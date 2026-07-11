@@ -1,0 +1,60 @@
+entity_types:
+  PERSON:
+    method: ner
+    ner_label: PER
+    token_prefix: PERSON
+  ORG:
+    method: ner
+    ner_label: ORG
+    token_prefix: ORG
+  ADDRESS:
+    method: ner
+    ner_extractor: addr        # НЕ ner_label/LOC — см. требования Блока 3: используется natasha.AddrExtractor, а не NER-тэггер
+    token_prefix: ADDRESS
+  INN:
+    method: regex
+    pattern: '\b\d{10}(\d{2})?\b'
+    validate: inn_checksum
+    token_prefix: INN
+  OGRN:
+    method: regex
+    pattern: '\b\d{13}(\d{2})?\b'
+    validate: ogrn_checksum
+    token_prefix: OGRN
+  KPP:
+    method: regex
+    pattern: '\b\d{9}\b'
+    token_prefix: KPP
+  BANK_ACCOUNT:
+    method: regex
+    pattern: '\b\d{20}\b'
+    token_prefix: ACCOUNT
+  BIK:
+    method: regex
+    pattern: '\b04\d{7}\b'
+    token_prefix: BIK
+  PASSPORT:
+    method: regex
+    pattern: '(?i)(?:паспорт|серия)[^\n\d]{0,20}(\d{2}\s?\d{2})\s?(\d{6})\b'
+    token_prefix: PASSPORT
+    # без контекстного якоря ("паспорт"/"серия") этот паттерн матчил бы любое 10-значное число —
+    # у паспортных данных нет контрольной суммы, поэтому единственная защита от ложных срабатываний — якорь по контексту
+  PHONE:
+    method: regex
+    pattern: '(?<!\d)(\+7|8)[\s\-]?\(?\d{3}\)?[\s\-]?\d{3}[\s\-]?\d{2}[\s\-]?\d{2}(?!\d)'
+    token_prefix: PHONE
+  EMAIL:
+    method: regex
+    pattern: '[\w\.-]+@[\w\.-]+\.\w+'
+    token_prefix: EMAIL
+  SUM:
+    method: regex
+    pattern: '\d[\d  ]*[.,]?\d*\s?(руб(лей|ля|\.)?|₽|USD|\$|долл(аров|\.)?)(?![а-яА-ЯёЁ])'
+    token_prefix: SUM
+    # пробельный класс внутри числа — только пробел/неразрывный пробел ( ), не \s, чтобы не захватывать переводы строк
+    # правая граница (?![а-яА-ЯёЁ]) — чтобы не съедать часть следующего слова, напр. "5 рубашек" не должно матчиться как "5 руб" + "ашек"
+  DATE:
+    method: regex
+    pattern: '\d{1,2}[.\/]\d{1,2}[.\/]\d{2,4}'
+    token_prefix: DATE
+    enabled: false
