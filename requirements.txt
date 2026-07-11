@@ -1,0 +1,6 @@
+python-docx
+PyYAML
+natasha==1.6.0
+pymorphy2==0.9.1
+yargy==0.16.0
+cryptography
