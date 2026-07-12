@@ -1,0 +1,40 @@
+[build-system]
+requires = ["setuptools>=64"]
+build-backend = "setuptools.build_meta"
+
+[project]
+name = "shifrator"
+version = "0.1.0"
+description = "SHIFRATOR — локальный офлайн-инструмент обратимой токенизации конфиденциальных данных в договорах"
+requires-python = ">=3.11"
+dependencies = [
+    "python-docx",
+    "PyYAML",
+    "natasha==1.6.0",
+    "pymorphy2==0.9.1",
+    "yargy==0.16.0",
+    "cryptography",
+    "lxml",
+]
+
+# src-layout с плоскими модулями: имена импортов (from models import …) —
+# зафиксированный контракт блоков 1-12, поэтому модули НЕ собраны в пакет.
+# Editable-установка (pip install -e . --no-build-isolation) кладёт src/ на
+# sys.path venv'а — после этого `python -c "import file_detokenizer"` работает
+# из любого cwd, что требуется тестам компонента 2 (test_g_regression).
+[tool.setuptools]
+package-dir = {"" = "src"}
+py-modules = [
+    "models",
+    "extractor",
+    "regex_detector",
+    "ner_detector",
+    "tokenizer",
+    "session_store",
+    "detokenizer",
+    "ooxml_core",
+    "docx_rewriter",
+    "pptx_rewriter",
+    "xlsx_rewriter",
+    "file_detokenizer",
+]

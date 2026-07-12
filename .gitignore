@@ -19,6 +19,7 @@ htmlcov/
 *_restored.*
 *.tmp
 scratch_test_*.py
+scratch/
 ~$*.docx
 ~$*.xlsx
 ~$*.pptx

@@ -2,6 +2,14 @@ import argparse
 import os
 import sys
 
+# Библиотечные модули проекта лежат в src/ (см. PROJECT_AUDIT.md, раздел
+# «Структура»). Плоские имена импортов (from extractor import …) — публичный
+# контракт всех блоков, поэтому src/ добавляется в sys.path, а не превращается
+# в пакет. Вставка в позицию 1: позицию 0 занимает директория самого скрипта.
+_SRC_DIR = os.path.join(os.path.dirname(os.path.abspath(__file__)), "src")
+if _SRC_DIR not in sys.path:
+    sys.path.insert(1, _SRC_DIR)
+
 
 def _default_config_path():
     return os.path.join(os.path.dirname(os.path.abspath(__file__)), "entity_types.yaml")
