@@ -44,8 +44,15 @@ def cmd_decrypt(session_id):
     from session_store import purge_expired, SessionNotFoundError, SessionExpiredError
     from detokenizer import detokenize
 
+    # Автоочистка чужих просроченных сессий выполняется ВСЕГДА в начале decrypt —
+    # независимо от того, какую сессию просит пользователь и найдётся ли она —
+    # чтобы просроченные .enc не копились на диске бесконечно. Файл КОНКРЕТНО
+    # запрошенной сессии исключаем из удаления (exclude_session_id): тогда, если
+    # она истекла именно сейчас, load_session ниже кинет SessionExpiredError
+    # («истекла»), а не SessionNotFoundError («не найдена»). Ошибки очистки не
+    # прерывают decrypt — логируются в stderr, выполнение продолжается.
     try:
-        purge_expired()
+        purge_expired(exclude_session_id=session_id)
     except Exception as e:
         print(f"Предупреждение: purge_expired завершился с ошибкой: {e}", file=sys.stderr)
 
@@ -73,6 +80,15 @@ def cmd_decrypt(session_id):
         )
 
 
+def cmd_delete(session_id):
+    from session_store import delete_session
+
+    if delete_session(session_id):
+        print(f"Сессия {session_id} удалена")
+    else:
+        print(f"Сессия {session_id} не найдена")
+
+
 def main():
     sys.stdout.reconfigure(encoding="utf-8")
     sys.stderr.reconfigure(encoding="utf-8")
@@ -90,6 +106,9 @@ def main():
     decrypt_parser = subparsers.add_parser("decrypt", help="восстановить текст ответа LLM")
     decrypt_parser.add_argument("session_id", help="session_id, полученный от encrypt")
 
+    delete_parser = subparsers.add_parser("delete", help="удалить сессию по session_id")
+    delete_parser.add_argument("session_id", help="session_id для удаления")
+
     args = parser.parse_args()
 
     if args.command == "encrypt":
@@ -97,6 +116,8 @@ def main():
         cmd_encrypt(args.path, config_path)
     elif args.command == "decrypt":
         cmd_decrypt(args.session_id)
+    elif args.command == "delete":
+        cmd_delete(args.session_id)
 
 
 if __name__ == "__main__":

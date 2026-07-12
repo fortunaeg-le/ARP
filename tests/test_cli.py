@@ -10,7 +10,9 @@ import sys
 
 import pytest
 
-SHIFRATOR = os.path.join(os.path.dirname(os.path.abspath(__file__)), "shifrator.py")
+SHIFRATOR = os.path.join(
+    os.path.dirname(os.path.dirname(os.path.abspath(__file__))), "shifrator.py"
+)
 
 
 def _run(args, tmp_path, stdin_text=None):
@@ -103,6 +105,72 @@ class TestCliDecryptUnresolvedWarning:
 
         dec = _run(["decrypt", sid], tmp_path, stdin_text="Неизвестный токен [ORG_99] в ответе.")
         assert "[ORG_99]" in dec.stderr
+
+
+def _sessions_dir(tmp_path):
+    return tmp_path / "home" / ".shifrator" / "sessions"
+
+
+def _make_session(tmp_path, ttl_hours):
+    """Создаёт сессию в CLI-хранилище (tmp_path/home/.shifrator/sessions) и возвращает sid."""
+    from session_store import save_session
+    from models import Entity
+
+    store = _sessions_dir(tmp_path)
+    store.mkdir(parents=True, exist_ok=True)
+    ent = Entity(
+        id="1", segment_id="p0", start=0, end=3, original_text="abc",
+        entity_type="ORG", detector="ner", confidence=1.0, token="[ORG_1]",
+    )
+    return save_session([ent], ttl_hours=ttl_hours, storage_dir=str(store))
+
+
+class TestCliDecryptPurgesOthersAtStart:
+    """Изменение A: decrypt чистит чужие просроченные сессии В НАЧАЛЕ команды (всегда),
+    но запрошенную истёкшую сессию по-прежнему сообщает как «истекла», а не «не найдена»."""
+
+    def test_expired_request_reports_expired_and_purges_other_stale(self, tmp_path):
+        """Истёкшая запрошенная сессия -> 'истекла' (код 1); чужой просроченный .enc удалён за тот же decrypt."""
+        sid_req = _make_session(tmp_path, ttl_hours=-1)     # запрошенная, истёкшая
+        sid_other = _make_session(tmp_path, ttl_hours=-1)   # чужая, истёкшая
+        sid_alive = _make_session(tmp_path, ttl_hours=24)   # чужая, живая
+
+        result = _run(["decrypt", sid_req], tmp_path, stdin_text="какой-то текст")
+
+        assert result.returncode == 1
+        assert "истекла" in result.stderr
+        # Чужой просроченный файл реально удалён за этот вызов decrypt...
+        assert not (_sessions_dir(tmp_path) / f"{sid_other}.enc").exists()
+        # ...живой не тронут, а запрошенный оставлен (исключён из очистки), чтобы дать «истекла».
+        assert (_sessions_dir(tmp_path) / f"{sid_alive}.enc").exists()
+        assert (_sessions_dir(tmp_path) / f"{sid_req}.enc").exists()
+
+
+class TestCliDelete:
+    """Изменение B: подкоманда delete <session_id> — ручное удаление, код возврата 0 всегда."""
+
+    def test_delete_existing_session_prints_deleted_rc0(self, tmp_path):
+        """delete существующей сессии -> stdout 'Сессия <id> удалена', код 0, файл исчез."""
+        sid = _make_session(tmp_path, ttl_hours=24)
+        result = _run(["delete", sid], tmp_path)
+        assert result.returncode == 0
+        assert result.stdout.strip() == f"Сессия {sid} удалена"
+        assert not (_sessions_dir(tmp_path) / f"{sid}.enc").exists()
+
+    def test_delete_absent_session_prints_not_found_rc0(self, tmp_path):
+        """delete отсутствующей (но валидной по формату) сессии -> 'Сессия <id> не найдена', код 0."""
+        _make_session(tmp_path, ttl_hours=24)  # чтобы хранилище существовало
+        import uuid
+        absent = str(uuid.uuid4())
+        result = _run(["delete", absent], tmp_path)
+        assert result.returncode == 0
+        assert result.stdout.strip() == f"Сессия {absent} не найдена"
+
+    def test_delete_invalid_format_prints_not_found_rc0(self, tmp_path):
+        """delete с невалидным session_id -> 'не найдена', код 0, к ФС не обращается."""
+        result = _run(["delete", "not-a-valid-id"], tmp_path)
+        assert result.returncode == 0
+        assert "не найдена" in result.stdout
 
 
 class TestCliArgparseExitCode:

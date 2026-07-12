@@ -3,6 +3,8 @@
 ## Что сделано
 Реализован модуль `session_store.py` — зашифрованное дисковое хранилище токен-маппинга. `save_session` дедуплицирует Entity по `token`, кладёт `{token, entity_type, original_text, segment_id}` в JSON, шифрует его `cryptography.fernet.Fernet` и пишет в `{storage_dir}/{session_id}.enc`; ключ генерируется при первом сохранении в `{storage_dir}/key.bin`. `load_session` валидирует формат id, расшифровывает и проверяет TTL в UTC. `purge_expired` удаляет только просроченные `.enc`, не трогая `key.bin` и нераспознанные файлы. Исключения `SessionNotFoundError`/`SessionExpiredError` определены в этом же модуле. Все сценарии приёмки проверены эмпирически (см. «Данные для тестов»).
 
+**Обновление (этап 2).** Создание `key.bin` сделано атомарным (`_load_or_create_key`: запись во временный файл + публикация через `os.link`, эксклюзивно) — параллельные `save_session` на свежую директорию больше не перезаписывают ключ друг друга. Повреждённый `key.bin` теперь не роняет процесс: `load_session` превращает `ValueError` из `Fernet()` в `SessionNotFoundError`, `purge_expired` — печатает предупреждение и возвращает `0`. У `purge_expired` появился параметр `exclude_session_id` (файл этой сессии не удаляется в проходе — нужно CLI `decrypt`). Добавлена функция `delete_session(session_id, storage_dir=None) -> bool` для ручного удаления одной сессии.
+
 ## Публичный интерфейс
 dataclass'ы импортируются из `models.py`, не переопределены.
 
@@ -12,15 +14,23 @@ dataclass'ы импортируются из `models.py`, не переопре�
 def save_session(entities: list[Entity], session_id: str | None = None,
                  ttl_hours: int = 24, storage_dir: str | None = None) -> str
 def load_session(session_id: str, storage_dir: str | None = None) -> dict
-def purge_expired(storage_dir: str | None = None) -> int
+def purge_expired(storage_dir: str | None = None,
+                  exclude_session_id: str | None = None) -> int
+def delete_session(session_id: str, storage_dir: str | None = None) -> bool
 
 class SessionNotFoundError(Exception): ...
 class SessionExpiredError(Exception): ...
 ```
 
+`exclude_session_id` (по умолчанию `None`) — если задан, файл `{exclude_session_id}.enc`
+не удаляется в этом проходе `purge_expired`, все остальные просроченные вычищаются;
+нужен CLI `decrypt`, чтобы после очистки отличить «истекла» от «не найдена».
+`delete_session` — ручное удаление одной сессии: `True` если файл был и удалён,
+`False` если файла не было или `session_id` невалиден по формату; `key.bin` не трогает.
+
 Строки импорта:
 ```python
-from session_store import save_session, load_session, purge_expired
+from session_store import save_session, load_session, purge_expired, delete_session
 from session_store import SessionNotFoundError, SessionExpiredError
 ```
 
@@ -35,7 +45,7 @@ tokens = session["entities"]            # list[{token, entity_type, original_tex
 
 Исключения:
 - `ValueError` (stdlib) — `save_session`, если явно переданный `session_id` не matchит `^[0-9a-f-]{36}$`.
-- `SessionNotFoundError` (`session_store`) — `load_session`, если `session_id` неверного формата (проверка до обращения к ФС — защита от path traversal), либо файла нет, либо файл не расшифровывается ключом.
+- `SessionNotFoundError` (`session_store`) — `load_session`, если `session_id` неверного формата (проверка до обращения к ФС — защита от path traversal), либо файла нет, либо файл не расшифровывается ключом, **либо сам `key.bin` повреждён** (невалидный ключ: `ValueError` из `Fernet()` перехватывается и оборачивается в `SessionNotFoundError`, а не пробрасывается наружу).
 - `SessionExpiredError` (`session_store`) — `load_session`, если `expires_at` уже наступил (сравнение в UTC).
 - `save_session`/`load_session` могут пробросить `OSError` при проблемах записи/чтения диска.
 
@@ -53,7 +63,8 @@ tokens = session["entities"]            # list[{token, entity_type, original_tex
 }
 ```
 `save_session` возвращает `session_id: str` (сгенерированный uuid4, если на вход пришёл `None`).
-`purge_expired` возвращает `int` — число фактически удалённых просроченных `.enc`-файлов.
+`purge_expired` возвращает `int` — число фактически удалённых просроченных `.enc`-файлов (при `exclude_session_id` файл исключённой сессии в это число не входит и не удаляется).
+`delete_session` возвращает `bool` — `True`, если файл сессии существовал и удалён; `False`, если файла не было или `session_id` невалиден по формату.
 
 ## Инварианты выходных данных
 Ключи dict из `load_session` (гарантированно присутствуют все): `session_id` (str), `created_at` (str, ISO 8601 timezone-aware), `expires_at` (str, ISO 8601 timezone-aware), `entities` (list, возможно пустой).
@@ -80,7 +91,7 @@ tokens = session["entities"]            # list[{token, entity_type, original_tex
 
 ## Соглашения о путях и файлах времени выполнения
 - Дефолтная директория хранилища (`storage_dir=None` во всех трёх функциях): `~/.shifrator/sessions`. Создаётся автоматически при первом сохранении.
-- Файл ключа: `{storage_dir}/key.bin` (Fernet-ключ, генерируется при первом save, паролем не защищён — ограничение MVP).
+- Файл ключа: `{storage_dir}/key.bin` (Fernet-ключ, генерируется при первом save, паролем не защищён — ограничение MVP). Создаётся атомарно: временный файл `key.bin.*.tmp` в той же директории + публикация через `os.link`. Временный файл затем удаляется, но код, перечисляющий содержимое директории, должен быть готов увидеть его мельком. Атомарность полная на POSIX и Windows/NTFS; на ФС без жёстких ссылок — запасной неатомарный путь (`O_CREAT|O_EXCL`).
 - Файлы сессий: `{storage_dir}/{session_id}.enc`.
 - Права `0o600` выставляются на `key.bin` и `*.enc` **только на POSIX**; на Windows (текущее окружение разработки) не действуют — ограничение MVP, как и предписано спецификацией.
 
@@ -93,7 +104,8 @@ tokens = session["entities"]            # list[{token, entity_type, original_tex
 ## Известные ограничения / TODO
 - `key.bin` не защищён паролем / OS keyring — защита только от случайного прочтения посторонним ПО, не от локального злоумышленника с доступом к диску (фаза 2).
 - Права `0o600` на Windows не применяются (нет POSIX-прав) — ограничение MVP.
-- `purge_expired` при отсутствии `key.bin` в директории возвращает 0 (расшифровать TTL нечем) — файлы не удаляются, что безопасно.
+- `purge_expired` при отсутствии `key.bin` в директории возвращает 0 (расшифровать TTL нечем) — файлы не удаляются, что безопасно. То же при **повреждённом** `key.bin`: предупреждение в stderr + `return 0`, без падения.
+- Ручное удаление сессии из-под `decrypt`-очистки: если пользователь запросил `decrypt` для истёкшей сессии, её `.enc` НЕ удаляется в этом проходе (исключён через `exclude_session_id`), чтобы показать «истекла»; он будет вычищен при следующей очистке, когда перестанет быть запрошенным.
 
 ## Данные для тестов
 1. **Дедупликация + save/load.** Вход: 3 Entity — два с `token="[ORG_1]"` (`segment_id` `p3` и `p7`) и один `"[INN_1]"` (`p3`). Ожидаемо: в файле 2 записи; у `[ORG_1]` сохранён `segment_id="p3"` (первое вхождение). ✅ проверено.
@@ -101,6 +113,8 @@ tokens = session["entities"]            # list[{token, entity_type, original_tex
 3. **Истёкший TTL (граничный).** Ручная подмена `expires_at` на прошедшую дату → `load_session` кидает `SessionExpiredError`. ✅ проверено.
 4. **purge_expired избирательность.** Директория с `key.bin`, `garbage.txt`, `broken.enc` (не-Fernet) и одним просроченным `.enc` → удаляется ровно 1 файл (просроченный `.enc`); `key.bin`, `garbage.txt`, `broken.enc` остаются, живая сессия по-прежнему загружается. ✅ проверено.
 5. **Валидация формата.** `save_session([], session_id="../evil")` → `ValueError`; `load_session("../../etc/passwd")` → `SessionNotFoundError` без обращения к ФС; пустой список entities → сессия создаётся с `"entities": []`. ✅ проверено.
+6. **purge_expired с exclude (этап 2).** Две просроченные сессии A (запрошенная) и B (чужая) → `purge_expired(exclude_session_id=A)` удаляет только B (`removed == 1`), файл A остаётся, `load_session(A)` затем кидает `SessionExpiredError`. Дефолт `exclude_session_id=None` — прежнее поведение (удаляются все просроченные). ✅ проверено (`tests/test_session_store.py::TestPurgeExpiredExcludeSession`).
+7. **delete_session (этап 2).** Существующая сессия → `True`, `.enc` удалён; отсутствующая (валидный формат) → `False`; невалидный формат (`../../etc/passwd`) → `False` без обращения к ФС; `key.bin` не тронут ни в одном случае. ✅ проверено (`tests/test_session_store.py::TestDeleteSession`).
 
 ## Файлы блока
 - `session_store.py` (создан)

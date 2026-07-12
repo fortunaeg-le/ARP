@@ -1,7 +1,9 @@
 import sys
+import zipfile
 from pathlib import Path
 
 from docx import Document
+from docx.opc.exceptions import PackageNotFoundError
 from docx.table import Table
 from docx.text.paragraph import Paragraph
 from docx.oxml.ns import qn
@@ -10,7 +12,15 @@ from models import SourceDocument, TextSegment
 
 
 def _extract_docx(path: str) -> SourceDocument:
-    document = Document(path)
+    try:
+        document = Document(path)
+    except (PackageNotFoundError, zipfile.BadZipFile) as exc:
+        # Файл не является валидным .docx-контейнером: переименованный .txt,
+        # обрезанный/битый или пустой файл. python-docx кидает PackageNotFoundError
+        # (или BadZipFile) — оборачиваем в понятный ValueError, который CLI ловит.
+        raise ValueError(
+            f"Файл не является корректным .docx (повреждён или неверный формат): {path}"
+        ) from exc
     segments: list[TextSegment] = []
 
     paragraph_counter = 0
@@ -65,14 +75,23 @@ def _extract_docx(path: str) -> SourceDocument:
 
 
 def _extract_txt(path: str) -> SourceDocument:
-    encoding = "utf-8-sig"
-    try:
-        with open(path, "r", encoding=encoding) as f:
-            raw = f.read()
-    except UnicodeDecodeError:
-        encoding = "cp1251"
-        with open(path, "r", encoding=encoding) as f:
-            raw = f.read()
+    with open(path, "rb") as f:
+        data = f.read()
+
+    # UTF-16 с BOM (LE 0xFF 0xFE / BE 0xFE 0xFF) — так блокнот Windows сохраняет
+    # "Юникод". Детектируем ДО отката на cp1251: иначе utf-8-sig падает, cp1251
+    # молча декодирует UTF-16-байты в моджибейк, и ПДн (ИНН/телефоны/ФИО) не
+    # находятся детекторами — тихая порча текста и утечка ПДн в искажённом виде.
+    if data.startswith(b"\xff\xfe") or data.startswith(b"\xfe\xff"):
+        encoding = "utf-16"
+        raw = data.decode(encoding)
+    else:
+        encoding = "utf-8-sig"
+        try:
+            raw = data.decode(encoding)
+        except UnicodeDecodeError:
+            encoding = "cp1251"
+            raw = data.decode(encoding)
 
     text = raw.replace("\r\n", "\n").replace("\r", "\n")
     lines = text.split("\n")

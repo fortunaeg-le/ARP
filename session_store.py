@@ -8,7 +8,8 @@
 Публичные функции:
   - save_session(entities, session_id=None, ttl_hours=24, storage_dir=None) -> session_id
   - load_session(session_id, storage_dir=None) -> dict  (формат см. спецификацию)
-  - purge_expired(storage_dir=None) -> число удалённых просроченных .enc-файлов
+  - purge_expired(storage_dir=None, exclude_session_id=None) -> число удалённых просроченных .enc
+  - delete_session(session_id, storage_dir=None) -> bool  (ручное удаление одной сессии)
 
 Исключения SessionNotFoundError / SessionExpiredError определены здесь же.
 
@@ -19,6 +20,7 @@ import json
 import os
 import re
 import sys
+import tempfile
 from datetime import datetime, timedelta, timezone
 from pathlib import Path
 
@@ -60,13 +62,60 @@ def _chmod_600(path: Path) -> None:
 
 
 def _load_or_create_key(storage_dir: Path) -> bytes:
-    """Читает ключ Fernet из {storage_dir}/key.bin, создавая его при первом запуске."""
+    """Читает ключ Fernet из {storage_dir}/key.bin, создавая его при первом запуске.
+
+    Создание атомарно (защита от TOCTOU-гонки): ключ пишется целиком во временный
+    файл и публикуется под финальным именем через os.link, который эксклюзивен —
+    кидает FileExistsError, если key.bin уже существует. Поэтому при параллельном
+    первом сохранении ровно ОДИН создатель побеждает, а проигравшие читают его уже
+    полностью записанный ключ (а не свой). Так закрыты сразу два окна: перезапись
+    ключа (link может пройти лишь однажды) и чтение недописанного файла (key.bin
+    появляется под финальным именем уже целиком, в отличие от create+write).
+
+    Примечание по атомарности: на POSIX os.link атомарен и падает на существующей
+    цели по спецификации. На Windows/NTFS он ложится на CreateHardLinkW с той же
+    семантикой отказа при существующей цели. На ФС без жёстких ссылок или при
+    временном файле на другом томе гарантия слабее — тогда возможен возврат к
+    неатомарному пути (см. except OSError ниже).
+    """
     key_path = storage_dir / _KEY_FILENAME
     if key_path.exists():
         return key_path.read_bytes()
+
     storage_dir.mkdir(parents=True, exist_ok=True)
     key = Fernet.generate_key()
-    key_path.write_bytes(key)
+
+    fd, tmp_name = tempfile.mkstemp(
+        dir=str(storage_dir), prefix=_KEY_FILENAME + ".", suffix=".tmp"
+    )
+    tmp_path = Path(tmp_name)
+    try:
+        with os.fdopen(fd, "wb") as tmp_file:
+            tmp_file.write(key)
+            tmp_file.flush()
+            os.fsync(tmp_file.fileno())
+        try:
+            os.link(tmp_path, key_path)
+        except FileExistsError:
+            # Гонку выиграл другой поток/процесс — берём его целиком записанный ключ.
+            return key_path.read_bytes()
+        except OSError:
+            # ФС не поддерживает жёсткие ссылки: неатомарный запасной путь. Всё ещё
+            # эксклюзивен через O_CREAT|O_EXCL, но с окном чтения недописанного файла.
+            try:
+                excl_fd = os.open(key_path, os.O_CREAT | os.O_EXCL | os.O_WRONLY, 0o600)
+            except FileExistsError:
+                return key_path.read_bytes()
+            with os.fdopen(excl_fd, "wb") as excl_file:
+                excl_file.write(key)
+                excl_file.flush()
+                os.fsync(excl_file.fileno())
+    finally:
+        try:
+            tmp_path.unlink()
+        except OSError:
+            pass
+
     _chmod_600(key_path)
     return key
 
@@ -150,7 +199,15 @@ def load_session(session_id: str, storage_dir: str | None = None) -> dict:
         raise SessionNotFoundError(f"Сессия не найдена: {session_id}")
 
     key = _load_or_create_key(store)
-    fernet = Fernet(key)
+    try:
+        fernet = Fernet(key)
+    except ValueError as exc:
+        # Повреждённый key.bin (обрезан, затёрт, синхронизирован наполовину):
+        # Fernet() кидает ValueError ещё до decrypt. Спека блока 5 требует явного
+        # SessionNotFoundError на «повреждён файл или ключ», а не падения.
+        raise SessionNotFoundError(
+            f"Сессия не расшифровывается (повреждён ключ): {session_id}"
+        ) from exc
 
     encrypted = session_path.read_bytes()
     try:
@@ -169,29 +226,53 @@ def load_session(session_id: str, storage_dir: str | None = None) -> dict:
     return data
 
 
-def purge_expired(storage_dir: str | None = None) -> int:
+def purge_expired(storage_dir: str | None = None, exclude_session_id: str | None = None) -> int:
     """Удаляет просроченные .enc-файлы в директории хранилища.
 
     Перебирает только *.enc; key.bin и прочие файлы никогда не трогаются.
     Файлы, которые не расшифровываются / содержат невалидный JSON / не имеют
     expires_at, пропускаются (с предупреждением в stderr), но не удаляются.
     Возвращает число фактически удалённых просроченных файлов.
+
+    exclude_session_id — если задан, файл {exclude_session_id}.enc в этом проходе
+    НЕ удаляется (и даже не проверяется), сколько бы он ни был просрочен. Нужно
+    для CLI decrypt: очистку зовём в начале, но файл запрошенной сессии оставляем,
+    чтобы последующий load_session мог отличить «истекла» (SessionExpiredError) от
+    «не найдена» (SessionNotFoundError). Все ОСТАЛЬНЫЕ просроченные сессии при этом
+    вычищаются за тот же проход.
     """
     store = _resolve_storage_dir(storage_dir)
     if not store.exists():
         return 0
 
+    exclude_name = f"{exclude_session_id}.enc" if exclude_session_id is not None else None
+
     key_path = store / _KEY_FILENAME
     if not key_path.exists():
         # Без ключа расшифровать ничего нельзя — удалять по TTL невозможно.
         return 0
-    fernet = Fernet(key_path.read_bytes())
+    try:
+        fernet = Fernet(key_path.read_bytes())
+    except ValueError as exc:
+        # Повреждённый key.bin: Fernet() кидает ValueError. Без валидного ключа
+        # ни одну сессию не расшифровать, поэтому чистить нечего — предупреждаем и
+        # выходим без падения (CLI decrypt зовёт purge_expired первым).
+        print(
+            f"[session_store] повреждён {_KEY_FILENAME}: {type(exc).__name__}: {exc}; "
+            "просроченные сессии не вычищены",
+            file=sys.stderr,
+        )
+        return 0
 
     now = datetime.now(timezone.utc)
     removed = 0
 
     for entry in store.iterdir():
         if not entry.is_file() or entry.suffix != ".enc":
+            continue
+        if exclude_name is not None and entry.name == exclude_name:
+            # Файл запрошенной у decrypt сессии не трогаем в этом проходе, чтобы
+            # load_session мог отличить «истекла» от «не найдена».
             continue
         try:
             raw = fernet.decrypt(entry.read_bytes())
@@ -215,3 +296,23 @@ def purge_expired(storage_dir: str | None = None) -> int:
                 )
 
     return removed
+
+
+def delete_session(session_id: str, storage_dir: str | None = None) -> bool:
+    """Удаляет файл сессии {storage_dir}/{session_id}.enc по явному запросу.
+
+    Валидирует session_id тем же regex, что load_session (^[0-9a-f-]{36}$); при
+    несовпадении к файловой системе НЕ обращается и возвращает False (защита от
+    path traversal). Возвращает True, если файл существовал и удалён, False —
+    если файла не было. key.bin никогда не трогает; штатных исключений не кидает.
+    """
+    if not _SESSION_ID_RE.match(session_id):
+        return False
+
+    store = _resolve_storage_dir(storage_dir)
+    session_path = store / f"{session_id}.enc"
+    try:
+        session_path.unlink()
+        return True
+    except FileNotFoundError:
+        return False

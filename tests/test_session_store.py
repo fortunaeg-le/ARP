@@ -10,7 +10,14 @@ import pytest
 from cryptography.fernet import Fernet
 
 from models import Entity
-from session_store import save_session, load_session, purge_expired, SessionNotFoundError, SessionExpiredError
+from session_store import (
+    save_session,
+    load_session,
+    purge_expired,
+    delete_session,
+    SessionNotFoundError,
+    SessionExpiredError,
+)
 
 
 def _entity(segment_id, token, entity_type, original_text):
@@ -212,6 +219,67 @@ class TestPurgeExpiredSelectivity:
         """Граничный случай: purge_expired без просроченных файлов возвращает 0."""
         save_session([], ttl_hours=24, storage_dir=str(tmp_path))
         assert purge_expired(storage_dir=str(tmp_path)) == 0
+
+
+class TestPurgeExpiredExcludeSession:
+    """Изменение A: purge_expired(exclude_session_id=...) чистит все ЧУЖИЕ просроченные
+    сессии за один проход, но файл исключённой сессии оставляет — чтобы CLI decrypt
+    мог отличить «истекла» от «не найдена» даже при очистке в начале команды."""
+
+    def test_excluded_expired_session_survives_while_others_purged(self, tmp_path):
+        """Чужой просроченный .enc удаляется за тот же проход, файл исключённой сессии — нет."""
+        sid_req = save_session([], ttl_hours=-1, storage_dir=str(tmp_path))
+        sid_other = save_session([], ttl_hours=-1, storage_dir=str(tmp_path))
+
+        removed = purge_expired(storage_dir=str(tmp_path), exclude_session_id=sid_req)
+
+        assert removed == 1
+        assert not (tmp_path / f"{sid_other}.enc").exists()
+        assert (tmp_path / f"{sid_req}.enc").exists()
+
+    def test_excluded_expired_session_still_reports_expired_on_load(self, tmp_path):
+        """Файл исключённой сессии на месте => load_session даёт SessionExpiredError, не NotFound."""
+        sid_req = save_session([], ttl_hours=-1, storage_dir=str(tmp_path))
+        purge_expired(storage_dir=str(tmp_path), exclude_session_id=sid_req)
+        with pytest.raises(SessionExpiredError):
+            load_session(sid_req, storage_dir=str(tmp_path))
+
+    def test_exclude_none_is_backward_compatible(self, tmp_path):
+        """Дефолт exclude_session_id=None — прежнее поведение: удаляются все просроченные."""
+        sid = save_session([], ttl_hours=-1, storage_dir=str(tmp_path))
+        removed = purge_expired(storage_dir=str(tmp_path))
+        assert removed == 1
+        assert not (tmp_path / f"{sid}.enc").exists()
+
+
+class TestDeleteSession:
+    """Изменение B: delete_session — ручное удаление одной сессии по session_id."""
+
+    def test_delete_existing_session_returns_true_and_removes_file(self, tmp_path):
+        """Happy path: существующая сессия удалена, delete_session -> True, .enc исчез."""
+        sid = save_session([_entity("p1", "[ORG_1]", "ORG", "Первый")], storage_dir=str(tmp_path))
+        assert (tmp_path / f"{sid}.enc").exists()
+        assert delete_session(sid, storage_dir=str(tmp_path)) is True
+        assert not (tmp_path / f"{sid}.enc").exists()
+
+    def test_delete_absent_but_wellformed_session_returns_false(self, tmp_path):
+        """Валидный по формату, но отсутствующий session_id -> False, без исключений."""
+        save_session([], storage_dir=str(tmp_path))  # директория и key.bin существуют
+        absent = str(uuid.uuid4())
+        assert delete_session(absent, storage_dir=str(tmp_path)) is False
+
+    def test_delete_invalid_format_returns_false_without_touching_fs(self, tmp_path):
+        """Невалидный session_id (path traversal) -> False, к ФС не обращается."""
+        sid = save_session([], storage_dir=str(tmp_path))
+        assert delete_session("../../etc/passwd", storage_dir=str(tmp_path)) is False
+        assert (tmp_path / "key.bin").exists()
+        assert (tmp_path / f"{sid}.enc").exists()
+
+    def test_delete_never_removes_key_bin(self, tmp_path):
+        """delete_session никогда не трогает key.bin."""
+        sid = save_session([], storage_dir=str(tmp_path))
+        delete_session(sid, storage_dir=str(tmp_path))
+        assert (tmp_path / "key.bin").exists()
 
 
 class TestSessionExceptionTypes:

@@ -10,9 +10,10 @@ import sys
 import pytest
 from docx import Document
 
-sys.path.insert(0, os.path.dirname(os.path.abspath(__file__)))
+_PROJECT_ROOT = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
+sys.path.insert(0, _PROJECT_ROOT)
 
-CONFIG_PATH = os.path.join(os.path.dirname(os.path.abspath(__file__)), "entity_types.yaml")
+CONFIG_PATH = os.path.join(_PROJECT_ROOT, "entity_types.yaml")
 
 
 @pytest.fixture(scope="session")
