@@ -18,6 +18,7 @@ htmlcov/
 .idea/
 *_restored.*
 *.tmp
+scratch_test_*.py
 ~$*.docx
 ~$*.xlsx
 ~$*.pptx
