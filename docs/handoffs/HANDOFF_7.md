@@ -1,5 +1,12 @@
 # HANDOFF — Блок 7: CLI
 
+> **Примечание аудита (2026-07-12).** Это исторический документ сдачи блока: он описывает
+> состояние на момент сдачи и НЕ обновляется. Источник истины — `docs/SHIFRATOR_SPEC_AI.md`
+> (+ `docs/SHIFRATOR_SPEC_FILE_DECRYPT.md` для блоков 8–12) и `HANDOFF_CURRENT.md` в корне.
+> После структурирования проекта все модули лежат в `src/` (импорты остались плоскими).
+> **Что здесь устарело:** не описана подкоманда `decrypt-file` (добавлена блоком 12,
+> компонент 2) и B6-семантика `delete` (удаляются `.enc` И `.txt`).
+
 ## Что сделано
 Реализован `shifrator.py` — точка входа CLI на `argparse` с тремя подкомандами: `encrypt <путь>`, `decrypt <session_id>` и `delete <session_id>`. `encrypt` склеивает блоки 1→2+3→4→5 (`extract` → `detect_regex`+`detect_ner` → `tokenize` → `save_session`). `decrypt` в начале команды вызывает `purge_expired(exclude_session_id=session_id)` (ошибки внутри логируются, не прерывают выполнение), читает текст из stdin до EOF, вызывает `detokenize`, печатает восстановленный текст в stdout и предупреждение об unresolved-токенах (если есть) в stderr. `delete` зовёт `delete_session(session_id)` и печатает результат в stdout (код возврата 0 всегда). Новой бизнес-логики сверх склейки нет.
 
