@@ -80,6 +80,45 @@ def cmd_decrypt(session_id):
         )
 
 
+def cmd_decrypt_file(session_id, path, out):
+    # Импорт лениво, внутри ветки подкоманды (соглашение блока 7): decrypt-file не
+    # должен тянуть тяжёлые модули при обычном encrypt/decrypt. file_detokenizer сам
+    # ничего тяжёлого не грузит — импорт мгновенный.
+    from file_detokenizer import detokenize_file
+    from session_store import SessionNotFoundError, SessionExpiredError
+    from ooxml_core import OoxmlError
+
+    # В отличие от decrypt, purge_expired здесь НЕ вызывается — чтобы не менять
+    # поведение по очистке в рамках аддитивной правки (см. спеку блока 12).
+    try:
+        dst_path, unresolved = detokenize_file(path, session_id, dst_path=out)
+    except FileNotFoundError:
+        print(f"Ошибка: файл не найден: {path}", file=sys.stderr)
+        sys.exit(1)
+    except FileExistsError as e:
+        print(f"Ошибка: {e}", file=sys.stderr)
+        sys.exit(1)
+    except ValueError as e:
+        print(f"Ошибка: {e}", file=sys.stderr)
+        sys.exit(1)
+    except OoxmlError as e:
+        print(f"Ошибка: {e}", file=sys.stderr)
+        sys.exit(1)
+    except SessionNotFoundError:
+        print(f"Ошибка: сессия не найдена: {session_id}", file=sys.stderr)
+        sys.exit(1)
+    except SessionExpiredError:
+        print(f"Ошибка: сессия истекла: {session_id}", file=sys.stderr)
+        sys.exit(1)
+
+    print(dst_path)
+    if unresolved:
+        print(
+            f"Предупреждение: не удалось восстановить токены: {', '.join(unresolved)}",
+            file=sys.stderr,
+        )
+
+
 def cmd_delete(session_id):
     from session_store import delete_session
 
@@ -109,6 +148,15 @@ def main():
     delete_parser = subparsers.add_parser("delete", help="удалить сессию по session_id")
     delete_parser.add_argument("session_id", help="session_id для удаления")
 
+    decrypt_file_parser = subparsers.add_parser(
+        "decrypt-file", help="раскрыть токены в файле .docx/.xlsx/.pptx с сохранением оформления"
+    )
+    decrypt_file_parser.add_argument("session_id", help="session_id, полученный от encrypt")
+    decrypt_file_parser.add_argument("path", help="путь к файлу .docx, .xlsx или .pptx")
+    decrypt_file_parser.add_argument(
+        "--out", default=None, help="путь к выходному файлу (по умолчанию рядом с исходным, суффикс _restored)"
+    )
+
     args = parser.parse_args()
 
     if args.command == "encrypt":
@@ -118,6 +166,8 @@ def main():
         cmd_decrypt(args.session_id)
     elif args.command == "delete":
         cmd_delete(args.session_id)
+    elif args.command == "decrypt-file":
+        cmd_decrypt_file(args.session_id, args.path, args.out)
 
 
 if __name__ == "__main__":
