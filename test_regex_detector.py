@@ -1,0 +1,271 @@
+"""Тесты блока 2 — regex_detector.py (detect_regex, inn_checksum, ogrn_checksum, VALIDATORS)."""
+import sys
+
+import pytest
+
+from models import SourceDocument, TextSegment
+from regex_detector import detect_regex, inn_checksum, ogrn_checksum, VALIDATORS
+
+
+def _doc(*texts):
+    """Строит SourceDocument из списка строк, по одному txt_line сегменту на строку."""
+    segments = [
+        TextSegment(id=f"l{i}", text=t, source_type="txt_line", metadata={"line_index": i, "encoding": "utf-8-sig"})
+        for i, t in enumerate(texts)
+    ]
+    return SourceDocument(segments=segments, source_format="txt", source_path="dummy.txt")
+
+
+class TestInnChecksum:
+    """Спека, блок 2: inn_checksum(value) по алгоритму ФНС (10 и 12 знаков)."""
+
+    def test_valid_10_digit_inn_passes(self):
+        """HANDOFF_2, Данные для тестов: '7707083893' — валидный 10-значный ИНН."""
+        assert inn_checksum("7707083893") is True
+
+    def test_invalid_10_digit_inn_fails(self):
+        """HANDOFF_2, Данные для тестов: '7707083894' — чек-сумма не сходится."""
+        assert inn_checksum("7707083894") is False
+
+    def test_valid_12_digit_inn_passes(self):
+        """HANDOFF_2, Данные для тестов: 12-значный ИНН '500100732259' валиден."""
+        assert inn_checksum("500100732259") is True
+
+    def test_invalid_12_digit_inn_fails(self):
+        """HANDOFF_2, Данные для тестов: 12-значный ИНН '500100732258' невалиден."""
+        assert inn_checksum("500100732258") is False
+
+    def test_non_digit_value_fails(self):
+        """Спека, блок 2: валидатор принимает m.group(0); нецифровая строка не проходит проверку."""
+        assert inn_checksum("abcdefghij") is False
+
+    def test_wrong_length_fails(self):
+        """Спека, блок 2: ИНН только 10 или 12 знаков; иная длина — не валидна."""
+        assert inn_checksum("12345") is False
+
+
+class TestOgrnChecksum:
+    """Спека, блок 2: ogrn_checksum(value) — 13 знаков mod 11, 15 знаков (ОГРНИП) mod 13."""
+
+    def test_valid_13_digit_ogrn_passes(self):
+        """HANDOFF_2, Данные для тестов: 'ОГРН 1027700132195' — валидный ОГРН."""
+        assert ogrn_checksum("1027700132195") is True
+
+    def test_invalid_13_digit_ogrn_fails(self):
+        """HANDOFF_2, Данные для тестов: 'ОГРН 1027700132196' — чек-сумма не сходится."""
+        assert ogrn_checksum("1027700132196") is False
+
+    def test_valid_15_digit_ogrnip_passes(self):
+        """HANDOFF_2, Данные для тестов: 'ОГРНИП 304500116000157' — валидный ОГРНИП."""
+        assert ogrn_checksum("304500116000157") is True
+
+    def test_wrong_length_fails(self):
+        """Спека, блок 2: ОГРН/ОГРНИП только 13 или 15 знаков; иная длина невалидна."""
+        assert ogrn_checksum("123") is False
+
+
+class TestValidatorsRegistry:
+    """Спека, блок 2: VALIDATORS — реестр {'inn_checksum': ..., 'ogrn_checksum': ...}."""
+
+    def test_registry_contains_both_validators(self):
+        """Спека, блок 2: VALIDATORS резолвит имена inn_checksum/ogrn_checksum из конфига."""
+        assert set(VALIDATORS.keys()) == {"inn_checksum", "ogrn_checksum"}
+
+    def test_registry_functions_match_module_level_functions(self):
+        """Спека, блок 2: VALIDATORS['inn_checksum'] — та же функция, что и inn_checksum."""
+        assert VALIDATORS["inn_checksum"] is inn_checksum
+        assert VALIDATORS["ogrn_checksum"] is ogrn_checksum
+
+
+class TestDetectRegexChecksumFiltering:
+    """HANDOFF_2, Пример 1 — валидные и испорченные чек-суммы ИНН/ОГРН."""
+
+    def test_valid_inn_and_kpp_found_with_correct_offsets(self, config_path):
+        """HANDOFF_2, Пример 1: 'ИНН 7707083893, КПП 773601001' -> INN[4:14], KPP[20:29]."""
+        doc = _doc("ИНН 7707083893, КПП 773601001")
+        entities = detect_regex(doc, config_path)
+        by_type = {e.entity_type: e for e in entities}
+        assert (by_type["INN"].start, by_type["INN"].end) == (4, 14)
+        assert (by_type["KPP"].start, by_type["KPP"].end) == (20, 29)
+
+    def test_invalid_inn_checksum_produces_no_entity(self, config_path):
+        """HANDOFF_2, Пример 1: 'ИНН 7707083894' -> ничего (чек-сумма не сходится)."""
+        doc = _doc("ИНН 7707083894")
+        entities = detect_regex(doc, config_path)
+        assert [e for e in entities if e.entity_type == "INN"] == []
+
+    def test_valid_ogrn_and_ogrnip_found(self, config_path):
+        """HANDOFF_2, Пример 1: 'ОГРН 1027700132195, ОГРНИП 304500116000157' -> два OGRN-Entity."""
+        doc = _doc("ОГРН 1027700132195, ОГРНИП 304500116000157")
+        entities = detect_regex(doc, config_path)
+        ogrn_values = {e.original_text for e in entities if e.entity_type == "OGRN"}
+        assert ogrn_values == {"1027700132195", "304500116000157"}
+
+    def test_invalid_ogrn_checksum_produces_no_entity(self, config_path):
+        """HANDOFF_2, Пример 1: 'ОГРН 1027700132196' -> ничего."""
+        doc = _doc("ОГРН 1027700132196")
+        entities = detect_regex(doc, config_path)
+        assert entities == []
+
+
+class TestDetectRegexPassportAnchor:
+    """HANDOFF_2, Пример 2 — паспорт: якорь обязателен."""
+
+    def test_passport_with_anchor_produces_single_entity_including_anchor(self, config_path):
+        """HANDOFF_2, Пример 2: 'паспорт серия 45 12 345678 выдан ОВД' -> один PASSPORT [0:26], якорь включён в спан."""
+        doc = _doc("паспорт серия 45 12 345678 выдан ОВД")
+        entities = detect_regex(doc, config_path)
+        passport = [e for e in entities if e.entity_type == "PASSPORT"]
+        assert len(passport) == 1
+        assert passport[0].original_text == "паспорт серия 45 12 345678"
+        assert (passport[0].start, passport[0].end) == (0, 26)
+
+    def test_random_10_digit_number_without_anchor_produces_no_passport(self, config_path):
+        """HANDOFF_2, Пример 2: 'случайное число 4512345678 без якоря' -> ни одного PASSPORT (и ИНН тоже не сходится)."""
+        doc = _doc("случайное число 4512345678 без якоря")
+        entities = detect_regex(doc, config_path)
+        assert [e for e in entities if e.entity_type == "PASSPORT"] == []
+        assert [e for e in entities if e.entity_type == "INN"] == []
+
+
+class TestDetectRegexKppBikOverlap:
+    """HANDOFF_2, Пример 3 — пересечение KPP/BIK, не разрешается блоком 2 (зона блока 4)."""
+
+    def test_nine_digit_starting_with_04_produces_both_kpp_and_bik(self, config_path):
+        """HANDOFF_2, Пример 3: 'БИК 044525225' -> оба KPP и BIK Entity на одном интервале [38:47]."""
+        doc = _doc("р/с 40702810400000012345 в банке, БИК 044525225")
+        entities = detect_regex(doc, config_path)
+        types_at_same_span = {e.entity_type for e in entities if (e.start, e.end) == (38, 47)}
+        assert types_at_same_span == {"KPP", "BIK"}
+
+    def test_bank_account_found_alongside_kpp_bik_overlap(self, config_path):
+        """HANDOFF_2, Пример 3: тот же вход также даёт BANK_ACCOUNT('40702810400000012345', [4:24])."""
+        doc = _doc("р/с 40702810400000012345 в банке, БИК 044525225")
+        entities = detect_regex(doc, config_path)
+        accounts = [e for e in entities if e.entity_type == "BANK_ACCOUNT"]
+        assert len(accounts) == 1
+        assert (accounts[0].original_text, accounts[0].start, accounts[0].end) == ("40702810400000012345", 4, 24)
+
+
+class TestDetectRegexSum:
+    """HANDOFF_2, Пример 4 — SUM и правая граница."""
+
+    def test_sum_with_nbsp_and_ruб_suffix_matched(self, config_path):
+        """HANDOFF_2, Пример 4: '1 500 000,00 руб.' и '500 000 ₽' распознаются как SUM."""
+        doc = _doc("Цена договора: 1 500 000,00 руб. без НДС; аванс 500 000 ₽")
+        entities = detect_regex(doc, config_path)
+        sums = {e.original_text for e in entities if e.entity_type == "SUM"}
+        assert "1 500 000,00 руб." in sums
+        assert "500 000 ₽" in sums
+
+    def test_sum_right_boundary_does_not_eat_next_word(self, config_path):
+        """HANDOFF_2, Пример 4: '5 рубашек' -> ничего (правая граница не должна съедать 'ашек')."""
+        doc = _doc("куплено 5 рубашек")
+        entities = detect_regex(doc, config_path)
+        assert [e for e in entities if e.entity_type == "SUM"] == []
+
+
+class TestDetectRegexDisabledType:
+    """HANDOFF_2, Пример 5 — выключенный тип (enabled: false)."""
+
+    def test_disabled_date_type_produces_no_entity(self, config_path):
+        """HANDOFF_2, Пример 5: 'дата 12.07.2026' -> ничего (DATE имеет enabled: false в конфиге)."""
+        doc = _doc("дата 12.07.2026")
+        entities = detect_regex(doc, config_path)
+        assert [e for e in entities if e.entity_type == "DATE"] == []
+
+
+class TestDetectRegexUnknownValidate:
+    """Спека, блок 2: незнакомый validate в конфиге -> предупреждение в stderr, тип пропущен целиком."""
+
+    def test_unknown_validate_prints_warning_and_skips_type_entirely(self, tmp_path, capsys):
+        """HANDOFF_2, Пример 5: validate 'snils_checksum' не в VALIDATORS -> предупреждение в stderr, по SNILS ни одного Entity."""
+        cfg = tmp_path / "cfg.yaml"
+        cfg.write_text(
+            "entity_types:\n"
+            "  SNILS:\n"
+            "    method: regex\n"
+            "    pattern: '\\d{11}'\n"
+            "    validate: snils_checksum\n"
+            "    token_prefix: SNILS\n",
+            encoding="utf-8",
+        )
+        doc = _doc("12345678901")
+        entities = detect_regex(doc, str(cfg))
+        captured = capsys.readouterr()
+        assert entities == []
+        assert "snils_checksum" in captured.err
+
+    def test_other_types_still_work_when_one_type_has_unknown_validate(self, tmp_path):
+        """Спека, блок 2: незнакомый validate у одного типа не мешает остальным типам конфига работать."""
+        cfg = tmp_path / "cfg.yaml"
+        cfg.write_text(
+            "entity_types:\n"
+            "  SNILS:\n"
+            "    method: regex\n"
+            "    pattern: '\\d{11}'\n"
+            "    validate: snils_checksum\n"
+            "    token_prefix: SNILS\n"
+            "  EMAIL:\n"
+            "    method: regex\n"
+            "    pattern: '[\\w.-]+@[\\w.-]+\\.\\w+'\n"
+            "    token_prefix: EMAIL\n",
+            encoding="utf-8",
+        )
+        doc = _doc("test@example.com")
+        entities = detect_regex(doc, str(cfg))
+        assert [e.entity_type for e in entities] == ["EMAIL"]
+
+
+class TestDetectRegexConfigErrors:
+    """HANDOFF_2, Публичный интерфейс — исключения detect_regex."""
+
+    def test_missing_config_file_raises_file_not_found_error(self):
+        """HANDOFF_2, Пример 5: detect_regex(doc, 'нет_такого.yaml') -> FileNotFoundError."""
+        doc = _doc("текст")
+        with pytest.raises(FileNotFoundError):
+            detect_regex(doc, "нет_такого_файла.yaml")
+
+    def test_config_without_entity_types_key_raises_key_error(self, tmp_path):
+        """HANDOFF_2, Публичный интерфейс: KeyError — если в конфиге нет верхнеуровневого ключа entity_types."""
+        cfg = tmp_path / "cfg.yaml"
+        cfg.write_text("something_else: {}\n", encoding="utf-8")
+        doc = _doc("текст")
+        with pytest.raises(KeyError):
+            detect_regex(doc, str(cfg))
+
+
+class TestDetectRegexInvariants:
+    """HANDOFF_2, Инварианты выходных данных."""
+
+    def test_all_entities_have_detector_regex(self, config_path):
+        """HANDOFF_2, Инварианты: у каждого Entity detector == 'regex'."""
+        doc = _doc("ИНН 7707083893")
+        entities = detect_regex(doc, config_path)
+        assert all(e.detector == "regex" for e in entities)
+
+    def test_all_entities_have_confidence_one(self, config_path):
+        """HANDOFF_2, Инварианты: у каждого Entity confidence == 1.0."""
+        doc = _doc("ИНН 7707083893")
+        entities = detect_regex(doc, config_path)
+        assert all(e.confidence == 1.0 for e in entities)
+
+    def test_all_entities_have_token_none(self, config_path):
+        """HANDOFF_2, Инварианты: у каждого Entity token is None (заполняется в блоке 4)."""
+        doc = _doc("ИНН 7707083893")
+        entities = detect_regex(doc, config_path)
+        assert all(e.token is None for e in entities)
+
+    def test_original_text_matches_segment_slice(self, config_path):
+        """HANDOFF_2, Инварианты: entity.original_text == segment.text[entity.start:entity.end]."""
+        doc = _doc("ИНН 7707083893, КПП 773601001")
+        entities = detect_regex(doc, config_path)
+        seg_text = doc.segments[0].text
+        for e in entities:
+            assert e.original_text == seg_text[e.start:e.end]
+
+    def test_empty_segment_text_produces_no_entities(self, config_path):
+        """HANDOFF_2, Предусловия: пустой text допустим, совпадений просто нет."""
+        doc = _doc("")
+        entities = detect_regex(doc, config_path)
+        assert entities == []

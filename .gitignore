@@ -4,3 +4,5 @@ __pycache__/
 .shifrator/
 *.enc
 key.bin
+.pytest_cache/
+test_run/
