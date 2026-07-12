@@ -14,10 +14,16 @@ dataclass'ы импортируются из models.py, не переопред�
 """
 
 import sys
+import uuid
 
 import yaml
 
 from models import Entity, SourceDocument, TextSegment
+
+# B3-fix: сколько символов хвоста A / головы B берём в граничное окно детекции.
+# 60 с запасом перекрывает самую длинную сущность (счёт из 20 цифр с пробелами-
+# разделителями, адрес) — торчащий за окно фрагмент реального смысла не несёт.
+_BOUNDARY_WINDOW = 60
 
 # Приоритет типов среди двух regex одинаковой длины (раньше в списке = сильнее).
 # Типы вне списка слабее всех перечисленных; между собой — по алфавиту entity_type.
@@ -188,6 +194,125 @@ def build_plain_text(doc: SourceDocument) -> str:
     return _assemble(doc, lambda seg: seg.text)
 
 
+def _boundary_sep(seg_a: TextSegment, seg_b: TextSegment) -> str:
+    """Разделитель, который _assemble/build_plain_text вставил бы между двумя
+    ИДУЩИМИ ПОДРЯД сегментами — но применительно к ПОСТРОЕНИЮ ГРАНИЧНОГО ОКНА.
+
+    build_plain_text склеивает верхнеуровневые единицы через '\\n', а ячейки одной
+    строки таблицы — через ' | ' (для читаемости итогового текста). Для окна
+    детекции ' | ' НЕ подходит: этот литерал физически рвёт паттерны (телефон/ИНН
+    через ' | ' не матчатся), а сущность, порванная границей соседних ячеек, обязана
+    реконструироваться. Поэтому две соседние ячейки одной строки одной таблицы
+    склеиваются в окне БЕЗ разделителя (''); во всех остальных случаях граница
+    соответствует '\\n' финальной сборки. См. SHIFRATOR_SPEC_AI_1.md / HANDOFF_4.
+    """
+    if (
+        seg_a.source_type == "docx_table_cell"
+        and seg_b.source_type == "docx_table_cell"
+        and seg_a.metadata["table_index"] == seg_b.metadata["table_index"]
+        and seg_a.metadata["row_index"] == seg_b.metadata["row_index"]
+    ):
+        return ""
+    return "\n"
+
+
+def _detect_boundary_entities(
+    doc: SourceDocument,
+    config_path: str,
+) -> tuple[list[Entity], dict[str, str]]:
+    """B3-fix: находит сущности, РАЗОРВАННЫЕ границей соседних сегментов.
+
+    detect_regex/detect_ner работают посегментно, поэтому значение, чей текст
+    разложен на хвост сегмента A и голову сегмента B (перенос абзаца/строки или
+    соседние ячейки таблицы), не находит ни один из них и утекает в открытом виде.
+
+    Здесь для каждой пары соседних (по индексу в doc.segments) сегментов строится
+    окно `хвост A + разделитель + голова B` и по нему повторно гоняются те же
+    публичные детекторы блоков 2/3. Оставляются ТОЛЬКО найденные в окне сущности,
+    чей интервал реально пересекает точку стыка (иначе это дубликат обычной
+    посегментной детекции). Пересекающая сущность делится на пару Entity_A/Entity_B
+    с реальными оффсетами внутри своих сегментов.
+
+    Возвращает: (список добавочных Entity, реестр {id -> id партнёра по паре}).
+    detect_regex/detect_ner импортируются ЛОКАЛЬНО, чтобы прямой импорт tokenizer
+    (напр. в юнит-тестах блока 4) не тянул natasha, пока окна не строятся реально.
+    """
+    from regex_detector import detect_regex
+    from ner_detector import detect_ner
+
+    extra: list[Entity] = []
+    partner: dict[str, str] = {}
+
+    segs = doc.segments
+    for i in range(len(segs) - 1):
+        seg_a, seg_b = segs[i], segs[i + 1]
+        if not seg_a.text or not seg_b.text:
+            continue  # пустой сегмент — стыка контента нет
+
+        text_a, text_b = seg_a.text, seg_b.text
+        tail_off = max(0, len(text_a) - _BOUNDARY_WINDOW)
+        tail = text_a[tail_off:]
+        head = text_b[:_BOUNDARY_WINDOW]
+        sep = _boundary_sep(seg_a, seg_b)
+
+        window = tail + sep + head
+        tail_end = len(tail)                 # позиция конца хвоста A в окне
+        head_start = tail_end + len(sep)     # позиция начала головы B в окне
+
+        win_seg = TextSegment(
+            id=f"boundary_{seg_a.id}_{seg_b.id}",
+            text=window,
+            source_type="txt_line",  # детекторы на source_type не смотрят
+            metadata={},
+        )
+        win_doc = SourceDocument(
+            segments=[win_seg],
+            source_format=doc.source_format,
+            source_path=doc.source_path,
+        )
+
+        win_entities = detect_regex(win_doc, config_path) + detect_ner(win_doc, config_path)
+        for win_e in win_entities:
+            # оставляем только то, что реально перекрывает стык хвоста A и головы B;
+            # всё, что целиком в хвосте A либо целиком в голове B — дубликат обычной
+            # посегментной детекции, не добавляем.
+            if not (win_e.start < tail_end and win_e.end > head_start):
+                continue
+
+            # оффсеты половин пересчитываем из позиции в окне обратно в оригинальные
+            # сегменты: A-часть тянется до конца text_a, B-часть — от начала text_b.
+            start_a = tail_off + win_e.start
+            end_a = len(text_a)
+            end_b = win_e.end - head_start
+
+            ent_a = Entity(
+                id=str(uuid.uuid4()),
+                segment_id=seg_a.id,
+                start=start_a,
+                end=end_a,
+                original_text=text_a[start_a:end_a],
+                entity_type=win_e.entity_type,
+                detector=win_e.detector,
+                confidence=win_e.confidence,
+            )
+            ent_b = Entity(
+                id=str(uuid.uuid4()),
+                segment_id=seg_b.id,
+                start=0,
+                end=end_b,
+                original_text=text_b[0:end_b],
+                entity_type=win_e.entity_type,
+                detector=win_e.detector,
+                confidence=win_e.confidence,
+            )
+            extra.append(ent_a)
+            extra.append(ent_b)
+            partner[ent_a.id] = ent_b.id
+            partner[ent_b.id] = ent_a.id
+
+    return extra, partner
+
+
 def tokenize(
     doc: SourceDocument,
     entities: list[Entity],
@@ -195,6 +320,12 @@ def tokenize(
 ) -> tuple[str, list[Entity]]:
     token_prefixes = _load_token_prefixes(config_path)
     seg_index = {seg.id: idx for idx, seg in enumerate(doc.segments)}
+
+    # --- B3-fix: сущности, разорванные границей соседних сегментов ---
+    # Добавляются к обычным ДО разрешения пересечений и проходят через тот же
+    # алгоритм; boundary_partner связывает половины одной пары для общего токена.
+    boundary_entities, boundary_partner = _detect_boundary_entities(doc, config_path)
+    entities = list(entities) + boundary_entities
 
     # --- Разрешение пересечений внутри каждого сегмента ---
     by_segment: dict[str, list[Entity]] = {}
@@ -210,17 +341,36 @@ def tokenize(
     # --- Порядок появления: (индекс сегмента, start) ---
     kept.sort(key=lambda e: (seg_index[e.segment_id], e.start))
 
-    # --- Присвоение токенов (переиспользование по (entity_type, original_text)) ---
+    # --- Присвоение токенов ---
+    # Обычное правило: переиспользование по (entity_type, original_text).
+    # B3-fix: если Entity — половина пары, разорванной границей, И его партнёр тоже
+    # выжил после разрешения пересечений, оба получают ОДИН общий токен (у половин
+    # разный original_text, поэтому обычное правило их бы развело). Если партнёр
+    # «проиграл» и удалён — выживший идёт по обычному правилу.
+    kept_ids = {e.id for e in kept}
     token_map: dict[tuple[str, str], str] = {}
+    group_token: dict[tuple[str, str], str] = {}
     counters: dict[str, int] = {}
+
+    def _new_token(entity_type: str) -> str:
+        prefix = token_prefixes[entity_type]
+        counters[prefix] = counters.get(prefix, 0) + 1
+        return f"[{prefix}_{counters[prefix]}]"
+
     for e in kept:
-        key = (e.entity_type, e.original_text)
-        token = token_map.get(key)
-        if token is None:
-            prefix = token_prefixes[e.entity_type]
-            counters[prefix] = counters.get(prefix, 0) + 1
-            token = f"[{prefix}_{counters[prefix]}]"
-            token_map[key] = token
+        partner_id = boundary_partner.get(e.id)
+        if partner_id is not None and partner_id in kept_ids:
+            pair_key = tuple(sorted((e.id, partner_id)))
+            token = group_token.get(pair_key)
+            if token is None:
+                token = _new_token(e.entity_type)
+                group_token[pair_key] = token
+        else:
+            key = (e.entity_type, e.original_text)
+            token = token_map.get(key)
+            if token is None:
+                token = _new_token(e.entity_type)
+                token_map[key] = token
         e.token = token
 
     # --- Сборка анонимизированного текста ---
