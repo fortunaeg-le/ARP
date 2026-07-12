@@ -7,8 +7,21 @@ import yaml
 from models import Entity, SourceDocument
 
 
+def _strip_requisite_separators(value: str) -> str:
+    """Убирает разделители-пробелы внутри реквизита перед проверкой чек-суммы.
+
+    B2-fix: паттерны INN/OGRN теперь допускают внутри цифр одиночный обычный или
+    неразрывный пробел (реквизиты в договорах группируют пробелами). m.group(0)
+    приходит в валидатор «сырым», с этими пробелами, поэтому здесь их снимаем —
+    формат Entity.original_text при этом НЕ меняется (пробелы там сохраняются как
+    есть; нормализация — зона блока 4, а не детектора). Снимаем ровно те же два
+    символа, что разрешены как разделители в паттерне: U+0020 и U+00A0."""
+    return value.replace(" ", "").replace(" ", "")
+
+
 def inn_checksum(value: str) -> bool:
     """Контрольное число ИНН по алгоритму ФНС (10 и 12 знаков)."""
+    value = _strip_requisite_separators(value)
     if not value.isdigit():
         return False
     digits = [int(ch) for ch in value]
@@ -27,6 +40,7 @@ def inn_checksum(value: str) -> bool:
 
 def ogrn_checksum(value: str) -> bool:
     """Контрольное число ОГРН (13 знаков, mod 11) и ОГРНИП (15 знаков, mod 13)."""
+    value = _strip_requisite_separators(value)
     if not value.isdigit():
         return False
     if len(value) == 13:

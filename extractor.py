@@ -74,6 +74,31 @@ def _extract_docx(path: str) -> SourceDocument:
     return SourceDocument(segments=segments, source_format="docx", source_path=path)
 
 
+def _looks_like_mojibake(text: str) -> bool:
+    """Эвристика тихой порчи: высокая доля управляющих/replacement-символов.
+
+    Байты UTF-16 (особенно UTF-16-LE, где ASCII-символ = <буква>0x00) успешно
+    «декодируются» как utf-8 или cp1251 БЕЗ исключения — но результат забит
+    NUL'ами и другими C0/C1-управляющими символами, которых в нормальном тексте
+    договора нет. Если их доля велика — декодирование заведомо мусорное. Обычный
+    UTF-8/cp1251-текст (в т.ч. с эмодзи и переводами строк) даёт долю ~0, поэтому
+    порог 0.30 не задевает валидные файлы, но уверенно ловит UTF-16-моджибейк
+    (у него доля ~0.5). Не пытаемся УГАДАТЬ UTF-16 без BOM — только не даём
+    испорченному тексту тихо пройти как валидный."""
+    if not text:
+        return False
+    bad = 0
+    for ch in text:
+        code = ord(ch)
+        if ch == "�":
+            bad += 1  # replacement-символ: часть байтов не декодировалась
+        elif code < 0x20 and ch not in "\t\n\r":
+            bad += 1  # C0-управляющие (в т.ч. NUL из UTF-16), кроме обычных пробелов
+        elif 0x7f <= code <= 0x9f:
+            bad += 1  # DEL и C1-управляющие
+    return bad / len(text) > 0.30
+
+
 def _extract_txt(path: str) -> SourceDocument:
     with open(path, "rb") as f:
         data = f.read()
@@ -92,6 +117,18 @@ def _extract_txt(path: str) -> SourceDocument:
         except UnicodeDecodeError:
             encoding = "cp1251"
             raw = data.decode(encoding)
+
+    # B5-fix: UTF-16 БЕЗ BOM «декодируется» как utf-8-sig/cp1251 без исключения, но
+    # в моджибейк — ПДн не находятся и утекают искажёнными без единого предупреждения
+    # (тот же класс тихой порчи, что закрывал фикс #7, но #7 ловит только UTF-16 C BOM).
+    # Надёжного автоопределения кодировки без BOM не существует, поэтому не угадываем:
+    # если ни один из перепробованных вариантов не дал «чистого» текста — поднимаем
+    # явную ошибку. Лучше внятный отказ, чем тихая утечка ПДн в LLM.
+    if _looks_like_mojibake(raw):
+        raise ValueError(
+            f"Не удалось надёжно определить кодировку файла: {path}. "
+            f"Сохраните файл в UTF-8 и повторите"
+        )
 
     text = raw.replace("\r\n", "\n").replace("\r", "\n")
     lines = text.split("\n")

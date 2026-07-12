@@ -288,10 +288,25 @@ def purge_expired(storage_dir: str | None = None, exclude_session_id: str | None
         if now >= expires_at:
             try:
                 entry.unlink()
-                removed += 1
             except OSError as exc:
                 print(
                     f"[session_store] не удалось удалить {entry.name}: {exc}",
+                    file=sys.stderr,
+                )
+                continue
+            removed += 1
+            # B6-fix: рядом с {sid}.enc encrypt пишет {sid}.txt (анонимизированный
+            # текст). Удаляем сайдкар вместе с просроченным .enc, иначе .txt копятся
+            # в хранилище без границы даже после TTL-очистки. Отсутствие сайдкара —
+            # штатная ситуация (не всякая сессия его имеет), не ошибка: просто пропускаем.
+            txt_sidecar = entry.with_suffix(".txt")
+            try:
+                txt_sidecar.unlink()
+            except FileNotFoundError:
+                pass
+            except OSError as exc:
+                print(
+                    f"[session_store] не удалось удалить сайдкар {txt_sidecar.name}: {exc}",
                     file=sys.stderr,
                 )
 
@@ -299,20 +314,51 @@ def purge_expired(storage_dir: str | None = None, exclude_session_id: str | None
 
 
 def delete_session(session_id: str, storage_dir: str | None = None) -> bool:
-    """Удаляет файл сессии {storage_dir}/{session_id}.enc по явному запросу.
+    """Удаляет файлы сессии {storage_dir}/{session_id}.enc и {session_id}.txt.
 
     Валидирует session_id тем же regex, что load_session (^[0-9a-f-]{36}$); при
     несовпадении к файловой системе НЕ обращается и возвращает False (защита от
-    path traversal). Возвращает True, если файл существовал и удалён, False —
-    если файла не было. key.bin никогда не трогает; штатных исключений не кидает.
+    path traversal). key.bin никогда не трогает; штатных исключений не кидает.
+
+    B6-fix: encrypt пишет рядом с {sid}.enc ещё и {sid}.txt (анонимизированный
+    текст). Раньше delete удалял только .enc и рапортовал успех — .txt оставался
+    на диске (ложный успех + утечка остаточных данных). Теперь удаляем ОБА файла.
+
+    Возвращает True, если удалён .enc (основной файл с чувствительным маппингом;
+    .txt вторичен и подчищается вместе с ним). Если .enc не найден, но остался
+    осиротевший .txt — удаляем и его, пишем предупреждение в stderr, но НЕ считаем
+    это успешным удалением сессии (возвращаем False): основного файла не было.
     """
     if not _SESSION_ID_RE.match(session_id):
         return False
 
     store = _resolve_storage_dir(storage_dir)
-    session_path = store / f"{session_id}.enc"
+    enc_path = store / f"{session_id}.enc"
+    txt_path = store / f"{session_id}.txt"
+
+    enc_deleted = False
     try:
-        session_path.unlink()
-        return True
+        enc_path.unlink()
+        enc_deleted = True
     except FileNotFoundError:
-        return False
+        pass
+
+    txt_deleted = False
+    try:
+        txt_path.unlink()
+        txt_deleted = True
+    except FileNotFoundError:
+        pass
+
+    if enc_deleted:
+        return True
+
+    if txt_deleted:
+        # Нештатная ситуация: .enc нет, а .txt остался. Подчистили сайдкар, но
+        # это не удаление основной сессии — сигналим и возвращаем False.
+        print(
+            f"[session_store] удалён осиротевший сайдкар {session_id}.txt, "
+            f"но {session_id}.enc не найден — сессия не считается удалённой",
+            file=sys.stderr,
+        )
+    return False
