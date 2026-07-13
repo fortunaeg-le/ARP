@@ -57,16 +57,34 @@ class TestDetectNerAddressGluing:
 
 
 class TestDetectNerAddressGlueBoundary:
-    """HANDOFF_3, Данные для тестов, п.4 — склейка НЕ выполняется через разрыв с буквой."""
+    """Волна 2, этап A — КОНТРАКТ ИЗМЕНЁН относительно HANDOFF_3, п.4.
 
-    def test_letter_gap_between_cities_prevents_gluing(self, ner_detector_module, config_path):
-        """HANDOFF_3, п.4: 'поставка из Москвы в Санкт-Петербург' -> два раздельных ADDRESS (разрыв ' в ' содержит букву)."""
-        doc = _doc("поставка из Москвы в Санкт-Петербург")
+    Было (yargy-сканер): соседние адресные Match'и НЕ склеивались через разрыв,
+    содержащий букву (' в '), поэтому 'из Москвы в Санкт-Петербург' давало ДВА
+    раздельных ADDRESS. Стало (гибрид): итоговый спан собирается кластеризацией по
+    близости (_ADDR_CLUSTER_GAP), которая намеренно склеивает разорванные грамматикой
+    многословные адресные конструкции ('г. СПб, наб. реки Фонтанки, д. 15'). Побочно
+    это склеивает и два близких городских хита в прозе в один ADDRESS.
+
+    Почему смена допустима: это НЕ тест на отсутствие утечки — обе части по-прежнему
+    закрыты ADDRESS-спаном, ни один топоним не утекает; меняется лишь ГРАНУЛЯРНОСТЬ
+    (один токен вместо двух), а над-закрытие связки ' в ' — безопасное направление
+    (шум, не утечка). См. docs/reports/DETECTION_REBUILD.md, этап A."""
+
+    def test_adjacent_city_hits_cluster_into_one_address_no_leak(self, ner_detector_module, config_path):
+        """Близкие адресные хиты кластеризуются в один ADDRESS; оба города закрыты."""
+        text = "поставка из Москвы в Санкт-Петербург"
+        doc = _doc(text)
         entities = ner_detector_module.detect_ner(doc, config_path)
-        addresses = {e.original_text for e in entities if e.entity_type == "ADDRESS"}
-        assert "Москвы" in addresses
-        assert "Санкт-Петербург" in addresses
-        assert "Москвы в Санкт-Петербург" not in addresses
+        addr_spans = [(e.start, e.end) for e in entities if e.entity_type == "ADDRESS"]
+        assert addr_spans, "адрес(а) должны быть найдены"
+        # Оба топонима покрыты объединением ADDRESS-спанов — ничего не утекает.
+        for city in ("Москвы", "Санкт-Петербург"):
+            cs = text.index(city)
+            ce = cs + len(city)
+            assert any(s <= cs and ce <= e for s, e in addr_spans), (
+                f"{city!r} не закрыт ни одним ADDRESS-спаном (утечка топонима)"
+            )
 
 
 class TestDetectNerEmptySegment:
