@@ -18,7 +18,7 @@ def test_unknown_token_survives_character_for_character(docx_builder, session_fa
     src = docx_builder("src.docx", xml)
     sid = session_factory({"[ORG_1]": "ООО «Ромашка»"})
 
-    dst, unresolved = detokenize_file(src, sid, storage_dir=storage_dir)
+    dst, _, unresolved = detokenize_file(src, sid, storage_dir=storage_dir)
 
     assert unresolved == ["[ORG_99]"]
     root = etree.fromstring(read_part(dst, "word/document.xml"))
@@ -32,7 +32,7 @@ def test_repeated_unknown_token_deduplicated_to_single_entry(docx_builder, sessi
     src = docx_builder("src.docx", xml)
     sid = session_factory({})
 
-    dst, unresolved = detokenize_file(src, sid, storage_dir=storage_dir)
+    dst, _, unresolved = detokenize_file(src, sid, storage_dir=storage_dir)
 
     assert unresolved == ["[ORG_99]"]
 
@@ -44,7 +44,7 @@ def test_unresolved_order_is_first_appearance(docx_builder, session_factory, sto
     src = docx_builder("src.docx", xml)
     sid = session_factory({})
 
-    dst, unresolved = detokenize_file(src, sid, storage_dir=storage_dir)
+    dst, _, unresolved = detokenize_file(src, sid, storage_dir=storage_dir)
 
     assert unresolved == ["[ZEBRA_1]", "[ALPHA_2]", "[MID_3]"]
 
@@ -56,7 +56,7 @@ def test_no_tokens_in_file_gives_empty_unresolved_and_intact_copy(docx_builder, 
     src = docx_builder("src.docx", xml)
     sid = session_factory({"[ORG_1]": "ООО «Ромашка»"})
 
-    dst, unresolved = detokenize_file(src, sid, storage_dir=storage_dir)
+    dst, _, unresolved = detokenize_file(src, sid, storage_dir=storage_dir)
 
     assert unresolved == []
     root = etree.fromstring(read_part(dst, "word/document.xml"))

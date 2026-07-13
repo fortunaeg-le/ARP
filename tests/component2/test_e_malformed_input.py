@@ -14,7 +14,7 @@ from ooxml_core import OoxmlError
 from docx_rewriter import rewrite as docx_rewrite
 from file_detokenizer import detokenize_file
 
-from conftest import W, resolver, make_zip
+from conftest import W, resolver, make_zip, CONTENT_TYPES
 
 
 def _resolver_empty(token):
@@ -134,14 +134,16 @@ def test_file_without_any_token_produces_intact_copy(tmp_path):
 <w:p><w:r><w:t>Текст совсем без токенов.</w:t></w:r></w:p>
 </w:body></w:document>""".encode("utf-8")
     src = make_zip(tmp_path / "clean.docx", {
+        "[Content_Types].xml": CONTENT_TYPES,
         "word/document.xml": xml,
         "word/media/image1.png": image_bytes,
     })
     dst = str(tmp_path / "out.docx")
 
-    unresolved = docx_rewrite(src, dst, _resolver_empty)
+    replaced, unresolved = docx_rewrite(src, dst, _resolver_empty)
 
     assert unresolved == []
+    assert replaced == 0  # в файле нет токенов — раскрывать нечего
     with zipfile.ZipFile(dst) as zf:
         assert zf.read("word/media/image1.png") == image_bytes
         assert b"\xd0\xa2\xd0\xb5\xd0\xba\xd1\x81\xd1\x82" in zf.read("word/document.xml")  # "Текст" utf-8

@@ -26,7 +26,7 @@ def test_docx_token_split_two_runs_gets_first_run_formatting(docx_builder):
     src = docx_builder("src.docx", xml)
     dst = src.replace("src.docx", "out.docx")
 
-    unresolved = docx_rewrite(src, dst, resolver({"[ORG_1]": "ООО «Ромашка»"}))
+    _, unresolved = docx_rewrite(src, dst, resolver({"[ORG_1]": "ООО «Ромашка»"}))
     assert unresolved == []
 
     root = etree.fromstring(read_part(dst, "word/document.xml"))
@@ -57,7 +57,7 @@ def test_docx_token_split_across_three_runs(docx_builder):
     src = docx_builder("src.docx", xml)
     dst = src.replace("src.docx", "out.docx")
 
-    unresolved = docx_rewrite(src, dst, resolver({"[ORG_1]": "ООО «Ромашка»"}))
+    _, unresolved = docx_rewrite(src, dst, resolver({"[ORG_1]": "ООО «Ромашка»"}))
     assert unresolved == []
 
     root = etree.fromstring(read_part(dst, "word/document.xml"))
@@ -83,7 +83,7 @@ def test_xlsx_token_split_across_three_runs_in_si(xlsx_builder):
     src = xlsx_builder("src.xlsx", shared, sheet)
     dst = src.replace("src.xlsx", "out.xlsx")
 
-    unresolved = xlsx_rewrite(src, dst, resolver({"[ORG_1]": "ООО «Ромашка»"}))
+    _, unresolved = xlsx_rewrite(src, dst, resolver({"[ORG_1]": "ООО «Ромашка»"}))
     assert unresolved == []
 
     root = etree.fromstring(read_part(dst, "xl/sharedStrings.xml"))
@@ -104,7 +104,7 @@ def test_docx_token_split_by_linebreak_not_resolved(docx_builder):
     src = docx_builder("src.docx", xml)
     dst = src.replace("src.docx", "out.docx")
 
-    unresolved = docx_rewrite(src, dst, resolver({"[PHONE_1]": "+7 495 123-45-67"}))
+    _, unresolved = docx_rewrite(src, dst, resolver({"[PHONE_1]": "+7 495 123-45-67"}))
 
     assert unresolved == []  # не найдено совпадений TOKEN_RE вообще -> не unresolved
     root = etree.fromstring(read_part(dst, "word/document.xml"))
@@ -126,7 +126,7 @@ def test_docx_token_split_across_paragraphs_not_resolved(docx_builder):
     src = docx_builder("src.docx", xml)
     dst = src.replace("src.docx", "out.docx")
 
-    unresolved = docx_rewrite(src, dst, resolver({"[ORG_1]": "ООО «Ромашка»"}))
+    _, unresolved = docx_rewrite(src, dst, resolver({"[ORG_1]": "ООО «Ромашка»"}))
 
     assert unresolved == []
     root = etree.fromstring(read_part(dst, "word/document.xml"))

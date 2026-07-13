@@ -66,7 +66,7 @@ class RunGroup:
     units: "list[TextUnit]"  # строго в порядке следования текста в документе
 
 
-def replace_tokens_in_group(group: RunGroup, resolve: Resolver) -> "list[str]":
+def replace_tokens_in_group(group: RunGroup, resolve: Resolver) -> "tuple[int, list[str]]":
     """Заменяет токены во всех units группы, включая разорванные между units.
 
     Алгоритм (см. блок 8 спецификации):
@@ -80,8 +80,12 @@ def replace_tokens_in_group(group: RunGroup, resolve: Resolver) -> "list[str]":
          правок оффсеты не сбиваются).
       6. Итоговые тексты пишутся только в units с writable=True.
 
-    Возвращает список НЕразрешённых токенов в порядке появления (с возможными
-    повторами). Тексты units при этом мутируются (u.text и u.node.text).
+    Возвращает `(число фактически выполненных замен, unresolved)`, где unresolved —
+    список НЕразрешённых токенов в порядке появления (с возможными повторами).
+    «Фактически выполненная замена» — токен, для которого resolve вернул не-None
+    (такой токен обязательно меняет текст своего unit). Токен, оставленный как
+    есть (unresolved), в счётчик не входит. Тексты units при этом мутируются
+    (u.text и u.node.text).
     """
     units = group.units
     orig_texts = [(u.text or "") for u in units]
@@ -98,6 +102,7 @@ def replace_tokens_in_group(group: RunGroup, resolve: Resolver) -> "list[str]":
     inserts: "dict[tuple[int, int], str]" = {}  # (unit_idx, local_idx) -> значение
 
     unresolved: "list[str]" = []
+    replaced = 0
 
     for m in TOKEN_RE.finditer(joined):
         token = m.group(0)
@@ -105,6 +110,7 @@ def replace_tokens_in_group(group: RunGroup, resolve: Resolver) -> "list[str]":
         if value is None:
             unresolved.append(token)
             continue
+        replaced += 1
 
         # Значение вставляется как текст lxml-узла — экранирование делает lxml.
         # \n / \r в OOXML внутри текстового узла ведут себя непредсказуемо ->
@@ -141,7 +147,7 @@ def replace_tokens_in_group(group: RunGroup, resolve: Resolver) -> "list[str]":
             _preserve_space_if_needed(u.node, new_text)
             u.text = new_text
 
-    return unresolved
+    return replaced, unresolved
 
 
 def _preserve_space_if_needed(node, text: str) -> None:
@@ -164,6 +170,10 @@ def read_zip_parts(src_path: str) -> "dict[str, bytes]":
 
     Защита от zip-бомбы: до чтения содержимого суммируем распакованные размеры по
     оглавлению; при превышении порогов кидаем OoxmlError, ничего не распаковывая.
+
+    Опорная проверка контейнера: в корне архива обязан присутствовать
+    `[Content_Types].xml` — без него это не OOXML-контейнер вообще (см. блок 8).
+    Проверка выполняется здесь, до любой другой работы над частями.
     """
     try:
         with zipfile.ZipFile(src_path) as zf:
@@ -179,6 +189,10 @@ def read_zip_parts(src_path: str) -> "dict[str, bytes]":
                     f"OOXML-контейнер отклонён: суммарный распакованный размер "
                     f"{total} байт превышает предел {_MAX_TOTAL_UNCOMPRESSED} байт "
                     f"(защита от zip-бомбы): {src_path}"
+                )
+            if not any(info.filename == "[Content_Types].xml" for info in infos):
+                raise OoxmlError(
+                    f"Файл не является корректным OOXML-контейнером (нет [Content_Types].xml): {src_path}"
                 )
             return {info.filename: zf.read(info) for info in infos}
     except zipfile.BadZipFile:

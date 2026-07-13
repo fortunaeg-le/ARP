@@ -130,9 +130,17 @@ def detect_ner(doc: SourceDocument, config_path: str) -> list[Entity]:
     entities: list[Entity] = []
 
     for segment in doc.segments:
-        text = segment.text
-        if not text:
+        orig_text = segment.text
+        if not orig_text:
             continue
+
+        # Весь путь детекции (Doc, расширение инициалов, AddrExtractor, склейка окон)
+        # работает с detection_text — копией той же длины с нормализованным регистром,
+        # если сегмент был визуально заглавным/строчным. original_text у каждого Entity
+        # вырезается из НАСТОЯЩЕГО segment.text (orig_text) по тем же оффсетам: равная
+        # длина делает их валидными в обоих. Для сегментов без detection_text это ровно
+        # segment.text — поведение идентично прежнему.
+        text = segment.metadata.get("detection_text", orig_text)
 
         # --- PERSON / ORG через NER-тэггер Natasha ---
         if ner_label_map:
@@ -153,7 +161,7 @@ def detect_ner(doc: SourceDocument, config_path: str) -> list[Entity]:
                     segment_id=segment.id,
                     start=start,
                     end=end,
-                    original_text=text[start:end],
+                    original_text=orig_text[start:end],
                     entity_type=entity_type,
                     detector="ner",
                     confidence=1.0,
@@ -168,7 +176,7 @@ def detect_ner(doc: SourceDocument, config_path: str) -> list[Entity]:
                     segment_id=segment.id,
                     start=start,
                     end=end,
-                    original_text=text[start:end],
+                    original_text=orig_text[start:end],
                     entity_type=addr_type,
                     detector="ner",
                     confidence=1.0,
@@ -177,9 +185,11 @@ def detect_ner(doc: SourceDocument, config_path: str) -> list[Entity]:
     # Инвариант блока 3: original_text строго равен срезу сегмента по [start:end].
     for e in entities:
         seg = next(s for s in doc.segments if s.id == e.segment_id)
-        assert e.original_text == seg.text[e.start:e.end], (
-            f"Нарушен инвариант original_text для {e.entity_type} в {e.segment_id}: "
-            f"{e.original_text!r} != {seg.text[e.start:e.end]!r}"
-        )
+        actual = seg.text[e.start:e.end]
+        if e.original_text != actual:
+            raise AssertionError(
+                f"Нарушен инвариант original_text для {e.entity_type} в {e.segment_id} "
+                f"[{e.start}:{e.end}]: ожидалось {e.original_text!r}, получено {actual!r}"
+            )
 
     return entities

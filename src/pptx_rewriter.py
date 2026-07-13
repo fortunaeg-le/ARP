@@ -17,6 +17,7 @@ import fnmatch
 import re
 
 from ooxml_core import (
+    OoxmlError,
     Resolver,
     RunGroup,
     TextUnit,
@@ -26,6 +27,10 @@ from ooxml_core import (
     rewrite_zip,
     serialize_xml,
 )
+
+# Опорная часть PowerPoint: без хотя бы одного слайда презентацию нечего
+# обрабатывать (см. блок 10). Заметки к слайдам опциональны.
+_SLIDE_MASK = "ppt/slides/slide*.xml"
 
 _A = "{http://schemas.openxmlformats.org/drawingml/2006/main}"
 _A_P = _A + "p"
@@ -82,23 +87,36 @@ def _build_groups(root) -> "list[RunGroup]":
     return groups
 
 
-def rewrite(src_path: str, dst_path: str, resolve: Resolver) -> "list[str]":
+def rewrite(src_path: str, dst_path: str, resolve: Resolver) -> "tuple[int, list[str]]":
     """Раскрывает токены в `.pptx` и пишет результат в `dst_path`.
 
-    Возвращает unresolved-токены в порядке первого появления в документе
-    (слайды по возрастанию номера, затем заметки к слайдам по возрастанию
-    номера), с возможными повторами — дедупликацию делает блок 12.
+    Возвращает `(число выполненных замен, unresolved)`, где unresolved — токены в
+    порядке первого появления в документе (слайды по возрастанию номера, затем
+    заметки к слайдам по возрастанию номера), с возможными повторами —
+    дедупликацию делает блок 12.
+
+    Если в архиве нет ни одного слайда `ppt/slides/slide*.xml` — это не корректный
+    `.pptx`, кидаем OoxmlError и файл назначения не создаём (см. блок 10).
     """
     parts = read_zip_parts(src_path)
+    if not any(fnmatch.fnmatchcase(n, _SLIDE_MASK) for n in parts):
+        raise OoxmlError(
+            f"Файл не является корректным .pptx: не найдена ни одна обязательная "
+            f"часть {_SLIDE_MASK}: {src_path}"
+        )
+
     modified: "dict[str, bytes]" = {}
     unresolved: "list[str]" = []
+    replaced = 0
 
     names = sorted((n for n in parts if _is_target_part(n)), key=_part_sort_key)
     for name in names:
         tree = parse_xml(parts[name])
         for group in _build_groups(tree.getroot()):
-            unresolved.extend(replace_tokens_in_group(group, resolve))
+            n, unres = replace_tokens_in_group(group, resolve)
+            replaced += n
+            unresolved.extend(unres)
         modified[name] = serialize_xml(tree)
 
     rewrite_zip(src_path, dst_path, modified)
-    return unresolved
+    return replaced, unresolved

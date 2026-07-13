@@ -45,6 +45,11 @@ class SessionExpiredError(Exception):
     """Срок жизни сессии (expires_at) истёк."""
 
 
+def default_storage_dir() -> Path:
+    """Возвращает дефолтную директорию хранилища сессий (~/.shifrator/sessions)."""
+    return _DEFAULT_STORAGE_DIR
+
+
 def _resolve_storage_dir(storage_dir: str | None) -> Path:
     """Возвращает Path к директории хранилища (дефолт — ~/.shifrator/sessions)."""
     if storage_dir is None:
@@ -177,8 +182,19 @@ def save_session(
     encrypted = fernet.encrypt(raw)
 
     session_path = store / f"{session_id}.enc"
-    session_path.write_bytes(encrypted)
-    _chmod_600(session_path)
+    fd, tmp_path = tempfile.mkstemp(dir=store, suffix=".tmp")
+    os.close(fd)
+    try:
+        with open(tmp_path, "wb") as f:
+            f.write(encrypted)
+        _chmod_600(Path(tmp_path))
+        os.replace(tmp_path, session_path)
+    except BaseException:
+        try:
+            os.remove(tmp_path)
+        except OSError:
+            pass
+        raise
 
     return session_id
 

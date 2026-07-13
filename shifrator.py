@@ -16,13 +16,11 @@ def _default_config_path():
 
 
 def cmd_encrypt(path, config_path):
-    from pathlib import Path
-
     from extractor import extract
     from regex_detector import detect_regex
     from ner_detector import detect_ner
     from tokenizer import tokenize
-    from session_store import save_session
+    from session_store import save_session, default_storage_dir
 
     try:
         doc = extract(path)
@@ -42,7 +40,7 @@ def cmd_encrypt(path, config_path):
 
     session_id = save_session(final_entities, session_id=None, ttl_hours=24)
 
-    storage_dir = Path.home() / ".shifrator" / "sessions"
+    storage_dir = default_storage_dir()
     (storage_dir / f"{session_id}.txt").write_text(anon_text, encoding="utf-8")
 
     print(session_id)
@@ -99,7 +97,7 @@ def cmd_decrypt_file(session_id, path, out):
     # В отличие от decrypt, purge_expired здесь НЕ вызывается — чтобы не менять
     # поведение по очистке в рамках аддитивной правки (см. спеку блока 12).
     try:
-        dst_path, unresolved = detokenize_file(path, session_id, dst_path=out)
+        dst_path, replaced, unresolved = detokenize_file(path, session_id, dst_path=out)
     except FileNotFoundError:
         print(f"Ошибка: файл не найден: {path}", file=sys.stderr)
         sys.exit(1)
@@ -123,6 +121,16 @@ def cmd_decrypt_file(session_id, path, out):
     if unresolved:
         print(
             f"Предупреждение: не удалось восстановить токены: {', '.join(unresolved)}",
+            file=sys.stderr,
+        )
+    if replaced == 0:
+        # Файл валиден, но раскрывать было нечего. Это не ошибка (код возврата 0),
+        # а сигнал: возможно, пользователь принёс не тот файл, либо токены лежат в
+        # частях, которые компонент не смотрит (надписи w:txbxContent, коды полей
+        # instrText — известное ограничение, см. блок 12 спецификации).
+        print(
+            "Предупреждение: в файле не найдено ни одного токена. Раскрывать было "
+            "нечего — проверьте, что это именно тот файл, который вернула LLM.",
             file=sys.stderr,
         )
 

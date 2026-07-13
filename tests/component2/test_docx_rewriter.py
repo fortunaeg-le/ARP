@@ -19,11 +19,16 @@ from lxml import etree
 
 from docx_rewriter import rewrite
 
+from conftest import CONTENT_TYPES
+
 W = "http://schemas.openxmlformats.org/wordprocessingml/2006/main"
 NSMAP = {"w": W}
 
 
 def make_docx(path, parts: dict) -> str:
+    # Настоящий .docx всегда содержит [Content_Types].xml; без него read_zip_parts
+    # (блок 8) считает файл не-OOXML. Добавляем, если тест не задал его сам.
+    parts = {"[Content_Types].xml": CONTENT_TYPES, **parts}
     with zipfile.ZipFile(path, "w") as zf:
         for name, data in parts.items():
             zf.writestr(name, data)
@@ -89,7 +94,7 @@ def test_styled_run_replaced_and_formatting_untouched(tmp_path):
     src = make_docx(tmp_path / "src.docx", {"word/document.xml": styled_run_document()})
     dst = str(tmp_path / "out.docx")
 
-    unresolved = rewrite(src, dst, resolver({"[PERSON_1]": "Иванов Иван Иванович"}))
+    _, unresolved = rewrite(src, dst, resolver({"[PERSON_1]": "Иванов Иван Иванович"}))
 
     assert unresolved == []
     root = etree.fromstring(read_part(dst, "word/document.xml"))
@@ -109,7 +114,7 @@ def test_token_split_across_two_runs_is_assembled(tmp_path):
     src = make_docx(tmp_path / "src.docx", {"word/document.xml": split_run_document()})
     dst = str(tmp_path / "out.docx")
 
-    unresolved = rewrite(src, dst, resolver({"[PERSON_1]": "Иванов Иван Иванович"}))
+    _, unresolved = rewrite(src, dst, resolver({"[PERSON_1]": "Иванов Иван Иванович"}))
 
     assert unresolved == []
     root = etree.fromstring(read_part(dst, "word/document.xml"))
@@ -121,7 +126,7 @@ def test_unknown_token_left_as_is_and_reported(tmp_path):
     src = make_docx(tmp_path / "src.docx", {"word/document.xml": unknown_token_document()})
     dst = str(tmp_path / "out.docx")
 
-    unresolved = rewrite(src, dst, resolver({}))
+    _, unresolved = rewrite(src, dst, resolver({}))
 
     assert unresolved == ["[ORG_99]"]
     root = etree.fromstring(read_part(dst, "word/document.xml"))
@@ -145,7 +150,7 @@ def test_token_in_table_cell_resolved(tmp_path):
     src = make_docx(tmp_path / "src.docx", {"word/document.xml": table_document()})
     dst = str(tmp_path / "out.docx")
 
-    unresolved = rewrite(src, dst, resolver({"[INN_1]": "7701234567"}))
+    _, unresolved = rewrite(src, dst, resolver({"[INN_1]": "7701234567"}))
 
     assert unresolved == []
     root = etree.fromstring(read_part(dst, "word/document.xml"))
@@ -156,7 +161,7 @@ def test_deleted_review_text_not_touched(tmp_path):
     src = make_docx(tmp_path / "src.docx", {"word/document.xml": deleted_text_document()})
     dst = str(tmp_path / "out.docx")
 
-    unresolved = rewrite(src, dst, resolver({"[PERSON_1]": "Иванов Иван Иванович"}))
+    _, unresolved = rewrite(src, dst, resolver({"[PERSON_1]": "Иванов Иван Иванович"}))
 
     assert unresolved == []
     root = etree.fromstring(read_part(dst, "word/document.xml"))
@@ -170,7 +175,7 @@ def test_token_in_header_resolved(tmp_path):
     })
     dst = str(tmp_path / "out.docx")
 
-    unresolved = rewrite(src, dst, resolver({"[ORG_1]": "ООО «Ромашка»"}))
+    _, unresolved = rewrite(src, dst, resolver({"[ORG_1]": "ООО «Ромашка»"}))
 
     assert unresolved == ["[ORG_99]"]
     hdr_root = etree.fromstring(read_part(dst, "word/header1.xml"))

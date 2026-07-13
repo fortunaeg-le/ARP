@@ -12,7 +12,7 @@ from docx_rewriter import rewrite as docx_rewrite
 from pptx_rewriter import rewrite as pptx_rewrite
 from xlsx_rewriter import rewrite as xlsx_rewrite
 
-from conftest import W, A, S, P_NS, read_part, resolver, assert_untouched_parts_identical, make_zip
+from conftest import W, A, S, P_NS, read_part, resolver, assert_untouched_parts_identical, make_zip, CONTENT_TYPES
 
 
 # ---------------------------------------------------------------------------
@@ -30,7 +30,7 @@ def test_docx_run_rpr_identical_after_resolve(docx_builder):
     src_root = etree.fromstring(xml)
     src_rpr_xml = etree.tostring(src_root.find(f".//{{{W}}}rPr"))
 
-    unresolved = docx_rewrite(src, dst, resolver({"[ORG_1]": "ООО «Ромашка»"}))
+    _, unresolved = docx_rewrite(src, dst, resolver({"[ORG_1]": "ООО «Ромашка»"}))
     assert unresolved == []
 
     dst_root = etree.fromstring(read_part(dst, "word/document.xml"))
@@ -55,7 +55,7 @@ def test_xlsx_cell_style_attribute_unchanged(xlsx_builder):
     src = xlsx_builder("src.xlsx", shared, sheet)
     dst = src.replace("src.xlsx", "out.xlsx")
 
-    unresolved = xlsx_rewrite(src, dst, resolver({"[ORG_1]": "ООО «Ромашка»"}))
+    _, unresolved = xlsx_rewrite(src, dst, resolver({"[ORG_1]": "ООО «Ромашка»"}))
     assert unresolved == []
 
     sh = etree.fromstring(read_part(dst, "xl/worksheets/sheet1.xml"))
@@ -80,7 +80,7 @@ def test_pptx_title_rpr_identical_after_resolve(pptx_builder):
     src_root = etree.fromstring(xml)
     src_rpr_xml = etree.tostring(src_root.find(f".//{{{A}}}rPr"))
 
-    unresolved = pptx_rewrite(src, dst, resolver({"[ORG_1]": "ООО «Ромашка»"}))
+    _, unresolved = pptx_rewrite(src, dst, resolver({"[ORG_1]": "ООО «Ромашка»"}))
     assert unresolved == []
 
     dst_root = etree.fromstring(read_part(dst, "ppt/slides/slide1.xml"))
@@ -106,6 +106,7 @@ def test_docx_full_archive_byte_identical_except_document_xml(tmp_path):
 </w:body></w:document>""".encode("utf-8")
 
     parts = {
+        "[Content_Types].xml": CONTENT_TYPES,
         "word/document.xml": document_xml,
         "word/media/image1.png": image_bytes,
         "word/numbering.xml": numbering_xml,
@@ -115,7 +116,7 @@ def test_docx_full_archive_byte_identical_except_document_xml(tmp_path):
     src = make_zip(tmp_path / "src.docx", parts)
     dst = str(tmp_path / "out.docx")
 
-    unresolved = docx_rewrite(src, dst, resolver({"[ORG_1]": "ООО «Ромашка»"}))
+    _, unresolved = docx_rewrite(src, dst, resolver({"[ORG_1]": "ООО «Ромашка»"}))
     assert unresolved == []
 
     assert_untouched_parts_identical(src, dst, touched_names={"word/document.xml"})
@@ -130,6 +131,7 @@ def test_pptx_full_archive_byte_identical_except_slide_xml(tmp_path):
 </p:spTree></p:cSld></p:sld>""".encode("utf-8")
 
     parts = {
+        "[Content_Types].xml": CONTENT_TYPES,
         "ppt/slides/slide1.xml": slide_xml,
         "ppt/charts/chart1.xml": chart_xml,
         "ppt/slideMasters/slideMaster1.xml": master_xml,
@@ -138,7 +140,7 @@ def test_pptx_full_archive_byte_identical_except_slide_xml(tmp_path):
     src = make_zip(tmp_path / "src.pptx", parts)
     dst = str(tmp_path / "out.pptx")
 
-    unresolved = pptx_rewrite(src, dst, resolver({"[ORG_1]": "ООО «Ромашка»"}))
+    _, unresolved = pptx_rewrite(src, dst, resolver({"[ORG_1]": "ООО «Ромашка»"}))
     assert unresolved == []
 
     assert_untouched_parts_identical(src, dst, touched_names={"ppt/slides/slide1.xml"})
@@ -163,6 +165,7 @@ def test_xlsx_full_archive_byte_identical_except_shared_strings(tmp_path):
     ).encode("utf-8")
 
     parts = {
+        "[Content_Types].xml": CONTENT_TYPES,
         "xl/sharedStrings.xml": shared,
         "xl/worksheets/sheet1.xml": sheet,
         "xl/styles.xml": styles_xml,
@@ -172,7 +175,7 @@ def test_xlsx_full_archive_byte_identical_except_shared_strings(tmp_path):
     src = make_zip(tmp_path / "src.xlsx", parts)
     dst = str(tmp_path / "out.xlsx")
 
-    unresolved = xlsx_rewrite(src, dst, resolver({"[ORG_1]": "ООО «Ромашка»"}))
+    _, unresolved = xlsx_rewrite(src, dst, resolver({"[ORG_1]": "ООО «Ромашка»"}))
     assert unresolved == []
 
     # sheet1.xml не входит в touched: адаптер не нашёл в нём inline-строк и

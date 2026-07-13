@@ -26,7 +26,7 @@ def test_leading_zeros_and_type_preserved_for_account_number(xlsx_builder):
     src = xlsx_builder("src.xlsx", shared, sheet)
     dst = src.replace("src.xlsx", "out.xlsx")
 
-    unresolved = xlsx_rewrite(src, dst, resolver({"[ACC_1]": "00123456789"}))
+    _, unresolved = xlsx_rewrite(src, dst, resolver({"[ACC_1]": "00123456789"}))
     assert unresolved == []
 
     ss_root = etree.fromstring(read_part(dst, "xl/sharedStrings.xml"))
@@ -50,7 +50,7 @@ def test_inn_value_not_turned_into_number_or_exponent(xlsx_builder):
     src = xlsx_builder("src.xlsx", shared, sheet)
     dst = src.replace("src.xlsx", "out.xlsx")
 
-    unresolved = xlsx_rewrite(src, dst, resolver({"[INN_1]": "7701234567"}))
+    _, unresolved = xlsx_rewrite(src, dst, resolver({"[INN_1]": "7701234567"}))
     assert unresolved == []
 
     ss_root = etree.fromstring(read_part(dst, "xl/sharedStrings.xml"))
@@ -75,7 +75,7 @@ def test_shared_si_referenced_by_three_cells_all_resolved(xlsx_builder):
     src = xlsx_builder("src.xlsx", shared, sheet)
     dst = src.replace("src.xlsx", "out.xlsx")
 
-    unresolved = xlsx_rewrite(src, dst, resolver({"[ORG_1]": "ООО «Ромашка»"}))
+    _, unresolved = xlsx_rewrite(src, dst, resolver({"[ORG_1]": "ООО «Ромашка»"}))
     assert unresolved == []
 
     # Общая строка одна: раскрытие произошло в единственном <si>, и все три
@@ -123,7 +123,7 @@ def test_inline_string_cell_resolved(xlsx_builder):
     src = xlsx_builder("src.xlsx", sheet_xml=sheet)
     dst = src.replace("src.xlsx", "out.xlsx")
 
-    unresolved = xlsx_rewrite(src, dst, resolver({"[ORG_1]": "ООО «Ромашка»"}))
+    _, unresolved = xlsx_rewrite(src, dst, resolver({"[ORG_1]": "ООО «Ромашка»"}))
     assert unresolved == []
 
     sh = etree.fromstring(read_part(dst, "xl/worksheets/sheet1.xml"))
@@ -147,7 +147,7 @@ def test_token_inside_formula_left_untouched_and_not_reported(xlsx_builder):
     src = xlsx_builder("src.xlsx", sheet_xml=sheet)
     dst = src.replace("src.xlsx", "out.xlsx")
 
-    unresolved = xlsx_rewrite(src, dst, resolver({"[ORG_1]": "ООО «Ромашка»"}))
+    _, unresolved = xlsx_rewrite(src, dst, resolver({"[ORG_1]": "ООО «Ромашка»"}))
 
     sh = etree.fromstring(read_part(dst, "xl/worksheets/sheet1.xml"))
     assert sh.find(f".//{{{S}}}f").text == 'CONCATENATE("[ORG_1]", A2)'

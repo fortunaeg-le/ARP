@@ -31,6 +31,7 @@ import fnmatch
 import re
 
 from ooxml_core import (
+    OoxmlError,
     Resolver,
     RunGroup,
     TextUnit,
@@ -88,28 +89,42 @@ def _build_groups(root, container_tag: str) -> "list[RunGroup]":
     return groups
 
 
-def rewrite(src_path: str, dst_path: str, resolve: Resolver) -> "list[str]":
+def rewrite(src_path: str, dst_path: str, resolve: Resolver) -> "tuple[int, list[str]]":
     """Раскрывает токены в `.xlsx` и пишет результат в `dst_path`.
 
-    Возвращает unresolved-токены в порядке первого появления: сначала по
-    `xl/sharedStrings.xml` (в порядке `<si>`), затем по листам
-    `xl/worksheets/sheet*.xml` (по возрастанию номера, `<is>` в порядке дерева),
-    с возможными повторами — дедупликацию делает блок 12.
+    Возвращает `(число выполненных замен, unresolved)`, где unresolved — токены в
+    порядке первого появления: сначала по `xl/sharedStrings.xml` (в порядке
+    `<si>`), затем по листам `xl/worksheets/sheet*.xml` (по возрастанию номера,
+    `<is>` в порядке дерева), с возможными повторами — дедупликацию делает блок 12.
+
+    Обязательна хотя бы одна часть-лист `xl/worksheets/sheet*.xml`; без листа это
+    не корректный `.xlsx` — кидаем OoxmlError и файл назначения не создаём.
+    `xl/sharedStrings.xml` при этом ОПЦИОНАЛЕН: книга целиком из чисел и
+    inline-строк валидна (см. блок 11).
     """
     parts = read_zip_parts(src_path)
+    sheet_names = sorted((n for n in parts if _is_sheet_part(n)), key=_sheet_sort_key)
+    if not sheet_names:
+        raise OoxmlError(
+            f"Файл не является корректным .xlsx: не найдена ни одна обязательная "
+            f"часть {_SHEET_MASK}: {src_path}"
+        )
+
     modified: "dict[str, bytes]" = {}
     unresolved: "list[str]" = []
+    replaced = 0
 
-    # 1) Общая таблица строк — основное место замен.
+    # 1) Общая таблица строк — основное место замен (опциональна).
     if _SHARED_STRINGS in parts:
         tree = parse_xml(parts[_SHARED_STRINGS])
         for group in _build_groups(tree.getroot(), _S_SI):
-            unresolved.extend(replace_tokens_in_group(group, resolve))
+            n, unres = replace_tokens_in_group(group, resolve)
+            replaced += n
+            unresolved.extend(unres)
         modified[_SHARED_STRINGS] = serialize_xml(tree)
 
     # 2) Inline-строки в листах (некоторые генераторы пишут <c t="inlineStr">,
     #    минуя sharedStrings).
-    sheet_names = sorted((n for n in parts if _is_sheet_part(n)), key=_sheet_sort_key)
     for name in sheet_names:
         tree = parse_xml(parts[name])
         groups = _build_groups(tree.getroot(), _S_IS)
@@ -118,8 +133,10 @@ def rewrite(src_path: str, dst_path: str, resolve: Resolver) -> "list[str]":
             # её байт-в-байт (rewrite_zip перенесёт оригинал).
             continue
         for group in groups:
-            unresolved.extend(replace_tokens_in_group(group, resolve))
+            n, unres = replace_tokens_in_group(group, resolve)
+            replaced += n
+            unresolved.extend(unres)
         modified[name] = serialize_xml(tree)
 
     rewrite_zip(src_path, dst_path, modified)
-    return unresolved
+    return replaced, unresolved

@@ -16,6 +16,7 @@
 import fnmatch
 
 from ooxml_core import (
+    OoxmlError,
     Resolver,
     RunGroup,
     TextUnit,
@@ -25,6 +26,10 @@ from ooxml_core import (
     rewrite_zip,
     serialize_xml,
 )
+
+# Опорная часть Word: без неё .docx нечего обрабатывать (см. блок 9). Колонтитулы,
+# сноски и концевые сноски опциональны — их отсутствие нормально.
+_REQUIRED_PART = "word/document.xml"
 
 _W = "{http://schemas.openxmlformats.org/wordprocessingml/2006/main}"
 _W_P = _W + "p"
@@ -85,23 +90,36 @@ def _build_groups(root) -> "list[RunGroup]":
     return groups
 
 
-def rewrite(src_path: str, dst_path: str, resolve: Resolver) -> "list[str]":
+def rewrite(src_path: str, dst_path: str, resolve: Resolver) -> "tuple[int, list[str]]":
     """Раскрывает токены в `.docx` и пишет результат в `dst_path`.
 
-    Возвращает unresolved-токены в порядке первого появления в документе
-    (document.xml, затем header*/footer*/footnotes/endnotes), с возможными
-    повторами — дедупликацию делает блок 12.
+    Возвращает `(число выполненных замен, unresolved)`, где unresolved — токены в
+    порядке первого появления в документе (document.xml, затем
+    header*/footer*/footnotes/endnotes), с возможными повторами — дедупликацию
+    делает блок 12.
+
+    Если в архиве нет обязательной части `word/document.xml` — это не корректный
+    `.docx`, кидаем OoxmlError и файл назначения не создаём (см. блок 9).
     """
     parts = read_zip_parts(src_path)
+    if _REQUIRED_PART not in parts:
+        raise OoxmlError(
+            f"Файл не является корректным .docx: не найдена обязательная часть "
+            f"{_REQUIRED_PART}: {src_path}"
+        )
+
     modified: "dict[str, bytes]" = {}
     unresolved: "list[str]" = []
+    replaced = 0
 
     names = sorted((n for n in parts if _is_target_part(n)), key=_part_sort_key)
     for name in names:
         tree = parse_xml(parts[name])
         for group in _build_groups(tree.getroot()):
-            unresolved.extend(replace_tokens_in_group(group, resolve))
+            n, unres = replace_tokens_in_group(group, resolve)
+            replaced += n
+            unresolved.extend(unres)
         modified[name] = serialize_xml(tree)
 
     rewrite_zip(src_path, dst_path, modified)
-    return unresolved
+    return replaced, unresolved

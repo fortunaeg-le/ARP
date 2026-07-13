@@ -5,11 +5,11 @@
 раскрывает токены в исходные значения из сессии (блок 5, `session_store`),
 сохраняя форматирование принесённого файла нетронутым. Своей логики разбора
 форматов не содержит: выбирает адаптер по расширению и вызывает его полиморфно
-(единая сигнатура блоков 9–11 — `rewrite(src, dst, resolve) -> list[str]`).
+(единая сигнатура блоков 9–11 — `rewrite(src, dst, resolve) -> tuple[int, list[str]]`).
 
 Публичная функция:
   - detokenize_file(src_path, session_id, dst_path=None, storage_dir=None)
-        -> (путь_к_созданному_файлу, unresolved)
+        -> (путь_к_созданному_файлу, число_замен, unresolved)
 
 Никакого NER/детекторов/tokenizer здесь нет и не импортируется — детокенизация
 файла в них не нуждается, а их импорт тяжёл (см. «Бюджет ресурсов» спеки).
@@ -55,7 +55,7 @@ def detokenize_file(
     session_id: str,
     dst_path: str | None = None,
     storage_dir: str | None = None,
-) -> tuple[str, list[str]]:
+) -> tuple[str, int, list[str]]:
     """Раскрывает токены в файле `src_path`, сохраняя новый файл в `dst_path`.
 
     Формат определяется по расширению `src_path` (нижний регистр). Неподдерживаемое
@@ -63,8 +63,9 @@ def detokenize_file(
     (маппинг token -> original_text); SessionNotFoundError/SessionExpiredError не
     перехватываются, а пробрасываются наверх (контракт блока 6).
 
-    Возвращает (путь_к_созданному_файлу, unresolved) — unresolved уникальны, в
-    порядке первого появления. Исходный файл не модифицируется.
+    Возвращает (путь_к_созданному_файлу, число_замен, unresolved) — число_замен —
+    сколько токенов фактически раскрыто, unresolved уникальны, в порядке первого
+    появления. Исходный файл не модифицируется.
 
     Исключения:
       - ValueError — неподдерживаемый формат либо dst_path совпадает с src_path;
@@ -103,7 +104,7 @@ def detokenize_file(
         return mapping.get(token)
 
     rewrite = _load_adapter(ext)
-    raw_unresolved = rewrite(src_path, dst_path, resolve)
+    replaced, raw_unresolved = rewrite(src_path, dst_path, resolve)
 
     # Дедупликация unresolved: уникальные, в порядке первого появления (контракт блока 6).
     unresolved: list[str] = []
@@ -113,4 +114,4 @@ def detokenize_file(
             seen.add(token)
             unresolved.append(token)
 
-    return dst_path, unresolved
+    return dst_path, replaced, unresolved

@@ -96,6 +96,19 @@ A = "http://schemas.openxmlformats.org/drawingml/2006/main"
 P_NS = "http://schemas.openxmlformats.org/presentationml/2006/main"
 S = "http://schemas.openxmlformats.org/spreadsheetml/2006/main"
 
+# Каждый настоящий OOXML-контейнер содержит в корне `[Content_Types].xml`; без
+# него read_zip_parts (блок 8) считает файл не-OOXML и кидает OoxmlError. Билдеры
+# валидных фикстур добавляют его, чтобы собранные zipfile-фикстуры соответствовали
+# минимальному инварианту контейнера. Содержимое части адаптерами не читается —
+# она лишь переносится байт-в-байт, — поэтому достаточно корректного минимума.
+CONTENT_TYPES = (
+    '<?xml version="1.0" encoding="UTF-8" standalone="yes"?>\r\n'
+    '<Types xmlns="http://schemas.openxmlformats.org/package/2006/content-types">'
+    '<Default Extension="rels" ContentType="application/vnd.openxmlformats-package.relationships+xml"/>'
+    '<Default Extension="xml" ContentType="application/xml"/>'
+    '</Types>'
+).encode("utf-8")
+
 
 def make_zip(path, parts: dict, compress=zipfile.ZIP_DEFLATED) -> str:
     with zipfile.ZipFile(path, "w", compress) as zf:
@@ -104,13 +117,20 @@ def make_zip(path, parts: dict, compress=zipfile.ZIP_DEFLATED) -> str:
     return str(path)
 
 
+def _with_content_types(parts: dict) -> dict:
+    """Добавляет `[Content_Types].xml`, если билдер строит валидный контейнер."""
+    merged = {"[Content_Types].xml": CONTENT_TYPES}
+    merged.update(parts)
+    return merged
+
+
 @pytest.fixture
 def docx_builder(tmp_path):
     def _build(filename, document_xml: bytes, extra_parts: dict = None):
         parts = {"word/document.xml": document_xml}
         if extra_parts:
             parts.update(extra_parts)
-        return make_zip(tmp_path / filename, parts)
+        return make_zip(tmp_path / filename, _with_content_types(parts))
     return _build
 
 
@@ -120,7 +140,7 @@ def pptx_builder(tmp_path):
         parts = {"ppt/slides/slide1.xml": slide_xml}
         if extra_parts:
             parts.update(extra_parts)
-        return make_zip(tmp_path / filename, parts)
+        return make_zip(tmp_path / filename, _with_content_types(parts))
     return _build
 
 
@@ -134,5 +154,5 @@ def xlsx_builder(tmp_path):
             parts["xl/worksheets/sheet1.xml"] = sheet_xml
         if extra_parts:
             parts.update(extra_parts)
-        return make_zip(tmp_path / filename, parts)
+        return make_zip(tmp_path / filename, _with_content_types(parts))
     return _build

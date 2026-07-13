@@ -18,10 +18,15 @@ from lxml import etree
 
 from pptx_rewriter import rewrite
 
+from conftest import CONTENT_TYPES
+
 A = "http://schemas.openxmlformats.org/drawingml/2006/main"
 
 
 def make_pptx(path, parts: dict) -> str:
+    # Настоящий .pptx всегда содержит [Content_Types].xml; без него read_zip_parts
+    # (блок 8) считает файл не-OOXML. Добавляем, если тест не задал его сам.
+    parts = {"[Content_Types].xml": CONTENT_TYPES, **parts}
     with zipfile.ZipFile(path, "w") as zf:
         for name, data in parts.items():
             zf.writestr(name, data)
@@ -75,7 +80,7 @@ def test_styled_title_replaced_and_formatting_untouched(tmp_path):
     src = make_pptx(tmp_path / "src.pptx", {"ppt/slides/slide1.xml": styled_title_slide()})
     dst = str(tmp_path / "out.pptx")
 
-    unresolved = rewrite(src, dst, resolver({"[ORG_1]": "ООО «Ромашка»"}))
+    _, unresolved = rewrite(src, dst, resolver({"[ORG_1]": "ООО «Ромашка»"}))
 
     assert unresolved == []
     root = etree.fromstring(read_part(dst, "ppt/slides/slide1.xml"))
@@ -91,7 +96,7 @@ def test_token_split_across_two_runs_in_table_cell(tmp_path):
     src = make_pptx(tmp_path / "src.pptx", {"ppt/slides/slide1.xml": table_cell_split_slide()})
     dst = str(tmp_path / "out.pptx")
 
-    unresolved = rewrite(src, dst, resolver({"[PHONE_1]": "+7 495 123-45-67"}))
+    _, unresolved = rewrite(src, dst, resolver({"[PHONE_1]": "+7 495 123-45-67"}))
 
     assert unresolved == []
     root = etree.fromstring(read_part(dst, "ppt/slides/slide1.xml"))
@@ -103,7 +108,7 @@ def test_unknown_token_left_as_is_and_reported(tmp_path):
     src = make_pptx(tmp_path / "src.pptx", {"ppt/slides/slide1.xml": unknown_token_slide()})
     dst = str(tmp_path / "out.pptx")
 
-    unresolved = rewrite(src, dst, resolver({}))
+    _, unresolved = rewrite(src, dst, resolver({}))
 
     assert unresolved == ["[ORG_99]"]
     root = etree.fromstring(read_part(dst, "ppt/slides/slide1.xml"))
@@ -130,7 +135,7 @@ def test_token_in_notes_slide_resolved(tmp_path):
     })
     dst = str(tmp_path / "out.pptx")
 
-    unresolved = rewrite(src, dst, resolver({"[ORG_1]": "ООО «Ромашка»"}))
+    _, unresolved = rewrite(src, dst, resolver({"[ORG_1]": "ООО «Ромашка»"}))
 
     assert unresolved == ["[ORG_99]"]
     notes_root = etree.fromstring(read_part(dst, "ppt/notesSlides/notesSlide1.xml"))
@@ -154,7 +159,7 @@ def test_linebreak_pseudo_separator_does_not_break_runs(tmp_path):
     src = make_pptx(tmp_path / "src.pptx", {"ppt/slides/slide1.xml": linebreak_slide()})
     dst = str(tmp_path / "out.pptx")
 
-    unresolved = rewrite(src, dst, resolver({}))
+    _, unresolved = rewrite(src, dst, resolver({}))
 
     assert unresolved == []
     root = etree.fromstring(read_part(dst, "ppt/slides/slide1.xml"))

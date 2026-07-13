@@ -22,6 +22,8 @@ from lxml import etree
 
 from xlsx_rewriter import rewrite
 
+from conftest import CONTENT_TYPES
+
 S = "http://schemas.openxmlformats.org/spreadsheetml/2006/main"
 
 STYLES = (
@@ -61,6 +63,7 @@ SHEET = (
 
 def make_xlsx(path, shared=SHARED, sheet=SHEET) -> str:
     parts = {
+        "[Content_Types].xml": CONTENT_TYPES,
         "xl/workbook.xml": WORKBOOK,
         "xl/styles.xml": STYLES,
         "xl/sharedStrings.xml": shared,
@@ -98,7 +101,7 @@ MAP = {
 def out(tmp_path):
     src = make_xlsx(tmp_path / "in.xlsx")
     dst = str(tmp_path / "out.xlsx")
-    unresolved = rewrite(src, dst, resolver(MAP))
+    _, unresolved = rewrite(src, dst, resolver(MAP))
     return src, dst, unresolved
 
 

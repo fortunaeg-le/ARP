@@ -12,14 +12,14 @@ import pytest
 from file_detokenizer import detokenize_file
 from session_store import SessionExpiredError, SessionNotFoundError
 
-from conftest import W, sha256_of, make_zip
+from conftest import W, sha256_of, make_zip, CONTENT_TYPES
 
 
 def _docx_with_token(path):
     xml = f"""<w:document xmlns:w="{W}"><w:body>
 <w:p><w:r><w:t>[ORG_1]</w:t></w:r></w:p>
 </w:body></w:document>""".encode("utf-8")
-    return make_zip(path, {"word/document.xml": xml})
+    return make_zip(path, {"[Content_Types].xml": CONTENT_TYPES, "word/document.xml": xml})
 
 
 # ---------------------------------------------------------------------------

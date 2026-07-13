@@ -220,7 +220,7 @@ def _boundary_sep(seg_a: TextSegment, seg_b: TextSegment) -> str:
 def _detect_boundary_entities(
     doc: SourceDocument,
     config_path: str,
-) -> tuple[list[Entity], dict[str, str]]:
+) -> list[Entity]:
     """B3-fix: находит сущности, РАЗОРВАННЫЕ границей соседних сегментов.
 
     detect_regex/detect_ner работают посегментно, поэтому значение, чей текст
@@ -232,9 +232,11 @@ def _detect_boundary_entities(
     публичные детекторы блоков 2/3. Оставляются ТОЛЬКО найденные в окне сущности,
     чей интервал реально пересекает точку стыка (иначе это дубликат обычной
     посегментной детекции). Пересекающая сущность делится на пару Entity_A/Entity_B
-    с реальными оффсетами внутри своих сегментов.
+    с реальными оффсетами внутри своих сегментов; половины идут дальше как две
+    ОБЫЧНЫЕ независимые сущности (у каждой свой original_text — свой токен), чтобы
+    восстановление в каждом сегменте было посимвольно точным.
 
-    Возвращает: (список добавочных Entity, реестр {id -> id партнёра по паре}).
+    Возвращает: список добавочных Entity.
     detect_regex/detect_ner импортируются ЛОКАЛЬНО, чтобы прямой импорт tokenizer
     (напр. в юнит-тестах блока 4) не тянул natasha, пока окна не строятся реально.
     """
@@ -242,7 +244,6 @@ def _detect_boundary_entities(
     from ner_detector import detect_ner
 
     extra: list[Entity] = []
-    partner: dict[str, str] = {}
 
     segs = doc.segments
     for i in range(len(segs) - 1):
@@ -308,10 +309,8 @@ def _detect_boundary_entities(
             )
             extra.append(ent_a)
             extra.append(ent_b)
-            partner[ent_a.id] = ent_b.id
-            partner[ent_b.id] = ent_a.id
 
-    return extra, partner
+    return extra
 
 
 def tokenize(
@@ -324,8 +323,10 @@ def tokenize(
 
     # --- B3-fix: сущности, разорванные границей соседних сегментов ---
     # Добавляются к обычным ДО разрешения пересечений и проходят через тот же
-    # алгоритм; boundary_partner связывает половины одной пары для общего токена.
-    boundary_entities, boundary_partner = _detect_boundary_entities(doc, config_path)
+    # алгоритм. Каждая половина пары — обычная независимая сущность со своим
+    # original_text (и, значит, своим токеном): так восстановление в каждом
+    # сегменте посимвольно точно (см. Вариант А в отчёте о фиксе порчи B3).
+    boundary_entities = _detect_boundary_entities(doc, config_path)
     entities = list(entities) + boundary_entities
 
     # --- Разрешение пересечений внутри каждого сегмента ---
@@ -343,14 +344,12 @@ def tokenize(
     kept.sort(key=lambda e: (seg_index[e.segment_id], e.start))
 
     # --- Присвоение токенов ---
-    # Обычное правило: переиспользование по (entity_type, original_text).
-    # B3-fix: если Entity — половина пары, разорванной границей, И его партнёр тоже
-    # выжил после разрешения пересечений, оба получают ОДИН общий токен (у половин
-    # разный original_text, поэтому обычное правило их бы развело). Если партнёр
-    # «проиграл» и удалён — выживший идёт по обычному правилу.
-    kept_ids = {e.id for e in kept}
+    # Единое правило: переиспользование по (entity_type, original_text). Половины
+    # разорванной границей сущности НЕ получают общий токен — у них разный
+    # original_text, поэтому каждая берёт свой токен со своим значением. Это делает
+    # восстановление посимвольно точным в обоих сегментах и превращает ложное
+    # срабатывание B3 из разрушительного (порча данных) в терпимо-шумное.
     token_map: dict[tuple[str, str], str] = {}
-    group_token: dict[tuple[str, str], str] = {}
     counters: dict[str, int] = {}
 
     def _new_token(entity_type: str) -> str:
@@ -359,19 +358,11 @@ def tokenize(
         return f"[{prefix}_{counters[prefix]}]"
 
     for e in kept:
-        partner_id = boundary_partner.get(e.id)
-        if partner_id is not None and partner_id in kept_ids:
-            pair_key = tuple(sorted((e.id, partner_id)))
-            token = group_token.get(pair_key)
-            if token is None:
-                token = _new_token(e.entity_type)
-                group_token[pair_key] = token
-        else:
-            key = (e.entity_type, e.original_text)
-            token = token_map.get(key)
-            if token is None:
-                token = _new_token(e.entity_type)
-                token_map[key] = token
+        key = (e.entity_type, e.original_text)
+        token = token_map.get(key)
+        if token is None:
+            token = _new_token(e.entity_type)
+            token_map[key] = token
         e.token = token
 
     # --- Сборка анонимизированного текста ---
