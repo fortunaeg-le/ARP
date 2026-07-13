@@ -67,22 +67,31 @@ def _token_overlaps(tok, start: int, end: int) -> bool:
     return tok.start < end and tok.stop > start
 
 
-def _appos_links(tokens, a_span: tuple[int, int], b_span: tuple[int, int]) -> bool:
-    """True, если есть ребро appos, напрямую связывающее токен из a_span с токеном
-    из b_span (в любую сторону). id токенов Natasha — строки вида '1_2'."""
+def _appos_links(tokens, org_span: tuple[int, int], per_span: tuple[int, int]) -> bool:
+    """True, если PER — аппозитивное ПРИЛОЖЕНИЕ к ORG: есть ребро appos, чей ЗАВИСИМЫЙ
+    токен лежит в PER-спане, а ГОЛОВА — в ORG-спане. НАПРАВЛЕНИЕ существенно.
+
+    Эмпирика (docs/reports/WAVE2_VERIFICATION.md, разбор в голой строке ячейки):
+      • «ИП Пирогова А.С.»  → root=«ИП»(ORG), «Пирогова»(PER) --appos--> «ИП».
+        Зависимый=PER, голова=ORG. Организационная форма — вершина, ФИО уточняет,
+        КАКОЙ именно ИП. ОДНО лицо (ИП и есть Пирогова) → склеиваем.
+      • «Свидетель Иванов И.И. ООО «Ромашка»» → «Иванов»(PER) --appos--> «Свидетель»,
+        «ООО»(ORG) --appos--> «Иванов»(PER). Зависимый=ORG, голова=PER.
+        Организация приложена К человеку — это РАЗНЫЕ стороны → НЕ склеиваем.
+    Прежняя версия принимала appos в ЛЮБУЮ сторону и потому ложно сливала второй случай
+    (W2-D3). Критерий синтаксический (направление ребра), НЕ список ролевых слов.
+    id токенов Natasha — строки вида '1_2'."""
     by_id = {t.id: t for t in tokens}
-    a0, a1 = a_span
-    b0, b1 = b_span
+    o0, o1 = org_span
+    p0, p1 = per_span
     for t in tokens:
         if t.rel not in _APPOS_RELS:
             continue
         head = by_id.get(t.head_id)
         if head is None:
             continue
-        # t в одном спане, его голова — в другом (в любом порядке)
-        if (_token_overlaps(t, b0, b1) and _token_overlaps(head, a0, a1)) or (
-            _token_overlaps(t, a0, a1) and _token_overlaps(head, b0, b1)
-        ):
+        # зависимый (t) — в PER-спане, его голова — в ORG-спане: ORG есть вершина.
+        if _token_overlaps(t, p0, p1) and _token_overlaps(head, o0, o1):
             return True
     return False
 

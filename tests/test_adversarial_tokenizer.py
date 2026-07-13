@@ -60,9 +60,10 @@ class TestLongOverlapChains:
         ]
         survivors = _resolve_overlaps(chain)
         assert _no_overlapping_survivors(survivors)
-        # A и C (PERSON) не пересекаются напрямую с итоговыми победителями и оба выбывают
-        # только через прямое пересечение — итог детерминирован.
-        assert sorted((s.start, s.end) for s in survivors) == [(3, 7), (9, 13)]
+        # W2-D1(б): проигравшие ОБРЕЗАЮТСЯ до непересекающейся части, а не выбрасываются
+        # целиком (раньше итог был [(3,7),(9,13)] — соседние ПДн терялись). Победители
+        # ADDRESS[9,13] и ORG[3,7]; A обрезан до [0,3], C — до [7,9]. Покрытие полное.
+        assert sorted((s.start, s.end) for s in survivors) == [(0, 3), (3, 7), (7, 9), (9, 13)]
 
     def test_five_entity_chain_no_overlapping_survivors(self):
         chain = [
@@ -75,17 +76,21 @@ class TestLongOverlapChains:
         survivors = _resolve_overlaps(chain)
         assert _no_overlapping_survivors(survivors)
 
-    def test_regex_cutting_two_ner_neighbours_removes_both(self):
-        """Короткий regex-спан, пересекающий сразу двух соседних NER-сущностей,
-        удаляет обе (правило 1 regex>ner). Это осознанное ограничение MVP —
-        подтверждаем детерминированный итог: остаётся только regex."""
+    def test_regex_cutting_two_ner_neighbours_trims_both(self):
+        """Короткий regex-спан, пересекающий сразу двух соседних NER-сущностей.
+        РАНЬШЕ (ограничение MVP) обе выбрасывались целиком — мина W2-D1(б): непересекающийся
+        хвост соседа (ПДн вне зоны ИНН) утекал. ТЕПЕРЬ проигравшие ОБРЕЗАЮТСЯ: INN держит
+        [5,9], PERSON сохраняет [0,5], ORG — [9,14]. Наложений нет, покрытие полное."""
         entities = [
             _e(0, 6, "PERSON", "ner"),
             _e(5, 9, "INN", "regex"),   # пересекает и PERSON, и ORG
             _e(8, 14, "ORG", "ner"),
         ]
         survivors = _resolve_overlaps(entities)
-        assert [s.entity_type for s in survivors] == ["INN"]
+        assert _no_overlapping_survivors(survivors)
+        assert sorted((s.start, s.end, s.entity_type) for s in survivors) == [
+            (0, 5, "PERSON"), (5, 9, "INN"), (9, 14, "ORG"),
+        ]
 
 
 # --------------------------------------------------------------------------- #

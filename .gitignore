@@ -20,6 +20,11 @@ htmlcov/
 *.tmp
 scratch_test_*.py
 scratch/
+# bench/ holds tracked regression scripts; their generated outputs are not tracked
+bench/*_out*.txt
+bench/pipe_out*.txt
+bench/*.docx
+bench/golden_*.txt
 ~$*.docx
 ~$*.xlsx
 ~$*.pptx

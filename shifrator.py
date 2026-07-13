@@ -33,7 +33,13 @@ def cmd_encrypt(path, config_path):
         sys.exit(1)
 
     try:
-        entities = detect_regex(doc, config_path) + detect_ner(doc, config_path)
+        # Реквизиты (regex) считаем ПЕРВЫМИ и передаём в detect_ner как «карту занятой
+        # территории»: расширение адреса не наступает на ИНН/ОГРН/счёт/телефон — иначе
+        # regex-хвост поглощается адресом и при разрешении пересечений адрес утекает
+        # открытым текстом (W2-D1). PER/ORG detect_ner защищает своими спанами сам.
+        regex_entities = detect_regex(doc, config_path)
+        ner_entities = detect_ner(doc, config_path, regex_entities=regex_entities)
+        entities = regex_entities + ner_entities
         # Волна 2, этап B: составные сущности «ORG + ФИО» (ИП Пирогова А.С.) —
         # отдельный синтаксический проход ПОСЛЕ основной детекции, ДО токенизации.
         entities = merge_compound_entities(doc, entities)

@@ -44,7 +44,7 @@ _ADDR_GAP_MAXLEN = 6
 # --- Гибридная детекция адреса (этап A волны 2): место — контекстно, спан — полный ---
 #
 # Раньше AddrExtractor (yargy) гонялся СКАНЕРОМ по тексту КАЖДОГО сегмента (~95%
-# времени детекции, см. scratch/RECON_REPORT.md) и всё равно ронял хвост адреса
+# времени детекции, см. docs/reports/RECON_REPORT.md) и всё равно ронял хвост адреса
 # (дом/индекс) в ~2/3 случаев. Теперь yargy — ПАРСЕР окрестности, а не сканер:
 #   1. Место адреса детектируем контекстно: LOC-спаны NER-тэггера (бессловарно) +
 #      regex-триггер на сильные адресные маркеры — для адресов с НЕЗНАКОМЫМ топонимом,
@@ -101,6 +101,60 @@ _ADDR_TOKEN_FWD_RE = re.compile(r"[\s,]*([^\s,]+)")
 _ADDR_TOKEN_RE = re.compile(r"[^\s,]+")
 
 
+def _overlaps_any(s: int, e: int, spans) -> bool:
+    """True, если [s, e) пересекается хотя бы с одним интервалом из spans."""
+    return any(max(s, os) < min(e, oe) for os, oe in spans)
+
+
+def _addr_transparent(text: str, s: int, e: int) -> bool:
+    """True, если интервал [s, e) — это АДРЕСНЫЙ ХВОСТ, ошибочно помеченный NER как
+    PER/ORG (напр. «Советская 12», «Свободы 46»: улица + номер дома NER часто тэггит
+    ORG). Такой спан НЕ должен быть барьером для адреса — адрес обязан его закрыть.
+    Отличаем от НАСТОЯЩЕГО соседа (ФИО «Иванов Иван Иванович», «ООО «Ромашка»») по
+    номеру дома: адресный хвост несёт цифру-номер И состоит целиком из адресно-
+    классифицируемых токенов; ФИО/ORG-название номера дома не имеют. regex-реквизиты
+    сюда НЕ попадают (проверяются отдельно и всегда остаются барьером — иначе утечка)."""
+    toks = _ADDR_TOKEN_RE.findall(text[s:e])
+    if not toks:
+        return False
+    if not any(any(ch.isdigit() for ch in tk) for tk in toks):
+        return False                              # нет номера дома — это не адресный хвост
+    return all(_classify_addr_token(tk) == "addr" for tk in toks)
+
+
+def _address_barriers(
+    text: str,
+    ner_spans: list[tuple[int, int]],
+    regex_spans: list[tuple[int, int]],
+) -> list[tuple[int, int]]:
+    """Занятая территория, на которую расширение адреса НЕ наступает: все regex-реквизиты
+    (всегда) + те PER/ORG, что НЕ являются адресным хвостом (_addr_transparent).
+    Общая для основного прохода и граничного (B3) — геометрия барьеров одна."""
+    barriers = list(regex_spans)
+    barriers += [(s, e) for s, e in ner_spans if not _addr_transparent(text, s, e)]
+    return barriers
+
+
+def _clip_edges(s: int, e: int, occupied) -> tuple[int, int]:
+    """Обрезает КРАЯ адресного спана до границы чужой сущности. Нужно потому, что сам
+    yargy иногда включает соседнее ФИО/ORG в адресный парс («д. 8 Иванов»): расширение
+    тут ни при чём, спан «грязный» с самого начала. Режем только край, упирающийся в
+    occupied (внутренние пересечения — редки и добираются обрезкой в _resolve_overlaps);
+    середину адреса не трогаем. Адрес закрывается вплотную ДО чужой сущности — это НЕ
+    сужение: та территория покрыта своим токеном, ничего не утекает."""
+    changed = True
+    while changed and s < e:
+        changed = False
+        for os_, oe in occupied:
+            if os_ > s and os_ < e <= oe:        # occ накрывает правый край, слева есть адрес
+                e = os_
+                changed = True
+            elif oe < e and os_ <= s < oe:       # occ накрывает левый край, справа есть адрес
+                s = oe
+                changed = True
+    return s, e
+
+
 def _classify_addr_token(tok: str) -> str:
     """Классифицирует токен на границе адреса: 'addr' (часть адреса — продолжать
     расширение), 'skip' (пустой/пунктуация — пройти, но не расширять), 'stop'
@@ -118,15 +172,21 @@ def _classify_addr_token(tok: str) -> str:
     return "stop"                             # слово нижнего регистра, не маркер — конец адреса
 
 
-def _expand_addr_right(text: str, end: int) -> int:
+def _expand_addr_right(text: str, end: int, occupied=()) -> int:
     """Тянет правый край адреса по адресным токенам, НИКОГДА не сужая.
-    Останавливается на первом не-адресном слове или на пределе _ADDR_EXPAND_MAX."""
+    Останавливается на первом не-адресном слове, на пределе _ADDR_EXPAND_MAX
+    или ВПЛОТНУЮ ДО начала чужой сущности (occupied): расширение не наступает на
+    территорию, уже занятую regex/PER/ORG-токеном — там ничего не утекает, зона
+    покрыта другим токеном. Асимметрия «при сомнении шире» действует только на
+    свободном тексте между концом адреса и началом чужой сущности."""
     p = end
     limit = min(len(text), end + _ADDR_EXPAND_MAX)
     while p < len(text):
         m = _ADDR_TOKEN_FWD_RE.match(text, p)
         if m is None or m.start(1) >= limit:
             break
+        if _overlaps_any(m.start(1), m.end(1), occupied):
+            break                                 # уткнулись в чужую сущность — стоп
         cls = _classify_addr_token(m.group(1))
         if cls == "stop":
             break
@@ -166,19 +226,24 @@ def _classify_addr_left_token(tok: str) -> str:
     return "stop"
 
 
-def _expand_addr_left(text: str, start: int) -> int:
+def _expand_addr_left(text: str, start: int, occupied=()) -> int:
     """Тянет левый край адреса влево по индексу/региону/маркерам, НИКОГДА не сужая.
     Заглавное слово впитывается, лишь если левее нашёлся фиксируемый адресный токен —
-    так «обл. Московская,»/«Российская Федерация,» входят, а метка «Адрес:» нет."""
+    так «обл. Московская,»/«Российская Федерация,» входят, а метка «Адрес:» нет.
+    Останавливается ВПЛОТНУЮ ПОСЛЕ чужой сущности (occupied): расширение влево не
+    заходит на территорию regex/PER/ORG-токена (симметрично правому расширению)."""
     bound = max(0, start - _ADDR_EXPAND_MAX)
     prefix = text[bound:start]
     new_start = start
     for m in reversed(list(_ADDR_TOKEN_RE.finditer(prefix))):
+        abs_s, abs_e = bound + m.start(), bound + m.end()
+        if _overlaps_any(abs_s, abs_e, occupied):
+            break                                 # уткнулись в чужую сущность — стоп
         cls = _classify_addr_left_token(m.group(0))
         if cls == "stop":
             break
         if cls == "commit":
-            new_start = bound + m.start()
+            new_start = abs_s
         # 'pass': идём влево, не фиксируя (впитается ретроспективно при commit)
     return new_start
 
@@ -209,11 +274,19 @@ def _filter_suspect_yargy(
     return kept
 
 
-def _build_address_spans(text: str, raw_spans: list[tuple[int, int]]) -> list[tuple[int, int]]:
+def _build_address_spans(
+    text: str,
+    raw_spans: list[tuple[int, int]],
+    occupied: list[tuple[int, int]] = (),
+) -> list[tuple[int, int]]:
     """Собирает финальные адресные спаны из «сырых» хитов (LOC ∪ yargy):
     кластеризует по близости, расширяет края по адресным токенам, повторно
     склеивает пересечения, возникшие от расширения. Полнота спана важнее точности
-    границ (см. асимметрию цены)."""
+    границ (см. асимметрию цены).
+
+    occupied — интервалы уже найденных ЧУЖИХ сущностей (regex-реквизиты, PER/ORG):
+    расширение края останавливается вплотную до них, не поглощая соседнее поле
+    (иначе следующая сущность теряет свой токен, а при regex-хвосте — утечка ПДн)."""
     spans = sorted({(s, e) for s, e in raw_spans if 0 <= s < e})
     if not spans:
         return []
@@ -229,7 +302,7 @@ def _build_address_spans(text: str, raw_spans: list[tuple[int, int]]) -> list[tu
     clusters.append((cs, ce))
 
     expanded = [
-        (_expand_addr_left(text, s), _expand_addr_right(text, e))
+        (_expand_addr_left(text, s, occupied), _expand_addr_right(text, e, occupied))
         for s, e in clusters
     ]
 
@@ -241,6 +314,15 @@ def _build_address_spans(text: str, raw_spans: list[tuple[int, int]]) -> list[tu
             merged[-1] = (ps, max(pe, e))
         else:
             merged.append((s, e))
+
+    # Обрезаем края спанов до границ чужих сущностей (yargy мог захватить соседнее поле).
+    if occupied:
+        clipped = []
+        for s, e in merged:
+            s, e = _clip_edges(s, e, occupied)
+            if s < e:
+                clipped.append((s, e))
+        return clipped
     return merged
 
 
@@ -326,8 +408,22 @@ def _glue_address_matches(text: str, matches: list) -> list[tuple[int, int]]:
     return spans
 
 
-def detect_ner(doc: SourceDocument, config_path: str) -> list[Entity]:
+def detect_ner(
+    doc: SourceDocument,
+    config_path: str,
+    regex_entities: list[Entity] | None = None,
+) -> list[Entity]:
+    """regex_entities — результат detect_regex, ЕСЛИ он уже посчитан вызывающим
+    (нормативный путь: реквизиты дают «карту занятой территории» ДО расширения
+    адреса, см. shifrator.py). Без него расширение всё равно уступает своим PER/ORG,
+    а пересечение с regex-хвостом ловится обрезкой в _resolve_overlaps (страховка)."""
     ner_label_map, addr_types = _load_ner_config(config_path)
+
+    # Карта regex-территории по сегментам: расширение адреса на неё не наступает.
+    regex_by_seg: dict[str, list[tuple[int, int]]] = {}
+    if regex_entities:
+        for e in regex_entities:
+            regex_by_seg.setdefault(e.segment_id, []).append((e.start, e.end))
 
     entities: list[Entity] = []
 
@@ -392,7 +488,13 @@ def detect_ner(doc: SourceDocument, config_path: str) -> list[Entity]:
                 # маркерные позиции в «сырьё» НЕ кладём, иначе список маркеров стал бы
                 # самостоятельным детектором. Расширение краёв использует маркеры как
                 # линейку, но стартует только от подтверждённых LOC/yargy-спанов.
-                for start, end in _build_address_spans(text, loc_spans + yargy_spans):
+                # Барьеры расширения = regex-реквизиты + настоящие PER/ORG (не адресный хвост).
+                occupied = _address_barriers(
+                    text, ner_spans, regex_by_seg.get(segment.id, [])
+                )
+                for start, end in _build_address_spans(
+                    text, loc_spans + yargy_spans, occupied
+                ):
                     for addr_type in addr_types:
                         entities.append(Entity(
                             id=str(uuid.uuid4()),

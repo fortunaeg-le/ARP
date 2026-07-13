@@ -105,13 +105,56 @@ def _has_overlapping_pair(entities: list[Entity]) -> bool:
     return False
 
 
+def _trim_to_free(loser: Entity, winner: Entity) -> list[Entity]:
+    """Обрезает проигравшую сущность до части(ей), НЕ пересекающих победителя, вместо
+    того чтобы выбросить её целиком (страховка W2-D1(б)). Пересечение победителя
+    закрыто его токеном — утекать там нечему; но непересекающийся остаток проигравшего
+    (напр. сам адрес слева от regex-ИНН) обязан сохранить свой токен, а не уйти в
+    открытый текст. Возвращает 0/1/2 обрезка (2 — если победитель внутри проигравшего).
+    Текст фрагмента режется из original_text проигравшего (равен срезу сегмента по
+    [start:end]), поэтому seg_text не нужен. Крайние пробелы срезаются, чтобы токен не
+    держал висячий разделитель; фрагмент из одних разделителей отбрасывается."""
+    ws, we = winner.start, winner.end
+    pieces: list[tuple[int, int]] = []
+    if loser.start < ws:
+        pieces.append((loser.start, min(loser.end, ws)))
+    if loser.end > we:
+        pieces.append((max(loser.start, we), loser.end))
+
+    out: list[Entity] = []
+    for s, e in pieces:
+        # текст фрагмента через смещения внутри original_text проигравшего
+        frag = loser.original_text[s - loser.start:e - loser.start]
+        lstrip = len(frag) - len(frag.lstrip(" \t\r\n"))
+        rstrip = len(frag) - len(frag.rstrip(" \t\r\n"))
+        s += lstrip
+        e -= rstrip
+        if e <= s:
+            continue
+        frag = loser.original_text[s - loser.start:e - loser.start]
+        if not frag.strip(" \t\r\n,;.:|«»\"'()"):
+            continue  # остаток из одних разделителей — не сущность
+        out.append(Entity(
+            id=str(uuid.uuid4()),
+            segment_id=loser.segment_id,
+            start=s,
+            end=e,
+            original_text=frag,
+            entity_type=loser.entity_type,
+            detector=loser.detector,
+            confidence=loser.confidence,
+        ))
+    return out
+
+
 def _resolve_overlaps(entities: list[Entity]) -> list[Entity]:
     """Разрешение пересечений внутри одного сегмента (полный алгоритм из ТЗ).
 
     Пока среди ещё не зафиксированных есть пересекающаяся пара: выбрать глобально
-    сильнейшего, зафиксировать его, удалить всех, кто пересекается ИМЕННО с ним
-    (не трогая тех, кто с ним не пересекается). Оставшиеся без пересечений проходят
-    без изменений.
+    сильнейшего, зафиксировать его, а всех, кто пересекается ИМЕННО с ним, ОБРЕЗАТЬ
+    до непересекающейся части (не выбрасывать целиком — иначе адрес, поглотивший
+    хвост regex-реквизита, утёк бы открытым текстом). Обрезки возвращаются в очередь
+    и участвуют в разрешении дальше. Не пересекающиеся с победителем — не трогаем.
     """
     pending = list(entities)
     kept: list[Entity] = []
@@ -122,8 +165,16 @@ def _resolve_overlaps(entities: list[Entity]) -> list[Entity]:
         for e in pending[1:]:
             winner = _winner(winner, e)
         kept.append(winner)
-        # удалить всех, кто пересекается с победителем, и самого победителя (зафиксирован)
-        pending = [e for e in pending if e is not winner and not _overlaps(e, winner)]
+        # победитель зафиксирован; пересекающиеся с ним — обрезаются, остальные как есть
+        new_pending: list[Entity] = []
+        for e in pending:
+            if e is winner:
+                continue
+            if _overlaps(e, winner):
+                new_pending.extend(_trim_to_free(e, winner))
+            else:
+                new_pending.append(e)
+        pending = new_pending
 
     kept.extend(pending)  # сущности без единого пересечения проходят как есть
     return kept
@@ -266,6 +317,7 @@ def _detect_boundary_entities(
         _addr_extractor,
         _build_address_spans,
         _filter_suspect_yargy,
+        _address_barriers,
         _ADDR_ANCHOR_RE,
     )
     from natasha import Doc
@@ -359,7 +411,17 @@ def _detect_boundary_entities(
                 if loc_by_win[k] or _ADDR_ANCHOR_RE.search(wt):
                     yargy_spans = _glue_address_matches(wt, list(_addr_extractor(wt)))
                     yargy_spans = _filter_suspect_yargy(wt, yargy_spans, ner_by_win[k], loc_by_win[k])
-                    for s, e in _build_address_spans(wt, loc_by_win[k] + yargy_spans):
+                    # Барьеры в окне: regex-реквизиты + настоящие PER/ORG (симметрично
+                    # основному проходу — адрес не поглощает соседнее поле на стыке).
+                    regex_spans = [
+                        (ls, le) for (ls, le, _et, det, _cf) in per_win[k] if det == "regex"
+                    ]
+                    perorg_spans = [
+                        (ls, le) for (ls, le, et, det, _cf) in per_win[k]
+                        if det != "regex" and et in ("PERSON", "ORG")
+                    ]
+                    occupied = _address_barriers(wt, perorg_spans, regex_spans)
+                    for s, e in _build_address_spans(wt, loc_by_win[k] + yargy_spans, occupied):
                         for addr_type in addr_types:
                             per_win[k].append((s, e, addr_type, "ner", 1.0))
 

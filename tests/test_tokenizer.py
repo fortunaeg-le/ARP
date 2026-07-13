@@ -127,8 +127,12 @@ class TestTokenizeOverlapResolutionKppBik:
 class TestTokenizeOverlapResolutionChain:
     """HANDOFF_4, Данные для тестов, п.3 — цепочка A-B-C, A∩B, B∩C, A∩C=∅."""
 
-    def test_middle_regex_winner_removes_both_neighbors(self, config_path):
-        """HANDOFF_4, п.3: победитель B (INN, regex) пересекается с A и C -> обе удаляются, остаётся только INN."""
+    def test_middle_regex_winner_trims_both_neighbors(self, config_path):
+        """W2-D1(б): победитель B (INN, regex) пересекается с A и C. РАНЬШЕ обе соседние
+        сущности выбрасывались целиком (остаётся только INN) — это была мина: если сосед
+        нёс ПДн вне зоны пересечения (адрес слева от ИНН), он утекал открытым текстом.
+        ТЕПЕРЬ проигравший ОБРЕЗАЕТСЯ до непересекающейся части: INN покрывает [4,12],
+        PERSON сохраняет свой хвост [0,4], ORG — [12,16]. Наложений не остаётся."""
         seg = _seg("p0", "AAAAAAAAAAAAAAAA")  # текст не важен для алгоритма пересечений
         doc = SourceDocument(segments=[seg], source_format="docx", source_path="d.docx")
         entities = [
@@ -137,8 +141,13 @@ class TestTokenizeOverlapResolutionChain:
             _entity("p0", 10, 16, "AAAAAA", "ORG", "ner"),
         ]
         _, result = tokenize(doc, entities, config_path)
-        assert len(result) == 1
-        assert result[0].entity_type == "INN"
+        spans = sorted((e.start, e.end, e.entity_type) for e in result)
+        assert spans == [(0, 4, "PERSON"), (4, 12, "INN"), (12, 16, "ORG")]
+        # ни одной пересекающейся пары среди выживших
+        assert not any(
+            max(a[0], b[0]) < min(a[1], b[1])
+            for i, a in enumerate(spans) for b in spans[i + 1:]
+        )
 
     def test_non_overlapping_winner_lets_the_third_entity_survive(self, config_path):
         """HANDOFF_4, п.3 (обратный случай): если победитель C не пересекается с A напрямую, A обязан выжить."""
