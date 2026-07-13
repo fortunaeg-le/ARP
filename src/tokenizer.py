@@ -265,6 +265,7 @@ def _detect_boundary_entities(
         _glue_address_matches,
         _addr_extractor,
         _build_address_spans,
+        _filter_suspect_yargy,
         _ADDR_ANCHOR_RE,
     )
     from natasha import Doc
@@ -333,6 +334,7 @@ def _detect_boundary_entities(
     ner_label_map, addr_types = _load_ner_config(config_path)
     if ner_label_map or addr_types:
         loc_by_win: list[list[tuple[int, int]]] = [[] for _ in wins]
+        ner_by_win: list[list[tuple[int, int]]] = [[] for _ in wins]  # PER/ORG для отсева yargy-ложняков
         nd = Doc(blob)
         nd.segment(_segmenter)
         nd.tag_ner(_ner_tagger)
@@ -349,12 +351,14 @@ def _detect_boundary_entities(
                 continue
             if span.type == "PER":
                 ls, le = _expand_person_span(win_texts[k], ls, le)
+            ner_by_win[k].append((ls, le))
             per_win[k].append((ls, le, entity_type, "ner", 1.0))
 
         if addr_types:
             for k, wt in enumerate(win_texts):
                 if loc_by_win[k] or _ADDR_ANCHOR_RE.search(wt):
                     yargy_spans = _glue_address_matches(wt, list(_addr_extractor(wt)))
+                    yargy_spans = _filter_suspect_yargy(wt, yargy_spans, ner_by_win[k], loc_by_win[k])
                     for s, e in _build_address_spans(wt, loc_by_win[k] + yargy_spans):
                         for addr_type in addr_types:
                             per_win[k].append((s, e, addr_type, "ner", 1.0))

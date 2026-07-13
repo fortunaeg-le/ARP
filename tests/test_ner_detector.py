@@ -87,6 +87,28 @@ class TestDetectNerAddressGlueBoundary:
             )
 
 
+class TestDetectNerAddressDoesNotSwallowName:
+    """Волна 2, этап A (доп. отсев yargy-ложняков на ФИО).
+
+    yargy иногда принимает ФИО за топоним; раньше кластеризация затягивала имя и метку
+    «адрес:» в ADDRESS-токен («Иванов И.И., адрес: г. Москва…»), человек не получал
+    своего PERSON-токена. Отсев подозрительных yargy-спанов (перекрывают PER/ORG без
+    LOC/маркера) это чинит, не роняя полноту адреса (см. GOLDEN)."""
+
+    def test_address_does_not_absorb_preceding_person_and_label(self, ner_detector_module, config_path):
+        doc = _doc("в лице директора Иванов И.И., адрес: г. Москва, ул. Ленина, д. 5")
+        entities = ner_detector_module.detect_ner(doc, config_path)
+        addresses = [e for e in entities if e.entity_type == "ADDRESS"]
+        persons = [e for e in entities if e.entity_type == "PERSON"]
+        # ФИО осталось отдельным PERSON, а не затянулось в адрес
+        assert any("Иванов" in p.original_text for p in persons)
+        assert all("Иванов" not in a.original_text for a in addresses)
+        # адрес закрыт целиком и начинается с города (метка «адрес:» не проглочена)
+        assert any(a.original_text == "г. Москва, ул. Ленина, д. 5" for a in addresses), (
+            [a.original_text for a in addresses]
+        )
+
+
 class TestDetectNerEmptySegment:
     """HANDOFF_3, Данные для тестов, п.5 — пустой сегмент не создаёт Entity."""
 

@@ -183,6 +183,32 @@ def _expand_addr_left(text: str, start: int) -> int:
     return new_start
 
 
+def _filter_suspect_yargy(
+    text: str,
+    yargy_spans: list[tuple[int, int]],
+    ner_spans: list[tuple[int, int]],
+    loc_spans: list[tuple[int, int]],
+) -> list[tuple[int, int]]:
+    """Отбрасывает yargy-спаны, похожие на ложное срабатывание на ФИО/названии: они
+    ПЕРЕКРЫВАЮТ уже найденную PER/ORG-сущность и при этом НЕ подкреплены ни LOC, ни
+    адресным маркером внутри себя. yargy иногда принимает последовательность заглавных
+    (имя) за топоним; такой обрывок, склеенный кластеризацией с настоящим адресом рядом,
+    затянул бы ФИО и метку («адрес:») в ADDRESS-токен (человек мислейбелится адресом,
+    своего PERSON-токена не получает). LOC/маркеры/расширение восстанавливают настоящий
+    адрес и без этого спана, поэтому его снятие безопасно для полноты (проверено GOLDEN)."""
+    if not ner_spans:
+        return yargy_spans
+    kept: list[tuple[int, int]] = []
+    for s, e in yargy_spans:
+        overlaps_ner = any(max(s, ns) < min(e, ne) for ns, ne in ner_spans)
+        overlaps_loc = any(max(s, ls) < min(e, le) for ls, le in loc_spans)
+        has_marker = _ADDR_ANCHOR_RE.search(text[s:e]) is not None
+        if overlaps_ner and not overlaps_loc and not has_marker:
+            continue
+        kept.append((s, e))
+    return kept
+
+
 def _build_address_spans(text: str, raw_spans: list[tuple[int, int]]) -> list[tuple[int, int]]:
     """Собирает финальные адресные спаны из «сырых» хитов (LOC ∪ yargy):
     кластеризует по близости, расширяет края по адресным токенам, повторно
@@ -322,6 +348,7 @@ def detect_ner(doc: SourceDocument, config_path: str) -> list[Entity]:
         # Тэггер нужен и для адреса (LOC — контекстный детектор места), поэтому
         # запускаем его, если сконфигурирован хоть PER/ORG, хоть ADDRESS.
         loc_spans: list[tuple[int, int]] = []
+        ner_spans: list[tuple[int, int]] = []   # PER/ORG-спаны для отсева yargy-ФИО-ложняков
         if ner_label_map or addr_types:
             nlp_doc = Doc(text)
             nlp_doc.segment(_segmenter)
@@ -337,6 +364,7 @@ def detect_ner(doc: SourceDocument, config_path: str) -> list[Entity]:
                 start, end = span.start, span.stop
                 if span.type == "PER":
                     start, end = _expand_person_span(text, start, end)
+                ner_spans.append((start, end))
 
                 entities.append(Entity(
                     id=str(uuid.uuid4()),
@@ -357,6 +385,9 @@ def detect_ner(doc: SourceDocument, config_path: str) -> list[Entity]:
             if loc_spans or has_marker:
                 # yargy — только здесь (окрестность хита), не по всему тексту
                 yargy_spans = _glue_address_matches(text, list(_addr_extractor(text)))
+                # Отсев yargy-ложняков на ФИО/названиях (перекрывают PER/ORG без LOC/маркера):
+                # иначе кластеризация затянула бы имя и метку в ADDRESS-токен.
+                yargy_spans = _filter_suspect_yargy(text, yargy_spans, ner_spans, loc_spans)
                 # Сам адрес подтверждают LOC и/или yargy (маркер — лишь триггер запуска):
                 # маркерные позиции в «сырьё» НЕ кладём, иначе список маркеров стал бы
                 # самостоятельным детектором. Расширение краёв использует маркеры как
