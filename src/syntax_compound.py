@@ -134,7 +134,7 @@ def merge_compound_entities(doc: SourceDocument, entities: list[Entity]) -> list
             (o.start, o.end, o) for o in orgs
         ]
         for m in _SPELLED_ORG_RE.finditer(text):
-            if not any(o.start <= m.start() and m.end() <= o.end() for o in orgs):
+            if not any(o.start <= m.start() and m.end() <= o.end for o in orgs):
                 org_spans.append((m.start(), m.end(), None))
 
         # Пары ORG↔PER в пределах разрыва _COMPOUND_MAX_GAP.

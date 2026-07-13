@@ -101,6 +101,23 @@ def test_standalone_person_without_org_unchanged():
     assert _orgs(ents) == []
 
 
+# ---------------- Регресс: креш на PER + реальный ORG + прописная ИП-форма ----------------
+
+def test_real_org_plus_spelled_ip_form_plus_person_does_not_crash():
+    """Сегмент с ОДНОВРЕМЕННО реальным ORG, PER и прописной ИП-формой (_SPELLED_ORG_RE)
+    не должен падать с TypeError.
+
+    Регресс на баг: 'o.end()' вызывался как метод, хотя Entity.end — int-атрибут
+    (src/syntax_compound.py:137). Крешило encrypt на 31/324 документах корпуса —
+    см. tests/corpus/docs/lease_0004.docx. Триггер: реальная ORG-сущность, чей
+    o.start <= m.start() прописной формы, форсирует вызов o.end() в generator-выражении."""
+    text = "ООО «Ромашка», а также Индивидуальный предприниматель Сидоров И.И."
+    _, ents = _detect_and_merge(text)
+    assert "ООО «Ромашка»" in _orgs(ents)
+    assert "Индивидуальный предприниматель Сидоров И.И." in _orgs(ents)
+    assert _persons(ents) == []
+
+
 # ---------------- Инварианты и round-trip ----------------
 
 def test_merged_entity_original_text_matches_slice():
