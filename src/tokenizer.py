@@ -217,6 +217,17 @@ def _boundary_sep(seg_a: TextSegment, seg_b: TextSegment) -> str:
     return "\n"
 
 
+# B3-fix + этап C волны 2: разделитель между граничными окнами в СБАТЧЕННОМ блобе.
+# Все окна склеиваются в один текст и детекторы гоняются ОДИН раз (а не 6000). Разделитель
+# обязан быть таким, через который НИЧТО не «сшивается»: перенос строки рвёт [ ]-классовые
+# реквизиты/SUM и email (в них нет \n), а невидимый U+2063 добивает границы слов и не
+# встречается в нормальном тексте. Natasha по \n режет предложения — NER-спаны через стык
+# окон не тянутся. Проверено в разведке (recon_h3e): 0 сущностей пересекает стык.
+# ВНИМАНИЕ: этот разделитель — про БЛОБ детекции, он НЕ имеет отношения к разделителю
+# _boundary_sep внутри самого окна (тот — осознанная семантика соседних ячеек, не трогать).
+_BATCH_SEP = "\n⁣⁣⁣\n"
+
+
 def _detect_boundary_entities(
     doc: SourceDocument,
     config_path: str,
@@ -227,88 +238,148 @@ def _detect_boundary_entities(
     разложен на хвост сегмента A и голову сегмента B (перенос абзаца/строки или
     соседние ячейки таблицы), не находит ни один из них и утекает в открытом виде.
 
-    Здесь для каждой пары соседних (по индексу в doc.segments) сегментов строится
-    окно `хвост A + разделитель + голова B` и по нему повторно гоняются те же
-    публичные детекторы блоков 2/3. Оставляются ТОЛЬКО найденные в окне сущности,
-    чей интервал реально пересекает точку стыка (иначе это дубликат обычной
-    посегментной детекции). Пересекающая сущность делится на пару Entity_A/Entity_B
-    с реальными оффсетами внутри своих сегментов; половины идут дальше как две
-    ОБЫЧНЫЕ независимые сущности (у каждой свой original_text — свой токен), чтобы
-    восстановление в каждом сегменте было посимвольно точным.
+    Для каждой пары соседних сегментов строится окно `хвост A + разделитель + голова B`.
+    Оставляются ТОЛЬКО сущности, чей интервал реально пересекает точку стыка (иначе это
+    дубликат обычной посегментной детекции). Пересекающая сущность делится на пару
+    Entity_A/Entity_B с реальными оффсетами внутри своих сегментов; половины идут дальше
+    как две ОБЫЧНЫЕ независимые сущности (свой original_text — свой токен).
 
-    Возвращает: список добавочных Entity.
-    detect_regex/detect_ner импортируются ЛОКАЛЬНО, чтобы прямой импорт tokenizer
-    (напр. в юнит-тестах блока 4) не тянул natasha, пока окна не строятся реально.
+    ЭТАП C (батчинг): раньше по каждому из ~6000 окон вызывались detect_regex+detect_ner
+    ОТДЕЛЬНО (6000×2 чтений конфига, 6000 запусков NER-тэггера — доминанта стоимости после
+    снятия yargy со сканирования на этапе A). Теперь все окна склеиваются в один блоб через
+    безопасный _BATCH_SEP, regex и NER-тэггер гоняются ОДИН раз, а найденные спаны
+    раскладываются обратно по окнам через карту оффсетов. yargy остаётся ГЕЙТИРОВАННЫМ
+    ПОСЕГМЕНТНО (как на этапе A): запускается только на коротком тексте окна с адресным
+    анкором — блоб-скан yargy (256 с) НЕ воскрешается. Результат идентичен посегментному
+    (батчинг меняет скорость, не состав сущностей); лишние чтения конфига исчезают сами
+    (кэш конфига отдельно не нужен, см. RECON_REPORT).
     """
-    from regex_detector import detect_regex
-    from ner_detector import detect_ner
+    import bisect
 
-    extra: list[Entity] = []
+    from regex_detector import detect_regex
+    from ner_detector import (
+        _segmenter,
+        _ner_tagger,
+        _load_ner_config,
+        _expand_person_span,
+        _glue_address_matches,
+        _addr_extractor,
+        _build_address_spans,
+        _ADDR_ANCHOR_RE,
+    )
+    from natasha import Doc
 
     segs = doc.segments
+
+    # 1. Построение окон (та же геометрия, что и раньше).
+    wins = []
     for i in range(len(segs) - 1):
         seg_a, seg_b = segs[i], segs[i + 1]
         if not seg_a.text or not seg_b.text:
             continue  # пустой сегмент — стыка контента нет
-
         text_a, text_b = seg_a.text, seg_b.text
         tail_off = max(0, len(text_a) - _BOUNDARY_WINDOW)
         tail = text_a[tail_off:]
         head = text_b[:_BOUNDARY_WINDOW]
         sep = _boundary_sep(seg_a, seg_b)
-
         window = tail + sep + head
-        tail_end = len(tail)                 # позиция конца хвоста A в окне
-        head_start = tail_end + len(sep)     # позиция начала головы B в окне
+        wins.append({
+            "seg_a": seg_a, "seg_b": seg_b,
+            "text_a": text_a, "text_b": text_b,
+            "tail_off": tail_off,
+            "tail_end": len(tail),               # конец хвоста A в окне
+            "head_start": len(tail) + len(sep),  # начало головы B в окне
+            "window": window,
+        })
 
-        win_seg = TextSegment(
-            id=f"boundary_{seg_a.id}_{seg_b.id}",
-            text=window,
-            source_type="txt_line",  # детекторы на source_type не смотрят
-            metadata={},
-        )
-        win_doc = SourceDocument(
-            segments=[win_seg],
-            source_format=doc.source_format,
-            source_path=doc.source_path,
-        )
+    if not wins:
+        return []
 
-        win_entities = detect_regex(win_doc, config_path) + detect_ner(win_doc, config_path)
-        for win_e in win_entities:
-            # оставляем только то, что реально перекрывает стык хвоста A и головы B;
-            # всё, что целиком в хвосте A либо целиком в голове B — дубликат обычной
-            # посегментной детекции, не добавляем.
-            if not (win_e.start < tail_end and win_e.end > head_start):
+    # 2. Блоб всех окон + карта стартовых оффсетов каждого окна в блобе.
+    win_texts = [w["window"] for w in wins]
+    starts: list[int] = []
+    pos = 0
+    for wt in win_texts:
+        starts.append(pos)
+        pos += len(wt) + len(_BATCH_SEP)
+    blob = _BATCH_SEP.join(win_texts)
+
+    def _locate(s: int, e: int):
+        """Блоб-оффсеты [s,e) -> (индекс окна, локальные s,e) или None, если спан
+        пересёк разделитель (сшивание — не должно происходить при безопасном _BATCH_SEP)."""
+        k = bisect.bisect_right(starts, s) - 1
+        ls, le = s - starts[k], e - starts[k]
+        if le > len(win_texts[k]):
+            return None
+        return k, ls, le
+
+    # локальные спаны на окно: (start, end, entity_type, detector, confidence)
+    per_win: list[list[tuple]] = [[] for _ in wins]
+
+    blob_doc = SourceDocument(
+        segments=[TextSegment(id="__batch__", text=blob, source_type="txt_line", metadata={})],
+        source_format=doc.source_format, source_path=doc.source_path,
+    )
+
+    # 3a. Regex — один проход по блобу (одно чтение конфига вместо 6000).
+    for e in detect_regex(blob_doc, config_path):
+        loc = _locate(e.start, e.end)
+        if loc is not None:
+            k, ls, le = loc
+            per_win[k].append((ls, le, e.entity_type, e.detector, e.confidence))
+
+    # 3b. NER-тэггер — один проход по блобу; PER/ORG раскладываются по окнам, LOC копятся
+    # как адресные анкоры. yargy — ПОСЕГМЕНТНО, только на окнах с анкором (короткий текст).
+    ner_label_map, addr_types = _load_ner_config(config_path)
+    if ner_label_map or addr_types:
+        loc_by_win: list[list[tuple[int, int]]] = [[] for _ in wins]
+        nd = Doc(blob)
+        nd.segment(_segmenter)
+        nd.tag_ner(_ner_tagger)
+        for span in nd.spans:
+            loc = _locate(span.start, span.stop)
+            if loc is None:
                 continue
+            k, ls, le = loc
+            if span.type == "LOC":
+                loc_by_win[k].append((ls, le))
+                continue
+            entity_type = ner_label_map.get(span.type)
+            if entity_type is None:
+                continue
+            if span.type == "PER":
+                ls, le = _expand_person_span(win_texts[k], ls, le)
+            per_win[k].append((ls, le, entity_type, "ner", 1.0))
 
-            # оффсеты половин пересчитываем из позиции в окне обратно в оригинальные
-            # сегменты: A-часть тянется до конца text_a, B-часть — от начала text_b.
-            start_a = tail_off + win_e.start
+        if addr_types:
+            for k, wt in enumerate(win_texts):
+                if loc_by_win[k] or _ADDR_ANCHOR_RE.search(wt):
+                    yargy_spans = _glue_address_matches(wt, list(_addr_extractor(wt)))
+                    for s, e in _build_address_spans(wt, loc_by_win[k] + yargy_spans):
+                        for addr_type in addr_types:
+                            per_win[k].append((s, e, addr_type, "ner", 1.0))
+
+    # 4. Пересекающие стык спаны -> пары Entity_A/Entity_B (та же логика, что и раньше).
+    extra: list[Entity] = []
+    for k, w in enumerate(wins):
+        tail_end, head_start = w["tail_end"], w["head_start"]
+        text_a, text_b, tail_off = w["text_a"], w["text_b"], w["tail_off"]
+        for (ls, le, entity_type, detector, confidence) in per_win[k]:
+            if not (ls < tail_end and le > head_start):
+                continue
+            start_a = tail_off + ls
             end_a = len(text_a)
-            end_b = win_e.end - head_start
-
-            ent_a = Entity(
-                id=str(uuid.uuid4()),
-                segment_id=seg_a.id,
-                start=start_a,
-                end=end_a,
-                original_text=text_a[start_a:end_a],
-                entity_type=win_e.entity_type,
-                detector=win_e.detector,
-                confidence=win_e.confidence,
-            )
-            ent_b = Entity(
-                id=str(uuid.uuid4()),
-                segment_id=seg_b.id,
-                start=0,
-                end=end_b,
-                original_text=text_b[0:end_b],
-                entity_type=win_e.entity_type,
-                detector=win_e.detector,
-                confidence=win_e.confidence,
-            )
-            extra.append(ent_a)
-            extra.append(ent_b)
+            end_b = le - head_start
+            extra.append(Entity(
+                id=str(uuid.uuid4()), segment_id=w["seg_a"].id,
+                start=start_a, end=end_a, original_text=text_a[start_a:end_a],
+                entity_type=entity_type, detector=detector, confidence=confidence,
+            ))
+            extra.append(Entity(
+                id=str(uuid.uuid4()), segment_id=w["seg_b"].id,
+                start=0, end=end_b, original_text=text_b[0:end_b],
+                entity_type=entity_type, detector=detector, confidence=confidence,
+            ))
 
     return extra
 
