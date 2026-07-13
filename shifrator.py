@@ -19,6 +19,7 @@ def cmd_encrypt(path, config_path):
     from extractor import extract
     from regex_detector import detect_regex
     from ner_detector import detect_ner
+    from syntax_compound import merge_compound_entities
     from tokenizer import tokenize
     from session_store import save_session, default_storage_dir
 
@@ -33,6 +34,9 @@ def cmd_encrypt(path, config_path):
 
     try:
         entities = detect_regex(doc, config_path) + detect_ner(doc, config_path)
+        # Волна 2, этап B: составные сущности «ORG + ФИО» (ИП Пирогова А.С.) —
+        # отдельный синтаксический проход ПОСЛЕ основной детекции, ДО токенизации.
+        entities = merge_compound_entities(doc, entities)
         anon_text, final_entities = tokenize(doc, entities, config_path)
     except FileNotFoundError:
         print(f"Ошибка: конфиг не найден: {config_path}", file=sys.stderr)

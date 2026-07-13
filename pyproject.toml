@@ -29,6 +29,7 @@ py-modules = [
     "extractor",
     "regex_detector",
     "ner_detector",
+    "syntax_compound",
     "tokenizer",
     "session_store",
     "detokenizer",
