@@ -41,7 +41,7 @@ from detokenizer import detokenize  # noqa: E402
 CONFIG = os.path.join(ROOT, "entity_types.yaml")
 GOLD = os.path.join(HERE, "gold.json")
 DOCS = os.path.join(HERE, "docs")
-COMMIT = "04452df"
+COMMIT = "8330dd2"  # этап 0c baseline; НЕ перезатираем results_04452df.json
 OUT = os.path.join(HERE, f"results_{COMMIT}.json")
 
 NUMERIC_TYPES = {"INN", "OGRN", "KPP", "ACCOUNT", "BIK", "PHONE",
@@ -233,6 +233,9 @@ def process_doc(d):
     doc_leaked = any(r["leaked"] for r in ent_records)
     doc_leaked_v2 = any(r["leak_v2"]["status"] != "none" for r in ent_records)
     return {
+        # исход документа: processed | refused | crashed.  refused пока не
+        # выставляется никогда — структура заложена под этап 1b (политика отказа).
+        "outcome": "processed",
         "doc_id": doc_id, "format": d["format"], "source": d["source"],
         "contract_type": d.get("contract_type", ""),
         "n_entities": len(d["entities"]),
@@ -258,7 +261,7 @@ def main():
         except Exception as exc:
             import traceback
             traceback.print_exc()
-            rec = {"doc_id": d["doc_id"], "error": repr(exc)}
+            rec = {"outcome": "crashed", "doc_id": d["doc_id"], "error": repr(exc)}
         results.append(rec)
         if (i + 1) % 10 == 0 or i == 0:
             dt = time.time() - t0
