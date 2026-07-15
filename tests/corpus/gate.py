@@ -1,0 +1,235 @@
+# -*- coding: utf-8 -*-
+"""
+gate.py — регресс-гейт этапа 0d.
+
+Прогоняет полный замер по замороженному корпусу (tests/corpus/run_measurement)
+и сравнивает результат с results_baseline.json (точка отсчёта — коммит
+2982f6f, этап 0b-fix). Печатает человекочитаемый диф и завершается кодом 1,
+если стало хуже хоть по одному из условий:
+
+  1. КРЕШИ. Появился документ, упавший с необработанным исключением
+     (outcome != "processed"). Порог — 0.
+  2. LEAK_V2 РОС. Частичная утечка (leak_v2, порог >=6 И порог >=8, ОБА)
+     выросла — по корпусу в целом (агрегат BIK-excl, см. measure_lib.
+     aggregate_results) ИЛИ по любому ИЗ 13 отдельных типов сущностей
+     (включая BIK — агрегат его исключает по методологической причине,
+     регресс именно в BIK-детекторе гейт всё равно обязан ловить). Порог
+     допуска — 0, считается по каждому типу отдельно, чтобы рост одного типа
+     не спрятался за падением другого.
+  3. FP ВЫРОС. Ложные срабатывания на РАЗМЕЧЕННЫХ негативах (не на всей
+     непомеченной прозе) выросли больше tests/corpus/gate_config.FP_TOLERANCE.
+  4. КОРПУС ИЗМЕНИЛСЯ. sha256sum -c MANIFEST.sha256 не OK — до ИЛИ после
+     прогона.
+
+Улучшения (leak_v2 упал, FP упал) гейт НЕ роняют — только печатаются.
+
+Запуск (минуты, полный корпус encrypt+decrypt по 324 документам — НЕ вешать
+на pre-commit, место этого гейта — CI на PR, трогающем src/):
+    venv/Scripts/python.exe tests/corpus/gate.py
+"""
+import hashlib
+import json
+import os
+import sys
+
+HERE = os.path.dirname(os.path.abspath(__file__))
+sys.path.insert(0, HERE)
+
+import measure_lib as ML  # noqa: E402
+import run_measurement as RM  # noqa: E402
+from gate_config import FP_TOLERANCE  # noqa: E402
+
+MANIFEST = os.path.join(HERE, "MANIFEST.sha256")
+BASELINE = os.path.join(HERE, "results_baseline.json")
+CURRENT_DUMP = os.path.join(HERE, "results_gate_current.json")
+
+EMPTY_STATS = {"n": 0, "found": 0, "leak_v1": 0, "leak_v2_6": 0, "leak_v2_8": 0}
+
+
+def check_manifest():
+    """Независимая от shell coreutils реализация `sha256sum -c MANIFEST.sha256`
+    (нужна на Windows, где sha256sum не всегда есть в PATH). Возвращает
+    (ok: bool, problems: list[str], n_checked: int)."""
+    problems = []
+    n = 0
+    with open(MANIFEST, encoding="utf-8") as f:
+        for line in f:
+            line = line.strip()
+            if not line:
+                continue
+            digest, rel = line.split(None, 1)
+            n += 1
+            path = os.path.join(HERE, rel)
+            if not os.path.isfile(path):
+                problems.append(f"{rel}: файл отсутствует")
+                continue
+            h = hashlib.sha256()
+            with open(path, "rb") as fh:
+                for chunk in iter(lambda: fh.read(1 << 20), b""):
+                    h.update(chunk)
+            if h.hexdigest() != digest:
+                problems.append(f"{rel}: sha256 не совпадает с MANIFEST.sha256")
+    return (not problems), problems, n
+
+
+def _rate(hits, n):
+    return (100.0 * hits / n) if n else 0.0
+
+
+def _delta_mark(before, after):
+    """'+' — стало лучше (утечка/FP упали), '-' — стало хуже (выросли), ' ' — не изменилось."""
+    if after < before:
+        return "+"
+    if after > before:
+        return "-"
+    return " "
+
+
+def compare(baseline_agg, current_agg, fp_tolerance):
+    """Возвращает (rows, regressions, improvements).
+    rows — построчные данные для печати диф-таблицы (все 13 типов).
+    regressions/improvements — списки человекочитаемых строк."""
+    regressions = []
+    improvements = []
+
+    if len(current_agg["crashed"]) > len(baseline_agg["crashed"]):
+        new_crashes = sorted(set(current_agg["crashed"]) - set(baseline_agg["crashed"]))
+        regressions.append(
+            "КРЕШИ: %d документ(ов) упали с необработанным исключением (было %d): %s"
+            % (len(current_agg["crashed"]), len(baseline_agg["crashed"]),
+               ", ".join(new_crashes[:20]) + (" …" if len(new_crashes) > 20 else ""))
+        )
+
+    rows = []
+    for t in ML.ALL_ENTITY_TYPES:
+        b = baseline_agg["per_type"].get(t, dict(EMPTY_STATS))
+        c = current_agg["per_type"].get(t, dict(EMPTY_STATS))
+        rows.append((t, b, c))
+        for key, label in (("leak_v2_6", "leak_v2>=6"), ("leak_v2_8", "leak_v2>=8")):
+            if c[key] > b[key]:
+                regressions.append(
+                    "%s[%s]: %d -> %d (+%d сущностей) — рост частичной утечки"
+                    % (t, label, b[key], c[key], c[key] - b[key])
+                )
+            elif c[key] < b[key]:
+                improvements.append(
+                    "%s[%s]: %d -> %d (-%d)" % (t, label, b[key], c[key], b[key] - c[key])
+                )
+
+    bt, ct = baseline_agg["total_bik_excl"], current_agg["total_bik_excl"]
+    for key, label in (("leak_v2_6", "leak_v2>=6"), ("leak_v2_8", "leak_v2>=8")):
+        if ct[key] > bt[key]:
+            regressions.append(
+                "TOTAL(BIK-excl)[%s]: %d -> %d (+%d сущностей) — рост частичной утечки"
+                % (label, bt[key], ct[key], ct[key] - bt[key])
+            )
+        elif ct[key] < bt[key]:
+            improvements.append(
+                "TOTAL(BIK-excl)[%s]: %d -> %d (-%d)" % (label, bt[key], ct[key], bt[key] - ct[key])
+            )
+
+    fp_b = baseline_agg["fp_on_neg_total"]
+    fp_c = current_agg["fp_on_neg_total"]
+    fp_delta = fp_c - fp_b
+    if fp_delta > fp_tolerance:
+        regressions.append(
+            "FP по негативам: %d -> %d (+%d), допуск gate_config.FP_TOLERANCE=+%d превышен"
+            % (fp_b, fp_c, fp_delta, fp_tolerance)
+        )
+    elif fp_delta < 0:
+        improvements.append("FP по негативам: %d -> %d (%d)" % (fp_b, fp_c, fp_delta))
+
+    return rows, regressions, improvements
+
+
+def print_report(rows, baseline_agg, current_agg):
+    header = "%-10s %6s | %16s | %20s | %20s | %14s" % (
+        "тип", "n", "recall б->т", "leak_v2>=6 б->т", "leak_v2>=8 б->т", "FP-негат б->т")
+    print(header)
+    print("-" * len(header))
+    for t, b, c in rows:
+        n = c["n"] if c["n"] else b["n"]
+        rb, rc = _rate(b["found"], b["n"]), _rate(c["found"], c["n"])
+        l6b, l6c = _rate(b["leak_v2_6"], b["n"]), _rate(c["leak_v2_6"], c["n"])
+        l8b, l8c = _rate(b["leak_v2_8"], b["n"]), _rate(c["leak_v2_8"], c["n"])
+        fpb = baseline_agg["fp_on_neg"].get(t, 0)
+        fpc = current_agg["fp_on_neg"].get(t, 0)
+        m6 = _delta_mark(b["leak_v2_6"], c["leak_v2_6"])
+        m8 = _delta_mark(b["leak_v2_8"], c["leak_v2_8"])
+        mfp = _delta_mark(fpb, fpc)
+        print("%-10s %6d | %6.1f%%->%6.1f%% | %s%6.1f%%->%6.1f%% | %s%6.1f%%->%6.1f%% | %s%5d->%-5d" % (
+            t, n, rb, rc, m6, l6b, l6c, m8, l8b, l8c, mfp, fpb, fpc))
+
+    print("-" * len(header))
+    bt, ct = baseline_agg["total_bik_excl"], current_agg["total_bik_excl"]
+    n = ct["n"] if ct["n"] else bt["n"]
+    rb, rc = _rate(bt["found"], bt["n"]), _rate(ct["found"], ct["n"])
+    l6b, l6c = _rate(bt["leak_v2_6"], bt["n"]), _rate(ct["leak_v2_6"], ct["n"])
+    l8b, l8c = _rate(bt["leak_v2_8"], bt["n"]), _rate(ct["leak_v2_8"], ct["n"])
+    m6 = _delta_mark(bt["leak_v2_6"], ct["leak_v2_6"])
+    m8 = _delta_mark(bt["leak_v2_8"], ct["leak_v2_8"])
+    fpb, fpc = baseline_agg["fp_on_neg_total"], current_agg["fp_on_neg_total"]
+    mfp = _delta_mark(fpb, fpc)
+    print("%-10s %6d | %6.1f%%->%6.1f%% | %s%6.1f%%->%6.1f%% | %s%6.1f%%->%6.1f%% | %s%5d->%-5d" % (
+        "TOTAL*", n, rb, rc, m6, l6b, l6c, m8, l8b, l8c, mfp, fpb, fpc))
+    print("* TOTAL — агрегат BIK-excl (см. BASELINE.md §1); FP-негат TOTAL — по ВСЕМ типам, гейт условия 3 считает по этой строке.")
+    print("  recall показан для контекста, регресс-условием НЕ является (см. docstring этого файла).")
+
+
+def main():
+    print("=== gate.py — регресс-гейт этапа 0d ===\n")
+
+    ok_before, bad_before, n_checked = check_manifest()
+    print(f"MANIFEST.sha256 (до прогона): {n_checked} файлов — {'OK' if ok_before else 'FAIL'}")
+    if not ok_before:
+        for p in bad_before[:20]:
+            print("  !!", p)
+
+    if not os.path.isfile(BASELINE):
+        print(f"\nНет baseline {BASELINE} — гейту не с чем сравнивать.")
+        return 2
+
+    baseline_results = json.load(open(BASELINE, encoding="utf-8"))
+    baseline_agg = ML.aggregate_results(baseline_results)
+
+    gold = RM.load_gold()
+    print(f"\nПрогон измерения: {len(gold)} документов (encrypt+decrypt, изолированное хранилище)…")
+    current_results = RM.run_all(gold, verbose=True)
+
+    # Отладочный снимок текущего прогона — НЕ results_baseline.json, точку
+    # отсчёта гейт никогда не перезаписывает.
+    json.dump(current_results, open(CURRENT_DUMP, "w", encoding="utf-8"), ensure_ascii=False)
+
+    ok_after, bad_after, _ = check_manifest()
+    print(f"\nMANIFEST.sha256 (после прогона): {'OK' if ok_after else 'FAIL'}")
+    if not ok_after:
+        for p in bad_after[:20]:
+            print("  !!", p)
+
+    current_agg = ML.aggregate_results(current_results)
+
+    print()
+    rows, regressions, improvements = compare(baseline_agg, current_agg, FP_TOLERANCE)
+    print_report(rows, baseline_agg, current_agg)
+
+    manifest_ok = ok_before and ok_after
+    if not manifest_ok:
+        regressions.insert(0, "MANIFEST.sha256 не совпал (см. вывод выше) — корпус изменился, замер недействителен")
+
+    print()
+    if improvements:
+        print(f"Улучшения ({len(improvements)}):")
+        for m in improvements:
+            print("  + " + m)
+    if regressions:
+        print(f"\nРЕГРЕССЫ ({len(regressions)}) — ГЕЙТ КРАСНЫЙ:")
+        for m in regressions:
+            print("  - " + m)
+        return 1
+
+    print("\nГейт ЗЕЛЁНЫЙ: регрессов не найдено.")
+    return 0
+
+
+if __name__ == "__main__":
+    sys.exit(main())

@@ -21,16 +21,24 @@ def _project_root():
     return _PROJECT_ROOT
 
 
-@pytest.mark.slow
 def test_existing_block1_7_suite_still_fully_green():
     """Прогоняет tests/ (без component2/) отдельным процессом pytest.
 
     Если тут появится хоть один упавший тест — это регресс, вызванный
     Компонентом 2 (новые модули этой сессии тестов ничего в блоках 1-7 не
     меняли), а не повод редактировать существующие тесты.
+
+    Дочерний pytest получает тот же фильтр -m "not slow", что и родительский
+    прогон (см. pytest.ini): без него дочерний процесс сам пытается собрать и
+    прогнать медленные тесты (полный корпус) и упирается в timeout=300 этого
+    subprocess.run — тест НЕ падал явно, а просто выпадал из дефолтного
+    прогона молча (см. HANDOFF_STAGE_0D.md). Фильтр обязателен именно здесь,
+    а не только в pytest.ini родителя, потому что дочерний pytest запускается
+    как отдельный процесс и addopts родителя на него не наследуются.
     """
     result = subprocess.run(
-        [sys.executable, "-m", "pytest", "tests", "--ignore=tests/component2", "-q"],
+        [sys.executable, "-m", "pytest", "tests", "--ignore=tests/component2",
+         "-m", "not slow", "-q"],
         cwd=_project_root(),
         capture_output=True,
         text=True,

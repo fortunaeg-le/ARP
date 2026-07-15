@@ -262,9 +262,19 @@ def process_doc(d):
     }
 
 
-def main():
+def load_gold():
     gold = json.load(open(GOLD, encoding="utf-8"))
     gold.sort(key=lambda d: d["doc_id"])
+    return gold
+
+
+def run_all(gold, verbose=True, on_checkpoint=None, checkpoint_every=50):
+    """Гоняет process_doc по всему gold, ловя исключения per-документ (креш
+    одного документа не должен обрывать замер остальных 323 — см. outcome
+    processed|crashed).  on_checkpoint(results), если задан, вызывается каждые
+    checkpoint_every документов — используется main() для инкрементальной
+    записи results_<commit>.json на длинных прогонах.  Переиспользуется
+    gate.py (этап 0d), поэтому вынесена из main() отдельно."""
     results = []
     t0 = time.time()
     for i, d in enumerate(gold):
@@ -275,12 +285,22 @@ def main():
             traceback.print_exc()
             rec = {"outcome": "crashed", "doc_id": d["doc_id"], "error": repr(exc)}
         results.append(rec)
-        if (i + 1) % 10 == 0 or i == 0:
+        if verbose and ((i + 1) % 10 == 0 or i == 0):
             dt = time.time() - t0
             print(f"[{i+1}/{len(gold)}] {d['doc_id']}  {dt:.0f}s  "
                   f"({(i+1)/dt:.1f} doc/s)", flush=True)
-        if (i + 1) % 50 == 0:
-            json.dump(results, open(OUT, "w", encoding="utf-8"), ensure_ascii=False)
+        if on_checkpoint and (i + 1) % checkpoint_every == 0:
+            on_checkpoint(results)
+    return results
+
+
+def main():
+    gold = load_gold()
+    t0 = time.time()
+    results = run_all(
+        gold, verbose=True,
+        on_checkpoint=lambda res: json.dump(res, open(OUT, "w", encoding="utf-8"), ensure_ascii=False),
+    )
     json.dump(results, open(OUT, "w", encoding="utf-8"), ensure_ascii=False)
     print(f"DONE {len(results)} docs in {time.time()-t0:.0f}s -> {OUT}", flush=True)
 

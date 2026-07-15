@@ -570,3 +570,126 @@ def leak_v2_email(gtext: str, anon_norm_v2: str):
             res["status"] = "partial"
             res["fragments"] = survived
     return res
+
+
+# =========================================================================== #
+#         Агрегация по типам для регресс-гейта (этап 0d, tests/corpus/gate.py) #
+# =========================================================================== #
+# 13 типов сущностей корпуса (README §«Правила разметки»).  Список ФИКСИРОВАН
+# и полон, даже если в конкретном прогоне у типа 0 сущностей: гейт обязан
+# видеть все 13 колонок, а не только те, что встретились (иначе тип, у
+# которого детектор полностью сломался и recall упал до 0, может тихо
+# выпасть из diff-таблицы вместо того, чтобы показать явный regress).
+ALL_ENTITY_TYPES = (
+    "PER", "ORG", "ADDRESS", "INN", "OGRN", "KPP", "ACCOUNT", "BIK",
+    "PHONE", "EMAIL", "PASSPORT", "SNILS", "BIRTHDATE",
+)
+
+
+def _leak_v2_hits(entity_type: str, v2: dict):
+    """(прошла ли утечка мягкий порог >=6, прошла ли строгий порог >=8).
+
+    Числовые типы (INN/OGRN/KPP/ACCOUNT/BIK/PHONE/PASSPORT/SNILS): запись v2
+    уже посчитана run_measurement'ом через leak_v2_numeric(strict=8, soft=6),
+    который АДАПТИРУЕТ строгий порог вниз для коротких ядер
+    (thr_strict = min(8, core_len)) — иначе короткое ядро (например 6-значный
+    код подразделения паспорта), выжившее ЦЕЛИКОМ, никогда не набрало бы 8 и
+    несправедливо не засчиталось бы «строгой» утечкой.  Здесь воспроизводим
+    ТУ ЖЕ адаптацию по сохранённым window_len/core_len, а не по фиксированному
+    literal >=8 — иначе агрегат разойдётся с тем, что реально пишет
+    leak_v2_numeric (проверено на baseline: literal >=8 даёт 39.8% BIK-excl
+    вместо верных 43.0%, см. HANDOFF_STAGE_0C.md/HANDOFF_STAGE_0D.md).
+
+    BIRTHDATE: частичной утечки у даты не существует (leak_v2_birthdate отдаёт
+    только full/none) — оба порога совпадают со status=='full'.
+
+    PER/ORG/ADDRESS/EMAIL: утечка — статус без числового окна (буквенный
+    токен/компонент либо выжил, либо нет) — оба порога совпадают с
+    status!='none'."""
+    status = v2["status"]
+    if entity_type == "BIRTHDATE":
+        hit = status == "full"
+        return hit, hit
+    window_len = v2.get("window_len")
+    core_len = v2.get("core_len")
+    if window_len is not None and core_len is not None:
+        hit_soft = status != "none"
+        hit_strict = hit_soft and window_len >= min(8, core_len)
+        return hit_soft, hit_strict
+    hit = status != "none"
+    return hit, hit
+
+
+def _empty_type_stats():
+    return {"n": 0, "found": 0, "leak_v1": 0, "leak_v2_6": 0, "leak_v2_8": 0}
+
+
+def aggregate_results(results):
+    """Сводка по типам сущностей для регресс-гейта из списка записей
+    run_measurement.process_doc() (outcome processed|crashed).
+
+    Возвращает dict:
+      crashed          — [doc_id, ...] упавших документов
+      n_docs           — всего документов в results
+      per_type         — {type: {n, found, leak_v1, leak_v2_6, leak_v2_8}},
+                          ключи — ВСЕ ALL_ENTITY_TYPES, даже с n=0
+      total_all        — сумма per_type по всем типам, BIK включён
+      total_bik_excl   — та же сумма, BIK ИСКЛЮЧЁН (см. BASELINE.md §1: общий
+                          для банков префикс БИК выживает почти всегда и
+                          никого не идентифицирует — включать его в общий
+                          agregate — шум).  Per-type регресс по BIK гейт всё
+                          равно ловит: BIK есть в per_type наравне с прочими.
+      fp_on_neg         — {type: count} ложных срабатываний, легших на
+                          размеченный негатив (gold['negatives'])
+      fp_total          — {type: count} ВСЕХ ложных срабатываний (включая
+                          неразмеченную прозу) — информационно, гейт по нему
+                          не падает (только по fp_on_neg_total)
+      fp_on_neg_total, fp_total_total — суммы по всем типам
+
+    Документы outcome!='processed' (креш) в per_type/total/fp НЕ участвуют —
+    их сущности не измерены (см. gate.py условие 1: сам факт креша роняет
+    гейт отдельно, порог 0, независимо от leak-чисел)."""
+    crashed = [r["doc_id"] for r in results if r.get("outcome") != "processed"]
+    per_type = {t: _empty_type_stats() for t in ALL_ENTITY_TYPES}
+    fp_on_neg = {t: 0 for t in ALL_ENTITY_TYPES}
+    fp_total = {t: 0 for t in ALL_ENTITY_TYPES}
+
+    for r in results:
+        if r.get("outcome") != "processed":
+            continue
+        for e in r["entities"]:
+            t = e["type"]
+            s = per_type.setdefault(t, _empty_type_stats())
+            s["n"] += 1
+            s["found"] += int(e["found"])
+            s["leak_v1"] += int(e["leak_v1"])
+            hit6, hit8 = _leak_v2_hits(t, e["leak_v2"])
+            s["leak_v2_6"] += int(hit6)
+            s["leak_v2_8"] += int(hit8)
+        for f in r.get("false_positives", []):
+            gt = f["gtype"]
+            fp_total[gt] = fp_total.get(gt, 0) + 1
+            if f.get("on_negative") is not None:
+                fp_on_neg[gt] = fp_on_neg.get(gt, 0) + 1
+
+    def _sum(exclude=()):
+        agg = _empty_type_stats()
+        for t, s in per_type.items():
+            if t in exclude:
+                continue
+            for k in agg:
+                agg[k] += s[k]
+        return agg
+
+    return {
+        "crashed": crashed,
+        "n_docs": len(results),
+        "n_docs_processed": len(results) - len(crashed),
+        "per_type": per_type,
+        "total_all": _sum(),
+        "total_bik_excl": _sum(exclude={"BIK"}),
+        "fp_on_neg": fp_on_neg,
+        "fp_total": fp_total,
+        "fp_on_neg_total": sum(fp_on_neg.values()),
+        "fp_total_total": sum(fp_total.values()),
+    }
