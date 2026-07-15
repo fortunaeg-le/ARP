@@ -41,7 +41,7 @@ from detokenizer import detokenize  # noqa: E402
 CONFIG = os.path.join(ROOT, "entity_types.yaml")
 GOLD = os.path.join(HERE, "gold.json")
 DOCS = os.path.join(HERE, "docs")
-COMMIT = "8330dd2"  # этап 0c baseline; НЕ перезатираем results_04452df.json
+COMMIT = "0bfix"  # этап 0b-fix; НЕ перезатираем results_baseline.json (гейт 0d)
 OUT = os.path.join(HERE, f"results_{COMMIT}.json")
 
 NUMERIC_TYPES = {"INN", "OGRN", "KPP", "ACCOUNT", "BIK", "PHONE",
@@ -91,14 +91,24 @@ def leak_pieces(gtype, gtext, anon_norm, anon_glue):
     return sorted(set(pieces))
 
 
-def leak_v2(gtype, gtext, anon_norm_v2, anon_digit_field):
+def leak_v2(gtype, gtext, anon_norm_v2, anon_digit_field, anon_date_field):
     """Метрика ЧАСТИЧНОЙ утечки (этап 0b).  Диспетчер по типу сущности.
     Возвращает dict {status: none|partial|full, fragments: [...], ...}.
     Считается ПАРАЛЛЕЛЬНО со старой (v1); v1 не удаляется — нужна для тренда.
 
     Отличие от v1: v1 требует, чтобы ЦЕЛОЕ ядро дожило подстрокой (заниженная
     оценка); v2 ловит выживший ФРАГМЕНТ ядра >= порога, короткие ФИО-токены и
-    покомпонентную утечку адреса — то, чего v1 не видит."""
+    покомпонентную утечку адреса — то, чего v1 не видит.
+
+    ИНВАРИАНТ (этап 0b-fix): у сущности, физически присутствующей в документе, НЕ
+    существует статуса «неприменимо».  Каждая сущность получает none/partial/full.
+    Тип, который метрика не умеет разобрать, — это НЕ повод её пропустить: пропуск
+    молча вычитает сущность из знаменателя утечки и делает метрику слепой к целому
+    типу (так этап 0c потерял 228 BIRTHDATE).  Неразобранный тип считаем full
+    КОНСЕРВАТИВНО (сущность есть, защиту доказать не смогли) и помечаем
+    unclassified=True, чтобы такие случаи были видны, а не растворялись в цифре."""
+    if gtype == "BIRTHDATE":
+        return ML.leak_v2_birthdate(gtext, anon_date_field)
     if gtype in V2_NUMERIC_TYPES:
         return ML.leak_v2_numeric(gtext, anon_digit_field, strict=8, soft=6)
     if gtype in ("PER", "ORG"):
@@ -107,8 +117,8 @@ def leak_v2(gtype, gtext, anon_norm_v2, anon_digit_field):
         return ML.leak_v2_address(gtext, anon_norm_v2, anon_digit_field)
     if gtype == "EMAIL":
         return ML.leak_v2_email(gtext, anon_norm_v2)
-    # прочие типы (DATE/SUM/BIRTHDATE) — метрика v2 к ним не применяется
-    return {"status": "none", "fragments": []}
+    # КОНСЕРВАТИВНЫЙ fallback — не пропуск (см. инвариант выше)
+    return {"status": "full", "fragments": [], "unclassified": True}
 
 
 def process_doc(d):
@@ -160,6 +170,8 @@ def process_doc(d):
     # независимая v2-нормализация анонимного текста (см. measure_lib, блок leak_v2)
     anon_norm_v2 = ML.v2_norm_text(anon_text)
     anon_digit_field = ML.v2_digit_runs(anon_text)
+    # поле для ДАТ: точка/слэш/перенос между цифрами склеены (см. v2_date_field)
+    anon_date_field = ML.v2_date_field(anon_text)
 
     # ---- сопоставление эталонных сущностей ----
     ent_records = []
@@ -193,7 +205,7 @@ def process_doc(d):
         in_body = (gs >= body_start and ge <= body_end)
         # residual leak — ДВЕ метрики параллельно (v1 бинарная + v2 частичная)
         pieces = leak_pieces(gt, e["text"], anon_norm, anon_glue)
-        v2 = leak_v2(gt, e["text"], anon_norm_v2, anon_digit_field)
+        v2 = leak_v2(gt, e["text"], anon_norm_v2, anon_digit_field, anon_date_field)
         ent_records.append({
             "type": gt, "category": e.get("category", ""), "trick": e.get("trick"),
             "checksum": e.get("checksum"), "text": e["text"],

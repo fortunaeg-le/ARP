@@ -499,6 +499,59 @@ def alpha_tokens_v2(s: str, min_len: int = 3):
     return [t for t in toks if len(t) >= min_len]
 
 
+def v2_date_field(s: str) -> str:
+    """Цифровое поле текста для сравнения ДАТ.  Отличие от v2_digit_runs: между
+    цифрами склеиваются НЕ только пробел/дефис, но и точка/слэш/перенос строки —
+    «10.07.1996» это ОДНО значение (дата), а не три независимых числа.
+
+    Зачем отдельное поле (диагноз этапа 0b-fix, подтверждён на данных):
+    v2_digit_runs («0 10 07 1996») рвёт дату по точкам, и самое длинное окно ядра
+    «10071996» в таком поле — «1996» (4 цифры), ниже мягкого порога 6.  Поэтому
+    дату НЕЛЬЗЯ мерить общей числовой веткой: она дала бы ~0% утечки на типе,
+    который утекает всегда.  Отсюда — своё поле и своя ветка leak_v2_birthdate.
+
+    Склейка через перенос строки обязательна: корпус намеренно мутирует даты
+    переносом внутри значения («15\\n.11.1996»), и метрика должна видеть утечку."""
+    s = _v2_strip_invisible(s)
+    s = "".join(_V2_LETTER2DIGIT.get(ch, ch) for ch in s)
+    out = []
+    prev_digit = False
+    for ch in s:
+        if ch.isdigit():
+            out.append(ch)
+            prev_digit = True
+        elif prev_digit and (ch.isspace() or ch in "-./"):
+            # разделитель ВНУТРИ даты/числа — склеиваем
+            continue
+        else:
+            if prev_digit:
+                out.append(" ")
+            prev_digit = False
+    return " ".join("".join(out).split())
+
+
+def leak_v2_birthdate(gtext: str, anon_date_field: str):
+    """Утечка ДАТЫ РОЖДЕНИЯ (этап 0b-fix).
+
+    В корпусе BIRTHDATE встречается в единственной форме — DD.MM.YYYY (с
+    мутациями: невидимые, омоглифы-буквы на месте цифр, переносы, пробелы внутри
+    значения).  Правило по ЗАДАНИЮ: дата утекла, если выжила связка
+    день+месяц+год, т.е. ПОЛНАЯ числовая дата.  Ядро = все цифры эталона подряд
+    (для DD.MM.YYYY это ровно day+month+year), поле — v2_date_field анонимного
+    текста.  Правил сверх этого не изобретаем: частичного статуса у даты нет —
+    выживший «1996» никого не идентифицирует, а полная дата идентифицирует.
+
+    Возвращает full (ядро дожило целиком) либо none."""
+    core = v2_core_digits(gtext)
+    res = {"status": "none", "fragments": [], "core_len": len(core)}
+    if not core:
+        return res
+    if core in anon_date_field:
+        res["status"] = "full"
+        res["fragments"] = [core]
+    return res
+
+
 def leak_v2_email(gtext: str, anon_norm_v2: str):
     """Частичная утечка EMAIL: выжила локальная часть ИЛИ домен."""
     res = {"status": "none", "fragments": []}
