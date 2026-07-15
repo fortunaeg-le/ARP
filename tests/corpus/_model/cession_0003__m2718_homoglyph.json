@@ -1,0 +1,1090 @@
+{
+ "body": [
+  {
+   "chunks": [
+    {
+     "s": "ДОГОВОР УСТУПКИ ПРАВА ТРЕБОВАНИЯ (ЦЕССИИ)"
+    }
+   ],
+   "style": "title",
+   "t": "p"
+  },
+  {
+   "chunks": [
+    {
+     "n": {
+      "why": "номер договора — не ПДн"
+     },
+     "s": "№ 98/2О23-К"
+    }
+   ],
+   "style": "title",
+   "t": "p"
+  },
+  {
+   "chunks": [],
+   "style": "normal",
+   "t": "p"
+  },
+  {
+   "chunks": [
+    {
+     "i": {
+      "why": "город без улицы/дома в шапке — серая зона: не пропуск и не ложное срабатывание"
+     },
+     "s": "г. Новосибирск"
+    },
+    {
+     "s": "     "
+    },
+    {
+     "n": {
+      "why": "дата документа — не ПДн"
+     },
+     "s": "«28» января 2023 г."
+    }
+   ],
+   "style": "normal",
+   "t": "p"
+  },
+  {
+   "chunks": [],
+   "style": "normal",
+   "t": "p"
+  },
+  {
+   "chunks": [
+    {
+     "e": {
+      "cat": "adversarial",
+      "id": "cession_0003-e1",
+      "note": "мутация homoglyph; исходно:",
+      "trick": "mut:homoglyph",
+      "type": "ORG"
+     },
+     "s": "ПAО «Заря»"
+    },
+    {
+     "s": ", именуемое в дальнейшем «Цедент», в лице исполнительного директора "
+    },
+    {
+     "e": {
+      "cat": "adversarial",
+      "id": "cession_0003-e2",
+      "note": "мутация homoglyph; исходно: инициалы слитно И.И.Иванов",
+      "trick": "mut:homoglyph",
+      "type": "PER"
+     },
+     "s": "Е.Д.Гуcева"
+    },
+    {
+     "s": ", действующего на основании "
+    },
+    {
+     "s": "Устaва"
+    },
+    {
+     "s": ", с одной стороны, и "
+    },
+    {
+     "e": {
+      "cat": "adversarial",
+      "id": "cession_0003-e3",
+      "note": "мутация homoglyph; исходно:",
+      "trick": "mut:homoglyph",
+      "type": "ORG"
+     },
+     "s": "OОО «Cевeрный Вeтер»"
+    },
+    {
+     "s": ", именуемое в дальнейшем «Цессионарий», в лице генерального директора "
+    },
+    {
+     "e": {
+      "cat": "adversarial",
+      "id": "cession_0003-e4",
+      "note": "мутация homoglyph; исходно: инициалы слитно И.И.Иванов",
+      "trick": "mut:homoglyph",
+      "type": "PER"
+     },
+     "s": "M.М.Сидоpoв"
+    },
+    {
+     "s": ", действующего на основании "
+    },
+    {
+     "s": "Устава"
+    },
+    {
+     "s": ", с другой стороны, совместно именуемые «Стороны», заключили настоящий "
+    },
+    {
+     "n": {
+      "why": "номер договора — не ПДн"
+     },
+     "s": "Договор № 50/2024-А"
+    },
+    {
+     "s": " (далее — Договор) о нижеследующем:"
+    }
+   ],
+   "style": "normal",
+   "t": "p"
+  },
+  {
+   "chunks": [],
+   "style": "normal",
+   "t": "p"
+  },
+  {
+   "chunks": [
+    {
+     "s": "1. ПРЕДMЕT ДOГOВОРА"
+    }
+   ],
+   "style": "bold",
+   "t": "p"
+  },
+  {
+   "chunks": [
+    {
+     "s": "1.І. Цедент уcтупаeт, а Цeссионарий принимает право требования к должнику, возникшее из договора поставки."
+    }
+   ],
+   "style": "normal",
+   "t": "p"
+  },
+  {
+   "chunks": [
+    {
+     "s": "1.2. Цедент обязан перeдaть Цесcиoнарию все документы, удостоверяющие уступаемое право требования."
+    }
+   ],
+   "style": "normal",
+   "t": "p"
+  },
+  {
+   "chunks": [
+    {
+     "s": "1.3. Уступка права требования является возмездной."
+    }
+   ],
+   "style": "normal",
+   "t": "p"
+  },
+  {
+   "chunks": [
+    {
+     "s": "1.4. Цедент отвечает за недействительность переданного требования, но не отвечает за неисполнение обязательства должником."
+    }
+   ],
+   "style": "normal",
+   "t": "p"
+  },
+  {
+   "chunks": [],
+   "style": "normal",
+   "t": "p"
+  },
+  {
+   "chunks": [
+    {
+     "s": "2. ЦЕНА И ПОРЯДОК РАСЧЁТОВ"
+    }
+   ],
+   "style": "bold",
+   "t": "p"
+  },
+  {
+   "chunks": [
+    {
+     "s": "2.1. Общая цена Договора составляет "
+    },
+    {
+     "n": {
+      "why": "сумма — не ПДн"
+     },
+     "s": "901 988,00 руб."
+    },
+    {
+     "s": ", в том числе НДС 20 %."
+    }
+   ],
+   "style": "normal",
+   "t": "p"
+  },
+  {
+   "chunks": [
+    {
+     "s": "2.2. "
+    },
+    {
+     "s": "Товар поставляется в соответствии с "
+    },
+    {
+     "n": {
+      "why": "стандарт — не ПДн"
+     },
+     "s": "ГОСТ 7.32-2017"
+    },
+    {
+     "s": ", артикул "
+    },
+    {
+     "n": {
+      "why": "артикул — не ПДн"
+     },
+     "s": "RM-8485-71"
+    },
+    {
+     "s": ", код "
+    },
+    {
+     "n": {
+      "why": "код ОКВЭД — не ПДн"
+     },
+     "s": "ОКВЭД 46.90"
+    },
+    {
+     "s": ". Оплата по "
+    },
+    {
+     "n": {
+      "why": "КБК (20 цифр, похоже на счёт) — не ПДн"
+     },
+     "s": "КБК 18210101011011000110"
+    },
+    {
+     "s": ", "
+    },
+    {
+     "n": {
+      "why": "ОКТМО — не ПДн"
+     },
+     "s": "OКТMО 45З82О00"
+    },
+    {
+     "s": ". См. "
+    },
+    {
+     "n": {
+      "why": "номер приложения — не ПДн"
+     },
+     "s": "Приложение № 1"
+    },
+    {
+     "s": " и "
+    },
+    {
+     "n": {
+      "why": "номер счёта-фактуры — не ПДн"
+     },
+     "s": "счёт-фактуру № 1123 от 03.03.2024"
+    },
+    {
+     "s": ". Ответственный — "
+    },
+    {
+     "n": {
+      "why": "должность, похожая на ФИО, — не ПДн"
+     },
+     "s": "Директор Отдела Продаж"
+    },
+    {
+     "s": ". Приёмка оформляется актом ("
+    },
+    {
+     "n": {
+      "why": "название документа — не ПДн"
+     },
+     "s": "Акт приёма-пepeдачи"
+    },
+    {
+     "s": "), срок — до 18:00 по "
+    },
+    {
+     "n": {
+      "why": "часовой пояс — не ПДн"
+     },
+     "s": "московскому времени"
+    },
+    {
+     "s": ". Споры — в "
+    },
+    {
+     "n": {
+      "why": "арбитражный институт — не ПДн"
+     },
+     "s": "МКАС при ТПП РФ"
+    },
+    {
+     "s": ". Цена — "
+    },
+    {
+     "n": {
+      "why": "сумма — не ПДн"
+     },
+     "s": "278 959,00 руб."
+    },
+    {
+     "s": "."
+    }
+   ],
+   "style": "normal",
+   "t": "p"
+  },
+  {
+   "chunks": [],
+   "style": "normal",
+   "t": "p"
+  },
+  {
+   "chunks": [
+    {
+     "s": "3. МЕСТО И СРОКИ ИСПОЛНЕНИЯ"
+    }
+   ],
+   "style": "bold",
+   "t": "p"
+  },
+  {
+   "chunks": [
+    {
+     "s": "З.І. Место исполнeния обязательcтв: "
+    },
+    {
+     "e": {
+      "cat": "adversarial",
+      "id": "cession_0003-e5",
+      "note": "мутация homoglyph; исходно: стиль адреса: canonical",
+      "trick": "mut:homoglyph",
+      "type": "ADDRESS"
+     },
+     "s": "42О1І1, г. Kазань, бул. Tверская, д. 80, кв. 102"
+    },
+    {
+     "s": "."
+    }
+   ],
+   "style": "normal",
+   "t": "p"
+  },
+  {
+   "chunks": [
+    {
+     "s": "3.2. Контактное лицо со стороны Цессионарий — "
+    },
+    {
+     "e": {
+      "cat": "adversarial",
+      "id": "cession_0003-e6",
+      "note": "мутация homoglyph; исходно: ФИО в родительном падеже",
+      "trick": "mut:homoglyph",
+      "type": "PER"
+     },
+     "s": "Сидoрoва Mиxаила Михайловича"
+    },
+    {
+     "s": ", тел. "
+    },
+    {
+     "e": {
+      "cat": "adversarial",
+      "id": "cession_0003-e7",
+      "note": "мутация homoglyph; исходно: формат: canonical",
+      "trick": "mut:homoglyph",
+      "type": "PHONE"
+     },
+     "s": "+7 (812) І20-Ч2-3І"
+    },
+    {
+     "s": "."
+    }
+   ],
+   "style": "normal",
+   "t": "p"
+  },
+  {
+   "chunks": [],
+   "style": "normal",
+   "t": "p"
+  },
+  {
+   "chunks": [
+    {
+     "s": "4. ПРОЧИЕ УСЛОВИЯ"
+    }
+   ],
+   "style": "bold",
+   "t": "p"
+  },
+  {
+   "chunks": [
+    {
+     "s": "4.1. Стороны несут ответственность за неисполнение или ненадлежащее исполнение обязательств в соответствии с законодательством Российской Федерации."
+    }
+   ],
+   "style": "normal",
+   "t": "p"
+  },
+  {
+   "chunks": [
+    {
+     "s": "4.2. За нарушение сроков оплаты начисляется неустойка в размере 0,1 % от суммы задолженности за каждый день просрочки, но не более 10 % от суммы обязательства."
+    }
+   ],
+   "style": "normal",
+   "t": "p"
+  },
+  {
+   "chunks": [
+    {
+     "s": "4.3. Стороны освобождаются от ответственности при наступлении обстоятельств непреодолимой силы, если они прямо повлияли на исполнение обязательств."
+    }
+   ],
+   "style": "normal",
+   "t": "p"
+  },
+  {
+   "chunks": [
+    {
+     "s": "4.4. Сторона, для которой создалась невозможность исполнения, обязана уведомить другую Сторону в течение 5 (пяти) рабочих дней с даты наступления таких обстоятельств."
+    }
+   ],
+   "style": "normal",
+   "t": "p"
+  },
+  {
+   "chunks": [
+    {
+     "s": "4.5. Все споры и разногласия решаются путём переговоров. Претензионный порядок обязателен, срок ответа на претензию — 15 календарных дней."
+    }
+   ],
+   "style": "normal",
+   "t": "p"
+  },
+  {
+   "chunks": [],
+   "style": "normal",
+   "t": "p"
+  },
+  {
+   "chunks": [],
+   "style": "normal",
+   "t": "p"
+  },
+  {
+   "chunks": [
+    {
+     "s": "10. ДОПОЛНИТЕЛЬHЫЕ СВEДEНИЯ O СТОРОНАХ"
+    }
+   ],
+   "style": "bold",
+   "t": "p"
+  },
+  {
+   "chunks": [
+    {
+     "s": "Уполномоченный прeдcтавитeль: "
+    },
+    {
+     "e": {
+      "cat": "adversarial",
+      "id": "cession_0003-e8",
+      "note": "мутация homoglyph; исходно: ZWJ на границе слова, мягкий перенос внутри фамилии",
+      "trick": "mut:homoglyph",
+      "type": "PER"
+     },
+     "s": "Гуcевa‍ Eкатеpина Дмитриевна"
+    }
+   ],
+   "style": "normal",
+   "t": "p"
+  },
+  {
+   "chunks": [
+    {
+     "s": "Получатель уведомлений: "
+    },
+    {
+     "e": {
+      "cat": "adversarial",
+      "id": "cession_0003-e9",
+      "note": "мутация homoglyph; исходно: ФИО разорвано переводом строки",
+      "trick": "mut:homoglyph",
+      "type": "PER"
+     },
+     "s": "Cидоpов\nMихaил Михайлович"
+    }
+   ],
+   "style": "normal",
+   "t": "p"
+  },
+  {
+   "chunks": [
+    {
+     "s": "Cчёт для возвpaта: "
+    },
+    {
+     "e": {
+      "cat": "adversarial",
+      "id": "cession_0003-e10",
+      "note": "мутация homoglyph; исходно: номер счёта разорван переводом строки",
+      "trick": "mut:homoglyph",
+      "type": "ACCOUNT"
+     },
+     "s": "4О70281О0\n0991287З627"
+    }
+   ],
+   "style": "normal",
+   "t": "p"
+  },
+  {
+   "chunks": [],
+   "style": "normal",
+   "t": "p"
+  },
+  {
+   "chunks": [
+    {
+     "s": "РЕКВИЗИТЫ И ПОДПИСИ СТОРОН"
+    }
+   ],
+   "style": "bold",
+   "t": "p"
+  },
+  {
+   "chunks": [],
+   "style": "normal",
+   "t": "p"
+  },
+  {
+   "chunks": [
+    {
+     "s": "Цедент:"
+    }
+   ],
+   "style": "bold",
+   "t": "p"
+  },
+  {
+   "chunks": [
+    {
+     "e": {
+      "cat": "adversarial",
+      "id": "cession_0003-e11",
+      "note": "мутация homoglyph; исходно:",
+      "trick": "mut:homoglyph",
+      "type": "ORG"
+     },
+     "s": "ПАО «3aря»"
+    }
+   ],
+   "style": "normal",
+   "t": "p"
+  },
+  {
+   "chunks": [
+    {
+     "s": "Юридичеcкий адрec: "
+    },
+    {
+     "e": {
+      "cat": "adversarial",
+      "id": "cession_0003-e12",
+      "note": "мутация homoglyph; исходно: стиль адреса: canonical",
+      "trick": "mut:homoglyph",
+      "type": "ADDRESS"
+     },
+     "s": "бО3000, г. Нижний Hoвгород, ул. Ленина, д. 89, кв. 39"
+    }
+   ],
+   "style": "normal",
+   "t": "p"
+  },
+  {
+   "chunks": [
+    {
+     "s": "ИHН "
+    },
+    {
+     "e": {
+      "cat": "adversarial",
+      "checksum": "invalid",
+      "id": "cession_0003-e13",
+      "note": "мутация homoglyph; исходно:",
+      "trick": "mut:homoglyph",
+      "type": "INN"
+     },
+     "s": "892О687Ч87"
+    },
+    {
+     "s": " КПП "
+    },
+    {
+     "e": {
+      "cat": "adversarial",
+      "id": "cession_0003-e14",
+      "note": "мутация homoglyph; исходно:",
+      "trick": "mut:homoglyph",
+      "type": "KPP"
+     },
+     "s": "7б9095729"
+    }
+   ],
+   "style": "normal",
+   "t": "p"
+  },
+  {
+   "chunks": [
+    {
+     "s": "ОГРН "
+    },
+    {
+     "e": {
+      "cat": "adversarial",
+      "checksum": "invalid",
+      "id": "cession_0003-e15",
+      "note": "мутация homoglyph; исходно:",
+      "trick": "mut:homoglyph",
+      "type": "OGRN"
+     },
+     "s": "12О3005О50622"
+    }
+   ],
+   "style": "normal",
+   "t": "p"
+  },
+  {
+   "chunks": [
+    {
+     "s": "р/с "
+    },
+    {
+     "e": {
+      "cat": "adversarial",
+      "checksum": "invalid",
+      "id": "cession_0003-e16",
+      "note": "мутация homoglyph; исходно:",
+      "trick": "mut:homoglyph",
+      "type": "ACCOUNT"
+     },
+     "s": "ЧО7О28104218725З6711"
+    },
+    {
+     "s": " в ПАО «Банк «Санкт-Петербург»"
+    }
+   ],
+   "style": "normal",
+   "t": "p"
+  },
+  {
+   "chunks": [
+    {
+     "s": "к/с "
+    },
+    {
+     "e": {
+      "cat": "adversarial",
+      "id": "cession_0003-e17",
+      "note": "мутация homoglyph; исходно: корреспондентский счёт банка",
+      "trick": "mut:homoglyph",
+      "type": "ACCOUNT"
+     },
+     "s": "3010І81090000О0О079О"
+    },
+    {
+     "s": " БИК "
+    },
+    {
+     "e": {
+      "cat": "adversarial",
+      "id": "cession_0003-e18",
+      "note": "мутация homoglyph; исходно:",
+      "trick": "mut:homoglyph",
+      "type": "BIK"
+     },
+     "s": "04Ч0З0790"
+    }
+   ],
+   "style": "normal",
+   "t": "p"
+  },
+  {
+   "chunks": [
+    {
+     "s": "Teл.: "
+    },
+    {
+     "e": {
+      "cat": "adversarial",
+      "id": "cession_0003-e19",
+      "note": "мутация homoglyph; исходно: формат: canonical",
+      "trick": "mut:homoglyph",
+      "type": "PHONE"
+     },
+     "s": "+7 (8Ч3) 5б8-72-1Ч"
+    }
+   ],
+   "style": "normal",
+   "t": "p"
+  },
+  {
+   "chunks": [
+    {
+     "s": "E-mail: "
+    },
+    {
+     "e": {
+      "cat": "adversarial",
+      "id": "cession_0003-e20",
+      "note": "мутация homoglyph; исходно:",
+      "trick": "mut:homoglyph",
+      "type": "EMAIL"
+     },
+     "s": "guseva@sibtrаns.ru"
+    }
+   ],
+   "style": "normal",
+   "t": "p"
+  },
+  {
+   "chunks": [],
+   "style": "normal",
+   "t": "p"
+  },
+  {
+   "chunks": [
+    {
+     "s": "Управляющий ______________ "
+    },
+    {
+     "e": {
+      "cat": "adversarial",
+      "id": "cession_0003-e21",
+      "note": "мутация homoglyph; исходно: инициалы перед фамилией",
+      "trick": "mut:homoglyph",
+      "type": "PER"
+     },
+     "s": "Е. Д. Гyсевa"
+    }
+   ],
+   "style": "normal",
+   "t": "p"
+  },
+  {
+   "chunks": [],
+   "style": "normal",
+   "t": "p"
+  },
+  {
+   "chunks": [
+    {
+     "s": "Цeссионарий:"
+    }
+   ],
+   "style": "bold",
+   "t": "p"
+  },
+  {
+   "chunks": [
+    {
+     "e": {
+      "cat": "adversarial",
+      "id": "cession_0003-e22",
+      "note": "мутация homoglyph; исходно:",
+      "trick": "mut:homoglyph",
+      "type": "ORG"
+     },
+     "s": "ООO «Cевeрный Ветеp»"
+    }
+   ],
+   "style": "normal",
+   "t": "p"
+  },
+  {
+   "chunks": [
+    {
+     "s": "Юридический адрес: "
+    },
+    {
+     "e": {
+      "cat": "adversarial",
+      "id": "cession_0003-e23",
+      "note": "мутация homoglyph; исходно: стиль адреса: canonical",
+      "trick": "mut:homoglyph",
+      "type": "ADDRESS"
+     },
+     "s": "60З00О, г. Нижний Новгоpoд, пер. Октябрьская, д. 9, кв. 15"
+    }
+   ],
+   "style": "normal",
+   "t": "p"
+  },
+  {
+   "chunks": [
+    {
+     "s": "Почтовый адрес: "
+    },
+    {
+     "e": {
+      "cat": "adversarial",
+      "id": "cession_0003-e24",
+      "note": "мутация homoglyph; исходно: стиль адреса: canonical",
+      "trick": "mut:homoglyph",
+      "type": "ADDRESS"
+     },
+     "s": "б30О99, г. Hoвосибирск, наб. Гагарина, д. 58, кв. 56"
+    }
+   ],
+   "style": "normal",
+   "t": "p"
+  },
+  {
+   "chunks": [
+    {
+     "s": "ИНН "
+    },
+    {
+     "e": {
+      "cat": "adversarial",
+      "checksum": "invalid",
+      "id": "cession_0003-e25",
+      "note": "мутация homoglyph; исходно:",
+      "trick": "mut:homoglyph",
+      "type": "INN"
+     },
+     "s": "25177І6476"
+    },
+    {
+     "s": " КПП "
+    },
+    {
+     "e": {
+      "cat": "adversarial",
+      "id": "cession_0003-e26",
+      "note": "мутация homoglyph; исходно:",
+      "trick": "mut:homoglyph",
+      "type": "KPP"
+     },
+     "s": "б7Ч492814"
+    }
+   ],
+   "style": "normal",
+   "t": "p"
+  },
+  {
+   "chunks": [
+    {
+     "s": "ОГРН "
+    },
+    {
+     "e": {
+      "cat": "adversarial",
+      "checksum": "invalid",
+      "id": "cession_0003-e27",
+      "note": "мутация homoglyph; исходно:",
+      "trick": "mut:homoglyph",
+      "type": "OGRN"
+     },
+     "s": "15б44765б264О"
+    }
+   ],
+   "style": "normal",
+   "t": "p"
+  },
+  {
+   "chunks": [
+    {
+     "s": "р/с "
+    },
+    {
+     "e": {
+      "cat": "adversarial",
+      "checksum": "invalid",
+      "id": "cession_0003-e28",
+      "note": "мутация homoglyph; исходно:",
+      "trick": "mut:homoglyph",
+      "type": "ACCOUNT"
+     },
+     "s": "40702810О099І287Зб27"
+    },
+    {
+     "s": " в ПАО Сбербанк"
+    }
+   ],
+   "style": "normal",
+   "t": "p"
+  },
+  {
+   "chunks": [
+    {
+     "s": "к/с "
+    },
+    {
+     "e": {
+      "cat": "adversarial",
+      "id": "cession_0003-e29",
+      "note": "мутация homoglyph; исходно: корреспондентский счёт банка",
+      "trick": "mut:homoglyph",
+      "type": "ACCOUNT"
+     },
+     "s": "З0І0І8І0400000000225"
+    },
+    {
+     "s": " БИК "
+    },
+    {
+     "e": {
+      "cat": "adversarial",
+      "id": "cession_0003-e30",
+      "note": "мутация homoglyph; исходно:",
+      "trick": "mut:homoglyph",
+      "type": "BIK"
+     },
+     "s": "04Ч525225"
+    }
+   ],
+   "style": "normal",
+   "t": "p"
+  },
+  {
+   "chunks": [
+    {
+     "s": "Тел.: "
+    },
+    {
+     "e": {
+      "cat": "adversarial",
+      "id": "cession_0003-e31",
+      "note": "мутация homoglyph; исходно: формат: canonical",
+      "trick": "mut:homoglyph",
+      "type": "PHONE"
+     },
+     "s": "+7 (8Ч6) 582-29-75"
+    }
+   ],
+   "style": "normal",
+   "t": "p"
+  },
+  {
+   "chunks": [
+    {
+     "s": "E-mail: "
+    },
+    {
+     "e": {
+      "cat": "adversarial",
+      "id": "cession_0003-e32",
+      "note": "мутация homoglyph; исходно:",
+      "trick": "mut:homoglyph",
+      "type": "EMAIL"
+     },
+     "s": "sidorov@уandех.ru"
+    }
+   ],
+   "style": "normal",
+   "t": "p"
+  },
+  {
+   "chunks": [],
+   "style": "normal",
+   "t": "p"
+  },
+  {
+   "chunks": [
+    {
+     "s": "Директор ______________ "
+    },
+    {
+     "e": {
+      "cat": "adversarial",
+      "id": "cession_0003-e33",
+      "note": "мутация homoglyph; исходно: инициалы перед фамилией",
+      "trick": "mut:homoglyph",
+      "type": "PER"
+     },
+     "s": "М. М. Сидoрoв"
+    }
+   ],
+   "style": "normal",
+   "t": "p"
+  },
+  {
+   "chunks": [],
+   "style": "normal",
+   "t": "p"
+  },
+  {
+   "chunks": [],
+   "style": "normal",
+   "t": "p"
+  },
+  {
+   "chunks": [
+    {
+     "s": "Подписи сторон:"
+    }
+   ],
+   "style": "normal",
+   "t": "p"
+  },
+  {
+   "chunks": [
+    {
+     "s": "Цедент: _______________ /"
+    },
+    {
+     "e": {
+      "cat": "adversarial",
+      "id": "cession_0003-e34",
+      "note": "мутация homoglyph; исходно: подпись: фамилия+инициалы",
+      "trick": "mut:homoglyph",
+      "type": "PER"
+     },
+     "s": "Гусева E. Д."
+    },
+    {
+     "s": "/"
+    }
+   ],
+   "style": "normal",
+   "t": "p"
+  },
+  {
+   "chunks": [
+    {
+     "s": "Цессионарий: _______________ /"
+    },
+    {
+     "e": {
+      "cat": "adversarial",
+      "id": "cession_0003-e35",
+      "note": "мутация homoglyph; исходно: подпись: фамилия+инициалы",
+      "trick": "mut:homoglyph",
+      "type": "PER"
+     },
+     "s": "Сидоpoв M. М."
+    },
+    {
+     "s": "/"
+    }
+   ],
+   "style": "normal",
+   "t": "p"
+  }
+ ],
+ "contract_type": "цессия",
+ "doc_id": "cession_0003__m2718_homoglyph",
+ "features": [
+  "initials_tight",
+  "invalid_checksum",
+  "linebreak_entity",
+  "mut:homoglyph",
+  "passport",
+  "zw_in_name"
+ ],
+ "format": "txt",
+ "parties": "LE-LE",
+ "source": "mutated:2718:homoglyph"
+}
