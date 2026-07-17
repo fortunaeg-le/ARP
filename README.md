@@ -39,7 +39,7 @@ venv/Scripts/python.exe shifrator.py decrypt-file <session_id> <файл.docx|.x
 | **slow** | `venv/Scripts/python.exe -m pytest -m slow -q` | перед merge | Полный корпус `tests/corpus/` без крешей (324 документа, `test_corpus_no_crash.py`). Минуты. |
 | **measure** | `venv/Scripts/python.exe tests/corpus/gate.py` | CI на PR, трогающем `src/` | Регресс-гейт: encrypt+decrypt по всем 324 документам корпуса, сравнение с `tests/corpus/results_baseline.json` (крешей быть не должно, частичная утечка `leak_v2` по каждому из 13 типов не должна расти, FP по негативам — не больше `tests/corpus/gate_config.FP_TOLERANCE`, `MANIFEST.sha256` корпуса — OK). Минуты; **НЕ вешать на pre-commit** — CI на PR. См. `docs/reports/HANDOFF_STAGE_0D.md`. |
 
-Тесты: `venv/Scripts/python.exe -m pytest -q` (эталон: 542 passed, 1 deselected, 1 xfailed).
+Тесты: `venv/Scripts/python.exe -m pytest -q` (эталон на `67993b7`: 721 passed, 1 deselected, 1 xfailed, ~270 c).
 
 ## Статус
 
