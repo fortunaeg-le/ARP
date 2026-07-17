@@ -10,7 +10,7 @@
 Рабочий интерпретатор — только `venv/Scripts/python.exe` (в нём стоит `natasha`). Из корня:
 
 ```
-venv/Scripts/python.exe shifrator.py encrypt <файл.docx|.txt> [--config entity_types.yaml]
+venv/Scripts/python.exe shifrator.py encrypt <файл.docx|.txt> [--config entity_types.yaml] [--allow-lossy]
 venv/Scripts/python.exe shifrator.py decrypt <session_id>        # ответ LLM — в stdin
 venv/Scripts/python.exe shifrator.py delete  <session_id>
 venv/Scripts/python.exe shifrator.py decrypt-file <session_id> <файл.docx|.xlsx|.pptx> [--out <путь>]
@@ -18,6 +18,18 @@ venv/Scripts/python.exe shifrator.py decrypt-file <session_id> <файл.docx|.x
 
 `encrypt` печатает в stdout **только** `session_id`; анонимизированный текст пишется в
 `~/.shifrator/sessions/{session_id}.txt`. Вход `encrypt` — только `.docx` / `.txt`.
+
+**Непрочитанные зоны `.docx` (этап 1).** Система читает только тело документа. Колонтитулы,
+сноски, надписи и вложенные таблицы она читать пока НЕ умеет — а раньше молча выбрасывала их
+текст из результата. Теперь `encrypt` **по умолчанию отказывается** работать с таким
+документом: `exit 2` и таблица «тип зоны / часть / сколько символов» в stdout. Молча потерять
+кусок договора хуже, чем отказаться его обрабатывать.
+
+Обойти отказ — `--allow-lossy` (или `strict_zones: false` в `entity_types.yaml`): тело
+документа обработается, а текст непрочитанных зон запишется в
+`~/.shifrator/sessions/{session_id}.unread.json`, чтобы было видно, что именно выброшено.
+**Этот файл содержит ПДн открытым текстом** — наружу (в LLM) уходит только `{session_id}.txt`.
+Подробности — `docs/reports/HANDOFF_STAGE_1.md`.
 
 ## Три уровня прогона
 

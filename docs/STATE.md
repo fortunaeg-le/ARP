@@ -65,6 +65,15 @@ venv/Scripts/python.exe -m pytest -q
   `tests/test_case_detection.py`.
 
 **🟡 Ограничения охвата (не дефекты — не реализовано):**
+- **Непрочитанные зоны `.docx` — ОБНАРУЖИВАЮТСЯ, но НЕ ЧИТАЮТСЯ (этап 1, 2026-07-17).**
+  `extractor` видит только верхний уровень тела `document.xml`; колонтитулы, сноски,
+  надписи (`w:txbxContent`) и вложенные таблицы не читаются (recall по ним 0%). Раньше их
+  текст молча выбрасывался. Теперь `src/unread_zones.py:scan_unread_zones` их находит, и
+  **по умолчанию `encrypt` ОТКАЗЫВАЕТСЯ** работать с таким документом (`exit 2`, таблица
+  зон на stdout). Обойти — `--allow-lossy` / `strict_zones: false` в `entity_types.yaml`:
+  тело обработается, текст зон уйдёт в `{session_id}.unread.json`. Научиться читать —
+  этап 6. Якоря: `tests/test_unread_zones.py`, `tests/test_cli_unread_zones.py`.
+  На корпусе в strict отказываются **135 из 162 docx** (см. `HANDOFF_STAGE_1.md`).
 - `encrypt` принимает только `.docx` / `.txt` (иначе `ValueError`, `src/extractor.py:extract`).
   `decrypt-file` — `.docx/.xlsx/.pptx` (`src/file_detokenizer.py:_SUPPORTED`).
 - PDF-извлечение не реализовано. Компонент 1 (веб-интерфейс) не начат.

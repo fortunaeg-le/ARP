@@ -140,20 +140,38 @@ class TestExtractDocxMergedCells:
         assert ids == {"t0_r0_c0", "t0_r0_c1", "t0_r1_c0", "t0_r1_c1"}
 
 
-class TestExtractDocxNestedTableWarning:
-    """Спека, блок 1: вложенная таблица в ячейке — предупреждение в stderr, не извлекается."""
+class TestExtractDocxNestedTable:
+    """Вложенная таблица в ячейке не извлекается.
 
-    def test_nested_table_prints_warning_with_cell_coordinates(self, tmp_path, capsys):
-        """Спека, блок 1: обнаружена вложенная таблица -> предупреждение в stderr с координатами ячейки."""
+    КОНТРАКТ ИЗМЕНЁН на этапе 1b (осознанно, см. HANDOFF_STAGE_1). Было: extract()
+    печатал предупреждение в stderr с координатами ячейки — и этим всё
+    заканчивалось, текст вложенной таблицы молча выпадал из результата. Такое
+    предупреждение и есть та самая тихая потеря, которую этап 1 закрывает: оно
+    ничего не останавливало и терялось среди прочего stderr.
+
+    Стало: extract() молчит (библиотечная функция извлекает, что умеет, и не решает
+    за вызывающего), а обнаружение и отказ вынесены в unread_zones.scan_unread_zones
+    + политику блока 7 — по умолчанию encrypt ОТКАЗЫВАЕТСЯ на таком документе.
+    Тест на новое поведение — tests/test_unread_zones.py и
+    tests/test_cli_unread_zones.py.
+    """
+
+    def test_nested_table_is_not_extracted_and_extract_stays_silent(self, tmp_path, capsys):
         path = tmp_path / "nested.docx"
         document = Document()
         outer = document.add_table(rows=1, cols=1)
         outer.cell(0, 0).add_table(rows=1, cols=1)
+        outer.cell(0, 0).tables[0].cell(0, 0).text = "ИНН 7707083893"
         document.save(path)
 
-        extract(str(path))
+        doc = extract(str(path))
         captured = capsys.readouterr()
-        assert "t0_r0_c0" in captured.err
+
+        # Ни одного сегмента вложенной таблицы (текст действительно не извлекается)…
+        assert not any("7707083893" in s.text for s in doc.segments)
+        # …и никакого «предупреждения вместо действия» в stderr: за громкость
+        # теперь отвечает политика отказа, а не печать из библиотечного слоя.
+        assert captured.err == ""
 
 
 class TestExtractTxtBasic:

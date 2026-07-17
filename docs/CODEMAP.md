@@ -15,6 +15,10 @@ bootstrap в `shifrator.py` (CLI).
 ### encrypt (`shifrator.py:cmd_encrypt`)
 ```
 extract(path)                      # .docx/.txt -> SourceDocument (сегменты + detection_text)
+  -> scan_unread_zones(path)                   # этап 1b: зоны, которые extract НЕ читает
+     # strict (умолчание): зоны найдены -> таблица на stdout + exit 2, сессии НЕ будет
+     # --allow-lossy / strict_zones: false: предупреждение + {sid}.unread.json (сырой текст)
+     # .txt читается целиком — политика к нему неприменима
   -> detect_regex(doc, cfg)                    # реквизиты; считаются ПЕРВЫМИ
   -> detect_ner(doc, cfg, regex_entities=…)    # PER/ORG/LOC + адрес; regex как барьеры
   -> merge_compound_entities(doc, entities)    # синтаксис: «ИП + ФИО» -> один ORG
@@ -50,6 +54,7 @@ delete_session(session_id) -> удаляет {sid}.enc (и сопутствую�
 |---|---|---|---|
 | `models.py` | Датаклассы формата | `TextSegment`, `SourceDocument`, `Entity` | все |
 | `extractor.py` | `.docx/.txt` → `SourceDocument`; нормализация регистра (`detection_text`), наследование caps от стилей; неверный формат → `ValueError` | `extract(path)` | `cmd_encrypt` |
+| `unread_zones.py` | **Этап 1a.** Обнаружение зон `.docx`, которые `extractor` НЕ читает (колонтитулы, сноски, надписи, вложенные таблицы). Через zip+lxml, **не** python-docx (он и есть источник слепоты). Зоны не читает — только находит | `scan_unread_zones(path) -> list[Zone]`, `zones_table`, `zones_to_json`; искл. `UnreadZoneError`; тип `Zone` | `cmd_encrypt`, `tests/corpus/run_measurement.py` |
 | `regex_detector.py` | Реквизиты (ИНН/ОГРН/тел/почта/сумма) с чек-суммами | `detect_regex(doc, cfg)`, `inn_checksum`, `ogrn_checksum` | `cmd_encrypt`, `tokenize` (B3-окно) |
 | `ner_detector.py` | Natasha PER/ORG/LOC + **гибридная детекция адреса** (LOC/маркеры + yargy в окне) + **барьеры** расширения | `detect_ner(doc, cfg, regex_entities=…)`; внутр.: `_address_barriers`, `_expand_addr_right/left`, `_filter_suspect_yargy`, `_build_address_spans` | `cmd_encrypt`, `tokenize` (B3-окно) |
 | `syntax_compound.py` | Склейка «ORG + ФИО» (ИП Пирогова А.С.) в один ORG по appos-ребру Natasha | `merge_compound_entities(doc, entities)`; внутр.: `_appos_links` (направление ребра!) | `cmd_encrypt` |
@@ -65,7 +70,12 @@ delete_session(session_id) -> удаляет {sid}.enc (и сопутствую�
 - **`Entity`** (`models.py`): `segment_id`, `start`, `end`, `original_text` (== `segment.text[start:end]`),
   `entity_type`, `detector` (`"regex"`/`"ner"`), `confidence`, `token` (проставляется в `tokenize`).
 - **`entity_types.yaml`** (рядом с `shifrator.py`) — типы сущностей, их regex/приоритеты и
-  префиксы токенов. Путь передаётся как `--config`.
+  префиксы токенов. Путь передаётся как `--config`. Ключ верхнего уровня **`strict_zones`**
+  (этап 1b, умолчание `true`) читает только блок 7 (`shifrator.py:_read_strict_zones`);
+  детекторы его игнорируют. Нечитаемый конфиг ⇒ `true` (fail-closed).
+- **Sidecar `{session_id}.unread.json`** (рядом с `{sid}.txt` и `{sid}.enc`) — появляется
+  только в lossy-режиме; содержит СЫРОЙ текст непрочитанных зон (ПДн!) и служит отметкой
+  «сессия lossy». Формат `{sid}.enc` (контракт блока 5) ради этой отметки НЕ расширялся.
 - **Токен**: `[<PREFIX>_<N>]`, нумерация сквозная по типу; переиспользование по
   `(entity_type, original_text)` (`tokenizer.py`, блок присвоения токенов).
 

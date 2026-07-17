@@ -31,6 +31,7 @@ sys.path.insert(0, HERE)
 
 import measure_lib as ML  # noqa: E402
 from extractor import extract  # noqa: E402
+from unread_zones import scan_unread_zones  # noqa: E402
 from regex_detector import detect_regex  # noqa: E402
 from ner_detector import detect_ner  # noqa: E402
 from syntax_compound import merge_compound_entities  # noqa: E402
@@ -41,7 +42,7 @@ from detokenizer import detokenize  # noqa: E402
 CONFIG = os.path.join(ROOT, "entity_types.yaml")
 GOLD = os.path.join(HERE, "gold.json")
 DOCS = os.path.join(HERE, "docs")
-COMMIT = "0bfix"  # этап 0b-fix; НЕ перезатираем results_baseline.json (гейт 0d)
+COMMIT = "stage1"  # этап 1b; НЕ перезатираем results_baseline.json (гейт 0d)
 OUT = os.path.join(HERE, f"results_{COMMIT}.json")
 
 NUMERIC_TYPES = {"INN", "OGRN", "KPP", "ACCOUNT", "BIK", "PHONE",
@@ -121,9 +122,39 @@ def leak_v2(gtype, gtext, anon_norm_v2, anon_digit_field, anon_date_field):
     return {"status": "full", "fragments": [], "unclassified": True}
 
 
-def process_doc(d):
+# Замер ВСЕГДА гоняет систему в lossy-режиме (этап 1b, §4 ЗАДАНИЯ).  Это не
+# косметика, а условие существования замера: после включения strict почти все docx
+# корпуса (135 из 162 — все с колонтитулом/сноской/надписью/вложенной таблицей)
+# начали бы отказываться, и цифры recall/leak обнулились бы на пустом месте.
+# Сопоставимость с baseline при этом сохраняется: зоны не читались и ДО этапа 1
+# (recall по ним ровно 0%), поэтому lossy-прогон меряет ровно то же тело
+# документа, что и baseline — политика отказа ничего не меняет в детекции.
+ALLOW_LOSSY = True
+
+
+def process_doc(d, allow_lossy=ALLOW_LOSSY):
     doc_id = d["doc_id"]
     path = os.path.join(DOCS, doc_id + "." + d["format"])
+
+    # --- политика непрочитанных зон (этап 1b) ---
+    # Сканируем ВСЕГДА, в обоих режимах: в lossy зоны не мешают обработке, но
+    # знать, сколько текста молча выброшено, замер обязан — это и есть та цифра,
+    # ради которой поле refused_zones заводится.
+    zones = scan_unread_zones(path) if d["format"] == "docx" else []
+    refused_zones = [
+        {"kind": z.kind, "part": z.part, "char_count": z.char_count}
+        for z in zones
+    ]
+    if zones and not allow_lossy:
+        # Третий исход документа наравне с processed/crashed. В штатном прогоне
+        # (ALLOW_LOSSY=True) сюда не попадаем; ветка существует, чтобы «отказано»
+        # было настоящим исходом харнесса, а не декоративным полем.
+        return {
+            "outcome": "refused", "doc_id": doc_id, "format": d["format"],
+            "source": d["source"], "n_entities": len(d["entities"]),
+            "refused_zones": refused_zones,
+        }
+
     G = ML.pt1_text(path)
     body_start = ML.body_offset(path, G)
     _, body_text = (None, G) if d["format"] == "txt" else ML._docx_header_and_body_text(path)
@@ -245,9 +276,16 @@ def process_doc(d):
     doc_leaked = any(r["leaked"] for r in ent_records)
     doc_leaked_v2 = any(r["leak_v2"]["status"] != "none" for r in ent_records)
     return {
-        # исход документа: processed | refused | crashed.  refused пока не
-        # выставляется никогда — структура заложена под этап 1b (политика отказа).
+        # исход документа: processed | refused | crashed (этап 1b — все три
+        # исхода теперь настоящие; refused возникает при allow_lossy=False).
         "outcome": "processed",
+        # Зоны, из-за которых документ БЫЛ БЫ отклонён в strict-режиме. В
+        # lossy-прогоне документ обработан, но их текст в анонимный результат не
+        # попал — список показывает, сколько именно молча выброшено.  Сырой текст
+        # зон здесь НЕ храним (в отличие от sidecar'а блока 7): results_*.json
+        # коммитится в git, и класть в него ПДн ради метрики незачем — для
+        # метрики хватает kind/part/char_count.
+        "refused_zones": refused_zones,
         "doc_id": doc_id, "format": d["format"], "source": d["source"],
         "contract_type": d.get("contract_type", ""),
         "n_entities": len(d["entities"]),

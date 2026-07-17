@@ -339,12 +339,16 @@ def _extract_docx(path: str) -> SourceDocument:
             table_style = table.style
             for row_idx, row in enumerate(table.rows):
                 for col_idx, cell in enumerate(row.cells):
-                    if len(cell.tables) > 0:
-                        print(
-                            f"Предупреждение: вложенная таблица в ячейке "
-                            f"t{table_idx}_r{row_idx}_c{col_idx} не извлечена (MVP)",
-                            file=sys.stderr,
-                        )
+                    # Этап 1b: вложенная таблица здесь БОЛЬШЕ НЕ логируется. Раньше
+                    # на неё печаталось предупреждение в stderr — и этим всё
+                    # заканчивалось: текст молча выпадал из результата, а warning
+                    # терялся среди прочего вывода. Теперь непрочитанные зоны
+                    # (включая вложенные таблицы) обнаруживает unread_zones.
+                    # scan_unread_zones, а решение принимает политика блока 7:
+                    # по умолчанию encrypt ОТКАЗЫВАЕТСЯ, с --allow-lossy — пишет
+                    # текст зон в {sid}.unread.json. Дублировать здесь warning
+                    # незачем: extract() — библиотечная функция, её задача извлечь
+                    # то, что она умеет, а не решать за вызывающего.
                     tc = cell._tc
                     cell_seg_id = f"t{table_idx}_r{row_idx}_c{col_idx}"
                     metadata = {
