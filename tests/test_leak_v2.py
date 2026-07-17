@@ -163,16 +163,23 @@ def agency_0003_record():
 
 
 def test_agency_0003_undetected_types_report_full_leak(agency_0003_record):
-    """End-to-end зеркало: BIRTHDATE и SNILS детектора не имеют, значения проходят
-    в анонимный текст целиком -> leak_v2 обязан вернуть full по обоим."""
-    for gtype in ("BIRTHDATE", "SNILS"):
-        ents = [e for e in agency_0003_record["entities"] if e["type"] == gtype]
-        assert ents, f"{gtype} не найден в gold-записи agency_0003"
-        for e in ents:
-            assert e["found"] is False, f"{gtype} внезапно детектится — тест устарел"
-            assert e["leak_v2"]["status"] == "full", (
-                f"{gtype} прошёл в анонимный текст целиком, но метрика "
-                f"не считает это утечкой: {e['leak_v2']}")
+    """End-to-end зеркало: BIRTHDATE детектора не имеет и НЕ трогается нормализацией
+    (дата через точки '.', а этап 2 схлопывает только пробелы/дефисы) — значение
+    проходит в анонимный текст целиком, leak_v2 обязан вернуть full.
+
+    SNILS сюда БОЛЬШЕ НЕ входит: типизированного детектора у него по-прежнему нет
+    (found=False, recall 0%), но этап 2 (нормализация) инцидентно маскирует его —
+    схлопывание дефисов даёт 9-значный прогон, который ловит KPP (см.
+    test_future_contracts.TestStage3SnilsHasNoDetector). Поэтому по SNILS метрика
+    теперь честно рапортует none (значение НЕ дожило), и зеркало «undetected → full»
+    на нём перестало быть верным. Роль зеркала целиком несёт BIRTHDATE."""
+    ents = [e for e in agency_0003_record["entities"] if e["type"] == "BIRTHDATE"]
+    assert ents, "BIRTHDATE не найден в gold-записи agency_0003"
+    for e in ents:
+        assert e["found"] is False, "BIRTHDATE внезапно детектится — тест устарел"
+        assert e["leak_v2"]["status"] == "full", (
+            f"BIRTHDATE прошёл в анонимный текст целиком, но метрика "
+            f"не считает это утечкой: {e['leak_v2']}")
 
 
 def test_no_entity_is_unclassified(agency_0003_record):

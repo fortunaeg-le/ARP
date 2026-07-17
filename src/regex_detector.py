@@ -5,6 +5,7 @@ import uuid
 import yaml
 
 from models import Entity, SourceDocument
+from normalizer import detection_view, norm_to_src
 
 
 def _strip_requisite_separators(value: str) -> str:
@@ -100,21 +101,24 @@ def detect_regex(doc: SourceDocument, config_path: str) -> list[Entity]:
 
     entities: list[Entity] = []
     for segment in doc.segments:
-        # Ищем в detection_text (копия той же длины с нормализованным регистром,
-        # если сегмент был визуально заглавным/строчным), но original_text вырезаем
-        # из НАСТОЯЩЕГО segment.text по тем же оффсетам — равная длина делает их
-        # валидными в обоих. Для сегментов без detection_text это ровно segment.text.
-        search_text = segment.metadata.get("detection_text", segment.text)
+        # Ищем в НОРМАЛИЗОВАННОЙ копии (омоглифы сведены, невидимые сняты,
+        # разделители внутри числа схлопнуты — этап 2), а найденный спан
+        # отображаем обратно в ИСХОДНЫЕ координаты через offset_map и вырезаем
+        # original_text из НАСТОЯЩЕГО segment.text. m.group(0) — уже нормализованная
+        # строка (чистые цифры), поэтому валидатор чек-суммы работает по ней прямо.
+        # На неискажённом тексте нормализация — тождество, поведение прежнее.
+        search_text, offset_map = detection_view(segment)
         for entity_type, pattern, validator in regex_types:
             for m in pattern.finditer(search_text):
                 if validator is not None and not validator(m.group(0)):
                     continue
+                start, end = norm_to_src(offset_map, m.start(), m.end())
                 entities.append(Entity(
                     id=str(uuid.uuid4()),
                     segment_id=segment.id,
-                    start=m.start(),
-                    end=m.end(),
-                    original_text=segment.text[m.start():m.end()],
+                    start=start,
+                    end=end,
+                    original_text=segment.text[start:end],
                     entity_type=entity_type,
                     detector="regex",
                     confidence=1.0,

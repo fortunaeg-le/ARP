@@ -14,6 +14,7 @@ import uuid
 import yaml
 
 from models import Entity, SourceDocument
+from normalizer import detection_view, norm_to_src, src_to_norm
 from natasha import (
     Segmenter,
     MorphVocab,
@@ -433,12 +434,14 @@ def detect_ner(
             continue
 
         # Весь путь детекции (Doc, расширение инициалов, AddrExtractor, склейка окон)
-        # работает с detection_text — копией той же длины с нормализованным регистром,
-        # если сегмент был визуально заглавным/строчным. original_text у каждого Entity
-        # вырезается из НАСТОЯЩЕГО segment.text (orig_text) по тем же оффсетам: равная
-        # длина делает их валидными в обоих. Для сегментов без detection_text это ровно
-        # segment.text — поведение идентично прежнему.
-        text = segment.metadata.get("detection_text", orig_text)
+        # работает с НОРМАЛИЗОВАННОЙ копией (этап 2): омоглифы сведены, невидимые
+        # сняты, разделители внутри числа схлопнуты, регистр нормализован (через
+        # detection_text как базу). Все внутренние спаны (loc/ner/yargy/барьеры) —
+        # в координатах ЭТОЙ копии. original_text у каждого Entity вырезается из
+        # НАСТОЯЩЕГО segment.text (orig_text), а спан [start,end) отображается из
+        # норм-координат в исходные через offset_map при СОЗДАНИИ Entity. На
+        # неискажённом тексте нормализация — тождество, поведение прежнее.
+        text, offset_map = detection_view(segment)
 
         # --- NER-тэггер Natasha: PERSON/ORG (по конфигу) + LOC-спаны (для адреса) ---
         # Тэггер нужен и для адреса (LOC — контекстный детектор места), поэтому
@@ -460,14 +463,15 @@ def detect_ner(
                 start, end = span.start, span.stop
                 if span.type == "PER":
                     start, end = _expand_person_span(text, start, end)
-                ner_spans.append((start, end))
+                ner_spans.append((start, end))   # норм-координаты (для барьеров)
 
+                src_start, src_end = norm_to_src(offset_map, start, end)
                 entities.append(Entity(
                     id=str(uuid.uuid4()),
                     segment_id=segment.id,
-                    start=start,
-                    end=end,
-                    original_text=orig_text[start:end],
+                    start=src_start,
+                    end=src_end,
+                    original_text=orig_text[src_start:src_end],
                     entity_type=entity_type,
                     detector="ner",
                     confidence=1.0,
@@ -489,19 +493,22 @@ def detect_ner(
                 # самостоятельным детектором. Расширение краёв использует маркеры как
                 # линейку, но стартует только от подтверждённых LOC/yargy-спанов.
                 # Барьеры расширения = regex-реквизиты + настоящие PER/ORG (не адресный хвост).
-                occupied = _address_barriers(
-                    text, ner_spans, regex_by_seg.get(segment.id, [])
-                )
+                # regex-реквизиты хранятся в ИСХОДНЫХ координатах — приводим их к
+                # координатам норм-текста, в которых работает расширение адреса.
+                regex_src = regex_by_seg.get(segment.id, [])
+                regex_norm = [src_to_norm(offset_map, s, e) for s, e in regex_src]
+                occupied = _address_barriers(text, ner_spans, regex_norm)
                 for start, end in _build_address_spans(
                     text, loc_spans + yargy_spans, occupied
                 ):
+                    src_start, src_end = norm_to_src(offset_map, start, end)
                     for addr_type in addr_types:
                         entities.append(Entity(
                             id=str(uuid.uuid4()),
                             segment_id=segment.id,
-                            start=start,
-                            end=end,
-                            original_text=orig_text[start:end],
+                            start=src_start,
+                            end=src_end,
+                            original_text=orig_text[src_start:src_end],
                             entity_type=addr_type,
                             detector="ner",
                             confidence=1.0,

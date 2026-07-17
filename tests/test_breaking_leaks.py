@@ -133,9 +133,11 @@ class TestEntitySplitAcrossSegmentBoundary:
 # B4 — ВАЖНО: телефон с кириллическим омоглифом
 # --------------------------------------------------------------------------- #
 class TestPhoneHomoglyphLeak:
-    @pytest.mark.xfail(strict=True, reason="B4: кириллическая З в номере ломает \\d, номер утекает")
     def test_phone_with_cyrillic_digit_lookalike_is_tokenized(self, tmp_path, config_path):
-        # 'З' (U+0417) вместо '3' — частый артефакт копипаста из PDF/OCR
+        # 'З' (U+0417) вместо '3' — частый артефакт копипаста из PDF/OCR.
+        # Этап 2 (нормализация перед детекцией) сводит омоглиф-цифру внутри
+        # числового токена, телефон детектируется и токенизируется. Ранее —
+        # xfail(strict): \d рвался на кириллице, реальные цифры утекали.
         anon = _anonymize_txt("Тел: +7 (495) 12З-45-67 звоните", tmp_path, config_path)
         assert "45-67" not in anon, "реальные цифры номера утекли рядом с омоглифом"
 
