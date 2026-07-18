@@ -5,7 +5,7 @@
 > `src/xlsx_rewriter.py`, `src/file_detokenizer.py` + подкоманда `decrypt-file` в
 > `shifrator.py`), см. `docs/handoffs/HANDOFF_8..12.md` и тесты `tests/component2/`.
 > Известный незакрытый дефект компонента: валидный ZIP без единой целевой части
-> «успешно» копируется вместо ошибки — см. `docs/reports/COMPONENT2_TEST_REPORT.md`
+> «успешно» копируется вместо ошибки — см. `docs/archive/reports/COMPONENT2_TEST_REPORT.md`
 > (намеренно красный тест `tests/component2/test_e_malformed_input.py`).
 > После структурирования проекта все библиотечные модули лежат в `src/` с плоскими
 > именами импортов; упоминаемые ниже имена файлов читать как `src/<имя>.py`.
@@ -574,7 +574,7 @@ python shifrator.py decrypt-file <session_id> <путь_к_файлу.docx|.xlsx
    `OoxmlError`, выходной файл не создан.
 5. Прогон существующего тестового набора (на момент написания — 138 тестов; после этапов
    2–3 тестирования и приёмки компонента 2 полный набор — 268 passed + 1 xfailed (B4) +
-   1 намеренно красный, см. `docs/reports/COMPONENT2_TEST_REPORT.md`) — **все зелёные, без
+   1 намеренно красный, см. `docs/archive/reports/COMPONENT2_TEST_REPORT.md`) — **все зелёные, без
    правок тестов**. Это формальное подтверждение, что компонент 2 ничего не сломал в блоках 1–7.
 
 ---

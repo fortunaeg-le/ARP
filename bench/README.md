@@ -27,4 +27,4 @@ venv/Scripts/python.exe bench/<script>.py
 - Golden: `tests/golden_addresses.py` + `tests/test_golden_addresses.py` (195 тестов, отслеживаются).
 - Внешний набор (15 адресов): инлайн в `verify_external.py` (отслеживается здесь).
 
-Отчёт, для которого эти скрипты — доказательная база: `docs/reports/WAVE2_VERIFICATION.md`.
+Отчёт, для которого эти скрипты — доказательная база: `docs/archive/reports/WAVE2_VERIFICATION.md`.
