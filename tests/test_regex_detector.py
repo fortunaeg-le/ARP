@@ -78,7 +78,15 @@ class TestValidatorsRegistry:
 
 
 class TestDetectRegexChecksumFiltering:
-    """HANDOFF_2, Пример 1 — валидные и испорченные чек-суммы ИНН/ОГРН."""
+    """HANDOFF_2, Пример 1 — валидные и испорченные чек-суммы ИНН/ОГРН.
+
+    ЭТАП 4 переопределил роль `validate:` (см. entity_types.yaml, комментарий у
+    INN/OGRN, и src/regex_detector.py `_has_anchor`): КС — фильтр только БЕЗ
+    якоря. «ИНН 7707083894»/«ОГРН 1027700132196» — якорь «ИНН»/«ОГРН» стоит
+    прямо перед значением, поэтому теперь значение МАСКИРУЕТСЯ невзирая на
+    невалидную КС (было: отбраковка, HANDOFF_2). Отбраковка по КС осталась
+    ЖИВОЙ, но только для голого числа без якоря — см.
+    TestDetectRegexChecksumIsFilterOnlyWithoutAnchor ниже."""
 
     def test_valid_inn_and_kpp_found_with_correct_offsets(self, config_path):
         """HANDOFF_2, Пример 1: 'ИНН 7707083893, КПП 773601001' -> INN[4:14], KPP[20:29]."""
@@ -88,11 +96,14 @@ class TestDetectRegexChecksumFiltering:
         assert (by_type["INN"].start, by_type["INN"].end) == (4, 14)
         assert (by_type["KPP"].start, by_type["KPP"].end) == (20, 29)
 
-    def test_invalid_inn_checksum_produces_no_entity(self, config_path):
-        """HANDOFF_2, Пример 1: 'ИНН 7707083894' -> ничего (чек-сумма не сходится)."""
+    def test_anchored_invalid_inn_checksum_is_still_masked(self, config_path):
+        """ЭТАП 4: 'ИНН 7707083894' (якорь «ИНН», КС не сходится) -> INN найден.
+        Инвариант продукта: невалидный по КС номер — всё равно ПДн (STATE §6)."""
         doc = _doc("ИНН 7707083894")
         entities = detect_regex(doc, config_path)
-        assert [e for e in entities if e.entity_type == "INN"] == []
+        inn = [e for e in entities if e.entity_type == "INN"]
+        assert len(inn) == 1
+        assert inn[0].original_text == "7707083894"
 
     def test_valid_ogrn_and_ogrnip_found(self, config_path):
         """HANDOFF_2, Пример 1: 'ОГРН 1027700132195, ОГРНИП 304500116000157' -> два OGRN-Entity."""
@@ -101,11 +112,49 @@ class TestDetectRegexChecksumFiltering:
         ogrn_values = {e.original_text for e in entities if e.entity_type == "OGRN"}
         assert ogrn_values == {"1027700132195", "304500116000157"}
 
-    def test_invalid_ogrn_checksum_produces_no_entity(self, config_path):
-        """HANDOFF_2, Пример 1: 'ОГРН 1027700132196' -> ничего."""
+    def test_anchored_invalid_ogrn_checksum_is_still_masked(self, config_path):
+        """ЭТАП 4: 'ОГРН 1027700132196' (якорь «ОГРН», КС не сходится) -> OGRN найден."""
         doc = _doc("ОГРН 1027700132196")
         entities = detect_regex(doc, config_path)
-        assert entities == []
+        assert [e.original_text for e in entities] == ["1027700132196"]
+        assert entities[0].entity_type == "OGRN"
+
+
+class TestDetectRegexChecksumIsFilterOnlyWithoutAnchor:
+    """ЭТАП 4 — асимметрия «якорь / без якоря» (entity_types.yaml, INN/OGRN/
+    BANK_ACCOUNT; src/regex_detector.py `_has_anchor`). Без якоря КС остаётся
+    шлагбаумом: голое число, невалидное по КС и без метки-триггера рядом, —
+    вероятно не реквизит (номер пункта, КБК, произвольная цифирь в прозе),
+    не маскируется."""
+
+    def test_bare_invalid_inn_without_anchor_produces_no_entity(self, config_path):
+        """Тот же невалидный ИНН '7707083894', но без слова «ИНН» рядом -> ничего."""
+        doc = _doc("В реестре встречается число 7707083894 без пояснений.")
+        entities = detect_regex(doc, config_path)
+        assert [e for e in entities if e.entity_type == "INN"] == []
+
+    def test_bare_valid_inn_without_anchor_is_still_masked(self, config_path):
+        """Зеркало: тот же голый ИНН, но с ВАЛИДНОЙ КС '7707083893' -> маскируется
+        и без якоря — КС сама подтверждает реквизит (поведение до этапа 4 не
+        меняется на этой ветке)."""
+        doc = _doc("В реестре встречается число 7707083893 без пояснений.")
+        entities = detect_regex(doc, config_path)
+        assert [e.original_text for e in entities if e.entity_type == "INN"] == ["7707083893"]
+
+    def test_bare_invalid_ogrn_without_anchor_produces_no_entity(self, config_path):
+        """Тот же невалидный ОГРН '1027700132196', но без слова «ОГРН» рядом -> ничего."""
+        doc = _doc("В реестре встречается число 1027700132196 без пояснений.")
+        entities = detect_regex(doc, config_path)
+        assert [e for e in entities if e.entity_type == "OGRN"] == []
+
+    def test_anchor_from_unrelated_earlier_number_does_not_leak_across(self, config_path):
+        """Якорь одного реквизита не защищает СОСЕДНЕЕ, никак с ним не связанное
+        число (КБК/произвольный 20-значный код рядом со счётом) — см. _has_anchor:
+        якорное окно не пересекает цифру предыдущего значения."""
+        doc = _doc("р/с 40702810160368220597, КБК 18210101011011000110")
+        entities = detect_regex(doc, config_path)
+        accounts = [e.original_text for e in entities if e.entity_type == "BANK_ACCOUNT"]
+        assert accounts == ["40702810160368220597"]
 
 
 class TestDetectRegexPassportAnchor:

@@ -367,7 +367,7 @@ class TestStage3PassportSubdivisionHasNoDetector:
 
 
 # =========================================================================== #
-# ЭТАП 4 — невалидная контрольная сумма: «увидели и отбросили»
+# ЭТАП 4 — невалидная контрольная сумма: КС как сигнал, а не шлагбаум [ПОГАШЕНО]
 # =========================================================================== #
 # Фикстура: lease_0003 — .txt с features=['invalid_checksum','oblique_names',
 # 'phone_zoo']. Корпус назначает контрольную сумму ПОДОКУМЕНТНО: документа, где у
@@ -375,7 +375,11 @@ class TestStage3PassportSubdivisionHasNoDetector:
 # валидной КС» берётся из чистого services_0001, а внутридокументное зеркало даёт
 # ACCOUNT (см. ниже).
 # Первоисточник: COVERAGE_MEASUREMENT.md §3 «rejected_invalid_checksum» (164) —
-# для 152-ФЗ такой номер всё равно ПДн, отбраковка = утечка.
+# для 152-ФЗ такой номер всё равно ПДн, отбраковка = утечка. Этап 4 добавил
+# `anchor:` (src/regex_detector.py `_has_anchor`): под якорем («ИНН»/«ОГРН» слева)
+# КС больше не решает — значение маскируется в любом случае. Все проверки ниже —
+# документ lease_0003 честно анкорирует ИНН/ОГРН/счёт словом-триггером
+# («ИНН 721566853972», «ОГРНИП 1480094441508», «р/с 40702810160368220597»).
 _S4_DOC = "lease_0003"
 _S4_INN_INVALID = "721566853972"
 _S4_OGRN_INVALID = "1480094441508"
@@ -383,19 +387,22 @@ _S4_ACCOUNT_INVALID = "40702810160368220597"
 
 
 class TestStage4InvalidChecksumIsRejectedAndLeaks:
-    """`entity_types.yaml` вешает `validate:` только на INN (inn_checksum) и OGRN
-    (ogrn_checksum). Номер с не сошедшейся КС детектор ОТБРАСЫВАЕТ — и значение
-    остаётся в открытом тексте. Проверено на a118c84: «ОГРН 1480094441508»,
+    """ЭТАП 4 ПОГАСИЛ ВЕСЬ КЛАСС (см. HANDOFF_STAGE_4). Было: `entity_types.yaml`
+    вешал `validate:` на INN/OGRN как БЕЗУСЛОВНЫЙ фильтр — номер с не сошедшейся КС
+    детектор ОТБРАСЫВАЛ, и значение оставалось в открытом тексте. Проверено на
+    a118c84: «ОГРН 1480094441508»,
     «ИНН 721566853972» видны в анонимном тексте."""
 
-    @pytest.mark.xfail(strict=True, reason="этап 4: ИНН с невалидной КС отбраковывается валидатором и утекает")
+    # ЭТАП 4 ПОГАСИЛ ЭТОТ КОНТРАКТ (метка xfail снята). Под якорем «ИНН» значение
+    # маскируется независимо от КС (src/regex_detector.py `_has_anchor`).
     def test_inn_with_invalid_checksum_is_still_masked(self, encrypt_doc):
         gold = _gold_entity(_S4_DOC, "INN", _S4_INN_INVALID)
         assert gold["checksum"] == "invalid"
         anon = _anon(encrypt_doc(_S4_DOC))
         _assert_masked("INN", gold["text"], anon, "ИНН с невалидной КС")
 
-    @pytest.mark.xfail(strict=True, reason="этап 4: ОГРН с невалидной КС отбраковывается валидатором и утекает")
+    # ЭТАП 4 ПОГАСИЛ ЭТОТ КОНТРАКТ (метка xfail снята). Под якорем «ОГРН»/«ОГРНИП»
+    # значение маскируется независимо от КС.
     def test_ogrn_with_invalid_checksum_is_still_masked(self, encrypt_doc):
         gold = _gold_entity(_S4_DOC, "OGRN", _S4_OGRN_INVALID)
         assert gold["checksum"] == "invalid"
