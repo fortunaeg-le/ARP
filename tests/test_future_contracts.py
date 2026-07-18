@@ -263,15 +263,10 @@ class TestStage3SnilsHasNoDetector:
     прогон под чужой детектор, и значение утекает в анонимном тексте ЦЕЛИКОМ
     («003-219 -113 82 » рядом с уже замаскированным [INN_2])."""
 
-    @pytest.mark.xfail(
-        strict=True,
-        reason="этап 3: типизированного детектора SNILS по-прежнему нет. "
-        "Частично маскируется инцидентно (~84%) через KPP/ADDRESS-overmatch "
-        "после нормализации этапа 2 — это ПОБОЧКА, не детектор. Дыра открыта. "
-        "Контракт гаснет только при появлении настоящего детектора SNILS/"
-        "subdivision с контрольной суммой на этапе 3. Фикстура — "
-        "supply_0003__m1337_digit_spaces, документ из оставшихся ~16%, где СНИЛС "
-        "ещё утекает открытым текстом (см. FINDINGS.md Stage2-N).")
+    # ЭТАП 3 ПОГАСИЛ ЭТОТ КОНТРАКТ (метка xfail снята). Появился типизированный
+    # детектор SNILS: якорь «СНИЛС» + форма ddd-ddd-ddd dd, span_group=1 (маскируется
+    # значение БЕЗ якоря). Тест из ожидания дыры стал пришпиливающим: если СНИЛС снова
+    # начнёт утекать, он покраснеет.
     def test_snils_value_does_not_survive_anonymization(self, encrypt_doc):
         gold = _gold_entity(_S3_SNILS_DOC, "SNILS", _S3_SNILS_TEXT)
         anon = _anon(encrypt_doc(_S3_SNILS_DOC))
@@ -305,28 +300,39 @@ class TestStage3BirthdateHasNoDetector:
     """Дата рождения не ищется: тип DATE в entity_types.yaml есть, но `enabled: false`
     (COVERAGE_MEASUREMENT.md §3). Проверено на a118c84: «Дата рождения: 21.01.1960»."""
 
-    @pytest.mark.xfail(strict=True, reason="этап 3: детектора BIRTHDATE нет (DATE enabled:false) — дата утекает")
+    # ЭТАП 3 ПОГАСИЛ ЭТОТ КОНТРАКТ (метка xfail снята). Появился тип BIRTHDATE:
+    # дата ПОД ЯКОРЕМ РОЖДЕНИЯ (не общий детектор дат — он обвалил бы precision на
+    # датах подписания/выдачи), маскируется span_group=1 — сама дата без якоря.
     def test_birthdate_value_does_not_survive_anonymization(self, encrypt_doc):
         gold = _gold_entity(_S3_DOC, "BIRTHDATE", _S3_BIRTHDATE)
         anon = _anon(encrypt_doc(_S3_DOC))
         _assert_masked("BIRTHDATE", gold["text"], anon, "дата рождения")
 
-    def test_mirror_birthdate_metric_reports_none_for_absent_date(self, encrypt_doc):
-        """ЗЕРКАЛО для ветки ДАТЫ (leak_v2_birthdate + v2_date_field).
+    def test_mirror_birthdate_metric_discriminates(self, encrypt_doc):
+        """ЗЕРКАЛО для ветки ДАТЫ (leak_v2_birthdate + v2_date_field): она РАЗЛИЧАЕТ,
+        а не всегда молчит. Без этого «none» в тесте выше ничего не стоил бы.
 
-        Замаскированной даты в корпусе не существует (детектора нет, recall 0/228),
-        поэтому зеркало «дата уже маскируется» физически невозможно. Проверяем то, что
-        зеркало и должно доказывать: ветка даты РАЗЛИЧАЕТ, а не всегда кричит. На ТОМ
-        ЖЕ анонимном тексте она обязана сказать «none» про дату рождения из ДРУГОГО
-        документа корпуса (её тут нет) и «full» про здешнюю. Всегда-красная метрика
-        обе назвала бы утечкой."""
+        ПРАВКА ЭТАПА 3. Раньше «положительной» стороной зеркала был сам утекающий
+        BIRTHDATE в анонимном тексте (`present == full`) — то есть зеркало опиралось
+        на ДЫРУ, и этап, закрывший дыру, ронял его. Теперь «положительная» сторона
+        берётся из ИСХОДНОГО текста документа, где дата есть заведомо и всегда:
+          * исходный текст   -> full  (метрика умеет сказать «утекло»);
+          * анонимный текст  -> none  (значение замаскировано);
+          * чужая дата корпуса на том же анонимном тексте -> none (не ложная тревога).
+        Все три стороны нужны: без первой метрика могла бы быть всегда-молчащей, без
+        третьей — всегда-кричащей."""
         other = _gold_entity("agency_0003", "BIRTHDATE", "10.07.1996")
+        gold = _gold_entity(_S3_DOC, "BIRTHDATE", _S3_BIRTHDATE)
+        raw = open(os.path.join(_DOCS_DIR, "{}.{}".format(_S3_DOC, _GOLD[_S3_DOC]["format"])),
+                   encoding="utf-8").read()
         anon = _anon(encrypt_doc(_S3_DOC))
         assert other["text"] not in anon, "чужая дата всё же есть в тексте — зеркало непригодно"
-        absent = _leak("BIRTHDATE", other["text"], anon)
-        present = _leak("BIRTHDATE", _S3_BIRTHDATE, anon)
-        assert absent["status"] == "none", "ветка даты кричит об утечке того, чего в тексте нет"
-        assert present["status"] == "full", "ветка даты не видит дату, которая в тексте есть"
+        assert _leak("BIRTHDATE", gold["text"], raw)["status"] == "full", \
+            "ветка даты не видит дату в ИСХОДНОМ тексте — метрика всегда-молчащая, зеркало непригодно"
+        assert _leak("BIRTHDATE", other["text"], anon)["status"] == "none", \
+            "ветка даты кричит об утечке того, чего в тексте нет"
+        assert _leak("BIRTHDATE", gold["text"], anon)["status"] == "none", \
+            "дата рождения дожила до анонимного текста"
 
 
 class TestStage3PassportSubdivisionHasNoDetector:
@@ -342,15 +348,9 @@ class TestStage3PassportSubdivisionHasNoDetector:
     подразделения «051-237» утекает открытым текстом даже на этом чистом
     документе — дыра не требует никакого искажения, чтобы проявиться."""
 
-    @pytest.mark.xfail(
-        strict=True,
-        reason="этап 3: типизированного детектора кода подразделения нет. "
-        "Частично маскируется инцидентно (~84%) через KPP/ADDRESS-overmatch "
-        "после нормализации этапа 2 — это ПОБОЧКА, не детектор. Дыра открыта. "
-        "Контракт гаснет только при появлении настоящего детектора SNILS/"
-        "subdivision с контрольной суммой на этапе 3. Фикстура — supply_0003 "
-        "(features=[]), где код подразделения утекает и без искажений "
-        "(см. FINDINGS.md Stage2-N).")
+    # ЭТАП 3 ПОГАСИЛ ЭТОТ КОНТРАКТ (метка xfail снята). У типа PASSPORT появился
+    # второй паттерн — код подразделения под якорем «код подразделения», span_group=1.
+    # Голый «ддд-ддд» без якоря по-прежнему НЕ берётся (это мусор: кусок телефона/индекса).
     def test_passport_subdivision_code_does_not_survive(self, encrypt_doc):
         gold = _gold_entity(_S3_SUBDIV_DOC, "PASSPORT", _S3_SUBDIV_CODE)
         anon = _anon(encrypt_doc(_S3_SUBDIV_DOC))

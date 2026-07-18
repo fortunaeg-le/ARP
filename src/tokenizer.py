@@ -27,9 +27,13 @@ _BOUNDARY_WINDOW = 60
 
 # Приоритет типов среди двух regex одинаковой длины (раньше в списке = сильнее).
 # Типы вне списка слабее всех перечисленных; между собой — по алфавиту entity_type.
+# SNILS выше KPP: 9 схлопнутых цифр СНИЛС — ровно форма КПП, и при РАВНОЙ длине спана
+# (вырожденный случай) маска обязана быть своего типа, а не чужого (C-корректность,
+# нарушение «SNILS под KPP»). В обычном случае СНИЛС и так длиннее (9+2 цифры).
+# BIRTHDATE выше DATE по той же причине (DATE сейчас enabled:false, но порядок фиксируем).
 _REGEX_PRIORITY = [
-    "BANK_ACCOUNT", "OGRN", "INN", "BIK", "KPP",
-    "PASSPORT", "PHONE", "SUM", "EMAIL", "DATE",
+    "BANK_ACCOUNT", "OGRN", "INN", "BIK", "SNILS", "KPP",
+    "PASSPORT", "PHONE", "SUM", "EMAIL", "BIRTHDATE", "DATE",
 ]
 # Приоритет типов среди двух ner при равной длине/confidence и неидентичных интервалах.
 _NER_PRIORITY = ["ADDRESS", "ORG", "PERSON"]

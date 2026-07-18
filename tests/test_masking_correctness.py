@@ -268,23 +268,41 @@ def test_e2e_negative_B_half_masked_value(tmp_path, monkeypatch):
         "эталон покрыт лишь частично, а метрика B этого не увидела"
 
 
-@pytest.mark.parametrize("doc_id", ["agency_0003"])
-def test_e2e_negative_C_snils_masked_as_foreign_type(doc_id):
+@pytest.mark.parametrize("doc_id", ["agency_0002"])
+def test_e2e_negative_C_account_masked_as_foreign_type(doc_id):
     """ОТРИЦАТЕЛЬНОЕ сквозное зеркало C на ЗАМОРОЖЕННОМ КОРПУСЕ (ready-made
-    нарушение из STATE §3): детектора SNILS нет, значение подхватывает чужой
-    regex и прячется под KPP/ADDRESS. Метрика обязана назвать это нарушением C —
-    при том, что по A и B такая маска может быть безупречной.
+    нарушение): значение подхватывает чужой regex и прячется под НЕ своим типом.
+    Метрика обязана назвать это нарушением C — при том, что по A и B такая маска
+    может быть безупречной.
 
-    Если этап 3 (детектор SNILS) закроет дыру, тест станет красным — и это
-    правильно: он ПРИШПИЛИВАЕТ нарушение, а его падение = сигнал, что зеркало
-    надо перенести на другой случай, а не что метрика сломалась."""
+    ПЕРЕНОС ЗЕРКАЛА, ЭТАП 3. Раньше здесь стоял СНИЛС на agency_0003: детектора
+    SNILS не было, значение ловил KPP, и это было нарушение C на 185/185 масок
+    корпуса. Этап 3 дал СНИЛС свой детектор, нарушение исчезло — тест покраснел
+    ровно так, как обещал его собственный докстринг («падение = сигнал перенести
+    зеркало на другой случай, а не что метрика сломалась»). Новый носитель
+    нарушения — ACCOUNT под KPP на agency_0002 (20 масок, дефект жадности KPP,
+    этапом 3 не чинится и в его область не входит)."""
     gold = {d["doc_id"]: d for d in RM.load_gold()}
     assert doc_id in gold, f"{doc_id} исчез из корпуса — зеркало обязано умереть громко"
     rec = RM.process_doc(gold[doc_id])
     bad = [m for m in rec["masks"]
-           if m["scored"] and m["gold_type"] == "SNILS" and not m["c_ok"]]
-    assert bad, "СНИЛС под чужим типом не найден — метрика C не различает типы"
-    assert all(m["gtype"] != "SNILS" for m in bad)
+           if m["scored"] and m["gold_type"] == "ACCOUNT" and not m["c_ok"]]
+    assert bad, "ACCOUNT под чужим типом не найден — метрика C не различает типы"
+    assert all(m["gtype"] != "ACCOUNT" for m in bad)
+
+
+@pytest.mark.parametrize("doc_id", ["agency_0003"])
+def test_e2e_positive_C_snils_is_masked_under_its_own_type(doc_id):
+    """ПРИШПИЛИВАЮЩИЙ тест этапа 3, обратная сторона перенесённого зеркала выше:
+    СНИЛС теперь маскируется ПОД СВОИМ типом. Если детектор SNILS исчезнет или его
+    перехватит KPP/ADDRESS, вернётся нарушение C — и тест покраснеет."""
+    gold = {d["doc_id"]: d for d in RM.load_gold()}
+    rec = RM.process_doc(gold[doc_id])
+    snils = [m for m in rec["masks"] if m["scored"] and m["gold_type"] == "SNILS"]
+    assert snils, "ни одна маска не легла на эталонный СНИЛС — детектор потерян"
+    assert all(m["c_ok"] for m in snils), \
+        "СНИЛС снова маскируется под чужим типом: {}".format(
+            [m["gtype"] for m in snils if not m["c_ok"]])
 
 
 # =========================================================================== #

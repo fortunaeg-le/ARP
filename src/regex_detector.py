@@ -57,10 +57,26 @@ VALIDATORS = {
 }
 
 
-def _load_regex_types(config_path: str) -> list[tuple[str, re.Pattern, object]]:
-    """Читает entity_types.yaml и возвращает [(entity_type, compiled_pattern, validator|None)]
-    для записей с method: regex и enabled != false. Типы с незнакомым validate
-    или некомпилируемым/отсутствующим pattern пропускаются целиком с предупреждением в stderr."""
+def _load_regex_types(config_path: str) -> list[tuple[str, re.Pattern, object, int]]:
+    """Читает entity_types.yaml и возвращает
+    [(entity_type, compiled_pattern, validator|None, span_group)] для записей с
+    method: regex и enabled != false. Типы с незнакомым validate или
+    некомпилируемым/отсутствующим pattern пропускаются целиком с предупреждением в stderr.
+
+    Два способа задать паттерны (этап 3):
+      * `pattern:` — один паттерн, как раньше;
+      * `patterns:` — СПИСОК записей {pattern, span_group?, validate?} для типов, у
+        которых одна сущность корпуса пишется несколькими непохожими способами.
+        Нужно для PASSPORT: «серия+номер» и «код подразделения» — один тип gold,
+        но два разных якоря и две разных формы значения.
+
+    `span_group: N` — номер группы, чей спан становится спаном сущности (по умолчанию
+    0, т.е. весь матч). Ключевое для ЯКОРНЫХ детекторов (этап 3): якорь («СНИЛС»,
+    «дата рождения», «код подразделения») обязан участвовать в ПОИСКЕ, но не должен
+    попадать в МАСКИРУЕМЫЙ спан — иначе повторяется дефект PASSPORT 0c-B, где
+    m.group(0) включает слово «паспорт» и спан шире эталонного (recall_exact 0%).
+    Детектируем ПО якорю, маскируем БЕЗ якоря.
+    """
     with open(config_path, encoding="utf-8") as f:
         config = yaml.safe_load(f)
 
@@ -71,28 +87,43 @@ def _load_regex_types(config_path: str) -> list[tuple[str, re.Pattern, object]]:
         if spec.get("enabled", True) is False:
             continue
 
-        pattern_str = spec.get("pattern")
-        if not pattern_str:
-            print(f"ПРЕДУПРЕЖДЕНИЕ: у типа {entity_type} (method: regex) нет поля pattern — "
-                  f"тип пропущен целиком", file=sys.stderr)
-            continue
-        try:
-            pattern = re.compile(pattern_str)
-        except re.error as exc:
-            print(f"ПРЕДУПРЕЖДЕНИЕ: паттерн типа {entity_type} не компилируется ({exc}) — "
-                  f"тип пропущен целиком", file=sys.stderr)
-            continue
+        if spec.get("patterns"):
+            raw_entries = spec["patterns"]
+        else:
+            raw_entries = [{"pattern": spec.get("pattern"),
+                            "validate": spec.get("validate"),
+                            "span_group": spec.get("span_group", 0)}]
 
-        validator = None
-        validate_name = spec.get("validate")
-        if validate_name is not None:
-            validator = VALIDATORS.get(validate_name)
-            if validator is None:
-                print(f"ПРЕДУПРЕЖДЕНИЕ: неизвестный validate '{validate_name}' у типа "
-                      f"{entity_type} — тип пропущен целиком", file=sys.stderr)
+        for entry in raw_entries:
+            pattern_str = entry.get("pattern")
+            if not pattern_str:
+                print(f"ПРЕДУПРЕЖДЕНИЕ: у типа {entity_type} (method: regex) нет поля "
+                      f"pattern — паттерн пропущен", file=sys.stderr)
+                continue
+            try:
+                pattern = re.compile(pattern_str)
+            except re.error as exc:
+                print(f"ПРЕДУПРЕЖДЕНИЕ: паттерн типа {entity_type} не компилируется "
+                      f"({exc}) — паттерн пропущен", file=sys.stderr)
                 continue
 
-        result.append((entity_type, pattern, validator))
+            span_group = entry.get("span_group", 0) or 0
+            if span_group > pattern.groups:
+                print(f"ПРЕДУПРЕЖДЕНИЕ: у типа {entity_type} span_group={span_group}, "
+                      f"а групп в паттерне {pattern.groups} — паттерн пропущен",
+                      file=sys.stderr)
+                continue
+
+            validator = None
+            validate_name = entry.get("validate")
+            if validate_name is not None:
+                validator = VALIDATORS.get(validate_name)
+                if validator is None:
+                    print(f"ПРЕДУПРЕЖДЕНИЕ: неизвестный validate '{validate_name}' у типа "
+                          f"{entity_type} — паттерн пропущен", file=sys.stderr)
+                    continue
+
+            result.append((entity_type, pattern, validator, span_group))
     return result
 
 
@@ -108,11 +139,14 @@ def detect_regex(doc: SourceDocument, config_path: str) -> list[Entity]:
         # строка (чистые цифры), поэтому валидатор чек-суммы работает по ней прямо.
         # На неискажённом тексте нормализация — тождество, поведение прежнее.
         search_text, offset_map = detection_view(segment)
-        for entity_type, pattern, validator in regex_types:
+        for entity_type, pattern, validator, span_group in regex_types:
             for m in pattern.finditer(search_text):
-                if validator is not None and not validator(m.group(0)):
+                if m.start(span_group) < 0:
+                    continue  # группа не участвовала в матче — спана нет
+                if validator is not None and not validator(m.group(span_group)):
                     continue
-                start, end = norm_to_src(offset_map, m.start(), m.end())
+                # span_group>0: якорь остаётся вне спана (см. _load_regex_types)
+                start, end = norm_to_src(offset_map, m.start(span_group), m.end(span_group))
                 entities.append(Entity(
                     id=str(uuid.uuid4()),
                     segment_id=segment.id,
