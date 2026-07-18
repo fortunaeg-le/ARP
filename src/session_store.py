@@ -214,7 +214,17 @@ def load_session(session_id: str, storage_dir: str | None = None) -> dict:
     if not session_path.exists():
         raise SessionNotFoundError(f"Сессия не найдена: {session_id}")
 
-    key = _load_or_create_key(store)
+    key_path = store / _KEY_FILENAME
+    if not key_path.exists():
+        # Файл сессии есть, а key.bin — нет: ключ удалён/утерян между save и load.
+        # _load_or_create_key здесь МОЛЧА создал бы новый ключ, что хоронит эту и
+        # все прочие сессии в директории, зашифрованные старым ключом. На пути
+        # чтения ключ никогда не пересоздаём — это ошибка, а не повод сгенерировать
+        # новый.
+        raise SessionNotFoundError(
+            f"Сессия не расшифровывается (отсутствует ключ хранилища): {session_id}"
+        )
+    key = key_path.read_bytes()
     try:
         fernet = Fernet(key)
     except ValueError as exc:
