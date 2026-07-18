@@ -573,6 +573,219 @@ def leak_v2_email(gtext: str, anon_norm_v2: str):
 
 
 # =========================================================================== #
+#   masking_correctness — КОРРЕКТНОСТЬ ТОГО, ЧТО СИСТЕМА УЖЕ ЗАМАСКИРОВАЛА     #
+# =========================================================================== #
+# ТРЕБОВАНИЕ ПРОДУКТА (асимметрия ошибок).  После автоматической шифрации документ
+# проверяет ЧЕЛОВЕК.  Он ищет, не осталось ли ЛИШНЕГО (утечка) — и НЕ проверяет,
+# правильно ли спрятано уже спрятанное.  Поэтому:
+#   пропуск  (сущность не замаскирована) — терпимо, человек поймает;
+#   кривая маскировка                    — недопустима, проходит проверку насквозь.
+# Отсюда метрика с ДРУГИМ ЗНАМЕНАТЕЛЕМ, чем recall/leak: там знаменатель — gold
+# («сколько поймали»), здесь — МАСКИ, поставленные системой («из пойманного,
+# сколько корректно»).  Путать нельзя: рост recall не улучшает эти проценты
+# автоматически, а этап, который начнёт маскировать криво ради recall, обязан
+# уронить именно их.
+#
+# Три уровня:
+#   A. ROUND-TRIP (жёстко) — замаскированное значение восстанавливается decrypt'ом
+#      БАЙТ-В-БАЙТ.  Знаменатель: все маски.
+#   B. ГРАНИЦЫ (жёстко) — эталонный спан закрыт масками ЦЕЛИКОМ, не наполовину.
+#      Знаменатель: маски, легшие хоть на одну эталонную сущность (маске, не
+#      попавшей ни в одну gold, покрывать нечего — это ложное срабатывание, его
+#      меряет FP-метрика, и в знаменатель B/C она не идёт).
+#   C. ТИП (мягко, информационно) — тип маски совпал с эталонным типом.
+#      Знаменатель тот же, что у B.
+#
+# ПОЧЕМУ A СЧИТАЕТСЯ ДВУМЯ ЧИСЛАМИ (a_ok и a_channel_ok) — не дублирование:
+#   a_ok         — вернулось ли РОВНО исходное значение сущности (требование продукта);
+#   a_channel_ok — совпал ли восстановленный участок с тем, что стояло на этом месте
+#                  в plain-сборке документа.
+# Они расходятся ровно там, где сама plain-сборка лоссова независимо от маскировки:
+# tokenizer._render_table заменяет '\n' внутри ячейки таблицы на пробел ПОСЛЕ
+# подстановки, поэтому значение, содержащее перенос строки внутри ячейки, в plain
+# стоит с пробелом, а detokenize возвращает его с исходным '\n'.  Значение при этом
+# восстановлено ВЕРНЕЕ оригинала документа, а не испорчено.  Считать это нарушением
+# A было бы подгонкой метрики под артефакт текстового канала; считать это «всё
+# хорошо» молча — потерей факта.  Поэтому два числа, и гейт жёсток по a_ok.
+# Замены '\n'->' ' длину не меняют, поэтому координаты plain и restored совпадают
+# символ в символ, пока len(restored)==len(plain) (это проверяется явно, см. aligned).
+
+
+def plain_segment_offsets(doc):
+    """(plain_text, {segment_id: offset}) — сборка plain-текста ПОВТОРЯЕТ
+    tokenizer._assemble/_render_table, но попутно запоминает смещение каждого
+    сегмента.  Смещения нужны, чтобы перевести локальные координаты Entity в
+    координаты plain/restored и проверить A поштучно.
+
+    Вызывающий ОБЯЗАН сверить возвращённый текст с build_plain_text(doc): если
+    реализации разойдутся (сборка в src/ изменится), смещения станут враньём, и
+    метрика A обязана умереть громко, а не тихо мерить не то.  Замена '\\n'->' '
+    в ячейках длину не меняет, поэтому локальные оффсеты сущности внутри ячейки
+    остаются валидными."""
+    segs = doc.segments
+    n = len(segs)
+    units = []
+    offsets = {}
+    pos = 0  # смещение начала текущей верхнеуровневой единицы
+
+    def _emit(unit_text, seg_offsets):
+        nonlocal pos
+        for sid, local in seg_offsets:
+            offsets[sid] = pos + local
+        units.append(unit_text)
+        pos += len(unit_text) + 1  # '\n' между единицами
+
+    i = 0
+    while i < n:
+        seg = segs[i]
+        if seg.source_type == "docx_table_cell":
+            table_index = seg.metadata["table_index"]
+            cells = []
+            while (i < n
+                   and segs[i].source_type == "docx_table_cell"
+                   and segs[i].metadata["table_index"] == table_index):
+                cells.append(segs[i])
+                i += 1
+            rows = {}
+            for c in cells:
+                rows.setdefault(c.metadata["row_index"], []).append(c)
+            row_strs = []
+            seg_offsets = []
+            tpos = 0
+            for r in sorted(rows):
+                row_cells = sorted(rows[r], key=lambda c: c.metadata["col_index"])
+                cpos = tpos
+                cell_strs = []
+                for k, c in enumerate(row_cells):
+                    if k:
+                        cpos += 3  # ' | '
+                    seg_offsets.append((c.id, cpos))
+                    ct = c.text.replace("\n", " ")
+                    cell_strs.append(ct)
+                    cpos += len(ct)
+                row_strs.append(" | ".join(cell_strs))
+                tpos = cpos + 1  # '\n' между строками таблицы
+            _emit("\n".join(row_strs), seg_offsets)
+        else:
+            _emit(seg.text, [(seg.id, 0)])
+            i += 1
+
+    return "\n".join(units), offsets
+
+
+def mc_check_a(pstart, original_text, restored, plain, aligned=True):
+    """A для ОДНОЙ маски.  pstart — смещение сущности в plain-координатах.
+
+    Возвращает {a_ok, a_channel_ok, reason}:
+      ok               — значение вернулось байт-в-байт и совпало с plain;
+      channel_ws_only  — значение вернулось байт-в-байт, но в plain на этом месте
+                         стоял схлопнутый пробел (артефакт сборки, не порча);
+      value_corrupted  — значение вернулось НЕ таким, каким было (нарушение A);
+      unaligned        — длины restored и plain разошлись, координаты недействительны;
+                         считаем нарушением КОНСЕРВАТИВНО (защиту доказать не смогли).
+    """
+    if not aligned:
+        return {"a_ok": False, "a_channel_ok": False, "reason": "unaligned"}
+    pend = pstart + len(original_text)
+    r = restored[pstart:pend]
+    p = plain[pstart:pend]
+    a_ok = (r == original_text)
+    ch_ok = (r == p)
+    if a_ok and ch_ok:
+        reason = "ok"
+    elif a_ok:
+        reason = "channel_ws_only"
+    else:
+        reason = "value_corrupted"
+    return {"a_ok": a_ok, "a_channel_ok": ch_ok, "reason": reason}
+
+
+def _iv_overlap(a0, a1, b0, b1):
+    return max(a0, b0) < min(a1, b1)
+
+
+def _covered_by_union(gs, ge, spans):
+    """Покрыт ли [gs,ge) объединением интервалов spans (список (s,e))."""
+    cur = gs
+    for s, e in sorted(spans):
+        if s > cur:
+            return False
+        cur = max(cur, e)
+        if cur >= ge:
+            return True
+    return cur >= ge
+
+
+def mc_check_bc(mask, golds, all_masks):
+    """B и C для ОДНОЙ маски.  mask/golds/all_masks — dict'ы со start/end и
+    типом (`gtype` у масок, `type` у gold), координаты общие (PT-1).
+
+    Эталонная сущность маски — та, с которой у неё НАИБОЛЬШЕЕ пересечение.
+    B считается по ОБЪЕДИНЕНИЮ всех масок, накрывающих эту эталонную сущность:
+    значение, закрытое двумя соседними масками, спрятано полностью — это НЕ брак.
+    Брак — когда объединение оставляет кусок эталона открытым (половина счёта под
+    маской, половина открытым текстом: разрыв через перенос строки/границу ячейки).
+
+    ВАЖНО: маска ШИРЕ эталона (over-capture, напр. PASSPORT) по B НЕ нарушение —
+    B про «не половина», а не про «ровно». Точность спана меряет recall_exact,
+    это другая метрика и другое требование.
+
+    Возвращает {scored, b_ok, c_ok, gold_type, mask_type}. scored=False — маска не
+    легла ни на одну эталонную сущность (ложное срабатывание): B/C неприменимы,
+    в знаменатель не идёт."""
+    ms, me = mask["start"], mask["end"]
+    ov = [g for g in golds if _iv_overlap(ms, me, g["start"], g["end"])]
+    if not ov:
+        return {"scored": False, "b_ok": None, "c_ok": None,
+                "gold_type": None, "mask_type": mask["gtype"]}
+    g = max(ov, key=lambda g: min(me, g["end"]) - max(ms, g["start"]))
+    gs, ge = g["start"], g["end"]
+    covering = [(m["start"], m["end"]) for m in all_masks
+                if _iv_overlap(m["start"], m["end"], gs, ge)]
+    return {
+        "scored": True,
+        "b_ok": _covered_by_union(gs, ge, covering),
+        "c_ok": (mask["gtype"] == g["type"]),
+        "gold_type": g["type"], "mask_type": mask["gtype"],
+    }
+
+
+def _empty_mc():
+    return {"n_masks": 0, "a_ok": 0, "a_channel_ok": 0,
+            "n_scored": 0, "b_ok": 0, "c_ok": 0}
+
+
+def mc_aggregate(mask_records):
+    """Сводка masking_correctness из плоского списка записей маски (поле каждой:
+    gtype, a_ok, a_channel_ok, scored, b_ok, c_ok).  Возвращает
+    {total: {...}, per_type: {gtype: {...}}}."""
+    total = _empty_mc()
+    per_type = {}
+    for r in mask_records:
+        t = r["gtype"]
+        s = per_type.setdefault(t, _empty_mc())
+        for d in (total, s):
+            d["n_masks"] += 1
+            d["a_ok"] += int(r["a_ok"])
+            d["a_channel_ok"] += int(r["a_channel_ok"])
+            if r["scored"]:
+                d["n_scored"] += 1
+                d["b_ok"] += int(r["b_ok"])
+                d["c_ok"] += int(r["c_ok"])
+    return {"total": total, "per_type": per_type}
+
+
+def mc_rates(stats):
+    """(A%, B%, C%) из блока статистики mc_aggregate.  Пустой знаменатель -> 100.0
+    (нечего маскировать — нечего испортить); гейт сравнивает АБСОЛЮТНЫЕ доли,
+    поэтому важно, чтобы пустой случай не давал 0% и не выглядел регрессом."""
+    a = (100.0 * stats["a_ok"] / stats["n_masks"]) if stats["n_masks"] else 100.0
+    b = (100.0 * stats["b_ok"] / stats["n_scored"]) if stats["n_scored"] else 100.0
+    c = (100.0 * stats["c_ok"] / stats["n_scored"]) if stats["n_scored"] else 100.0
+    return a, b, c
+
+
+# =========================================================================== #
 #         Агрегация по типам для регресс-гейта (этап 0d, tests/corpus/gate.py) #
 # =========================================================================== #
 # 13 типов сущностей корпуса (README §«Правила разметки»).  Список ФИКСИРОВАН
@@ -650,6 +863,7 @@ def aggregate_results(results):
     их сущности не измерены (см. gate.py условие 1: сам факт креша роняет
     гейт отдельно, порог 0, независимо от leak-чисел)."""
     crashed = [r["doc_id"] for r in results if r.get("outcome") != "processed"]
+    mask_records = []
     per_type = {t: _empty_type_stats() for t in ALL_ENTITY_TYPES}
     fp_on_neg = {t: 0 for t in ALL_ENTITY_TYPES}
     fp_total = {t: 0 for t in ALL_ENTITY_TYPES}
@@ -666,6 +880,7 @@ def aggregate_results(results):
             hit6, hit8 = _leak_v2_hits(t, e["leak_v2"])
             s["leak_v2_6"] += int(hit6)
             s["leak_v2_8"] += int(hit8)
+        mask_records.extend(r.get("masks", []))
         for f in r.get("false_positives", []):
             gt = f["gtype"]
             fp_total[gt] = fp_total.get(gt, 0) + 1
@@ -692,4 +907,8 @@ def aggregate_results(results):
         "fp_total": fp_total,
         "fp_on_neg_total": sum(fp_on_neg.values()),
         "fp_total_total": sum(fp_total.values()),
+        # masking_correctness: знаменатель — МАСКИ системы, не gold (см. блок выше).
+        # Старые results_*.json поля "masks" не содержат — тогда блок пуст, и гейт
+        # честно печатает «нет данных» вместо выдуманных 100%.
+        "masking_correctness": mc_aggregate(mask_records),
     }

@@ -20,6 +20,14 @@ gate.py — регресс-гейт этапа 0d.
      непомеченной прозе) выросли больше tests/corpus/gate_config.FP_TOLERANCE.
   4. КОРПУС ИЗМЕНИЛСЯ. sha256sum -c MANIFEST.sha256 не OK — до ИЛИ после
      прогона.
+  5. MASKING_CORRECTNESS УПАЛА. Доля A (round-trip замаскированного значения)
+     или B (эталонный спан закрыт масками ЦЕЛИКОМ) по агрегату стала НИЖЕ
+     baseline. Знаменатель — МАСКИ системы, не gold (см. measure_lib, блок
+     masking_correctness): условия 2-3 ловят «плохо ловим», условие 5 ловит
+     «поймали, но спрятали криво» — этап, который начнёт маскировать криво ради
+     recall, обязан покраснеть именно здесь. Допуск — 0 (корректность только
+     растёт). C (совпадение типа маски с эталонным) печатается, но гейт НЕ
+     роняет: это МЯГКИЙ уровень по решению владельца продукта.
 
 Улучшения (leak_v2 упал, FP упал) гейт НЕ роняют — только печатаются.
 
@@ -139,6 +147,31 @@ def compare(baseline_agg, current_agg, fp_tolerance):
     elif fp_delta < 0:
         improvements.append("FP по негативам: %d -> %d (%d)" % (fp_b, fp_c, fp_delta))
 
+    # --- условие 5: masking_correctness (A жёстко, B жёстко, C информационно) ---
+    mb = baseline_agg.get("masking_correctness", {}).get("total")
+    mc = current_agg.get("masking_correctness", {}).get("total")
+    if not mb or not mb["n_masks"]:
+        # baseline снят до появления метрики (нет поля "masks") — сравнивать не с
+        # чем. Молчать нельзя: иначе условие 5 «зелено» просто потому, что его не
+        # с чем сопоставить.
+        regressions.append(
+            "masking_correctness: в baseline нет поля 'masks' — пересоберите "
+            "results_baseline.json текущим run_measurement.py, иначе условие 5 слепо"
+        )
+    elif mc and mc["n_masks"]:
+        (ab, bb, cb), (ac, bc_, cc) = ML.mc_rates(mb), ML.mc_rates(mc)
+        for label, before, after in (("A round-trip", ab, ac), ("B границы", bb, bc_)):
+            if after < before - 1e-9:
+                regressions.append(
+                    "masking_correctness[%s]: %.2f%% -> %.2f%% — корректность "
+                    "маскировки УПАЛА (допуск 0)" % (label, before, after)
+                )
+            elif after > before + 1e-9:
+                improvements.append(
+                    "masking_correctness[%s]: %.2f%% -> %.2f%%" % (label, before, after))
+        # C намеренно не участвует ни в regressions, ни в improvements — он
+        # печатается в отчёте (print_masking_correctness) и не влияет на код возврата.
+
     return rows, regressions, improvements
 
 
@@ -176,6 +209,34 @@ def print_report(rows, baseline_agg, current_agg):
     print("  recall показан для контекста, регресс-условием НЕ является (см. docstring этого файла).")
 
 
+def print_masking_correctness(baseline_agg, current_agg):
+    """Отчёт по masking_correctness РЯДОМ с recall/leak. Знаменатели печатаются
+    явно: у A это все маски, у B/C — маски, легшие хоть на одну эталонную
+    сущность (маске-ложняку покрывать нечего). Их нельзя читать как проценты от
+    gold — это другая метрика (см. measure_lib, блок masking_correctness)."""
+    mb = baseline_agg.get("masking_correctness", {}).get("total") or ML._empty_mc()
+    mc = current_agg.get("masking_correctness", {}).get("total") or ML._empty_mc()
+    print("\nmasking_correctness — корректность ТОГО, ЧТО СИСТЕМА ЗАМАСКИРОВАЛА")
+    print("  (знаменатель — маски системы, НЕ gold; A/B роняют гейт, C — информационно)")
+    ab, bb, cb = ML.mc_rates(mb)
+    ac, bc_, cc = ML.mc_rates(mc)
+    print("  масок: %d -> %d   (из них легли на эталон: %d -> %d)"
+          % (mb["n_masks"], mc["n_masks"], mb["n_scored"], mc["n_scored"]))
+    for label, before, after, hard in (
+        ("A round-trip (значение восстановлено байт-в-байт)", ab, ac, True),
+        ("B границы  (эталон закрыт масками целиком)", bb, bc_, True),
+        ("C тип      (тип маски == тип эталона)", cb, cc, False),
+    ):
+        mark = " " if abs(after - before) < 1e-9 else ("+" if after > before else "-")
+        print("  %s %-52s %6.2f%% -> %6.2f%%%s"
+              % (mark, label, before, after, "" if hard else "   [мягкий]"))
+    ch_b = (100.0 * mb["a_channel_ok"] / mb["n_masks"]) if mb["n_masks"] else 100.0
+    ch_c = (100.0 * mc["a_channel_ok"] / mc["n_masks"]) if mc["n_masks"] else 100.0
+    print("    справочно A-канал (restored == plain на месте маски): "
+          "%.2f%% -> %.2f%% — расхождение с A выше даёт схлопывание '\\n'->' ' "
+          "в ячейке таблицы при сборке plain, само значение при этом цело." % (ch_b, ch_c))
+
+
 def main():
     print("=== gate.py — регресс-гейт этапа 0d ===\n")
 
@@ -211,6 +272,7 @@ def main():
     print()
     rows, regressions, improvements = compare(baseline_agg, current_agg, FP_TOLERANCE)
     print_report(rows, baseline_agg, current_agg)
+    print_masking_correctness(baseline_agg, current_agg)
 
     manifest_ok = ok_before and ok_after
     if not manifest_ok:

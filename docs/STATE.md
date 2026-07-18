@@ -18,7 +18,7 @@
 ```
 venv/Scripts/python.exe -m pytest -q
 ```
-Эталон на `d8e969b`: **769 passed, 1 deselected, 12 xfailed** (~350 c). Другой интерпретатор
+Эталон: **788 passed, 1 deselected, 14 xfailed** (~375 c). Другой интерпретатор
 (`natasha` не установлена) — ошибки сбора; рабочий только `venv/Scripts/python.exe`.
 
 12 `xfailed` — намеренно отложенные дефекты/дыры покрытия, помечены `@xfail(strict=True)`:
@@ -39,6 +39,14 @@ venv/Scripts/python.exe -m pytest -q
 | leak_v2 ≥8 (строгий порог) | **27.2%** |
 | FP на негативах | **2284** |
 | recall_exact (base·canonical, n=2060) | 76.2% |
+| **masking_correctness A** (round-trip, знам. — 17725 масок) | **100.0%** |
+| **masking_correctness B** (границы, знам. — 9723 маски на эталоне) | **77.8%** |
+| masking_correctness C (тип, мягкий, тот же знам.) | 85.2% |
+
+`masking_correctness` — корректность ТОГО, ЧТО СИСТЕМА ЗАМАСКИРОВАЛА; знаменатель — **маски
+системы, не gold** (recall/leak: «сколько поймали»; эта метрика: «из пойманного, сколько
+спрятано корректно»). Введена контрактом MC, см.
+[`archive/reports/HANDOFF_CONTRACT_MC.md`](archive/reports/HANDOFF_CONTRACT_MC.md).
 
 Источник — `docs/archive/reports/HANDOFF_STAGE_2.md` §3/§7. Точка отсчёта регресс-гейта —
 `tests/corpus/results_baseline.json` (пересобран этапом 2, в `MANIFEST.sha256` не входит).
@@ -107,6 +115,11 @@ venv/Scripts/python.exe -m pytest -q
 
 - Корпус `tests/corpus/**` заморожен — `sha256sum -c MANIFEST.sha256` из `tests/corpus/`
   обязан быть OK до и после любой правки. Корпус не редактировать.
+- **Корректность маскировки только растёт.** `masking_correctness` A (round-trip) и B
+  (границы) не должны ПАДАТЬ ни на одном этапе — гейт роняется с допуском 0 (условие 5).
+  C (тип) — мягкий, печатается, но не роняет. Асимметрия ошибок: пропуск человек поймает на
+  проверке, кривую маскировку — нет, поэтому этап, который начнёт маскировать криво ради
+  recall, обязан покраснеть.
 - Регресс-гейт (`tests/corpus/gate.py`) не должен показывать рост крешей/`leak_v2`/FP или
   смену MANIFEST. Не вешать на pre-commit — CI на PR, трогающем `src/`.
 - `~/.shifrator/sessions/` — путь хранилища, имена `key.bin`/`{sid}.enc`/`{sid}.txt`. Смена

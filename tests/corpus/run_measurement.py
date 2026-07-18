@@ -191,6 +191,18 @@ def process_doc(d, allow_lossy=ALLOW_LOSSY):
                    "len_mismatch": len_mismatch, "ws_only": ws_only,
                    "sample": sample})
 
+    # ---- masking_correctness: координаты масок в plain/restored ----
+    # Отдельная система координат от PT-1: A сравнивает restored с plain, а plain —
+    # это сборка tokenizer.build_plain_text, а не PT-1-текст корпуса.  Смещения
+    # сегментов внутри plain считаем повторной сборкой и СВЕРЯЕМ её с эталонной:
+    # разъезд реализаций сделал бы координаты A враньём, поэтому падаем громко.
+    plain2, plain_offs = ML.plain_segment_offsets(doc)
+    assert plain2 == plain, (
+        f"{doc_id}: ML.plain_segment_offsets разошлась с tokenizer.build_plain_text — "
+        "координаты метрики A недействительны"
+    )
+    aligned = (len(restored) == len(plain))
+
     # глобализация найденных
     offs, loc_misses = ML.build_segment_offsets(doc, G, body_start)
     det = ML.map_entities_to_pt1(kept, offs, G)
@@ -273,6 +285,42 @@ def process_doc(d, allow_lossy=ALLOW_LOSSY):
             "cross_type": (cross["type"] if cross else None),
         })
 
+    # ---- masking_correctness (A/B/C) по КАЖДОЙ маске системы ----
+    # Знаменатель — маски (kept), а НЕ gold: меряем «из пойманного, сколько
+    # корректно».  det[i] соответствует kept[i] (map_entities_to_pt1 сохраняет
+    # порядок), поэтому одну и ту же маску смотрим в двух системах координат:
+    # plain (для A) и PT-1 (для B/C, где размечен gold).
+    masks_pt1 = [
+        {"start": x["start"], "end": x["end"], "gtype": x["gtype"]}
+        for x in det_located
+    ]
+    mask_records = []
+    for e, x in zip(kept, det):
+        base = plain_offs.get(e.segment_id)
+        if base is None:
+            # сегмент не попал в plain-сборку — координаты A недействительны,
+            # считаем нарушением консервативно (см. mc_check_a, reason unaligned).
+            a = {"a_ok": False, "a_channel_ok": False, "reason": "no_plain_offset"}
+        else:
+            a = ML.mc_check_a(base + e.start, e.original_text, restored, plain,
+                              aligned=aligned)
+        if x["start"] is None:
+            bc = {"scored": False, "b_ok": None, "c_ok": None,
+                  "gold_type": None, "mask_type": x["gtype"]}
+        else:
+            bc = ML.mc_check_bc(
+                {"start": x["start"], "end": x["end"], "gtype": x["gtype"]},
+                d["entities"], masks_pt1,
+            )
+        mask_records.append({
+            "gtype": x["gtype"], "raw_type": x["raw_type"], "token": e.token,
+            "text": e.original_text,
+            "a_ok": a["a_ok"], "a_channel_ok": a["a_channel_ok"],
+            "a_reason": a["reason"],
+            "scored": bc["scored"], "b_ok": bc["b_ok"], "c_ok": bc["c_ok"],
+            "gold_type": bc["gold_type"],
+        })
+
     doc_leaked = any(r["leaked"] for r in ent_records)
     doc_leaked_v2 = any(r["leak_v2"]["status"] != "none" for r in ent_records)
     return {
@@ -296,6 +344,10 @@ def process_doc(d, allow_lossy=ALLOW_LOSSY):
         "doc_leaked": doc_leaked,
         "doc_leaked_v2": doc_leaked_v2,
         "entities": ent_records,
+        # masking_correctness: по одной записи на КАЖДУЮ маску системы (см.
+        # measure_lib, блок masking_correctness). Знаменатель метрики — этот
+        # список, а не "entities" (gold).
+        "masks": mask_records,
         "false_positives": fp_records,
     }
 
