@@ -143,12 +143,130 @@ class TestLowercaseHeuristic:
         doc = extract(src)
         assert _seg(doc, "l0").metadata["detection_text"] == "1. Сидоров Сидор Сидорович"
 
-    def test_unnumbered_lowercase_line_gets_no_detection_text(self, txt_factory):
-        """Строчная строка БЕЗ нумерации -> эвристика НЕ срабатывает (это и есть
-        известная непокрытая дыра)."""
+    def test_unnumbered_lowercase_line_now_gets_detection_text(self, txt_factory):
+        """ЭТАП 2b: строчная строка БЕЗ нумерации теперь нормализуется.
+
+        До 2b эвристика требовала признак пункта перечисления ("1."/"(1)"), и это
+        была ЗАДОКУМЕНТИРОВАННАЯ непокрытая дыра: ФИО строчными в обычном абзаце
+        не находилось (recall на сплошь строчных ФИО был РОВНО 0.0%). Требование
+        нумерации снято — тест перевёрнут вместе с поведением."""
         src = txt_factory("иванов иван иванович подписал договор")
         doc = extract(src)
+        assert (_seg(doc, "l0").metadata["detection_text"]
+                == "Иванов Иван Иванович Подписал Договор")
+
+
+# --------------------------------------------------------------------------- #
+# Этап 2b — регистровая нормализация на уровне СЛОВА и её щиты.
+# --------------------------------------------------------------------------- #
+
+class TestStage2bWordLevelCase:
+    def test_uppercase_name_inside_mixed_segment(self, txt_factory, config_path,
+                                                 ner_detector_module):
+        """ЗАГЛАВНОЕ ФИО в сегменте СМЕШАННОГО регистра. Посегментная эвристика
+        мимо этого проходила (isupper() у сегмента ложно) — словная ловит."""
+        src = txt_factory("Исполнитель: ПЕТРОВА ОЛЬГА ИВАНОВНА")
+        doc = extract(src)
+        assert (_seg(doc, "l0").metadata["detection_text"]
+                == "Исполнитель: Петрова Ольга Ивановна")
+        persons = [e for e in ner_detector_module.detect_ner(doc, config_path)
+                   if e.entity_type == "PERSON"]
+        assert any("ПЕТРОВА" in p.original_text for p in persons)
+
+    def test_alternating_case_word_is_normalized(self, txt_factory):
+        """'пЕтРоВ' — заглавная после строчной внутри слова, так не пишут."""
+        src = txt_factory("Подписал кУзНеЦоВа мАрИя")
+        doc = extract(src)
+        assert (_seg(doc, "l0").metadata["detection_text"]
+                == "Подписал Кузнецова Мария")
+
+    def test_normal_case_text_is_left_byte_for_byte(self, txt_factory):
+        """ГЛАВНАЯ ГАРАНТИЯ: на тексте с нормальным регистром преобразование
+        ТОЖДЕСТВЕННО, detection_text вообще не создаётся. Именно это защищает
+        уже работающую детекцию (PER recall на смешанном регистре) от 2b."""
+        src = txt_factory("Договор подписан. Стороны: Иванов И. И. и ООО «Ромашка».")
+        doc = extract(src)
         assert "detection_text" not in _seg(doc, "l0").metadata
+
+    def test_legal_form_abbreviations_stay_uppercase(self, txt_factory):
+        """Слова 2-3 букв (ООО/ИП/АО) — юр-формы, а не капс: остаются заглавными,
+        иначе рушится синтаксический слой составных сущностей ('ИП + ФИО')."""
+        src = txt_factory("ип пирогова а.с.")
+        doc = extract(src)
+        assert _seg(doc, "l0").metadata["detection_text"] == "ИП Пирогова А.С."
+
+    def test_numeric_token_case_is_untouched(self, txt_factory):
+        """ЩИТ РЕКВИЗИТА. Свод цифровых омоглифов в normalizer регистрозависим
+        ('б'->6 есть, 'Б'->6 НЕТ). Поднять регистр у БИК, где буквы стоят вместо
+        цифр, значит сломать свод и потерять реквизит ЦЕЛИКОМ. Замер этапа 2b
+        поймал ровно это: 4 реквизита теряли маску полностью."""
+        # ФИО рядом — чтобы detection_text вообще создался (без единого изменения
+        # он не создаётся): так видно, что соседний реквизит при этом прошёл мимо
+        # нормализации байт-в-байт. Три заглавных слова — иначе не прогон.
+        src = txt_factory("ПЕТРОВА ОЛЬГА ИВАНОВНА бик 04Ч525ЗбО счёт 4О80281О4бІ704803064")
+        doc = extract(src)
+        det = _seg(doc, "l0").metadata["detection_text"]
+        assert det.startswith("Петрова ")
+        assert "04Ч525ЗбО" in det and "4О80281О4бІ704803064" in det
+
+    def test_invisible_chars_do_not_split_word(self, txt_factory):
+        """Слово читается СКВОЗЬ невидимые (Cf), как и в normalizer: иначе
+        'о<SHY>лЬгА' распалось бы на 'о' и 'лЬгА', одиночная 'о' не выглядела бы
+        аномальной, и имя чинилось бы наполовину ('о Льга')."""
+        src = txt_factory("Получатель о\xadлЬгА")
+        doc = extract(src)
+        assert _seg(doc, "l0").metadata["detection_text"] == "Получатель О\xadльга"
+
+    def test_lone_uppercase_acronym_is_not_touched(self, txt_factory):
+        """ОДИНОКОЕ заглавное слово среди нормального текста — аббревиатура, а не
+        ФИО. Приведённое к Титульному, 'ОКВЭД' -> 'Оквэд' читается Наташей как
+        фамилия: замер дал +17 ложных PER на негативах, 13 из них ровно 'ОКВЭД'."""
+        src = txt_factory("СТ 7.32-2017, артикул RM-7584-29, код ОКВЭД")
+        doc = extract(src)
+        assert "detection_text" not in _seg(doc, "l0").metadata
+
+    def test_uppercase_run_of_three_is_normalized(self, txt_factory):
+        """Контроль к предыдущему: ФИО заглавными — ПРОГОН из >=3 заглавных слов,
+        он чинится. Инициалы считаются частью прогона ('КРЫЛОВА Е. П.')."""
+        doc = extract(txt_factory("Подписал КРЫЛОВА Е. П."))
+        assert _seg(doc, "l0").metadata["detection_text"] == "Подписал Крылова Е. П."
+
+    def test_two_word_caps_run_is_left_alone(self, txt_factory):
+        """Прогон из ДВУХ заглавных слов не трогаем: чаще это топоним без
+        маркеров, чем ФИО. Замер: 'МОСКВА ЛЕНИНА 47/3 КВ 67' до 2b случайно
+        попадал под NER-маску целиком, а нормализация регистра эту случайную
+        маску убирала и ОТКРЫВАЛА адрес — 2b создавал новую утечку. Цена порога —
+        двусловные заглавные ФИО не чинятся; инвариант дороже."""
+        doc = extract(txt_factory("МОСКВА ЛЕНИНА 47/3 КВ 67"))
+        assert "detection_text" not in _seg(doc, "l0").metadata
+
+    def test_combo_segment_is_left_alone_entirely(self, txt_factory):
+        """Stage2b-A: сегмент со словом СМЕШАННОГО алфавита (омоглифная подмена
+        латиницей) этап 2b не трогает ВОВСЕ — ни одного слова.
+
+        Щит стоит на сегменте, а не на слове, и это принципиально: словной щит
+        замерен и отвергнут (полунормализация — чистые слова имени к Титульному,
+        омоглифное рваным — теряла 7 ФИО из-под маски ЦЕЛИКОМ). Инвариант 2b:
+        не создать НИ ОДНОЙ новой утечки; combo-стык вынесен отдельным шагом."""
+        # 'иBаНоB' — латинская B внутри кириллицы; 'пЕтРоВа' рядом чистая.
+        src = txt_factory("иBаНоB пЕтРоВа")
+        doc = extract(src)
+        assert "detection_text" not in _seg(doc, "l0").metadata
+
+    def test_pure_cyrillic_segment_still_normalized(self, txt_factory):
+        """Контроль к предыдущему: без латиницы тот же текст чинится — то есть
+        щит сужает 2b ровно на combo, а не отключает его."""
+        src = txt_factory("иванов пЕтРоВа")
+        doc = extract(src)
+        assert _seg(doc, "l0").metadata["detection_text"] == "иванов Петрова"
+
+    def test_length_is_preserved_by_word_level_branch(self, txt_factory):
+        """Инвариант равной длины — фундамент схемы оффсетов — держится и на
+        словной ветви, включая невидимые и реквизиты."""
+        line = "ПЕТРОВА О\xadЛЬГА, бик 04Ч525ЗбО, кУзНеЦоВа"
+        doc = extract(txt_factory(line))
+        seg = _seg(doc, "l0")
+        assert len(seg.metadata["detection_text"]) == len(seg.text)
 
 
 # --------------------------------------------------------------------------- #
@@ -330,6 +448,15 @@ class TestStyleInheritedCaps:
 
 
 class TestStyleCapsCancellation:
+    # Текст проб здесь СМЕШАННОГО регистра ('иванов Иван Иванович'), и это
+    # существенно. Проверяется механизм Изменения 1 (наследование all_caps по
+    # цепочке стилей), а его признак — сам факт появления detection_text. После
+    # этапа 2b сплошь строчный сегмент нормализуется УЖЕ ПО ДРУГОЙ ветви
+    # (регистровая эвристика), поэтому на строчной пробе «detection_text нет»
+    # перестало означать «капс отменён» — проба смешала бы два механизма.
+    # Смешанный регистр для ветви 2b тождественен (она правит только заглавные
+    # слова и слова с внутренним флипом), значит ключ появится ТОЛЬКО если
+    # сработает наследование капса — ровно то, что тест и должен ловить.
     def test_direct_run_false_cancels_inherited_true(self, tmp_path):
         """Явный False на ране поверх унаследованного True (стиль абзаца) ->
         detection_text НЕ создаётся (трёхзначная логика не схлопнута в двузначную)."""
@@ -338,7 +465,7 @@ class TestStyleCapsCancellation:
         st = _add_para_style(doc, "CapsPara", all_caps=True)
         p = doc.add_paragraph()
         p.style = st
-        r = p.add_run("иванов иван иванович")
+        r = p.add_run("иванов Иван Иванович")
         r.font.all_caps = False   # отмена унаследованного капса
         doc.save(str(path))
 
@@ -353,7 +480,7 @@ class TestStyleCapsCancellation:
         child = _add_para_style(doc, "ChildOff", all_caps=False, base=parent)
         p = doc.add_paragraph()
         p.style = child
-        p.add_run("иванов иван иванович")
+        p.add_run("иванов Иван Иванович")
         doc.save(str(path))
 
         d = extract(str(path))
@@ -372,13 +499,15 @@ class TestStyleCapsRobustness:
         b.base_style = a   # цикл
         p = doc.add_paragraph()
         p.style = a
-        p.add_run("иванов иван иванович")
+        # Смешанный регистр — по той же причине, что в TestStyleCapsCancellation:
+        # изолируем наследование капса от регистровой эвристики этапа 2b.
+        p.add_run("иванов Иван Иванович")
         doc.save(str(path))
 
         d = extract(str(path))   # не должно зависнуть
         # Капса в цикле нет -> detection_text не создан, но извлечение прошло.
         assert "detection_text" not in _seg(d, "p0").metadata
-        assert _seg(d, "p0").text == "иванов иван иванович"
+        assert _seg(d, "p0").text == "иванов Иван Иванович"
 
 
 class TestStyleCapsRoundTripAndLength:

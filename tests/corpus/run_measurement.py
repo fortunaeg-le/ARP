@@ -42,7 +42,7 @@ from detokenizer import detokenize  # noqa: E402
 CONFIG = os.path.join(ROOT, "entity_types.yaml")
 GOLD = os.path.join(HERE, "gold.json")
 DOCS = os.path.join(HERE, "docs")
-COMMIT = "stage4"  # этап 4 (КС — сигнал, не шлагбаум); НЕ перезатираем results_baseline.json (гейт)
+COMMIT = "stage2b"  # этап 2b (регистр); НЕ перезатираем results_baseline.json (гейт)
 OUT = os.path.join(HERE, f"results_{COMMIT}.json")
 
 NUMERIC_TYPES = {"INN", "OGRN", "KPP", "ACCOUNT", "BIK", "PHONE",
