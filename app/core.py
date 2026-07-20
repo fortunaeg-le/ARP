@@ -25,6 +25,8 @@ if _SRC not in sys.path:
 
 DEFAULT_CONFIG = os.path.join(_ROOT, "entity_types.yaml")
 
+BUILD_MARK = "stage-a-fix"
+
 
 # --- Человекочитаемые названия типов ПДн (для юриста, не коды) ---------------
 TYPE_LABELS = {

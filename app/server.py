@@ -19,6 +19,8 @@ from http.server import BaseHTTPRequestHandler, ThreadingHTTPServer
 sys.path.insert(0, os.path.dirname(os.path.abspath(__file__)))
 import core  # noqa: E402
 
+print(f"[BUILD_MARK={core.BUILD_MARK}]", file=sys.stderr)
+
 HOST = "127.0.0.1"
 PORT = int(os.environ.get("SHIFRATOR_UI_PORT", "8765"))
 _HERE = os.path.dirname(os.path.abspath(__file__))
@@ -174,8 +176,25 @@ class Handler(BaseHTTPRequestHandler):
         self._send_json(result)
 
 
+class Server(ThreadingHTTPServer):
+    # На Windows SO_REUSEADDR (значение по умолчанию в http.server) позволяет НОВОМУ
+    # процессу забиндиться на порт, даже если СТАРЫЙ процесс всё ещё слушает его —
+    # без ошибки. Итог: два сервера одновременно на 127.0.0.1:8765, ОС отдаёт
+    # запросы то одному, то другому — пользователь видит то старый код, то новый.
+    # Отключаем reuse, чтобы конфликт порта падал явно, а не терялся молча.
+    allow_reuse_address = False
+
+
 def main():
-    server = ThreadingHTTPServer((HOST, PORT), Handler)
+    try:
+        server = Server((HOST, PORT), Handler)
+    except OSError as e:
+        print("=" * 60)
+        print(f"  [ОШИБКА] Порт {PORT} уже занят — похоже, интерфейс уже запущен")
+        print(f"  в другом окне. Закройте то окно (или его процесс) и запустите заново.")
+        print(f"  Системная ошибка: {e}")
+        print("=" * 60)
+        sys.exit(1)
     url = f"http://{HOST}:{PORT}/"
     print("=" * 60)
     print("  SHIFRATOR — десктоп-интерфейс")
