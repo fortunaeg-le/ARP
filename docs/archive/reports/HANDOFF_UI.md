@@ -70,3 +70,15 @@ round-trip к точному оригиналу, человеческие оши
   захотим CI на `app/` — стоит завести отдельный `tests/app/` с HTTP-клиентом,
   чтобы не смешивать с замерным гейтом `src/`.
 - Только `.docx`/`.txt` на входе (как и CLI encrypt). PDF/веб — вне этой задачи.
+
+## Фикс: UI отставал от этапа A (2026-07-20)
+
+Причина: `app/core.py::run_encrypt` был написан ДО этапа A (structure-first ORG) и
+никогда не обновлялся — вызывал `detect_regex`+`detect_ner`+`merge_compound_entities`,
+но не `anchor_registry.detect_org`/`suppress_conflicts`. Не копия кода/конфига/venv —
+тот же `src/`, тот же `entity_types.yaml`, тот же `venv`, просто пропущенный шаг
+конвейера. Фикс: добавлены 3 строки в `app/core.py` (импорт + вызов `detect_org`/
+`suppress_conflicts`, тот же порядок, что `shifrator.py::cmd_encrypt`). Проверка:
+`dogovor.docx` через CLI и через `core.run_encrypt` → `{sid}.txt` побайтно идентичны
+(sha256 `d62655103...faa77690` оба), ORG_* метки в UI-выводе присутствуют (4 шт.).
+`src/`/`shifrator.py`/`entity_types.yaml` не тронуты; `MANIFEST.sha256` — OK до и после.

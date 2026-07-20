@@ -151,6 +151,7 @@ def run_encrypt(path: str, allow_lossy: bool = False, config_path: str = DEFAULT
     from extractor import extract
     from regex_detector import detect_regex
     from ner_detector import detect_ner
+    from anchor_registry import detect_org, suppress_conflicts
     from syntax_compound import merge_compound_entities
     from tokenizer import tokenize, _assemble
     from session_store import save_session, default_storage_dir
@@ -166,7 +167,11 @@ def run_encrypt(path: str, allow_lossy: bool = False, config_path: str = DEFAULT
     # --- Реальная детекция и маскировка (никакой своей логики) ---
     regex_entities = detect_regex(doc, config_path)
     ner_entities = detect_ner(doc, config_path, regex_entities=regex_entities)
-    entities = regex_entities + ner_entities
+    # Этап A: тот же порядок, что shifrator.py::cmd_encrypt — структурный ORG-движок
+    # + арбитраж конфликтов с Natasha PER/ADDRESS.
+    org_entities = detect_org(doc, regex_entities=regex_entities)
+    ner_entities = suppress_conflicts(org_entities, ner_entities)
+    entities = regex_entities + ner_entities + org_entities
     entities = merge_compound_entities(doc, entities)
     anon_text, final_entities = tokenize(doc, entities, config_path)
 

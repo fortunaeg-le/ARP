@@ -217,6 +217,11 @@ PASSPORT под якорем «код подразделения». Все 13 т
   Natasha PER/ADDR/ORG-мешанины. Итог: GLiNER → ярус recall позже, этап A structure-first.
   Латентность CPU ~2–3× медленнее Natasha. См. `archive/reports/HANDOFF_A0_GLINER.md`.
 
+**UI отставал от этапа A** (2026-07-20, фикс): `app/core.py` не вызывал
+`anchor_registry.detect_org`/`suppress_conflicts` (написан до этапа A) — ORG-меток
+не давал, при том что `src/`/CLI не тронуты. Починено (3 строки в `app/core.py`),
+byte-diff CLI↔UI подтверждён. См. [`archive/reports/HANDOFF_UI.md`](archive/reports/HANDOFF_UI.md).
+
 ## 6. Границы, действующие всегда
 
 - Корпус `tests/corpus/**` заморожен — `sha256sum -c MANIFEST.sha256` из `tests/corpus/`
