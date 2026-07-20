@@ -11,9 +11,15 @@ entity_types:
     method: ner
     ner_label: PER
     token_prefix: PERSON
+  # ЭТАП A (structure-first ORG). Natasha-ORG на прозе ВЫКЛЮЧЕНА: убран ner_label,
+  # поэтому _load_ner_config не кладёт ORG в ner_label_map — NER-тэггер ORG больше
+  # не даёт (он метил юр-мусор: Большинство→ORG, а одно имя фирмы в падежах — разные
+  # типы, см. archive/reports/HANDOFF_A0_GLINER.md). ORG теперь даёт ТОЛЬКО
+  # src/anchor_registry.py (якорь по org-форме/кавычкам/введению/ИНН-ОГРН юрлица +
+  # проход 2 по лемме ядра). token_prefix оставлен — тип по-прежнему токенизируется.
   ORG:
-    method: ner
-    ner_label: ORG
+    method: anchor_registry
+    anchor_type: ORG
     token_prefix: ORG
   ADDRESS:
     method: ner

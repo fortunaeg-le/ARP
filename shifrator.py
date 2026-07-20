@@ -92,6 +92,7 @@ def cmd_encrypt(path, config_path, allow_lossy=False):
     from extractor import extract
     from regex_detector import detect_regex
     from ner_detector import detect_ner
+    from anchor_registry import detect_org, suppress_conflicts
     from syntax_compound import merge_compound_entities
     from tokenizer import tokenize
     from session_store import save_session, default_storage_dir
@@ -128,7 +129,12 @@ def cmd_encrypt(path, config_path, allow_lossy=False):
         # открытым текстом (W2-D1). PER/ORG detect_ner защищает своими спанами сам.
         regex_entities = detect_regex(doc, config_path)
         ner_entities = detect_ner(doc, config_path, regex_entities=regex_entities)
-        entities = regex_entities + ner_entities
+        # Этап A: ORG даёт структурный движок (якорь+реестр+проход 2), Natasha-ORG
+        # выключена в конфиге. Арбитраж типов снимает Natasha PER/ADDRESS, ошибочно
+        # наложенные на ядро организации (тот же «Восход», рвущийся на 3 типа).
+        org_entities = detect_org(doc, regex_entities=regex_entities)
+        ner_entities = suppress_conflicts(org_entities, ner_entities)
+        entities = regex_entities + ner_entities + org_entities
         # Волна 2, этап B: составные сущности «ORG + ФИО» (ИП Пирогова А.С.) —
         # отдельный синтаксический проход ПОСЛЕ основной детекции, ДО токенизации.
         entities = merge_compound_entities(doc, entities)

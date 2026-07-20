@@ -1,0 +1,408 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>SHIFRATOR — обезличивание договоров</title>
+<style>
+  :root{
+    --bg:#f4f5f7; --panel:#fff; --ink:#1c2330; --muted:#5c6675; --line:#dfe3e9;
+    --accent:#2f6df6; --accent-d:#1f57d6; --ok:#137a4b; --okbg:#e7f6ee;
+    --warn:#9a5b00; --warnbg:#fff4e0; --warnline:#f0c987;
+    --err:#b32020; --errbg:#fdecec; --shadow:0 1px 3px rgba(20,30,50,.08),0 8px 24px rgba(20,30,50,.06);
+  }
+  *{box-sizing:border-box}
+  body{margin:0;font:15px/1.5 -apple-system,Segoe UI,Roboto,Arial,sans-serif;background:var(--bg);color:var(--ink)}
+  header{background:var(--panel);border-bottom:1px solid var(--line);padding:10px 20px;display:flex;align-items:center;gap:16px;position:sticky;top:0;z-index:20}
+  header .brand{font-weight:700;letter-spacing:.5px}
+  header .brand small{font-weight:400;color:var(--muted);margin-left:8px}
+  nav{display:flex;gap:4px;margin-left:auto}
+  nav button{border:1px solid transparent;background:none;color:var(--muted);padding:6px 14px;border-radius:8px;cursor:pointer;font-size:14px}
+  nav button.active{background:#eef3ff;color:var(--accent-d);border-color:#d3e0ff;font-weight:600}
+  nav button:disabled{opacity:.4;cursor:not-allowed}
+  main{max-width:1280px;margin:0 auto;padding:20px}
+  .screen{display:none}
+  .screen.active{display:block}
+  .card{background:var(--panel);border:1px solid var(--line);border-radius:12px;box-shadow:var(--shadow);padding:22px}
+  h2{margin:0 0 6px;font-size:19px}
+  .sub{color:var(--muted);margin:0 0 18px;font-size:14px}
+  button.primary{background:var(--accent);color:#fff;border:none;padding:10px 18px;border-radius:8px;font-size:15px;font-weight:600;cursor:pointer}
+  button.primary:hover{background:var(--accent-d)}
+  button.ghost{background:none;border:1px solid var(--line);padding:9px 16px;border-radius:8px;cursor:pointer;color:var(--ink);font-size:14px}
+  button.ghost:hover{border-color:var(--accent);color:var(--accent-d)}
+  button:disabled{opacity:.5;cursor:not-allowed}
+
+  /* --- drop zone --- */
+  .drop{border:2px dashed #c3ccd8;border-radius:12px;padding:44px 20px;text-align:center;color:var(--muted);cursor:pointer;transition:.15s;background:#fafbfd}
+  .drop:hover,.drop.over{border-color:var(--accent);background:#f2f6ff;color:var(--accent-d)}
+  .drop .big{font-size:42px;line-height:1;margin-bottom:10px}
+  .drop b{color:var(--ink)}
+
+  /* --- status --- */
+  .status{margin-top:18px;padding:12px 16px;border-radius:10px;display:none;align-items:center;gap:10px}
+  .status.show{display:flex}
+  .status.busy{background:#eef3ff;color:var(--accent-d)}
+  .status.ok{background:var(--okbg);color:var(--ok)}
+  .status.err{background:var(--errbg);color:var(--err)}
+  .spinner{width:16px;height:16px;border:2px solid #cdd8ee;border-top-color:var(--accent);border-radius:50%;animation:spin .8s linear infinite;flex:0 0 auto}
+  @keyframes spin{to{transform:rotate(360deg)}}
+
+  /* --- warning block --- */
+  .warn{background:var(--warnbg);border:1px solid var(--warnline);border-radius:10px;padding:14px 16px;margin-top:16px}
+  .warn h3{margin:0 0 6px;font-size:15px;color:var(--warn);display:flex;gap:8px;align-items:center}
+  .warn table{width:100%;border-collapse:collapse;margin:10px 0;font-size:13px}
+  .warn th,.warn td{text-align:left;padding:5px 8px;border-bottom:1px solid var(--warnline)}
+  .warn th{color:var(--warn);font-weight:600}
+  .warn .zprev{color:var(--muted);max-width:340px;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
+  .warn .actions{display:flex;gap:10px;margin-top:6px;flex-wrap:wrap}
+
+  /* --- verify layout --- */
+  .verify-top{display:flex;flex-wrap:wrap;gap:14px;align-items:center;margin-bottom:14px}
+  .badge{background:#eef3ff;color:var(--accent-d);border-radius:20px;padding:6px 14px;font-weight:600;font-size:14px}
+  .sid{font:13px ui-monospace,Consolas,monospace;background:#f0f2f6;border:1px solid var(--line);padding:5px 10px;border-radius:8px;user-select:all}
+  .verify-grid{display:grid;grid-template-columns:1fr 340px;gap:16px;align-items:start}
+  .panes{display:grid;grid-template-columns:1fr 1fr;gap:14px;min-width:0}
+  .pane h4{margin:0;padding:10px 14px;font-size:13px;color:var(--muted);border-bottom:1px solid var(--line);background:#fafbfd;border-radius:12px 12px 0 0;text-transform:uppercase;letter-spacing:.4px}
+  .pane .body{padding:14px;white-space:pre-wrap;word-break:break-word;font-size:13.5px;max-height:62vh;overflow:auto;line-height:1.7}
+  .pane{background:var(--panel);border:1px solid var(--line);border-radius:12px;min-width:0}
+
+  mark.ent{border-radius:4px;padding:0 2px;cursor:default;box-decoration-break:clone;-webkit-box-decoration-break:clone}
+  mark.ent.active{outline:2px solid rgba(0,0,0,.35);outline-offset:0}
+  /* type colors */
+  .t-PERSON{background:#ffd9e0}.t-ORG{background:#d7e6ff}.t-ADDRESS{background:#ffe6bd}
+  .t-INN{background:#d4f3dd}.t-OGRN{background:#c9f0e6}.t-KPP{background:#e6dcff}
+  .t-BANK_ACCOUNT{background:#dbe7c8}.t-BIK{background:#cfeede}.t-PASSPORT{background:#ffd6c2}
+  .t-PHONE{background:#c6ecf5}.t-EMAIL{background:#e4e0c0}.t-SNILS{background:#f0d4f0}
+  .t-BIRTHDATE{background:#ffe0cc}.t-SUM{background:#e8eab0}.t-DATE{background:#e2e6ea}
+
+  /* --- sidebar list --- */
+  .side{background:var(--panel);border:1px solid var(--line);border-radius:12px;max-height:70vh;overflow:auto;position:sticky;top:70px}
+  .side h4{margin:0;padding:12px 14px;font-size:14px;border-bottom:1px solid var(--line)}
+  .grp{border-bottom:1px solid var(--line)}
+  .grp-h{padding:9px 14px;font-size:12px;font-weight:700;color:var(--muted);display:flex;justify-content:space-between;text-transform:uppercase;letter-spacing:.4px;background:#fafbfd}
+  .swatch{display:inline-block;width:11px;height:11px;border-radius:3px;margin-right:7px;vertical-align:middle}
+  .rep{padding:7px 14px;font-size:13px;cursor:pointer;border-top:1px solid #f0f2f6;display:flex;justify-content:space-between;gap:8px}
+  .rep:hover,.rep.active{background:#eef3ff}
+  .rep .orig{overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
+  .rep .tok{font:11.5px ui-monospace,Consolas,monospace;color:var(--muted);flex:0 0 auto}
+  .rep .cnt{color:var(--muted);font-size:11px;flex:0 0 auto}
+
+  .verify-actions{display:flex;gap:12px;margin-top:16px;flex-wrap:wrap;align-items:center}
+  .note{color:var(--muted);font-size:13px}
+
+  /* --- tooltip --- */
+  #tip{position:fixed;z-index:60;background:#1c2330;color:#fff;padding:8px 11px;border-radius:8px;font-size:12.5px;max-width:340px;box-shadow:var(--shadow);pointer-events:none;display:none;line-height:1.45}
+  #tip b{color:#ffd9e0}
+  #tip .arrow{color:#8fb2ff}
+  #tip code{font:11.5px ui-monospace,Consolas,monospace;background:rgba(255,255,255,.15);padding:1px 4px;border-radius:4px}
+
+  /* --- restore --- */
+  .field{margin-bottom:14px}
+  .field label{display:block;font-size:13px;color:var(--muted);margin-bottom:5px;font-weight:600}
+  .field input,.field textarea{width:100%;border:1px solid var(--line);border-radius:8px;padding:9px 11px;font-size:14px;font-family:inherit;background:#fff}
+  .field input{font-family:ui-monospace,Consolas,monospace}
+  .field textarea{min-height:160px;resize:vertical;white-space:pre;overflow:auto}
+  .restored{margin-top:16px;white-space:pre-wrap;word-break:break-word;background:#fafbfd;border:1px solid var(--line);border-radius:10px;padding:14px;font-size:13.5px;max-height:52vh;overflow:auto;line-height:1.7}
+  .legend{display:flex;flex-wrap:wrap;gap:8px 14px;margin:4px 0 0;font-size:12px;color:var(--muted)}
+  .hidden{display:none}
+</style>
+</head>
+<body>
+<header>
+  <div class="brand">SHIFRATOR<small>обезличивание персональных данных в договорах · локально</small></div>
+  <nav>
+    <button id="nav-enc" class="active" onclick="show('enc')">1 · Шифрация</button>
+    <button id="nav-ver" onclick="show('ver')" disabled>2 · Проверка</button>
+    <button id="nav-res" onclick="show('res')">3 · Восстановление</button>
+  </nav>
+</header>
+
+<main>
+  <!-- ===================== SCREEN 1: ENCRYPT ===================== -->
+  <section id="scr-enc" class="screen active">
+    <div class="card">
+      <h2>Загрузите договор</h2>
+      <p class="sub">Поддерживаются <b>.docx</b> и <b>.txt</b>. Система спрячет персональные данные, а вы проверите результат перед выдачей. Обработка идёт на этом компьютере — файл никуда не отправляется.</p>
+      <div id="drop" class="drop">
+        <div class="big">📄</div>
+        <div><b>Перетащите файл сюда</b> или нажмите, чтобы выбрать</div>
+        <div style="margin-top:6px;font-size:13px">.docx / .txt</div>
+      </div>
+      <input id="file" type="file" accept=".docx,.txt" class="hidden">
+
+      <div id="enc-status" class="status">
+        <span id="enc-spin" class="spinner"></span>
+        <span id="enc-msg"></span>
+      </div>
+
+      <!-- zones refusal choice -->
+      <div id="zones-box" class="warn hidden">
+        <h3>⚠️ Внимание: часть документа система не умеет читать</h3>
+        <div id="zones-intro" class="note"></div>
+        <table><thead><tr><th>Зона</th><th>Где</th><th>Символов</th><th>Начало текста</th></tr></thead>
+          <tbody id="zones-rows"></tbody></table>
+        <div class="note">Если продолжить без этих зон — их текст <b>НЕ будет обезличен</b> и не попадёт в результат (сохранится локально в файл <code>{ID}.unread.json</code> рядом с сессией, чтобы вы видели, что именно выпало). Рекомендуется перенести это содержимое в тело документа и загрузить заново.</div>
+        <div class="actions">
+          <button class="primary" onclick="proceedLossy()">Обработать без этих зон</button>
+          <button class="ghost" onclick="cancelZones()">Отмена — исправлю документ</button>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ===================== SCREEN 2: VERIFY ===================== -->
+  <section id="scr-ver" class="screen">
+    <div class="card">
+      <div class="verify-top">
+        <h2 style="margin:0">Проверка результата</h2>
+        <span class="badge" id="v-count">спрятано 0</span>
+        <div style="margin-left:auto;display:flex;gap:8px;align-items:center">
+          <span class="note">ID сессии:</span>
+          <span class="sid" id="v-sid" title="Понадобится для восстановления">—</span>
+        </div>
+      </div>
+
+      <div id="v-lossy" class="warn hidden">
+        <h3>⚠️ Документ обработан частично</h3>
+        <div class="note" id="v-lossy-text"></div>
+      </div>
+
+      <div class="warn" style="background:#eef3ff;border-color:#cddcff;color:var(--accent-d)">
+        <h3 style="color:var(--accent-d)">🔍 Проверьте глазами</h3>
+        <div class="note" style="color:#33507f">Система прячет данные, но <b>не гарантирует полноту</b> — просмотрите обезличенный текст справа: не осталось ли ФИО, номеров, адресов открытым текстом. Наведите курсор на подсветку, чтобы увидеть, что и на что заменено.</div>
+      </div>
+
+      <div class="legend" id="v-legend"></div>
+
+      <div class="verify-grid" style="margin-top:14px">
+        <div class="panes">
+          <div class="pane"><h4>Исходный текст</h4><div class="body" id="pane-orig"></div></div>
+          <div class="pane"><h4>Обезличенный текст</h4><div class="body" id="pane-anon"></div></div>
+        </div>
+        <div class="side">
+          <h4>Что спрятано <span class="note" id="v-side-count"></span></h4>
+          <div id="v-list"></div>
+        </div>
+      </div>
+
+      <div class="verify-actions">
+        <button class="primary" onclick="downloadAnon()">⬇ Скачать обезличенный текст</button>
+        <button class="ghost" onclick="show('enc');resetEnc()">Загрузить другой документ</button>
+        <span class="note">Сохраните <b>ID сессии</b> — по нему позже восстановите оригинал (срок хранения 24 ч).</span>
+      </div>
+    </div>
+  </section>
+
+  <!-- ===================== SCREEN 3: RESTORE ===================== -->
+  <section id="scr-res" class="screen">
+    <div class="card" style="max-width:820px;margin:0 auto">
+      <h2>Восстановление оригинала</h2>
+      <p class="sub">Введите ID сессии и вставьте обезличенный текст (или загрузите скачанный <code>{ID}.txt</code>). Система вернёт исходные значения на место замен.</p>
+      <div class="field">
+        <label>ID сессии</label>
+        <input id="r-sid" placeholder="напр. 3f2a1c9e-...-...-...-............" spellcheck="false">
+      </div>
+      <div class="field">
+        <label>Обезличенный текст (ответ, где стоят токены вида [PERSON_1])</label>
+        <textarea id="r-text" placeholder="Вставьте текст сюда…"></textarea>
+        <div style="margin-top:8px"><button class="ghost" onclick="document.getElementById('r-file').click()">📂 Загрузить .txt в это поле</button>
+          <input id="r-file" type="file" accept=".txt" class="hidden"></div>
+      </div>
+      <button class="primary" onclick="doDecrypt()">Восстановить оригинал</button>
+
+      <div id="res-status" class="status"><span id="res-spin" class="spinner"></span><span id="res-msg"></span></div>
+
+      <div id="res-out" class="hidden">
+        <div class="verify-top" style="margin-top:18px">
+          <h3 style="margin:0;font-size:16px">Восстановленный текст</h3>
+          <div style="margin-left:auto"><button class="ghost" onclick="downloadRestored()">⬇ Скачать</button></div>
+        </div>
+        <div id="r-unresolved" class="warn hidden" style="margin-top:8px"></div>
+        <div class="restored" id="r-restored"></div>
+      </div>
+    </div>
+  </section>
+</main>
+
+<div id="tip"></div>
+
+<script>
+let CUR = null;             // текущий результат шифрации
+let PENDING_FILE = null;    // файл, ждущий решения по зонам
+const TYPE_LABELS = {PERSON:"ФИО",ORG:"Организация",ADDRESS:"Адрес",INN:"ИНН",OGRN:"ОГРН/ОГРНИП",KPP:"КПП",BANK_ACCOUNT:"Банковский счёт",BIK:"БИК",PASSPORT:"Паспорт",PHONE:"Телефон",EMAIL:"E-mail",SNILS:"СНИЛС",BIRTHDATE:"Дата рождения",SUM:"Сумма",DATE:"Дата"};
+
+function show(which){
+  for(const s of ['enc','ver','res']){
+    document.getElementById('scr-'+s).classList.toggle('active', s===which);
+    document.getElementById('nav-'+s).classList.toggle('active', s===which);
+  }
+}
+
+/* ---------- upload wiring ---------- */
+const drop=document.getElementById('drop'), fileInput=document.getElementById('file');
+drop.onclick=()=>fileInput.click();
+fileInput.onchange=e=>{ if(e.target.files[0]) startEncrypt(e.target.files[0]); fileInput.value=''; };
+['dragenter','dragover'].forEach(ev=>drop.addEventListener(ev,e=>{e.preventDefault();drop.classList.add('over');}));
+['dragleave','drop'].forEach(ev=>drop.addEventListener(ev,e=>{e.preventDefault();drop.classList.remove('over');}));
+drop.addEventListener('drop',e=>{ const f=e.dataTransfer.files[0]; if(f) startEncrypt(f); });
+
+function status(el,msg,kind){
+  const box=document.getElementById(el+'-status');
+  box.className='status show '+(kind||'');
+  document.getElementById(el+'-spin').style.display = kind==='busy' ? 'block':'none';
+  document.getElementById(el+'-msg').textContent=msg;
+}
+function hideStatus(el){ document.getElementById(el+'-status').className='status'; }
+
+function resetEnc(){
+  hideStatus('enc');
+  document.getElementById('zones-box').classList.add('hidden');
+  PENDING_FILE=null;
+}
+
+async function startEncrypt(file, allowLossy){
+  const ext=(file.name.match(/\.[^.]+$/)||[''])[0].toLowerCase();
+  if(ext!=='.docx' && ext!=='.txt'){ status('enc','Поддерживаются только .docx и .txt.','err'); return; }
+  document.getElementById('zones-box').classList.add('hidden');
+  status('enc','Обрабатывается «'+file.name+'»…','busy');
+  try{
+    const buf=await file.arrayBuffer();
+    const resp=await fetch('/api/encrypt',{method:'POST',
+      headers:{'X-Filename':encodeURIComponent(file.name),'X-Allow-Lossy':allowLossy?'1':'0',
+               'Content-Type':'application/octet-stream'},
+      body:buf});
+    const data=await resp.json();
+    if(data.status==='refused'){ PENDING_FILE=file; showZones(data); status('enc','Требуется ваше решение по непрочитанным зонам ниже.','err'); return; }
+    if(data.status==='error'){ status('enc',data.message,'err'); return; }
+    // header X-Filename был url-encoded — вернём читаемое имя
+    data.source_name=file.name;
+    CUR=data;
+    renderVerify(data);
+    hideStatus('enc');
+    document.getElementById('nav-ver').disabled=false;
+    show('ver');
+  }catch(err){ status('enc','Ошибка связи с локальным сервером: '+err,'err'); }
+}
+
+/* ---------- zones choice ---------- */
+function showZones(data){
+  const box=document.getElementById('zones-box');
+  document.getElementById('zones-intro').innerHTML=
+    'Документ «'+esc(data.source_name)+'» содержит <b>'+data.zones.length+'</b> зон(ы), '+
+    'которые SHIFRATOR пока не читает. Их содержимое НЕ обезличено:';
+  document.getElementById('zones-rows').innerHTML=data.zones.map(z=>
+    '<tr><td>'+esc(z.kind_label)+'</td><td>'+esc(z.part)+'</td><td>'+z.char_count+
+    '</td><td class="zprev">'+esc(z.preview)+'</td></tr>').join('');
+  box.classList.remove('hidden');
+}
+function proceedLossy(){ if(PENDING_FILE) startEncrypt(PENDING_FILE,true); }
+function cancelZones(){ resetEnc(); status('enc','Отменено. Перенесите содержимое зон в тело документа и загрузите снова.','err'); }
+
+/* ---------- verify render ---------- */
+function esc(s){ return (s||'').replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;'); }
+
+function renderVerify(d){
+  document.getElementById('v-sid').textContent=d.session_id;
+  document.getElementById('v-count').textContent='спрятано '+d.values_hidden+' знач. · '+d.entities_total+' замен';
+  document.getElementById('pane-orig').innerHTML=d.original_html||'<span class="note">(пусто)</span>';
+  document.getElementById('pane-anon').innerHTML=d.anon_html||'<span class="note">(пусто)</span>';
+
+  // lossy banner
+  const lb=document.getElementById('v-lossy');
+  if(d.lossy && d.zones && d.zones.length){
+    lb.classList.remove('hidden');
+    document.getElementById('v-lossy-text').innerHTML=
+      '<b>'+d.zones.length+'</b> зон(ы) документа не прочитаны и НЕ обезличены (их текст отсутствует в результате): '+
+      d.zones.map(z=>esc(z.kind_label)).join(', ')+'. Сырой текст сохранён локально в <code>'+esc(d.session_id)+'.unread.json</code>.';
+  } else lb.classList.add('hidden');
+
+  // sidebar grouped by type
+  const byType={};
+  d.replacements.forEach(r=>{ (byType[r.entity_type]=byType[r.entity_type]||[]).push(r); });
+  const types=Object.keys(byType).sort((a,b)=>(TYPE_LABELS[a]||a).localeCompare(TYPE_LABELS[b]||b));
+  let html='', legend='';
+  types.forEach(t=>{
+    const label=TYPE_LABELS[t]||t;
+    legend+='<span><span class="swatch t-'+t+'"></span>'+esc(label)+'</span>';
+    html+='<div class="grp"><div class="grp-h"><span><span class="swatch t-'+t+'"></span>'+esc(label)+'</span><span>'+byType[t].length+'</span></div>';
+    byType[t].forEach(r=>{
+      html+='<div class="rep" data-ri="'+r.ri+'" onmouseenter="hi('+r.ri+',1)" onmouseleave="hi('+r.ri+',0)" onclick="jump('+r.ri+')">'+
+        '<span class="orig" title="'+esc(r.original_text)+'">'+esc(r.original_text)+'</span>'+
+        '<span><span class="tok">'+esc(r.token)+'</span>'+(r.count>1?' <span class="cnt">×'+r.count+'</span>':'')+'</span></div>';
+    });
+    html+='</div>';
+  });
+  document.getElementById('v-list').innerHTML=html||'<div class="rep note">Ничего не найдено — проверьте документ вручную.</div>';
+  document.getElementById('v-legend').innerHTML=legend;
+  document.getElementById('v-side-count').textContent='('+d.replacements.length+')';
+  wireMarks();
+}
+
+/* hover highlight cross-reference between panes + sidebar */
+function hi(ri,on){
+  document.querySelectorAll('[data-ri="'+ri+'"]').forEach(el=>el.classList.toggle('active',!!on));
+}
+function jump(ri){
+  const m=document.querySelector('.pane .body mark[data-ri="'+ri+'"]');
+  if(m) m.scrollIntoView({behavior:'smooth',block:'center'});
+}
+const tip=document.getElementById('tip');
+function wireMarks(){
+  document.querySelectorAll('.pane .body mark.ent').forEach(m=>{
+    const ri=+m.dataset.ri, r=CUR.replacements[ri];
+    m.addEventListener('mouseenter',e=>{ hi(ri,1);
+      tip.innerHTML='<b>'+esc(r.type_label)+'</b><br>'+esc(r.original_text)+' <span class="arrow">→</span> <code>'+esc(r.token)+'</code>';
+      tip.style.display='block'; moveTip(e); });
+    m.addEventListener('mousemove',moveTip);
+    m.addEventListener('mouseleave',()=>{ hi(ri,0); tip.style.display='none'; });
+  });
+}
+function moveTip(e){
+  const pad=14; let x=e.clientX+pad, y=e.clientY+pad;
+  const r=tip.getBoundingClientRect();
+  if(x+r.width>innerWidth) x=e.clientX-r.width-pad;
+  if(y+r.height>innerHeight) y=e.clientY-r.height-pad;
+  tip.style.left=x+'px'; tip.style.top=y+'px';
+}
+
+/* ---------- downloads ---------- */
+function saveText(name,text){
+  const blob=new Blob([text],{type:'text/plain;charset=utf-8'});
+  const a=document.createElement('a'); a.href=URL.createObjectURL(blob); a.download=name;
+  document.body.appendChild(a); a.click(); a.remove(); URL.revokeObjectURL(a.href);
+}
+function downloadAnon(){ if(CUR) saveText(CUR.session_id+'.txt', CUR.anon_text); }
+
+/* ---------- restore ---------- */
+document.getElementById('r-file').onchange=async e=>{
+  const f=e.target.files[0]; if(!f) return;
+  document.getElementById('r-text').value=await f.text();
+  e.target.value='';
+};
+let RESTORED='';
+async function doDecrypt(){
+  const sid=document.getElementById('r-sid').value.trim();
+  const text=document.getElementById('r-text').value;
+  document.getElementById('res-out').classList.add('hidden');
+  status('res','Восстанавливается…','busy');
+  try{
+    const resp=await fetch('/api/decrypt',{method:'POST',headers:{'Content-Type':'application/json'},
+      body:JSON.stringify({session_id:sid,text:text})});
+    const data=await resp.json();
+    if(data.status==='error'){ status('res',data.message,'err'); return; }
+    hideStatus('res');
+    RESTORED=data.restored;
+    document.getElementById('r-restored').textContent=data.restored;
+    const un=document.getElementById('r-unresolved');
+    if(data.unresolved && data.unresolved.length){
+      un.classList.remove('hidden');
+      un.innerHTML='<h3>⚠️ Не восстановлены токены</h3><div class="note">Эти токены есть в тексте, но отсутствуют в сессии (возможно, текст из другой сессии): '+
+        data.unresolved.map(t=>'<code>'+esc(t)+'</code>').join(', ')+'</div>';
+    } else un.classList.add('hidden');
+    document.getElementById('res-out').classList.remove('hidden');
+  }catch(err){ status('res','Ошибка связи с локальным сервером: '+err,'err'); }
+}
+function downloadRestored(){ const sid=document.getElementById('r-sid').value.trim()||'restored'; saveText(sid+'_restored.txt',RESTORED); }
+</script>
+</body>
+</html>

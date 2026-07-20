@@ -41,8 +41,13 @@ class TestEndToEndEncryptDecrypt:
             paragraphs_before=["Договор подписал Иванов И.И. от лица ООО «Ромашка», ИНН 7707083893."],
         )
         doc = extract(path)
-        entities = detect_regex(doc, config_path) + ner_detector_module.detect_ner(doc, config_path)
-        anon_text, final_entities = tokenize(doc, entities, config_path)
+        # Этап A: ORG даёт структурный движок (detect_org), Natasha-ORG выключена.
+        from anchor_registry import detect_org, suppress_conflicts
+        rx = detect_regex(doc, config_path)
+        ner = ner_detector_module.detect_ner(doc, config_path, regex_entities=rx)
+        org = detect_org(doc, regex_entities=rx)
+        ner = suppress_conflicts(org, ner)
+        anon_text, final_entities = tokenize(doc, rx + ner + org, config_path)
 
         assert "7707083893" not in anon_text
         assert "ООО «Ромашка»" not in anon_text

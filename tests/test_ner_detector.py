@@ -25,10 +25,17 @@ class TestDetectNerPersonInitialsRight:
         assert persons[0].original_text == "Иванов И.И."
 
     def test_org_found_alongside_person(self, ner_detector_module, config_path):
-        """HANDOFF_3, п.1: тот же абзац также даёт ORG 'ООО «Ромашка»'."""
+        """Этап A: ORG больше НЕ даёт detect_ner (Natasha-ORG выключена в конфиге) —
+        его даёт структурный движок anchor_registry.detect_org. detect_ner на этом
+        абзаце обязан по-прежнему давать PERSON, но НИ ОДНОГО ORG; ORG «ООО «Ромашка»»
+        приходит из detect_org. Тест переориентирован на новую архитектуру (ORG сменил
+        источник), утечки при этом нет — «ООО «Ромашка»» по-прежнему маскируется."""
+        from anchor_registry import detect_org
         doc = _doc("Договор подписал Иванов И.И. от лица ООО «Ромашка».")
         entities = ner_detector_module.detect_ner(doc, config_path)
-        orgs = [e for e in entities if e.entity_type == "ORG"]
+        assert [e for e in entities if e.entity_type == "ORG"] == []
+        assert any(e.entity_type == "PERSON" for e in entities)
+        orgs = [e for e in detect_org(doc) if e.entity_type == "ORG"]
         assert len(orgs) == 1
         assert orgs[0].original_text == "ООО «Ромашка»"
 

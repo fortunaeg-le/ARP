@@ -116,9 +116,13 @@ class TestDocxNoNormalizationNeeded:
         ])
         doc = extract(src)
         assert "detection_text" not in _seg(doc, "p0").metadata
-        # Поведение детекции — как раньше: PERSON и ORG находятся.
+        # Поведение детекции — как раньше: PERSON находит detect_ner. ORG сменил
+        # источник (этап A): его даёт структурный движок anchor_registry.detect_org,
+        # а не Natasha-ORG. Проверяем оба: PERSON из NER, ORG из движка.
+        from anchor_registry import detect_org
         types = {e.entity_type for e in ner_detector_module.detect_ner(doc, config_path)}
-        assert "PERSON" in types and "ORG" in types
+        assert "PERSON" in types
+        assert any(e.entity_type == "ORG" for e in detect_org(doc))
 
 
 # --------------------------------------------------------------------------- #

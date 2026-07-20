@@ -1,0 +1,27 @@
+=== gate.py Ч регресс-гейт этапа 0d ===
+
+MANIFEST.sha256 (до прогона): 656 файлов Ч OK
+
+ѕрогон измерени€: 324 документов (encrypt+decrypt, изолированное хранилище)Е
+[1/324] agency_0001  2s  (0.6 doc/s)
+[10/324] agency_0004  16s  (0.6 doc/s)
+[20/324] agency_0007__m1337_combo  38s  (0.5 doc/s)
+[30/324] agency_0010__m2718_linebreak  54s  (0.6 doc/s)
+[40/324] cession_0004  72s  (0.6 doc/s)
+[50/324] cession_0007__m1337_digit_spaces  87s  (0.6 doc/s)
+[60/324] labor_0002__m2718_homoglyph  103s  (0.6 doc/s)
+[70/324] labor_0006  121s  (0.6 doc/s)
+[80/324] labor_0009__m1337_invisible  136s  (0.6 doc/s)
+[90/324] labor_0012__m2718_digit_spaces  156s  (0.6 doc/s)
+[100/324] lease_0004  171s  (0.6 doc/s)
+[110/324] lease_0007__m1337_combo  193s  (0.6 doc/s)
+[120/324] lease_0010__m2718_cell_split  211s  (0.6 doc/s)
+[130/324] loan_0002  227s  (0.6 doc/s)
+[140/324] loan_0005__m1337_digit_spaces  246s  (0.6 doc/s)
+[150/324] loan_0008__m2718_case  261s  (0.6 doc/s)
+[160/324] sale_0002  280s  (0.6 doc/s)
+[170/324] sale_0005__m1337_invisible  299s  (0.6 doc/s)
+[180/324] sale_0008__m2718_combo  317s  (0.6 doc/s)
+[190/324] sale_0012  337s  (0.6 doc/s)
+[200/324] services_0001__m1337_combo  358s  (0.6 doc/s)
+[210/324] services_0004__m2718_invisible  374s  (0.6 doc/s)

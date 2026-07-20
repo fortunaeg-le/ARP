@@ -34,6 +34,7 @@ from extractor import extract  # noqa: E402
 from unread_zones import scan_unread_zones  # noqa: E402
 from regex_detector import detect_regex  # noqa: E402
 from ner_detector import detect_ner  # noqa: E402
+from anchor_registry import detect_org, suppress_conflicts  # noqa: E402
 from syntax_compound import merge_compound_entities  # noqa: E402
 from tokenizer import tokenize, build_plain_text  # noqa: E402
 from session_store import save_session  # noqa: E402
@@ -163,7 +164,9 @@ def process_doc(d, allow_lossy=ALLOW_LOSSY):
     doc = extract(path)
     regex_e = detect_regex(doc, CONFIG)
     ner_e = detect_ner(doc, CONFIG, regex_entities=regex_e)
-    entities = regex_e + ner_e
+    org_e = detect_org(doc, regex_entities=regex_e)
+    ner_e = suppress_conflicts(org_e, ner_e)
+    entities = regex_e + ner_e + org_e
     entities = merge_compound_entities(doc, entities)
     anon_text, kept = tokenize(doc, entities, CONFIG)
 
