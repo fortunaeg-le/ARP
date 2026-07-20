@@ -28,3 +28,7 @@ bench/golden_*.txt
 ~$*.docx
 ~$*.xlsx
 ~$*.pptx
+
+# a0_gliner experiment: isolated venv + model cache not tracked
+experiments/a0_gliner/venv_gliner/
+experiments/a0_gliner/hf_cache/

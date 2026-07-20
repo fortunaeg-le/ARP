@@ -1,0 +1,5979 @@
+{
+ "latency_ner_total_s": 52.44,
+ "n_docs": 22,
+ "by_doc": {
+  "agency_0001": [
+   {
+    "seg_id": "l0",
+    "type": "ORG",
+    "text": "АГЕНТСКИЙ ДОГОВОР",
+    "start": 0,
+    "end": 17
+   },
+   {
+    "seg_id": "l3",
+    "type": "ORG",
+    "text": "21",
+    "start": 14,
+    "end": 16
+   },
+   {
+    "seg_id": "l3",
+    "type": "ADDRESS",
+    "text": "г. Тверь     «21»",
+    "start": 0,
+    "end": 17
+   },
+   {
+    "seg_id": "l5",
+    "type": "ORG",
+    "text": "ПАО «ПромСнаб»",
+    "start": 0,
+    "end": 14
+   },
+   {
+    "seg_id": "l5",
+    "type": "ORG",
+    "text": "Агент",
+    "start": 40,
+    "end": 45
+   },
+   {
+    "seg_id": "l5",
+    "type": "PERSON",
+    "text": "Новиковой",
+    "start": 65,
+    "end": 74
+   },
+   {
+    "seg_id": "l5",
+    "type": "PERSON",
+    "text": "Ольги Егоровны",
+    "start": 75,
+    "end": 89
+   },
+   {
+    "seg_id": "l5",
+    "type": "ORG",
+    "text": "ПАО «Титан»",
+    "start": 144,
+    "end": 155
+   },
+   {
+    "seg_id": "l5",
+    "type": "ORG",
+    "text": "Принципал",
+    "start": 181,
+    "end": 190
+   },
+   {
+    "seg_id": "l5",
+    "type": "PERSON",
+    "text": "Зайцева Сергея Петровича",
+    "start": 213,
+    "end": 237
+   },
+   {
+    "seg_id": "l5",
+    "type": "ORG",
+    "text": "Стороны",
+    "start": 337,
+    "end": 344
+   },
+   {
+    "seg_id": "l8",
+    "type": "PERSON",
+    "text": "Принципала",
+    "start": 62,
+    "end": 72
+   },
+   {
+    "seg_id": "l8",
+    "type": "PERSON",
+    "text": "Принципала",
+    "start": 129,
+    "end": 139
+   },
+   {
+    "seg_id": "l9",
+    "type": "PERSON",
+    "text": "Принципалу",
+    "start": 24,
+    "end": 34
+   },
+   {
+    "seg_id": "l11",
+    "type": "PERSON",
+    "text": "Принципал",
+    "start": 5,
+    "end": 14
+   },
+   {
+    "seg_id": "l11",
+    "type": "PERSON",
+    "text": "Агенту",
+    "start": 33,
+    "end": 39
+   },
+   {
+    "seg_id": "l15",
+    "type": "ORG",
+    "text": "МКАС",
+    "start": 341,
+    "end": 345
+   },
+   {
+    "seg_id": "l15",
+    "type": "ORG",
+    "text": "ТПП",
+    "start": 350,
+    "end": 353
+   },
+   {
+    "seg_id": "l15",
+    "type": "ADDRESS",
+    "text": "с ГОСТ 7.32-2017, артикул RM-5871-96",
+    "start": 39,
+    "end": 75
+   },
+   {
+    "seg_id": "l15",
+    "type": "ADDRESS",
+    "text": "РФ. Цена",
+    "start": 354,
+    "end": 362
+   },
+   {
+    "seg_id": "l18",
+    "type": "ADDRESS",
+    "text": "344002, г. Ростов-на-Дону, ш. Тверская, д. 49, кв. 193",
+    "start": 36,
+    "end": 90
+   },
+   {
+    "seg_id": "l19",
+    "type": "PERSON",
+    "text": "Принципал",
+    "start": 32,
+    "end": 41
+   },
+   {
+    "seg_id": "l19",
+    "type": "PERSON",
+    "text": "Зайцева Сергея Петровича",
+    "start": 44,
+    "end": 68
+   },
+   {
+    "seg_id": "l22",
+    "type": "ADDRESS",
+    "text": "Российской Федерации",
+    "start": 127,
+    "end": 147
+   },
+   {
+    "seg_id": "l25",
+    "type": "ADDRESS",
+    "text": "Сторону",
+    "start": 87,
+    "end": 94
+   },
+   {
+    "seg_id": "l31",
+    "type": "PERSON",
+    "text": "Нoвиkовa Ольгa Егоровна",
+    "start": 20,
+    "end": 43
+   },
+   {
+    "seg_id": "l32",
+    "type": "ORG",
+    "text": "БИК",
+    "start": 0,
+    "end": 3
+   },
+   {
+    "seg_id": "l39",
+    "type": "ORG",
+    "text": "ПАО «ПромСнаб»",
+    "start": 0,
+    "end": 14
+   },
+   {
+    "seg_id": "l40",
+    "type": "ADDRESS",
+    "text": "620014, г. Екатеринбург, бул. Гагарина, д. 25, кв. 162",
+    "start": 19,
+    "end": 73
+   },
+   {
+    "seg_id": "l41",
+    "type": "ADDRESS",
+    "text": "620014, г. Екатеринбург, ул. Ленинградская, д. 56, кв. 165",
+    "start": 16,
+    "end": 74
+   },
+   {
+    "seg_id": "l44",
+    "type": "ORG",
+    "text": "ПАО Сбербанк",
+    "start": 27,
+    "end": 39
+   },
+   {
+    "seg_id": "l47",
+    "type": "ADDRESS",
+    "text": "E-mail",
+    "start": 0,
+    "end": 6
+   },
+   {
+    "seg_id": "l49",
+    "type": "PERSON",
+    "text": "О. Е. Новикова",
+    "start": 24,
+    "end": 38
+   },
+   {
+    "seg_id": "l52",
+    "type": "ORG",
+    "text": "ПАО «Титан»",
+    "start": 0,
+    "end": 11
+   },
+   {
+    "seg_id": "l53",
+    "type": "ADDRESS",
+    "text": "630099, г. Новосибирск, ш. Ленинградская, д. 11, кв. 151",
+    "start": 19,
+    "end": 75
+   },
+   {
+    "seg_id": "l54",
+    "type": "ADDRESS",
+    "text": "443010, г. Самара, наб. Садовая, д. 57, кв. 140",
+    "start": 16,
+    "end": 63
+   },
+   {
+    "seg_id": "l57",
+    "type": "ORG",
+    "text": "АО «Райффайзенбанк»",
+    "start": 27,
+    "end": 46
+   },
+   {
+    "seg_id": "l60",
+    "type": "ADDRESS",
+    "text": "E-mail",
+    "start": 0,
+    "end": 6
+   },
+   {
+    "seg_id": "l62",
+    "type": "PERSON",
+    "text": "С. П. Зайцев",
+    "start": 27,
+    "end": 39
+   },
+   {
+    "seg_id": "l66",
+    "type": "PERSON",
+    "text": "Новикова О. Е.",
+    "start": 24,
+    "end": 38
+   },
+   {
+    "seg_id": "l67",
+    "type": "PERSON",
+    "text": "Зайцев С. П.",
+    "start": 28,
+    "end": 40
+   }
+  ],
+  "agency_0002": [
+   {
+    "seg_id": "p0",
+    "type": "ORG",
+    "text": "АГЕНТСКИЙ ДОГОВОР",
+    "start": 0,
+    "end": 17
+   },
+   {
+    "seg_id": "p3",
+    "type": "ADDRESS",
+    "text": "г. Ростов-на-Дону     «11»",
+    "start": 0,
+    "end": 26
+   },
+   {
+    "seg_id": "p5",
+    "type": "ORG",
+    "text": "АО «Атлант»",
+    "start": 0,
+    "end": 11
+   },
+   {
+    "seg_id": "p5",
+    "type": "ORG",
+    "text": "Агент",
+    "start": 37,
+    "end": 42
+   },
+   {
+    "seg_id": "p5",
+    "type": "PERSON",
+    "text": "Е.О.Сидорова",
+    "start": 62,
+    "end": 74
+   },
+   {
+    "seg_id": "p5",
+    "type": "ORG",
+    "text": "ИП",
+    "start": 129,
+    "end": 131
+   },
+   {
+    "seg_id": "p5",
+    "type": "PERSON",
+    "text": "Беляев Олег Олегович",
+    "start": 132,
+    "end": 152
+   },
+   {
+    "seg_id": "p5",
+    "type": "ORG",
+    "text": "Принципал",
+    "start": 196,
+    "end": 205
+   },
+   {
+    "seg_id": "p5",
+    "type": "ORG",
+    "text": "Стороны",
+    "start": 317,
+    "end": 324
+   },
+   {
+    "seg_id": "p8",
+    "type": "PERSON",
+    "text": "Принципала",
+    "start": 62,
+    "end": 72
+   },
+   {
+    "seg_id": "p8",
+    "type": "PERSON",
+    "text": "Принципала",
+    "start": 129,
+    "end": 139
+   },
+   {
+    "seg_id": "p9",
+    "type": "PERSON",
+    "text": "Принципалу",
+    "start": 24,
+    "end": 34
+   },
+   {
+    "seg_id": "p11",
+    "type": "PERSON",
+    "text": "Принципал",
+    "start": 5,
+    "end": 14
+   },
+   {
+    "seg_id": "p11",
+    "type": "PERSON",
+    "text": "Агенту",
+    "start": 33,
+    "end": 39
+   },
+   {
+    "seg_id": "p15",
+    "type": "ORG",
+    "text": "МКАС",
+    "start": 341,
+    "end": 345
+   },
+   {
+    "seg_id": "p15",
+    "type": "ORG",
+    "text": "ТПП",
+    "start": 350,
+    "end": 353
+   },
+   {
+    "seg_id": "p15",
+    "type": "ADDRESS",
+    "text": "с ГОСТ 7.32-2017, артикул RM-7766-28",
+    "start": 39,
+    "end": 75
+   },
+   {
+    "seg_id": "p15",
+    "type": "ADDRESS",
+    "text": "РФ. Цена",
+    "start": 354,
+    "end": 362
+   },
+   {
+    "seg_id": "p18",
+    "type": "ADDRESS",
+    "text": "Ростов-на-Дону Промышленная 12/2 кв 50",
+    "start": 36,
+    "end": 74
+   },
+   {
+    "seg_id": "p19",
+    "type": "PERSON",
+    "text": "Беляеву Олегу Олеговичу",
+    "start": 30,
+    "end": 53
+   },
+   {
+    "seg_id": "p21",
+    "type": "ORG",
+    "text": "ПРОЧИЕ УСЛОВИЯ",
+    "start": 3,
+    "end": 17
+   },
+   {
+    "seg_id": "p22",
+    "type": "ADDRESS",
+    "text": "Российской Федерации",
+    "start": 127,
+    "end": 147
+   },
+   {
+    "seg_id": "p25",
+    "type": "ADDRESS",
+    "text": "Сторону",
+    "start": 87,
+    "end": 94
+   },
+   {
+    "seg_id": "p31",
+    "type": "PERSON",
+    "text": "Беляев Ол⁠е‍г Олегович",
+    "start": 17,
+    "end": 39
+   },
+   {
+    "seg_id": "p32",
+    "type": "PERSON",
+    "text": "Беляев\nОлег Олегович",
+    "start": 24,
+    "end": 44
+   },
+   {
+    "seg_id": "p35",
+    "type": "ORG",
+    "text": "ПОДПИСИ СТОРОН",
+    "start": 12,
+    "end": 26
+   },
+   {
+    "seg_id": "t0_r0_c0",
+    "type": "ORG",
+    "text": "ПАО Сбербанк",
+    "start": 170,
+    "end": 182
+   },
+   {
+    "seg_id": "t0_r0_c0",
+    "type": "PERSON",
+    "text": "Е. О. Сидорова",
+    "start": 301,
+    "end": 315
+   },
+   {
+    "seg_id": "t0_r0_c0",
+    "type": "ADDRESS",
+    "text": "Москва, Мира 68\nПочтовый адрес: Химки Баумана 75/3 кв 69\nИНН",
+    "start": 38,
+    "end": 98
+   },
+   {
+    "seg_id": "t0_r0_c1",
+    "type": "PERSON",
+    "text": "Беляев Олег Олегович",
+    "start": 42,
+    "end": 62
+   },
+   {
+    "seg_id": "t0_r0_c1",
+    "type": "ORG",
+    "text": "Отделение № 8611 ПАО Сбербанк",
+    "start": 189,
+    "end": 218
+   },
+   {
+    "seg_id": "t0_r0_c1",
+    "type": "PERSON",
+    "text": "Беляев О. О.",
+    "start": 316,
+    "end": 328
+   },
+   {
+    "seg_id": "t0_r0_c1",
+    "type": "ADDRESS",
+    "text": "Нижний Новгород Промышленная 47/2 кв 12\nИНН",
+    "start": 82,
+    "end": 125
+   },
+   {
+    "seg_id": "t0_r0_c1",
+    "type": "ADDRESS",
+    "text": "г. Казань, БИК",
+    "start": 219,
+    "end": 233
+   },
+   {
+    "seg_id": "p39",
+    "type": "PERSON",
+    "text": "Сидорова Е. О.",
+    "start": 24,
+    "end": 38
+   },
+   {
+    "seg_id": "p40",
+    "type": "PERSON",
+    "text": "Беляев О. О.",
+    "start": 28,
+    "end": 40
+   }
+  ],
+  "cession_0001": [
+   {
+    "seg_id": "l0",
+    "type": "ORG",
+    "text": "ДОГОВОР УСТУПКИ ПРАВА ТРЕБОВАНИЯ (ЦЕССИИ)",
+    "start": 0,
+    "end": 41
+   },
+   {
+    "seg_id": "l3",
+    "type": "ADDRESS",
+    "text": "г. Москва     «09»",
+    "start": 0,
+    "end": 18
+   },
+   {
+    "seg_id": "l5",
+    "type": "ORG",
+    "text": "ИП",
+    "start": 0,
+    "end": 2
+   },
+   {
+    "seg_id": "l5",
+    "type": "PERSON",
+    "text": "Коваль Владимир Алексеевич",
+    "start": 3,
+    "end": 29
+   },
+   {
+    "seg_id": "l5",
+    "type": "ORG",
+    "text": "Цедент",
+    "start": 73,
+    "end": 79
+   },
+   {
+    "seg_id": "l5",
+    "type": "PERSON",
+    "text": "Попов Иван Павлович",
+    "start": 171,
+    "end": 190
+   },
+   {
+    "seg_id": "l5",
+    "type": "ORG",
+    "text": "ГУ",
+    "start": 220,
+    "end": 222
+   },
+   {
+    "seg_id": "l5",
+    "type": "ORG",
+    "text": "МВД",
+    "start": 223,
+    "end": 226
+   },
+   {
+    "seg_id": "l5",
+    "type": "ORG",
+    "text": "Цессионарий",
+    "start": 310,
+    "end": 321
+   },
+   {
+    "seg_id": "l5",
+    "type": "ORG",
+    "text": "Стороны",
+    "start": 363,
+    "end": 370
+   },
+   {
+    "seg_id": "l5",
+    "type": "ADDRESS",
+    "text": ", выдан ГУ МВД России по г. Москве 04.06.2006, код подразделения ",
+    "start": 212,
+    "end": 277
+   },
+   {
+    "seg_id": "l8",
+    "type": "PERSON",
+    "text": "Цессионарий",
+    "start": 24,
+    "end": 35
+   },
+   {
+    "seg_id": "l9",
+    "type": "PERSON",
+    "text": "Цедент",
+    "start": 5,
+    "end": 11
+   },
+   {
+    "seg_id": "l9",
+    "type": "PERSON",
+    "text": "Цессионарию",
+    "start": 28,
+    "end": 39
+   },
+   {
+    "seg_id": "l11",
+    "type": "PERSON",
+    "text": "Цедент",
+    "start": 5,
+    "end": 11
+   },
+   {
+    "seg_id": "l15",
+    "type": "ORG",
+    "text": "МКАС",
+    "start": 341,
+    "end": 345
+   },
+   {
+    "seg_id": "l15",
+    "type": "ORG",
+    "text": "ТПП",
+    "start": 350,
+    "end": 353
+   },
+   {
+    "seg_id": "l15",
+    "type": "ADDRESS",
+    "text": "с ГОСТ 7.32-2017, артикул RM-5366-49",
+    "start": 39,
+    "end": 75
+   },
+   {
+    "seg_id": "l15",
+    "type": "ADDRESS",
+    "text": "РФ. Цена",
+    "start": 354,
+    "end": 362
+   },
+   {
+    "seg_id": "l18",
+    "type": "ADDRESS",
+    "text": "а/я 54, г. Казань, 420111",
+    "start": 36,
+    "end": 61
+   },
+   {
+    "seg_id": "l19",
+    "type": "PERSON",
+    "text": "Попову",
+    "start": 30,
+    "end": 36
+   },
+   {
+    "seg_id": "l19",
+    "type": "PERSON",
+    "text": "Ивану Павловичу",
+    "start": 37,
+    "end": 52
+   },
+   {
+    "seg_id": "l21",
+    "type": "ORG",
+    "text": "ПРОЧИЕ УСЛОВИЯ",
+    "start": 3,
+    "end": 17
+   },
+   {
+    "seg_id": "l22",
+    "type": "ADDRESS",
+    "text": "Российской Федерации",
+    "start": 127,
+    "end": 147
+   },
+   {
+    "seg_id": "l25",
+    "type": "ADDRESS",
+    "text": "Сторону",
+    "start": 87,
+    "end": 94
+   },
+   {
+    "seg_id": "l30",
+    "type": "PERSON",
+    "text": "пОпОв Иван",
+    "start": 13,
+    "end": 23
+   },
+   {
+    "seg_id": "l31",
+    "type": "PERSON",
+    "text": "Попову",
+    "start": 23,
+    "end": 29
+   },
+   {
+    "seg_id": "l31",
+    "type": "PERSON",
+    "text": "Ивану Павловичу",
+    "start": 30,
+    "end": 45
+   },
+   {
+    "seg_id": "l31",
+    "type": "PERSON",
+    "text": "Поповым Иваном Павловичем",
+    "start": 67,
+    "end": 92
+   },
+   {
+    "seg_id": "l31",
+    "type": "PERSON",
+    "text": "Попова Ивана Павловича",
+    "start": 103,
+    "end": 125
+   },
+   {
+    "seg_id": "l31",
+    "type": "PERSON",
+    "text": "Попов Иван Павлович",
+    "start": 139,
+    "end": 158
+   },
+   {
+    "seg_id": "l31",
+    "type": "PERSON",
+    "text": "Попов И. П.",
+    "start": 176,
+    "end": 187
+   },
+   {
+    "seg_id": "l33",
+    "type": "ORG",
+    "text": "ПОДПИСИ СТОРОН",
+    "start": 12,
+    "end": 26
+   },
+   {
+    "seg_id": "l36",
+    "type": "PERSON",
+    "text": "Коваль Владимир Алексеевич",
+    "start": 31,
+    "end": 57
+   },
+   {
+    "seg_id": "l37",
+    "type": "ADDRESS",
+    "text": "а/я 10, г. Нижний Новгород, 603000",
+    "start": 19,
+    "end": 53
+   },
+   {
+    "seg_id": "l39",
+    "type": "ORG",
+    "text": "ПАО «Банк «Санкт-Петербург»",
+    "start": 27,
+    "end": 54
+   },
+   {
+    "seg_id": "l41",
+    "type": "ADDRESS",
+    "text": "E-mail",
+    "start": 0,
+    "end": 6
+   },
+   {
+    "seg_id": "l43",
+    "type": "PERSON",
+    "text": "Коваль В. А.",
+    "start": 18,
+    "end": 30
+   },
+   {
+    "seg_id": "l46",
+    "type": "PERSON",
+    "text": "Попов Иван Павлович",
+    "start": 0,
+    "end": 19
+   },
+   {
+    "seg_id": "l48",
+    "type": "ADDRESS",
+    "text": "а/я 25, г. Сергиев Посад, 141300",
+    "start": 19,
+    "end": 51
+   },
+   {
+    "seg_id": "l49",
+    "type": "ORG",
+    "text": "ГУ",
+    "start": 28,
+    "end": 30
+   },
+   {
+    "seg_id": "l49",
+    "type": "ORG",
+    "text": "МВД",
+    "start": 31,
+    "end": 34
+   },
+   {
+    "seg_id": "l49",
+    "type": "ORG",
+    "text": "787-280",
+    "start": 85,
+    "end": 92
+   },
+   {
+    "seg_id": "l49",
+    "type": "ADDRESS",
+    "text": ", выдан ГУ МВД России по г. Москве 04.06.2006",
+    "start": 20,
+    "end": 65
+   },
+   {
+    "seg_id": "l52",
+    "type": "ADDRESS",
+    "text": "E-mail",
+    "start": 0,
+    "end": 6
+   },
+   {
+    "seg_id": "l54",
+    "type": "PERSON",
+    "text": "Попов И. П.",
+    "start": 15,
+    "end": 26
+   },
+   {
+    "seg_id": "l58",
+    "type": "PERSON",
+    "text": "Коваль В. А.",
+    "start": 25,
+    "end": 37
+   },
+   {
+    "seg_id": "l59",
+    "type": "PERSON",
+    "text": "Попов Иван Павлович",
+    "start": 30,
+    "end": 49
+   }
+  ],
+  "cession_0002": [
+   {
+    "seg_id": "p3",
+    "type": "ADDRESS",
+    "text": "г. Новосибирск     «22»",
+    "start": 0,
+    "end": 23
+   },
+   {
+    "seg_id": "p5",
+    "type": "PERSON",
+    "text": "Макаров Юрий Николаевич",
+    "start": 0,
+    "end": 23
+   },
+   {
+    "seg_id": "p5",
+    "type": "ORG",
+    "text": "ОУФМС",
+    "start": 53,
+    "end": 58
+   },
+   {
+    "seg_id": "p5",
+    "type": "ORG",
+    "text": "Цедент",
+    "start": 167,
+    "end": 173
+   },
+   {
+    "seg_id": "p5",
+    "type": "PERSON",
+    "text": "Богданов Владимир Николаевич",
+    "start": 195,
+    "end": 223
+   },
+   {
+    "seg_id": "p5",
+    "type": "ORG",
+    "text": "ГУ",
+    "start": 253,
+    "end": 255
+   },
+   {
+    "seg_id": "p5",
+    "type": "ORG",
+    "text": "МВД",
+    "start": 256,
+    "end": 259
+   },
+   {
+    "seg_id": "p5",
+    "type": "ORG",
+    "text": "Цессионарий",
+    "start": 343,
+    "end": 354
+   },
+   {
+    "seg_id": "p5",
+    "type": "ORG",
+    "text": "Стороны",
+    "start": 396,
+    "end": 403
+   },
+   {
+    "seg_id": "p5",
+    "type": "ADDRESS",
+    "text": "России по Тверской области в Заволжском р-не 19.06.2016, код подразделения ",
+    "start": 59,
+    "end": 134
+   },
+   {
+    "seg_id": "p5",
+    "type": "ADDRESS",
+    "text": ", выдан ГУ МВД России по г. Москве 23.07.2010, код подразделения ",
+    "start": 245,
+    "end": 310
+   },
+   {
+    "seg_id": "p8",
+    "type": "PERSON",
+    "text": "Цессионарий",
+    "start": 24,
+    "end": 35
+   },
+   {
+    "seg_id": "p9",
+    "type": "PERSON",
+    "text": "Цедент",
+    "start": 5,
+    "end": 11
+   },
+   {
+    "seg_id": "p9",
+    "type": "PERSON",
+    "text": "Цессионарию",
+    "start": 28,
+    "end": 39
+   },
+   {
+    "seg_id": "p11",
+    "type": "PERSON",
+    "text": "Цедент",
+    "start": 5,
+    "end": 11
+   },
+   {
+    "seg_id": "p15",
+    "type": "ORG",
+    "text": "МКАС",
+    "start": 341,
+    "end": 345
+   },
+   {
+    "seg_id": "p15",
+    "type": "ORG",
+    "text": "ТПП",
+    "start": 350,
+    "end": 353
+   },
+   {
+    "seg_id": "p15",
+    "type": "ADDRESS",
+    "text": "с ГОСТ 7.32-2017, артикул RM-9283-73",
+    "start": 39,
+    "end": 75
+   },
+   {
+    "seg_id": "p15",
+    "type": "ADDRESS",
+    "text": "РФ. Цена",
+    "start": 354,
+    "end": 362
+   },
+   {
+    "seg_id": "p18",
+    "type": "ADDRESS",
+    "text": "141400, г. Химки, наб. Кутузовский, д. 5, кв. 31",
+    "start": 36,
+    "end": 84
+   },
+   {
+    "seg_id": "p19",
+    "type": "PERSON",
+    "text": "Богданову",
+    "start": 30,
+    "end": 39
+   },
+   {
+    "seg_id": "p19",
+    "type": "PERSON",
+    "text": "Владимиру Николаевичу",
+    "start": 40,
+    "end": 61
+   },
+   {
+    "seg_id": "p22",
+    "type": "ADDRESS",
+    "text": "Российской Федерации",
+    "start": 127,
+    "end": 147
+   },
+   {
+    "seg_id": "p25",
+    "type": "ADDRESS",
+    "text": "Сторону",
+    "start": 87,
+    "end": 94
+   },
+   {
+    "seg_id": "t0_r0_c0",
+    "type": "PERSON",
+    "text": "Макаров Юрий Николаевич",
+    "start": 8,
+    "end": 31
+   },
+   {
+    "seg_id": "t0_r0_c0",
+    "type": "ORG",
+    "text": "ОУФМС",
+    "start": 161,
+    "end": 166
+   },
+   {
+    "seg_id": "t0_r0_c0",
+    "type": "PERSON",
+    "text": "Макаров Ю. Н.\nСогласовано",
+    "start": 348,
+    "end": 373
+   },
+   {
+    "seg_id": "t0_r0_c0",
+    "type": "PERSON",
+    "text": "Макаров Юрий Николаевич",
+    "start": 375,
+    "end": 398
+   },
+   {
+    "seg_id": "t0_r0_c0",
+    "type": "ADDRESS",
+    "text": "190000, г. Санкт-Петербург, наб. Гагарина, д. 1, кв. 14\nПаспорт 08 19 096084, выдан ОУФМС России по Тверской области в Заволжском р-не 19.06.2016, код подразделения 926-827\nСНИЛС",
+    "start": 77,
+    "end": 255
+   },
+   {
+    "seg_id": "t0_r0_c1",
+    "type": "PERSON",
+    "text": "Богданов Владимир Николаевич\nДата",
+    "start": 13,
+    "end": 46
+   },
+   {
+    "seg_id": "t0_r0_c1",
+    "type": "ORG",
+    "text": "ГУ",
+    "start": 178,
+    "end": 180
+   },
+   {
+    "seg_id": "t0_r0_c1",
+    "type": "ORG",
+    "text": "МВД",
+    "start": 181,
+    "end": 184
+   },
+   {
+    "seg_id": "t0_r0_c1",
+    "type": "PERSON",
+    "text": "Богданов В. Н.",
+    "start": 342,
+    "end": 356
+   },
+   {
+    "seg_id": "t0_r0_c1",
+    "type": "ADDRESS",
+    "text": "344002, г. Ростов-на-Дону, проезд Промышленная, д. 80, кв. 110\nПаспорт 92 03 412957, выдан ГУ МВД России по г. Москве 23.07.2010, код подразделения 117-815\nСНИЛС",
+    "start": 87,
+    "end": 248
+   },
+   {
+    "seg_id": "p38",
+    "type": "ADDRESS",
+    "text": "143000, г. Одинцово, пер. Пушкина, д. 24, кв. 88",
+    "start": 30,
+    "end": 78
+   },
+   {
+    "seg_id": "p39",
+    "type": "PERSON",
+    "text": "Иванов Иван Егорович",
+    "start": 11,
+    "end": 31
+   },
+   {
+    "seg_id": "p40",
+    "type": "ADDRESS",
+    "text": "Тел",
+    "start": 0,
+    "end": 3
+   },
+   {
+    "seg_id": "p43",
+    "type": "PERSON",
+    "text": "Макаров Юрий Николаевич",
+    "start": 25,
+    "end": 48
+   },
+   {
+    "seg_id": "p44",
+    "type": "PERSON",
+    "text": "Богданов Владимир Николаевич",
+    "start": 30,
+    "end": 58
+   }
+  ],
+  "labor_0001": [
+   {
+    "seg_id": "l3",
+    "type": "ADDRESS",
+    "text": "г. Одинцово     «08»",
+    "start": 0,
+    "end": 20
+   },
+   {
+    "seg_id": "l5",
+    "type": "ORG",
+    "text": "ИП",
+    "start": 0,
+    "end": 2
+   },
+   {
+    "seg_id": "l5",
+    "type": "PERSON",
+    "text": "Макаров Владимир Владимирович",
+    "start": 3,
+    "end": 32
+   },
+   {
+    "seg_id": "l5",
+    "type": "ORG",
+    "text": "Работодатель",
+    "start": 76,
+    "end": 88
+   },
+   {
+    "seg_id": "l5",
+    "type": "PERSON",
+    "text": "Семёнов Дмитрий Михайлович",
+    "start": 180,
+    "end": 206
+   },
+   {
+    "seg_id": "l5",
+    "type": "ORG",
+    "text": "ОУФМС",
+    "start": 243,
+    "end": 248
+   },
+   {
+    "seg_id": "l5",
+    "type": "ORG",
+    "text": "Работник",
+    "start": 338,
+    "end": 346
+   },
+   {
+    "seg_id": "l5",
+    "type": "ORG",
+    "text": "Стороны",
+    "start": 388,
+    "end": 395
+   },
+   {
+    "seg_id": "l5",
+    "type": "ADDRESS",
+    "text": ", выдан ТП № 2 ОУФМС России по Московской обл. 13.01.2017, код подразделения ",
+    "start": 228,
+    "end": 305
+   },
+   {
+    "seg_id": "l16",
+    "type": "ORG",
+    "text": "МКАС",
+    "start": 341,
+    "end": 345
+   },
+   {
+    "seg_id": "l16",
+    "type": "ORG",
+    "text": "ТПП",
+    "start": 350,
+    "end": 353
+   },
+   {
+    "seg_id": "l16",
+    "type": "ADDRESS",
+    "text": "с ГОСТ 7.32-2017, артикул RM-9420-94",
+    "start": 39,
+    "end": 75
+   },
+   {
+    "seg_id": "l16",
+    "type": "ADDRESS",
+    "text": "РФ. Цена",
+    "start": 354,
+    "end": 362
+   },
+   {
+    "seg_id": "l19",
+    "type": "ADDRESS",
+    "text": "наб. Строителей, д. 55, с. Ивановское, Тверская обл.",
+    "start": 36,
+    "end": 88
+   },
+   {
+    "seg_id": "l20",
+    "type": "PERSON",
+    "text": "Семёнову Дмитрию Михайловичу",
+    "start": 30,
+    "end": 58
+   },
+   {
+    "seg_id": "l23",
+    "type": "ADDRESS",
+    "text": "Российской Федерации",
+    "start": 127,
+    "end": 147
+   },
+   {
+    "seg_id": "l26",
+    "type": "ADDRESS",
+    "text": "Сторону",
+    "start": 87,
+    "end": 94
+   },
+   {
+    "seg_id": "l31",
+    "type": "ORG",
+    "text": "МАКАРОВ ВЛАДИМИР ВЛАДИМИРОВИЧ",
+    "start": 15,
+    "end": 44
+   },
+   {
+    "seg_id": "l37",
+    "type": "PERSON",
+    "text": "Макаров Владимир Владимирович",
+    "start": 31,
+    "end": 60
+   },
+   {
+    "seg_id": "l38",
+    "type": "ADDRESS",
+    "text": "бул. Победы, д. 37, рп. Обухово, Новосибирская обл.",
+    "start": 19,
+    "end": 70
+   },
+   {
+    "seg_id": "l40",
+    "type": "ORG",
+    "text": "ПАО Сбербанк",
+    "start": 27,
+    "end": 39
+   },
+   {
+    "seg_id": "l40",
+    "type": "ORG",
+    "text": "БИК 044525225",
+    "start": 41,
+    "end": 54
+   },
+   {
+    "seg_id": "l42",
+    "type": "ADDRESS",
+    "text": "E-mail",
+    "start": 0,
+    "end": 6
+   },
+   {
+    "seg_id": "l44",
+    "type": "PERSON",
+    "text": "Макаров В. В.",
+    "start": 18,
+    "end": 31
+   },
+   {
+    "seg_id": "l49",
+    "type": "ADDRESS",
+    "text": "наб. Советская, д. 86, д. Малые Вязёмы, Свердловская обл.",
+    "start": 19,
+    "end": 76
+   },
+   {
+    "seg_id": "l50",
+    "type": "ORG",
+    "text": "ОУФМС",
+    "start": 35,
+    "end": 40
+   },
+   {
+    "seg_id": "l50",
+    "type": "ORG",
+    "text": "622-513",
+    "start": 97,
+    "end": 104
+   },
+   {
+    "seg_id": "l50",
+    "type": "ADDRESS",
+    "text": ", выдан ТП № 2 ОУФМС России по Московской обл. 13.01.2017",
+    "start": 20,
+    "end": 77
+   },
+   {
+    "seg_id": "l53",
+    "type": "ADDRESS",
+    "text": "E-mail",
+    "start": 0,
+    "end": 6
+   },
+   {
+    "seg_id": "l55",
+    "type": "PERSON",
+    "text": "Семёнов Д. М.",
+    "start": 15,
+    "end": 28
+   },
+   {
+    "seg_id": "l55",
+    "type": "ADDRESS",
+    "text": "Д. М",
+    "start": 23,
+    "end": 27
+   },
+   {
+    "seg_id": "l59",
+    "type": "PERSON",
+    "text": "Макаров В. В",
+    "start": 31,
+    "end": 43
+   },
+   {
+    "seg_id": "l60",
+    "type": "PERSON",
+    "text": "Семёнов Дмитрий Михайлович",
+    "start": 27,
+    "end": 53
+   }
+  ],
+  "labor_0002": [
+   {
+    "seg_id": "p3",
+    "type": "ADDRESS",
+    "text": "г. Воронеж     «06»",
+    "start": 0,
+    "end": 19
+   },
+   {
+    "seg_id": "p5",
+    "type": "ORG",
+    "text": "ООО «Восход»",
+    "start": 0,
+    "end": 12
+   },
+   {
+    "seg_id": "p5",
+    "type": "ORG",
+    "text": "Работодатель",
+    "start": 38,
+    "end": 50
+   },
+   {
+    "seg_id": "p5",
+    "type": "PERSON",
+    "text": "Оганесяна Гургена Ашотовича",
+    "start": 73,
+    "end": 100
+   },
+   {
+    "seg_id": "p5",
+    "type": "PERSON",
+    "text": "Иванов Артём Андреевич",
+    "start": 180,
+    "end": 202
+   },
+   {
+    "seg_id": "p5",
+    "type": "ORG",
+    "text": "ОУФМС",
+    "start": 239,
+    "end": 244
+   },
+   {
+    "seg_id": "p5",
+    "type": "ORG",
+    "text": "Работник",
+    "start": 334,
+    "end": 342
+   },
+   {
+    "seg_id": "p5",
+    "type": "ORG",
+    "text": "Стороны",
+    "start": 384,
+    "end": 391
+   },
+   {
+    "seg_id": "p5",
+    "type": "ADDRESS",
+    "text": ", выдан ТП № 2 ОУФМС России по Московской обл. 09.02.2019, код подразделения ",
+    "start": 224,
+    "end": 301
+   },
+   {
+    "seg_id": "p16",
+    "type": "ORG",
+    "text": "МКАС",
+    "start": 341,
+    "end": 345
+   },
+   {
+    "seg_id": "p16",
+    "type": "ORG",
+    "text": "ТПП",
+    "start": 350,
+    "end": 353
+   },
+   {
+    "seg_id": "p16",
+    "type": "ADDRESS",
+    "text": "с ГОСТ 7.32-2017, артикул RM-8017-22",
+    "start": 39,
+    "end": 75
+   },
+   {
+    "seg_id": "p16",
+    "type": "ADDRESS",
+    "text": "РФ. Цена",
+    "start": 354,
+    "end": 362
+   },
+   {
+    "seg_id": "p19",
+    "type": "ADDRESS",
+    "text": "Новосибирская обл., Дмитровский р-н, 17 км автодороги М-6 «Дон», стр. 1",
+    "start": 36,
+    "end": 107
+   },
+   {
+    "seg_id": "p20",
+    "type": "PERSON",
+    "text": "Иванову Артёму Андреевичу",
+    "start": 30,
+    "end": 55
+   },
+   {
+    "seg_id": "p22",
+    "type": "ORG",
+    "text": "ПРОЧИЕ УСЛОВИЯ",
+    "start": 3,
+    "end": 17
+   },
+   {
+    "seg_id": "p23",
+    "type": "ADDRESS",
+    "text": "Российской Федерации",
+    "start": 127,
+    "end": 147
+   },
+   {
+    "seg_id": "p26",
+    "type": "ADDRESS",
+    "text": "Сторону",
+    "start": 87,
+    "end": 94
+   },
+   {
+    "seg_id": "p31",
+    "type": "PERSON",
+    "text": "Оганесян‍ Гурген Ашото­вич",
+    "start": 30,
+    "end": 56
+   },
+   {
+    "seg_id": "p32",
+    "type": "PERSON",
+    "text": "иВаНоВ Артём",
+    "start": 13,
+    "end": 25
+   },
+   {
+    "seg_id": "p34",
+    "type": "ORG",
+    "text": "ПОДПИСИ СТОРОН",
+    "start": 12,
+    "end": 26
+   },
+   {
+    "seg_id": "t0_r0_c0",
+    "type": "ORG",
+    "text": "ООО «Восход»",
+    "start": 14,
+    "end": 26
+   },
+   {
+    "seg_id": "t0_r0_c0",
+    "type": "ORG",
+    "text": "ПАО «Банк «Санкт-Петербург»",
+    "start": 204,
+    "end": 231
+   },
+   {
+    "seg_id": "t0_r0_c0",
+    "type": "PERSON",
+    "text": "Г. А. Оганесян",
+    "start": 350,
+    "end": 364
+   },
+   {
+    "seg_id": "t0_r0_c0",
+    "type": "PERSON",
+    "text": "Согласовано",
+    "start": 365,
+    "end": 376
+   },
+   {
+    "seg_id": "t0_r0_c0",
+    "type": "PERSON",
+    "text": "Оганесян Гурген Ашотович",
+    "start": 378,
+    "end": 402
+   },
+   {
+    "seg_id": "t0_r0_c0",
+    "type": "ADDRESS",
+    "text": "Новосибирская обл., Дмитровский р-н, 36 км автодороги М-9 «Дон», стр. 2\nИНН",
+    "start": 46,
+    "end": 121
+   },
+   {
+    "seg_id": "t0_r0_c0",
+    "type": "ADDRESS",
+    "text": "Г. А",
+    "start": 350,
+    "end": 354
+   },
+   {
+    "seg_id": "t0_r0_c1",
+    "type": "PERSON",
+    "text": "Иванов Артём Андреевич",
+    "start": 10,
+    "end": 32
+   },
+   {
+    "seg_id": "t0_r0_c1",
+    "type": "ORG",
+    "text": "ОУФМС",
+    "start": 216,
+    "end": 221
+   },
+   {
+    "seg_id": "t0_r0_c1",
+    "type": "PERSON",
+    "text": "Иванов А. А.",
+    "start": 392,
+    "end": 404
+   },
+   {
+    "seg_id": "t0_r0_c1",
+    "type": "ADDRESS",
+    "text": "143000, Краснодарский край, г. Одинцово, ул. Ленинградская, д. 11, корп. 2, литера А, пом. 18, оф. 445\nПаспорт 71 20 325868, выдан ТП № 2 ОУФМС России по Московской обл. 09.02.2019, код подразделения 306-273\nСНИЛС",
+    "start": 78,
+    "end": 291
+   },
+   {
+    "seg_id": "p38",
+    "type": "PERSON",
+    "text": "Оганесян Г. А.",
+    "start": 31,
+    "end": 45
+   },
+   {
+    "seg_id": "p38",
+    "type": "ADDRESS",
+    "text": "Г. А",
+    "start": 40,
+    "end": 44
+   },
+   {
+    "seg_id": "p39",
+    "type": "PERSON",
+    "text": "Иванов Артём Андреевич",
+    "start": 27,
+    "end": 49
+   }
+  ],
+  "lease_0001": [
+   {
+    "seg_id": "l0",
+    "type": "ORG",
+    "text": "ДОГОВОР АРЕНДЫ НЕЖИЛОГО ПОМЕЩЕНИЯ",
+    "start": 0,
+    "end": 33
+   },
+   {
+    "seg_id": "l3",
+    "type": "ADDRESS",
+    "text": "г. Красногорск     «01»",
+    "start": 0,
+    "end": 23
+   },
+   {
+    "seg_id": "l5",
+    "type": "ORG",
+    "text": "ООО «Иванов»",
+    "start": 0,
+    "end": 12
+   },
+   {
+    "seg_id": "l5",
+    "type": "ORG",
+    "text": "Арендодатель",
+    "start": 38,
+    "end": 50
+   },
+   {
+    "seg_id": "l5",
+    "type": "PERSON",
+    "text": "Беляева Егора Алексеевича",
+    "start": 73,
+    "end": 98
+   },
+   {
+    "seg_id": "l5",
+    "type": "ORG",
+    "text": "ООО «Иванов»",
+    "start": 178,
+    "end": 190
+   },
+   {
+    "seg_id": "l5",
+    "type": "ORG",
+    "text": "Арендатор",
+    "start": 216,
+    "end": 225
+   },
+   {
+    "seg_id": "l5",
+    "type": "PERSON",
+    "text": "Петрова Николая Ивановича",
+    "start": 248,
+    "end": 273
+   },
+   {
+    "seg_id": "l5",
+    "type": "ORG",
+    "text": "Стороны",
+    "start": 373,
+    "end": 380
+   },
+   {
+    "seg_id": "l8",
+    "type": "ADDRESS",
+    "text": "Арендатору",
+    "start": 37,
+    "end": 47
+   },
+   {
+    "seg_id": "l15",
+    "type": "ORG",
+    "text": "МКАС",
+    "start": 341,
+    "end": 345
+   },
+   {
+    "seg_id": "l15",
+    "type": "ORG",
+    "text": "ТПП",
+    "start": 350,
+    "end": 353
+   },
+   {
+    "seg_id": "l15",
+    "type": "ADDRESS",
+    "text": "с ГОСТ 7.32-2017, артикул RM-1591-66",
+    "start": 39,
+    "end": 75
+   },
+   {
+    "seg_id": "l15",
+    "type": "ADDRESS",
+    "text": "РФ. Цена",
+    "start": 354,
+    "end": 362
+   },
+   {
+    "seg_id": "l18",
+    "type": "ADDRESS",
+    "text": "394000, Свердловская обл., г. Воронеж, пер. Заречная, д. 39, корп. 2, литера А, пом. 24, оф. 376",
+    "start": 36,
+    "end": 132
+   },
+   {
+    "seg_id": "l19",
+    "type": "PERSON",
+    "text": "Арендатор",
+    "start": 32,
+    "end": 41
+   },
+   {
+    "seg_id": "l19",
+    "type": "PERSON",
+    "text": "Петрова Николая Ивановича",
+    "start": 44,
+    "end": 69
+   },
+   {
+    "seg_id": "l21",
+    "type": "ORG",
+    "text": "ПРОЧИЕ УСЛОВИЯ",
+    "start": 3,
+    "end": 17
+   },
+   {
+    "seg_id": "l22",
+    "type": "ADDRESS",
+    "text": "Российской Федерации",
+    "start": 127,
+    "end": 147
+   },
+   {
+    "seg_id": "l25",
+    "type": "ADDRESS",
+    "text": "Сторону",
+    "start": 87,
+    "end": 94
+   },
+   {
+    "seg_id": "l29",
+    "type": "ORG",
+    "text": "ПОДПИСИ СТОРОН",
+    "start": 12,
+    "end": 26
+   },
+   {
+    "seg_id": "l32",
+    "type": "ORG",
+    "text": "ООО «Иванов»",
+    "start": 0,
+    "end": 12
+   },
+   {
+    "seg_id": "l33",
+    "type": "ADDRESS",
+    "text": "Тверская обл., Наро-Фоминский р-н, 81 км автодороги М-4 «Дон», стр. 6",
+    "start": 19,
+    "end": 88
+   },
+   {
+    "seg_id": "l36",
+    "type": "ORG",
+    "text": "Филиал «Центральный»",
+    "start": 27,
+    "end": 47
+   },
+   {
+    "seg_id": "l36",
+    "type": "ORG",
+    "text": "ПАО «Совкомбанк»",
+    "start": 48,
+    "end": 64
+   },
+   {
+    "seg_id": "l39",
+    "type": "ADDRESS",
+    "text": "E-mail",
+    "start": 0,
+    "end": 6
+   },
+   {
+    "seg_id": "l41",
+    "type": "PERSON",
+    "text": "Е. А. Беляев",
+    "start": 36,
+    "end": 48
+   },
+   {
+    "seg_id": "l44",
+    "type": "ORG",
+    "text": "ООО «Иванов»",
+    "start": 0,
+    "end": 12
+   },
+   {
+    "seg_id": "l45",
+    "type": "ADDRESS",
+    "text": "443010, Новосибирская обл., г. Самара, ул. Кирова, д. 38, корп. 3, литера А, пом. 23, оф. 262",
+    "start": 19,
+    "end": 112
+   },
+   {
+    "seg_id": "l46",
+    "type": "ADDRESS",
+    "text": "Свердловская обл.",
+    "start": 16,
+    "end": 33
+   },
+   {
+    "seg_id": "l49",
+    "type": "ORG",
+    "text": "Отделение № 8611 ПАО Сбербанк",
+    "start": 27,
+    "end": 56
+   },
+   {
+    "seg_id": "l49",
+    "type": "ADDRESS",
+    "text": "г. Казань",
+    "start": 57,
+    "end": 66
+   },
+   {
+    "seg_id": "l52",
+    "type": "ADDRESS",
+    "text": "E-mail",
+    "start": 0,
+    "end": 6
+   },
+   {
+    "seg_id": "l54",
+    "type": "PERSON",
+    "text": "Н. И. Петров",
+    "start": 24,
+    "end": 36
+   },
+   {
+    "seg_id": "l58",
+    "type": "PERSON",
+    "text": "Беляев Е. А.",
+    "start": 31,
+    "end": 43
+   },
+   {
+    "seg_id": "l59",
+    "type": "PERSON",
+    "text": "Петров Н. И.",
+    "start": 28,
+    "end": 40
+   }
+  ],
+  "lease_0002": [
+   {
+    "seg_id": "p0",
+    "type": "ORG",
+    "text": "ДОГОВОР АРЕНДЫ НЕЖИЛОГО ПОМЕЩЕНИЯ",
+    "start": 0,
+    "end": 33
+   },
+   {
+    "seg_id": "p3",
+    "type": "ORG",
+    "text": "26",
+    "start": 14,
+    "end": 16
+   },
+   {
+    "seg_id": "p3",
+    "type": "ADDRESS",
+    "text": "г. Химки     «26»",
+    "start": 0,
+    "end": 17
+   },
+   {
+    "seg_id": "p5",
+    "type": "ORG",
+    "text": "ООО «Василёк»",
+    "start": 0,
+    "end": 13
+   },
+   {
+    "seg_id": "p5",
+    "type": "ORG",
+    "text": "Арендодатель",
+    "start": 39,
+    "end": 51
+   },
+   {
+    "seg_id": "p5",
+    "type": "ORG",
+    "text": "Пчелы",
+    "start": 74,
+    "end": 79
+   },
+   {
+    "seg_id": "p5",
+    "type": "PERSON",
+    "text": "Светланы Егоровны",
+    "start": 80,
+    "end": 97
+   },
+   {
+    "seg_id": "p5",
+    "type": "ORG",
+    "text": "ИП",
+    "start": 152,
+    "end": 154
+   },
+   {
+    "seg_id": "p5",
+    "type": "PERSON",
+    "text": "Зайцева Е. А.",
+    "start": 155,
+    "end": 168
+   },
+   {
+    "seg_id": "p5",
+    "type": "ORG",
+    "text": "Арендатор",
+    "start": 212,
+    "end": 221
+   },
+   {
+    "seg_id": "p5",
+    "type": "ORG",
+    "text": "Стороны",
+    "start": 333,
+    "end": 340
+   },
+   {
+    "seg_id": "p8",
+    "type": "ADDRESS",
+    "text": "Арендатору",
+    "start": 37,
+    "end": 47
+   },
+   {
+    "seg_id": "p15",
+    "type": "ORG",
+    "text": "МКАС",
+    "start": 341,
+    "end": 345
+   },
+   {
+    "seg_id": "p15",
+    "type": "ORG",
+    "text": "ТПП",
+    "start": 350,
+    "end": 353
+   },
+   {
+    "seg_id": "p15",
+    "type": "ADDRESS",
+    "text": "с ГОСТ 7.32-2017, артикул RM-2450-77",
+    "start": 39,
+    "end": 75
+   },
+   {
+    "seg_id": "p15",
+    "type": "ADDRESS",
+    "text": "РФ. Цена",
+    "start": 354,
+    "end": 362
+   },
+   {
+    "seg_id": "p18",
+    "type": "ADDRESS",
+    "text": "а/я 72, г. Санкт-Петербург, 190000",
+    "start": 36,
+    "end": 70
+   },
+   {
+    "seg_id": "p19",
+    "type": "PERSON",
+    "text": "Зайцевой",
+    "start": 30,
+    "end": 38
+   },
+   {
+    "seg_id": "p19",
+    "type": "PERSON",
+    "text": "Екатерине Алексеевне",
+    "start": 39,
+    "end": 59
+   },
+   {
+    "seg_id": "p21",
+    "type": "ORG",
+    "text": "ПРОЧИЕ УСЛОВИЯ",
+    "start": 3,
+    "end": 17
+   },
+   {
+    "seg_id": "p22",
+    "type": "ADDRESS",
+    "text": "Российской Федерации",
+    "start": 127,
+    "end": 147
+   },
+   {
+    "seg_id": "p25",
+    "type": "ADDRESS",
+    "text": "Сторону",
+    "start": 87,
+    "end": 94
+   },
+   {
+    "seg_id": "p29",
+    "type": "ORG",
+    "text": "ПОДПИСИ СТОРОН",
+    "start": 12,
+    "end": 26
+   },
+   {
+    "seg_id": "t0_r0_c0",
+    "type": "ORG",
+    "text": "Арендодатель",
+    "start": 0,
+    "end": 12
+   },
+   {
+    "seg_id": "t0_r0_c0",
+    "type": "ORG",
+    "text": "ООО «Василёк»",
+    "start": 14,
+    "end": 27
+   },
+   {
+    "seg_id": "t0_r0_c0",
+    "type": "ORG",
+    "text": "ПАО «Совкомбанк»",
+    "start": 196,
+    "end": 212
+   },
+   {
+    "seg_id": "t0_r0_c0",
+    "type": "PERSON",
+    "text": "С. Е. Пчела",
+    "start": 337,
+    "end": 348
+   },
+   {
+    "seg_id": "t0_r0_c0",
+    "type": "ADDRESS",
+    "text": "а/я 18, г. Казань, 420111\nПочтовый адрес: а/я 50, г. Екатеринбург, 620014\nИНН",
+    "start": 47,
+    "end": 124
+   },
+   {
+    "seg_id": "t0_r0_c1",
+    "type": "PERSON",
+    "text": "Зайцева Екатерина Алексеевна",
+    "start": 42,
+    "end": 70
+   },
+   {
+    "seg_id": "t0_r0_c1",
+    "type": "ORG",
+    "text": "ПАО «Совкомбанк»",
+    "start": 184,
+    "end": 200
+   },
+   {
+    "seg_id": "t0_r0_c1",
+    "type": "ORG",
+    "text": "БИК",
+    "start": 202,
+    "end": 205
+   },
+   {
+    "seg_id": "t0_r0_c1",
+    "type": "PERSON",
+    "text": "Зайцева Е. А.",
+    "start": 288,
+    "end": 301
+   },
+   {
+    "seg_id": "t0_r0_c1",
+    "type": "ADDRESS",
+    "text": "а/я 51, г. Воронеж, 394000\nИНН",
+    "start": 90,
+    "end": 120
+   },
+   {
+    "seg_id": "t1_r1_c0",
+    "type": "PERSON",
+    "text": "Зайцева",
+    "start": 0,
+    "end": 7
+   },
+   {
+    "seg_id": "t1_r1_c1",
+    "type": "PERSON",
+    "text": "Екатерина Алексеевна",
+    "start": 0,
+    "end": 20
+   },
+   {
+    "seg_id": "p34",
+    "type": "ADDRESS",
+    "text": "а/я 50, г. Тверь, 170100",
+    "start": 30,
+    "end": 54
+   },
+   {
+    "seg_id": "p35",
+    "type": "PERSON",
+    "text": "Кладовщик",
+    "start": 0,
+    "end": 9
+   },
+   {
+    "seg_id": "p35",
+    "type": "PERSON",
+    "text": "Петров Андрей Сергеевич",
+    "start": 11,
+    "end": 34
+   },
+   {
+    "seg_id": "p36",
+    "type": "ADDRESS",
+    "text": "Тел",
+    "start": 0,
+    "end": 3
+   },
+   {
+    "seg_id": "p40",
+    "type": "PERSON",
+    "text": "Зайцева Е. А.",
+    "start": 28,
+    "end": 41
+   }
+  ],
+  "loan_0001": [
+   {
+    "seg_id": "l0",
+    "type": "ORG",
+    "text": "ДОГОВОР ЗАЙМА",
+    "start": 0,
+    "end": 13
+   },
+   {
+    "seg_id": "l3",
+    "type": "ADDRESS",
+    "text": "г. Екатеринбург     «12»",
+    "start": 0,
+    "end": 24
+   },
+   {
+    "seg_id": "l5",
+    "type": "ORG",
+    "text": "ООО \"Заря\"",
+    "start": 0,
+    "end": 10
+   },
+   {
+    "seg_id": "l5",
+    "type": "ORG",
+    "text": "Займодавец",
+    "start": 36,
+    "end": 46
+   },
+   {
+    "seg_id": "l5",
+    "type": "PERSON",
+    "text": "Крыловой Веры Олеговны",
+    "start": 79,
+    "end": 101
+   },
+   {
+    "seg_id": "l5",
+    "type": "PERSON",
+    "text": "Петров Консалтинг",
+    "start": 181,
+    "end": 198
+   },
+   {
+    "seg_id": "l5",
+    "type": "ORG",
+    "text": "Заёмщик",
+    "start": 224,
+    "end": 231
+   },
+   {
+    "seg_id": "l5",
+    "type": "PERSON",
+    "text": "Белова",
+    "start": 251,
+    "end": 257
+   },
+   {
+    "seg_id": "l5",
+    "type": "PERSON",
+    "text": "Ивана Егоровича",
+    "start": 258,
+    "end": 273
+   },
+   {
+    "seg_id": "l5",
+    "type": "ORG",
+    "text": "Стороны",
+    "start": 373,
+    "end": 380
+   },
+   {
+    "seg_id": "l8",
+    "type": "PERSON",
+    "text": "Заёмщику",
+    "start": 41,
+    "end": 49
+   },
+   {
+    "seg_id": "l8",
+    "type": "PERSON",
+    "text": "Заёмщик",
+    "start": 71,
+    "end": 78
+   },
+   {
+    "seg_id": "l9",
+    "type": "PERSON",
+    "text": "Займодавца",
+    "start": 85,
+    "end": 95
+   },
+   {
+    "seg_id": "l10",
+    "type": "PERSON",
+    "text": "Заёмщик",
+    "start": 27,
+    "end": 34
+   },
+   {
+    "seg_id": "l11",
+    "type": "PERSON",
+    "text": "Займодавца",
+    "start": 70,
+    "end": 80
+   },
+   {
+    "seg_id": "l15",
+    "type": "ORG",
+    "text": "МКАС",
+    "start": 341,
+    "end": 345
+   },
+   {
+    "seg_id": "l15",
+    "type": "ORG",
+    "text": "ТПП",
+    "start": 350,
+    "end": 353
+   },
+   {
+    "seg_id": "l15",
+    "type": "ADDRESS",
+    "text": "с ГОСТ 7.32-2017, артикул RM-6203-14",
+    "start": 39,
+    "end": 75
+   },
+   {
+    "seg_id": "l15",
+    "type": "ADDRESS",
+    "text": "РФ. Цена",
+    "start": 354,
+    "end": 362
+   },
+   {
+    "seg_id": "l18",
+    "type": "ADDRESS",
+    "text": "630099, Тверская обл., г. Новосибирск, пер. Садовая, вл. 89, стр. 1, пом. VII.",
+    "start": 36,
+    "end": 114
+   },
+   {
+    "seg_id": "l19",
+    "type": "PERSON",
+    "text": "Заёмщик",
+    "start": 32,
+    "end": 39
+   },
+   {
+    "seg_id": "l19",
+    "type": "PERSON",
+    "text": "Белова Ивана Егоровича",
+    "start": 42,
+    "end": 64
+   },
+   {
+    "seg_id": "l21",
+    "type": "ORG",
+    "text": "ПРОЧИЕ УСЛОВИЯ",
+    "start": 3,
+    "end": 17
+   },
+   {
+    "seg_id": "l22",
+    "type": "ADDRESS",
+    "text": "Российской Федерации",
+    "start": 127,
+    "end": 147
+   },
+   {
+    "seg_id": "l25",
+    "type": "ADDRESS",
+    "text": "Сторону",
+    "start": 87,
+    "end": 94
+   },
+   {
+    "seg_id": "l30",
+    "type": "PERSON",
+    "text": "Крыло­ва‍ Вера Олеговна",
+    "start": 30,
+    "end": 53
+   },
+   {
+    "seg_id": "l31",
+    "type": "PERSON",
+    "text": "Белов",
+    "start": 24,
+    "end": 29
+   },
+   {
+    "seg_id": "l32",
+    "type": "PERSON",
+    "text": "Иван Егорович",
+    "start": 0,
+    "end": 13
+   },
+   {
+    "seg_id": "l36",
+    "type": "ORG",
+    "text": "ПОДПИСИ СТОРОН",
+    "start": 12,
+    "end": 26
+   },
+   {
+    "seg_id": "l39",
+    "type": "ORG",
+    "text": "ООО \"Заря\"",
+    "start": 0,
+    "end": 10
+   },
+   {
+    "seg_id": "l40",
+    "type": "ADDRESS",
+    "text": "141300, Новосибирская обл., г. Сергиев Посад, ул. Победы, вл. 45, стр. 2, пом. VII",
+    "start": 19,
+    "end": 101
+   },
+   {
+    "seg_id": "l43",
+    "type": "ORG",
+    "text": "АО «Альфа-Банк»",
+    "start": 27,
+    "end": 42
+   },
+   {
+    "seg_id": "l46",
+    "type": "ADDRESS",
+    "text": "E-mail",
+    "start": 0,
+    "end": 6
+   },
+   {
+    "seg_id": "l48",
+    "type": "PERSON",
+    "text": "В. О. Крылова",
+    "start": 36,
+    "end": 49
+   },
+   {
+    "seg_id": "l51",
+    "type": "PERSON",
+    "text": "Петров Консалтинг",
+    "start": 0,
+    "end": 17
+   },
+   {
+    "seg_id": "l52",
+    "type": "ADDRESS",
+    "text": "620014, Свердловская обл., г. Екатеринбург, ш. Полевая, вл. 35, стр. 4, пом. VII",
+    "start": 19,
+    "end": 99
+   },
+   {
+    "seg_id": "l53",
+    "type": "ADDRESS",
+    "text": "141300, Московская обл., г. Сергиев Посад, пер. Пушкина, вл. 15, стр. 2, пом. VII",
+    "start": 16,
+    "end": 97
+   },
+   {
+    "seg_id": "l56",
+    "type": "ORG",
+    "text": "ПАО Сбербанк",
+    "start": 27,
+    "end": 39
+   },
+   {
+    "seg_id": "l59",
+    "type": "ADDRESS",
+    "text": "E-mail",
+    "start": 0,
+    "end": 6
+   },
+   {
+    "seg_id": "l61",
+    "type": "PERSON",
+    "text": "И. Е. Белов",
+    "start": 36,
+    "end": 47
+   },
+   {
+    "seg_id": "l65",
+    "type": "PERSON",
+    "text": "Крылова В. О.",
+    "start": 29,
+    "end": 42
+   },
+   {
+    "seg_id": "l66",
+    "type": "PERSON",
+    "text": "Белов И. Е.",
+    "start": 26,
+    "end": 37
+   }
+  ],
+  "loan_0002": [
+   {
+    "seg_id": "p0",
+    "type": "ORG",
+    "text": "ДОГОВОР ЗАЙМА",
+    "start": 0,
+    "end": 13
+   },
+   {
+    "seg_id": "p3",
+    "type": "ORG",
+    "text": "03",
+    "start": 14,
+    "end": 16
+   },
+   {
+    "seg_id": "p3",
+    "type": "ADDRESS",
+    "text": "г. Химки     «03»",
+    "start": 0,
+    "end": 17
+   },
+   {
+    "seg_id": "p5",
+    "type": "ORG",
+    "text": "АО «НПО им. С.А. Лавочкина",
+    "start": 0,
+    "end": 26
+   },
+   {
+    "seg_id": "p5",
+    "type": "ORG",
+    "text": "Займодавец",
+    "start": 53,
+    "end": 63
+   },
+   {
+    "seg_id": "p5",
+    "type": "ORG",
+    "text": "Пироговой",
+    "start": 96,
+    "end": 105
+   },
+   {
+    "seg_id": "p5",
+    "type": "PERSON",
+    "text": "Натальи Михайловны",
+    "start": 106,
+    "end": 124
+   },
+   {
+    "seg_id": "p5",
+    "type": "PERSON",
+    "text": "Смирнов В. А.",
+    "start": 210,
+    "end": 223
+   },
+   {
+    "seg_id": "p5",
+    "type": "ORG",
+    "text": "Заёмщик",
+    "start": 267,
+    "end": 274
+   },
+   {
+    "seg_id": "p5",
+    "type": "ORG",
+    "text": "Стороны",
+    "start": 386,
+    "end": 393
+   },
+   {
+    "seg_id": "p8",
+    "type": "PERSON",
+    "text": "Заёмщику",
+    "start": 41,
+    "end": 49
+   },
+   {
+    "seg_id": "p8",
+    "type": "PERSON",
+    "text": "Заёмщик",
+    "start": 71,
+    "end": 78
+   },
+   {
+    "seg_id": "p9",
+    "type": "PERSON",
+    "text": "Займодавца",
+    "start": 85,
+    "end": 95
+   },
+   {
+    "seg_id": "p10",
+    "type": "PERSON",
+    "text": "Заёмщик",
+    "start": 27,
+    "end": 34
+   },
+   {
+    "seg_id": "p11",
+    "type": "PERSON",
+    "text": "Займодавца",
+    "start": 70,
+    "end": 80
+   },
+   {
+    "seg_id": "p15",
+    "type": "ORG",
+    "text": "МКАС",
+    "start": 341,
+    "end": 345
+   },
+   {
+    "seg_id": "p15",
+    "type": "ORG",
+    "text": "ТПП",
+    "start": 350,
+    "end": 353
+   },
+   {
+    "seg_id": "p15",
+    "type": "ADDRESS",
+    "text": "с ГОСТ 7.32-2017, артикул RM-3884-58",
+    "start": 39,
+    "end": 75
+   },
+   {
+    "seg_id": "p15",
+    "type": "ADDRESS",
+    "text": "РФ. Цена",
+    "start": 354,
+    "end": 362
+   },
+   {
+    "seg_id": "p18",
+    "type": "ADDRESS",
+    "text": "просп. Советская, д. 52, пгт. Софрино, Свердловская обл.",
+    "start": 36,
+    "end": 92
+   },
+   {
+    "seg_id": "p19",
+    "type": "PERSON",
+    "text": "Смирнову Владимиру Алексеевичу",
+    "start": 30,
+    "end": 60
+   },
+   {
+    "seg_id": "p22",
+    "type": "ADDRESS",
+    "text": "Российской Федерации",
+    "start": 127,
+    "end": 147
+   },
+   {
+    "seg_id": "p25",
+    "type": "ADDRESS",
+    "text": "Сторону",
+    "start": 87,
+    "end": 94
+   },
+   {
+    "seg_id": "p31",
+    "type": "PERSON",
+    "text": "Пироговa Наталья Михaйлoвна",
+    "start": 20,
+    "end": 47
+   },
+   {
+    "seg_id": "p32",
+    "type": "ORG",
+    "text": "БИК",
+    "start": 0,
+    "end": 3
+   },
+   {
+    "seg_id": "p33",
+    "type": "ORG",
+    "text": "АО НПО им. С.А. Лавочкина",
+    "start": 0,
+    "end": 25
+   },
+   {
+    "seg_id": "t0_r0_c0",
+    "type": "ORG",
+    "text": "АО «НПО им. С.А. Лавочкина",
+    "start": 12,
+    "end": 38
+   },
+   {
+    "seg_id": "t0_r0_c0",
+    "type": "ORG",
+    "text": "Родник",
+    "start": 88,
+    "end": 94
+   },
+   {
+    "seg_id": "t0_r0_c0",
+    "type": "ORG",
+    "text": "Банк ВТБ (ПАО)",
+    "start": 186,
+    "end": 200
+   },
+   {
+    "seg_id": "t0_r0_c0",
+    "type": "PERSON",
+    "text": "Н. М. Пирогова",
+    "start": 317,
+    "end": 331
+   },
+   {
+    "seg_id": "t0_r0_c0",
+    "type": "ADDRESS",
+    "text": "ш. Тверская, д. 2, тер. СНТ «Родник», Тверская обл.\nИНН",
+    "start": 59,
+    "end": 114
+   },
+   {
+    "seg_id": "t0_r0_c1",
+    "type": "PERSON",
+    "text": "Смирнов Владимир Алексеевич\nАдрес",
+    "start": 40,
+    "end": 73
+   },
+   {
+    "seg_id": "t0_r0_c1",
+    "type": "PERSON",
+    "text": "Космонавтов",
+    "start": 92,
+    "end": 103
+   },
+   {
+    "seg_id": "t0_r0_c1",
+    "type": "ORG",
+    "text": "Родник",
+    "start": 122,
+    "end": 128
+   },
+   {
+    "seg_id": "t0_r0_c1",
+    "type": "ORG",
+    "text": "АО «Тинькофф Банк",
+    "start": 212,
+    "end": 229
+   },
+   {
+    "seg_id": "t0_r0_c1",
+    "type": "ORG",
+    "text": "БИК",
+    "start": 232,
+    "end": 235
+   },
+   {
+    "seg_id": "t0_r0_c1",
+    "type": "PERSON",
+    "text": "Смирнов В. А.",
+    "start": 314,
+    "end": 327
+   },
+   {
+    "seg_id": "t0_r0_c1",
+    "type": "ADDRESS",
+    "text": "Тверская обл.\nИНН",
+    "start": 131,
+    "end": 148
+   },
+   {
+    "seg_id": "p40",
+    "type": "PERSON",
+    "text": "Смирнов В. А.",
+    "start": 26,
+    "end": 39
+   }
+  ],
+  "loan_0006__m2718_homoglyph": [
+   {
+    "seg_id": "p0",
+    "type": "ORG",
+    "text": "ДОГОВОР ЗАЙМА",
+    "start": 0,
+    "end": 13
+   },
+   {
+    "seg_id": "p3",
+    "type": "ADDRESS",
+    "text": "г. Воронеж     «10»",
+    "start": 0,
+    "end": 19
+   },
+   {
+    "seg_id": "p5",
+    "type": "PERSON",
+    "text": "Cmирнов Oлeг Петрович",
+    "start": 0,
+    "end": 21
+   },
+   {
+    "seg_id": "p5",
+    "type": "ORG",
+    "text": "ОУФМС",
+    "start": 58,
+    "end": 63
+   },
+   {
+    "seg_id": "p5",
+    "type": "ORG",
+    "text": "Займодавец",
+    "start": 153,
+    "end": 163
+   },
+   {
+    "seg_id": "p5",
+    "type": "PERSON",
+    "text": "Ивaнов Влaдиmиp Дмитриевич",
+    "start": 185,
+    "end": 211
+   },
+   {
+    "seg_id": "p5",
+    "type": "ORG",
+    "text": "ОУФМС",
+    "start": 248,
+    "end": 253
+   },
+   {
+    "seg_id": "p5",
+    "type": "ORG",
+    "text": "Заёмщик",
+    "start": 343,
+    "end": 350
+   },
+   {
+    "seg_id": "p5",
+    "type": "ORG",
+    "text": "Стороны",
+    "start": 392,
+    "end": 399
+   },
+   {
+    "seg_id": "p5",
+    "type": "ADDRESS",
+    "text": ", выдан ТП № 2 ОУФМС России по Московской обл. 09.08.2004, код подpaзделeния ",
+    "start": 43,
+    "end": 120
+   },
+   {
+    "seg_id": "p5",
+    "type": "ADDRESS",
+    "text": "З1 02 7987О7, выдан ТП № 2 ОУФМС России по Московской обл. 28.О2.20І5, код подразделения ",
+    "start": 221,
+    "end": 310
+   },
+   {
+    "seg_id": "p9",
+    "type": "PERSON",
+    "text": "Заёмщику",
+    "start": 41,
+    "end": 49
+   },
+   {
+    "seg_id": "p9",
+    "type": "PERSON",
+    "text": "Заёмщик",
+    "start": 71,
+    "end": 78
+   },
+   {
+    "seg_id": "p10",
+    "type": "PERSON",
+    "text": "Займодавца",
+    "start": 85,
+    "end": 95
+   },
+   {
+    "seg_id": "p11",
+    "type": "PERSON",
+    "text": "Заёмщик",
+    "start": 27,
+    "end": 34
+   },
+   {
+    "seg_id": "p12",
+    "type": "PERSON",
+    "text": "Займодавца",
+    "start": 70,
+    "end": 80
+   },
+   {
+    "seg_id": "p16",
+    "type": "ORG",
+    "text": "МКАС",
+    "start": 341,
+    "end": 345
+   },
+   {
+    "seg_id": "p16",
+    "type": "ORG",
+    "text": "ТПП",
+    "start": 350,
+    "end": 353
+   },
+   {
+    "seg_id": "p16",
+    "type": "ADDRESS",
+    "text": "с ГОСТ 7.32-2017, артикул RM-6833-63",
+    "start": 39,
+    "end": 75
+   },
+   {
+    "seg_id": "p16",
+    "type": "ADDRESS",
+    "text": "РФ. Цена",
+    "start": 354,
+    "end": 362
+   },
+   {
+    "seg_id": "p19",
+    "type": "ADDRESS",
+    "text": "6О300О, г. Нижний Новгoрoд, проезд Заречная, д. 54, кв. 17",
+    "start": 36,
+    "end": 94
+   },
+   {
+    "seg_id": "p20",
+    "type": "PERSON",
+    "text": "Ивaнoвy Влaдимиру Дмитриевичу",
+    "start": 30,
+    "end": 59
+   },
+   {
+    "seg_id": "p23",
+    "type": "ADDRESS",
+    "text": "Российской Федерации",
+    "start": 127,
+    "end": 147
+   },
+   {
+    "seg_id": "p26",
+    "type": "ADDRESS",
+    "text": "Сторону",
+    "start": 87,
+    "end": 94
+   },
+   {
+    "seg_id": "p31",
+    "type": "PERSON",
+    "text": "Смирно­в‍ Олeг Петрoвич",
+    "start": 30,
+    "end": 53
+   },
+   {
+    "seg_id": "t0_r0_c0",
+    "type": "PERSON",
+    "text": "Смирнoв Олег Петpович\nДата",
+    "start": 12,
+    "end": 38
+   },
+   {
+    "seg_id": "t0_r0_c0",
+    "type": "PERSON",
+    "text": "Kосмонавтoв",
+    "start": 106,
+    "end": 117
+   },
+   {
+    "seg_id": "t0_r0_c0",
+    "type": "ORG",
+    "text": "ОУФМС",
+    "start": 168,
+    "end": 173
+   },
+   {
+    "seg_id": "t0_r0_c0",
+    "type": "PERSON",
+    "text": "Cмиpнов О. П.",
+    "start": 338,
+    "end": 351
+   },
+   {
+    "seg_id": "t0_r0_c0",
+    "type": "ADDRESS",
+    "text": "630О99, г. Нoвосибирск, ш. Kосмонавтoв, д. 7, кв. 166\nПаспорт 76 І8 74І82І, выдан ТП № 2 ОУФМС России по Московской обл. 09.08.2004, код подразделения 371-97О\nСНИЛС З3б-643-317 85 ИНН",
+    "start": 79,
+    "end": 262
+   },
+   {
+    "seg_id": "t0_r0_c1",
+    "type": "PERSON",
+    "text": "Ивaнов Влaдимир Дмитриевич",
+    "start": 9,
+    "end": 35
+   },
+   {
+    "seg_id": "t0_r0_c1",
+    "type": "ORG",
+    "text": "ОУФМС",
+    "start": 168,
+    "end": 173
+   },
+   {
+    "seg_id": "t0_r0_c1",
+    "type": "PERSON",
+    "text": "Иванoв В. Д.",
+    "start": 342,
+    "end": 354
+   },
+   {
+    "seg_id": "t0_r0_c1",
+    "type": "ADDRESS",
+    "text": "44З010, г. Самaра, бул. Профсoюзнaя, д. 83, кв. 184\nПаспорт 3І 02 7987О7, выдан ТП № 2 ОУФМС России по Московской обл. 28.02.2015, код подразделения 95З-І75\nCНИЛС",
+    "start": 81,
+    "end": 243
+   },
+   {
+    "seg_id": "t1_r1_c0",
+    "type": "PERSON",
+    "text": "Ивaнов",
+    "start": 0,
+    "end": 6
+   },
+   {
+    "seg_id": "t1_r1_c1",
+    "type": "PERSON",
+    "text": "Влaдимиp Дмитриевич",
+    "start": 0,
+    "end": 19
+   },
+   {
+    "seg_id": "p39",
+    "type": "PERSON",
+    "text": "Cмирнов Олeг Пeтрович",
+    "start": 29,
+    "end": 50
+   },
+   {
+    "seg_id": "p40",
+    "type": "PERSON",
+    "text": "Иванoв Bладимир Дmитриевич",
+    "start": 26,
+    "end": 52
+   }
+  ],
+  "sale_0001": [
+   {
+    "seg_id": "l3",
+    "type": "ADDRESS",
+    "text": "г. Екатеринбург     «24»",
+    "start": 0,
+    "end": 24
+   },
+   {
+    "seg_id": "l5",
+    "type": "PERSON",
+    "text": "Максимова А. М.",
+    "start": 31,
+    "end": 46
+   },
+   {
+    "seg_id": "l5",
+    "type": "PERSON",
+    "text": "Крылова Юлия Олеговна",
+    "start": 190,
+    "end": 211
+   },
+   {
+    "seg_id": "l5",
+    "type": "ORG",
+    "text": "ГУ",
+    "start": 241,
+    "end": 243
+   },
+   {
+    "seg_id": "l5",
+    "type": "ORG",
+    "text": "МВД",
+    "start": 244,
+    "end": 247
+   },
+   {
+    "seg_id": "l5",
+    "type": "ORG",
+    "text": "046-177",
+    "start": 298,
+    "end": 305
+   },
+   {
+    "seg_id": "l5",
+    "type": "ORG",
+    "text": "Стороны",
+    "start": 383,
+    "end": 390
+   },
+   {
+    "seg_id": "l5",
+    "type": "ADDRESS",
+    "text": ", выдан ГУ МВД России по г. Москве 16.02.2020",
+    "start": 233,
+    "end": 278
+   },
+   {
+    "seg_id": "l8",
+    "type": "PERSON",
+    "text": "Покупатель",
+    "start": 73,
+    "end": 83
+   },
+   {
+    "seg_id": "l8",
+    "type": "ADDRESS",
+    "text": "Покупателя",
+    "start": 49,
+    "end": 59
+   },
+   {
+    "seg_id": "l10",
+    "type": "ADDRESS",
+    "text": "к Покупателю с",
+    "start": 35,
+    "end": 49
+   },
+   {
+    "seg_id": "l11",
+    "type": "PERSON",
+    "text": "Покупателем",
+    "start": 56,
+    "end": 67
+   },
+   {
+    "seg_id": "l15",
+    "type": "ORG",
+    "text": "МКАС",
+    "start": 341,
+    "end": 345
+   },
+   {
+    "seg_id": "l15",
+    "type": "ORG",
+    "text": "ТПП",
+    "start": 350,
+    "end": 353
+   },
+   {
+    "seg_id": "l15",
+    "type": "ADDRESS",
+    "text": "с ГОСТ 7.32-2017, артикул RM-7584-29",
+    "start": 39,
+    "end": 75
+   },
+   {
+    "seg_id": "l15",
+    "type": "ADDRESS",
+    "text": "РФ. Цена",
+    "start": 354,
+    "end": 362
+   },
+   {
+    "seg_id": "l18",
+    "type": "ADDRESS",
+    "text": "614000, Свердловская обл., г. Пермь, бул. Промышленная, вл. 15, стр. 2, пом. VII.",
+    "start": 36,
+    "end": 117
+   },
+   {
+    "seg_id": "l19",
+    "type": "PERSON",
+    "text": "Крыловой Юлии Олеговне",
+    "start": 30,
+    "end": 52
+   },
+   {
+    "seg_id": "l22",
+    "type": "ADDRESS",
+    "text": "Российской Федерации",
+    "start": 127,
+    "end": 147
+   },
+   {
+    "seg_id": "l25",
+    "type": "ADDRESS",
+    "text": "Сторону",
+    "start": 87,
+    "end": 94
+   },
+   {
+    "seg_id": "l36",
+    "type": "PERSON",
+    "text": "Максимова Анна Михайловна",
+    "start": 31,
+    "end": 56
+   },
+   {
+    "seg_id": "l37",
+    "type": "ADDRESS",
+    "text": "630099, Краснодарский край, г. Новосибирск, ул. Пушкина, вл. 90, стр. 5, пом. VII",
+    "start": 19,
+    "end": 100
+   },
+   {
+    "seg_id": "l39",
+    "type": "ORG",
+    "text": "ПАО «Совкомбанк»",
+    "start": 27,
+    "end": 43
+   },
+   {
+    "seg_id": "l41",
+    "type": "ADDRESS",
+    "text": "E-mail",
+    "start": 0,
+    "end": 6
+   },
+   {
+    "seg_id": "l43",
+    "type": "PERSON",
+    "text": "Максимова А. М.",
+    "start": 18,
+    "end": 33
+   },
+   {
+    "seg_id": "l46",
+    "type": "PERSON",
+    "text": "Крылова Юлия Олеговна",
+    "start": 0,
+    "end": 21
+   },
+   {
+    "seg_id": "l48",
+    "type": "ADDRESS",
+    "text": "630099, Республика Татарстан, г. Новосибирск, бул. Кутузовский, вл. 69, стр. 5, пом. VII",
+    "start": 19,
+    "end": 107
+   },
+   {
+    "seg_id": "l49",
+    "type": "ORG",
+    "text": "ГУ",
+    "start": 28,
+    "end": 30
+   },
+   {
+    "seg_id": "l49",
+    "type": "ORG",
+    "text": "МВД",
+    "start": 31,
+    "end": 34
+   },
+   {
+    "seg_id": "l49",
+    "type": "ORG",
+    "text": "046-177",
+    "start": 85,
+    "end": 92
+   },
+   {
+    "seg_id": "l49",
+    "type": "ADDRESS",
+    "text": ", выдан ГУ МВД России по г. Москве 16.02.2020",
+    "start": 20,
+    "end": 65
+   },
+   {
+    "seg_id": "l52",
+    "type": "ADDRESS",
+    "text": "E-mail",
+    "start": 0,
+    "end": 6
+   },
+   {
+    "seg_id": "l54",
+    "type": "PERSON",
+    "text": "Крылова Ю. О.",
+    "start": 15,
+    "end": 28
+   },
+   {
+    "seg_id": "l58",
+    "type": "PERSON",
+    "text": "Максимова А. М./",
+    "start": 27,
+    "end": 43
+   },
+   {
+    "seg_id": "l59",
+    "type": "PERSON",
+    "text": "Крылова Юлия Олеговна",
+    "start": 29,
+    "end": 50
+   }
+  ],
+  "sale_0002": [
+   {
+    "seg_id": "p3",
+    "type": "ORG",
+    "text": "13",
+    "start": 14,
+    "end": 16
+   },
+   {
+    "seg_id": "p3",
+    "type": "ADDRESS",
+    "text": "г. Химки     «13»",
+    "start": 0,
+    "end": 17
+   },
+   {
+    "seg_id": "p5",
+    "type": "PERSON",
+    "text": "Попов Егор Петрович",
+    "start": 0,
+    "end": 19
+   },
+   {
+    "seg_id": "p5",
+    "type": "ORG",
+    "text": "ОУФМС",
+    "start": 56,
+    "end": 61
+   },
+   {
+    "seg_id": "p5",
+    "type": "PERSON",
+    "text": "Титова Анна Михайловна",
+    "start": 181,
+    "end": 203
+   },
+   {
+    "seg_id": "p5",
+    "type": "ORG",
+    "text": "ОВД «Тропарёво",
+    "start": 233,
+    "end": 247
+   },
+   {
+    "seg_id": "p5",
+    "type": "ORG",
+    "text": "094-925",
+    "start": 289,
+    "end": 296
+   },
+   {
+    "seg_id": "p5",
+    "type": "ORG",
+    "text": "Стороны",
+    "start": 374,
+    "end": 381
+   },
+   {
+    "seg_id": "p5",
+    "type": "ADDRESS",
+    "text": ", выдан ТП № 2 ОУФМС России по Московской обл. 16.06.2012, код подразделения ",
+    "start": 41,
+    "end": 118
+   },
+   {
+    "seg_id": "p5",
+    "type": "ADDRESS",
+    "text": ", выдан ОВД «Тропарёво» г. Москвы 07.02.2008",
+    "start": 225,
+    "end": 269
+   },
+   {
+    "seg_id": "p9",
+    "type": "PERSON",
+    "text": "Покупатель",
+    "start": 73,
+    "end": 83
+   },
+   {
+    "seg_id": "p9",
+    "type": "ADDRESS",
+    "text": "Покупателя",
+    "start": 49,
+    "end": 59
+   },
+   {
+    "seg_id": "p11",
+    "type": "ADDRESS",
+    "text": "к Покупателю с",
+    "start": 35,
+    "end": 49
+   },
+   {
+    "seg_id": "p12",
+    "type": "PERSON",
+    "text": "Покупателем",
+    "start": 56,
+    "end": 67
+   },
+   {
+    "seg_id": "p16",
+    "type": "ORG",
+    "text": "МКАС",
+    "start": 341,
+    "end": 345
+   },
+   {
+    "seg_id": "p16",
+    "type": "ORG",
+    "text": "ТПП",
+    "start": 350,
+    "end": 353
+   },
+   {
+    "seg_id": "p16",
+    "type": "ADDRESS",
+    "text": "с ГОСТ 7.32-2017, артикул RM-9145-85",
+    "start": 39,
+    "end": 75
+   },
+   {
+    "seg_id": "p16",
+    "type": "ADDRESS",
+    "text": "РФ. Цена",
+    "start": 354,
+    "end": 362
+   },
+   {
+    "seg_id": "p19",
+    "type": "ORG",
+    "text": "Родник",
+    "start": 71,
+    "end": 77
+   },
+   {
+    "seg_id": "p19",
+    "type": "ADDRESS",
+    "text": "бул. Космонавтов, д. 28, тер. СНТ «Родник», Республика Татарстан",
+    "start": 36,
+    "end": 100
+   },
+   {
+    "seg_id": "p20",
+    "type": "PERSON",
+    "text": "Титовой",
+    "start": 30,
+    "end": 37
+   },
+   {
+    "seg_id": "p20",
+    "type": "PERSON",
+    "text": "Анне Михайловне",
+    "start": 38,
+    "end": 53
+   },
+   {
+    "seg_id": "p22",
+    "type": "ORG",
+    "text": "ПРОЧИЕ УСЛОВИЯ",
+    "start": 3,
+    "end": 17
+   },
+   {
+    "seg_id": "p23",
+    "type": "ADDRESS",
+    "text": "Российской Федерации",
+    "start": 127,
+    "end": 147
+   },
+   {
+    "seg_id": "p26",
+    "type": "ADDRESS",
+    "text": "Сторону",
+    "start": 87,
+    "end": 94
+   },
+   {
+    "seg_id": "p31",
+    "type": "PERSON",
+    "text": "Попо­в‍ Егор Петрович",
+    "start": 30,
+    "end": 51
+   },
+   {
+    "seg_id": "p32",
+    "type": "PERSON",
+    "text": "тИтОвА Анна",
+    "start": 13,
+    "end": 24
+   },
+   {
+    "seg_id": "p34",
+    "type": "ORG",
+    "text": "ПОДПИСИ СТОРОН",
+    "start": 12,
+    "end": 26
+   },
+   {
+    "seg_id": "t0_r0_c0",
+    "type": "PERSON",
+    "text": "Попов Егор Петрович\nДата",
+    "start": 10,
+    "end": 34
+   },
+   {
+    "seg_id": "t0_r0_c0",
+    "type": "ORG",
+    "text": "ОУФМС",
+    "start": 166,
+    "end": 171
+   },
+   {
+    "seg_id": "t0_r0_c0",
+    "type": "PERSON",
+    "text": "Попов Е. П.",
+    "start": 337,
+    "end": 348
+   },
+   {
+    "seg_id": "t0_r0_c0",
+    "type": "ADDRESS",
+    "text": "проезд Пушкина, д. 79, пгт. Софрино, Краснодарский край\nПаспорт 30 09 242640, выдан ТП № 2 ОУФМС России по Московской обл. 16.06.2012, код подразделения 448-818\nСНИЛС",
+    "start": 75,
+    "end": 241
+   },
+   {
+    "seg_id": "t0_r0_c1",
+    "type": "PERSON",
+    "text": "Титова Анна Михайловна",
+    "start": 12,
+    "end": 34
+   },
+   {
+    "seg_id": "t0_r0_c1",
+    "type": "ORG",
+    "text": "ОВД «Тропарёво",
+    "start": 162,
+    "end": 176
+   },
+   {
+    "seg_id": "t0_r0_c1",
+    "type": "PERSON",
+    "text": "Титова А. М.",
+    "start": 332,
+    "end": 344
+   },
+   {
+    "seg_id": "t0_r0_c1",
+    "type": "ADDRESS",
+    "text": "ш. Советская, д. 58, пгт. Софрино, Ленинградская обл.\nПаспорт 21 17 122959, выдан ОВД «Тропарёво» г. Москвы 07.02.2008",
+    "start": 80,
+    "end": 198
+   },
+   {
+    "seg_id": "t1_r1_c1",
+    "type": "PERSON",
+    "text": "Анна Михайловна",
+    "start": 0,
+    "end": 15
+   },
+   {
+    "seg_id": "p39",
+    "type": "PERSON",
+    "text": "Попов Егор Петрович",
+    "start": 27,
+    "end": 46
+   },
+   {
+    "seg_id": "p40",
+    "type": "PERSON",
+    "text": "Титова Анна Михайловна",
+    "start": 29,
+    "end": 51
+   }
+  ],
+  "sale_0006": [
+   {
+    "seg_id": "p3",
+    "type": "ORG",
+    "text": "15",
+    "start": 14,
+    "end": 16
+   },
+   {
+    "seg_id": "p3",
+    "type": "ADDRESS",
+    "text": "г. Химки     «15»",
+    "start": 0,
+    "end": 17
+   },
+   {
+    "seg_id": "p5",
+    "type": "PERSON",
+    "text": "Волков В. С.",
+    "start": 192,
+    "end": 204
+   },
+   {
+    "seg_id": "p5",
+    "type": "ORG",
+    "text": "Стороны",
+    "start": 370,
+    "end": 377
+   },
+   {
+    "seg_id": "p8",
+    "type": "PERSON",
+    "text": "Покупатель",
+    "start": 73,
+    "end": 83
+   },
+   {
+    "seg_id": "p8",
+    "type": "ADDRESS",
+    "text": "Покупателя",
+    "start": 49,
+    "end": 59
+   },
+   {
+    "seg_id": "p10",
+    "type": "ADDRESS",
+    "text": "к Покупателю с",
+    "start": 35,
+    "end": 49
+   },
+   {
+    "seg_id": "p11",
+    "type": "PERSON",
+    "text": "Покупателем",
+    "start": 56,
+    "end": 67
+   },
+   {
+    "seg_id": "p15",
+    "type": "ORG",
+    "text": "МКАС",
+    "start": 341,
+    "end": 345
+   },
+   {
+    "seg_id": "p15",
+    "type": "ORG",
+    "text": "ТПП",
+    "start": 350,
+    "end": 353
+   },
+   {
+    "seg_id": "p15",
+    "type": "ADDRESS",
+    "text": "с ГОСТ 7.32-2017, артикул RM-1278-35",
+    "start": 39,
+    "end": 75
+   },
+   {
+    "seg_id": "p15",
+    "type": "ADDRESS",
+    "text": "РФ. Цена",
+    "start": 354,
+    "end": 362
+   },
+   {
+    "seg_id": "p18",
+    "type": "ADDRESS",
+    "text": "443010, г. Самара, проезд Садовая, д. 41, кв. 5",
+    "start": 36,
+    "end": 83
+   },
+   {
+    "seg_id": "p19",
+    "type": "PERSON",
+    "text": "Волкову Владимиру Сергеевичу",
+    "start": 30,
+    "end": 58
+   },
+   {
+    "seg_id": "p21",
+    "type": "ORG",
+    "text": "ПРОЧИЕ УСЛОВИЯ",
+    "start": 3,
+    "end": 17
+   },
+   {
+    "seg_id": "p22",
+    "type": "ADDRESS",
+    "text": "Российской Федерации",
+    "start": 127,
+    "end": 147
+   },
+   {
+    "seg_id": "p25",
+    "type": "ADDRESS",
+    "text": "Сторону",
+    "start": 87,
+    "end": 94
+   },
+   {
+    "seg_id": "p30",
+    "type": "PERSON",
+    "text": "ЛЕБЕДЕВА",
+    "start": 15,
+    "end": 23
+   },
+   {
+    "seg_id": "p30",
+    "type": "PERSON",
+    "text": "ОЛЬГА ПАВЛОВНА",
+    "start": 24,
+    "end": 38
+   },
+   {
+    "seg_id": "p31",
+    "type": "ADDRESS",
+    "text": "603000, г. Нижний Новгород, просп. Космонавтов, д. 40, кв. 1723443442638",
+    "start": 18,
+    "end": 90
+   },
+   {
+    "seg_id": "p33",
+    "type": "ORG",
+    "text": "ПОДПИСИ СТОРОН",
+    "start": 12,
+    "end": 26
+   },
+   {
+    "seg_id": "t0_r0_c0",
+    "type": "PERSON",
+    "text": "Лебедева",
+    "start": 10,
+    "end": 18
+   },
+   {
+    "seg_id": "t0_r0_c0",
+    "type": "PERSON",
+    "text": "Ольга Павловна",
+    "start": 19,
+    "end": 33
+   },
+   {
+    "seg_id": "t0_r0_c0",
+    "type": "PERSON",
+    "text": "Лебедева",
+    "start": 65,
+    "end": 73
+   },
+   {
+    "seg_id": "t0_r0_c0",
+    "type": "PERSON",
+    "text": "Ольга Павловна",
+    "start": 74,
+    "end": 88
+   },
+   {
+    "seg_id": "t0_r0_c0",
+    "type": "ORG",
+    "text": "АО «Альфа-Банк»",
+    "start": 223,
+    "end": 238
+   },
+   {
+    "seg_id": "t0_r0_c0",
+    "type": "ORG",
+    "text": "БИК",
+    "start": 240,
+    "end": 243
+   },
+   {
+    "seg_id": "t0_r0_c0",
+    "type": "PERSON",
+    "text": "Лебедева О. П.",
+    "start": 336,
+    "end": 350
+   },
+   {
+    "seg_id": "t0_r0_c0",
+    "type": "ADDRESS",
+    "text": "420111, г. Казань, ул. Советская, д. 76, кв. 24\nИНН",
+    "start": 108,
+    "end": 159
+   },
+   {
+    "seg_id": "t0_r0_c1",
+    "type": "PERSON",
+    "text": "Волков Владимир Сергеевич\nАдрес",
+    "start": 63,
+    "end": 94
+   },
+   {
+    "seg_id": "t0_r0_c1",
+    "type": "ORG",
+    "text": "ПАО Сбербанк",
+    "start": 233,
+    "end": 245
+   },
+   {
+    "seg_id": "t0_r0_c1",
+    "type": "ORG",
+    "text": "БИК",
+    "start": 247,
+    "end": 250
+   },
+   {
+    "seg_id": "t0_r0_c1",
+    "type": "PERSON",
+    "text": "Волков В. С.",
+    "start": 324,
+    "end": 336
+   },
+   {
+    "seg_id": "t0_r0_c1",
+    "type": "ADDRESS",
+    "text": "Одинцово, Лесная 44\nИндивидуальный",
+    "start": 12,
+    "end": 46
+   },
+   {
+    "seg_id": "t0_r0_c1",
+    "type": "ADDRESS",
+    "text": "143400, г. Красногорск, проезд Октябрьская, д. 59, кв. 23\nИНН",
+    "start": 108,
+    "end": 169
+   },
+   {
+    "seg_id": "p37",
+    "type": "PERSON",
+    "text": "Лебедева О. П.",
+    "start": 27,
+    "end": 41
+   },
+   {
+    "seg_id": "p38",
+    "type": "PERSON",
+    "text": "Волков В. С.",
+    "start": 29,
+    "end": 41
+   }
+  ],
+  "services_0001": [
+   {
+    "seg_id": "l0",
+    "type": "ORG",
+    "text": "ДОГОВОР ВОЗМЕЗДНОГО ОКАЗАНИЯ УСЛУГ",
+    "start": 0,
+    "end": 34
+   },
+   {
+    "seg_id": "l3",
+    "type": "ADDRESS",
+    "text": "г. Ростов-на-Дону     «11»",
+    "start": 0,
+    "end": 26
+   },
+   {
+    "seg_id": "l5",
+    "type": "ORG",
+    "text": "ИП",
+    "start": 0,
+    "end": 2
+   },
+   {
+    "seg_id": "l5",
+    "type": "PERSON",
+    "text": "Никитина Екатерина Николаевна",
+    "start": 3,
+    "end": 32
+   },
+   {
+    "seg_id": "l5",
+    "type": "PERSON",
+    "text": "Новиков Олег Николаевич",
+    "start": 179,
+    "end": 202
+   },
+   {
+    "seg_id": "l5",
+    "type": "ORG",
+    "text": "ОУФМС",
+    "start": 232,
+    "end": 237
+   },
+   {
+    "seg_id": "l5",
+    "type": "ORG",
+    "text": "Стороны",
+    "start": 396,
+    "end": 403
+   },
+   {
+    "seg_id": "l5",
+    "type": "ADDRESS",
+    "text": ", выдан ОУФМС России по Тверской области в Заволжском р-не 17.08.2015, код подразделения ",
+    "start": 224,
+    "end": 313
+   },
+   {
+    "seg_id": "l8",
+    "type": "ORG",
+    "text": "Заказчика",
+    "start": 38,
+    "end": 47
+   },
+   {
+    "seg_id": "l11",
+    "type": "PERSON",
+    "text": "Исполнителя",
+    "start": 108,
+    "end": 119
+   },
+   {
+    "seg_id": "l15",
+    "type": "ORG",
+    "text": "МКАС",
+    "start": 341,
+    "end": 345
+   },
+   {
+    "seg_id": "l15",
+    "type": "ORG",
+    "text": "ТПП",
+    "start": 350,
+    "end": 353
+   },
+   {
+    "seg_id": "l15",
+    "type": "ADDRESS",
+    "text": "с ГОСТ 7.32-2017, артикул RM-5038-70",
+    "start": 39,
+    "end": 75
+   },
+   {
+    "seg_id": "l15",
+    "type": "ADDRESS",
+    "text": "РФ. Цена",
+    "start": 354,
+    "end": 362
+   },
+   {
+    "seg_id": "l18",
+    "type": "ADDRESS",
+    "text": "143400, г. Красногорск, наб. Пушкина, д. 41, кв. 59",
+    "start": 36,
+    "end": 87
+   },
+   {
+    "seg_id": "l19",
+    "type": "PERSON",
+    "text": "Новикову",
+    "start": 30,
+    "end": 38
+   },
+   {
+    "seg_id": "l19",
+    "type": "PERSON",
+    "text": "Олегу Николаевичу",
+    "start": 39,
+    "end": 56
+   },
+   {
+    "seg_id": "l21",
+    "type": "ORG",
+    "text": "ПРОЧИЕ УСЛОВИЯ",
+    "start": 3,
+    "end": 17
+   },
+   {
+    "seg_id": "l22",
+    "type": "ADDRESS",
+    "text": "Российской Федерации",
+    "start": 127,
+    "end": 147
+   },
+   {
+    "seg_id": "l25",
+    "type": "ADDRESS",
+    "text": "Сторону",
+    "start": 87,
+    "end": 94
+   },
+   {
+    "seg_id": "l29",
+    "type": "ORG",
+    "text": "ПОДПИСИ СТОРОН",
+    "start": 12,
+    "end": 26
+   },
+   {
+    "seg_id": "l32",
+    "type": "PERSON",
+    "text": "Никитина Екатерина Николаевна",
+    "start": 31,
+    "end": 60
+   },
+   {
+    "seg_id": "l33",
+    "type": "ADDRESS",
+    "text": "143400, г. Красногорск, бул. Кутузовский, д. 23, кв. 35",
+    "start": 19,
+    "end": 74
+   },
+   {
+    "seg_id": "l35",
+    "type": "ORG",
+    "text": "АО «Тинькофф Банк",
+    "start": 27,
+    "end": 44
+   },
+   {
+    "seg_id": "l35",
+    "type": "ORG",
+    "text": "БИК 044525974",
+    "start": 47,
+    "end": 60
+   },
+   {
+    "seg_id": "l37",
+    "type": "ADDRESS",
+    "text": "E-mail",
+    "start": 0,
+    "end": 6
+   },
+   {
+    "seg_id": "l39",
+    "type": "PERSON",
+    "text": "Никитина Е. Н.",
+    "start": 18,
+    "end": 32
+   },
+   {
+    "seg_id": "l42",
+    "type": "PERSON",
+    "text": "Новиков Олег Николаевич",
+    "start": 0,
+    "end": 23
+   },
+   {
+    "seg_id": "l44",
+    "type": "ADDRESS",
+    "text": "143000, г. Одинцово, наб. Кирова, д. 72, кв. 15",
+    "start": 19,
+    "end": 66
+   },
+   {
+    "seg_id": "l45",
+    "type": "ORG",
+    "text": "ОУФМС",
+    "start": 28,
+    "end": 33
+   },
+   {
+    "seg_id": "l45",
+    "type": "ORG",
+    "text": "812-400",
+    "start": 109,
+    "end": 116
+   },
+   {
+    "seg_id": "l45",
+    "type": "ADDRESS",
+    "text": ", выдан ОУФМС России по Тверской области в Заволжском р-не 17.08.2015",
+    "start": 20,
+    "end": 89
+   },
+   {
+    "seg_id": "l48",
+    "type": "ORG",
+    "text": "E-mail",
+    "start": 0,
+    "end": 6
+   },
+   {
+    "seg_id": "l50",
+    "type": "PERSON",
+    "text": "Новиков О. Н.",
+    "start": 15,
+    "end": 28
+   },
+   {
+    "seg_id": "l54",
+    "type": "PERSON",
+    "text": "Никитина Е. Н.",
+    "start": 30,
+    "end": 44
+   },
+   {
+    "seg_id": "l55",
+    "type": "PERSON",
+    "text": "Новиков Олег Николаевич",
+    "start": 27,
+    "end": 50
+   }
+  ],
+  "services_0002": [
+   {
+    "seg_id": "p0",
+    "type": "ORG",
+    "text": "ДОГОВОР ВОЗМЕЗДНОГО ОКАЗАНИЯ УСЛУГ",
+    "start": 0,
+    "end": 34
+   },
+   {
+    "seg_id": "p3",
+    "type": "ORG",
+    "text": "14",
+    "start": 14,
+    "end": 16
+   },
+   {
+    "seg_id": "p3",
+    "type": "ADDRESS",
+    "text": "г. Тверь     «14»",
+    "start": 0,
+    "end": 17
+   },
+   {
+    "seg_id": "p5",
+    "type": "PERSON",
+    "text": "Ольга Егоровна",
+    "start": 7,
+    "end": 21
+   },
+   {
+    "seg_id": "p5",
+    "type": "ORG",
+    "text": "ОУФМС",
+    "start": 58,
+    "end": 63
+   },
+   {
+    "seg_id": "p5",
+    "type": "ORG",
+    "text": "479-259",
+    "start": 120,
+    "end": 127
+   },
+   {
+    "seg_id": "p5",
+    "type": "PERSON",
+    "text": "Морозова Вера Ивановна",
+    "start": 186,
+    "end": 208
+   },
+   {
+    "seg_id": "p5",
+    "type": "ORG",
+    "text": "ОВД «Тропарёво",
+    "start": 238,
+    "end": 252
+   },
+   {
+    "seg_id": "p5",
+    "type": "ORG",
+    "text": "582-034",
+    "start": 294,
+    "end": 301
+   },
+   {
+    "seg_id": "p5",
+    "type": "ORG",
+    "text": "Стороны",
+    "start": 377,
+    "end": 384
+   },
+   {
+    "seg_id": "p5",
+    "type": "ADDRESS",
+    "text": ", выдан ТП № 2 ОУФМС России по Московской обл. 05.09.2005",
+    "start": 43,
+    "end": 100
+   },
+   {
+    "seg_id": "p5",
+    "type": "ADDRESS",
+    "text": ", выдан ОВД «Тропарёво» г. Москвы 23.03.2013",
+    "start": 230,
+    "end": 274
+   },
+   {
+    "seg_id": "p8",
+    "type": "ORG",
+    "text": "Заказчика",
+    "start": 38,
+    "end": 47
+   },
+   {
+    "seg_id": "p11",
+    "type": "PERSON",
+    "text": "Исполнителя",
+    "start": 108,
+    "end": 119
+   },
+   {
+    "seg_id": "p15",
+    "type": "ORG",
+    "text": "МКАС",
+    "start": 341,
+    "end": 345
+   },
+   {
+    "seg_id": "p15",
+    "type": "ORG",
+    "text": "ТПП",
+    "start": 350,
+    "end": 353
+   },
+   {
+    "seg_id": "p15",
+    "type": "ADDRESS",
+    "text": "с ГОСТ 7.32-2017, артикул RM-9611-48",
+    "start": 39,
+    "end": 75
+   },
+   {
+    "seg_id": "p15",
+    "type": "ADDRESS",
+    "text": "РФ. Цена",
+    "start": 354,
+    "end": 362
+   },
+   {
+    "seg_id": "p18",
+    "type": "ADDRESS",
+    "text": "344002, г. Ростов-на-Дону, бул. Пушкина, д. 80, кв. 141",
+    "start": 36,
+    "end": 91
+   },
+   {
+    "seg_id": "p19",
+    "type": "PERSON",
+    "text": "Морозовой Вере Ивановне",
+    "start": 30,
+    "end": 53
+   },
+   {
+    "seg_id": "p21",
+    "type": "ORG",
+    "text": "ПРОЧИЕ УСЛОВИЯ",
+    "start": 3,
+    "end": 17
+   },
+   {
+    "seg_id": "p22",
+    "type": "ADDRESS",
+    "text": "Российской Федерации",
+    "start": 127,
+    "end": 147
+   },
+   {
+    "seg_id": "p25",
+    "type": "ADDRESS",
+    "text": "Сторону",
+    "start": 87,
+    "end": 94
+   },
+   {
+    "seg_id": "p29",
+    "type": "ORG",
+    "text": "ПОДПИСИ СТОРОН",
+    "start": 12,
+    "end": 26
+   },
+   {
+    "seg_id": "t0_r0_c0",
+    "type": "PERSON",
+    "text": "Ершова",
+    "start": 13,
+    "end": 19
+   },
+   {
+    "seg_id": "t0_r0_c0",
+    "type": "PERSON",
+    "text": "Ольга Егоровна",
+    "start": 20,
+    "end": 34
+   },
+   {
+    "seg_id": "t0_r0_c0",
+    "type": "ORG",
+    "text": "ОУФМС",
+    "start": 163,
+    "end": 168
+   },
+   {
+    "seg_id": "t0_r0_c0",
+    "type": "PERSON",
+    "text": "Ершова О. Е.",
+    "start": 338,
+    "end": 350
+   },
+   {
+    "seg_id": "t0_r0_c0",
+    "type": "ADDRESS",
+    "text": "614000, г. Пермь, ул. Советская, д. 51, кв. 170\nПаспорт 63 03 668378, выдан ТП № 2 ОУФМС России по Московской обл. 05.09.2005, код подразделения 479-259\nСНИЛС",
+    "start": 80,
+    "end": 238
+   },
+   {
+    "seg_id": "t0_r0_c1",
+    "type": "PERSON",
+    "text": "Морозова Вера Ивановна",
+    "start": 10,
+    "end": 32
+   },
+   {
+    "seg_id": "t0_r0_c1",
+    "type": "ORG",
+    "text": "ОВД «Тропарёво",
+    "start": 159,
+    "end": 173
+   },
+   {
+    "seg_id": "t0_r0_c1",
+    "type": "PERSON",
+    "text": "Морозова В. И.",
+    "start": 329,
+    "end": 343
+   },
+   {
+    "seg_id": "t0_r0_c1",
+    "type": "ADDRESS",
+    "text": "143000, г. Одинцово, проезд Заречная, д. 22, кв. 117\nПаспорт 21 17 497728, выдан ОВД «Тропарёво» г. Москвы 23.03.2013, код подразделения 582-034\nСНИЛС",
+    "start": 78,
+    "end": 228
+   },
+   {
+    "seg_id": "p33",
+    "type": "PERSON",
+    "text": "Ершова Ольга Егоровна",
+    "start": 30,
+    "end": 51
+   },
+   {
+    "seg_id": "p34",
+    "type": "PERSON",
+    "text": "Морозова Вера Ивановна",
+    "start": 27,
+    "end": 49
+   }
+  ],
+  "services_0002__m1337_linebreak": [
+   {
+    "seg_id": "p0",
+    "type": "ORG",
+    "text": "ДОГОВОР ВОЗМЕЗДНОГО ОКАЗАНИЯ УСЛУГ",
+    "start": 0,
+    "end": 34
+   },
+   {
+    "seg_id": "p3",
+    "type": "ORG",
+    "text": "14",
+    "start": 15,
+    "end": 17
+   },
+   {
+    "seg_id": "p3",
+    "type": "ADDRESS",
+    "text": "г. Тверь   \n  «14»",
+    "start": 0,
+    "end": 18
+   },
+   {
+    "seg_id": "p5",
+    "type": "PERSON",
+    "text": "Ершова",
+    "start": 0,
+    "end": 6
+   },
+   {
+    "seg_id": "p5",
+    "type": "PERSON",
+    "text": "Ольга Егоро",
+    "start": 7,
+    "end": 18
+   },
+   {
+    "seg_id": "p5",
+    "type": "ORG",
+    "text": "ОУФМС",
+    "start": 60,
+    "end": 65
+   },
+   {
+    "seg_id": "p5",
+    "type": "PERSON",
+    "text": "Морозова\n Вера Ивановна",
+    "start": 189,
+    "end": 212
+   },
+   {
+    "seg_id": "p5",
+    "type": "ORG",
+    "text": "ОВД «Тропарёво",
+    "start": 243,
+    "end": 257
+   },
+   {
+    "seg_id": "p5",
+    "type": "ORG",
+    "text": "Зак\nазчик",
+    "start": 333,
+    "end": 342
+   },
+   {
+    "seg_id": "p5",
+    "type": "ORG",
+    "text": "Стороны",
+    "start": 384,
+    "end": 391
+   },
+   {
+    "seg_id": "p5",
+    "type": "ADDRESS",
+    "text": "России по Московской обл. 05.09.2005",
+    "start": 66,
+    "end": 102
+   },
+   {
+    "seg_id": "p5",
+    "type": "ADDRESS",
+    "text": "21 17\n 497728, выдан ОВД «Тропарёво» г. Москвы 23.03.2013",
+    "start": 222,
+    "end": 279
+   },
+   {
+    "seg_id": "p8",
+    "type": "ORG",
+    "text": "Заказчика",
+    "start": 38,
+    "end": 47
+   },
+   {
+    "seg_id": "p11",
+    "type": "PERSON",
+    "text": "Исполнителя",
+    "start": 108,
+    "end": 119
+   },
+   {
+    "seg_id": "p15",
+    "type": "ORG",
+    "text": "МКАС",
+    "start": 343,
+    "end": 347
+   },
+   {
+    "seg_id": "p15",
+    "type": "ORG",
+    "text": "ТПП",
+    "start": 352,
+    "end": 355
+   },
+   {
+    "seg_id": "p15",
+    "type": "ADDRESS",
+    "text": "с ГОСТ 7.32-2017",
+    "start": 39,
+    "end": 55
+   },
+   {
+    "seg_id": "p15",
+    "type": "ADDRESS",
+    "text": "РФ. Цена",
+    "start": 356,
+    "end": 364
+   },
+   {
+    "seg_id": "p18",
+    "type": "ADDRESS",
+    "text": "344002, г. Ростов-на-Дону, бул. Пушкина, д. 80, кв\n. 141.",
+    "start": 36,
+    "end": 93
+   },
+   {
+    "seg_id": "p19",
+    "type": "PERSON",
+    "text": "Морозовой Вере",
+    "start": 30,
+    "end": 44
+   },
+   {
+    "seg_id": "p19",
+    "type": "PERSON",
+    "text": "Иванов",
+    "start": 45,
+    "end": 51
+   },
+   {
+    "seg_id": "p21",
+    "type": "ORG",
+    "text": "ПРОЧИЕ УСЛОВИЯ",
+    "start": 3,
+    "end": 17
+   },
+   {
+    "seg_id": "p22",
+    "type": "ADDRESS",
+    "text": "Российской Федерации",
+    "start": 127,
+    "end": 147
+   },
+   {
+    "seg_id": "p25",
+    "type": "ADDRESS",
+    "text": "Сторону",
+    "start": 87,
+    "end": 94
+   },
+   {
+    "seg_id": "p29",
+    "type": "ORG",
+    "text": "ПОДПИСИ СТОРОН",
+    "start": 12,
+    "end": 26
+   },
+   {
+    "seg_id": "t0_r0_c0",
+    "type": "ORG",
+    "text": "ОУФМС",
+    "start": 168,
+    "end": 173
+   },
+   {
+    "seg_id": "t0_r0_c0",
+    "type": "PERSON",
+    "text": "Ершо\nва О. Е.",
+    "start": 349,
+    "end": 362
+   },
+   {
+    "seg_id": "t0_r0_c0",
+    "type": "ADDRESS",
+    "text": "614000, г. Пермь, ул. Советская, д. 5\n1, кв. 170\nПаспор\nт 63 0\n3 668378, выдан ТП № 2 ОУФМС России по Московской обл. 05.09.2005",
+    "start": 82,
+    "end": 210
+   },
+   {
+    "seg_id": "t0_r0_c1",
+    "type": "PERSON",
+    "text": "Морозова Вера Ив",
+    "start": 10,
+    "end": 26
+   },
+   {
+    "seg_id": "t0_r0_c1",
+    "type": "ORG",
+    "text": "ОВД «Тропарёво",
+    "start": 163,
+    "end": 177
+   },
+   {
+    "seg_id": "t0_r0_c1",
+    "type": "PERSON",
+    "text": "Морозова\n В. И.",
+    "start": 339,
+    "end": 354
+   },
+   {
+    "seg_id": "t0_r0_c1",
+    "type": "ADDRESS",
+    "text": "143000, г. Од\nинцово, проезд Заречная, д. 22, кв. 117\nПаспорт 21\n 17 497728, выдан ОВД «Тропарёво» г. Москвы 23.03.2013",
+    "start": 80,
+    "end": 199
+   },
+   {
+    "seg_id": "t0_r0_c1",
+    "type": "ADDRESS",
+    "text": "58\n2-034\nСНИЛС 601-127\n-487 39 ИНН",
+    "start": 219,
+    "end": 253
+   },
+   {
+    "seg_id": "p33",
+    "type": "PERSON",
+    "text": "Ершова О\nльга Егоровна",
+    "start": 30,
+    "end": 52
+   },
+   {
+    "seg_id": "p34",
+    "type": "PERSON",
+    "text": "Вера Ивановна",
+    "start": 37,
+    "end": 50
+   }
+  ],
+  "supply_0001": [
+   {
+    "seg_id": "l0",
+    "type": "ORG",
+    "text": "ДОГОВОР ПОСТАВКИ",
+    "start": 0,
+    "end": 16
+   },
+   {
+    "seg_id": "l3",
+    "type": "ADDRESS",
+    "text": "г. Москва     «18»",
+    "start": 0,
+    "end": 18
+   },
+   {
+    "seg_id": "l5",
+    "type": "ORG",
+    "text": "ПАО «Вектор»",
+    "start": 0,
+    "end": 12
+   },
+   {
+    "seg_id": "l5",
+    "type": "ORG",
+    "text": "Поставщик",
+    "start": 38,
+    "end": 47
+   },
+   {
+    "seg_id": "l5",
+    "type": "PERSON",
+    "text": "Зайцевой Марии Михайловны",
+    "start": 83,
+    "end": 108
+   },
+   {
+    "seg_id": "l5",
+    "type": "ORG",
+    "text": "ООО «Восход»",
+    "start": 163,
+    "end": 175
+   },
+   {
+    "seg_id": "l5",
+    "type": "PERSON",
+    "text": "Лебедевой",
+    "start": 231,
+    "end": 240
+   },
+   {
+    "seg_id": "l5",
+    "type": "PERSON",
+    "text": "Ольги Николаевны",
+    "start": 241,
+    "end": 257
+   },
+   {
+    "seg_id": "l5",
+    "type": "ORG",
+    "text": "Стороны",
+    "start": 357,
+    "end": 364
+   },
+   {
+    "seg_id": "l8",
+    "type": "PERSON",
+    "text": "Покупателя",
+    "start": 50,
+    "end": 60
+   },
+   {
+    "seg_id": "l8",
+    "type": "PERSON",
+    "text": "Покупатель",
+    "start": 70,
+    "end": 80
+   },
+   {
+    "seg_id": "l9",
+    "type": "ADDRESS",
+    "text": "Договора",
+    "start": 118,
+    "end": 126
+   },
+   {
+    "seg_id": "l11",
+    "type": "ADDRESS",
+    "text": "к Покупателю с",
+    "start": 44,
+    "end": 58
+   },
+   {
+    "seg_id": "l11",
+    "type": "ADDRESS",
+    "text": "Сторон",
+    "start": 129,
+    "end": 135
+   },
+   {
+    "seg_id": "l16",
+    "type": "ORG",
+    "text": "МКАС",
+    "start": 341,
+    "end": 345
+   },
+   {
+    "seg_id": "l16",
+    "type": "ORG",
+    "text": "ТПП",
+    "start": 350,
+    "end": 353
+   },
+   {
+    "seg_id": "l16",
+    "type": "ADDRESS",
+    "text": "с ГОСТ 7.32-2017, артикул RM-8670-58",
+    "start": 39,
+    "end": 75
+   },
+   {
+    "seg_id": "l16",
+    "type": "ADDRESS",
+    "text": "РФ. Цена",
+    "start": 354,
+    "end": 362
+   },
+   {
+    "seg_id": "l19",
+    "type": "ADDRESS",
+    "text": "141300, г. Сергиев Посад, пер. Ленина, д. 7, кв. 12",
+    "start": 36,
+    "end": 87
+   },
+   {
+    "seg_id": "l20",
+    "type": "PERSON",
+    "text": "Покупатель",
+    "start": 32,
+    "end": 42
+   },
+   {
+    "seg_id": "l20",
+    "type": "PERSON",
+    "text": "Лебедевой Ольги Николаевны",
+    "start": 45,
+    "end": 71
+   },
+   {
+    "seg_id": "l22",
+    "type": "ORG",
+    "text": "ПРОЧИЕ УСЛОВИЯ",
+    "start": 3,
+    "end": 17
+   },
+   {
+    "seg_id": "l23",
+    "type": "ADDRESS",
+    "text": "Российской Федерации",
+    "start": 127,
+    "end": 147
+   },
+   {
+    "seg_id": "l26",
+    "type": "ADDRESS",
+    "text": "Сторону",
+    "start": 87,
+    "end": 94
+   },
+   {
+    "seg_id": "l29",
+    "type": "ADDRESS",
+    "text": "Сторон",
+    "start": 143,
+    "end": 149
+   },
+   {
+    "seg_id": "l32",
+    "type": "ADDRESS",
+    "text": "Стороны",
+    "start": 77,
+    "end": 84
+   },
+   {
+    "seg_id": "l38",
+    "type": "ADDRESS",
+    "text": "Сторон",
+    "start": 143,
+    "end": 149
+   },
+   {
+    "seg_id": "l41",
+    "type": "ADDRESS",
+    "text": "Стороны",
+    "start": 76,
+    "end": 83
+   },
+   {
+    "seg_id": "l44",
+    "type": "ADDRESS",
+    "text": "Стороной",
+    "start": 108,
+    "end": 116
+   },
+   {
+    "seg_id": "l45",
+    "type": "PERSON",
+    "text": "Сторона-1",
+    "start": 5,
+    "end": 14
+   },
+   {
+    "seg_id": "l45",
+    "type": "PERSON",
+    "text": "Зайцева Мария Михайловна",
+    "start": 86,
+    "end": 110
+   },
+   {
+    "seg_id": "l45",
+    "type": "ADDRESS",
+    "text": "170100, г. Тверь, пер. Тверская, д. 27, кв. 143",
+    "start": 164,
+    "end": 211
+   },
+   {
+    "seg_id": "l48",
+    "type": "ORG",
+    "text": "ПОДПИСИ СТОРОН",
+    "start": 12,
+    "end": 26
+   },
+   {
+    "seg_id": "l51",
+    "type": "ORG",
+    "text": "ПАО «Вектор»",
+    "start": 0,
+    "end": 12
+   },
+   {
+    "seg_id": "l52",
+    "type": "ADDRESS",
+    "text": "630099, г. Новосибирск, наб. Мира, д. 27, кв. 162",
+    "start": 19,
+    "end": 68
+   },
+   {
+    "seg_id": "l53",
+    "type": "ADDRESS",
+    "text": "170100, г. Тверь, ш. Заречная, д. 22, кв. 22",
+    "start": 16,
+    "end": 60
+   },
+   {
+    "seg_id": "l56",
+    "type": "ORG",
+    "text": "Банк ВТБ (ПАО)",
+    "start": 27,
+    "end": 41
+   },
+   {
+    "seg_id": "l59",
+    "type": "ADDRESS",
+    "text": "E-mail",
+    "start": 0,
+    "end": 6
+   },
+   {
+    "seg_id": "l61",
+    "type": "PERSON",
+    "text": "М. М. Зайцева",
+    "start": 24,
+    "end": 37
+   },
+   {
+    "seg_id": "l64",
+    "type": "ORG",
+    "text": "ООО «Восход»",
+    "start": 0,
+    "end": 12
+   },
+   {
+    "seg_id": "l65",
+    "type": "ADDRESS",
+    "text": "443010, г. Самара, ш. Ленина, д. 3, кв. 61",
+    "start": 19,
+    "end": 61
+   },
+   {
+    "seg_id": "l68",
+    "type": "ORG",
+    "text": "Филиал «Центральный»",
+    "start": 27,
+    "end": 47
+   },
+   {
+    "seg_id": "l68",
+    "type": "ORG",
+    "text": "ПАО «Совкомбанк»",
+    "start": 48,
+    "end": 64
+   },
+   {
+    "seg_id": "l71",
+    "type": "ADDRESS",
+    "text": "E-mail",
+    "start": 0,
+    "end": 6
+   },
+   {
+    "seg_id": "l73",
+    "type": "PERSON",
+    "text": "О. Н. Лебедева",
+    "start": 24,
+    "end": 38
+   },
+   {
+    "seg_id": "l77",
+    "type": "PERSON",
+    "text": "Зайцева М. М./",
+    "start": 28,
+    "end": 42
+   },
+   {
+    "seg_id": "l78",
+    "type": "PERSON",
+    "text": "Лебедева О. Н.",
+    "start": 29,
+    "end": 43
+   }
+  ],
+  "supply_0002": [
+   {
+    "seg_id": "p0",
+    "type": "ORG",
+    "text": "ДОГОВОР ПОСТАВКИ",
+    "start": 0,
+    "end": 16
+   },
+   {
+    "seg_id": "p3",
+    "type": "ADDRESS",
+    "text": "г. Казань     «27»",
+    "start": 0,
+    "end": 18
+   },
+   {
+    "seg_id": "p5",
+    "type": "ORG",
+    "text": "ООО «Аргус»",
+    "start": 0,
+    "end": 11
+   },
+   {
+    "seg_id": "p5",
+    "type": "ORG",
+    "text": "Поставщик",
+    "start": 37,
+    "end": 46
+   },
+   {
+    "seg_id": "p5",
+    "type": "PERSON",
+    "text": "Соколовой",
+    "start": 79,
+    "end": 88
+   },
+   {
+    "seg_id": "p5",
+    "type": "PERSON",
+    "text": "Натальи Юрьевны",
+    "start": 89,
+    "end": 104
+   },
+   {
+    "seg_id": "p5",
+    "type": "ORG",
+    "text": "ИП",
+    "start": 159,
+    "end": 161
+   },
+   {
+    "seg_id": "p5",
+    "type": "PERSON",
+    "text": "Семёнов О. Е.",
+    "start": 162,
+    "end": 175
+   },
+   {
+    "seg_id": "p5",
+    "type": "ORG",
+    "text": "Стороны",
+    "start": 341,
+    "end": 348
+   },
+   {
+    "seg_id": "p8",
+    "type": "PERSON",
+    "text": "Покупателя",
+    "start": 50,
+    "end": 60
+   },
+   {
+    "seg_id": "p8",
+    "type": "PERSON",
+    "text": "Покупатель",
+    "start": 70,
+    "end": 80
+   },
+   {
+    "seg_id": "p9",
+    "type": "ADDRESS",
+    "text": "Договора",
+    "start": 118,
+    "end": 126
+   },
+   {
+    "seg_id": "p11",
+    "type": "ADDRESS",
+    "text": "к Покупателю с",
+    "start": 44,
+    "end": 58
+   },
+   {
+    "seg_id": "p11",
+    "type": "ADDRESS",
+    "text": "Сторон",
+    "start": 129,
+    "end": 135
+   },
+   {
+    "seg_id": "p16",
+    "type": "ORG",
+    "text": "МКАС",
+    "start": 341,
+    "end": 345
+   },
+   {
+    "seg_id": "p16",
+    "type": "ORG",
+    "text": "ТПП",
+    "start": 350,
+    "end": 353
+   },
+   {
+    "seg_id": "p16",
+    "type": "ADDRESS",
+    "text": "с ГОСТ 7.32-2017, артикул RM-1462-69",
+    "start": 39,
+    "end": 75
+   },
+   {
+    "seg_id": "p16",
+    "type": "ADDRESS",
+    "text": "РФ. Цена",
+    "start": 354,
+    "end": 362
+   },
+   {
+    "seg_id": "p19",
+    "type": "ADDRESS",
+    "text": "141300, г. Сергиев Посад, бул. Садовая, д. 51, кв. 78",
+    "start": 36,
+    "end": 89
+   },
+   {
+    "seg_id": "p20",
+    "type": "PERSON",
+    "text": "Олегу Егоровичу",
+    "start": 39,
+    "end": 54
+   },
+   {
+    "seg_id": "p20",
+    "type": "ADDRESS",
+    "text": "Семёнову",
+    "start": 30,
+    "end": 38
+   },
+   {
+    "seg_id": "p22",
+    "type": "ORG",
+    "text": "ПРОЧИЕ УСЛОВИЯ",
+    "start": 3,
+    "end": 17
+   },
+   {
+    "seg_id": "p23",
+    "type": "ADDRESS",
+    "text": "Российской Федерации",
+    "start": 127,
+    "end": 147
+   },
+   {
+    "seg_id": "p26",
+    "type": "ADDRESS",
+    "text": "Сторону",
+    "start": 87,
+    "end": 94
+   },
+   {
+    "seg_id": "p30",
+    "type": "ORG",
+    "text": "ПОДПИСИ СТОРОН",
+    "start": 12,
+    "end": 26
+   },
+   {
+    "seg_id": "t0_r0_c0",
+    "type": "ORG",
+    "text": "ООО «Аргус»",
+    "start": 11,
+    "end": 22
+   },
+   {
+    "seg_id": "t0_r0_c0",
+    "type": "ORG",
+    "text": "Банк ВТБ (ПАО)",
+    "start": 231,
+    "end": 245
+   },
+   {
+    "seg_id": "t0_r0_c0",
+    "type": "PERSON",
+    "text": "Н. Ю. Соколова",
+    "start": 363,
+    "end": 377
+   },
+   {
+    "seg_id": "t0_r0_c0",
+    "type": "ADDRESS",
+    "text": "394000, г. Воронеж, проезд Пушкина, д. 13, кв. 80\nПочтовый адрес: 170100, г. Тверь, проезд Баумана, д. 28, кв. 65\nИНН",
+    "start": 42,
+    "end": 159
+   },
+   {
+    "seg_id": "t0_r0_c1",
+    "type": "PERSON",
+    "text": "Семёнов Олег Егорович",
+    "start": 43,
+    "end": 64
+   },
+   {
+    "seg_id": "t0_r0_c1",
+    "type": "ORG",
+    "text": "ПАО «Совкомбанк»",
+    "start": 207,
+    "end": 223
+   },
+   {
+    "seg_id": "t0_r0_c1",
+    "type": "ORG",
+    "text": "БИК",
+    "start": 225,
+    "end": 228
+   },
+   {
+    "seg_id": "t0_r0_c1",
+    "type": "PERSON",
+    "text": "Семёнов О. Е.",
+    "start": 305,
+    "end": 318
+   },
+   {
+    "seg_id": "t0_r0_c1",
+    "type": "ADDRESS",
+    "text": "190000, г. Санкт-Петербург, проезд Мира, д. 11, кв. 186\nИНН",
+    "start": 84,
+    "end": 143
+   },
+   {
+    "seg_id": "p34",
+    "type": "PERSON",
+    "text": "Соколова Н. Ю.",
+    "start": 28,
+    "end": 42
+   },
+   {
+    "seg_id": "p35",
+    "type": "PERSON",
+    "text": "Семёнов О. Е.",
+    "start": 29,
+    "end": 42
+   }
+  ],
+  "works_0001": [
+   {
+    "seg_id": "l0",
+    "type": "ORG",
+    "text": "ДОГОВОР ПОДРЯДА",
+    "start": 0,
+    "end": 15
+   },
+   {
+    "seg_id": "l3",
+    "type": "ORG",
+    "text": "27",
+    "start": 14,
+    "end": 16
+   },
+   {
+    "seg_id": "l3",
+    "type": "ADDRESS",
+    "text": "г. Тверь     «27»",
+    "start": 0,
+    "end": 17
+   },
+   {
+    "seg_id": "l5",
+    "type": "ORG",
+    "text": "ООО «Логистик Групп",
+    "start": 0,
+    "end": 19
+   },
+   {
+    "seg_id": "l5",
+    "type": "ORG",
+    "text": "Подрядчик",
+    "start": 46,
+    "end": 55
+   },
+   {
+    "seg_id": "l5",
+    "type": "PERSON",
+    "text": "Волкова",
+    "start": 91,
+    "end": 98
+   },
+   {
+    "seg_id": "l5",
+    "type": "PERSON",
+    "text": "Юрия Дмитриевича",
+    "start": 99,
+    "end": 115
+   },
+   {
+    "seg_id": "l5",
+    "type": "ORG",
+    "text": "ООО «Василёк»",
+    "start": 191,
+    "end": 204
+   },
+   {
+    "seg_id": "l5",
+    "type": "PERSON",
+    "text": "Гусевой Юлии Алексеевны",
+    "start": 274,
+    "end": 297
+   },
+   {
+    "seg_id": "l5",
+    "type": "ORG",
+    "text": "Стороны",
+    "start": 372,
+    "end": 379
+   },
+   {
+    "seg_id": "l9",
+    "type": "PERSON",
+    "text": "Подрядчика",
+    "start": 35,
+    "end": 45
+   },
+   {
+    "seg_id": "l15",
+    "type": "ORG",
+    "text": "МКАС",
+    "start": 341,
+    "end": 345
+   },
+   {
+    "seg_id": "l15",
+    "type": "ORG",
+    "text": "ТПП",
+    "start": 350,
+    "end": 353
+   },
+   {
+    "seg_id": "l15",
+    "type": "ADDRESS",
+    "text": "с ГОСТ 7.32-2017, артикул RM-3854-72",
+    "start": 39,
+    "end": 75
+   },
+   {
+    "seg_id": "l15",
+    "type": "ADDRESS",
+    "text": "РФ. Цена",
+    "start": 354,
+    "end": 362
+   },
+   {
+    "seg_id": "l18",
+    "type": "ADDRESS",
+    "text": "наб. Кирова, д. 56, д. Малые Вязёмы, Краснодарский край",
+    "start": 36,
+    "end": 91
+   },
+   {
+    "seg_id": "l19",
+    "type": "PERSON",
+    "text": "Гусевой Юлии Алексеевны",
+    "start": 43,
+    "end": 66
+   },
+   {
+    "seg_id": "l21",
+    "type": "ORG",
+    "text": "ПРОЧИЕ УСЛОВИЯ",
+    "start": 3,
+    "end": 17
+   },
+   {
+    "seg_id": "l22",
+    "type": "ADDRESS",
+    "text": "Российской Федерации",
+    "start": 127,
+    "end": 147
+   },
+   {
+    "seg_id": "l25",
+    "type": "ADDRESS",
+    "text": "Сторону",
+    "start": 87,
+    "end": 94
+   },
+   {
+    "seg_id": "l28",
+    "type": "ADDRESS",
+    "text": "Сторон",
+    "start": 143,
+    "end": 149
+   },
+   {
+    "seg_id": "l31",
+    "type": "ADDRESS",
+    "text": "Стороны",
+    "start": 77,
+    "end": 84
+   },
+   {
+    "seg_id": "l37",
+    "type": "ADDRESS",
+    "text": "Сторон",
+    "start": 143,
+    "end": 149
+   },
+   {
+    "seg_id": "l40",
+    "type": "ADDRESS",
+    "text": "Стороны",
+    "start": 76,
+    "end": 83
+   },
+   {
+    "seg_id": "l43",
+    "type": "ADDRESS",
+    "text": "Стороной",
+    "start": 108,
+    "end": 116
+   },
+   {
+    "seg_id": "l44",
+    "type": "PERSON",
+    "text": "Сторона-1",
+    "start": 5,
+    "end": 14
+   },
+   {
+    "seg_id": "l44",
+    "type": "PERSON",
+    "text": "Волков Юрий Дмитриевич",
+    "start": 86,
+    "end": 108
+   },
+   {
+    "seg_id": "l44",
+    "type": "ADDRESS",
+    "text": "просп. Пушкина, д. 13, пгт. Софрино, Краснодарский край",
+    "start": 162,
+    "end": 217
+   },
+   {
+    "seg_id": "l48",
+    "type": "PERSON",
+    "text": "Волко­в‍ Юрий Дмитриевич",
+    "start": 30,
+    "end": 54
+   },
+   {
+    "seg_id": "l49",
+    "type": "PERSON",
+    "text": "Гусева",
+    "start": 24,
+    "end": 30
+   },
+   {
+    "seg_id": "l50",
+    "type": "PERSON",
+    "text": "Юлия Алексеевна",
+    "start": 0,
+    "end": 15
+   },
+   {
+    "seg_id": "l54",
+    "type": "ORG",
+    "text": "ПОДПИСИ СТОРОН",
+    "start": 12,
+    "end": 26
+   },
+   {
+    "seg_id": "l57",
+    "type": "ORG",
+    "text": "ООО «Логистик Групп",
+    "start": 0,
+    "end": 19
+   },
+   {
+    "seg_id": "l58",
+    "type": "ADDRESS",
+    "text": "пер. Тверская, д. 57, рп. Обухово, Свердловская обл.",
+    "start": 19,
+    "end": 71
+   },
+   {
+    "seg_id": "l59",
+    "type": "ADDRESS",
+    "text": "пер. Победы, д. 9, д. Малые Вязёмы, Тверская обл.",
+    "start": 16,
+    "end": 65
+   },
+   {
+    "seg_id": "l62",
+    "type": "ORG",
+    "text": "ПАО «Совкомбанк»",
+    "start": 27,
+    "end": 43
+   },
+   {
+    "seg_id": "l65",
+    "type": "ADDRESS",
+    "text": "E-mail",
+    "start": 0,
+    "end": 6
+   },
+   {
+    "seg_id": "l67",
+    "type": "PERSON",
+    "text": "Ю. Д. Волков",
+    "start": 27,
+    "end": 39
+   },
+   {
+    "seg_id": "l67",
+    "type": "ADDRESS",
+    "text": "Д. Волков",
+    "start": 30,
+    "end": 39
+   },
+   {
+    "seg_id": "l70",
+    "type": "ORG",
+    "text": "ООО «Василёк»",
+    "start": 0,
+    "end": 13
+   },
+   {
+    "seg_id": "l71",
+    "type": "ADDRESS",
+    "text": "наб. Баумана, д. 87, пгт. Софрино, Ленинградская обл.",
+    "start": 19,
+    "end": 72
+   },
+   {
+    "seg_id": "l74",
+    "type": "ORG",
+    "text": "АО «Тинькофф Банк",
+    "start": 27,
+    "end": 44
+   },
+   {
+    "seg_id": "l79",
+    "type": "PERSON",
+    "text": "Ю. А. Гусева",
+    "start": 24,
+    "end": 36
+   },
+   {
+    "seg_id": "l83",
+    "type": "PERSON",
+    "text": "Волков Ю. Д.",
+    "start": 28,
+    "end": 40
+   },
+   {
+    "seg_id": "l84",
+    "type": "PERSON",
+    "text": "Гусева Ю. А.",
+    "start": 27,
+    "end": 39
+   }
+  ],
+  "works_0002": [
+   {
+    "seg_id": "p0",
+    "type": "ORG",
+    "text": "договор подряда",
+    "start": 0,
+    "end": 15
+   },
+   {
+    "seg_id": "p3",
+    "type": "ADDRESS",
+    "text": "г. Одинцово     «04»",
+    "start": 0,
+    "end": 20
+   },
+   {
+    "seg_id": "p5",
+    "type": "ORG",
+    "text": "АО «Альтаир»",
+    "start": 0,
+    "end": 12
+   },
+   {
+    "seg_id": "p5",
+    "type": "ORG",
+    "text": "Подрядчик",
+    "start": 38,
+    "end": 47
+   },
+   {
+    "seg_id": "p5",
+    "type": "PERSON",
+    "text": "Вриса Йохана",
+    "start": 70,
+    "end": 82
+   },
+   {
+    "seg_id": "p5",
+    "type": "ORG",
+    "text": "ИП",
+    "start": 162,
+    "end": 164
+   },
+   {
+    "seg_id": "p5",
+    "type": "PERSON",
+    "text": "Смирнова Ирина Сергеевна",
+    "start": 165,
+    "end": 189
+   },
+   {
+    "seg_id": "p5",
+    "type": "ORG",
+    "text": "Заказчик",
+    "start": 233,
+    "end": 241
+   },
+   {
+    "seg_id": "p5",
+    "type": "ORG",
+    "text": "Стороны",
+    "start": 353,
+    "end": 360
+   },
+   {
+    "seg_id": "p9",
+    "type": "PERSON",
+    "text": "Подрядчика",
+    "start": 35,
+    "end": 45
+   },
+   {
+    "seg_id": "p15",
+    "type": "ORG",
+    "text": "МКАС",
+    "start": 341,
+    "end": 345
+   },
+   {
+    "seg_id": "p15",
+    "type": "ORG",
+    "text": "ТПП",
+    "start": 350,
+    "end": 353
+   },
+   {
+    "seg_id": "p15",
+    "type": "ADDRESS",
+    "text": "с ГОСТ 7.32-2017, артикул RM-5591-13",
+    "start": 39,
+    "end": 75
+   },
+   {
+    "seg_id": "p15",
+    "type": "ADDRESS",
+    "text": "РФ. Цена",
+    "start": 354,
+    "end": 362
+   },
+   {
+    "seg_id": "p18",
+    "type": "ADDRESS",
+    "text": "Свердловская обл.",
+    "start": 36,
+    "end": 53
+   },
+   {
+    "seg_id": "p19",
+    "type": "PERSON",
+    "text": "Смирновой",
+    "start": 30,
+    "end": 39
+   },
+   {
+    "seg_id": "p19",
+    "type": "PERSON",
+    "text": "Ирине Сергеевне",
+    "start": 40,
+    "end": 55
+   },
+   {
+    "seg_id": "p22",
+    "type": "ADDRESS",
+    "text": "Российской Федерации",
+    "start": 127,
+    "end": 147
+   },
+   {
+    "seg_id": "p25",
+    "type": "ADDRESS",
+    "text": "Сторону",
+    "start": 87,
+    "end": 94
+   },
+   {
+    "seg_id": "p31",
+    "type": "PERSON",
+    "text": "де Врис Йохaн",
+    "start": 20,
+    "end": 33
+   },
+   {
+    "seg_id": "p32",
+    "type": "ORG",
+    "text": "БИК",
+    "start": 0,
+    "end": 3
+   },
+   {
+    "seg_id": "p33",
+    "type": "ORG",
+    "text": "АО Альтаир ИНН 0542374415 КПП",
+    "start": 0,
+    "end": 29
+   },
+   {
+    "seg_id": "p33",
+    "type": "ADDRESS",
+    "text": "Нижний Новгород  Полевая 47",
+    "start": 40,
+    "end": 67
+   },
+   {
+    "seg_id": "t0_r0_c0",
+    "type": "ORG",
+    "text": "АО «Альтаир»",
+    "start": 11,
+    "end": 23
+   },
+   {
+    "seg_id": "t0_r0_c0",
+    "type": "ORG",
+    "text": "ПАО «Банк «Санкт-Петербург»",
+    "start": 231,
+    "end": 258
+   },
+   {
+    "seg_id": "t0_r0_c0",
+    "type": "PERSON",
+    "text": "Й. де Врис",
+    "start": 372,
+    "end": 382
+   },
+   {
+    "seg_id": "t0_r0_c0",
+    "type": "ADDRESS",
+    "text": "394000, Ленинградская обл., г. Воронеж, наб. Ленинградская, д. 43, корп. 2, литера А, пом. 1, оф. 427\nИНН",
+    "start": 43,
+    "end": 148
+   },
+   {
+    "seg_id": "t0_r0_c1",
+    "type": "PERSON",
+    "text": "Смирнова Ирина Сергеевна",
+    "start": 41,
+    "end": 65
+   },
+   {
+    "seg_id": "t0_r0_c1",
+    "type": "ORG",
+    "text": "Банк ВТБ (ПАО)",
+    "start": 199,
+    "end": 213
+   },
+   {
+    "seg_id": "t0_r0_c1",
+    "type": "ORG",
+    "text": "БИК",
+    "start": 215,
+    "end": 218
+   },
+   {
+    "seg_id": "t0_r0_c1",
+    "type": "PERSON",
+    "text": "Смирнова И. С.",
+    "start": 300,
+    "end": 314
+   },
+   {
+    "seg_id": "t0_r0_c1",
+    "type": "ADDRESS",
+    "text": "Краснодарский край",
+    "start": 85,
+    "end": 103
+   },
+   {
+    "seg_id": "p41",
+    "type": "PERSON",
+    "text": "Смирнова И. С.",
+    "start": 27,
+    "end": 41
+   }
+  ],
+  "works_0009": [
+   {
+    "seg_id": "l0",
+    "type": "ORG",
+    "text": "ДОГОВОР ПОДРЯДА",
+    "start": 0,
+    "end": 15
+   },
+   {
+    "seg_id": "l3",
+    "type": "ADDRESS",
+    "text": "г. Екатеринбург     «13»",
+    "start": 0,
+    "end": 24
+   },
+   {
+    "seg_id": "l5",
+    "type": "ORG",
+    "text": "ООО «Медведев»",
+    "start": 0,
+    "end": 14
+   },
+   {
+    "seg_id": "l5",
+    "type": "ORG",
+    "text": "Подрядчик",
+    "start": 40,
+    "end": 49
+   },
+   {
+    "seg_id": "l5",
+    "type": "PERSON",
+    "text": "Оганесяна Гургена Ашотовича",
+    "start": 85,
+    "end": 112
+   },
+   {
+    "seg_id": "l5",
+    "type": "PERSON",
+    "text": "Морозова Анна Николаевна",
+    "start": 188,
+    "end": 212
+   },
+   {
+    "seg_id": "l5",
+    "type": "ORG",
+    "text": "ОВД «Тропарёво",
+    "start": 242,
+    "end": 256
+   },
+   {
+    "seg_id": "l5",
+    "type": "ORG",
+    "text": "308-065",
+    "start": 298,
+    "end": 305
+   },
+   {
+    "seg_id": "l5",
+    "type": "ORG",
+    "text": "Стороны",
+    "start": 381,
+    "end": 388
+   },
+   {
+    "seg_id": "l5",
+    "type": "ADDRESS",
+    "text": ", выдан ОВД «Тропарёво» г. Москвы 13.04.2010",
+    "start": 234,
+    "end": 278
+   },
+   {
+    "seg_id": "l9",
+    "type": "PERSON",
+    "text": "Подрядчика",
+    "start": 35,
+    "end": 45
+   },
+   {
+    "seg_id": "l15",
+    "type": "ORG",
+    "text": "МКАС",
+    "start": 341,
+    "end": 345
+   },
+   {
+    "seg_id": "l15",
+    "type": "ORG",
+    "text": "ТПП",
+    "start": 350,
+    "end": 353
+   },
+   {
+    "seg_id": "l15",
+    "type": "ADDRESS",
+    "text": "с ГОСТ 7.32-2017, артикул RM-6281-17",
+    "start": 39,
+    "end": 75
+   },
+   {
+    "seg_id": "l15",
+    "type": "ADDRESS",
+    "text": "РФ. Цена",
+    "start": 354,
+    "end": 362
+   },
+   {
+    "seg_id": "l18",
+    "type": "ADDRESS",
+    "text": "141400, Республика Татарстан, г. Химки, наб. Гагарина, д. 83, корп. 3, литера А, пом. 18, оф. 227",
+    "start": 36,
+    "end": 133
+   },
+   {
+    "seg_id": "l19",
+    "type": "PERSON",
+    "text": "Морозовой",
+    "start": 30,
+    "end": 39
+   },
+   {
+    "seg_id": "l19",
+    "type": "PERSON",
+    "text": "Анне Николаевне",
+    "start": 40,
+    "end": 55
+   },
+   {
+    "seg_id": "l21",
+    "type": "ORG",
+    "text": "ПРОЧИЕ УСЛОВИЯ",
+    "start": 3,
+    "end": 17
+   },
+   {
+    "seg_id": "l22",
+    "type": "ADDRESS",
+    "text": "Российской Федерации",
+    "start": 127,
+    "end": 147
+   },
+   {
+    "seg_id": "l25",
+    "type": "ADDRESS",
+    "text": "Сторону",
+    "start": 87,
+    "end": 94
+   },
+   {
+    "seg_id": "l30",
+    "type": "PERSON",
+    "text": "морозовой",
+    "start": 10,
+    "end": 19
+   },
+   {
+    "seg_id": "l30",
+    "type": "PERSON",
+    "text": "анной николаевной",
+    "start": 20,
+    "end": 37
+   },
+   {
+    "seg_id": "l31",
+    "type": "ORG",
+    "text": "ООО Медведев ИНН",
+    "start": 0,
+    "end": 16
+   },
+   {
+    "seg_id": "l33",
+    "type": "ORG",
+    "text": "ПОДПИСИ СТОРОН",
+    "start": 12,
+    "end": 26
+   },
+   {
+    "seg_id": "l36",
+    "type": "ORG",
+    "text": "ООО «Медведев»",
+    "start": 0,
+    "end": 14
+   },
+   {
+    "seg_id": "l37",
+    "type": "ADDRESS",
+    "text": "344002, Новосибирская обл., г. Ростов-на-Дону, ш. Лесная, д. 29, корп. 2, литера А, пом. 30, оф. 238",
+    "start": 19,
+    "end": 119
+   },
+   {
+    "seg_id": "l40",
+    "type": "ORG",
+    "text": "Отделение № 8611 ПАО Сбербанк",
+    "start": 27,
+    "end": 56
+   },
+   {
+    "seg_id": "l40",
+    "type": "ADDRESS",
+    "text": "г. Казань",
+    "start": 57,
+    "end": 66
+   },
+   {
+    "seg_id": "l43",
+    "type": "ADDRESS",
+    "text": "E-mail",
+    "start": 0,
+    "end": 6
+   },
+   {
+    "seg_id": "l45",
+    "type": "PERSON",
+    "text": "Г. А. Оганесян",
+    "start": 36,
+    "end": 50
+   },
+   {
+    "seg_id": "l45",
+    "type": "ADDRESS",
+    "text": "Г. А",
+    "start": 36,
+    "end": 40
+   },
+   {
+    "seg_id": "l48",
+    "type": "PERSON",
+    "text": "Морозова Анна Николаевна",
+    "start": 0,
+    "end": 24
+   },
+   {
+    "seg_id": "l50",
+    "type": "ADDRESS",
+    "text": "Краснодарский край, Дмитровский р-н, 31 км автодороги М-8 «Дон», стр. 2",
+    "start": 19,
+    "end": 90
+   },
+   {
+    "seg_id": "l51",
+    "type": "ORG",
+    "text": "ОВД «Тропарёво",
+    "start": 28,
+    "end": 42
+   },
+   {
+    "seg_id": "l51",
+    "type": "ORG",
+    "text": "308-065",
+    "start": 84,
+    "end": 91
+   },
+   {
+    "seg_id": "l51",
+    "type": "ADDRESS",
+    "text": ", выдан ОВД «Тропарёво» г. Москвы 13.04.2010",
+    "start": 20,
+    "end": 64
+   },
+   {
+    "seg_id": "l54",
+    "type": "ADDRESS",
+    "text": "E-mail",
+    "start": 0,
+    "end": 6
+   },
+   {
+    "seg_id": "l56",
+    "type": "PERSON",
+    "text": "Морозова А. Н.",
+    "start": 15,
+    "end": 29
+   },
+   {
+    "seg_id": "l60",
+    "type": "PERSON",
+    "text": "Оганесян Г. А.",
+    "start": 28,
+    "end": 42
+   },
+   {
+    "seg_id": "l60",
+    "type": "ADDRESS",
+    "text": "Г. А",
+    "start": 37,
+    "end": 41
+   },
+   {
+    "seg_id": "l61",
+    "type": "PERSON",
+    "text": "Морозова Анна Николаевна",
+    "start": 27,
+    "end": 51
+   }
+  ]
+ }
+}

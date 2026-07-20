@@ -1,0 +1,3410 @@
+{
+ "model": "urchade/gliner_multi-v2.1",
+ "label_set": "ru",
+ "threshold": 0.5,
+ "n_spans": 378,
+ "spans": [
+  {
+   "seg_id": "p2",
+   "text": "Восход",
+   "label": "организация",
+   "type": "ORG",
+   "score": 0.7623,
+   "start": 42,
+   "end": 48
+  },
+  {
+   "seg_id": "p6",
+   "text": "Участники",
+   "label": "человек",
+   "type": "PERSON",
+   "score": 0.6599,
+   "start": 0,
+   "end": 9
+  },
+  {
+   "seg_id": "p6",
+   "text": "Восход",
+   "label": "организация",
+   "type": "ORG",
+   "score": 0.7039,
+   "start": 52,
+   "end": 58
+  },
+  {
+   "seg_id": "p8",
+   "text": "Иванов Роман Эдуардович",
+   "label": "человек",
+   "type": "PERSON",
+   "score": 0.9457,
+   "start": 3,
+   "end": 26
+  },
+  {
+   "seg_id": "p8",
+   "text": "ИНН 771234567890",
+   "label": "адрес",
+   "type": "ADDRESS",
+   "score": 0.9515,
+   "start": 28,
+   "end": 44
+  },
+  {
+   "seg_id": "p9",
+   "text": "Петрова Ольга Николаевна",
+   "label": "человек",
+   "type": "PERSON",
+   "score": 0.9502,
+   "start": 3,
+   "end": 27
+  },
+  {
+   "seg_id": "p9",
+   "text": "ИНН 770987654321",
+   "label": "адрес",
+   "type": "ADDRESS",
+   "score": 0.9274,
+   "start": 29,
+   "end": 45
+  },
+  {
+   "seg_id": "p10",
+   "text": "Ким Ен Су",
+   "label": "человек",
+   "type": "PERSON",
+   "score": 0.9776,
+   "start": 3,
+   "end": 12
+  },
+  {
+   "seg_id": "p10",
+   "text": "ИНН 503216549870",
+   "label": "адрес",
+   "type": "ADDRESS",
+   "score": 0.8969,
+   "start": 14,
+   "end": 30
+  },
+  {
+   "seg_id": "p12",
+   "text": "Участники",
+   "label": "человек",
+   "type": "PERSON",
+   "score": 0.6951,
+   "start": 21,
+   "end": 30
+  },
+  {
+   "seg_id": "p12",
+   "text": "Участник",
+   "label": "человек",
+   "type": "PERSON",
+   "score": 0.7878,
+   "start": 59,
+   "end": 67
+  },
+  {
+   "seg_id": "p15",
+   "text": "Участники",
+   "label": "человек",
+   "type": "PERSON",
+   "score": 0.8539,
+   "start": 15,
+   "end": 24
+  },
+  {
+   "seg_id": "p15",
+   "text": "Общества",
+   "label": "организация",
+   "type": "ORG",
+   "score": 0.6451,
+   "start": 138,
+   "end": 146
+  },
+  {
+   "seg_id": "p16",
+   "text": "Участники",
+   "label": "человек",
+   "type": "PERSON",
+   "score": 0.8032,
+   "start": 5,
+   "end": 14
+  },
+  {
+   "seg_id": "p16",
+   "text": "Общества",
+   "label": "организация",
+   "type": "ORG",
+   "score": 0.8886,
+   "start": 76,
+   "end": 84
+  },
+  {
+   "seg_id": "p16",
+   "text": "Обществу",
+   "label": "организация",
+   "type": "ORG",
+   "score": 0.9087,
+   "start": 138,
+   "end": 146
+  },
+  {
+   "seg_id": "p20",
+   "text": "Общем собрании Участников",
+   "label": "организация",
+   "type": "ORG",
+   "score": 0.5978,
+   "start": 24,
+   "end": 49
+  },
+  {
+   "seg_id": "p20",
+   "text": "Общего собрания",
+   "label": "организация",
+   "type": "ORG",
+   "score": 0.6585,
+   "start": 88,
+   "end": 103
+  },
+  {
+   "seg_id": "p20",
+   "text": "Участники",
+   "label": "человек",
+   "type": "PERSON",
+   "score": 0.8765,
+   "start": 105,
+   "end": 114
+  },
+  {
+   "seg_id": "p21",
+   "text": "Общества",
+   "label": "организация",
+   "type": "ORG",
+   "score": 0.5266,
+   "start": 63,
+   "end": 71
+  },
+  {
+   "seg_id": "p23",
+   "text": "Общества",
+   "label": "организация",
+   "type": "ORG",
+   "score": 0.8053,
+   "start": 22,
+   "end": 30
+  },
+  {
+   "seg_id": "p23",
+   "text": "Участников",
+   "label": "человек",
+   "type": "PERSON",
+   "score": 0.5381,
+   "start": 75,
+   "end": 85
+  },
+  {
+   "seg_id": "p26",
+   "text": "Участник",
+   "label": "человек",
+   "type": "PERSON",
+   "score": 0.9211,
+   "start": 5,
+   "end": 13
+  },
+  {
+   "seg_id": "p26",
+   "text": "Участников",
+   "label": "человек",
+   "type": "PERSON",
+   "score": 0.7176,
+   "start": 123,
+   "end": 133
+  },
+  {
+   "seg_id": "p27",
+   "text": "Участника",
+   "label": "человек",
+   "type": "PERSON",
+   "score": 0.8124,
+   "start": 19,
+   "end": 28
+  },
+  {
+   "seg_id": "p28",
+   "text": "Участник",
+   "label": "человек",
+   "type": "PERSON",
+   "score": 0.9373,
+   "start": 5,
+   "end": 13
+  },
+  {
+   "seg_id": "p31",
+   "text": "Восхода",
+   "label": "организация",
+   "type": "ORG",
+   "score": 0.8812,
+   "start": 46,
+   "end": 53
+  },
+  {
+   "seg_id": "p31",
+   "text": "Восхода",
+   "label": "организация",
+   "type": "ORG",
+   "score": 0.9166,
+   "start": 78,
+   "end": 85
+  },
+  {
+   "seg_id": "p32",
+   "text": "Каждый Участник",
+   "label": "человек",
+   "type": "PERSON",
+   "score": 0.7562,
+   "start": 5,
+   "end": 20
+  },
+  {
+   "seg_id": "p33",
+   "text": "Восходом",
+   "label": "организация",
+   "type": "ORG",
+   "score": 0.9582,
+   "start": 25,
+   "end": 33
+  },
+  {
+   "seg_id": "p33",
+   "text": "Участниками",
+   "label": "человек",
+   "type": "PERSON",
+   "score": 0.6015,
+   "start": 56,
+   "end": 67
+  },
+  {
+   "seg_id": "p33",
+   "text": "Восхода",
+   "label": "организация",
+   "type": "ORG",
+   "score": 0.9337,
+   "start": 101,
+   "end": 108
+  },
+  {
+   "seg_id": "p34",
+   "text": "Восходом",
+   "label": "организация",
+   "type": "ORG",
+   "score": 0.5955,
+   "start": 23,
+   "end": 31
+  },
+  {
+   "seg_id": "p34",
+   "text": "Участников",
+   "label": "человек",
+   "type": "PERSON",
+   "score": 0.6386,
+   "start": 54,
+   "end": 64
+  },
+  {
+   "seg_id": "p34",
+   "text": "Восходом",
+   "label": "организация",
+   "type": "ORG",
+   "score": 0.6504,
+   "start": 88,
+   "end": 96
+  },
+  {
+   "seg_id": "p34",
+   "text": "Участник",
+   "label": "человек",
+   "type": "PERSON",
+   "score": 0.588,
+   "start": 110,
+   "end": 118
+  },
+  {
+   "seg_id": "p35",
+   "text": "Восхода",
+   "label": "организация",
+   "type": "ORG",
+   "score": 0.5106,
+   "start": 23,
+   "end": 30
+  },
+  {
+   "seg_id": "p36",
+   "text": "«Рассветом",
+   "label": "организация",
+   "type": "ORG",
+   "score": 0.5065,
+   "start": 49,
+   "end": 59
+  },
+  {
+   "seg_id": "p36",
+   "text": "Большинство",
+   "label": "человек",
+   "type": "PERSON",
+   "score": 0.5043,
+   "start": 79,
+   "end": 90
+  },
+  {
+   "seg_id": "p39",
+   "text": "Участники",
+   "label": "человек",
+   "type": "PERSON",
+   "score": 0.8539,
+   "start": 15,
+   "end": 24
+  },
+  {
+   "seg_id": "p39",
+   "text": "Общества",
+   "label": "организация",
+   "type": "ORG",
+   "score": 0.6451,
+   "start": 138,
+   "end": 146
+  },
+  {
+   "seg_id": "p40",
+   "text": "Участники",
+   "label": "человек",
+   "type": "PERSON",
+   "score": 0.8032,
+   "start": 5,
+   "end": 14
+  },
+  {
+   "seg_id": "p40",
+   "text": "Общества",
+   "label": "организация",
+   "type": "ORG",
+   "score": 0.8886,
+   "start": 76,
+   "end": 84
+  },
+  {
+   "seg_id": "p40",
+   "text": "Обществу",
+   "label": "организация",
+   "type": "ORG",
+   "score": 0.9087,
+   "start": 138,
+   "end": 146
+  },
+  {
+   "seg_id": "p44",
+   "text": "Общем собрании Участников",
+   "label": "организация",
+   "type": "ORG",
+   "score": 0.5978,
+   "start": 24,
+   "end": 49
+  },
+  {
+   "seg_id": "p44",
+   "text": "Общего собрания",
+   "label": "организация",
+   "type": "ORG",
+   "score": 0.6585,
+   "start": 88,
+   "end": 103
+  },
+  {
+   "seg_id": "p44",
+   "text": "Участники",
+   "label": "человек",
+   "type": "PERSON",
+   "score": 0.8765,
+   "start": 105,
+   "end": 114
+  },
+  {
+   "seg_id": "p45",
+   "text": "Общества",
+   "label": "организация",
+   "type": "ORG",
+   "score": 0.5266,
+   "start": 63,
+   "end": 71
+  },
+  {
+   "seg_id": "p47",
+   "text": "Общества",
+   "label": "организация",
+   "type": "ORG",
+   "score": 0.8053,
+   "start": 22,
+   "end": 30
+  },
+  {
+   "seg_id": "p47",
+   "text": "Участников",
+   "label": "человек",
+   "type": "PERSON",
+   "score": 0.5381,
+   "start": 75,
+   "end": 85
+  },
+  {
+   "seg_id": "p50",
+   "text": "Участник",
+   "label": "человек",
+   "type": "PERSON",
+   "score": 0.9211,
+   "start": 5,
+   "end": 13
+  },
+  {
+   "seg_id": "p50",
+   "text": "Участников",
+   "label": "человек",
+   "type": "PERSON",
+   "score": 0.7176,
+   "start": 123,
+   "end": 133
+  },
+  {
+   "seg_id": "p51",
+   "text": "Участника",
+   "label": "человек",
+   "type": "PERSON",
+   "score": 0.8124,
+   "start": 19,
+   "end": 28
+  },
+  {
+   "seg_id": "p52",
+   "text": "Участник",
+   "label": "человек",
+   "type": "PERSON",
+   "score": 0.9373,
+   "start": 5,
+   "end": 13
+  },
+  {
+   "seg_id": "p55",
+   "text": "Восхода",
+   "label": "организация",
+   "type": "ORG",
+   "score": 0.8812,
+   "start": 46,
+   "end": 53
+  },
+  {
+   "seg_id": "p55",
+   "text": "Восхода",
+   "label": "организация",
+   "type": "ORG",
+   "score": 0.9166,
+   "start": 78,
+   "end": 85
+  },
+  {
+   "seg_id": "p56",
+   "text": "Каждый Участник",
+   "label": "человек",
+   "type": "PERSON",
+   "score": 0.7562,
+   "start": 5,
+   "end": 20
+  },
+  {
+   "seg_id": "p57",
+   "text": "Восходом",
+   "label": "организация",
+   "type": "ORG",
+   "score": 0.9582,
+   "start": 25,
+   "end": 33
+  },
+  {
+   "seg_id": "p57",
+   "text": "Участниками",
+   "label": "человек",
+   "type": "PERSON",
+   "score": 0.6015,
+   "start": 56,
+   "end": 67
+  },
+  {
+   "seg_id": "p57",
+   "text": "Восхода",
+   "label": "организация",
+   "type": "ORG",
+   "score": 0.9337,
+   "start": 101,
+   "end": 108
+  },
+  {
+   "seg_id": "p58",
+   "text": "Восходом",
+   "label": "организация",
+   "type": "ORG",
+   "score": 0.5955,
+   "start": 23,
+   "end": 31
+  },
+  {
+   "seg_id": "p58",
+   "text": "Участников",
+   "label": "человек",
+   "type": "PERSON",
+   "score": 0.6386,
+   "start": 54,
+   "end": 64
+  },
+  {
+   "seg_id": "p58",
+   "text": "Восходом",
+   "label": "организация",
+   "type": "ORG",
+   "score": 0.6504,
+   "start": 88,
+   "end": 96
+  },
+  {
+   "seg_id": "p58",
+   "text": "Участник",
+   "label": "человек",
+   "type": "PERSON",
+   "score": 0.588,
+   "start": 110,
+   "end": 118
+  },
+  {
+   "seg_id": "p59",
+   "text": "Восхода",
+   "label": "организация",
+   "type": "ORG",
+   "score": 0.5106,
+   "start": 23,
+   "end": 30
+  },
+  {
+   "seg_id": "p60",
+   "text": "«Рассветом",
+   "label": "организация",
+   "type": "ORG",
+   "score": 0.5065,
+   "start": 49,
+   "end": 59
+  },
+  {
+   "seg_id": "p60",
+   "text": "Большинство",
+   "label": "человек",
+   "type": "PERSON",
+   "score": 0.5043,
+   "start": 79,
+   "end": 90
+  },
+  {
+   "seg_id": "p63",
+   "text": "Участники",
+   "label": "человек",
+   "type": "PERSON",
+   "score": 0.8539,
+   "start": 15,
+   "end": 24
+  },
+  {
+   "seg_id": "p63",
+   "text": "Общества",
+   "label": "организация",
+   "type": "ORG",
+   "score": 0.6451,
+   "start": 138,
+   "end": 146
+  },
+  {
+   "seg_id": "p64",
+   "text": "Участники",
+   "label": "человек",
+   "type": "PERSON",
+   "score": 0.8032,
+   "start": 5,
+   "end": 14
+  },
+  {
+   "seg_id": "p64",
+   "text": "Общества",
+   "label": "организация",
+   "type": "ORG",
+   "score": 0.8886,
+   "start": 76,
+   "end": 84
+  },
+  {
+   "seg_id": "p64",
+   "text": "Обществу",
+   "label": "организация",
+   "type": "ORG",
+   "score": 0.9087,
+   "start": 138,
+   "end": 146
+  },
+  {
+   "seg_id": "p68",
+   "text": "Общем собрании Участников",
+   "label": "организация",
+   "type": "ORG",
+   "score": 0.5978,
+   "start": 24,
+   "end": 49
+  },
+  {
+   "seg_id": "p68",
+   "text": "Общего собрания",
+   "label": "организация",
+   "type": "ORG",
+   "score": 0.6585,
+   "start": 88,
+   "end": 103
+  },
+  {
+   "seg_id": "p68",
+   "text": "Участники",
+   "label": "человек",
+   "type": "PERSON",
+   "score": 0.8765,
+   "start": 105,
+   "end": 114
+  },
+  {
+   "seg_id": "p69",
+   "text": "Общества",
+   "label": "организация",
+   "type": "ORG",
+   "score": 0.5266,
+   "start": 63,
+   "end": 71
+  },
+  {
+   "seg_id": "p71",
+   "text": "Общества",
+   "label": "организация",
+   "type": "ORG",
+   "score": 0.8053,
+   "start": 22,
+   "end": 30
+  },
+  {
+   "seg_id": "p71",
+   "text": "Участников",
+   "label": "человек",
+   "type": "PERSON",
+   "score": 0.5381,
+   "start": 75,
+   "end": 85
+  },
+  {
+   "seg_id": "p74",
+   "text": "Участник",
+   "label": "человек",
+   "type": "PERSON",
+   "score": 0.9211,
+   "start": 5,
+   "end": 13
+  },
+  {
+   "seg_id": "p74",
+   "text": "Участников",
+   "label": "человек",
+   "type": "PERSON",
+   "score": 0.7176,
+   "start": 123,
+   "end": 133
+  },
+  {
+   "seg_id": "p75",
+   "text": "Участника",
+   "label": "человек",
+   "type": "PERSON",
+   "score": 0.8124,
+   "start": 19,
+   "end": 28
+  },
+  {
+   "seg_id": "p76",
+   "text": "Участник",
+   "label": "человек",
+   "type": "PERSON",
+   "score": 0.9373,
+   "start": 5,
+   "end": 13
+  },
+  {
+   "seg_id": "p79",
+   "text": "Восхода",
+   "label": "организация",
+   "type": "ORG",
+   "score": 0.8812,
+   "start": 46,
+   "end": 53
+  },
+  {
+   "seg_id": "p79",
+   "text": "Восхода",
+   "label": "организация",
+   "type": "ORG",
+   "score": 0.9166,
+   "start": 78,
+   "end": 85
+  },
+  {
+   "seg_id": "p80",
+   "text": "Каждый Участник",
+   "label": "человек",
+   "type": "PERSON",
+   "score": 0.7562,
+   "start": 5,
+   "end": 20
+  },
+  {
+   "seg_id": "p81",
+   "text": "Восходом",
+   "label": "организация",
+   "type": "ORG",
+   "score": 0.9582,
+   "start": 25,
+   "end": 33
+  },
+  {
+   "seg_id": "p81",
+   "text": "Участниками",
+   "label": "человек",
+   "type": "PERSON",
+   "score": 0.6015,
+   "start": 56,
+   "end": 67
+  },
+  {
+   "seg_id": "p81",
+   "text": "Восхода",
+   "label": "организация",
+   "type": "ORG",
+   "score": 0.9337,
+   "start": 101,
+   "end": 108
+  },
+  {
+   "seg_id": "p82",
+   "text": "Восходом",
+   "label": "организация",
+   "type": "ORG",
+   "score": 0.5955,
+   "start": 23,
+   "end": 31
+  },
+  {
+   "seg_id": "p82",
+   "text": "Участников",
+   "label": "человек",
+   "type": "PERSON",
+   "score": 0.6386,
+   "start": 54,
+   "end": 64
+  },
+  {
+   "seg_id": "p82",
+   "text": "Восходом",
+   "label": "организация",
+   "type": "ORG",
+   "score": 0.6504,
+   "start": 88,
+   "end": 96
+  },
+  {
+   "seg_id": "p82",
+   "text": "Участник",
+   "label": "человек",
+   "type": "PERSON",
+   "score": 0.588,
+   "start": 110,
+   "end": 118
+  },
+  {
+   "seg_id": "p83",
+   "text": "Восхода",
+   "label": "организация",
+   "type": "ORG",
+   "score": 0.5106,
+   "start": 23,
+   "end": 30
+  },
+  {
+   "seg_id": "p84",
+   "text": "«Рассветом",
+   "label": "организация",
+   "type": "ORG",
+   "score": 0.5065,
+   "start": 49,
+   "end": 59
+  },
+  {
+   "seg_id": "p84",
+   "text": "Большинство",
+   "label": "человек",
+   "type": "PERSON",
+   "score": 0.5043,
+   "start": 79,
+   "end": 90
+  },
+  {
+   "seg_id": "p87",
+   "text": "Участники",
+   "label": "человек",
+   "type": "PERSON",
+   "score": 0.8539,
+   "start": 15,
+   "end": 24
+  },
+  {
+   "seg_id": "p87",
+   "text": "Общества",
+   "label": "организация",
+   "type": "ORG",
+   "score": 0.6451,
+   "start": 138,
+   "end": 146
+  },
+  {
+   "seg_id": "p88",
+   "text": "Участники",
+   "label": "человек",
+   "type": "PERSON",
+   "score": 0.8032,
+   "start": 5,
+   "end": 14
+  },
+  {
+   "seg_id": "p88",
+   "text": "Общества",
+   "label": "организация",
+   "type": "ORG",
+   "score": 0.8886,
+   "start": 76,
+   "end": 84
+  },
+  {
+   "seg_id": "p88",
+   "text": "Обществу",
+   "label": "организация",
+   "type": "ORG",
+   "score": 0.9087,
+   "start": 138,
+   "end": 146
+  },
+  {
+   "seg_id": "p92",
+   "text": "Общем собрании Участников",
+   "label": "организация",
+   "type": "ORG",
+   "score": 0.5978,
+   "start": 24,
+   "end": 49
+  },
+  {
+   "seg_id": "p92",
+   "text": "Общего собрания",
+   "label": "организация",
+   "type": "ORG",
+   "score": 0.6585,
+   "start": 88,
+   "end": 103
+  },
+  {
+   "seg_id": "p92",
+   "text": "Участники",
+   "label": "человек",
+   "type": "PERSON",
+   "score": 0.8765,
+   "start": 105,
+   "end": 114
+  },
+  {
+   "seg_id": "p93",
+   "text": "Общества",
+   "label": "организация",
+   "type": "ORG",
+   "score": 0.5266,
+   "start": 63,
+   "end": 71
+  },
+  {
+   "seg_id": "p95",
+   "text": "Общества",
+   "label": "организация",
+   "type": "ORG",
+   "score": 0.8053,
+   "start": 22,
+   "end": 30
+  },
+  {
+   "seg_id": "p95",
+   "text": "Участников",
+   "label": "человек",
+   "type": "PERSON",
+   "score": 0.5381,
+   "start": 75,
+   "end": 85
+  },
+  {
+   "seg_id": "p98",
+   "text": "Участник",
+   "label": "человек",
+   "type": "PERSON",
+   "score": 0.9211,
+   "start": 5,
+   "end": 13
+  },
+  {
+   "seg_id": "p98",
+   "text": "Участников",
+   "label": "человек",
+   "type": "PERSON",
+   "score": 0.7176,
+   "start": 123,
+   "end": 133
+  },
+  {
+   "seg_id": "p99",
+   "text": "Участника",
+   "label": "человек",
+   "type": "PERSON",
+   "score": 0.8124,
+   "start": 19,
+   "end": 28
+  },
+  {
+   "seg_id": "p100",
+   "text": "Участник",
+   "label": "человек",
+   "type": "PERSON",
+   "score": 0.9373,
+   "start": 5,
+   "end": 13
+  },
+  {
+   "seg_id": "p103",
+   "text": "Восхода",
+   "label": "организация",
+   "type": "ORG",
+   "score": 0.8812,
+   "start": 46,
+   "end": 53
+  },
+  {
+   "seg_id": "p103",
+   "text": "Восхода",
+   "label": "организация",
+   "type": "ORG",
+   "score": 0.9166,
+   "start": 78,
+   "end": 85
+  },
+  {
+   "seg_id": "p104",
+   "text": "Каждый Участник",
+   "label": "человек",
+   "type": "PERSON",
+   "score": 0.7562,
+   "start": 5,
+   "end": 20
+  },
+  {
+   "seg_id": "p105",
+   "text": "Восходом",
+   "label": "организация",
+   "type": "ORG",
+   "score": 0.9582,
+   "start": 25,
+   "end": 33
+  },
+  {
+   "seg_id": "p105",
+   "text": "Участниками",
+   "label": "человек",
+   "type": "PERSON",
+   "score": 0.6015,
+   "start": 56,
+   "end": 67
+  },
+  {
+   "seg_id": "p105",
+   "text": "Восхода",
+   "label": "организация",
+   "type": "ORG",
+   "score": 0.9337,
+   "start": 101,
+   "end": 108
+  },
+  {
+   "seg_id": "p106",
+   "text": "Восходом",
+   "label": "организация",
+   "type": "ORG",
+   "score": 0.5955,
+   "start": 23,
+   "end": 31
+  },
+  {
+   "seg_id": "p106",
+   "text": "Участников",
+   "label": "человек",
+   "type": "PERSON",
+   "score": 0.6386,
+   "start": 54,
+   "end": 64
+  },
+  {
+   "seg_id": "p106",
+   "text": "Восходом",
+   "label": "организация",
+   "type": "ORG",
+   "score": 0.6504,
+   "start": 88,
+   "end": 96
+  },
+  {
+   "seg_id": "p106",
+   "text": "Участник",
+   "label": "человек",
+   "type": "PERSON",
+   "score": 0.588,
+   "start": 110,
+   "end": 118
+  },
+  {
+   "seg_id": "p107",
+   "text": "Восхода",
+   "label": "организация",
+   "type": "ORG",
+   "score": 0.5106,
+   "start": 23,
+   "end": 30
+  },
+  {
+   "seg_id": "p108",
+   "text": "«Рассветом",
+   "label": "организация",
+   "type": "ORG",
+   "score": 0.5065,
+   "start": 49,
+   "end": 59
+  },
+  {
+   "seg_id": "p108",
+   "text": "Большинство",
+   "label": "человек",
+   "type": "PERSON",
+   "score": 0.5043,
+   "start": 79,
+   "end": 90
+  },
+  {
+   "seg_id": "p111",
+   "text": "Участники",
+   "label": "человек",
+   "type": "PERSON",
+   "score": 0.8539,
+   "start": 15,
+   "end": 24
+  },
+  {
+   "seg_id": "p111",
+   "text": "Общества",
+   "label": "организация",
+   "type": "ORG",
+   "score": 0.6451,
+   "start": 138,
+   "end": 146
+  },
+  {
+   "seg_id": "p112",
+   "text": "Участники",
+   "label": "человек",
+   "type": "PERSON",
+   "score": 0.8032,
+   "start": 5,
+   "end": 14
+  },
+  {
+   "seg_id": "p112",
+   "text": "Общества",
+   "label": "организация",
+   "type": "ORG",
+   "score": 0.8886,
+   "start": 76,
+   "end": 84
+  },
+  {
+   "seg_id": "p112",
+   "text": "Обществу",
+   "label": "организация",
+   "type": "ORG",
+   "score": 0.9087,
+   "start": 138,
+   "end": 146
+  },
+  {
+   "seg_id": "p116",
+   "text": "Общем собрании Участников",
+   "label": "организация",
+   "type": "ORG",
+   "score": 0.5978,
+   "start": 24,
+   "end": 49
+  },
+  {
+   "seg_id": "p116",
+   "text": "Общего собрания",
+   "label": "организация",
+   "type": "ORG",
+   "score": 0.6585,
+   "start": 88,
+   "end": 103
+  },
+  {
+   "seg_id": "p116",
+   "text": "Участники",
+   "label": "человек",
+   "type": "PERSON",
+   "score": 0.8765,
+   "start": 105,
+   "end": 114
+  },
+  {
+   "seg_id": "p117",
+   "text": "Общества",
+   "label": "организация",
+   "type": "ORG",
+   "score": 0.5266,
+   "start": 63,
+   "end": 71
+  },
+  {
+   "seg_id": "p119",
+   "text": "Общества",
+   "label": "организация",
+   "type": "ORG",
+   "score": 0.8053,
+   "start": 22,
+   "end": 30
+  },
+  {
+   "seg_id": "p119",
+   "text": "Участников",
+   "label": "человек",
+   "type": "PERSON",
+   "score": 0.5381,
+   "start": 75,
+   "end": 85
+  },
+  {
+   "seg_id": "p122",
+   "text": "Участник",
+   "label": "человек",
+   "type": "PERSON",
+   "score": 0.9211,
+   "start": 5,
+   "end": 13
+  },
+  {
+   "seg_id": "p122",
+   "text": "Участников",
+   "label": "человек",
+   "type": "PERSON",
+   "score": 0.7176,
+   "start": 123,
+   "end": 133
+  },
+  {
+   "seg_id": "p123",
+   "text": "Участника",
+   "label": "человек",
+   "type": "PERSON",
+   "score": 0.8124,
+   "start": 19,
+   "end": 28
+  },
+  {
+   "seg_id": "p124",
+   "text": "Участник",
+   "label": "человек",
+   "type": "PERSON",
+   "score": 0.9373,
+   "start": 5,
+   "end": 13
+  },
+  {
+   "seg_id": "p127",
+   "text": "Восхода",
+   "label": "организация",
+   "type": "ORG",
+   "score": 0.8812,
+   "start": 46,
+   "end": 53
+  },
+  {
+   "seg_id": "p127",
+   "text": "Восхода",
+   "label": "организация",
+   "type": "ORG",
+   "score": 0.9166,
+   "start": 78,
+   "end": 85
+  },
+  {
+   "seg_id": "p128",
+   "text": "Каждый Участник",
+   "label": "человек",
+   "type": "PERSON",
+   "score": 0.7562,
+   "start": 5,
+   "end": 20
+  },
+  {
+   "seg_id": "p129",
+   "text": "Восходом",
+   "label": "организация",
+   "type": "ORG",
+   "score": 0.9582,
+   "start": 25,
+   "end": 33
+  },
+  {
+   "seg_id": "p129",
+   "text": "Участниками",
+   "label": "человек",
+   "type": "PERSON",
+   "score": 0.6015,
+   "start": 56,
+   "end": 67
+  },
+  {
+   "seg_id": "p129",
+   "text": "Восхода",
+   "label": "организация",
+   "type": "ORG",
+   "score": 0.9337,
+   "start": 101,
+   "end": 108
+  },
+  {
+   "seg_id": "p130",
+   "text": "Восходом",
+   "label": "организация",
+   "type": "ORG",
+   "score": 0.5955,
+   "start": 23,
+   "end": 31
+  },
+  {
+   "seg_id": "p130",
+   "text": "Участников",
+   "label": "человек",
+   "type": "PERSON",
+   "score": 0.6386,
+   "start": 54,
+   "end": 64
+  },
+  {
+   "seg_id": "p130",
+   "text": "Восходом",
+   "label": "организация",
+   "type": "ORG",
+   "score": 0.6504,
+   "start": 88,
+   "end": 96
+  },
+  {
+   "seg_id": "p130",
+   "text": "Участник",
+   "label": "человек",
+   "type": "PERSON",
+   "score": 0.588,
+   "start": 110,
+   "end": 118
+  },
+  {
+   "seg_id": "p131",
+   "text": "Восхода",
+   "label": "организация",
+   "type": "ORG",
+   "score": 0.5106,
+   "start": 23,
+   "end": 30
+  },
+  {
+   "seg_id": "p132",
+   "text": "«Рассветом",
+   "label": "организация",
+   "type": "ORG",
+   "score": 0.5065,
+   "start": 49,
+   "end": 59
+  },
+  {
+   "seg_id": "p132",
+   "text": "Большинство",
+   "label": "человек",
+   "type": "PERSON",
+   "score": 0.5043,
+   "start": 79,
+   "end": 90
+  },
+  {
+   "seg_id": "p135",
+   "text": "Участники",
+   "label": "человек",
+   "type": "PERSON",
+   "score": 0.8539,
+   "start": 15,
+   "end": 24
+  },
+  {
+   "seg_id": "p135",
+   "text": "Общества",
+   "label": "организация",
+   "type": "ORG",
+   "score": 0.6451,
+   "start": 138,
+   "end": 146
+  },
+  {
+   "seg_id": "p136",
+   "text": "Участники",
+   "label": "человек",
+   "type": "PERSON",
+   "score": 0.8032,
+   "start": 5,
+   "end": 14
+  },
+  {
+   "seg_id": "p136",
+   "text": "Общества",
+   "label": "организация",
+   "type": "ORG",
+   "score": 0.8886,
+   "start": 76,
+   "end": 84
+  },
+  {
+   "seg_id": "p136",
+   "text": "Обществу",
+   "label": "организация",
+   "type": "ORG",
+   "score": 0.9087,
+   "start": 138,
+   "end": 146
+  },
+  {
+   "seg_id": "p140",
+   "text": "Общем собрании Участников",
+   "label": "организация",
+   "type": "ORG",
+   "score": 0.5978,
+   "start": 24,
+   "end": 49
+  },
+  {
+   "seg_id": "p140",
+   "text": "Общего собрания",
+   "label": "организация",
+   "type": "ORG",
+   "score": 0.6585,
+   "start": 88,
+   "end": 103
+  },
+  {
+   "seg_id": "p140",
+   "text": "Участники",
+   "label": "человек",
+   "type": "PERSON",
+   "score": 0.8765,
+   "start": 105,
+   "end": 114
+  },
+  {
+   "seg_id": "p141",
+   "text": "Общества",
+   "label": "организация",
+   "type": "ORG",
+   "score": 0.5266,
+   "start": 63,
+   "end": 71
+  },
+  {
+   "seg_id": "p143",
+   "text": "Общества",
+   "label": "организация",
+   "type": "ORG",
+   "score": 0.8053,
+   "start": 22,
+   "end": 30
+  },
+  {
+   "seg_id": "p143",
+   "text": "Участников",
+   "label": "человек",
+   "type": "PERSON",
+   "score": 0.5381,
+   "start": 75,
+   "end": 85
+  },
+  {
+   "seg_id": "p146",
+   "text": "Участник",
+   "label": "человек",
+   "type": "PERSON",
+   "score": 0.9211,
+   "start": 5,
+   "end": 13
+  },
+  {
+   "seg_id": "p146",
+   "text": "Участников",
+   "label": "человек",
+   "type": "PERSON",
+   "score": 0.7176,
+   "start": 123,
+   "end": 133
+  },
+  {
+   "seg_id": "p147",
+   "text": "Участника",
+   "label": "человек",
+   "type": "PERSON",
+   "score": 0.8124,
+   "start": 19,
+   "end": 28
+  },
+  {
+   "seg_id": "p148",
+   "text": "Участник",
+   "label": "человек",
+   "type": "PERSON",
+   "score": 0.9373,
+   "start": 5,
+   "end": 13
+  },
+  {
+   "seg_id": "p151",
+   "text": "Восхода",
+   "label": "организация",
+   "type": "ORG",
+   "score": 0.8812,
+   "start": 46,
+   "end": 53
+  },
+  {
+   "seg_id": "p151",
+   "text": "Восхода",
+   "label": "организация",
+   "type": "ORG",
+   "score": 0.9166,
+   "start": 78,
+   "end": 85
+  },
+  {
+   "seg_id": "p152",
+   "text": "Каждый Участник",
+   "label": "человек",
+   "type": "PERSON",
+   "score": 0.7562,
+   "start": 5,
+   "end": 20
+  },
+  {
+   "seg_id": "p153",
+   "text": "Восходом",
+   "label": "организация",
+   "type": "ORG",
+   "score": 0.9582,
+   "start": 25,
+   "end": 33
+  },
+  {
+   "seg_id": "p153",
+   "text": "Участниками",
+   "label": "человек",
+   "type": "PERSON",
+   "score": 0.6015,
+   "start": 56,
+   "end": 67
+  },
+  {
+   "seg_id": "p153",
+   "text": "Восхода",
+   "label": "организация",
+   "type": "ORG",
+   "score": 0.9337,
+   "start": 101,
+   "end": 108
+  },
+  {
+   "seg_id": "p154",
+   "text": "Восходом",
+   "label": "организация",
+   "type": "ORG",
+   "score": 0.5955,
+   "start": 23,
+   "end": 31
+  },
+  {
+   "seg_id": "p154",
+   "text": "Участников",
+   "label": "человек",
+   "type": "PERSON",
+   "score": 0.6386,
+   "start": 54,
+   "end": 64
+  },
+  {
+   "seg_id": "p154",
+   "text": "Восходом",
+   "label": "организация",
+   "type": "ORG",
+   "score": 0.6504,
+   "start": 88,
+   "end": 96
+  },
+  {
+   "seg_id": "p154",
+   "text": "Участник",
+   "label": "человек",
+   "type": "PERSON",
+   "score": 0.588,
+   "start": 110,
+   "end": 118
+  },
+  {
+   "seg_id": "p155",
+   "text": "Восхода",
+   "label": "организация",
+   "type": "ORG",
+   "score": 0.5106,
+   "start": 23,
+   "end": 30
+  },
+  {
+   "seg_id": "p156",
+   "text": "«Рассветом",
+   "label": "организация",
+   "type": "ORG",
+   "score": 0.5065,
+   "start": 49,
+   "end": 59
+  },
+  {
+   "seg_id": "p156",
+   "text": "Большинство",
+   "label": "человек",
+   "type": "PERSON",
+   "score": 0.5043,
+   "start": 79,
+   "end": 90
+  },
+  {
+   "seg_id": "p159",
+   "text": "Участники",
+   "label": "человек",
+   "type": "PERSON",
+   "score": 0.8539,
+   "start": 15,
+   "end": 24
+  },
+  {
+   "seg_id": "p159",
+   "text": "Общества",
+   "label": "организация",
+   "type": "ORG",
+   "score": 0.6451,
+   "start": 138,
+   "end": 146
+  },
+  {
+   "seg_id": "p160",
+   "text": "Участники",
+   "label": "человек",
+   "type": "PERSON",
+   "score": 0.8032,
+   "start": 5,
+   "end": 14
+  },
+  {
+   "seg_id": "p160",
+   "text": "Общества",
+   "label": "организация",
+   "type": "ORG",
+   "score": 0.8886,
+   "start": 76,
+   "end": 84
+  },
+  {
+   "seg_id": "p160",
+   "text": "Обществу",
+   "label": "организация",
+   "type": "ORG",
+   "score": 0.9087,
+   "start": 138,
+   "end": 146
+  },
+  {
+   "seg_id": "p164",
+   "text": "Общем собрании Участников",
+   "label": "организация",
+   "type": "ORG",
+   "score": 0.5978,
+   "start": 24,
+   "end": 49
+  },
+  {
+   "seg_id": "p164",
+   "text": "Общего собрания",
+   "label": "организация",
+   "type": "ORG",
+   "score": 0.6585,
+   "start": 88,
+   "end": 103
+  },
+  {
+   "seg_id": "p164",
+   "text": "Участники",
+   "label": "человек",
+   "type": "PERSON",
+   "score": 0.8765,
+   "start": 105,
+   "end": 114
+  },
+  {
+   "seg_id": "p165",
+   "text": "Общества",
+   "label": "организация",
+   "type": "ORG",
+   "score": 0.5266,
+   "start": 63,
+   "end": 71
+  },
+  {
+   "seg_id": "p167",
+   "text": "Общества",
+   "label": "организация",
+   "type": "ORG",
+   "score": 0.8053,
+   "start": 22,
+   "end": 30
+  },
+  {
+   "seg_id": "p167",
+   "text": "Участников",
+   "label": "человек",
+   "type": "PERSON",
+   "score": 0.5381,
+   "start": 75,
+   "end": 85
+  },
+  {
+   "seg_id": "p170",
+   "text": "Участник",
+   "label": "человек",
+   "type": "PERSON",
+   "score": 0.9211,
+   "start": 5,
+   "end": 13
+  },
+  {
+   "seg_id": "p170",
+   "text": "Участников",
+   "label": "человек",
+   "type": "PERSON",
+   "score": 0.7176,
+   "start": 123,
+   "end": 133
+  },
+  {
+   "seg_id": "p171",
+   "text": "Участника",
+   "label": "человек",
+   "type": "PERSON",
+   "score": 0.8124,
+   "start": 19,
+   "end": 28
+  },
+  {
+   "seg_id": "p172",
+   "text": "Участник",
+   "label": "человек",
+   "type": "PERSON",
+   "score": 0.9373,
+   "start": 5,
+   "end": 13
+  },
+  {
+   "seg_id": "p175",
+   "text": "Восхода",
+   "label": "организация",
+   "type": "ORG",
+   "score": 0.8812,
+   "start": 46,
+   "end": 53
+  },
+  {
+   "seg_id": "p175",
+   "text": "Восхода",
+   "label": "организация",
+   "type": "ORG",
+   "score": 0.9166,
+   "start": 78,
+   "end": 85
+  },
+  {
+   "seg_id": "p176",
+   "text": "Каждый Участник",
+   "label": "человек",
+   "type": "PERSON",
+   "score": 0.7562,
+   "start": 5,
+   "end": 20
+  },
+  {
+   "seg_id": "p177",
+   "text": "Восходом",
+   "label": "организация",
+   "type": "ORG",
+   "score": 0.9582,
+   "start": 25,
+   "end": 33
+  },
+  {
+   "seg_id": "p177",
+   "text": "Участниками",
+   "label": "человек",
+   "type": "PERSON",
+   "score": 0.6015,
+   "start": 56,
+   "end": 67
+  },
+  {
+   "seg_id": "p177",
+   "text": "Восхода",
+   "label": "организация",
+   "type": "ORG",
+   "score": 0.9337,
+   "start": 101,
+   "end": 108
+  },
+  {
+   "seg_id": "p178",
+   "text": "Восходом",
+   "label": "организация",
+   "type": "ORG",
+   "score": 0.5955,
+   "start": 23,
+   "end": 31
+  },
+  {
+   "seg_id": "p178",
+   "text": "Участников",
+   "label": "человек",
+   "type": "PERSON",
+   "score": 0.6386,
+   "start": 54,
+   "end": 64
+  },
+  {
+   "seg_id": "p178",
+   "text": "Восходом",
+   "label": "организация",
+   "type": "ORG",
+   "score": 0.6504,
+   "start": 88,
+   "end": 96
+  },
+  {
+   "seg_id": "p178",
+   "text": "Участник",
+   "label": "человек",
+   "type": "PERSON",
+   "score": 0.588,
+   "start": 110,
+   "end": 118
+  },
+  {
+   "seg_id": "p179",
+   "text": "Восхода",
+   "label": "организация",
+   "type": "ORG",
+   "score": 0.5106,
+   "start": 23,
+   "end": 30
+  },
+  {
+   "seg_id": "p180",
+   "text": "«Рассветом",
+   "label": "организация",
+   "type": "ORG",
+   "score": 0.5065,
+   "start": 49,
+   "end": 59
+  },
+  {
+   "seg_id": "p180",
+   "text": "Большинство",
+   "label": "человек",
+   "type": "PERSON",
+   "score": 0.5043,
+   "start": 79,
+   "end": 90
+  },
+  {
+   "seg_id": "p183",
+   "text": "Участники",
+   "label": "человек",
+   "type": "PERSON",
+   "score": 0.8539,
+   "start": 15,
+   "end": 24
+  },
+  {
+   "seg_id": "p183",
+   "text": "Общества",
+   "label": "организация",
+   "type": "ORG",
+   "score": 0.6451,
+   "start": 138,
+   "end": 146
+  },
+  {
+   "seg_id": "p184",
+   "text": "Участники",
+   "label": "человек",
+   "type": "PERSON",
+   "score": 0.8032,
+   "start": 5,
+   "end": 14
+  },
+  {
+   "seg_id": "p184",
+   "text": "Общества",
+   "label": "организация",
+   "type": "ORG",
+   "score": 0.8886,
+   "start": 76,
+   "end": 84
+  },
+  {
+   "seg_id": "p184",
+   "text": "Обществу",
+   "label": "организация",
+   "type": "ORG",
+   "score": 0.9087,
+   "start": 138,
+   "end": 146
+  },
+  {
+   "seg_id": "p188",
+   "text": "Общем собрании Участников",
+   "label": "организация",
+   "type": "ORG",
+   "score": 0.5978,
+   "start": 24,
+   "end": 49
+  },
+  {
+   "seg_id": "p188",
+   "text": "Общего собрания",
+   "label": "организация",
+   "type": "ORG",
+   "score": 0.6585,
+   "start": 88,
+   "end": 103
+  },
+  {
+   "seg_id": "p188",
+   "text": "Участники",
+   "label": "человек",
+   "type": "PERSON",
+   "score": 0.8765,
+   "start": 105,
+   "end": 114
+  },
+  {
+   "seg_id": "p189",
+   "text": "Общества",
+   "label": "организация",
+   "type": "ORG",
+   "score": 0.5266,
+   "start": 63,
+   "end": 71
+  },
+  {
+   "seg_id": "p191",
+   "text": "Общества",
+   "label": "организация",
+   "type": "ORG",
+   "score": 0.8053,
+   "start": 22,
+   "end": 30
+  },
+  {
+   "seg_id": "p191",
+   "text": "Участников",
+   "label": "человек",
+   "type": "PERSON",
+   "score": 0.5381,
+   "start": 75,
+   "end": 85
+  },
+  {
+   "seg_id": "p194",
+   "text": "Участник",
+   "label": "человек",
+   "type": "PERSON",
+   "score": 0.9211,
+   "start": 5,
+   "end": 13
+  },
+  {
+   "seg_id": "p194",
+   "text": "Участников",
+   "label": "человек",
+   "type": "PERSON",
+   "score": 0.7176,
+   "start": 123,
+   "end": 133
+  },
+  {
+   "seg_id": "p195",
+   "text": "Участника",
+   "label": "человек",
+   "type": "PERSON",
+   "score": 0.8124,
+   "start": 19,
+   "end": 28
+  },
+  {
+   "seg_id": "p196",
+   "text": "Участник",
+   "label": "человек",
+   "type": "PERSON",
+   "score": 0.9373,
+   "start": 5,
+   "end": 13
+  },
+  {
+   "seg_id": "p199",
+   "text": "Восхода",
+   "label": "организация",
+   "type": "ORG",
+   "score": 0.8812,
+   "start": 46,
+   "end": 53
+  },
+  {
+   "seg_id": "p199",
+   "text": "Восхода",
+   "label": "организация",
+   "type": "ORG",
+   "score": 0.9166,
+   "start": 78,
+   "end": 85
+  },
+  {
+   "seg_id": "p200",
+   "text": "Каждый Участник",
+   "label": "человек",
+   "type": "PERSON",
+   "score": 0.7562,
+   "start": 5,
+   "end": 20
+  },
+  {
+   "seg_id": "p201",
+   "text": "Восходом",
+   "label": "организация",
+   "type": "ORG",
+   "score": 0.9582,
+   "start": 25,
+   "end": 33
+  },
+  {
+   "seg_id": "p201",
+   "text": "Участниками",
+   "label": "человек",
+   "type": "PERSON",
+   "score": 0.6015,
+   "start": 56,
+   "end": 67
+  },
+  {
+   "seg_id": "p201",
+   "text": "Восхода",
+   "label": "организация",
+   "type": "ORG",
+   "score": 0.9337,
+   "start": 101,
+   "end": 108
+  },
+  {
+   "seg_id": "p202",
+   "text": "Восходом",
+   "label": "организация",
+   "type": "ORG",
+   "score": 0.5955,
+   "start": 23,
+   "end": 31
+  },
+  {
+   "seg_id": "p202",
+   "text": "Участников",
+   "label": "человек",
+   "type": "PERSON",
+   "score": 0.6386,
+   "start": 54,
+   "end": 64
+  },
+  {
+   "seg_id": "p202",
+   "text": "Восходом",
+   "label": "организация",
+   "type": "ORG",
+   "score": 0.6504,
+   "start": 88,
+   "end": 96
+  },
+  {
+   "seg_id": "p202",
+   "text": "Участник",
+   "label": "человек",
+   "type": "PERSON",
+   "score": 0.588,
+   "start": 110,
+   "end": 118
+  },
+  {
+   "seg_id": "p203",
+   "text": "Восхода",
+   "label": "организация",
+   "type": "ORG",
+   "score": 0.5106,
+   "start": 23,
+   "end": 30
+  },
+  {
+   "seg_id": "p204",
+   "text": "«Рассветом",
+   "label": "организация",
+   "type": "ORG",
+   "score": 0.5065,
+   "start": 49,
+   "end": 59
+  },
+  {
+   "seg_id": "p204",
+   "text": "Большинство",
+   "label": "человек",
+   "type": "PERSON",
+   "score": 0.5043,
+   "start": 79,
+   "end": 90
+  },
+  {
+   "seg_id": "p207",
+   "text": "Участники",
+   "label": "человек",
+   "type": "PERSON",
+   "score": 0.8539,
+   "start": 15,
+   "end": 24
+  },
+  {
+   "seg_id": "p207",
+   "text": "Общества",
+   "label": "организация",
+   "type": "ORG",
+   "score": 0.6451,
+   "start": 138,
+   "end": 146
+  },
+  {
+   "seg_id": "p208",
+   "text": "Участники",
+   "label": "человек",
+   "type": "PERSON",
+   "score": 0.8032,
+   "start": 5,
+   "end": 14
+  },
+  {
+   "seg_id": "p208",
+   "text": "Общества",
+   "label": "организация",
+   "type": "ORG",
+   "score": 0.8886,
+   "start": 76,
+   "end": 84
+  },
+  {
+   "seg_id": "p208",
+   "text": "Обществу",
+   "label": "организация",
+   "type": "ORG",
+   "score": 0.9087,
+   "start": 138,
+   "end": 146
+  },
+  {
+   "seg_id": "p212",
+   "text": "Общем собрании Участников",
+   "label": "организация",
+   "type": "ORG",
+   "score": 0.5978,
+   "start": 24,
+   "end": 49
+  },
+  {
+   "seg_id": "p212",
+   "text": "Общего собрания",
+   "label": "организация",
+   "type": "ORG",
+   "score": 0.6585,
+   "start": 88,
+   "end": 103
+  },
+  {
+   "seg_id": "p212",
+   "text": "Участники",
+   "label": "человек",
+   "type": "PERSON",
+   "score": 0.8765,
+   "start": 105,
+   "end": 114
+  },
+  {
+   "seg_id": "p213",
+   "text": "Общества",
+   "label": "организация",
+   "type": "ORG",
+   "score": 0.5266,
+   "start": 63,
+   "end": 71
+  },
+  {
+   "seg_id": "p215",
+   "text": "Общества",
+   "label": "организация",
+   "type": "ORG",
+   "score": 0.8053,
+   "start": 22,
+   "end": 30
+  },
+  {
+   "seg_id": "p215",
+   "text": "Участников",
+   "label": "человек",
+   "type": "PERSON",
+   "score": 0.5381,
+   "start": 75,
+   "end": 85
+  },
+  {
+   "seg_id": "p218",
+   "text": "Участник",
+   "label": "человек",
+   "type": "PERSON",
+   "score": 0.9211,
+   "start": 5,
+   "end": 13
+  },
+  {
+   "seg_id": "p218",
+   "text": "Участников",
+   "label": "человек",
+   "type": "PERSON",
+   "score": 0.7176,
+   "start": 123,
+   "end": 133
+  },
+  {
+   "seg_id": "p219",
+   "text": "Участника",
+   "label": "человек",
+   "type": "PERSON",
+   "score": 0.8124,
+   "start": 19,
+   "end": 28
+  },
+  {
+   "seg_id": "p220",
+   "text": "Участник",
+   "label": "человек",
+   "type": "PERSON",
+   "score": 0.9373,
+   "start": 5,
+   "end": 13
+  },
+  {
+   "seg_id": "p223",
+   "text": "Восхода",
+   "label": "организация",
+   "type": "ORG",
+   "score": 0.8812,
+   "start": 46,
+   "end": 53
+  },
+  {
+   "seg_id": "p223",
+   "text": "Восхода",
+   "label": "организация",
+   "type": "ORG",
+   "score": 0.9166,
+   "start": 78,
+   "end": 85
+  },
+  {
+   "seg_id": "p224",
+   "text": "Каждый Участник",
+   "label": "человек",
+   "type": "PERSON",
+   "score": 0.7562,
+   "start": 5,
+   "end": 20
+  },
+  {
+   "seg_id": "p225",
+   "text": "Восходом",
+   "label": "организация",
+   "type": "ORG",
+   "score": 0.9582,
+   "start": 25,
+   "end": 33
+  },
+  {
+   "seg_id": "p225",
+   "text": "Участниками",
+   "label": "человек",
+   "type": "PERSON",
+   "score": 0.6015,
+   "start": 56,
+   "end": 67
+  },
+  {
+   "seg_id": "p225",
+   "text": "Восхода",
+   "label": "организация",
+   "type": "ORG",
+   "score": 0.9337,
+   "start": 101,
+   "end": 108
+  },
+  {
+   "seg_id": "p226",
+   "text": "Восходом",
+   "label": "организация",
+   "type": "ORG",
+   "score": 0.5955,
+   "start": 23,
+   "end": 31
+  },
+  {
+   "seg_id": "p226",
+   "text": "Участников",
+   "label": "человек",
+   "type": "PERSON",
+   "score": 0.6386,
+   "start": 54,
+   "end": 64
+  },
+  {
+   "seg_id": "p226",
+   "text": "Восходом",
+   "label": "организация",
+   "type": "ORG",
+   "score": 0.6504,
+   "start": 88,
+   "end": 96
+  },
+  {
+   "seg_id": "p226",
+   "text": "Участник",
+   "label": "человек",
+   "type": "PERSON",
+   "score": 0.588,
+   "start": 110,
+   "end": 118
+  },
+  {
+   "seg_id": "p227",
+   "text": "Восхода",
+   "label": "организация",
+   "type": "ORG",
+   "score": 0.5106,
+   "start": 23,
+   "end": 30
+  },
+  {
+   "seg_id": "p228",
+   "text": "«Рассветом",
+   "label": "организация",
+   "type": "ORG",
+   "score": 0.5065,
+   "start": 49,
+   "end": 59
+  },
+  {
+   "seg_id": "p228",
+   "text": "Большинство",
+   "label": "человек",
+   "type": "PERSON",
+   "score": 0.5043,
+   "start": 79,
+   "end": 90
+  },
+  {
+   "seg_id": "p231",
+   "text": "Участники",
+   "label": "человек",
+   "type": "PERSON",
+   "score": 0.8539,
+   "start": 15,
+   "end": 24
+  },
+  {
+   "seg_id": "p231",
+   "text": "Общества",
+   "label": "организация",
+   "type": "ORG",
+   "score": 0.6451,
+   "start": 138,
+   "end": 146
+  },
+  {
+   "seg_id": "p232",
+   "text": "Участники",
+   "label": "человек",
+   "type": "PERSON",
+   "score": 0.8032,
+   "start": 5,
+   "end": 14
+  },
+  {
+   "seg_id": "p232",
+   "text": "Общества",
+   "label": "организация",
+   "type": "ORG",
+   "score": 0.8886,
+   "start": 76,
+   "end": 84
+  },
+  {
+   "seg_id": "p232",
+   "text": "Обществу",
+   "label": "организация",
+   "type": "ORG",
+   "score": 0.9087,
+   "start": 138,
+   "end": 146
+  },
+  {
+   "seg_id": "p236",
+   "text": "Общем собрании Участников",
+   "label": "организация",
+   "type": "ORG",
+   "score": 0.5978,
+   "start": 24,
+   "end": 49
+  },
+  {
+   "seg_id": "p236",
+   "text": "Общего собрания",
+   "label": "организация",
+   "type": "ORG",
+   "score": 0.6585,
+   "start": 88,
+   "end": 103
+  },
+  {
+   "seg_id": "p236",
+   "text": "Участники",
+   "label": "человек",
+   "type": "PERSON",
+   "score": 0.8765,
+   "start": 105,
+   "end": 114
+  },
+  {
+   "seg_id": "p237",
+   "text": "Общества",
+   "label": "организация",
+   "type": "ORG",
+   "score": 0.5266,
+   "start": 63,
+   "end": 71
+  },
+  {
+   "seg_id": "p239",
+   "text": "Общества",
+   "label": "организация",
+   "type": "ORG",
+   "score": 0.8053,
+   "start": 22,
+   "end": 30
+  },
+  {
+   "seg_id": "p239",
+   "text": "Участников",
+   "label": "человек",
+   "type": "PERSON",
+   "score": 0.5381,
+   "start": 75,
+   "end": 85
+  },
+  {
+   "seg_id": "p242",
+   "text": "Участник",
+   "label": "человек",
+   "type": "PERSON",
+   "score": 0.9211,
+   "start": 5,
+   "end": 13
+  },
+  {
+   "seg_id": "p242",
+   "text": "Участников",
+   "label": "человек",
+   "type": "PERSON",
+   "score": 0.7176,
+   "start": 123,
+   "end": 133
+  },
+  {
+   "seg_id": "p243",
+   "text": "Участника",
+   "label": "человек",
+   "type": "PERSON",
+   "score": 0.8124,
+   "start": 19,
+   "end": 28
+  },
+  {
+   "seg_id": "p244",
+   "text": "Участник",
+   "label": "человек",
+   "type": "PERSON",
+   "score": 0.9373,
+   "start": 5,
+   "end": 13
+  },
+  {
+   "seg_id": "p247",
+   "text": "Восхода",
+   "label": "организация",
+   "type": "ORG",
+   "score": 0.8812,
+   "start": 46,
+   "end": 53
+  },
+  {
+   "seg_id": "p247",
+   "text": "Восхода",
+   "label": "организация",
+   "type": "ORG",
+   "score": 0.9166,
+   "start": 78,
+   "end": 85
+  },
+  {
+   "seg_id": "p248",
+   "text": "Каждый Участник",
+   "label": "человек",
+   "type": "PERSON",
+   "score": 0.7562,
+   "start": 5,
+   "end": 20
+  },
+  {
+   "seg_id": "p249",
+   "text": "Восходом",
+   "label": "организация",
+   "type": "ORG",
+   "score": 0.9582,
+   "start": 25,
+   "end": 33
+  },
+  {
+   "seg_id": "p249",
+   "text": "Участниками",
+   "label": "человек",
+   "type": "PERSON",
+   "score": 0.6015,
+   "start": 56,
+   "end": 67
+  },
+  {
+   "seg_id": "p249",
+   "text": "Восхода",
+   "label": "организация",
+   "type": "ORG",
+   "score": 0.9337,
+   "start": 101,
+   "end": 108
+  },
+  {
+   "seg_id": "p250",
+   "text": "Восходом",
+   "label": "организация",
+   "type": "ORG",
+   "score": 0.5955,
+   "start": 23,
+   "end": 31
+  },
+  {
+   "seg_id": "p250",
+   "text": "Участников",
+   "label": "человек",
+   "type": "PERSON",
+   "score": 0.6386,
+   "start": 54,
+   "end": 64
+  },
+  {
+   "seg_id": "p250",
+   "text": "Восходом",
+   "label": "организация",
+   "type": "ORG",
+   "score": 0.6504,
+   "start": 88,
+   "end": 96
+  },
+  {
+   "seg_id": "p250",
+   "text": "Участник",
+   "label": "человек",
+   "type": "PERSON",
+   "score": 0.588,
+   "start": 110,
+   "end": 118
+  },
+  {
+   "seg_id": "p251",
+   "text": "Восхода",
+   "label": "организация",
+   "type": "ORG",
+   "score": 0.5106,
+   "start": 23,
+   "end": 30
+  },
+  {
+   "seg_id": "p252",
+   "text": "«Рассветом",
+   "label": "организация",
+   "type": "ORG",
+   "score": 0.5065,
+   "start": 49,
+   "end": 59
+  },
+  {
+   "seg_id": "p252",
+   "text": "Большинство",
+   "label": "человек",
+   "type": "PERSON",
+   "score": 0.5043,
+   "start": 79,
+   "end": 90
+  },
+  {
+   "seg_id": "p255",
+   "text": "Участники",
+   "label": "человек",
+   "type": "PERSON",
+   "score": 0.8539,
+   "start": 15,
+   "end": 24
+  },
+  {
+   "seg_id": "p255",
+   "text": "Общества",
+   "label": "организация",
+   "type": "ORG",
+   "score": 0.6451,
+   "start": 138,
+   "end": 146
+  },
+  {
+   "seg_id": "p256",
+   "text": "Участники",
+   "label": "человек",
+   "type": "PERSON",
+   "score": 0.8032,
+   "start": 5,
+   "end": 14
+  },
+  {
+   "seg_id": "p256",
+   "text": "Общества",
+   "label": "организация",
+   "type": "ORG",
+   "score": 0.8886,
+   "start": 76,
+   "end": 84
+  },
+  {
+   "seg_id": "p256",
+   "text": "Обществу",
+   "label": "организация",
+   "type": "ORG",
+   "score": 0.9087,
+   "start": 138,
+   "end": 146
+  },
+  {
+   "seg_id": "p260",
+   "text": "Общем собрании Участников",
+   "label": "организация",
+   "type": "ORG",
+   "score": 0.5978,
+   "start": 24,
+   "end": 49
+  },
+  {
+   "seg_id": "p260",
+   "text": "Общего собрания",
+   "label": "организация",
+   "type": "ORG",
+   "score": 0.6585,
+   "start": 88,
+   "end": 103
+  },
+  {
+   "seg_id": "p260",
+   "text": "Участники",
+   "label": "человек",
+   "type": "PERSON",
+   "score": 0.8765,
+   "start": 105,
+   "end": 114
+  },
+  {
+   "seg_id": "p261",
+   "text": "Общества",
+   "label": "организация",
+   "type": "ORG",
+   "score": 0.5266,
+   "start": 63,
+   "end": 71
+  },
+  {
+   "seg_id": "p263",
+   "text": "Общества",
+   "label": "организация",
+   "type": "ORG",
+   "score": 0.8053,
+   "start": 22,
+   "end": 30
+  },
+  {
+   "seg_id": "p263",
+   "text": "Участников",
+   "label": "человек",
+   "type": "PERSON",
+   "score": 0.5381,
+   "start": 75,
+   "end": 85
+  },
+  {
+   "seg_id": "p266",
+   "text": "Участник",
+   "label": "человек",
+   "type": "PERSON",
+   "score": 0.9211,
+   "start": 5,
+   "end": 13
+  },
+  {
+   "seg_id": "p266",
+   "text": "Участников",
+   "label": "человек",
+   "type": "PERSON",
+   "score": 0.7176,
+   "start": 123,
+   "end": 133
+  },
+  {
+   "seg_id": "p267",
+   "text": "Участника",
+   "label": "человек",
+   "type": "PERSON",
+   "score": 0.8124,
+   "start": 19,
+   "end": 28
+  },
+  {
+   "seg_id": "p268",
+   "text": "Участник",
+   "label": "человек",
+   "type": "PERSON",
+   "score": 0.9373,
+   "start": 5,
+   "end": 13
+  },
+  {
+   "seg_id": "p271",
+   "text": "Восхода",
+   "label": "организация",
+   "type": "ORG",
+   "score": 0.8812,
+   "start": 46,
+   "end": 53
+  },
+  {
+   "seg_id": "p271",
+   "text": "Восхода",
+   "label": "организация",
+   "type": "ORG",
+   "score": 0.9166,
+   "start": 78,
+   "end": 85
+  },
+  {
+   "seg_id": "p272",
+   "text": "Каждый Участник",
+   "label": "человек",
+   "type": "PERSON",
+   "score": 0.7562,
+   "start": 5,
+   "end": 20
+  },
+  {
+   "seg_id": "p273",
+   "text": "Восходом",
+   "label": "организация",
+   "type": "ORG",
+   "score": 0.9582,
+   "start": 25,
+   "end": 33
+  },
+  {
+   "seg_id": "p273",
+   "text": "Участниками",
+   "label": "человек",
+   "type": "PERSON",
+   "score": 0.6015,
+   "start": 56,
+   "end": 67
+  },
+  {
+   "seg_id": "p273",
+   "text": "Восхода",
+   "label": "организация",
+   "type": "ORG",
+   "score": 0.9337,
+   "start": 101,
+   "end": 108
+  },
+  {
+   "seg_id": "p274",
+   "text": "Восходом",
+   "label": "организация",
+   "type": "ORG",
+   "score": 0.5955,
+   "start": 23,
+   "end": 31
+  },
+  {
+   "seg_id": "p274",
+   "text": "Участников",
+   "label": "человек",
+   "type": "PERSON",
+   "score": 0.6386,
+   "start": 54,
+   "end": 64
+  },
+  {
+   "seg_id": "p274",
+   "text": "Восходом",
+   "label": "организация",
+   "type": "ORG",
+   "score": 0.6504,
+   "start": 88,
+   "end": 96
+  },
+  {
+   "seg_id": "p274",
+   "text": "Участник",
+   "label": "человек",
+   "type": "PERSON",
+   "score": 0.588,
+   "start": 110,
+   "end": 118
+  },
+  {
+   "seg_id": "p275",
+   "text": "Восхода",
+   "label": "организация",
+   "type": "ORG",
+   "score": 0.5106,
+   "start": 23,
+   "end": 30
+  },
+  {
+   "seg_id": "p276",
+   "text": "«Рассветом",
+   "label": "организация",
+   "type": "ORG",
+   "score": 0.5065,
+   "start": 49,
+   "end": 59
+  },
+  {
+   "seg_id": "p276",
+   "text": "Большинство",
+   "label": "человек",
+   "type": "PERSON",
+   "score": 0.5043,
+   "start": 79,
+   "end": 90
+  },
+  {
+   "seg_id": "p279",
+   "text": "Участники",
+   "label": "человек",
+   "type": "PERSON",
+   "score": 0.8539,
+   "start": 15,
+   "end": 24
+  },
+  {
+   "seg_id": "p279",
+   "text": "Общества",
+   "label": "организация",
+   "type": "ORG",
+   "score": 0.6451,
+   "start": 138,
+   "end": 146
+  },
+  {
+   "seg_id": "p280",
+   "text": "Участники",
+   "label": "человек",
+   "type": "PERSON",
+   "score": 0.8032,
+   "start": 5,
+   "end": 14
+  },
+  {
+   "seg_id": "p280",
+   "text": "Общества",
+   "label": "организация",
+   "type": "ORG",
+   "score": 0.8886,
+   "start": 76,
+   "end": 84
+  },
+  {
+   "seg_id": "p280",
+   "text": "Обществу",
+   "label": "организация",
+   "type": "ORG",
+   "score": 0.9087,
+   "start": 138,
+   "end": 146
+  },
+  {
+   "seg_id": "p284",
+   "text": "Общем собрании Участников",
+   "label": "организация",
+   "type": "ORG",
+   "score": 0.5978,
+   "start": 24,
+   "end": 49
+  },
+  {
+   "seg_id": "p284",
+   "text": "Общего собрания",
+   "label": "организация",
+   "type": "ORG",
+   "score": 0.6585,
+   "start": 88,
+   "end": 103
+  },
+  {
+   "seg_id": "p284",
+   "text": "Участники",
+   "label": "человек",
+   "type": "PERSON",
+   "score": 0.8765,
+   "start": 105,
+   "end": 114
+  },
+  {
+   "seg_id": "p285",
+   "text": "Общества",
+   "label": "организация",
+   "type": "ORG",
+   "score": 0.5266,
+   "start": 63,
+   "end": 71
+  },
+  {
+   "seg_id": "p287",
+   "text": "Общества",
+   "label": "организация",
+   "type": "ORG",
+   "score": 0.8053,
+   "start": 22,
+   "end": 30
+  },
+  {
+   "seg_id": "p287",
+   "text": "Участников",
+   "label": "человек",
+   "type": "PERSON",
+   "score": 0.5381,
+   "start": 75,
+   "end": 85
+  },
+  {
+   "seg_id": "p290",
+   "text": "Участник",
+   "label": "человек",
+   "type": "PERSON",
+   "score": 0.9211,
+   "start": 5,
+   "end": 13
+  },
+  {
+   "seg_id": "p290",
+   "text": "Участников",
+   "label": "человек",
+   "type": "PERSON",
+   "score": 0.7176,
+   "start": 123,
+   "end": 133
+  },
+  {
+   "seg_id": "p291",
+   "text": "Участника",
+   "label": "человек",
+   "type": "PERSON",
+   "score": 0.8124,
+   "start": 19,
+   "end": 28
+  },
+  {
+   "seg_id": "p292",
+   "text": "Участник",
+   "label": "человек",
+   "type": "PERSON",
+   "score": 0.9373,
+   "start": 5,
+   "end": 13
+  },
+  {
+   "seg_id": "p295",
+   "text": "Восхода",
+   "label": "организация",
+   "type": "ORG",
+   "score": 0.8812,
+   "start": 46,
+   "end": 53
+  },
+  {
+   "seg_id": "p295",
+   "text": "Восхода",
+   "label": "организация",
+   "type": "ORG",
+   "score": 0.9166,
+   "start": 78,
+   "end": 85
+  },
+  {
+   "seg_id": "p296",
+   "text": "Каждый Участник",
+   "label": "человек",
+   "type": "PERSON",
+   "score": 0.7562,
+   "start": 5,
+   "end": 20
+  },
+  {
+   "seg_id": "p297",
+   "text": "Восходом",
+   "label": "организация",
+   "type": "ORG",
+   "score": 0.9582,
+   "start": 25,
+   "end": 33
+  },
+  {
+   "seg_id": "p297",
+   "text": "Участниками",
+   "label": "человек",
+   "type": "PERSON",
+   "score": 0.6015,
+   "start": 56,
+   "end": 67
+  },
+  {
+   "seg_id": "p297",
+   "text": "Восхода",
+   "label": "организация",
+   "type": "ORG",
+   "score": 0.9337,
+   "start": 101,
+   "end": 108
+  },
+  {
+   "seg_id": "p298",
+   "text": "Восходом",
+   "label": "организация",
+   "type": "ORG",
+   "score": 0.5955,
+   "start": 23,
+   "end": 31
+  },
+  {
+   "seg_id": "p298",
+   "text": "Участников",
+   "label": "человек",
+   "type": "PERSON",
+   "score": 0.6386,
+   "start": 54,
+   "end": 64
+  },
+  {
+   "seg_id": "p298",
+   "text": "Восходом",
+   "label": "организация",
+   "type": "ORG",
+   "score": 0.6504,
+   "start": 88,
+   "end": 96
+  },
+  {
+   "seg_id": "p298",
+   "text": "Участник",
+   "label": "человек",
+   "type": "PERSON",
+   "score": 0.588,
+   "start": 110,
+   "end": 118
+  },
+  {
+   "seg_id": "p299",
+   "text": "Восхода",
+   "label": "организация",
+   "type": "ORG",
+   "score": 0.5106,
+   "start": 23,
+   "end": 30
+  },
+  {
+   "seg_id": "p300",
+   "text": "«Рассветом",
+   "label": "организация",
+   "type": "ORG",
+   "score": 0.5065,
+   "start": 49,
+   "end": 59
+  },
+  {
+   "seg_id": "p300",
+   "text": "Большинство",
+   "label": "человек",
+   "type": "PERSON",
+   "score": 0.5043,
+   "start": 79,
+   "end": 90
+  },
+  {
+   "seg_id": "p303",
+   "text": "Участниками",
+   "label": "человек",
+   "type": "PERSON",
+   "score": 0.565,
+   "start": 66,
+   "end": 77
+  },
+  {
+   "seg_id": "p303",
+   "text": "Участников",
+   "label": "человек",
+   "type": "PERSON",
+   "score": 0.5897,
+   "start": 124,
+   "end": 134
+  },
+  {
+   "seg_id": "p303",
+   "text": "Общества",
+   "label": "организация",
+   "type": "ORG",
+   "score": 0.7698,
+   "start": 166,
+   "end": 174
+  },
+  {
+   "seg_id": "p304",
+   "text": "Арбитражном суде города Москвы",
+   "label": "организация",
+   "type": "ORG",
+   "score": 0.8148,
+   "start": 78,
+   "end": 108
+  },
+  {
+   "seg_id": "p305",
+   "text": "Банк России",
+   "label": "организация",
+   "type": "ORG",
+   "score": 0.9766,
+   "start": 50,
+   "end": 61
+  },
+  {
+   "seg_id": "p309",
+   "text": "Иванов Роман Эдуардович",
+   "label": "человек",
+   "type": "PERSON",
+   "score": 0.7691,
+   "start": 0,
+   "end": 23
+  },
+  {
+   "seg_id": "p310",
+   "text": "771234567890",
+   "label": "адрес",
+   "type": "ADDRESS",
+   "score": 0.6257,
+   "start": 4,
+   "end": 16
+  },
+  {
+   "seg_id": "p311",
+   "text": "143000",
+   "label": "адрес",
+   "type": "ADDRESS",
+   "score": 0.5942,
+   "start": 19,
+   "end": 25
+  },
+  {
+   "seg_id": "p311",
+   "text": "ул. Садовая",
+   "label": "адрес",
+   "type": "ADDRESS",
+   "score": 0.8969,
+   "start": 40,
+   "end": 51
+  },
+  {
+   "seg_id": "p311",
+   "text": "д. 15",
+   "label": "адрес",
+   "type": "ADDRESS",
+   "score": 0.5853,
+   "start": 53,
+   "end": 58
+  },
+  {
+   "seg_id": "p311",
+   "text": "кв. 7",
+   "label": "адрес",
+   "type": "ADDRESS",
+   "score": 0.5464,
+   "start": 60,
+   "end": 65
+  },
+  {
+   "seg_id": "p312",
+   "text": "+7 (903) 3814138",
+   "label": "адрес",
+   "type": "ADDRESS",
+   "score": 0.5747,
+   "start": 6,
+   "end": 22
+  },
+  {
+   "seg_id": "p312",
+   "text": "ivanov",
+   "label": "человек",
+   "type": "PERSON",
+   "score": 0.806,
+   "start": 32,
+   "end": 38
+  },
+  {
+   "seg_id": "p313",
+   "text": "Иванов Р.Э.",
+   "label": "человек",
+   "type": "PERSON",
+   "score": 0.7908,
+   "start": 25,
+   "end": 36
+  },
+  {
+   "seg_id": "p315",
+   "text": "Петрова Ольга Николаевна",
+   "label": "человек",
+   "type": "PERSON",
+   "score": 0.8715,
+   "start": 0,
+   "end": 24
+  },
+  {
+   "seg_id": "p316",
+   "text": "770987654321",
+   "label": "адрес",
+   "type": "ADDRESS",
+   "score": 0.758,
+   "start": 4,
+   "end": 16
+  },
+  {
+   "seg_id": "p317",
+   "text": "143000",
+   "label": "адрес",
+   "type": "ADDRESS",
+   "score": 0.645,
+   "start": 19,
+   "end": 25
+  },
+  {
+   "seg_id": "p317",
+   "text": "ул. Садовая",
+   "label": "адрес",
+   "type": "ADDRESS",
+   "score": 0.8902,
+   "start": 40,
+   "end": 51
+  },
+  {
+   "seg_id": "p317",
+   "text": "д. 14",
+   "label": "адрес",
+   "type": "ADDRESS",
+   "score": 0.5128,
+   "start": 53,
+   "end": 58
+  },
+  {
+   "seg_id": "p317",
+   "text": "кв. 174",
+   "label": "адрес",
+   "type": "ADDRESS",
+   "score": 0.5464,
+   "start": 60,
+   "end": 67
+  },
+  {
+   "seg_id": "p318",
+   "text": "+7 (903) 6582185",
+   "label": "адрес",
+   "type": "ADDRESS",
+   "score": 0.5232,
+   "start": 6,
+   "end": 22
+  },
+  {
+   "seg_id": "p318",
+   "text": "petrova",
+   "label": "человек",
+   "type": "PERSON",
+   "score": 0.5884,
+   "start": 32,
+   "end": 39
+  },
+  {
+   "seg_id": "p319",
+   "text": "Петрова О.Н.",
+   "label": "человек",
+   "type": "PERSON",
+   "score": 0.8202,
+   "start": 25,
+   "end": 37
+  },
+  {
+   "seg_id": "p321",
+   "text": "Ким Ен Су",
+   "label": "адрес",
+   "type": "ADDRESS",
+   "score": 0.6557,
+   "start": 0,
+   "end": 9
+  },
+  {
+   "seg_id": "p322",
+   "text": "503216549870",
+   "label": "адрес",
+   "type": "ADDRESS",
+   "score": 0.5534,
+   "start": 4,
+   "end": 16
+  },
+  {
+   "seg_id": "p323",
+   "text": "101000",
+   "label": "адрес",
+   "type": "ADDRESS",
+   "score": 0.5465,
+   "start": 19,
+   "end": 25
+  },
+  {
+   "seg_id": "p323",
+   "text": "ул. Тверская",
+   "label": "адрес",
+   "type": "ADDRESS",
+   "score": 0.8745,
+   "start": 38,
+   "end": 50
+  },
+  {
+   "seg_id": "p323",
+   "text": "д. 4",
+   "label": "адрес",
+   "type": "ADDRESS",
+   "score": 0.5647,
+   "start": 52,
+   "end": 56
+  },
+  {
+   "seg_id": "p324",
+   "text": "+7 (495) 3387487",
+   "label": "адрес",
+   "type": "ADDRESS",
+   "score": 0.5329,
+   "start": 6,
+   "end": 22
+  },
+  {
+   "seg_id": "p324",
+   "text": "kim",
+   "label": "человек",
+   "type": "PERSON",
+   "score": 0.6861,
+   "start": 32,
+   "end": 35
+  },
+  {
+   "seg_id": "p325",
+   "text": "Ким Е.С.",
+   "label": "человек",
+   "type": "PERSON",
+   "score": 0.8316,
+   "start": 25,
+   "end": 33
+  }
+ ]
+}

@@ -1,0 +1,2114 @@
+{
+ "engine": "natasha-1.6.0 (штатный detect_ner по норм-входу)",
+ "latency_regex_s": 0.026,
+ "latency_ner_s": 2.924,
+ "latency_total_s": 2.949,
+ "n_entities": 300,
+ "by_type": {
+  "ADDRESS": 65,
+  "ORG": 178,
+  "PERSON": 57
+ },
+ "entities": [
+  {
+   "seg_id": "p2",
+   "type": "ORG",
+   "text": "Общества с ограниченной ответственностью «Восход",
+   "start": 0,
+   "end": 48
+  },
+  {
+   "seg_id": "p4",
+   "type": "ADDRESS",
+   "text": "г. Москва                          «15»",
+   "start": 0,
+   "end": 39
+  },
+  {
+   "seg_id": "p6",
+   "type": "ORG",
+   "text": "Участники Общества с ограниченной ответственностью «Восход»",
+   "start": 0,
+   "end": 59
+  },
+  {
+   "seg_id": "p6",
+   "type": "ORG",
+   "text": "Общество",
+   "start": 70,
+   "end": 78
+  },
+  {
+   "seg_id": "p8",
+   "type": "PERSON",
+   "text": "Иванов Роман Эдуардович",
+   "start": 3,
+   "end": 26
+  },
+  {
+   "seg_id": "p9",
+   "type": "PERSON",
+   "text": "Петрова Ольга Николаевна",
+   "start": 3,
+   "end": 27
+  },
+  {
+   "seg_id": "p10",
+   "type": "PERSON",
+   "text": "Ким Ен Су",
+   "start": 3,
+   "end": 12
+  },
+  {
+   "seg_id": "p12",
+   "type": "ORG",
+   "text": "Участники",
+   "start": 21,
+   "end": 30
+  },
+  {
+   "seg_id": "p12",
+   "type": "ORG",
+   "text": "Участник",
+   "start": 59,
+   "end": 67
+  },
+  {
+   "seg_id": "p15",
+   "type": "ORG",
+   "text": "Уставом Общества",
+   "start": 130,
+   "end": 146
+  },
+  {
+   "seg_id": "p15",
+   "type": "ADDRESS",
+   "text": "Российской Федерации",
+   "start": 107,
+   "end": 127
+  },
+  {
+   "seg_id": "p16",
+   "type": "ORG",
+   "text": "Общества",
+   "start": 76,
+   "end": 84
+  },
+  {
+   "seg_id": "p16",
+   "type": "ORG",
+   "text": "Обществу",
+   "start": 138,
+   "end": 146
+  },
+  {
+   "seg_id": "p20",
+   "type": "ORG",
+   "text": "Общего собрания",
+   "start": 88,
+   "end": 103
+  },
+  {
+   "seg_id": "p21",
+   "type": "ORG",
+   "text": "Бюджета Общества",
+   "start": 55,
+   "end": 71
+  },
+  {
+   "seg_id": "p21",
+   "type": "ORG",
+   "text": "Большинством",
+   "start": 84,
+   "end": 96
+  },
+  {
+   "seg_id": "p23",
+   "type": "ORG",
+   "text": "Общества",
+   "start": 22,
+   "end": 30
+  },
+  {
+   "seg_id": "p23",
+   "type": "ORG",
+   "text": "Совета определяется Уставом.",
+   "start": 108,
+   "end": 136
+  },
+  {
+   "seg_id": "p28",
+   "type": "ORG",
+   "text": "Долю",
+   "start": 38,
+   "end": 42
+  },
+  {
+   "seg_id": "p30",
+   "type": "ORG",
+   "text": "УЧАСТНИКОВ И ОБЩЕСТВА",
+   "start": 18,
+   "end": 39
+  },
+  {
+   "seg_id": "p31",
+   "type": "PERSON",
+   "text": "Восхода",
+   "start": 46,
+   "end": 53
+  },
+  {
+   "seg_id": "p31",
+   "type": "PERSON",
+   "text": "Восхода",
+   "start": 78,
+   "end": 85
+  },
+  {
+   "seg_id": "p32",
+   "type": "PERSON",
+   "text": "Восход",
+   "start": 39,
+   "end": 45
+  },
+  {
+   "seg_id": "p32",
+   "type": "ADDRESS",
+   "text": "Восхода",
+   "start": 89,
+   "end": 96
+  },
+  {
+   "seg_id": "p33",
+   "type": "PERSON",
+   "text": "Восходом",
+   "start": 25,
+   "end": 33
+  },
+  {
+   "seg_id": "p33",
+   "type": "ORG",
+   "text": "Долям",
+   "start": 84,
+   "end": 89
+  },
+  {
+   "seg_id": "p33",
+   "type": "ADDRESS",
+   "text": "Восхода",
+   "start": 101,
+   "end": 108
+  },
+  {
+   "seg_id": "p34",
+   "type": "ADDRESS",
+   "text": "Восходом",
+   "start": 88,
+   "end": 96
+  },
+  {
+   "seg_id": "p35",
+   "type": "ADDRESS",
+   "text": "Восходе",
+   "start": 75,
+   "end": 82
+  },
+  {
+   "seg_id": "p36",
+   "type": "ORG",
+   "text": "Рассветом",
+   "start": 50,
+   "end": 59
+  },
+  {
+   "seg_id": "p36",
+   "type": "ORG",
+   "text": "Большинство",
+   "start": 79,
+   "end": 90
+  },
+  {
+   "seg_id": "p36",
+   "type": "ORG",
+   "text": "Рассвету",
+   "start": 118,
+   "end": 126
+  },
+  {
+   "seg_id": "p39",
+   "type": "ORG",
+   "text": "Уставом Общества",
+   "start": 130,
+   "end": 146
+  },
+  {
+   "seg_id": "p39",
+   "type": "ADDRESS",
+   "text": "Российской Федерации",
+   "start": 107,
+   "end": 127
+  },
+  {
+   "seg_id": "p40",
+   "type": "ORG",
+   "text": "Общества",
+   "start": 76,
+   "end": 84
+  },
+  {
+   "seg_id": "p40",
+   "type": "ORG",
+   "text": "Обществу",
+   "start": 138,
+   "end": 146
+  },
+  {
+   "seg_id": "p44",
+   "type": "ORG",
+   "text": "Общего собрания",
+   "start": 88,
+   "end": 103
+  },
+  {
+   "seg_id": "p45",
+   "type": "ORG",
+   "text": "Бюджета Общества",
+   "start": 55,
+   "end": 71
+  },
+  {
+   "seg_id": "p45",
+   "type": "ORG",
+   "text": "Большинством",
+   "start": 84,
+   "end": 96
+  },
+  {
+   "seg_id": "p47",
+   "type": "ORG",
+   "text": "Общества",
+   "start": 22,
+   "end": 30
+  },
+  {
+   "seg_id": "p47",
+   "type": "ORG",
+   "text": "Совета определяется Уставом.",
+   "start": 108,
+   "end": 136
+  },
+  {
+   "seg_id": "p52",
+   "type": "ORG",
+   "text": "Долю",
+   "start": 38,
+   "end": 42
+  },
+  {
+   "seg_id": "p54",
+   "type": "ORG",
+   "text": "УЧАСТНИКОВ И ОБЩЕСТВА",
+   "start": 18,
+   "end": 39
+  },
+  {
+   "seg_id": "p55",
+   "type": "PERSON",
+   "text": "Восхода",
+   "start": 46,
+   "end": 53
+  },
+  {
+   "seg_id": "p55",
+   "type": "PERSON",
+   "text": "Восхода",
+   "start": 78,
+   "end": 85
+  },
+  {
+   "seg_id": "p56",
+   "type": "PERSON",
+   "text": "Восход",
+   "start": 39,
+   "end": 45
+  },
+  {
+   "seg_id": "p56",
+   "type": "ADDRESS",
+   "text": "Восхода",
+   "start": 89,
+   "end": 96
+  },
+  {
+   "seg_id": "p57",
+   "type": "PERSON",
+   "text": "Восходом",
+   "start": 25,
+   "end": 33
+  },
+  {
+   "seg_id": "p57",
+   "type": "ORG",
+   "text": "Долям",
+   "start": 84,
+   "end": 89
+  },
+  {
+   "seg_id": "p57",
+   "type": "ADDRESS",
+   "text": "Восхода",
+   "start": 101,
+   "end": 108
+  },
+  {
+   "seg_id": "p58",
+   "type": "ADDRESS",
+   "text": "Восходом",
+   "start": 88,
+   "end": 96
+  },
+  {
+   "seg_id": "p59",
+   "type": "ADDRESS",
+   "text": "Восходе",
+   "start": 75,
+   "end": 82
+  },
+  {
+   "seg_id": "p60",
+   "type": "ORG",
+   "text": "Рассветом",
+   "start": 50,
+   "end": 59
+  },
+  {
+   "seg_id": "p60",
+   "type": "ORG",
+   "text": "Большинство",
+   "start": 79,
+   "end": 90
+  },
+  {
+   "seg_id": "p60",
+   "type": "ORG",
+   "text": "Рассвету",
+   "start": 118,
+   "end": 126
+  },
+  {
+   "seg_id": "p63",
+   "type": "ORG",
+   "text": "Уставом Общества",
+   "start": 130,
+   "end": 146
+  },
+  {
+   "seg_id": "p63",
+   "type": "ADDRESS",
+   "text": "Российской Федерации",
+   "start": 107,
+   "end": 127
+  },
+  {
+   "seg_id": "p64",
+   "type": "ORG",
+   "text": "Общества",
+   "start": 76,
+   "end": 84
+  },
+  {
+   "seg_id": "p64",
+   "type": "ORG",
+   "text": "Обществу",
+   "start": 138,
+   "end": 146
+  },
+  {
+   "seg_id": "p68",
+   "type": "ORG",
+   "text": "Общего собрания",
+   "start": 88,
+   "end": 103
+  },
+  {
+   "seg_id": "p69",
+   "type": "ORG",
+   "text": "Бюджета Общества",
+   "start": 55,
+   "end": 71
+  },
+  {
+   "seg_id": "p69",
+   "type": "ORG",
+   "text": "Большинством",
+   "start": 84,
+   "end": 96
+  },
+  {
+   "seg_id": "p71",
+   "type": "ORG",
+   "text": "Общества",
+   "start": 22,
+   "end": 30
+  },
+  {
+   "seg_id": "p71",
+   "type": "ORG",
+   "text": "Совета определяется Уставом.",
+   "start": 108,
+   "end": 136
+  },
+  {
+   "seg_id": "p76",
+   "type": "ORG",
+   "text": "Долю",
+   "start": 38,
+   "end": 42
+  },
+  {
+   "seg_id": "p78",
+   "type": "ORG",
+   "text": "УЧАСТНИКОВ И ОБЩЕСТВА",
+   "start": 18,
+   "end": 39
+  },
+  {
+   "seg_id": "p79",
+   "type": "PERSON",
+   "text": "Восхода",
+   "start": 46,
+   "end": 53
+  },
+  {
+   "seg_id": "p79",
+   "type": "PERSON",
+   "text": "Восхода",
+   "start": 78,
+   "end": 85
+  },
+  {
+   "seg_id": "p80",
+   "type": "PERSON",
+   "text": "Восход",
+   "start": 39,
+   "end": 45
+  },
+  {
+   "seg_id": "p80",
+   "type": "ADDRESS",
+   "text": "Восхода",
+   "start": 89,
+   "end": 96
+  },
+  {
+   "seg_id": "p81",
+   "type": "PERSON",
+   "text": "Восходом",
+   "start": 25,
+   "end": 33
+  },
+  {
+   "seg_id": "p81",
+   "type": "ORG",
+   "text": "Долям",
+   "start": 84,
+   "end": 89
+  },
+  {
+   "seg_id": "p81",
+   "type": "ADDRESS",
+   "text": "Восхода",
+   "start": 101,
+   "end": 108
+  },
+  {
+   "seg_id": "p82",
+   "type": "ADDRESS",
+   "text": "Восходом",
+   "start": 88,
+   "end": 96
+  },
+  {
+   "seg_id": "p83",
+   "type": "ADDRESS",
+   "text": "Восходе",
+   "start": 75,
+   "end": 82
+  },
+  {
+   "seg_id": "p84",
+   "type": "ORG",
+   "text": "Рассветом",
+   "start": 50,
+   "end": 59
+  },
+  {
+   "seg_id": "p84",
+   "type": "ORG",
+   "text": "Большинство",
+   "start": 79,
+   "end": 90
+  },
+  {
+   "seg_id": "p84",
+   "type": "ORG",
+   "text": "Рассвету",
+   "start": 118,
+   "end": 126
+  },
+  {
+   "seg_id": "p87",
+   "type": "ORG",
+   "text": "Уставом Общества",
+   "start": 130,
+   "end": 146
+  },
+  {
+   "seg_id": "p87",
+   "type": "ADDRESS",
+   "text": "Российской Федерации",
+   "start": 107,
+   "end": 127
+  },
+  {
+   "seg_id": "p88",
+   "type": "ORG",
+   "text": "Общества",
+   "start": 76,
+   "end": 84
+  },
+  {
+   "seg_id": "p88",
+   "type": "ORG",
+   "text": "Обществу",
+   "start": 138,
+   "end": 146
+  },
+  {
+   "seg_id": "p92",
+   "type": "ORG",
+   "text": "Общего собрания",
+   "start": 88,
+   "end": 103
+  },
+  {
+   "seg_id": "p93",
+   "type": "ORG",
+   "text": "Бюджета Общества",
+   "start": 55,
+   "end": 71
+  },
+  {
+   "seg_id": "p93",
+   "type": "ORG",
+   "text": "Большинством",
+   "start": 84,
+   "end": 96
+  },
+  {
+   "seg_id": "p95",
+   "type": "ORG",
+   "text": "Общества",
+   "start": 22,
+   "end": 30
+  },
+  {
+   "seg_id": "p95",
+   "type": "ORG",
+   "text": "Совета определяется Уставом.",
+   "start": 108,
+   "end": 136
+  },
+  {
+   "seg_id": "p100",
+   "type": "ORG",
+   "text": "Долю",
+   "start": 38,
+   "end": 42
+  },
+  {
+   "seg_id": "p102",
+   "type": "ORG",
+   "text": "УЧАСТНИКОВ И ОБЩЕСТВА",
+   "start": 18,
+   "end": 39
+  },
+  {
+   "seg_id": "p103",
+   "type": "PERSON",
+   "text": "Восхода",
+   "start": 46,
+   "end": 53
+  },
+  {
+   "seg_id": "p103",
+   "type": "PERSON",
+   "text": "Восхода",
+   "start": 78,
+   "end": 85
+  },
+  {
+   "seg_id": "p104",
+   "type": "PERSON",
+   "text": "Восход",
+   "start": 39,
+   "end": 45
+  },
+  {
+   "seg_id": "p104",
+   "type": "ADDRESS",
+   "text": "Восхода",
+   "start": 89,
+   "end": 96
+  },
+  {
+   "seg_id": "p105",
+   "type": "PERSON",
+   "text": "Восходом",
+   "start": 25,
+   "end": 33
+  },
+  {
+   "seg_id": "p105",
+   "type": "ORG",
+   "text": "Долям",
+   "start": 84,
+   "end": 89
+  },
+  {
+   "seg_id": "p105",
+   "type": "ADDRESS",
+   "text": "Восхода",
+   "start": 101,
+   "end": 108
+  },
+  {
+   "seg_id": "p106",
+   "type": "ADDRESS",
+   "text": "Восходом",
+   "start": 88,
+   "end": 96
+  },
+  {
+   "seg_id": "p107",
+   "type": "ADDRESS",
+   "text": "Восходе",
+   "start": 75,
+   "end": 82
+  },
+  {
+   "seg_id": "p108",
+   "type": "ORG",
+   "text": "Рассветом",
+   "start": 50,
+   "end": 59
+  },
+  {
+   "seg_id": "p108",
+   "type": "ORG",
+   "text": "Большинство",
+   "start": 79,
+   "end": 90
+  },
+  {
+   "seg_id": "p108",
+   "type": "ORG",
+   "text": "Рассвету",
+   "start": 118,
+   "end": 126
+  },
+  {
+   "seg_id": "p111",
+   "type": "ORG",
+   "text": "Уставом Общества",
+   "start": 130,
+   "end": 146
+  },
+  {
+   "seg_id": "p111",
+   "type": "ADDRESS",
+   "text": "Российской Федерации",
+   "start": 107,
+   "end": 127
+  },
+  {
+   "seg_id": "p112",
+   "type": "ORG",
+   "text": "Общества",
+   "start": 76,
+   "end": 84
+  },
+  {
+   "seg_id": "p112",
+   "type": "ORG",
+   "text": "Обществу",
+   "start": 138,
+   "end": 146
+  },
+  {
+   "seg_id": "p116",
+   "type": "ORG",
+   "text": "Общего собрания",
+   "start": 88,
+   "end": 103
+  },
+  {
+   "seg_id": "p117",
+   "type": "ORG",
+   "text": "Бюджета Общества",
+   "start": 55,
+   "end": 71
+  },
+  {
+   "seg_id": "p117",
+   "type": "ORG",
+   "text": "Большинством",
+   "start": 84,
+   "end": 96
+  },
+  {
+   "seg_id": "p119",
+   "type": "ORG",
+   "text": "Общества",
+   "start": 22,
+   "end": 30
+  },
+  {
+   "seg_id": "p119",
+   "type": "ORG",
+   "text": "Совета определяется Уставом.",
+   "start": 108,
+   "end": 136
+  },
+  {
+   "seg_id": "p124",
+   "type": "ORG",
+   "text": "Долю",
+   "start": 38,
+   "end": 42
+  },
+  {
+   "seg_id": "p126",
+   "type": "ORG",
+   "text": "УЧАСТНИКОВ И ОБЩЕСТВА",
+   "start": 18,
+   "end": 39
+  },
+  {
+   "seg_id": "p127",
+   "type": "PERSON",
+   "text": "Восхода",
+   "start": 46,
+   "end": 53
+  },
+  {
+   "seg_id": "p127",
+   "type": "PERSON",
+   "text": "Восхода",
+   "start": 78,
+   "end": 85
+  },
+  {
+   "seg_id": "p128",
+   "type": "PERSON",
+   "text": "Восход",
+   "start": 39,
+   "end": 45
+  },
+  {
+   "seg_id": "p128",
+   "type": "ADDRESS",
+   "text": "Восхода",
+   "start": 89,
+   "end": 96
+  },
+  {
+   "seg_id": "p129",
+   "type": "PERSON",
+   "text": "Восходом",
+   "start": 25,
+   "end": 33
+  },
+  {
+   "seg_id": "p129",
+   "type": "ORG",
+   "text": "Долям",
+   "start": 84,
+   "end": 89
+  },
+  {
+   "seg_id": "p129",
+   "type": "ADDRESS",
+   "text": "Восхода",
+   "start": 101,
+   "end": 108
+  },
+  {
+   "seg_id": "p130",
+   "type": "ADDRESS",
+   "text": "Восходом",
+   "start": 88,
+   "end": 96
+  },
+  {
+   "seg_id": "p131",
+   "type": "ADDRESS",
+   "text": "Восходе",
+   "start": 75,
+   "end": 82
+  },
+  {
+   "seg_id": "p132",
+   "type": "ORG",
+   "text": "Рассветом",
+   "start": 50,
+   "end": 59
+  },
+  {
+   "seg_id": "p132",
+   "type": "ORG",
+   "text": "Большинство",
+   "start": 79,
+   "end": 90
+  },
+  {
+   "seg_id": "p132",
+   "type": "ORG",
+   "text": "Рассвету",
+   "start": 118,
+   "end": 126
+  },
+  {
+   "seg_id": "p135",
+   "type": "ORG",
+   "text": "Уставом Общества",
+   "start": 130,
+   "end": 146
+  },
+  {
+   "seg_id": "p135",
+   "type": "ADDRESS",
+   "text": "Российской Федерации",
+   "start": 107,
+   "end": 127
+  },
+  {
+   "seg_id": "p136",
+   "type": "ORG",
+   "text": "Общества",
+   "start": 76,
+   "end": 84
+  },
+  {
+   "seg_id": "p136",
+   "type": "ORG",
+   "text": "Обществу",
+   "start": 138,
+   "end": 146
+  },
+  {
+   "seg_id": "p140",
+   "type": "ORG",
+   "text": "Общего собрания",
+   "start": 88,
+   "end": 103
+  },
+  {
+   "seg_id": "p141",
+   "type": "ORG",
+   "text": "Бюджета Общества",
+   "start": 55,
+   "end": 71
+  },
+  {
+   "seg_id": "p141",
+   "type": "ORG",
+   "text": "Большинством",
+   "start": 84,
+   "end": 96
+  },
+  {
+   "seg_id": "p143",
+   "type": "ORG",
+   "text": "Общества",
+   "start": 22,
+   "end": 30
+  },
+  {
+   "seg_id": "p143",
+   "type": "ORG",
+   "text": "Совета определяется Уставом.",
+   "start": 108,
+   "end": 136
+  },
+  {
+   "seg_id": "p148",
+   "type": "ORG",
+   "text": "Долю",
+   "start": 38,
+   "end": 42
+  },
+  {
+   "seg_id": "p150",
+   "type": "ORG",
+   "text": "УЧАСТНИКОВ И ОБЩЕСТВА",
+   "start": 18,
+   "end": 39
+  },
+  {
+   "seg_id": "p151",
+   "type": "PERSON",
+   "text": "Восхода",
+   "start": 46,
+   "end": 53
+  },
+  {
+   "seg_id": "p151",
+   "type": "PERSON",
+   "text": "Восхода",
+   "start": 78,
+   "end": 85
+  },
+  {
+   "seg_id": "p152",
+   "type": "PERSON",
+   "text": "Восход",
+   "start": 39,
+   "end": 45
+  },
+  {
+   "seg_id": "p152",
+   "type": "ADDRESS",
+   "text": "Восхода",
+   "start": 89,
+   "end": 96
+  },
+  {
+   "seg_id": "p153",
+   "type": "PERSON",
+   "text": "Восходом",
+   "start": 25,
+   "end": 33
+  },
+  {
+   "seg_id": "p153",
+   "type": "ORG",
+   "text": "Долям",
+   "start": 84,
+   "end": 89
+  },
+  {
+   "seg_id": "p153",
+   "type": "ADDRESS",
+   "text": "Восхода",
+   "start": 101,
+   "end": 108
+  },
+  {
+   "seg_id": "p154",
+   "type": "ADDRESS",
+   "text": "Восходом",
+   "start": 88,
+   "end": 96
+  },
+  {
+   "seg_id": "p155",
+   "type": "ADDRESS",
+   "text": "Восходе",
+   "start": 75,
+   "end": 82
+  },
+  {
+   "seg_id": "p156",
+   "type": "ORG",
+   "text": "Рассветом",
+   "start": 50,
+   "end": 59
+  },
+  {
+   "seg_id": "p156",
+   "type": "ORG",
+   "text": "Большинство",
+   "start": 79,
+   "end": 90
+  },
+  {
+   "seg_id": "p156",
+   "type": "ORG",
+   "text": "Рассвету",
+   "start": 118,
+   "end": 126
+  },
+  {
+   "seg_id": "p159",
+   "type": "ORG",
+   "text": "Уставом Общества",
+   "start": 130,
+   "end": 146
+  },
+  {
+   "seg_id": "p159",
+   "type": "ADDRESS",
+   "text": "Российской Федерации",
+   "start": 107,
+   "end": 127
+  },
+  {
+   "seg_id": "p160",
+   "type": "ORG",
+   "text": "Общества",
+   "start": 76,
+   "end": 84
+  },
+  {
+   "seg_id": "p160",
+   "type": "ORG",
+   "text": "Обществу",
+   "start": 138,
+   "end": 146
+  },
+  {
+   "seg_id": "p164",
+   "type": "ORG",
+   "text": "Общего собрания",
+   "start": 88,
+   "end": 103
+  },
+  {
+   "seg_id": "p165",
+   "type": "ORG",
+   "text": "Бюджета Общества",
+   "start": 55,
+   "end": 71
+  },
+  {
+   "seg_id": "p165",
+   "type": "ORG",
+   "text": "Большинством",
+   "start": 84,
+   "end": 96
+  },
+  {
+   "seg_id": "p167",
+   "type": "ORG",
+   "text": "Общества",
+   "start": 22,
+   "end": 30
+  },
+  {
+   "seg_id": "p167",
+   "type": "ORG",
+   "text": "Совета определяется Уставом.",
+   "start": 108,
+   "end": 136
+  },
+  {
+   "seg_id": "p172",
+   "type": "ORG",
+   "text": "Долю",
+   "start": 38,
+   "end": 42
+  },
+  {
+   "seg_id": "p174",
+   "type": "ORG",
+   "text": "УЧАСТНИКОВ И ОБЩЕСТВА",
+   "start": 18,
+   "end": 39
+  },
+  {
+   "seg_id": "p175",
+   "type": "PERSON",
+   "text": "Восхода",
+   "start": 46,
+   "end": 53
+  },
+  {
+   "seg_id": "p175",
+   "type": "PERSON",
+   "text": "Восхода",
+   "start": 78,
+   "end": 85
+  },
+  {
+   "seg_id": "p176",
+   "type": "PERSON",
+   "text": "Восход",
+   "start": 39,
+   "end": 45
+  },
+  {
+   "seg_id": "p176",
+   "type": "ADDRESS",
+   "text": "Восхода",
+   "start": 89,
+   "end": 96
+  },
+  {
+   "seg_id": "p177",
+   "type": "PERSON",
+   "text": "Восходом",
+   "start": 25,
+   "end": 33
+  },
+  {
+   "seg_id": "p177",
+   "type": "ORG",
+   "text": "Долям",
+   "start": 84,
+   "end": 89
+  },
+  {
+   "seg_id": "p177",
+   "type": "ADDRESS",
+   "text": "Восхода",
+   "start": 101,
+   "end": 108
+  },
+  {
+   "seg_id": "p178",
+   "type": "ADDRESS",
+   "text": "Восходом",
+   "start": 88,
+   "end": 96
+  },
+  {
+   "seg_id": "p179",
+   "type": "ADDRESS",
+   "text": "Восходе",
+   "start": 75,
+   "end": 82
+  },
+  {
+   "seg_id": "p180",
+   "type": "ORG",
+   "text": "Рассветом",
+   "start": 50,
+   "end": 59
+  },
+  {
+   "seg_id": "p180",
+   "type": "ORG",
+   "text": "Большинство",
+   "start": 79,
+   "end": 90
+  },
+  {
+   "seg_id": "p180",
+   "type": "ORG",
+   "text": "Рассвету",
+   "start": 118,
+   "end": 126
+  },
+  {
+   "seg_id": "p183",
+   "type": "ORG",
+   "text": "Уставом Общества",
+   "start": 130,
+   "end": 146
+  },
+  {
+   "seg_id": "p183",
+   "type": "ADDRESS",
+   "text": "Российской Федерации",
+   "start": 107,
+   "end": 127
+  },
+  {
+   "seg_id": "p184",
+   "type": "ORG",
+   "text": "Общества",
+   "start": 76,
+   "end": 84
+  },
+  {
+   "seg_id": "p184",
+   "type": "ORG",
+   "text": "Обществу",
+   "start": 138,
+   "end": 146
+  },
+  {
+   "seg_id": "p188",
+   "type": "ORG",
+   "text": "Общего собрания",
+   "start": 88,
+   "end": 103
+  },
+  {
+   "seg_id": "p189",
+   "type": "ORG",
+   "text": "Бюджета Общества",
+   "start": 55,
+   "end": 71
+  },
+  {
+   "seg_id": "p189",
+   "type": "ORG",
+   "text": "Большинством",
+   "start": 84,
+   "end": 96
+  },
+  {
+   "seg_id": "p191",
+   "type": "ORG",
+   "text": "Общества",
+   "start": 22,
+   "end": 30
+  },
+  {
+   "seg_id": "p191",
+   "type": "ORG",
+   "text": "Совета определяется Уставом.",
+   "start": 108,
+   "end": 136
+  },
+  {
+   "seg_id": "p196",
+   "type": "ORG",
+   "text": "Долю",
+   "start": 38,
+   "end": 42
+  },
+  {
+   "seg_id": "p198",
+   "type": "ORG",
+   "text": "УЧАСТНИКОВ И ОБЩЕСТВА",
+   "start": 18,
+   "end": 39
+  },
+  {
+   "seg_id": "p199",
+   "type": "PERSON",
+   "text": "Восхода",
+   "start": 46,
+   "end": 53
+  },
+  {
+   "seg_id": "p199",
+   "type": "PERSON",
+   "text": "Восхода",
+   "start": 78,
+   "end": 85
+  },
+  {
+   "seg_id": "p200",
+   "type": "PERSON",
+   "text": "Восход",
+   "start": 39,
+   "end": 45
+  },
+  {
+   "seg_id": "p200",
+   "type": "ADDRESS",
+   "text": "Восхода",
+   "start": 89,
+   "end": 96
+  },
+  {
+   "seg_id": "p201",
+   "type": "PERSON",
+   "text": "Восходом",
+   "start": 25,
+   "end": 33
+  },
+  {
+   "seg_id": "p201",
+   "type": "ORG",
+   "text": "Долям",
+   "start": 84,
+   "end": 89
+  },
+  {
+   "seg_id": "p201",
+   "type": "ADDRESS",
+   "text": "Восхода",
+   "start": 101,
+   "end": 108
+  },
+  {
+   "seg_id": "p202",
+   "type": "ADDRESS",
+   "text": "Восходом",
+   "start": 88,
+   "end": 96
+  },
+  {
+   "seg_id": "p203",
+   "type": "ADDRESS",
+   "text": "Восходе",
+   "start": 75,
+   "end": 82
+  },
+  {
+   "seg_id": "p204",
+   "type": "ORG",
+   "text": "Рассветом",
+   "start": 50,
+   "end": 59
+  },
+  {
+   "seg_id": "p204",
+   "type": "ORG",
+   "text": "Большинство",
+   "start": 79,
+   "end": 90
+  },
+  {
+   "seg_id": "p204",
+   "type": "ORG",
+   "text": "Рассвету",
+   "start": 118,
+   "end": 126
+  },
+  {
+   "seg_id": "p207",
+   "type": "ORG",
+   "text": "Уставом Общества",
+   "start": 130,
+   "end": 146
+  },
+  {
+   "seg_id": "p207",
+   "type": "ADDRESS",
+   "text": "Российской Федерации",
+   "start": 107,
+   "end": 127
+  },
+  {
+   "seg_id": "p208",
+   "type": "ORG",
+   "text": "Общества",
+   "start": 76,
+   "end": 84
+  },
+  {
+   "seg_id": "p208",
+   "type": "ORG",
+   "text": "Обществу",
+   "start": 138,
+   "end": 146
+  },
+  {
+   "seg_id": "p212",
+   "type": "ORG",
+   "text": "Общего собрания",
+   "start": 88,
+   "end": 103
+  },
+  {
+   "seg_id": "p213",
+   "type": "ORG",
+   "text": "Бюджета Общества",
+   "start": 55,
+   "end": 71
+  },
+  {
+   "seg_id": "p213",
+   "type": "ORG",
+   "text": "Большинством",
+   "start": 84,
+   "end": 96
+  },
+  {
+   "seg_id": "p215",
+   "type": "ORG",
+   "text": "Общества",
+   "start": 22,
+   "end": 30
+  },
+  {
+   "seg_id": "p215",
+   "type": "ORG",
+   "text": "Совета определяется Уставом.",
+   "start": 108,
+   "end": 136
+  },
+  {
+   "seg_id": "p220",
+   "type": "ORG",
+   "text": "Долю",
+   "start": 38,
+   "end": 42
+  },
+  {
+   "seg_id": "p222",
+   "type": "ORG",
+   "text": "УЧАСТНИКОВ И ОБЩЕСТВА",
+   "start": 18,
+   "end": 39
+  },
+  {
+   "seg_id": "p223",
+   "type": "PERSON",
+   "text": "Восхода",
+   "start": 46,
+   "end": 53
+  },
+  {
+   "seg_id": "p223",
+   "type": "PERSON",
+   "text": "Восхода",
+   "start": 78,
+   "end": 85
+  },
+  {
+   "seg_id": "p224",
+   "type": "PERSON",
+   "text": "Восход",
+   "start": 39,
+   "end": 45
+  },
+  {
+   "seg_id": "p224",
+   "type": "ADDRESS",
+   "text": "Восхода",
+   "start": 89,
+   "end": 96
+  },
+  {
+   "seg_id": "p225",
+   "type": "PERSON",
+   "text": "Восходом",
+   "start": 25,
+   "end": 33
+  },
+  {
+   "seg_id": "p225",
+   "type": "ORG",
+   "text": "Долям",
+   "start": 84,
+   "end": 89
+  },
+  {
+   "seg_id": "p225",
+   "type": "ADDRESS",
+   "text": "Восхода",
+   "start": 101,
+   "end": 108
+  },
+  {
+   "seg_id": "p226",
+   "type": "ADDRESS",
+   "text": "Восходом",
+   "start": 88,
+   "end": 96
+  },
+  {
+   "seg_id": "p227",
+   "type": "ADDRESS",
+   "text": "Восходе",
+   "start": 75,
+   "end": 82
+  },
+  {
+   "seg_id": "p228",
+   "type": "ORG",
+   "text": "Рассветом",
+   "start": 50,
+   "end": 59
+  },
+  {
+   "seg_id": "p228",
+   "type": "ORG",
+   "text": "Большинство",
+   "start": 79,
+   "end": 90
+  },
+  {
+   "seg_id": "p228",
+   "type": "ORG",
+   "text": "Рассвету",
+   "start": 118,
+   "end": 126
+  },
+  {
+   "seg_id": "p231",
+   "type": "ORG",
+   "text": "Уставом Общества",
+   "start": 130,
+   "end": 146
+  },
+  {
+   "seg_id": "p231",
+   "type": "ADDRESS",
+   "text": "Российской Федерации",
+   "start": 107,
+   "end": 127
+  },
+  {
+   "seg_id": "p232",
+   "type": "ORG",
+   "text": "Общества",
+   "start": 76,
+   "end": 84
+  },
+  {
+   "seg_id": "p232",
+   "type": "ORG",
+   "text": "Обществу",
+   "start": 138,
+   "end": 146
+  },
+  {
+   "seg_id": "p236",
+   "type": "ORG",
+   "text": "Общего собрания",
+   "start": 88,
+   "end": 103
+  },
+  {
+   "seg_id": "p237",
+   "type": "ORG",
+   "text": "Бюджета Общества",
+   "start": 55,
+   "end": 71
+  },
+  {
+   "seg_id": "p237",
+   "type": "ORG",
+   "text": "Большинством",
+   "start": 84,
+   "end": 96
+  },
+  {
+   "seg_id": "p239",
+   "type": "ORG",
+   "text": "Общества",
+   "start": 22,
+   "end": 30
+  },
+  {
+   "seg_id": "p239",
+   "type": "ORG",
+   "text": "Совета определяется Уставом.",
+   "start": 108,
+   "end": 136
+  },
+  {
+   "seg_id": "p244",
+   "type": "ORG",
+   "text": "Долю",
+   "start": 38,
+   "end": 42
+  },
+  {
+   "seg_id": "p246",
+   "type": "ORG",
+   "text": "УЧАСТНИКОВ И ОБЩЕСТВА",
+   "start": 18,
+   "end": 39
+  },
+  {
+   "seg_id": "p247",
+   "type": "PERSON",
+   "text": "Восхода",
+   "start": 46,
+   "end": 53
+  },
+  {
+   "seg_id": "p247",
+   "type": "PERSON",
+   "text": "Восхода",
+   "start": 78,
+   "end": 85
+  },
+  {
+   "seg_id": "p248",
+   "type": "PERSON",
+   "text": "Восход",
+   "start": 39,
+   "end": 45
+  },
+  {
+   "seg_id": "p248",
+   "type": "ADDRESS",
+   "text": "Восхода",
+   "start": 89,
+   "end": 96
+  },
+  {
+   "seg_id": "p249",
+   "type": "PERSON",
+   "text": "Восходом",
+   "start": 25,
+   "end": 33
+  },
+  {
+   "seg_id": "p249",
+   "type": "ORG",
+   "text": "Долям",
+   "start": 84,
+   "end": 89
+  },
+  {
+   "seg_id": "p249",
+   "type": "ADDRESS",
+   "text": "Восхода",
+   "start": 101,
+   "end": 108
+  },
+  {
+   "seg_id": "p250",
+   "type": "ADDRESS",
+   "text": "Восходом",
+   "start": 88,
+   "end": 96
+  },
+  {
+   "seg_id": "p251",
+   "type": "ADDRESS",
+   "text": "Восходе",
+   "start": 75,
+   "end": 82
+  },
+  {
+   "seg_id": "p252",
+   "type": "ORG",
+   "text": "Рассветом",
+   "start": 50,
+   "end": 59
+  },
+  {
+   "seg_id": "p252",
+   "type": "ORG",
+   "text": "Большинство",
+   "start": 79,
+   "end": 90
+  },
+  {
+   "seg_id": "p252",
+   "type": "ORG",
+   "text": "Рассвету",
+   "start": 118,
+   "end": 126
+  },
+  {
+   "seg_id": "p255",
+   "type": "ORG",
+   "text": "Уставом Общества",
+   "start": 130,
+   "end": 146
+  },
+  {
+   "seg_id": "p255",
+   "type": "ADDRESS",
+   "text": "Российской Федерации",
+   "start": 107,
+   "end": 127
+  },
+  {
+   "seg_id": "p256",
+   "type": "ORG",
+   "text": "Общества",
+   "start": 76,
+   "end": 84
+  },
+  {
+   "seg_id": "p256",
+   "type": "ORG",
+   "text": "Обществу",
+   "start": 138,
+   "end": 146
+  },
+  {
+   "seg_id": "p260",
+   "type": "ORG",
+   "text": "Общего собрания",
+   "start": 88,
+   "end": 103
+  },
+  {
+   "seg_id": "p261",
+   "type": "ORG",
+   "text": "Бюджета Общества",
+   "start": 55,
+   "end": 71
+  },
+  {
+   "seg_id": "p261",
+   "type": "ORG",
+   "text": "Большинством",
+   "start": 84,
+   "end": 96
+  },
+  {
+   "seg_id": "p263",
+   "type": "ORG",
+   "text": "Общества",
+   "start": 22,
+   "end": 30
+  },
+  {
+   "seg_id": "p263",
+   "type": "ORG",
+   "text": "Совета определяется Уставом.",
+   "start": 108,
+   "end": 136
+  },
+  {
+   "seg_id": "p268",
+   "type": "ORG",
+   "text": "Долю",
+   "start": 38,
+   "end": 42
+  },
+  {
+   "seg_id": "p270",
+   "type": "ORG",
+   "text": "УЧАСТНИКОВ И ОБЩЕСТВА",
+   "start": 18,
+   "end": 39
+  },
+  {
+   "seg_id": "p271",
+   "type": "PERSON",
+   "text": "Восхода",
+   "start": 46,
+   "end": 53
+  },
+  {
+   "seg_id": "p271",
+   "type": "PERSON",
+   "text": "Восхода",
+   "start": 78,
+   "end": 85
+  },
+  {
+   "seg_id": "p272",
+   "type": "PERSON",
+   "text": "Восход",
+   "start": 39,
+   "end": 45
+  },
+  {
+   "seg_id": "p272",
+   "type": "ADDRESS",
+   "text": "Восхода",
+   "start": 89,
+   "end": 96
+  },
+  {
+   "seg_id": "p273",
+   "type": "PERSON",
+   "text": "Восходом",
+   "start": 25,
+   "end": 33
+  },
+  {
+   "seg_id": "p273",
+   "type": "ORG",
+   "text": "Долям",
+   "start": 84,
+   "end": 89
+  },
+  {
+   "seg_id": "p273",
+   "type": "ADDRESS",
+   "text": "Восхода",
+   "start": 101,
+   "end": 108
+  },
+  {
+   "seg_id": "p274",
+   "type": "ADDRESS",
+   "text": "Восходом",
+   "start": 88,
+   "end": 96
+  },
+  {
+   "seg_id": "p275",
+   "type": "ADDRESS",
+   "text": "Восходе",
+   "start": 75,
+   "end": 82
+  },
+  {
+   "seg_id": "p276",
+   "type": "ORG",
+   "text": "Рассветом",
+   "start": 50,
+   "end": 59
+  },
+  {
+   "seg_id": "p276",
+   "type": "ORG",
+   "text": "Большинство",
+   "start": 79,
+   "end": 90
+  },
+  {
+   "seg_id": "p276",
+   "type": "ORG",
+   "text": "Рассвету",
+   "start": 118,
+   "end": 126
+  },
+  {
+   "seg_id": "p279",
+   "type": "ORG",
+   "text": "Уставом Общества",
+   "start": 130,
+   "end": 146
+  },
+  {
+   "seg_id": "p279",
+   "type": "ADDRESS",
+   "text": "Российской Федерации",
+   "start": 107,
+   "end": 127
+  },
+  {
+   "seg_id": "p280",
+   "type": "ORG",
+   "text": "Общества",
+   "start": 76,
+   "end": 84
+  },
+  {
+   "seg_id": "p280",
+   "type": "ORG",
+   "text": "Обществу",
+   "start": 138,
+   "end": 146
+  },
+  {
+   "seg_id": "p284",
+   "type": "ORG",
+   "text": "Общего собрания",
+   "start": 88,
+   "end": 103
+  },
+  {
+   "seg_id": "p285",
+   "type": "ORG",
+   "text": "Бюджета Общества",
+   "start": 55,
+   "end": 71
+  },
+  {
+   "seg_id": "p285",
+   "type": "ORG",
+   "text": "Большинством",
+   "start": 84,
+   "end": 96
+  },
+  {
+   "seg_id": "p287",
+   "type": "ORG",
+   "text": "Общества",
+   "start": 22,
+   "end": 30
+  },
+  {
+   "seg_id": "p287",
+   "type": "ORG",
+   "text": "Совета определяется Уставом.",
+   "start": 108,
+   "end": 136
+  },
+  {
+   "seg_id": "p292",
+   "type": "ORG",
+   "text": "Долю",
+   "start": 38,
+   "end": 42
+  },
+  {
+   "seg_id": "p294",
+   "type": "ORG",
+   "text": "УЧАСТНИКОВ И ОБЩЕСТВА",
+   "start": 18,
+   "end": 39
+  },
+  {
+   "seg_id": "p295",
+   "type": "PERSON",
+   "text": "Восхода",
+   "start": 46,
+   "end": 53
+  },
+  {
+   "seg_id": "p295",
+   "type": "PERSON",
+   "text": "Восхода",
+   "start": 78,
+   "end": 85
+  },
+  {
+   "seg_id": "p296",
+   "type": "PERSON",
+   "text": "Восход",
+   "start": 39,
+   "end": 45
+  },
+  {
+   "seg_id": "p296",
+   "type": "ADDRESS",
+   "text": "Восхода",
+   "start": 89,
+   "end": 96
+  },
+  {
+   "seg_id": "p297",
+   "type": "PERSON",
+   "text": "Восходом",
+   "start": 25,
+   "end": 33
+  },
+  {
+   "seg_id": "p297",
+   "type": "ORG",
+   "text": "Долям",
+   "start": 84,
+   "end": 89
+  },
+  {
+   "seg_id": "p297",
+   "type": "ADDRESS",
+   "text": "Восхода",
+   "start": 101,
+   "end": 108
+  },
+  {
+   "seg_id": "p298",
+   "type": "ADDRESS",
+   "text": "Восходом",
+   "start": 88,
+   "end": 96
+  },
+  {
+   "seg_id": "p299",
+   "type": "ADDRESS",
+   "text": "Восходе",
+   "start": 75,
+   "end": 82
+  },
+  {
+   "seg_id": "p300",
+   "type": "ORG",
+   "text": "Рассветом",
+   "start": 50,
+   "end": 59
+  },
+  {
+   "seg_id": "p300",
+   "type": "ORG",
+   "text": "Большинство",
+   "start": 79,
+   "end": 90
+  },
+  {
+   "seg_id": "p300",
+   "type": "ORG",
+   "text": "Рассвету",
+   "start": 118,
+   "end": 126
+  },
+  {
+   "seg_id": "p303",
+   "type": "ORG",
+   "text": "Общества.",
+   "start": 166,
+   "end": 175
+  },
+  {
+   "seg_id": "p304",
+   "type": "ORG",
+   "text": "Арбитражном суде",
+   "start": 78,
+   "end": 94
+  },
+  {
+   "seg_id": "p304",
+   "type": "ADDRESS",
+   "text": "города Москвы",
+   "start": 95,
+   "end": 108
+  },
+  {
+   "seg_id": "p305",
+   "type": "ORG",
+   "text": "Участниками производятся",
+   "start": 19,
+   "end": 43
+  },
+  {
+   "seg_id": "p305",
+   "type": "ORG",
+   "text": "Банк России",
+   "start": 50,
+   "end": 61
+  },
+  {
+   "seg_id": "p307",
+   "type": "ORG",
+   "text": "ПОДПИСИ СТОРОН",
+   "start": 23,
+   "end": 37
+  },
+  {
+   "seg_id": "p309",
+   "type": "PERSON",
+   "text": "Иванов Роман Эдуардович",
+   "start": 0,
+   "end": 23
+  },
+  {
+   "seg_id": "p311",
+   "type": "ADDRESS",
+   "text": "143000, г. Одинцово, ул. Садовая, д. 15, кв. 7",
+   "start": 19,
+   "end": 65
+  },
+  {
+   "seg_id": "p313",
+   "type": "PERSON",
+   "text": "Иванов Р.Э.",
+   "start": 25,
+   "end": 36
+  },
+  {
+   "seg_id": "p315",
+   "type": "PERSON",
+   "text": "Петрова Ольга Николаевна",
+   "start": 0,
+   "end": 24
+  },
+  {
+   "seg_id": "p317",
+   "type": "ADDRESS",
+   "text": "143000, г. Одинцово, ул. Садовая, д. 14, кв. 174",
+   "start": 19,
+   "end": 67
+  },
+  {
+   "seg_id": "p319",
+   "type": "PERSON",
+   "text": "Петрова О.Н.",
+   "start": 25,
+   "end": 37
+  },
+  {
+   "seg_id": "p321",
+   "type": "PERSON",
+   "text": "Ким Ен Су",
+   "start": 0,
+   "end": 9
+  },
+  {
+   "seg_id": "p323",
+   "type": "ADDRESS",
+   "text": "101000, г. Москва, ул. Тверская, д. 4, кв. 24",
+   "start": 19,
+   "end": 64
+  },
+  {
+   "seg_id": "p325",
+   "type": "PERSON",
+   "text": "Ким Е.С.",
+   "start": 25,
+   "end": 33
+  }
+ ]
+}
