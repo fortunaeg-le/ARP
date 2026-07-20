@@ -18,11 +18,12 @@
 ```
 venv/Scripts/python.exe -m pytest -q
 ```
-Эталон: **845 passed, 1 deselected, 9 xfailed** (~370 c; +2 к прежним 843 —
-`tests/corpus/test_gate_regression_detection.py`, 2026-07-20). Другой интерпретатор
-(`natasha` не установлена) — ошибки сбора; рабочий только `venv/Scripts/python.exe`.
+Эталон: **840 passed, 1 deselected, 14 xfailed** (~460 c; этап A structure-first ORG,
+2026-07-20: +4 xfail-находки A-1…A-4, часть прежних ORG-тестов перецелена на новый
+источник ORG). Другой интерпретатор (`natasha` не установлена) — ошибки сбора;
+рабочий только `venv/Scripts/python.exe`.
 
-9 `xfailed` — намеренно отложенные дефекты/дыры покрытия, помечены `@xfail(strict=True)`:
+14 `xfailed` — намеренно отложенные дефекты/дыры покрытия, помечены `@xfail(strict=True)`:
 если станут проходить незамеченно — тест «покраснеет» (XPASS→FAIL), это сигнал снять метку.
 Крупнейшая группа — `tests/test_future_contracts.py` (карта «дыра → этап», см. §4).
 
@@ -191,6 +192,19 @@ PASSPORT под якорем «код подразделения». Все 13 т
   `archive/reports/HANDOFF_STAGE_4.md`); этап 2b (регистровая детекция ФИО —
   словная/сегментная нормализация `detection_text`, см.
   `archive/reports/HANDOFF_STAGE_2B.md`).
+- **Этап A (structure-first ORG), 2026-07-20** — `src/anchor_registry.py`: ORG теперь
+  даёт ЯКОРЬ+РЕЕСТР+ПРОХОД 2 по лемме ядра (org-форма/кавычки/введение/ИНН-ОГРН
+  юрлица), Natasha-ORG выключена (`ner_label: ORG` убран). На dogovor.docx мусор
+  Natasha-ORG (Большинство/Доля/Общество-алиас/заголовки, ~152 спана) → **0**;
+  «Восход» из 3 типов Natasha → **единый ORG, 122/122**. Корпус: ORG маски 4002→1011,
+  ORG FP на негативах **682→1**, FP всего −682, masking B 79.6→81.8%, A=100%, ORG
+  recall 88.3→89.8%, 0 крешей. **Гейт КРАСНЫЙ по условию 2 (leak_v2): +126 PER/+30
+  ADDRESS/+15 ORG — это MASK-SHIFT** (Natasha-ORG случайно прятала фамилии-омонимы
+  нарицательных, ИП-ФИО и фрагменты адреса, которые PER/ADDRESS-детекторы не берут;
+  разрыв имени переносом строки движок не сшивает). Механизм ORG утечки НЕ вносит
+  (числовые типы байт-в-байт); закрытие — за PER/ADDRESS-якорями и cross-segment ORG.
+  4 находки помечены `@xfail(strict)`. См.
+  [`archive/reports/HANDOFF_STAGE_A_ORG.md`](archive/reports/HANDOFF_STAGE_A_ORG.md).
 - **Открыто/следующее:** этап PER-границ (PER-B), этап 5 (адрес без маркеров), этап 6
   (чтение непрочитанных зон + харнесс 1-A), PDF-извлечение, компонент 1 (веб).
   Контракты-заглушки будущих этапов — `tests/test_future_contracts.py`
