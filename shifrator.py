@@ -126,13 +126,19 @@ def cmd_encrypt(path, config_path, allow_lossy=False):
         # Реквизиты (regex) считаем ПЕРВЫМИ и передаём в detect_ner как «карту занятой
         # территории»: расширение адреса не наступает на ИНН/ОГРН/счёт/телефон — иначе
         # regex-хвост поглощается адресом и при разрешении пересечений адрес утекает
-        # открытым текстом (W2-D1). PER/ORG detect_ner защищает своими спанами сам.
+        # открытым текстом (W2-D1). PER detect_ner защищает своими спанами сам.
         regex_entities = detect_regex(doc, config_path)
-        ner_entities = detect_ner(doc, config_path, regex_entities=regex_entities)
-        # Этап A: ORG даёт структурный движок (якорь+реестр+проход 2), Natasha-ORG
-        # выключена в конфиге. Арбитраж типов снимает Natasha PER/ADDRESS, ошибочно
-        # наложенные на ядро организации (тот же «Восход», рвущийся на 3 типа).
+        # Этап A': ORG считается ДО detect_ner (не после) и передаётся туда как ещё
+        # один барьер расширения адреса (A-4) — иначе адресный детектор, работая
+        # без знания о структурном ORG, наступает на готовый ORG-спан и перетипирует
+        # его обломок в ADDRESS (lease_0008). Структурный движок (якорь+реестр+
+        # проход 2), Natasha-ORG выключена в конфиге. Арбитраж типов снимает Natasha
+        # PER/ADDRESS, ошибочно наложенные на ядро организации (тот же «Восход»,
+        # рвущийся на 3 типа).
         org_entities = detect_org(doc, regex_entities=regex_entities)
+        ner_entities = detect_ner(
+            doc, config_path, regex_entities=regex_entities, org_entities=org_entities,
+        )
         ner_entities = suppress_conflicts(org_entities, ner_entities)
         entities = regex_entities + ner_entities + org_entities
         # Волна 2, этап B: составные сущности «ORG + ФИО» (ИП Пирогова А.С.) —

@@ -6,7 +6,7 @@ run_measurement.py — харнесс замера покрытия SHIFRATOR п
     venv/Scripts/python.exe tests/corpus/run_measurement.py
 
 Что делает (см. ЗАДАНИЕ этап 2, §3-4):
-  * гоняет ПОЛНЫЙ конвейер encrypt (extract -> detect_regex -> detect_ner ->
+  * гоняет ПОЛНЫЙ конвейер encrypt (extract -> detect_regex -> detect_org -> detect_ner ->
     merge_compound_entities -> tokenize) в ИЗОЛИРОВАННОМ хранилище сессий;
   * detokenize(anon) для проверки round-trip;
   * отображает найденные сущности в координаты PT-1 (gold) и сопоставляет с gold;
@@ -163,8 +163,10 @@ def process_doc(d, allow_lossy=ALLOW_LOSSY):
 
     doc = extract(path)
     regex_e = detect_regex(doc, CONFIG)
-    ner_e = detect_ner(doc, CONFIG, regex_entities=regex_e)
+    # Этап A': detect_org считается ДО detect_ner и передаётся туда барьером
+    # расширения адреса (A-4) — тот же порядок, что shifrator.py::cmd_encrypt.
     org_e = detect_org(doc, regex_entities=regex_e)
+    ner_e = detect_ner(doc, CONFIG, regex_entities=regex_e, org_entities=org_e)
     ner_e = suppress_conflicts(org_e, ner_e)
     entities = regex_e + ner_e + org_e
     entities = merge_compound_entities(doc, entities)

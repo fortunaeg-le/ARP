@@ -127,11 +127,15 @@ def _address_barriers(
     text: str,
     ner_spans: list[tuple[int, int]],
     regex_spans: list[tuple[int, int]],
+    org_spans: list[tuple[int, int]] = (),
 ) -> list[tuple[int, int]]:
     """Занятая территория, на которую расширение адреса НЕ наступает: все regex-реквизиты
-    (всегда) + те PER/ORG, что НЕ являются адресным хвостом (_addr_transparent).
-    Общая для основного прохода и граничного (B3) — геометрия барьеров одна."""
-    barriers = list(regex_spans)
+    (всегда) + все структурные ORG-спаны движка anchor_registry (всегда, этап A' —
+    это уже подтверждённый якорем/реестром реальный ORG, не сырая догадка NER, поэтому
+    _addr_transparent к ним не применяется) + те Natasha PER/ORG, что НЕ являются
+    адресным хвостом (_addr_transparent). Общая для основного прохода и граничного
+    (B3) — геометрия барьеров одна."""
+    barriers = list(regex_spans) + list(org_spans)
     barriers += [(s, e) for s, e in ner_spans if not _addr_transparent(text, s, e)]
     return barriers
 
@@ -413,11 +417,18 @@ def detect_ner(
     doc: SourceDocument,
     config_path: str,
     regex_entities: list[Entity] | None = None,
+    org_entities: list[Entity] | None = None,
 ) -> list[Entity]:
     """regex_entities — результат detect_regex, ЕСЛИ он уже посчитан вызывающим
     (нормативный путь: реквизиты дают «карту занятой территории» ДО расширения
     адреса, см. shifrator.py). Без него расширение всё равно уступает своим PER/ORG,
-    а пересечение с regex-хвостом ловится обрезкой в _resolve_overlaps (страховка)."""
+    а пересечение с regex-хвостом ловится обрезкой в _resolve_overlaps (страховка).
+
+    org_entities — результат anchor_registry.detect_org, ЕСЛИ он уже посчитан
+    вызывающим (этап A': ORG теперь считается ДО detect_ner, см. shifrator.py). Это
+    структурный барьер расширения адреса — закрывает A-4 (адрес поглощал обломок
+    готового ORG, lease_0008). Без него расширение адреса просто не видит ORG вовсе
+    (Natasha-ORG в конфиге выключена, см. этап A)."""
     ner_label_map, addr_types = _load_ner_config(config_path)
 
     # Карта regex-территории по сегментам: расширение адреса на неё не наступает.
@@ -425,6 +436,13 @@ def detect_ner(
     if regex_entities:
         for e in regex_entities:
             regex_by_seg.setdefault(e.segment_id, []).append((e.start, e.end))
+
+    # Карта структурных ORG-спанов (anchor_registry) по сегментам — тот же
+    # безусловный барьер, что regex, см. docstring _address_barriers.
+    org_by_seg: dict[str, list[tuple[int, int]]] = {}
+    if org_entities:
+        for e in org_entities:
+            org_by_seg.setdefault(e.segment_id, []).append((e.start, e.end))
 
     entities: list[Entity] = []
 
@@ -492,12 +510,15 @@ def detect_ner(
                 # маркерные позиции в «сырьё» НЕ кладём, иначе список маркеров стал бы
                 # самостоятельным детектором. Расширение краёв использует маркеры как
                 # линейку, но стартует только от подтверждённых LOC/yargy-спанов.
-                # Барьеры расширения = regex-реквизиты + настоящие PER/ORG (не адресный хвост).
-                # regex-реквизиты хранятся в ИСХОДНЫХ координатах — приводим их к
-                # координатам норм-текста, в которых работает расширение адреса.
+                # Барьеры расширения = regex-реквизиты + структурные ORG (anchor_registry,
+                # этап A'-4) + настоящие PER/ORG NER (не адресный хвост). regex/ORG хранятся
+                # в ИСХОДНЫХ координатах — приводим их к координатам норм-текста, в которых
+                # работает расширение адреса.
                 regex_src = regex_by_seg.get(segment.id, [])
                 regex_norm = [src_to_norm(offset_map, s, e) for s, e in regex_src]
-                occupied = _address_barriers(text, ner_spans, regex_norm)
+                org_src = org_by_seg.get(segment.id, [])
+                org_norm = [src_to_norm(offset_map, s, e) for s, e in org_src]
+                occupied = _address_barriers(text, ner_spans, regex_norm, org_norm)
                 for start, end in _build_address_spans(
                     text, loc_spans + yargy_spans, occupied
                 ):

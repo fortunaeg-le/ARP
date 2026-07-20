@@ -18,12 +18,13 @@
 ```
 venv/Scripts/python.exe -m pytest -q
 ```
-Эталон: **840 passed, 1 deselected, 14 xfailed** (~460 c; этап A structure-first ORG,
-2026-07-20: +4 xfail-находки A-1…A-4, часть прежних ORG-тестов перецелена на новый
-источник ORG). Другой интерпретатор (`natasha` не установлена) — ошибки сбора;
-рабочий только `venv/Scripts/python.exe`.
+Эталон: **841 passed, 1 deselected, 13 xfailed** (~450 c; этап A′, 2026-07-20:
+A-4 xfail снят — `test_wave2_overcapture::test_following_org_keeps_its_own_token`
+теперь честно зелёный, барьер `detect_org` → `detect_ner` работает). Другой
+интерпретатор (`natasha` не установлена) — ошибки сбора; рабочий только
+`venv/Scripts/python.exe`.
 
-14 `xfailed` — намеренно отложенные дефекты/дыры покрытия, помечены `@xfail(strict=True)`:
+13 `xfailed` — намеренно отложенные дефекты/дыры покрытия, помечены `@xfail(strict=True)`:
 если станут проходить незамеченно — тест «покраснеет» (XPASS→FAIL), это сигнал снять метку.
 Крупнейшая группа — `tests/test_future_contracts.py` (карта «дыра → этап», см. §4).
 
@@ -221,6 +222,25 @@ PASSPORT под якорем «код подразделения». Все 13 т
 `anchor_registry.detect_org`/`suppress_conflicts` (написан до этапа A) — ORG-меток
 не давал, при том что `src/`/CLI не тронуты. Починено (3 строки в `app/core.py`),
 byte-diff CLI↔UI подтверждён. См. [`archive/reports/HANDOFF_UI.md`](archive/reports/HANDOFF_UI.md).
+
+- **Этап A′ (нормализация якоря + порядок пайплайна), 2026-07-20** — два точечных
+  фикса поверх этапа A. (1) `anchor_search_view` в `src/anchor_registry.py`: свой,
+  независимый от Stage 2, поисковый вид, вырезающий `\n\r\xad​⁠‌
+  ‍ \xa0` НАПРОЧЬ до фолдинга омоглифов (NBSP/NNBSP к моменту обычного
+  `detection_view` уже необратимо стали пробелом) — чинит org-форму/кавычки,
+  разорванные этими символами ВНУТРИ одного сегмента. (2) `detect_org` теперь
+  считается ДО `detect_ner` (`shifrator.py`/`app/core.py`/`run_measurement.py`) и
+  передаётся туда барьером `org_entities` в `_address_barriers` — закрывает A-4
+  (`test_wave2_overcapture::test_following_org_keeps_its_own_token`, xfail снят).
+  Изолированный эффект (Stage A+A′ vs Stage A): ORG leak_v2 120→**88** (−32), ORG
+  recall 88.3→**93.9%** (было 89.8% на одном этапе A); ВСЕ остальные 12 типов —
+  побайтно без изменений. Round-trip на 48 вариантах именованных мутаций — 0 порчи
+  значения (единственный класс whole-doc несовпадений — предсуществующая
+  `\n`→`' '` асимметрия `_render_table`, найдена и задокументирована как Aprime-3,
+  НЕ внесена этой сессией). Разбор оставшихся 28 пропусков ORG показал 3 отдельные,
+  вне-границ находки (`Aprime-1/2/3` в `FINDINGS.md`) — не одна причина, как
+  предполагала исходная постановка. См.
+  [`archive/reports/HANDOFF_STAGE_APRIME.md`](archive/reports/HANDOFF_STAGE_APRIME.md).
 
 **UI второй фикс — старый процесс отвечал вместо нового** (2026-07-20): `http.server`
 даёт Windows молча забиндить новый `server.py` на занятый порт (`allow_reuse_address`)

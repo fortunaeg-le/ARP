@@ -20,14 +20,15 @@ _CONFIG = os.path.join(os.path.dirname(__file__), "..", "entity_types.yaml")
 
 
 def _detect_and_merge(text):
-    # Этап A: ORG теперь даёт структурный движок (detect_org), а не Natasha-ORG.
-    # Хелпер собирает ПОЛНЫЙ конвейер (regex + PER/ADDRESS-NER + ORG-движок +
-    # арбитраж), как cmd_encrypt/run_measurement, иначе «ООО «Ромашка»» не находится.
+    # Этап A': ORG даёт структурный движок (detect_org), а не Natasha-ORG, и считается
+    # ДО detect_ner (барьер адреса, A-4). Хелпер собирает ПОЛНЫЙ конвейер (regex + ORG-
+    # движок + PER/ADDRESS-NER + арбитраж), как cmd_encrypt/run_measurement, иначе
+    # «ООО «Ромашка»» не находится.
     seg = TextSegment(id="s", text=text, source_type="txt_line", metadata={})
     doc = SourceDocument(segments=[seg], source_format="txt", source_path="<t>")
     rx = detect_regex(doc, _CONFIG)
-    ner = detect_ner(doc, _CONFIG, regex_entities=rx)
     org = detect_org(doc, regex_entities=rx)
+    ner = detect_ner(doc, _CONFIG, regex_entities=rx, org_entities=org)
     ner = suppress_conflicts(org, ner)
     return doc, merge_compound_entities(doc, rx + ner + org)
 

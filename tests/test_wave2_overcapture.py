@@ -36,14 +36,15 @@ _CFG = os.path.join(os.path.dirname(__file__), "..", "entity_types.yaml")
 
 
 def _anonymize(text: str):
-    # Этап A: ПОЛНЫЙ конвейер, включая структурный ORG-движок (detect_org) и арбитраж
-    # типов — как cmd_encrypt. Без detect_org «ООО «Ромашка»» не находится (Natasha-ORG
-    # выключена), и адрес over-capture'ил бы её.
+    # Этап A': ПОЛНЫЙ конвейер, включая структурный ORG-движок (detect_org) и арбитраж
+    # типов — как cmd_encrypt. detect_org считается ДО detect_ner и передаётся туда
+    # барьером расширения адреса (A-4) — иначе «ООО «Ромашка»» (Natasha-ORG выключена)
+    # не виден адресному расширению и over-capture'ится.
     seg = TextSegment(id="s0", text=text, source_type="txt_line", metadata={})
     doc = SourceDocument(segments=[seg], source_format="txt", source_path="<oc>")
     rx = detect_regex(doc, _CFG)
-    ner = detect_ner(doc, _CFG, regex_entities=rx)
     org = detect_org(doc, regex_entities=rx)
+    ner = detect_ner(doc, _CFG, regex_entities=rx, org_entities=org)
     ner = suppress_conflicts(org, ner)
     ents = merge_compound_entities(doc, rx + ner + org)
     anon, final = tokenize(doc, ents, _CFG)
@@ -90,13 +91,6 @@ def test_following_person_keeps_its_own_token():
     )
 
 
-@pytest.mark.xfail(strict=True, reason=(
-    "Этап A: структурный ORG-движок (detect_org) считается ПОСЛЕ NER-адреса, поэтому "
-    "расширение ADDRESS больше не видит ORG как барьер и может поглотить соседнюю "
-    "«ООО «Ромашка»» в ADDRESS-спан. УТЕЧКИ НЕТ — область замаскирована (как ADDRESS), "
-    "но тип/границы хуже. Возврат ORG-барьера в расширение адреса — задача пайплайн-"
-    "порядка (detect_org до detect_ner), вне прототипа ORG. Находка этапа A.")
-)
 def test_following_org_keeps_its_own_token():
     """ORG после адреса не должна всасываться в ADDRESS-токен.
 

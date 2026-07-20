@@ -36,10 +36,11 @@ from tokenizer import tokenize
 
 
 def _full_pipeline(doc, config_path):
-    # Этап A: ПОЛНЫЙ конвейер, включая структурный ORG-движок и арбитраж типов.
+    # Этап A': ПОЛНЫЙ конвейер, включая структурный ORG-движок и арбитраж типов.
+    # detect_org считается ДО detect_ner и передаётся туда барьером адреса (A-4).
     rx = detect_regex(doc, config_path)
-    ner = detect_ner(doc, config_path, regex_entities=rx)
     org = detect_org(doc, regex_entities=rx)
+    ner = detect_ner(doc, config_path, regex_entities=rx, org_entities=org)
     ner = suppress_conflicts(org, ner)
     return rx + ner + org
 

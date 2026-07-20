@@ -37,7 +37,7 @@ import uuid
 from dataclasses import dataclass, field
 
 from models import Entity, SourceDocument
-from normalizer import detection_view, norm_to_src, src_to_norm
+from normalizer import norm_to_src, normalize_for_detection, src_to_norm
 
 # pymorphy-анализатор берём тот же, что уже загружен под Natasha (см. ТЗ: «pymorphy
 # уже есть под Наташей»). Это НЕ обращение к NER Natasha — только морфология лемм.
@@ -45,11 +45,78 @@ from ner_detector import _morph_vocab as _MORPH
 
 
 # --------------------------------------------------------------------------- #
+#         Поисковое представление ЯКОРЯ (этап A′-1, ЛОКАЛЬНО в детекторе)     #
+# --------------------------------------------------------------------------- #
+# Мутации-«разрывы» (перенос строки внутри слова, невидимые/NBSP-разделители,
+# внедрённые ВНУТРЬ «ПАО»/«ООО»/имени в кавычках) рвут регэкспы якоря на уровне
+# ТОКЕНА: \W-граница \n обрывает _WORD_RE точно так же, как настоящий пробел, а
+# NBSP/NNBSP к моменту стандартного detection_view (Stage 2, normalizer.py) уже
+# необратимо стали ОБЫЧНЫМ пробелом — отличить «пробел, который на самом деле
+# NBSP внутри слова» от настоящего пробела на этом этапе уже нельзя. Поэтому для
+# ПОИСКА якоря строим СВОЙ (независимый от Stage 2) вид: сперва вырезаем разрывающие
+# символы из detection_text/segment.text НАПРОЧЬ (до того, как Stage 2 успеет
+# превратить NBSP в пробел), потом прогоняем через тот же normalize_for_detection
+# (омоглифы/регистр — как обычно). Итоговая карта индексов ведёт СРАЗУ в
+# segment.text, минуя Stage-2 norm — но семантика та же: только ПОИСК меняется,
+# спан для маски/восстановления идёт через эту же карту в исходные координаты
+# (norm_to_src ниже), поэтому в маску попадает ИСХОДНЫЙ байтовый диапазон целиком,
+# включая все вырезанные при поиске символы.
+_BREAKING_CHARS = frozenset(
+    "\n\r"       # перенос строки/CR — рвёт слово при переносе-мутации
+    "\xad"       # SOFT HYPHEN
+    "\u200b"     # ZERO WIDTH SPACE
+    "\u2060"     # WORD JOINER
+    "\u200c"     # ZERO WIDTH NON-JOINER
+    "\u200d"     # ZERO WIDTH JOINER
+    "\u202f"     # NARROW NO-BREAK SPACE
+    "\xa0"       # NO-BREAK SPACE
+)
+
+
+def _strip_breaking(text: str) -> tuple[str, list[int]]:
+    """Убирает _BREAKING_CHARS из text (только вырезание, без замены пробелом —
+    иначе «ПА\\nО» не схлопнется обратно в «ПАО»). Возвращает (out, idx), idx[k] —
+    позиция out[k] в text (строго возрастающая, как offset_map по всему пайплайну)."""
+    out: list[str] = []
+    idx: list[int] = []
+    for i, ch in enumerate(text):
+        if ch in _BREAKING_CHARS:
+            continue
+        out.append(ch)
+        idx.append(i)
+    return "".join(out), idx
+
+
+def _compose(outer_to_mid: list[int], mid_to_inner: list[int]) -> list[int]:
+    """Композиция двух карт индексов: outer_idx -> inner_idx."""
+    return [mid_to_inner[i] for i in outer_to_mid]
+
+
+def anchor_search_view(segment) -> tuple[str, list[int]]:
+    """(search_text, offset_map) для ПОИСКА ЯКОРЯ. offset_map индексирует
+    segment.text напрямую (как и все карты пайплайна) — композиция «вырезать
+    разрывающие» + «normalize_for_detection» на очищенном тексте. Кэшируется в
+    segment.metadata под отдельным ключом (НЕ пересекается с _norm_cache
+    detection_view — это независимый вид, не общий пайплайн Stage 2)."""
+    md = segment.metadata
+    cached = md.get("_anchor_search_cache")
+    if cached is not None:
+        return cached
+    base = md.get("detection_text", segment.text)
+    stripped, stripped_to_base = _strip_breaking(base)
+    search, search_to_stripped = normalize_for_detection(stripped)
+    search_to_base = _compose(search_to_stripped, stripped_to_base)
+    result = (search, search_to_base)
+    md["_anchor_search_cache"] = result
+    return result
+
+
+# --------------------------------------------------------------------------- #
 #                     Нормализация кавычек (ЛОКАЛЬНО в детекторе)              #
 # --------------------------------------------------------------------------- #
 # В общий пайплайн нормализация кавычек не входит, поэтому она ЗДЕСЬ (требование
 # ТЗ). Замена строго 1:1 по символам (длина сохраняется) — поэтому спаны,
-# найденные в норм-тексте, остаются валидными координатами detection_view.
+# найденные в норм-тексте, остаются валидными координатами anchor_search_view.
 _OPEN_QUOTES = "«“„‹"
 _CLOSE_QUOTES = "»”›"
 _ASCII_QUOTE = '"'          # ASCII-кавычка неоднозначна (и откр., и закр.)
@@ -78,8 +145,8 @@ def _find_quoted(norm: str):
 #         Закрытый ЮРИДИЧЕСКИЙ класс организационно-правовых форм              #
 # --------------------------------------------------------------------------- #
 # Это ГРАММАТИКА ЖАНРА, а не стоп-словарь названий: перечень org-ПРАВОВЫХ форм
-# конечен и закрыт. Работает по НОРМАЛИЗОВАННОМУ тексту (омоглифы/невидимые сведены
-# в detection_view ДО детектора), включая искажения в самих формах.
+# конечен и закрыт. Работает по НОРМАЛИЗОВАННОМУ тексту (омоглифы/невидимые/разрывы
+# сведены в anchor_search_view ДО детектора), включая искажения в самих формах.
 #
 # ИП НАМЕРЕННО ИСКЛЮЧЁН из org-форм. В корпусе «ИП + ФИО» размечен как PER (нота
 # gold «составная форма: ИП+ФИО»), а не ORG: индивидуальный предприниматель — это
@@ -501,8 +568,9 @@ def _digit_count(text: str) -> int:
 
 def _inn_ogrn_norm_by_seg(regex_entities, doc):
     """Для каждого сегмента — позиции НАЧАЛА валидированных реквизитов ЮРЛИЦА в
-    НОРМ-координатах: ИНН из 10 цифр и ОГРН из 13 цифр. 12-значный ИНН и
-    15-значный ОГРНИП (физлицо/ИП) исключены."""
+    координатах ПОИСКОВОГО ПРЕДСТАВЛЕНИЯ ЯКОРЯ (anchor_search_view — та же система
+    координат, в которой движок ищет name-run слева от реквизита): ИНН из 10 цифр
+    и ОГРН из 13 цифр. 12-значный ИНН и 15-значный ОГРНИП (физлицо/ИП) исключены."""
     out: dict[str, list] = {}
     seg_by_id = {s.id: s for s in doc.segments}
     for e in regex_entities or []:
@@ -516,7 +584,7 @@ def _inn_ogrn_norm_by_seg(regex_entities, doc):
         seg = seg_by_id.get(e.segment_id)
         if seg is None:
             continue
-        _norm, omap = detection_view(seg)
+        _search, omap = anchor_search_view(seg)
         ns, _ne = src_to_norm(omap, e.start, e.end)
         out.setdefault(e.segment_id, []).append((ns, e.entity_type))
     return out
@@ -533,12 +601,12 @@ class AnchorEngine:
         inn_by_seg = _inn_ogrn_norm_by_seg(regex_entities, doc)
         registry = Registry()
 
-        # общий кеш норм-вью на сегмент
+        # общий кеш поискового вида (anchor_search_view, этап A'-1) на сегмент
         views = {}
         for seg in doc.segments:
             if not seg.text:
                 continue
-            norm, omap = detection_view(seg)
+            norm, omap = anchor_search_view(seg)
             views[seg.id] = (norm, norm.lower(), omap)
 
         entities: list[Entity] = []

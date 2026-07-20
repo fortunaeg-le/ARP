@@ -168,10 +168,13 @@ def run_encrypt(path: str, allow_lossy: bool = False, config_path: str = DEFAULT
 
     # --- Реальная детекция и маскировка (никакой своей логики) ---
     regex_entities = detect_regex(doc, config_path)
-    ner_entities = detect_ner(doc, config_path, regex_entities=regex_entities)
-    # Этап A: тот же порядок, что shifrator.py::cmd_encrypt — структурный ORG-движок
-    # + арбитраж конфликтов с Natasha PER/ADDRESS.
+    # Этап A': тот же порядок, что shifrator.py::cmd_encrypt — ORG считается ДО
+    # detect_ner и передаётся туда барьером расширения адреса (A-4), затем арбитраж
+    # конфликтов с Natasha PER/ADDRESS.
     org_entities = detect_org(doc, regex_entities=regex_entities)
+    ner_entities = detect_ner(
+        doc, config_path, regex_entities=regex_entities, org_entities=org_entities,
+    )
     ner_entities = suppress_conflicts(org_entities, ner_entities)
     entities = regex_entities + ner_entities + org_entities
     entities = merge_compound_entities(doc, entities)
