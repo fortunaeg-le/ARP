@@ -134,6 +134,14 @@ def test_fast_set_encrypt_never_crashes(tmp_path):
 @pytest.mark.slow
 def test_full_corpus_encrypt_never_crashes(tmp_path):
     """Полный корпус — все 324 документа. Контракт: ни один не бросает
-    необработанное TypeError/AttributeError/IndexError."""
+    необработанное TypeError/AttributeError/IndexError.
+
+    Если в этой сессии всё равно будет запущен tests/corpus/gate.py —
+    отдельный `pytest -m slow` (этот тест) НЕ нужен: условие 1 гейта — та же
+    проверка «0 крешей» на том же корпусе, строгое надмножество (плюс leak_v2/
+    FP/masking_correctness). Гонять оба — два полных прогона Natasha ради
+    одной и той же креш-проверки, см. docs/archive/reports/EFFICIENCY_AUDIT.md
+    §2.1. Этот тест остаётся для контекстов, где gate.py в сессии не
+    запускается (например голый `pytest -m slow` в CI без гейта)."""
     doc_ids, formats = _all_doc_ids()
     _assert_no_unhandled_crash(doc_ids, formats, tmp_path)

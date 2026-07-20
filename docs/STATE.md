@@ -18,12 +18,25 @@
 ```
 venv/Scripts/python.exe -m pytest -q
 ```
-Эталон: **843 passed, 1 deselected, 9 xfailed** (~370 c). Другой интерпретатор
+Эталон: **845 passed, 1 deselected, 9 xfailed** (~370 c; +2 к прежним 843 —
+`tests/corpus/test_gate_regression_detection.py`, 2026-07-20). Другой интерпретатор
 (`natasha` не установлена) — ошибки сбора; рабочий только `venv/Scripts/python.exe`.
 
 9 `xfailed` — намеренно отложенные дефекты/дыры покрытия, помечены `@xfail(strict=True)`:
 если станут проходить незамеченно — тест «покраснеет» (XPASS→FAIL), это сигнал снять метку.
 Крупнейшая группа — `tests/test_future_contracts.py` (карта «дыра → этап», см. §4).
+
+Если в сессии всё равно будет запущен `tests/corpus/gate.py` (полный корпус,
+условие 1 = креши + leak_v2/FP/masking) — отдельный `pytest -m slow`
+(`test_full_corpus_encrypt_never_crashes`, тоже полный корпус, только креши)
+не нужен: гейт строго надмножество, гонять оба — два прогона Natasha ради
+одной проверки (docs/archive/reports/EFFICIENCY_AUDIT.md §2.1). Между
+правками внутри сессии — `tests/corpus/subsample.py` (без `--флаги` или с
+`--trick`/`--type`/`--feature`), быстрая ОТЛАДОЧНАЯ подвыборка 20-50
+документов; НЕ замена `gate.py` перед коммитом. Ложный таймаут
+`test_g_regression` = конкуренция за CPU с параллельным полным прогоном
+(`gate.py`/`pytest -m slow` в другом терминале той же сессии), НЕ дефект —
+при таймауте сначала проверь нагрузку, не диф.
 
 ## 1. Статус релиза
 
@@ -220,3 +233,4 @@ PASSPORT под якорем «код подразделения». Все 13 т
 - Летопись этапов (baseline, замеры, хендоффы, находки — цифры и репро, могут врать
   относительно текущего кода) — [`archive/INDEX.md`](archive/INDEX.md).
 - Замерный харнесс — `bench/` (`bench/README.md`).
+- Отладочная подвыборка корпуса (не для baseline/коммита) — `tests/corpus/subsample.py`.

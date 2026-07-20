@@ -34,6 +34,21 @@ gate.py — регресс-гейт этапа 0d.
 Запуск (минуты, полный корпус encrypt+decrypt по 324 документам — НЕ вешать
 на pre-commit, место этого гейта — CI на PR, трогающем src/):
     venv/Scripts/python.exe tests/corpus/gate.py
+
+Условие 1 (креши) — строгое НАДМНОЖЕСТВО того, что проверяет
+`pytest -m slow` (tests/test_corpus_no_crash.py::test_full_corpus_encrypt_
+never_crashes: тот же полный корпус, та же проверка «0 крешей», без
+leak_v2/FP/masking). Если gate.py уже будет запущен в этой сессии —
+отдельный `pytest -m slow` НЕ нужен, это второй полный прогон Natasha ради
+уже покрытой проверки (docs/archive/reports/EFFICIENCY_AUDIT.md §2.1). Оба
+пути к крешу существуют для разных контекстов: gate.py — full-signature
+проверка перед коммитом, `pytest -m slow` — если по какой-то причине
+запускается ТОЛЬКО pytest-набор без gate.py. Гонять оба в одной сессии
+избыточно, не исключайте ни один из них по отдельности.
+
+Логика условия 1 (сравнение множеств crashed до/после) не покрыта прогоном
+корпуса — только собственным юнит-тестом, см.
+tests/corpus/test_gate_regression_detection.py (быстрый, без Natasha).
 """
 import hashlib
 import json
