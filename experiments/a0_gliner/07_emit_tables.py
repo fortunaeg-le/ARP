@@ -60,5 +60,46 @@ for model, mr in RS["models"].items():
           f"{g['covered_same_type']}/{n} ({same_pct:.0f}%) | {100-same_pct:.0f}% |")
     w("")
 
+# --- (c) role-word over-masking по сетке (dogovor) ---
+import re
+ROLE = re.compile(
+    r"^(участник\w*|обществ\w*|большинств\w*|дол(я|ю|и|е|ей|ям|ями|ях)|устав\w*"
+    r"|прибыл\w*|сторон\w*|собрани\w*|решени\w*|договор\w*|бюджет\w*|совет\w*|прав\w*)$",
+    re.I)
+
+
+def _rolecount(spans):
+    c = 0
+    for sp in spans:
+        t = " ".join(sp["text"].lower().split()).strip(" .,«»\"()")
+        toks = t.split()
+        if ROLE.match(t) or (len(toks) <= 3 and any(ROLE.match(w) for w in toks)):
+            c += 1
+    return c
+
+
+nat_rc = _rolecount([{"text": e["text"]} for e in
+                     json.load(open(os.path.join(HERE, "dumps", "natasha_dogovor.json"),
+                                    encoding="utf-8"))["entities"]])
+w("## (c) Новый мусор — over-masking родовых слов, по сетке (dogovor)\n")
+w("Спаны, где значение — родовое юр-слово (участник/общество/большинство/доля/устав/"
+  "…), НЕ ПДн. Natasha порога не имеет (плоско). Критерий «не хуже старого»: GLiNER "
+  "должен быть ≤ Natasha.\n")
+w("| порог | Natasha | multi-v2.1 ru | pii-v1 ru |")
+w("|---|---:|---:|---:|")
+for th in GRID:
+    thf = float(th)
+    cells = []
+    for f in ("raw_gliner_multi-v2_1_ru.json", "raw_gliner_multi_pii-v1_ru.json"):
+        raw = json.load(open(os.path.join(HERE, "dumps", f), encoding="utf-8"))
+        cells.append(_rolecount([p for p in raw["predictions"] if p["score"] >= thf]))
+    mark = lambda v: f"**{v}**" if v <= nat_rc else str(v)  # noqa: E731
+    w(f"| {th} | {nat_rc} | {mark(cells[0])} | {mark(cells[1])} |")
+w("\nЖирным — точки, где GLiNER-мусор ≤ Natasha (150): только th≥0.7 у multi-v2.1 "
+  "(0.7→134, 0.9→36) — но там Восход recall падает до 41–30 % и адреса теряются. "
+  "Т.е. (c) проходит лишь там, где проваливаются (b)/адреса; при рабочих th=0.1–0.5 "
+  "мусор ×1.6–2.4. Единственный критерий, красный на ВСЕХ порогах, — синтетика "
+  "(пропуск ≥19 %), на нём и держится «НЕТ».\n")
+
 open(os.path.join(HERE, "tables", "summary.md"), "w", encoding="utf-8").write("\n".join(out))
 print("tables/summary.md написан,", len(out), "строк")
