@@ -1,0 +1,802 @@
+{
+  "_comment": "РЕЕСТР известного непокрытого долга ADDRESS для гейта этапа D. НЕ стоп-словарь, НЕ читается детектором — только гейт вычитает эти известные адверсариальные утечки при оценке регресса. Каждая закроется штатно на Entity.spans (мульти-спановые сущности). Сформирован из дампов sub_head vs sub_stagecfix (этап C + фикс сеяния agency_0009). agency_0009 «Москва Ленина 47/3 кв 67» ЗДЕСЬ ОТСУТСТВУЕТ — он покрыт фиксом, больше не долг.",
+  "stage": "C",
+  "type": "ADDRESS",
+  "criterion": "found on HEAD (greedy over-capture) AND missed on stage-C-fix AND leak_v2 != none",
+  "count": 61,
+  "leaks": [
+    {
+      "doc_id": "agency_0005__m2718_linebreak",
+      "entity_type": "ADDRESS",
+      "span": {
+        "start": 3276,
+        "end": 3348
+      },
+      "value": "Новосибирская обл., Дмитровский р-н, 29 км автод\nороги М-8 «Дон», стр. 3",
+      "trick": "mut:linebreak",
+      "category": "adversarial",
+      "reason": "adversarial-mutation: yargy-unassembled (рваный/склеенный спан под мутацией)",
+      "closes_on": "entity-spans"
+    },
+    {
+      "doc_id": "agency_0006__m1337_combo",
+      "entity_type": "ADDRESS",
+      "span": {
+        "start": 5190,
+        "end": 5227
+      },
+      "value": "a/я​ 44, Г. нИжНиЙ­ hОв гOрОд, Б03000",
+      "trick": "mut:combo",
+      "category": "adversarial",
+      "reason": "adversarial-mutation: yargy-unassembled (рваный/склеенный спан под мутацией)",
+      "closes_on": "entity-spans"
+    },
+    {
+      "doc_id": "agency_0010__m1337_case",
+      "entity_type": "ADDRESS",
+      "span": {
+        "start": 3150,
+        "end": 3173
+      },
+      "value": "ХИМКИ, ЛЕНИНГРАДСКАЯ 36",
+      "trick": "mut:case",
+      "category": "adversarial",
+      "reason": "adversarial-mutation: yargy-unassembled (рваный/склеенный спан под мутацией)",
+      "closes_on": "entity-spans"
+    },
+    {
+      "doc_id": "agency_0010__m2718_linebreak",
+      "entity_type": "ADDRESS",
+      "span": {
+        "start": 3189,
+        "end": 3213
+      },
+      "value": "Химки, Ленинградск\nая 36",
+      "trick": "mut:linebreak",
+      "category": "adversarial",
+      "reason": "adversarial-mutation: yargy-unassembled (рваный/склеенный спан под мутацией)",
+      "closes_on": "entity-spans"
+    },
+    {
+      "doc_id": "cession_0001__m1337_digit_spaces",
+      "entity_type": "ADDRESS",
+      "span": {
+        "start": 1495,
+        "end": 1521
+      },
+      "value": "а/я 54, г. Казань, 420 111",
+      "trick": "mut:digit_spaces",
+      "category": "adversarial",
+      "reason": "adversarial-mutation: yargy-unassembled (рваный/склеенный спан под мутацией)",
+      "closes_on": "entity-spans"
+    },
+    {
+      "doc_id": "cession_0001__m2718_linebreak",
+      "entity_type": "ADDRESS",
+      "span": {
+        "start": 2782,
+        "end": 2817
+      },
+      "value": "а/я 10, г. Нижний Новгор\nод, 603000",
+      "trick": "mut:linebreak",
+      "category": "adversarial",
+      "reason": "adversarial-mutation: yargy-unassembled (рваный/склеенный спан под мутацией)",
+      "closes_on": "entity-spans"
+    },
+    {
+      "doc_id": "cession_0008__m1337_digit_spaces",
+      "entity_type": "ADDRESS",
+      "span": {
+        "start": 1525,
+        "end": 1560
+      },
+      "value": "а/я 75, г. Нижний Новгород, 603 000",
+      "trick": "mut:digit_spaces",
+      "category": "adversarial",
+      "reason": "adversarial-mutation: yargy-unassembled (рваный/склеенный спан под мутацией)",
+      "closes_on": "entity-spans"
+    },
+    {
+      "doc_id": "cession_0008__m1337_digit_spaces",
+      "entity_type": "ADDRESS",
+      "span": {
+        "start": 2678,
+        "end": 2709
+      },
+      "value": "а/я 29, г. Новосибирск, 6300 99",
+      "trick": "mut:digit_spaces",
+      "category": "adversarial",
+      "reason": "adversarial-mutation: yargy-unassembled (рваный/склеенный спан под мутацией)",
+      "closes_on": "entity-spans"
+    },
+    {
+      "doc_id": "cession_0008__m1337_digit_spaces",
+      "entity_type": "ADDRESS",
+      "span": {
+        "start": 3357,
+        "end": 3383
+      },
+      "value": "а/я 12, г. Химки, 141 4 00",
+      "trick": "mut:digit_spaces",
+      "category": "adversarial",
+      "reason": "adversarial-mutation: yargy-unassembled (рваный/склеенный спан под мутацией)",
+      "closes_on": "entity-spans"
+    },
+    {
+      "doc_id": "cession_0008__m2718_combo",
+      "entity_type": "ADDRESS",
+      "span": {
+        "start": 1558,
+        "end": 1595
+      },
+      "value": "a/я ​75​, г. НиЖнИй нОвГoРо д, 6оЗ000",
+      "trick": "mut:combo",
+      "category": "adversarial",
+      "reason": "adversarial-mutation: yargy-unassembled (рваный/склеенный спан под мутацией)",
+      "closes_on": "entity-spans"
+    },
+    {
+      "doc_id": "cession_0008__m2718_combo",
+      "entity_type": "ADDRESS",
+      "span": {
+        "start": 2738,
+        "end": 2771
+      },
+      "value": "А/Я 29‍,⁠ Г. НОВOС ИБИРCK, 63О099",
+      "trick": "mut:combo",
+      "category": "adversarial",
+      "reason": "adversarial-mutation: yargy-unassembled (рваный/склеенный спан под мутацией)",
+      "closes_on": "entity-spans"
+    },
+    {
+      "doc_id": "cession_0008__m2718_combo",
+      "entity_type": "ADDRESS",
+      "span": {
+        "start": 3107,
+        "end": 3135
+      },
+      "value": "А/ Я Ч5, Г. С АM​АPA, 443010",
+      "trick": "mut:combo",
+      "category": "adversarial",
+      "reason": "adversarial-mutation: yargy-unassembled (рваный/склеенный спан под мутацией)",
+      "closes_on": "entity-spans"
+    },
+    {
+      "doc_id": "cession_0008__m2718_combo",
+      "entity_type": "ADDRESS",
+      "span": {
+        "start": 3447,
+        "end": 3474
+      },
+      "value": "а/я  1‍2​, Г. xИмKи, 14І4О0",
+      "trick": "mut:combo",
+      "category": "adversarial",
+      "reason": "adversarial-mutation: yargy-unassembled (рваный/склеенный спан под мутацией)",
+      "closes_on": "entity-spans"
+    },
+    {
+      "doc_id": "labor_0003__m1337_invisible",
+      "entity_type": "ADDRESS",
+      "span": {
+        "start": 1636,
+        "end": 1672
+      },
+      "value": "а/я 44, г. Р‍ост‍ов-на-Д ону, 344002",
+      "trick": "mut:invisible",
+      "category": "adversarial",
+      "reason": "adversarial-mutation: yargy-unassembled (рваный/склеенный спан под мутацией)",
+      "closes_on": "entity-spans"
+    },
+    {
+      "doc_id": "labor_0003__m2718_case",
+      "entity_type": "ADDRESS",
+      "span": {
+        "start": 1592,
+        "end": 1625
+      },
+      "value": "А/Я 44, Г. РОСТОВ-НА-ДОНУ, 344002",
+      "trick": "mut:case",
+      "category": "adversarial",
+      "reason": "adversarial-mutation: yargy-unassembled (рваный/склеенный спан под мутацией)",
+      "closes_on": "entity-spans"
+    },
+    {
+      "doc_id": "labor_0003__m2718_case",
+      "entity_type": "ADDRESS",
+      "span": {
+        "start": 4487,
+        "end": 4512
+      },
+      "value": "А/Я 86, Г. МОСКВА, 101000",
+      "trick": "mut:case",
+      "category": "adversarial",
+      "reason": "adversarial-mutation: yargy-unassembled (рваный/склеенный спан под мутацией)",
+      "closes_on": "entity-spans"
+    },
+    {
+      "doc_id": "labor_0003__m2718_case",
+      "entity_type": "ADDRESS",
+      "span": {
+        "start": 4816,
+        "end": 4848
+      },
+      "value": "А/Я 93, Г. СЕРГИЕВ ПОСАД, 141300",
+      "trick": "mut:case",
+      "category": "adversarial",
+      "reason": "adversarial-mutation: yargy-unassembled (рваный/склеенный спан под мутацией)",
+      "closes_on": "entity-spans"
+    },
+    {
+      "doc_id": "labor_0006__m1337_case",
+      "entity_type": "ADDRESS",
+      "span": {
+        "start": 3085,
+        "end": 3110
+      },
+      "value": "ростов-на-дону, лесная 53",
+      "trick": "mut:case",
+      "category": "adversarial",
+      "reason": "adversarial-mutation: yargy-unassembled (рваный/склеенный спан под мутацией)",
+      "closes_on": "entity-spans"
+    },
+    {
+      "doc_id": "labor_0006__m2718_linebreak",
+      "entity_type": "ADDRESS",
+      "span": {
+        "start": 1648,
+        "end": 1666
+      },
+      "value": "Тверь, Полев\nая 21",
+      "trick": "mut:linebreak",
+      "category": "adversarial",
+      "reason": "adversarial-mutation: yargy-unassembled (рваный/склеенный спан под мутацией)",
+      "closes_on": "entity-spans"
+    },
+    {
+      "doc_id": "labor_0006__m2718_linebreak",
+      "entity_type": "ADDRESS",
+      "span": {
+        "start": 2775,
+        "end": 2797
+      },
+      "value": "Пермь, \nПрофсоюзная 24",
+      "trick": "mut:linebreak",
+      "category": "adversarial",
+      "reason": "adversarial-mutation: yargy-unassembled (рваный/склеенный спан под мутацией)",
+      "closes_on": "entity-spans"
+    },
+    {
+      "doc_id": "labor_0008__m1337_linebreak",
+      "entity_type": "ADDRESS",
+      "span": {
+        "start": 1570,
+        "end": 1629
+      },
+      "value": "просп. Космонавтов, д.\n 29, рп. Обухово, Ленинградская обл.",
+      "trick": "mut:linebreak",
+      "category": "adversarial",
+      "reason": "adversarial-mutation: yargy-unassembled (рваный/склеенный спан под мутацией)",
+      "closes_on": "entity-spans"
+    },
+    {
+      "doc_id": "labor_0010__m2718_invisible",
+      "entity_type": "ADDRESS",
+      "span": {
+        "start": 1672,
+        "end": 1705
+      },
+      "value": "а/я‍ 13, г. Красногорск, 1 43­400",
+      "trick": "mut:invisible",
+      "category": "adversarial",
+      "reason": "adversarial-mutation: yargy-unassembled (рваный/склеенный спан под мутацией)",
+      "closes_on": "entity-spans"
+    },
+    {
+      "doc_id": "labor_0010__m2718_invisible",
+      "entity_type": "ADDRESS",
+      "span": {
+        "start": 4957,
+        "end": 4990
+      },
+      "value": "а/я 83, г. Новосибирск⁠,  6300 99",
+      "trick": "mut:invisible",
+      "category": "adversarial",
+      "reason": "adversarial-mutation: yargy-unassembled (рваный/склеенный спан под мутацией)",
+      "closes_on": "entity-spans"
+    },
+    {
+      "doc_id": "labor_0010__m2718_invisible",
+      "entity_type": "ADDRESS",
+      "span": {
+        "start": 5663,
+        "end": 5691
+      },
+      "value": "а/я 68, г. М‍осква, ⁠1 01000",
+      "trick": "mut:invisible",
+      "category": "adversarial",
+      "reason": "adversarial-mutation: yargy-unassembled (рваный/склеенный спан под мутацией)",
+      "closes_on": "entity-spans"
+    },
+    {
+      "doc_id": "lease_0002__m1337_digit_spaces",
+      "entity_type": "ADDRESS",
+      "span": {
+        "start": 2474,
+        "end": 2500
+      },
+      "value": "а/я 18, г. Казань, 420 111",
+      "trick": "mut:digit_spaces",
+      "category": "adversarial",
+      "reason": "adversarial-mutation: yargy-unassembled (рваный/склеенный спан под мутацией)",
+      "closes_on": "entity-spans"
+    },
+    {
+      "doc_id": "lease_0002__m1337_digit_spaces",
+      "entity_type": "ADDRESS",
+      "span": {
+        "start": 2892,
+        "end": 2919
+      },
+      "value": "а/я 51, г. Воронеж, 3940 00",
+      "trick": "mut:digit_spaces",
+      "category": "adversarial",
+      "reason": "adversarial-mutation: yargy-unassembled (рваный/склеенный спан под мутацией)",
+      "closes_on": "entity-spans"
+    },
+    {
+      "doc_id": "lease_0002__m1337_digit_spaces",
+      "entity_type": "ADDRESS",
+      "span": {
+        "start": 3226,
+        "end": 3252
+      },
+      "value": "а/я 50, г. Тверь, 170 1 00",
+      "trick": "mut:digit_spaces",
+      "category": "adversarial",
+      "reason": "adversarial-mutation: yargy-unassembled (рваный/склеенный спан под мутацией)",
+      "closes_on": "entity-spans"
+    },
+    {
+      "doc_id": "lease_0002__m2718_combo",
+      "entity_type": "ADDRESS",
+      "span": {
+        "start": 1502,
+        "end": 1539
+      },
+      "value": "a/­я 72, г.​ сaнкт-пeтeрбург, 190 000",
+      "trick": "mut:combo",
+      "category": "adversarial",
+      "reason": "adversarial-mutation: yargy-unassembled (рваный/склеенный спан под мутацией)",
+      "closes_on": "entity-spans"
+    },
+    {
+      "doc_id": "lease_0002__m2718_combo",
+      "entity_type": "ADDRESS",
+      "span": {
+        "start": 2505,
+        "end": 2533
+      },
+      "value": "A‍/Я 18, Г.‍ КA‍ЗАНЬ, 42011І",
+      "trick": "mut:combo",
+      "category": "adversarial",
+      "reason": "adversarial-mutation: yargy-unassembled (рваный/склеенный спан под мутацией)",
+      "closes_on": "entity-spans"
+    },
+    {
+      "doc_id": "lease_0002__m2718_combo",
+      "entity_type": "ADDRESS",
+      "span": {
+        "start": 3267,
+        "end": 3294
+      },
+      "value": "A/Я 50, Г­. ⁠TВEРЬ, І7010‍0",
+      "trick": "mut:combo",
+      "category": "adversarial",
+      "reason": "adversarial-mutation: yargy-unassembled (рваный/склеенный спан под мутацией)",
+      "closes_on": "entity-spans"
+    },
+    {
+      "doc_id": "lease_0004__m1337_combo",
+      "entity_type": "ADDRESS",
+      "span": {
+        "start": 1602,
+        "end": 1621
+      },
+      "value": "KAЗ­АНЬ, КИ­РОВА 74",
+      "trick": "mut:combo",
+      "category": "adversarial",
+      "reason": "adversarial-mutation: yargy-unassembled (рваный/склеенный спан под мутацией)",
+      "closes_on": "entity-spans"
+    },
+    {
+      "doc_id": "lease_0006__m2718_case",
+      "entity_type": "ADDRESS",
+      "span": {
+        "start": 4956,
+        "end": 4974
+      },
+      "value": "хИмКи, ТвЕрСкАя 33",
+      "trick": "mut:case",
+      "category": "adversarial",
+      "reason": "adversarial-mutation: yargy-unassembled (рваный/склеенный спан под мутацией)",
+      "closes_on": "entity-spans"
+    },
+    {
+      "doc_id": "lease_0008__m1337_case",
+      "entity_type": "ADDRESS",
+      "span": {
+        "start": 2547,
+        "end": 2573
+      },
+      "value": "А/Я 68, Г. ВОРОНЕЖ, 394000",
+      "trick": "mut:case",
+      "category": "adversarial",
+      "reason": "adversarial-mutation: yargy-unassembled (рваный/склеенный спан под мутацией)",
+      "closes_on": "entity-spans"
+    },
+    {
+      "doc_id": "lease_0008__m2718_linebreak",
+      "entity_type": "ADDRESS",
+      "span": {
+        "start": 2935,
+        "end": 2960
+      },
+      "value": "а/я 36, г. Химки, 141\n400",
+      "trick": "mut:linebreak",
+      "category": "adversarial",
+      "reason": "adversarial-mutation: yargy-unassembled (рваный/склеенный спан под мутацией)",
+      "closes_on": "entity-spans"
+    },
+    {
+      "doc_id": "lease_0011__m2718_linebreak",
+      "entity_type": "ADDRESS",
+      "span": {
+        "start": 1541,
+        "end": 1571
+      },
+      "value": "Самара \nОктябрьская 20/4 кв 44",
+      "trick": "mut:linebreak",
+      "category": "adversarial",
+      "reason": "adversarial-mutation: yargy-unassembled (рваный/склеенный спан под мутацией)",
+      "closes_on": "entity-spans"
+    },
+    {
+      "doc_id": "lease_0011__m2718_linebreak",
+      "entity_type": "ADDRESS",
+      "span": {
+        "start": 2849,
+        "end": 2876
+      },
+      "value": "Самара Г\nагарина 30/3 кв 66",
+      "trick": "mut:linebreak",
+      "category": "adversarial",
+      "reason": "adversarial-mutation: yargy-unassembled (рваный/склеенный спан под мутацией)",
+      "closes_on": "entity-spans"
+    },
+    {
+      "doc_id": "loan_0004__m1337_digit_spaces",
+      "entity_type": "ADDRESS",
+      "span": {
+        "start": 1547,
+        "end": 1573
+      },
+      "value": "а/я 2, г. Воронеж, 394 000",
+      "trick": "mut:digit_spaces",
+      "category": "adversarial",
+      "reason": "adversarial-mutation: yargy-unassembled (рваный/склеенный спан под мутацией)",
+      "closes_on": "entity-spans"
+    },
+    {
+      "doc_id": "loan_0004__m1337_digit_spaces",
+      "entity_type": "ADDRESS",
+      "span": {
+        "start": 2863,
+        "end": 2890
+      },
+      "value": "а/я 19, г. Воронеж, 394 000",
+      "trick": "mut:digit_spaces",
+      "category": "adversarial",
+      "reason": "adversarial-mutation: yargy-unassembled (рваный/склеенный спан под мутацией)",
+      "closes_on": "entity-spans"
+    },
+    {
+      "doc_id": "loan_0004__m1337_digit_spaces",
+      "entity_type": "ADDRESS",
+      "span": {
+        "start": 3211,
+        "end": 3236
+      },
+      "value": "а/я 63, г. Химки, 141 400",
+      "trick": "mut:digit_spaces",
+      "category": "adversarial",
+      "reason": "adversarial-mutation: yargy-unassembled (рваный/склеенный спан под мутацией)",
+      "closes_on": "entity-spans"
+    },
+    {
+      "doc_id": "loan_0004__m2718_combo",
+      "entity_type": "ADDRESS",
+      "span": {
+        "start": 1565,
+        "end": 1593
+      },
+      "value": "А/Я 2, Г. ВOPO​НЕ​Ж,  39Ч000",
+      "trick": "mut:combo",
+      "category": "adversarial",
+      "reason": "adversarial-mutation: yargy-unassembled (рваный/склеенный спан под мутацией)",
+      "closes_on": "entity-spans"
+    },
+    {
+      "doc_id": "loan_0004__m2718_combo",
+      "entity_type": "ADDRESS",
+      "span": {
+        "start": 2913,
+        "end": 2942
+      },
+      "value": "А/Я І​9, Г. ВОРOНЕЖ,­ 3940О‍О",
+      "trick": "mut:combo",
+      "category": "adversarial",
+      "reason": "adversarial-mutation: yargy-unassembled (рваный/склеенный спан под мутацией)",
+      "closes_on": "entity-spans"
+    },
+    {
+      "doc_id": "loan_0004__m2718_combo",
+      "entity_type": "ADDRESS",
+      "span": {
+        "start": 3271,
+        "end": 3298
+      },
+      "value": "а/я 6з​, г. химkи , і‍41ч00",
+      "trick": "mut:combo",
+      "category": "adversarial",
+      "reason": "adversarial-mutation: yargy-unassembled (рваный/склеенный спан под мутацией)",
+      "closes_on": "entity-spans"
+    },
+    {
+      "doc_id": "loan_0010__m1337_case",
+      "entity_type": "ADDRESS",
+      "span": {
+        "start": 5188,
+        "end": 5205
+      },
+      "value": "ХИМКИ, БАУМАНА 33",
+      "trick": "mut:case",
+      "category": "adversarial",
+      "reason": "adversarial-mutation: yargy-unassembled (рваный/склеенный спан под мутацией)",
+      "closes_on": "entity-spans"
+    },
+    {
+      "doc_id": "sale_0004__m2718_invisible",
+      "entity_type": "ADDRESS",
+      "span": {
+        "start": 3129,
+        "end": 3162
+      },
+      "value": "а/я 24, г. ‍Новосиби рск,  630099",
+      "trick": "mut:invisible",
+      "category": "adversarial",
+      "reason": "adversarial-mutation: yargy-unassembled (рваный/склеенный спан под мутацией)",
+      "closes_on": "entity-spans"
+    },
+    {
+      "doc_id": "sale_0011__m1337_invisible",
+      "entity_type": "ADDRESS",
+      "span": {
+        "start": 3126,
+        "end": 3159
+      },
+      "value": "а/я 98 , г. Н овосибир⁠ск, 630099",
+      "trick": "mut:invisible",
+      "category": "adversarial",
+      "reason": "adversarial-mutation: yargy-unassembled (рваный/склеенный спан под мутацией)",
+      "closes_on": "entity-spans"
+    },
+    {
+      "doc_id": "sale_0011__m2718_case",
+      "entity_type": "ADDRESS",
+      "span": {
+        "start": 1475,
+        "end": 1507
+      },
+      "value": "а/я 79, г. сергиев посад, 141300",
+      "trick": "mut:case",
+      "category": "adversarial",
+      "reason": "adversarial-mutation: yargy-unassembled (рваный/склеенный спан под мутацией)",
+      "closes_on": "entity-spans"
+    },
+    {
+      "doc_id": "sale_0011__m2718_case",
+      "entity_type": "ADDRESS",
+      "span": {
+        "start": 2664,
+        "end": 2689
+      },
+      "value": "а/я 41, г. казань, 420111",
+      "trick": "mut:case",
+      "category": "adversarial",
+      "reason": "adversarial-mutation: yargy-unassembled (рваный/склеенный спан под мутацией)",
+      "closes_on": "entity-spans"
+    },
+    {
+      "doc_id": "sale_0014__m1337_case",
+      "entity_type": "ADDRESS",
+      "span": {
+        "start": 2946,
+        "end": 2963
+      },
+      "value": "химки, пушкина 71",
+      "trick": "mut:case",
+      "category": "adversarial",
+      "reason": "adversarial-mutation: yargy-unassembled (рваный/склеенный спан под мутацией)",
+      "closes_on": "entity-spans"
+    },
+    {
+      "doc_id": "sale_0014__m1337_case",
+      "entity_type": "ADDRESS",
+      "span": {
+        "start": 3034,
+        "end": 3060
+      },
+      "value": "сАнКт-пЕтЕрБуРг, ПоБеДы 39",
+      "trick": "mut:case",
+      "category": "adversarial",
+      "reason": "adversarial-mutation: yargy-unassembled (рваный/склеенный спан под мутацией)",
+      "closes_on": "entity-spans"
+    },
+    {
+      "doc_id": "sale_0014__m2718_linebreak",
+      "entity_type": "ADDRESS",
+      "span": {
+        "start": 1553,
+        "end": 1570
+      },
+      "value": "Пермь, Киро\nва 77",
+      "trick": "mut:linebreak",
+      "category": "adversarial",
+      "reason": "adversarial-mutation: yargy-unassembled (рваный/склеенный спан под мутацией)",
+      "closes_on": "entity-spans"
+    },
+    {
+      "doc_id": "sale_0014__m2718_linebreak",
+      "entity_type": "ADDRESS",
+      "span": {
+        "start": 2979,
+        "end": 2997
+      },
+      "value": "Химки, Пушк\nина 71",
+      "trick": "mut:linebreak",
+      "category": "adversarial",
+      "reason": "adversarial-mutation: yargy-unassembled (рваный/склеенный спан под мутацией)",
+      "closes_on": "entity-spans"
+    },
+    {
+      "doc_id": "services_0005__m2718_linebreak",
+      "entity_type": "ADDRESS",
+      "span": {
+        "start": 1567,
+        "end": 1588
+      },
+      "value": "Воронеж, Гагари\nна 33",
+      "trick": "mut:linebreak",
+      "category": "adversarial",
+      "reason": "adversarial-mutation: yargy-unassembled (рваный/склеенный спан под мутацией)",
+      "closes_on": "entity-spans"
+    },
+    {
+      "doc_id": "services_0009__m1337_invisible",
+      "entity_type": "ADDRESS",
+      "span": {
+        "start": 2575,
+        "end": 2603
+      },
+      "value": "а/я​ 50, г. М осква, 101­000",
+      "trick": "mut:invisible",
+      "category": "adversarial",
+      "reason": "adversarial-mutation: yargy-unassembled (рваный/склеенный спан под мутацией)",
+      "closes_on": "entity-spans"
+    },
+    {
+      "doc_id": "services_0012__m2718_case",
+      "entity_type": "ADDRESS",
+      "span": {
+        "start": 2783,
+        "end": 2802
+      },
+      "value": "кАзАнЬ, тВеРсКаЯ 45",
+      "trick": "mut:case",
+      "category": "adversarial",
+      "reason": "adversarial-mutation: yargy-unassembled (рваный/склеенный спан под мутацией)",
+      "closes_on": "entity-spans"
+    },
+    {
+      "doc_id": "works_0003__m1337_invisible",
+      "entity_type": "ADDRESS",
+      "span": {
+        "start": 2729,
+        "end": 2757
+      },
+      "value": "а/я 97 , г. Самара, 4 43 010",
+      "trick": "mut:invisible",
+      "category": "adversarial",
+      "reason": "adversarial-mutation: yargy-unassembled (рваный/склеенный спан под мутацией)",
+      "closes_on": "entity-spans"
+    },
+    {
+      "doc_id": "works_0004__m1337_invisible",
+      "entity_type": "ADDRESS",
+      "span": {
+        "start": 3197,
+        "end": 3216
+      },
+      "value": "Воронеж , Ленин а 5",
+      "trick": "mut:invisible",
+      "category": "adversarial",
+      "reason": "adversarial-mutation: yargy-unassembled (рваный/склеенный спан под мутацией)",
+      "closes_on": "entity-spans"
+    },
+    {
+      "doc_id": "works_0006__m2718_combo",
+      "entity_type": "ADDRESS",
+      "span": {
+        "start": 1611,
+        "end": 1630
+      },
+      "value": "КAЗA⁠НЬ, КИPOВА‍ 78",
+      "trick": "mut:combo",
+      "category": "adversarial",
+      "reason": "adversarial-mutation: yargy-unassembled (рваный/склеенный спан под мутацией)",
+      "closes_on": "entity-spans"
+    },
+    {
+      "doc_id": "works_0010__m1337_homoglyph",
+      "entity_type": "ADDRESS",
+      "span": {
+        "start": 3037,
+        "end": 3061
+      },
+      "value": "а/я 12, г. Пермь, б1ЧО00",
+      "trick": "mut:homoglyph",
+      "category": "adversarial",
+      "reason": "adversarial-mutation: yargy-unassembled (рваный/склеенный спан под мутацией)",
+      "closes_on": "entity-spans"
+    },
+    {
+      "doc_id": "works_0010__m2718_case",
+      "entity_type": "ADDRESS",
+      "span": {
+        "start": 2747,
+        "end": 2771
+      },
+      "value": "а/я 38, г. тверь, 170100",
+      "trick": "mut:case",
+      "category": "adversarial",
+      "reason": "adversarial-mutation: yargy-unassembled (рваный/склеенный спан под мутацией)",
+      "closes_on": "entity-spans"
+    },
+    {
+      "doc_id": "works_0010__m2718_case",
+      "entity_type": "ADDRESS",
+      "span": {
+        "start": 3037,
+        "end": 3061
+      },
+      "value": "А/Я 12, Г. ПЕРМЬ, 614000",
+      "trick": "mut:case",
+      "category": "adversarial",
+      "reason": "adversarial-mutation: yargy-unassembled (рваный/склеенный спан под мутацией)",
+      "closes_on": "entity-spans"
+    },
+    {
+      "doc_id": "works_0012__m2718_linebreak",
+      "entity_type": "ADDRESS",
+      "span": {
+        "start": 3164,
+        "end": 3184
+      },
+      "value": "Са\nмара, Тверская 58",
+      "trick": "mut:linebreak",
+      "category": "adversarial",
+      "reason": "adversarial-mutation: yargy-unassembled (рваный/склеенный спан под мутацией)",
+      "closes_on": "entity-spans"
+    }
+  ]
+}
