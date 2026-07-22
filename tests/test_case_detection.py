@@ -15,9 +15,17 @@ from docx.enum.style import WD_STYLE_TYPE
 
 from extractor import extract, _normalize_case, _MAX_HEURISTIC_LEN
 from regex_detector import detect_regex
+from anchor_registry import detect_structural
+from pipeline import run_detection
 from tokenizer import tokenize, build_plain_text
 from session_store import save_session
 from detokenizer import detokenize
+
+# ЭТАП B: PERSON даёт структурный движок (Natasha-PER выключена в конфиге, как
+# Natasha-ORG на этапе A). Инвариант этих тестов — «нормализация РЕГИСТРА (all_caps/
+# строчный/стиль docx) включает детекцию ФИО» — сохранён: PerAnchorDetector строит
+# поисковый вид на том же detection_text из extractor. Меняется только ИСТОЧНИК ФИО:
+# detect_ner → detect_structural. Мигрировано без ослабления утверждений о ФИО.
 
 
 # --------------------------------------------------------------------------- #
@@ -59,7 +67,7 @@ class TestDocxAllCaps:
         seg = _seg(doc, "p0")
         assert seg.metadata["detection_text"] == "стороны: Иванов Иван Иванович"
 
-        persons = [e for e in ner_detector_module.detect_ner(doc, config_path)
+        persons = [e for e in detect_structural(doc)
                    if e.entity_type == "PERSON"]
         assert persons, "ФИО под all_caps должно находиться после нормализации"
         assert any(p.original_text == "иванов иван иванович" for p in persons), (
@@ -74,7 +82,7 @@ class TestDocxAllCaps:
         ])
         doc = extract(src)
         assert _seg(doc, "p0").metadata["detection_text"] == "стороны: Петров Пётр Петрович"
-        persons = [e for e in ner_detector_module.detect_ner(doc, config_path)
+        persons = [e for e in detect_structural(doc)
                    if e.entity_type == "PERSON"]
         assert any(p.original_text == "петров пётр петрович" for p in persons)
 
@@ -87,7 +95,7 @@ class TestDocxAllCaps:
         doc = extract(src)
         assert _seg(doc, "p0").metadata["detection_text"] == "ИП Пирогова А.С."
 
-        persons = [e for e in ner_detector_module.detect_ner(doc, config_path)
+        persons = [e for e in detect_structural(doc)
                    if e.entity_type == "PERSON"]
         assert persons, "ФИО при юр-форме ИП должно находиться"
         # original_text любой сущности — строго срез строчного оригинала.
@@ -116,13 +124,11 @@ class TestDocxNoNormalizationNeeded:
         ])
         doc = extract(src)
         assert "detection_text" not in _seg(doc, "p0").metadata
-        # Поведение детекции — как раньше: PERSON находит detect_ner. ORG сменил
-        # источник (этап A): его даёт структурный движок anchor_registry.detect_org,
-        # а не Natasha-ORG. Проверяем оба: PERSON из NER, ORG из движка.
-        from anchor_registry import detect_org
-        types = {e.entity_type for e in ner_detector_module.detect_ner(doc, config_path)}
+        # Этап A/B: и PERSON, и ORG даёт структурный движок (обе метки Natasha
+        # выключены). Проверяем, что оба типа найдены на обычном сегменте.
+        types = {e.entity_type for e in detect_structural(doc)}
         assert "PERSON" in types
-        assert any(e.entity_type == "ORG" for e in detect_org(doc))
+        assert "ORG" in types
 
 
 # --------------------------------------------------------------------------- #
@@ -137,7 +143,7 @@ class TestLowercaseHeuristic:
         doc = extract(src)
         assert _seg(doc, "l0").metadata["detection_text"] == "(1) Иванов Иван Иванович"
 
-        persons = [e for e in ner_detector_module.detect_ner(doc, config_path)
+        persons = [e for e in detect_structural(doc)
                    if e.entity_type == "PERSON"]
         assert any(p.original_text == "иванов иван иванович" for p in persons)
 
@@ -173,7 +179,7 @@ class TestStage2bWordLevelCase:
         doc = extract(src)
         assert (_seg(doc, "l0").metadata["detection_text"]
                 == "Исполнитель: Петрова Ольга Ивановна")
-        persons = [e for e in ner_detector_module.detect_ner(doc, config_path)
+        persons = [e for e in detect_structural(doc)
                    if e.entity_type == "PERSON"]
         assert any("ПЕТРОВА" in p.original_text for p in persons)
 
@@ -326,7 +332,7 @@ class TestRoundTrip:
             [("инн 7707083893", {"all_caps": True})],
         ])
         doc = extract(src)
-        entities = detect_regex(doc, config_path) + ner_detector_module.detect_ner(doc, config_path)
+        entities = run_detection(doc, config_path)
         anon, result = tokenize(doc, entities, config_path)
 
         session_id = save_session(result, storage_dir=str(tmp_path / "sessions"))
@@ -380,7 +386,7 @@ class TestStyleInheritedCaps:
 
         d = extract(str(path))
         assert _seg(d, "p0").metadata["detection_text"] == "Иванов Иван Иванович"
-        persons = [e for e in ner_detector_module.detect_ner(d, config_path)
+        persons = [e for e in detect_structural(d)
                    if e.entity_type == "PERSON"]
         assert any(pe.original_text == "иванов иван иванович" for pe in persons)
 
@@ -396,7 +402,7 @@ class TestStyleInheritedCaps:
 
         d = extract(str(path))
         assert _seg(d, "p0").metadata["detection_text"] == "Петров Пётр Петрович"
-        persons = [e for e in ner_detector_module.detect_ner(d, config_path)
+        persons = [e for e in detect_structural(d)
                    if e.entity_type == "PERSON"]
         assert any(pe.original_text == "петров пётр петрович" for pe in persons)
 
@@ -414,7 +420,7 @@ class TestStyleInheritedCaps:
 
         d = extract(str(path))
         assert _seg(d, "p0").metadata["detection_text"] == "Сидоров Сидор Сидорович"
-        persons = [e for e in ner_detector_module.detect_ner(d, config_path)
+        persons = [e for e in detect_structural(d)
                    if e.entity_type == "PERSON"]
         assert any(pe.original_text == "сидоров сидор сидорович" for pe in persons)
 
@@ -433,7 +439,7 @@ class TestStyleInheritedCaps:
         d = extract(str(path))
         cell_seg = _seg(d, "t0_r0_c0")
         assert cell_seg.metadata["detection_text"] == "Кузнецов Иван Петрович"
-        persons = [e for e in ner_detector_module.detect_ner(d, config_path)
+        persons = [e for e in detect_structural(d)
                    if e.entity_type == "PERSON"]
         assert any(pe.original_text == "кузнецов иван петрович" for pe in persons)
 
@@ -527,7 +533,7 @@ class TestStyleCapsRoundTripAndLength:
         doc.save(str(path))
 
         d = extract(str(path))
-        entities = detect_regex(d, config_path) + ner_detector_module.detect_ner(d, config_path)
+        entities = run_detection(d, config_path)
         anon, result = tokenize(d, entities, config_path)
         session_id = save_session(result, storage_dir=str(tmp_path / "sessions"))
         restored, unresolved = detokenize(anon, session_id, storage_dir=str(tmp_path / "sessions"))

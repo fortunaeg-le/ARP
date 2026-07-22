@@ -25,7 +25,7 @@ if _SRC not in sys.path:
 
 DEFAULT_CONFIG = os.path.join(_ROOT, "entity_types.yaml")
 
-BUILD_MARK = "stage-a-fix"
+BUILD_MARK = "stage-b-per"
 
 
 # --- Человекочитаемые названия типов ПДн (для юриста, не коды) ---------------
@@ -151,10 +151,7 @@ def run_encrypt(path: str, allow_lossy: bool = False, config_path: str = DEFAULT
     наверх — их переводит в человеческий текст вызывающий (server.py).
     """
     from extractor import extract
-    from regex_detector import detect_regex
-    from ner_detector import detect_ner
-    from anchor_registry import detect_org, suppress_conflicts
-    from syntax_compound import merge_compound_entities
+    from pipeline import run_detection
     from tokenizer import tokenize, _assemble
     from session_store import save_session, default_storage_dir
     import json
@@ -166,18 +163,11 @@ def run_encrypt(path: str, allow_lossy: bool = False, config_path: str = DEFAULT
     if zones and not allow_lossy:
         raise EncryptRefused(zones)
 
-    # --- Реальная детекция и маскировка (никакой своей логики) ---
-    regex_entities = detect_regex(doc, config_path)
-    # Этап A': тот же порядок, что shifrator.py::cmd_encrypt — ORG считается ДО
-    # detect_ner и передаётся туда барьером расширения адреса (A-4), затем арбитраж
-    # конфликтов с Natasha PER/ADDRESS.
-    org_entities = detect_org(doc, regex_entities=regex_entities)
-    ner_entities = detect_ner(
-        doc, config_path, regex_entities=regex_entities, org_entities=org_entities,
-    )
-    ner_entities = suppress_conflicts(org_entities, ner_entities)
-    entities = regex_entities + ner_entities + org_entities
-    entities = merge_compound_entities(doc, entities)
+    # --- Реальная детекция (ЕДИНЫЙ конвейер, никакой своей логики) ---
+    # Порядок шагов — в pipeline.run_detection, ТА ЖЕ функция, что зовёт CLI. UI
+    # больше не держит копию порядка и не может отстать от этапа (был инцидент, см.
+    # archive/reports/HANDOFF_UI.md и src/pipeline.py).
+    entities = run_detection(doc, config_path)
     anon_text, final_entities = tokenize(doc, entities, config_path)
 
     session_id = save_session(final_entities, session_id=None, ttl_hours=24)

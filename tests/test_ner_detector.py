@@ -14,40 +14,44 @@ def _doc(*texts):
 
 
 class TestDetectNerPersonInitialsRight:
-    """HANDOFF_3, Данные для тестов, п.1 — расширение спана PERSON вправо инициалами."""
+    """HANDOFF_3, п.1 — ФИО с инициалами одним спаном. ЭТАП B: PER больше НЕ даёт
+    detect_ner (Natasha-PER выключена в конфиге, как Natasha-ORG на этапе A) — его
+    даёт структурный движок anchor_registry (якорь по форме ФИО «фамилия + инициалы»).
+    Инвариант «Иванов И.И. — ОДИН спан» сохранён, но источник сменился."""
 
-    def test_person_span_extended_right_with_initials(self, ner_detector_module, config_path):
-        """HANDOFF_3, п.1: 'Иванов И.И.' -> PERSON [17,28) с инициалами включёнными вправо."""
+    def test_person_span_extended_right_with_initials(self, config_path):
+        """'Иванов И.И.' -> PERSON одним спаном с инициалами (структурный якорь)."""
+        from anchor_registry import detect_structural
         doc = _doc("Договор подписал Иванов И.И. от лица ООО «Ромашка».")
-        entities = ner_detector_module.detect_ner(doc, config_path)
-        persons = [e for e in entities if e.entity_type == "PERSON"]
+        persons = [e for e in detect_structural(doc) if e.entity_type == "PERSON"]
         assert len(persons) == 1
         assert persons[0].original_text == "Иванов И.И."
 
     def test_org_found_alongside_person(self, ner_detector_module, config_path):
-        """Этап A: ORG больше НЕ даёт detect_ner (Natasha-ORG выключена в конфиге) —
-        его даёт структурный движок anchor_registry.detect_org. detect_ner на этом
-        абзаце обязан по-прежнему давать PERSON, но НИ ОДНОГО ORG; ORG «ООО «Ромашка»»
-        приходит из detect_org. Тест переориентирован на новую архитектуру (ORG сменил
-        источник), утечки при этом нет — «ООО «Ромашка»» по-прежнему маскируется."""
-        from anchor_registry import detect_org
+        """Этап A/B: ни ORG, ни PER больше не даёт detect_ner (обе метки Natasha
+        выключены) — их даёт структурный движок anchor_registry.detect_structural.
+        detect_ner на этом абзаце не должен давать НИ ORG, НИ PERSON; оба приходят из
+        структуры. Утечки нет — и «ООО «Ромашка»», и «Иванов И.И.» маскируются."""
+        from anchor_registry import detect_structural
         doc = _doc("Договор подписал Иванов И.И. от лица ООО «Ромашка».")
         entities = ner_detector_module.detect_ner(doc, config_path)
         assert [e for e in entities if e.entity_type == "ORG"] == []
-        assert any(e.entity_type == "PERSON" for e in entities)
-        orgs = [e for e in detect_org(doc) if e.entity_type == "ORG"]
-        assert len(orgs) == 1
-        assert orgs[0].original_text == "ООО «Ромашка»"
+        assert [e for e in entities if e.entity_type == "PERSON"] == []
+        struct = detect_structural(doc)
+        orgs = [e for e in struct if e.entity_type == "ORG"]
+        pers = [e for e in struct if e.entity_type == "PERSON"]
+        assert len(orgs) == 1 and orgs[0].original_text == "ООО «Ромашка»"
+        assert any(p.original_text == "Иванов И.И." for p in pers)
 
 
 class TestDetectNerPersonInitialsLeft:
-    """HANDOFF_3, Данные для тестов, п.2 — расширение спана PERSON влево инициалами."""
+    """HANDOFF_3, п.2 — инициалы СЛЕВА от фамилии, один спан (этап B: структурный)."""
 
-    def test_person_span_extended_left_with_initials(self, ner_detector_module, config_path):
-        """HANDOFF_3, п.2: 'П.П. Петров' -> PERSON с инициалами включёнными слева."""
+    def test_person_span_extended_left_with_initials(self, config_path):
+        """'П.П. Петров' -> PERSON одним спаном с инициалами слева (структурный якорь)."""
+        from anchor_registry import detect_structural
         doc = _doc("Со стороны заказчика — П.П. Петров, директор ЗАО «Вектор».")
-        entities = ner_detector_module.detect_ner(doc, config_path)
-        persons = [e for e in entities if e.entity_type == "PERSON"]
+        persons = [e for e in detect_structural(doc) if e.entity_type == "PERSON"]
         assert any(e.original_text == "П.П. Петров" for e in persons)
 
 
@@ -103,12 +107,15 @@ class TestDetectNerAddressDoesNotSwallowName:
     LOC/маркера) это чинит, не роняя полноту адреса (см. GOLDEN)."""
 
     def test_address_does_not_absorb_preceding_person_and_label(self, ner_detector_module, config_path):
+        # ЭТАП B: ФИО даёт структурный движок, он же служит барьером адресу (per_entities).
+        from anchor_registry import detect_structural
         doc = _doc("в лице директора Иванов И.И., адрес: г. Москва, ул. Ленина, д. 5")
-        entities = ner_detector_module.detect_ner(doc, config_path)
+        struct = detect_structural(doc)
+        per = [e for e in struct if e.entity_type == "PERSON"]
+        entities = ner_detector_module.detect_ner(doc, config_path, per_entities=per)
         addresses = [e for e in entities if e.entity_type == "ADDRESS"]
-        persons = [e for e in entities if e.entity_type == "PERSON"]
         # ФИО осталось отдельным PERSON, а не затянулось в адрес
-        assert any("Иванов" in p.original_text for p in persons)
+        assert any("Иванов" in p.original_text for p in per)
         assert all("Иванов" not in a.original_text for a in addresses)
         # адрес закрыт целиком и начинается с города (метка «адрес:» не проглочена)
         assert any(a.original_text == "г. Москва, ул. Ленина, д. 5" for a in addresses), (

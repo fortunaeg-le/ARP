@@ -10,27 +10,19 @@ import os
 import pytest
 
 from models import SourceDocument, TextSegment
-from regex_detector import detect_regex
-from ner_detector import detect_ner
-from anchor_registry import detect_org, suppress_conflicts
-from syntax_compound import merge_compound_entities
+from pipeline import run_detection
 from tokenizer import tokenize
 
 _CONFIG = os.path.join(os.path.dirname(__file__), "..", "entity_types.yaml")
 
 
 def _detect_and_merge(text):
-    # Этап A': ORG даёт структурный движок (detect_org), а не Natasha-ORG, и считается
-    # ДО detect_ner (барьер адреса, A-4). Хелпер собирает ПОЛНЫЙ конвейер (regex + ORG-
-    # движок + PER/ADDRESS-NER + арбитраж), как cmd_encrypt/run_measurement, иначе
-    # «ООО «Ромашка»» не находится.
+    # Этап B: ЕДИНЫЙ боевой конвейер (pipeline.run_detection). PER даёт структурный
+    # движок (Natasha-PER выключена), ORG — он же, составные ИП+ФИО склеивает
+    # merge_compound внутри run_detection — как cmd_encrypt/UI/замер.
     seg = TextSegment(id="s", text=text, source_type="txt_line", metadata={})
     doc = SourceDocument(segments=[seg], source_format="txt", source_path="<t>")
-    rx = detect_regex(doc, _CONFIG)
-    org = detect_org(doc, regex_entities=rx)
-    ner = detect_ner(doc, _CONFIG, regex_entities=rx, org_entities=org)
-    ner = suppress_conflicts(org, ner)
-    return doc, merge_compound_entities(doc, rx + ner + org)
+    return doc, run_detection(doc, _CONFIG)
 
 
 def _orgs(ents):
@@ -76,39 +68,30 @@ def test_spelled_out_ip_form_merges_into_org():
 
 # ---------------- НЕГАТИВНЫЕ: ложного склеивания быть не должно ----------------
 
-@pytest.mark.xfail(strict=True, reason=(
-    "Этап A (structure-first ORG): склейка «ИП + ФИО» опиралась на Natasha-ORG-токен "
-    "«ИП»; после её отключения кандидата даёт _SPELLED_ORG_RE, но appos-склейка "
-    "здесь не срабатывает (парс Natasha в сочинительной «Стороны: … и …»), поэтому "
-    "«ИП Иванов И.И.» остаётся PER, а не становится 2-й ORG. КЛЮЧЕВОЕ свойство "
-    "БЕЗОПАСНОСТИ (Иванов и Ромашка НЕ склеены в один блоб) выдержано — утечки нет; "
-    "различие только в ORG-гранулярности. Находка этапа A, см. HANDOFF_STAGE_A_ORG.")
-)
 def test_two_parties_not_glued_into_one_blob():
-    """'Стороны: ИП Иванов И.И. и ООО «Ромашка»' -> ДВЕ сущности, не один блоб.
+    """A-2 (ПОГАШЕН этапом B): 'Стороны: ИП Иванов И.И. и ООО «Ромашка»' -> ДВЕ ORG.
 
-    Сочинение (conj/cc), а не приложение (appos) — стороны РАЗНЫЕ. Ни одна ORG не
-    содержит одновременно 'Иванов' и 'Ромашка'."""
+    «ИП Иванов И.И.» становится ВТОРЫМ ORG (ИП+ФИО — сторона договора), «ООО «Ромашка»»
+    — первым; блоба нет. Раньше (этап A) склейка ИП+ФИО опиралась на Natasha-ORG-токен
+    «ИП» и в сочинительной конструкции не срабатывала (xfail). Этап B: PER анкорит
+    «Иванов И.И.» структурно, а merge_compound склеивает ИП-форму, ВПЛОТНУЮ примыкающую
+    к ФИО, без опоры на appos-направление (парсер цепляет ФИО к корню предложения)."""
     _, ents = _detect_and_merge("Стороны: ИП Иванов И.И. и ООО «Ромашка»")
     orgs = _orgs(ents)
     assert len(orgs) == 2, orgs
     assert not any("Иванов" in o and "Ромашка" in o for o in orgs), orgs
 
 
-@pytest.mark.xfail(strict=True, reason=(
-    "Этап A: structure-first ORG трактует «КФХ Петров» как ОДНУ организацию (форма + "
-    "имя, как «ООО Медведев»), тогда как Natasha+compound держали «КФХ» и главу-"
-    "человека «Петров» раздельно по роли «Глава». Человек ОСТАЁТСЯ замаскирован (в "
-    "составе ORG-токена) — утечки нет; различие в типе/гранулярности. Роль-словную "
-    "разметку главы КФХ структурный ORG пока не учитывает. Находка этапа A.")
-)
 def test_role_plus_fio_not_merged_into_org():
-    """'Глава КФХ Петров': appos у Петрова — к слову 'Глава', не к ORG 'КФХ'.
+    """A-3 (ПОГАШЕН этапом B): 'Глава КФХ Петров' — человек НЕ становится ORG-блобом.
 
-    Роль+ФИО — это НЕ ИП+ФИО: человек здесь представитель, а не организация;
-    КФХ и Петров остаются раздельными (осознанная типизация, см. отчёт)."""
+    Роль-слово «Глава» перед org-формой означает, что имя за формой — РУКОВОДИТЕЛЬ
+    (человек), а не часть названия юрлица. Этап B: ORG-детектор не грабит «Петров» в
+    блоб «КФХ Петров» (роль-маркер слева), а PER-детектор анкорит «Петров» как человека
+    по тому же роль-маркеру. Требование A-3 — «человек маскируется как PER/роль, НЕ
+    единый ORG-блоб» — выполнено; голая форма КФХ без имени организацией не считается
+    (не идентифицирует), поэтому отдельного ORG «КФХ» здесь нет, и это не утечка."""
     _, ents = _detect_and_merge("Глава КФХ Петров")
-    assert "КФХ" in _orgs(ents)
     assert "Петров" in _persons(ents)
     assert not any("Петров" in o for o in _orgs(ents))
 

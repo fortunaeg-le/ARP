@@ -32,10 +32,7 @@ sys.path.insert(0, HERE)
 import measure_lib as ML  # noqa: E402
 from extractor import extract  # noqa: E402
 from unread_zones import scan_unread_zones  # noqa: E402
-from regex_detector import detect_regex  # noqa: E402
-from ner_detector import detect_ner  # noqa: E402
-from anchor_registry import detect_org, suppress_conflicts  # noqa: E402
-from syntax_compound import merge_compound_entities  # noqa: E402
+from pipeline import run_detection  # noqa: E402
 from tokenizer import tokenize, build_plain_text  # noqa: E402
 from session_store import save_session  # noqa: E402
 from detokenizer import detokenize  # noqa: E402
@@ -43,7 +40,7 @@ from detokenizer import detokenize  # noqa: E402
 CONFIG = os.path.join(ROOT, "entity_types.yaml")
 GOLD = os.path.join(HERE, "gold.json")
 DOCS = os.path.join(HERE, "docs")
-COMMIT = "stage2b"  # этап 2b (регистр); НЕ перезатираем results_baseline.json (гейт)
+COMMIT = "stageb"  # этап B (structure-first PER); НЕ перезатираем results_baseline.json
 OUT = os.path.join(HERE, f"results_{COMMIT}.json")
 
 NUMERIC_TYPES = {"INN", "OGRN", "KPP", "ACCOUNT", "BIK", "PHONE",
@@ -162,14 +159,9 @@ def process_doc(d, allow_lossy=ALLOW_LOSSY):
     body_end = body_start + len(body_text)
 
     doc = extract(path)
-    regex_e = detect_regex(doc, CONFIG)
-    # Этап A': detect_org считается ДО detect_ner и передаётся туда барьером
-    # расширения адреса (A-4) — тот же порядок, что shifrator.py::cmd_encrypt.
-    org_e = detect_org(doc, regex_entities=regex_e)
-    ner_e = detect_ner(doc, CONFIG, regex_entities=regex_e, org_entities=org_e)
-    ner_e = suppress_conflicts(org_e, ner_e)
-    entities = regex_e + ner_e + org_e
-    entities = merge_compound_entities(doc, entities)
+    # ЕДИНЫЙ конвейер детекции (этап B): та же pipeline.run_detection, что зовут CLI и
+    # UI — замер меряет ровно то, что видит пользователь (см. src/pipeline.py).
+    entities = run_detection(doc, CONFIG)
     anon_text, kept = tokenize(doc, entities, CONFIG)
 
     # round-trip

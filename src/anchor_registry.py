@@ -73,14 +73,25 @@ _BREAKING_CHARS = frozenset(
 )
 
 
-def _strip_breaking(text: str) -> tuple[str, list[int]]:
+def _strip_breaking(text: str, nl_to_space: bool = False) -> tuple[str, list[int]]:
     """Убирает _BREAKING_CHARS из text (только вырезание, без замены пробелом —
     иначе «ПА\\nО» не схлопнется обратно в «ПАО»). Возвращает (out, idx), idx[k] —
-    позиция out[k] в text (строго возрастающая, как offset_map по всему пайплайну)."""
+    позиция out[k] в text (строго возрастающая, как offset_map по всему пайплайну).
+
+    nl_to_space=True (для PER): перенос строки/CR НЕ вырезаются, а заменяются пробелом.
+    Причина — ключ ORG обычно ОДНОТОКЕННЫЙ («Ромашка»/«Восход»), и `\\n` в него попадает
+    ВНУТРИ слова (мутация t_linebreak ставит его в случайную позицию), поэтому вырезание
+    склеивает форму обратно. Ключ PER — МНОГОТОКЕННЫЙ («Беляев Олег Олегович»), и `\\n`
+    ложится на ГРАНИЦУ слов; вырезание склеило бы «БеляевОлег» в один нераспознаваемый
+    токен. Прочие разрывы (NBSP/ZWSP/…) мутация t_invisible вставляет ВНУТРИ слова, не
+    трогая исходный пробел, поэтому их вырезаем в обоих режимах."""
     out: list[str] = []
     idx: list[int] = []
     for i, ch in enumerate(text):
         if ch in _BREAKING_CHARS:
+            if nl_to_space and ch in "\n\r":
+                out.append(" ")
+                idx.append(i)
             continue
         out.append(ch)
         idx.append(i)
@@ -108,6 +119,23 @@ def anchor_search_view(segment) -> tuple[str, list[int]]:
     search_to_base = _compose(search_to_stripped, stripped_to_base)
     result = (search, search_to_base)
     md["_anchor_search_cache"] = result
+    return result
+
+
+def per_search_view(segment) -> tuple[str, list[int]]:
+    """Поисковый вид для PER: как anchor_search_view, но перенос строки/CR внутри
+    сущности заменяется ПРОБЕЛОМ, а не вырезается (см. _strip_breaking про
+    много-/однотокенные ключи). Отдельный кэш-ключ — вид независимый."""
+    md = segment.metadata
+    cached = md.get("_per_search_cache")
+    if cached is not None:
+        return cached
+    base = md.get("detection_text", segment.text)
+    stripped, stripped_to_base = _strip_breaking(base, nl_to_space=True)
+    search, search_to_stripped = normalize_for_detection(stripped)
+    search_to_base = _compose(search_to_stripped, stripped_to_base)
+    result = (search, search_to_base)
+    md["_per_search_cache"] = result
     return result
 
 
@@ -273,6 +301,144 @@ def _core_key(core_text: str):
 
 
 # --------------------------------------------------------------------------- #
+#            Морфология ИМЕНИ СОБСТВЕННОГО (PER) — этап B                      #
+# --------------------------------------------------------------------------- #
+# Фамилия/имя/отчество определяются СТРУКТУРНО, по грамматическим пометам pymorphy
+# (Surn/Name/Patr), а НЕ по словарю фамилий (запрет ТЗ). Тот же _MORPH, что уже
+# загружен под Natasha. Пометы дают падеж/род «бесплатно», поэтому косвенный падеж
+# («Морозовой Анне Николаевне») собирается в ОДИН спан без опоры на границы Natasha.
+_INITIAL_RE = re.compile(r"^[А-ЯЁA-Z]$")   # одиночная заглавная буква = инициал
+
+
+# Порог правдоподобия помету имени. pymorphy держит МУСОРНЫЕ разборы с околонулевым
+# счётом: «по» имеет разбор-фамилию «По» (Эдгар По) со счётом 8.9e-05, «о»/«с»/«в» —
+# тоже. Без порога предлог «по» метится PER и тянет за собой хвост ФИО-прогона.
+# Настоящие части имени идут со счётом >=0.125 (Анне 0.125, Ивановой 0.125, Мороз
+# 0.27), поэтому порог 0.01 отсекает мусор, не задевая ни одной реальной формы.
+_NAMEPART_MIN_SCORE = 0.01
+
+
+def _nameparts(word: str) -> frozenset:
+    """Множество ролей ФИО, которые pymorphy приписывает слову с ПРАВДОПОДОБНЫМ счётом:
+    {'surn','name','patr'}. Пустое — слово не часть имени собственного (по морфологии)."""
+    tags = set()
+    for f in _MORPH(word):
+        if f.score < _NAMEPART_MIN_SCORE:
+            continue
+        t = f.tag
+        if "Surn" in t:
+            tags.add("surn")
+        if "Name" in t:
+            tags.add("name")
+        if "Patr" in t:
+            tags.add("patr")
+    return frozenset(tags)
+
+
+def _is_initial(word: str) -> bool:
+    return _INITIAL_RE.match(word) is not None
+
+
+# Максимум РЕАЛЬНЫХ слов-имён (не инициалов) в одном ФИО-спане — защита от
+# «убегания» прогона по соседним фамилиям в перечислении.
+_FIO_MAX_WORDS = 4
+
+
+def _fio_run(norm, tokens, npar, i):
+    """Собирает СВЯЗНЫЙ спан ФИО вокруг токена i (у которого есть помета имени).
+    Влево и вправо присоединяет соседние токены-части имени (surn/name/patr) и
+    инициалы, если между ними только пробелы/точки. Возвращает (lo, hi) — диапазон
+    ИНДЕКСОВ токенов [lo, hi], целиком составляющих ФИО."""
+    lo = hi = i
+    real = 1 if not _is_initial(tokens[i].group(0)) else 0
+    # вправо
+    while hi + 1 < len(tokens):
+        gap = norm[tokens[hi].end():tokens[hi + 1].start()]
+        if gap.strip(" \t."):
+            break
+        w = tokens[hi + 1].group(0)
+        is_init = _is_initial(w)
+        if not (is_init or npar[hi + 1]):
+            break
+        if not is_init and real >= _FIO_MAX_WORDS:
+            break
+        hi += 1
+        if not is_init:
+            real += 1
+    # влево
+    while lo - 1 >= 0:
+        gap = norm[tokens[lo - 1].end():tokens[lo].start()]
+        if gap.strip(" \t."):
+            break
+        w = tokens[lo - 1].group(0)
+        is_init = _is_initial(w)
+        if not (is_init or npar[lo - 1]):
+            break
+        if not is_init and real >= _FIO_MAX_WORDS:
+            break
+        lo -= 1
+        if not is_init:
+            real += 1
+    return lo, hi
+
+
+def _fio_span(norm, tokens, lo, hi):
+    """Символьные границы ФИО-прогона [lo,hi]. Если прогон заканчивается инициалом,
+    включаем завершающую точку («Беляев О. О.» целиком, с точкой) — так граница
+    совпадает с эталонной формой корпуса."""
+    s = tokens[lo].start()
+    e = tokens[hi].end()
+    if _is_initial(tokens[hi].group(0)) and norm[e:e + 1] == ".":
+        e += 1
+    return s, e
+
+
+def _surname_key(tokens, npar, lo, hi):
+    """Ключ реестра для ФИО-спана [lo,hi]: лемма ФАМИЛИИ (первый токен с пометой
+    'surn'). Возвращает (key_tuple, surname_token_index) или (None, None), если
+    фамилии в прогоне нет (голое имя/отчество якорем PER не считаем)."""
+    for j in range(lo, hi + 1):
+        if "surn" in npar[j]:
+            return (_lemma_first(tokens[j].group(0)),), j
+    return None, None
+
+
+# Маркеры-контекст, при которых даже ГОЛАЯ фамилия анкорится как человек. Проверяются
+# в левом окне перед прогоном ФИО (омоглифы/регистр уже сведены anchor_search_view).
+_PER_GRAZHD_RE = re.compile(r"(?i)(?:граждан(?:ин|ка)|\bгр\.)\s*$")
+# Роль-слово в левом окне: допускаем одно промежуточное слово (org-форму) между
+# ролью и ФИО — «Глава КФХ Петров», «Генеральный директор ООО Иванов И.И.» (A-3).
+_PER_ROLE_RE = re.compile(
+    r"(?i)(?:директор\w*|бухгалтер\w*|руководител\w*|президент\w*|глав\w*|начальник\w*"
+    r"|управляющ\w*|представител\w*|учредител\w*|нотариус\w*|председател\w*).{0,15}$"
+)
+_PER_VLICE_RE = re.compile(r"(?i)в\s+лице\s*$")
+_PER_IP_RE = re.compile(
+    r"(?i)(?:индивидуальн\w*\s+предпринимател\w*|(?<![а-яёa-z])ип)\s*$"
+)
+# «действующ…» после ФИО — подтверждение конструкции «в лице X, действующего…».
+_PER_ACTING_RE = re.compile(r"(?i)^[\s,]*действу\w+")
+
+# Адресный тип-маркер ВПЛОТНУЮ слева от прогона: «ул. Пушкина», «ш. Гагарина»,
+# «г. Пушкин» — топоним/улица-однофамилец, НЕ человек. Метить PER здесь нельзя
+# (коллизия фамилия↔улица; улица — компонент адреса, этап C). Закрытый список
+# типов места, примыкающих точкой/пробелом к имени собственному.
+_PER_ADDR_TYPE_LEFT_RE = re.compile(
+    r"(?i)(?:^|[\s,.])(?:ул|улиц\w*|пер|переул\w*|пр|пр-?кт|пр-?т|проспект\w*|ш|шоссе"
+    r"|наб|набережн\w*|б-?р|бульвар\w*|проезд\w*|пл|площад\w*|туп|тупик\w*|алле\w*"
+    r"|г|гор|город\w*|д|дер|деревн\w*|с|село|пос|пгт|мкр|мкрн|р-?н|обл|область|кра\w*"
+    r"|респ|округ\w*|кв|кварта\w*|тер|снт|днт)\.?\s{0,2}$"
+)
+
+
+def _addr_type_left(low: str, s: int) -> bool:
+    """True, если ВПЛОТНУЮ слева от позиции s стоит адресный тип-маркер (улица/город/
+    и т.п.). Тогда следующее имя собственное — топоним, не человек."""
+    return _PER_ADDR_TYPE_LEFT_RE.search(low[max(0, s - 14):s]) is not None
+# Инициалы вокруг фамилии — усиливающий признак (И. О. / И.О.).
+
+
+# --------------------------------------------------------------------------- #
 #                         Реестр документа (Registry)                         #
 # --------------------------------------------------------------------------- #
 @dataclass
@@ -343,11 +509,26 @@ class AnchorDetector:
 
     entity_type = None
 
-    def detect(self, seg, norm, low, omap, inn_ogrn_norm) -> list:
+    def search_view(self, seg):
+        """Поисковый вид сегмента (norm, offset_map→segment.text) для ЭТОГО типа.
+        ORG вырезает перенос строки (однотокенный ключ), PER заменяет его пробелом
+        (многотокенный ключ) — см. per_search_view/_strip_breaking."""
+        return anchor_search_view(seg)
+
+    def detect(self, seg, norm, low, omap, requisites) -> list:
+        """requisites — список (ns, ne, kind, digit_count) валидированных реквизитов
+        сегмента (INN/OGRN/SNILS) в координатах anchor_search_view. Детектор сам
+        решает, какие ему нужны (ORG: ИНН-10/ОГРН-13 юрлица; PER: ИНН-12/СНИЛС)."""
         raise NotImplementedError
 
     def guard(self, norm, low, run_start, run_end) -> bool:
         raise NotImplementedError
+
+    def expand_match(self, norm, low, tokens, npar, i, klen):
+        """Проход 2: по какому диапазону символов пометить вхождение ключа, начавшееся
+        с токена i длиной klen. По умолчанию — ровно эти klen токенов (поведение ORG).
+        PER переопределяет: расширяет до СВЯЗНОГО спана ФИО (косвенный падеж целиком)."""
+        return tokens[i].start(), tokens[i + klen - 1].end()
 
 
 class OrgAnchorDetector(AnchorDetector):
@@ -361,7 +542,20 @@ class OrgAnchorDetector(AnchorDetector):
     # варианты именуем-. Здесь важно ЛЕВОЕ имя (то, что ВВОДИТСЯ), а не алиас после.
     _INTRO_RE = re.compile(r"(?i)(?:именуем\w+|\bдалее\b|в\s+дальнейшем)")
 
-    def detect(self, seg, norm, low, omap, inn_ogrn_norm) -> list:
+    # Роль-слово перед org-формой («Глава КФХ …», A-3): следующее за формой имя —
+    # ЧЕЛОВЕК-руководитель, а НЕ часть названия юрлица. Тогда pattern B не грабит имя
+    # в ORG-блоб, имя достаётся PER-детектору по роль-маркеру.
+    _ROLE_BEFORE_FORM_RE = re.compile(
+        r"(?i)(?:глав\w*|директор\w*|руководител\w*|начальник\w*|председател\w*)\W{0,8}$"
+    )
+
+    def detect(self, seg, norm, low, omap, requisites) -> list:
+        # ЮРЛИЦО-реквизиты для якоря ORG: ИНН из 10 цифр и ОГРН из 13 цифр.
+        # 12-значный ИНН / 15-значный ОГРНИП — физлицо/ИП (работают на PER).
+        inn_ogrn_norm = [
+            (ns, kind) for (ns, ne, kind, dc) in requisites
+            if (kind == "INN" and dc == 10) or (kind == "OGRN" and dc == 13)
+        ]
         anchors: list[Anchor] = []
 
         # --- Признак: имя в кавычках (+ org-форма слева / конструкция введения) ---
@@ -393,6 +587,12 @@ class OrgAnchorDetector(AnchorDetector):
                 j += 1
             if j >= len(norm) or norm[j] in _OPEN_QUOTES + _ASCII_QUOTE:
                 continue  # за формой кавычка — это кавычный случай выше
+            # A-3: роль-слово слева от формы («Глава КФХ …») — имя за формой это
+            # РУКОВОДИТЕЛЬ (человек), не часть названия. Не грабим его в ORG-блоб;
+            # PER-детектор возьмёт его по роль-маркеру. Саму форму как ORG тоже не
+            # регистрируем (голая «КФХ» без имени не идентифицирует организацию).
+            if self._ROLE_BEFORE_FORM_RE.search(low[:m.start()]):
+                continue
             # После АББРЕВИАТУРНОЙ формы допускаем ведущий ALL-CAPS токен имени
             # («АО НПО …», «КБ …»): сразу за «АО»/«ПАО» метки реквизита не стоят, а
             # имя-абброс организации частотно. За РАЗВЁРНУТОЙ формой (Общество…) —
@@ -556,6 +756,131 @@ class OrgAnchorDetector(AnchorDetector):
         return norm[i] in ".!?\n"
 
 
+class PerAnchorDetector(AnchorDetector):
+    """Детектор якорей PER (люди). Та же машина, что ORG: якорь → реестр по лемме
+    ФАМИЛИИ → проход 2 по падежам. Признаки якоря (по совокупности):
+      * САМО-ЯКОРЬ по форме ФИО: фамилия + имя/отчество ИЛИ фамилия + инициалы —
+        структурно однозначная запись человека (99.7% ФИО корпуса, замер этапа B);
+      * ГОЛАЯ фамилия анкорится ТОЛЬКО при внешнем маркере: «гражданин/гражданка/гр.»,
+        должность рядом, «в лице …, действующего…», ИП, соседний ИНН-12/СНИЛС физлица.
+    Безъякорная одиночная фамилия («…и Иванов подписал…») СОЗНАТЕЛЬНО пропускается
+    (класс Aprime-1 для PER) — precision важнее recall.
+    """
+
+    entity_type = "PERSON"
+
+    def search_view(self, seg):
+        return per_search_view(seg)
+
+    def detect(self, seg, norm, low, omap, requisites) -> list:
+        req_phys = [
+            (ns, ne) for (ns, ne, kind, dc) in requisites
+            if kind == "SNILS" or (kind == "INN" and dc == 12)
+        ]
+        anchors: list[Anchor] = []
+        tokens = list(_WORD_RE.finditer(norm))
+        if not tokens:
+            return anchors
+        npar = [_nameparts(t.group(0)) for t in tokens]
+
+        seen_spans: set = set()
+        for i, t in enumerate(tokens):
+            if "surn" not in npar[i]:
+                continue
+            lo, hi = _fio_run(norm, tokens, npar, i)
+            key, si = _surname_key(tokens, npar, lo, hi)
+            if key is None:
+                continue
+            s, e = _fio_span(norm, tokens, lo, hi)
+            if (s, e) in seen_spans:
+                continue
+            seen_spans.add((s, e))
+
+            # Адресный тип-маркер слева («ул. Пушкина», «ш. Гагарина») — это улица-
+            # однофамилец, не человек: PER-якорь не строим (коллизия с ADDRESS, этап C).
+            if _addr_type_left(low, s):
+                continue
+
+            # доказательства
+            ev = set()
+            real_words = sum(1 for j in range(lo, hi + 1)
+                             if not _is_initial(tokens[j].group(0)))
+            has_init = any(_is_initial(tokens[j].group(0)) for j in range(lo, hi + 1))
+            has_given = any(("name" in npar[j] or "patr" in npar[j])
+                            for j in range(lo, hi + 1))
+            # само-якорь: фамилия + имя/отчество, либо фамилия + инициалы
+            if (real_words >= 2 and has_given) or has_init:
+                ev.add("fullname")
+
+            left = low[max(0, s - 40):s]
+            if _PER_GRAZHD_RE.search(left):
+                ev.add("grazhd")
+            if _PER_ROLE_RE.search(left):
+                ev.add("role")
+            if _PER_IP_RE.search(left):
+                ev.add("ip")
+            if _PER_VLICE_RE.search(left):
+                ev.add("vlice")
+            elif _PER_ACTING_RE.match(low[e:e + 30]) and \
+                    re.search(r"(?i)в\s+лице\b", low[max(0, s - 60):s]):
+                ev.add("vlice")
+            # соседний реквизит физлица (в том же сегменте, окно 40 симв. по обе стороны)
+            for (rns, rne) in req_phys:
+                if abs(rns - e) <= 40 or abs(s - rne) <= 40:
+                    ev.add("req")
+                    break
+
+            if not ev:
+                continue   # голая фамилия без маркера — пропускаем (Aprime-1 PER)
+
+            anchors.append(Anchor(
+                seg.id, s, e, key, norm[s:e].strip(), ev, len(ev),
+            ))
+
+            # ВТОРИЧНЫЙ ключ (имя, отчество) от УВЕРЕННОГО полного ФИО (фамилия+имя+
+            # отчество): нужен, когда продолжение ФИО оторвано в СОСЕДНИЙ сегмент
+            # («…Сидоров» | «Михаил Михайлович» — cross-segment split, вне области
+            # Entity.spans). Тогда проход 2 накрывает осиротевшее «Имя Отчество» по
+            # этому ключу того же человека. Структурно (без словаря имён), внутри
+            # документа. Регистрируется ТОЛЬКО от полной формы — не от голого имени.
+            name_lemma = patr_lemma = None
+            for j in range(lo, hi + 1):
+                if "name" in npar[j] and name_lemma is None:
+                    name_lemma = _lemma_first(tokens[j].group(0))
+                if "patr" in npar[j] and patr_lemma is None:
+                    patr_lemma = _lemma_first(tokens[j].group(0))
+            if name_lemma and patr_lemma and "surn" in npar[si]:
+                anchors.append(Anchor(
+                    seg.id, s, e, (name_lemma, patr_lemma),
+                    norm[s:e].strip(), ev | {"namepatr"}, len(ev),
+                ))
+        return anchors
+
+    def expand_match(self, norm, low, tokens, npar, i, klen):
+        """Проход 2: вокруг совпавшей фамилии собрать СВЯЗНЫЙ спан ФИО целиком —
+        косвенный падеж («Морозовой Анне Николаевне») одним спаном (закрывает PER-B)."""
+        lo, hi = _fio_run(norm, tokens, npar, i)
+        return _fio_span(norm, tokens, lo, hi)
+
+    def guard(self, norm, low, s, e) -> bool:
+        """Коллизия «фамилия-омоним обычного слова» (Мороз/Зима). Точность важнее
+        полноты. Метим вхождение уже ЗАРЕГИСТРИРОВАННОГО человека, если:
+          * оно начинается с ЗАГЛАВНОЙ (строчное «мороз» в середине — обычное слово);
+          * И это не одиночная заглавная в начале предложения без имени рядом.
+        Расширенный проходом-2 спан (фамилия+имя/инициал) — само по себе второй
+        признак, поэтому многословный спан метим всегда."""
+        if not norm[s:s + 1].isupper():
+            return False
+        # адресный тип-маркер слева — улица-однофамилец, не человек (коллизия ADDRESS)
+        if _addr_type_left(low, s):
+            return False
+        # многословный спан (есть пробел внутри) — форма ФИО, метим
+        if " " in norm[s:e].strip() or "." in norm[s:e]:
+            return True
+        at_start = OrgAnchorDetector._at_sentence_start(norm, s)
+        return not at_start
+
+
 # --------------------------------------------------------------------------- #
 #                               Движок                                         #
 # --------------------------------------------------------------------------- #
@@ -566,27 +891,16 @@ def _digit_count(text: str) -> int:
     return len(_NUM_RE.findall(text))
 
 
-def _inn_ogrn_norm_by_seg(regex_entities, doc):
-    """Для каждого сегмента — позиции НАЧАЛА валидированных реквизитов ЮРЛИЦА в
-    координатах ПОИСКОВОГО ПРЕДСТАВЛЕНИЯ ЯКОРЯ (anchor_search_view — та же система
-    координат, в которой движок ищет name-run слева от реквизита): ИНН из 10 цифр
-    и ОГРН из 13 цифр. 12-значный ИНН и 15-значный ОГРНИП (физлицо/ИП) исключены."""
+def _requisites_src_by_seg(regex_entities):
+    """Реквизиты (ИНН/ОГРН/СНИЛС) в ИСХОДНЫХ координатах сегмента: (src_s, src_e,
+    kind, digit_count). В координаты поискового вида КОНКРЕТНОГО детектора переводит
+    движок (у ORG и PER разные виды, поэтому единой norm-координаты нет)."""
     out: dict[str, list] = {}
-    seg_by_id = {s.id: s for s in doc.segments}
     for e in regex_entities or []:
-        if e.entity_type not in ("INN", "OGRN"):
+        if e.entity_type not in ("INN", "OGRN", "SNILS"):
             continue
         dc = _digit_count(e.original_text)
-        if e.entity_type == "INN" and dc != 10:
-            continue
-        if e.entity_type == "OGRN" and dc != 13:
-            continue
-        seg = seg_by_id.get(e.segment_id)
-        if seg is None:
-            continue
-        _search, omap = anchor_search_view(seg)
-        ns, _ne = src_to_norm(omap, e.start, e.end)
-        out.setdefault(e.segment_id, []).append((ns, e.entity_type))
+        out.setdefault(e.segment_id, []).append((e.start, e.end, e.entity_type, dc))
     return out
 
 
@@ -598,55 +912,89 @@ class AnchorEngine:
         self.detectors = detectors
 
     def run(self, doc: SourceDocument, regex_entities=None) -> list[Entity]:
-        inn_by_seg = _inn_ogrn_norm_by_seg(regex_entities, doc)
+        req_src_by_seg = _requisites_src_by_seg(regex_entities)
         registry = Registry()
+        # один детектор на тип — для прохода 2 (тип ключа арбитрируется реестром,
+        # детектор выбирается по ПОБЕДИВШЕМУ типу, не по тому, кто первый нашёл).
+        det_by_type = {d.entity_type: d for d in self.detectors}
 
-        # общий кеш поискового вида (anchor_search_view, этап A'-1) на сегмент
-        views = {}
+        # Поисковый вид — СВОЙ у каждого детектора (ORG вырезает \n, PER заменяет
+        # пробелом). Кэш по (seg_id, det.entity_type).
+        view_cache: dict[tuple, tuple] = {}
+
+        def view_for(det, seg):
+            k = (seg.id, det.entity_type)
+            v = view_cache.get(k)
+            if v is None:
+                norm, omap = det.search_view(seg)
+                v = (norm, norm.lower(), omap)
+                view_cache[k] = v
+            return v
+
+        def reqs_for(det, seg, omap):
+            out = []
+            for (ss, se, kind, dc) in req_src_by_seg.get(seg.id, []):
+                ns, ne = src_to_norm(omap, ss, se)
+                out.append((ns, ne, kind, dc))
+            return out
+
+        entities: list[Entity] = []
+        # барьеры эмита — ОБЩИЕ для всех типов, но в РАЗНЫХ координатах у ORG и PER.
+        # Храним занятые спаны в ИСХОДНЫХ координатах (общий язык) + переводим при
+        # проверке пересечения.
+        emitted_src: dict[str, list] = {}     # seg_id -> [(src_s,src_e)]
+
+        # --- PASS 1a: СОБИРАЕМ все якоря (по всем детекторам, по всем сегментам) ---
+        collected: list[tuple] = []   # (seg, det, norm, omap, Anchor)
         for seg in doc.segments:
             if not seg.text:
                 continue
-            norm, omap = anchor_search_view(seg)
-            views[seg.id] = (norm, norm.lower(), omap)
-
-        entities: list[Entity] = []
-        emitted_spans: dict[str, list] = {}   # seg_id -> [(ns,ne)] уже помеченные
-
-        # --- PASS 1: якоря ---
-        detector_by_key: dict[tuple, AnchorDetector] = {}
-        for seg in doc.segments:
-            if seg.id not in views:
-                continue
-            norm, low, omap = views[seg.id]
-            inn_ogrn = inn_by_seg.get(seg.id, [])
             for det in self.detectors:
-                for a in det.detect(seg, norm, low, omap, inn_ogrn):
-                    registry.add(a.core_key, det.entity_type, a.canonical,
-                                 a.evidence, a.confidence)
-                    detector_by_key[a.core_key] = det
-                    self._emit(entities, emitted_spans, seg, norm, omap,
-                               a.span_start, a.span_end, det.entity_type)
+                norm, low, omap = view_for(det, seg)
+                reqs = reqs_for(det, seg, omap)
+                for a in det.detect(seg, norm, low, omap, reqs):
+                    collected.append((seg, det, norm, omap, a))
+
+        # --- PASS 1b: АРБИТРАЖ ТИПОВ В РЕЕСТРЕ (один раз, порядко-независимо) ---
+        # Сортируем по убыванию уверенности, чтобы сильнейшее доказательство задало
+        # тип ключа независимо от порядка сегментов; при равной силе ORG вперёд PER
+        # (структурный ORG «Восход» не перетипируется в PER — инвариант п.4 ТЗ).
+        _type_rank = {"ORG": 0, "PERSON": 1}
+        collected.sort(key=lambda c: (-c[4].confidence, _type_rank.get(c[1].entity_type, 9)))
+        for (seg, det, norm, omap, a) in collected:
+            registry.add(a.core_key, det.entity_type, a.canonical, a.evidence, a.confidence)
+
+        # --- PASS 1c: ЭМИТ спанов якорей ПОБЕДИВШЕГО типа ---
+        for (seg, det, norm, omap, a) in collected:
+            rec = registry.get(a.core_key)
+            if rec is None or rec.entity_type != det.entity_type:
+                continue   # этот якорь проиграл арбитраж — эмитит победивший тип
+            self._emit(entities, emitted_src, seg, norm, omap,
+                       a.span_start, a.span_end, det.entity_type)
 
         # --- PASS 2: падежные вхождения по реестру + guard ---
         for seg in doc.segments:
-            if seg.id not in views:
+            if not seg.text:
                 continue
-            norm, low, omap = views[seg.id]
-            tokens = list(_WORD_RE.finditer(norm))
-            if not tokens:
-                continue
-            lemsets = [_lemma_set(t.group(0)) for t in tokens]
-            for rec in registry.records():
-                det = detector_by_key.get(rec.key)
-                if det is None:
+            for det in self.detectors:
+                recs = [r for r in registry.records() if r.entity_type == det.entity_type]
+                if not recs:
                     continue
-                self._match_key(entities, emitted_spans, seg, norm, low, omap,
-                                tokens, lemsets, rec, det)
+                norm, low, omap = view_for(det, seg)
+                tokens = list(_WORD_RE.finditer(norm))
+                if not tokens:
+                    continue
+                lemsets = [_lemma_set(t.group(0)) for t in tokens]
+                npar = [_nameparts(t.group(0)) for t in tokens] \
+                    if det.entity_type == "PERSON" else None
+                for rec in recs:
+                    self._match_key(entities, emitted_src, seg, norm, low, omap,
+                                    tokens, lemsets, npar, rec, det)
 
         return entities
 
-    def _match_key(self, entities, emitted_spans, seg, norm, low, omap,
-                   tokens, lemsets, rec, det):
+    def _match_key(self, entities, emitted_src, seg, norm, low, omap,
+                   tokens, lemsets, npar, rec, det):
         klen = len(rec.key)
         n = len(tokens)
         i = 0
@@ -655,27 +1003,27 @@ class AnchorEngine:
             if not ok:
                 i += 1
                 continue
-            s = tokens[i].start()
-            e = tokens[i + klen - 1].end()
-            if self._covered(emitted_spans, seg.id, s, e):
+            s, e = det.expand_match(norm, low, tokens, npar, i, klen)
+            src_s, src_e = norm_to_src(omap, s, e)
+            if self._covered(emitted_src, seg.id, src_s, src_e):
                 i += klen
                 continue
             if not det.guard(norm, low, s, e):
                 i += klen
                 continue
-            self._emit(entities, emitted_spans, seg, norm, omap, s, e,
+            self._emit(entities, emitted_src, seg, norm, omap, s, e,
                        rec.entity_type)
             i += klen
 
     @staticmethod
-    def _covered(emitted_spans, seg_id, s, e):
-        for (a, b) in emitted_spans.get(seg_id, ()):
+    def _covered(emitted_src, seg_id, s, e):
+        for (a, b) in emitted_src.get(seg_id, ()):
             if max(a, s) < min(b, e):
                 return True
         return False
 
     @staticmethod
-    def _emit(entities, emitted_spans, seg, norm, omap, ns, ne, entity_type):
+    def _emit(entities, emitted_src, seg, norm, omap, ns, ne, entity_type):
         # обрезаем крайние пробелы/кавычки-скобки норм-спана
         while ns < ne and norm[ns] in " \t":
             ns += 1
@@ -684,6 +1032,10 @@ class AnchorEngine:
         if ns >= ne:
             return
         src_start, src_end = norm_to_src(omap, ns, ne)
+        # межтиповая проверка занятости — в ИСХОДНЫХ координатах (у ORG и PER разные
+        # norm-виды, общий язык — src). Иначе ORG- и PER-спаны не «видят» друг друга.
+        if AnchorEngine._covered(emitted_src, seg.id, src_start, src_end):
+            return
         entities.append(Entity(
             id=str(uuid.uuid4()),
             segment_id=seg.id,
@@ -694,7 +1046,7 @@ class AnchorEngine:
             detector="ner",
             confidence=1.0,
         ))
-        emitted_spans.setdefault(seg.id, []).append((ns, ne))
+        emitted_src.setdefault(seg.id, []).append((src_start, src_end))
 
 
 # --------------------------------------------------------------------------- #
@@ -758,7 +1110,16 @@ def _entity_lemmas(e):
 #                            Публичная функция                                #
 # --------------------------------------------------------------------------- #
 def detect_org(doc: SourceDocument, regex_entities=None):
-    """Возвращает список ORG-сущностей (якоря + падежные вхождения). Тип — один
-    (ORG), движок типо-параметричен для будущих PER/ADDRESS."""
+    """Только ORG-сущности (якоря + падежные вхождения). Оставлена для обратной
+    совместимости отдельных тестов ORG; боевой конвейер зовёт detect_structural."""
     engine = AnchorEngine([OrgAnchorDetector()])
+    return engine.run(doc, regex_entities=regex_entities)
+
+
+def detect_structural(doc: SourceDocument, regex_entities=None):
+    """Этап B: ORG + PER одним движком (один реестр → взаимный арбитраж типов п.4:
+    «Восход» не станет PER, зарегистрированная фамилия не станет ORG). Возвращает
+    смешанный список ORG- и PERSON-сущностей. ORG и PER взаимно НЕ поглощаются
+    (emitted_spans движка), оба служат барьером адресу (см. detect_ner)."""
+    engine = AnchorEngine([OrgAnchorDetector(), PerAnchorDetector()])
     return engine.run(doc, regex_entities=regex_entities)

@@ -418,6 +418,7 @@ def detect_ner(
     config_path: str,
     regex_entities: list[Entity] | None = None,
     org_entities: list[Entity] | None = None,
+    per_entities: list[Entity] | None = None,
 ) -> list[Entity]:
     """regex_entities — результат detect_regex, ЕСЛИ он уже посчитан вызывающим
     (нормативный путь: реквизиты дают «карту занятой территории» ДО расширения
@@ -428,7 +429,12 @@ def detect_ner(
     вызывающим (этап A': ORG теперь считается ДО detect_ner, см. shifrator.py). Это
     структурный барьер расширения адреса — закрывает A-4 (адрес поглощал обломок
     готового ORG, lease_0008). Без него расширение адреса просто не видит ORG вовсе
-    (Natasha-ORG в конфиге выключена, см. этап A)."""
+    (Natasha-ORG в конфиге выключена, см. этап A).
+
+    per_entities — структурные PER-сущности anchor_registry (этап B): такой же
+    безусловный барьер расширения адреса, что ORG. Natasha-PER в конфиге выключена
+    (structure-first PER), поэтому адрес больше не видит людей через NER — барьер
+    ставит готовый PER-спан, чтобы адрес не заходил на ФИО (подготовка к этапу C)."""
     ner_label_map, addr_types = _load_ner_config(config_path)
 
     # Карта regex-территории по сегментам: расширение адреса на неё не наступает.
@@ -443,6 +449,12 @@ def detect_ner(
     if org_entities:
         for e in org_entities:
             org_by_seg.setdefault(e.segment_id, []).append((e.start, e.end))
+
+    # Структурные PER-спаны (этап B) — тот же безусловный барьер, что ORG.
+    per_by_seg: dict[str, list[tuple[int, int]]] = {}
+    if per_entities:
+        for e in per_entities:
+            per_by_seg.setdefault(e.segment_id, []).append((e.start, e.end))
 
     entities: list[Entity] = []
 
@@ -503,22 +515,30 @@ def detect_ner(
             if loc_spans or has_marker:
                 # yargy — только здесь (окрестность хита), не по всему тексту
                 yargy_spans = _glue_address_matches(text, list(_addr_extractor(text)))
-                # Отсев yargy-ложняков на ФИО/названиях (перекрывают PER/ORG без LOC/маркера):
-                # иначе кластеризация затянула бы имя и метку в ADDRESS-токен.
-                yargy_spans = _filter_suspect_yargy(text, yargy_spans, ner_spans, loc_spans)
-                # Сам адрес подтверждают LOC и/или yargy (маркер — лишь триггер запуска):
-                # маркерные позиции в «сырьё» НЕ кладём, иначе список маркеров стал бы
-                # самостоятельным детектором. Расширение краёв использует маркеры как
-                # линейку, но стартует только от подтверждённых LOC/yargy-спанов.
-                # Барьеры расширения = regex-реквизиты + структурные ORG (anchor_registry,
-                # этап A'-4) + настоящие PER/ORG NER (не адресный хвост). regex/ORG хранятся
-                # в ИСХОДНЫХ координатах — приводим их к координатам норм-текста, в которых
-                # работает расширение адреса.
+                # Структурные ORG/PER-спаны (anchor_registry, этапы A/B) в координатах
+                # норм-текста — нужны и для ОТСЕВА yargy-ложняков (ниже), и как барьеры
+                # расширения. regex/ORG/PER хранятся в ИСХОДНЫХ координатах.
                 regex_src = regex_by_seg.get(segment.id, [])
                 regex_norm = [src_to_norm(offset_map, s, e) for s, e in regex_src]
                 org_src = org_by_seg.get(segment.id, [])
                 org_norm = [src_to_norm(offset_map, s, e) for s, e in org_src]
-                occupied = _address_barriers(text, ner_spans, regex_norm, org_norm)
+                per_src = per_by_seg.get(segment.id, [])
+                per_norm = [src_to_norm(offset_map, s, e) for s, e in per_src]
+                # Отсев yargy-ложняков на ФИО/названиях (перекрывают PER/ORG без LOC/
+                # маркера): иначе кластеризация затянула бы имя и метку в ADDRESS-токен.
+                # ЭТАП B: Natasha-PER/ORG выключены, поэтому ner_spans почти пуст —
+                # источник «занятых» ФИО/ORG-спанов теперь СТРУКТУРНЫЙ движок (per/org_norm).
+                # Без них yargy-ложняк на «Иванов» сшивается с реальным адресом и тянет
+                # метку «адрес:» в токен (регресс, вскрытый отключением Natasha-PER).
+                name_spans = list(ner_spans) + list(org_norm) + list(per_norm)
+                yargy_spans = _filter_suspect_yargy(text, yargy_spans, name_spans, loc_spans)
+                # Сам адрес подтверждают LOC и/или yargy (маркер — лишь триггер запуска):
+                # маркерные позиции в «сырьё» НЕ кладём, иначе список маркеров стал бы
+                # самостоятельным детектором. Расширение краёв использует маркеры как
+                # линейку, но стартует только от подтверждённых LOC/yargy-спанов.
+                occupied = _address_barriers(
+                    text, ner_spans, regex_norm, list(org_norm) + list(per_norm)
+                )
                 for start, end in _build_address_spans(
                     text, loc_spans + yargy_spans, occupied
                 ):

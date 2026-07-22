@@ -90,10 +90,7 @@ def _print_refusal(exc):
 
 def cmd_encrypt(path, config_path, allow_lossy=False):
     from extractor import extract
-    from regex_detector import detect_regex
-    from ner_detector import detect_ner
-    from anchor_registry import detect_org, suppress_conflicts
-    from syntax_compound import merge_compound_entities
+    from pipeline import run_detection
     from tokenizer import tokenize
     from session_store import save_session, default_storage_dir
     from ooxml_core import OoxmlError
@@ -123,27 +120,11 @@ def cmd_encrypt(path, config_path, allow_lossy=False):
         sys.exit(1)
 
     try:
-        # Реквизиты (regex) считаем ПЕРВЫМИ и передаём в detect_ner как «карту занятой
-        # территории»: расширение адреса не наступает на ИНН/ОГРН/счёт/телефон — иначе
-        # regex-хвост поглощается адресом и при разрешении пересечений адрес утекает
-        # открытым текстом (W2-D1). PER detect_ner защищает своими спанами сам.
-        regex_entities = detect_regex(doc, config_path)
-        # Этап A': ORG считается ДО detect_ner (не после) и передаётся туда как ещё
-        # один барьер расширения адреса (A-4) — иначе адресный детектор, работая
-        # без знания о структурном ORG, наступает на готовый ORG-спан и перетипирует
-        # его обломок в ADDRESS (lease_0008). Структурный движок (якорь+реестр+
-        # проход 2), Natasha-ORG выключена в конфиге. Арбитраж типов снимает Natasha
-        # PER/ADDRESS, ошибочно наложенные на ядро организации (тот же «Восход»,
-        # рвущийся на 3 типа).
-        org_entities = detect_org(doc, regex_entities=regex_entities)
-        ner_entities = detect_ner(
-            doc, config_path, regex_entities=regex_entities, org_entities=org_entities,
-        )
-        ner_entities = suppress_conflicts(org_entities, ner_entities)
-        entities = regex_entities + ner_entities + org_entities
-        # Волна 2, этап B: составные сущности «ORG + ФИО» (ИП Пирогова А.С.) —
-        # отдельный синтаксический проход ПОСЛЕ основной детекции, ДО токенизации.
-        entities = merge_compound_entities(doc, entities)
+        # ЕДИНЫЙ конвейер детекции (этап B, консолидация): порядок шагов живёт в
+        # pipeline.run_detection — та же функция, что зовут UI (app/core.py) и замер
+        # (run_measurement.py). Копии порядка в этом файле больше нет (устраняет класс
+        # UI-рассинхрона, см. src/pipeline.py).
+        entities = run_detection(doc, config_path)
         anon_text, final_entities = tokenize(doc, entities, config_path)
     except FileNotFoundError:
         print(f"Ошибка: конфиг не найден: {config_path}", file=sys.stderr)

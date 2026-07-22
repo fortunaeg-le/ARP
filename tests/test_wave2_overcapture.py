@@ -26,27 +26,19 @@ import os
 import pytest
 
 from models import SourceDocument, TextSegment
-from regex_detector import detect_regex
-from ner_detector import detect_ner
-from anchor_registry import detect_org, suppress_conflicts
-from syntax_compound import merge_compound_entities
+from pipeline import run_detection
 from tokenizer import tokenize
 
 _CFG = os.path.join(os.path.dirname(__file__), "..", "entity_types.yaml")
 
 
 def _anonymize(text: str):
-    # Этап A': ПОЛНЫЙ конвейер, включая структурный ORG-движок (detect_org) и арбитраж
-    # типов — как cmd_encrypt. detect_org считается ДО detect_ner и передаётся туда
-    # барьером расширения адреса (A-4) — иначе «ООО «Ромашка»» (Natasha-ORG выключена)
-    # не виден адресному расширению и over-capture'ится.
+    # Этап B: ЕДИНЫЙ боевой конвейер (pipeline.run_detection) — как cmd_encrypt/UI.
+    # Тест мерит ровно то, что видит пользователь (структурный ORG+PER, барьеры адреса,
+    # арбитраж типов, составные ИП+ФИО).
     seg = TextSegment(id="s0", text=text, source_type="txt_line", metadata={})
     doc = SourceDocument(segments=[seg], source_format="txt", source_path="<oc>")
-    rx = detect_regex(doc, _CFG)
-    org = detect_org(doc, regex_entities=rx)
-    ner = detect_ner(doc, _CFG, regex_entities=rx, org_entities=org)
-    ner = suppress_conflicts(org, ner)
-    ents = merge_compound_entities(doc, rx + ner + org)
+    ents = run_detection(doc, _CFG)
     anon, final = tokenize(doc, ents, _CFG)
     return anon, final
 

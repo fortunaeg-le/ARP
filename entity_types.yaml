@@ -7,9 +7,16 @@
 strict_zones: true
 
 entity_types:
+  # ЭТАП B (structure-first PER). Natasha-PER на прозе ВЫКЛЮЧЕНА (убран ner_label,
+  # как ORG на этапе A): NER-тэггер рвал косвенный падеж на два спана (PER-B) и давал
+  # ложные PER на родовых словах (Участник→PERSON). ФИО теперь даёт ТОЛЬКО
+  # src/anchor_registry.py (PerAnchorDetector: якорь по форме ФИО/должности/«в лице»/
+  # «гражданин»/ИНН-12/СНИЛС + проход 2 по лемме ФАМИЛИИ, косвенный падеж одним
+  # спаном). Безъякорная одиночная фамилия сознательно пропускается (класс Aprime-1).
+  # token_prefix оставлен — тип по-прежнему токенизируется.
   PERSON:
-    method: ner
-    ner_label: PER
+    method: anchor_registry
+    anchor_type: PER
     token_prefix: PERSON
   # ЭТАП A (structure-first ORG). Natasha-ORG на прозе ВЫКЛЮЧЕНА: убран ner_label,
   # поэтому _load_ner_config не кладёт ORG в ner_label_map — NER-тэггер ORG больше

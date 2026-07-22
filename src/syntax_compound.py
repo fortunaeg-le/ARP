@@ -171,7 +171,17 @@ def merge_compound_entities(doc: SourceDocument, entities: list[Entity]) -> list
                 continue
             if id(p) in consumed:
                 continue
-            if not _appos_links(tokens, (os_, oe), (p.start, p.end)):
+            linked = _appos_links(tokens, (os_, oe), (p.start, p.end))
+            if not linked and oent is None and _gap((os_, oe), (p.start, p.end)) <= 1:
+                # A-2: синтетическая ИП-форма (_SPELLED_ORG_RE) ВПЛОТНУЮ перед ФИО —
+                # структурная единица «ИП + ФИО». В сочинительной конструкции
+                # («Стороны: ИП Иванов и ООО «Ромашка»») парсер цепляет ФИО appos'ом к
+                # КОРНЮ предложения, не к «ИП», поэтому appos-проверка не срабатывает.
+                # Непосредственное примыкание аббревиатуры-формы к имени однозначно
+                # (это НЕ ролевое «Свидетель Иванов …»: там ORG — реальная сущность,
+                # oent is not None, и для неё по-прежнему требуется appos-направление).
+                linked = True
+            if not linked:
                 continue
 
             start = min(os_, p.start)

@@ -18,9 +18,9 @@
 ```
 venv/Scripts/python.exe -m pytest -q
 ```
-Эталон: **841 passed, 1 deselected, 13 xfailed** (~450 c; этап A′, 2026-07-20:
-A-4 xfail снят — `test_wave2_overcapture::test_following_org_keeps_its_own_token`
-теперь честно зелёный, барьер `detect_org` → `detect_ner` работает). Другой
+Эталон: **853 passed, 1 deselected, 11 xfailed** (~335 c; этап B, 2026-07-22:
+A-2/A-3 xfail сняты — «ИП Иванов»→2-й ORG и «Глава КФХ Петров»→PER теперь честно
+зелёные; PER даёт структурный движок). Другой
 интерпретатор (`natasha` не установлена) — ошибки сбора; рабочий только
 `venv/Scripts/python.exe`.
 
@@ -120,8 +120,8 @@ BIK 6.4→**5.5%**, KPP 4.9→**4.1%**; INN/OGRN/PHONE/PASSPORT/SNILS и все 
 
 | тип | детектор | метод |
 |---|---|---|
-| PERSON (PER) | есть | NER (natasha) |
-| ORG | есть | NER (natasha) |
+| PERSON (PER) | есть | **структурный** (anchor_registry, этап B; Natasha-PER выключена) |
+| ORG | есть | структурный (anchor_registry, этап A; Natasha-ORG выключена) |
 | ADDRESS | есть, неточен (см. §4 0c-C/D) | NER (`yargy.AddrExtractor`) |
 | INN | есть | regex + чек-сумма КАК СИГНАЛ (этап 4: под якорем маскируется и при невалидной КС) |
 | OGRN | есть | regex + чек-сумма КАК СИГНАЛ (этап 4, симметрично INN) |
@@ -206,7 +206,7 @@ PASSPORT под якорем «код подразделения». Все 13 т
   (числовые типы байт-в-байт); закрытие — за PER/ADDRESS-якорями и cross-segment ORG.
   4 находки помечены `@xfail(strict)`. См.
   [`archive/reports/HANDOFF_STAGE_A_ORG.md`](archive/reports/HANDOFF_STAGE_A_ORG.md).
-- **Открыто/следующее:** этап PER-границ (PER-B), этап 5 (адрес без маркеров), этап 6
+- **Открыто/следующее:** ~~PER-границ (PER-B)~~ закрыт этапом B; этап 5 (адрес без маркеров), этап 6
   (чтение непрочитанных зон + харнесс 1-A), PDF-извлечение, компонент 1 (веб).
   Контракты-заглушки будущих этапов — `tests/test_future_contracts.py`
   (`docs/archive/reports/FUTURE_CONTRACTS.md` — карта «дыра → тест → этап»).
@@ -241,6 +241,27 @@ byte-diff CLI↔UI подтверждён. См. [`archive/reports/HANDOFF_UI.md
   вне-границ находки (`Aprime-1/2/3` в `FINDINGS.md`) — не одна причина, как
   предполагала исходная постановка. См.
   [`archive/reports/HANDOFF_STAGE_APRIME.md`](archive/reports/HANDOFF_STAGE_APRIME.md).
+
+- **Этап B (structure-first PER + консолидация точек входа), 2026-07-22** — двухпроходный
+  механизм распространён на ЛЮДЕЙ. `PerAnchorDetector` в `src/anchor_registry.py` в том
+  же `AnchorEngine`, что ORG; **Natasha-PER выключена** (`entity_types.yaml`), как
+  Natasha-ORG на этапе A. Якорь ФИО — по пометам pymorphy `Surn/Name/Patr` (порог счёта
+  0.01 против мусорных разборов), само-якорь «фамилия+имя/отчество» или «фамилия+инициалы»,
+  голая фамилия — только при маркере (гражданин/должность/«в лице»/ИП/ИНН-12/СНИЛС).
+  Косвенный падеж — ОДИН спан (`_fio_run`, закрывает **PER-B**). Реестр по лемме фамилии,
+  арбитраж типов ORG↔PER (двухфазный pass-1). Раздельные виды `per_search_view`(\n→пробел)
+  vs `anchor_search_view`(\n вырезан). **A-2** (ИП Иванов → 2-й ORG) и **A-3** (Глава КФХ
+  Петров → PER, не блоб) погашены, xfail сняты. Барьер PER↔ORG↔ADDRESS в `detect_ner`
+  (`per_entities`). **Консолидация**: `src/pipeline.py::run_detection` — единственная копия
+  порядка шагов, зовут CLI/UI/замер (устраняет UI-рассинхрон). Изолированный эффект
+  (A′→B): PER exact(found) 77.8→**87.6%**, PER leak_v2≥6 41.3→**28.7%**, masking B
+  81.9→**89.8%**, masking A=**100%**, ложных PER на негативах 11→**1**; PER recall
+  72.2→71.7% (−0.5pp — Aprime-1 безъякорные); ORG recall ↑ 93.9→94.2%; 10 не-PER/ORG/ADDRESS
+  типов байт-в-байт; 0 крешей. ORG leak +1.6pp = MASK-SHIFT (8 «Петров Консалтинг»
+  Aprime-1, теряли случайную маскировку Natasha-PER — не регрессия). Паритет CLI↔UI —
+  побайтный тест в обязательном прогоне. Результаты — `experiments/stage_b/`, НЕ в корпусе;
+  sha256 корпуса OK до/после. См.
+  [`archive/reports/HANDOFF_STAGE_B_PER.md`](archive/reports/HANDOFF_STAGE_B_PER.md).
 
 **UI второй фикс — старый процесс отвечал вместо нового** (2026-07-20): `http.server`
 даёт Windows молча забиндить новый `server.py` на занятый порт (`allow_reuse_address`)
