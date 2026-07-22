@@ -1,0 +1,49 @@
+Подвыборка: 324/324 документов
+
+тип             n |   recall |      leak6 |   FP-нег
+PER          3420 |    74.1% |      29.2% |        1
+ORG           462 |    94.2% |      20.6% |        1
+ADDRESS      1308 |    87.5% |      31.0% |        1
+INN          1044 |    82.6% |      14.3% |        0
+OGRN          420 |    89.5% |       9.0% |        5
+KPP           246 |    91.9% |       7.3% |        7
+ACCOUNT       732 |    83.2% |      15.4% |        0
+BIK           453 |    91.2% |       7.3% |        0
+PHONE        1218 |    57.6% |      32.3% |        0
+EMAIL         714 |    81.9% |      15.7% |        0
+PASSPORT      912 |    69.6% |      30.9% |        0
+SNILS         228 |    73.7% |      17.1% |        0
+BIRTHDATE     228 |    74.1% |      25.9% |        0
+crashes: 0  fp_total: 650
+
+ADDRESS: n=1308 found=1145 exact(found)=745 (65.1%)
+round-trip fails: 44 ['agency_0002', 'agency_0002__m1337_invisible', 'agency_0002__m2718_digit_spaces', 'agency_0010', 'agency_0010__m1337_case', 'agency_0010__m2718_linebreak', 'cession_0002__m1337_linebreak', 'labor_0006__m2718_linebreak', 'labor_0008__m1337_linebreak', 'lease_0006']
+
+Ложные ADDRESS (fp on non-ADDRESS):
+  agency_0006__m2718_homoglyph   'Паспорт 08 О9 9545О2, выдан ОУФМС России по' neg=None cross=PASSPORT
+  cession_0005__m1337_invisible  '\u202f2275'                                  neg=None cross=INN
+  labor_0002__m1337_combo        'Паспорт 7І\u202f 20 32\u200d5868, выдан ТП № 2 ОУФМС ' neg=None cross=PASSPORT
+  labor_0010                     'Д.Ю.Мельник ИНН'                             neg=None cross=PER
+  labor_0010__m1337_cell_split   'Д.Ю.Мельник ИНН'                             neg=None cross=PER
+  labor_0010__m2718_invisible    'Д.Ю.Мельни\u200bк ИНН'                       neg=None cross=PER
+  lease_0006__m1337_homoglyph    'Паспорт 18 І5 3Ч5615, выдан ОВД «Тропарёво»' neg=None cross=PASSPORT
+  loan_0002__m2718_digit_spaces  'С.А. Лавочкина ИНН'                          neg=None cross=ORG
+  loan_0002__m2718_digit_spaces  'КПП'                                         neg=None cross=None
+  loan_0006__m2718_homoglyph     'Паспорт 76 І8 74І82І, выдан ТП № 2 ОУФМС Ро' neg=None cross=PASSPORT
+  loan_0006__m2718_homoglyph     'Паспорт 3І 02 7987О7, выдан ТП № 2 ОУФМС Ро' neg=None cross=PASSPORT
+  sale_0006__m1337_invisible     '\xa02638'                                    neg=None cross=INN
+  services_0008__m2718_combo     'Паспорт 9\u200d9 Об \u200d550262, вЫдАн tП № 2 OуФм\u2060с' neg=None cross=PASSPORT
+  works_0007__m1337_combo        'с ГОСТ 7.32-2017, \u2060АрТиКyЛ RM-8918-60'  neg=стандарт — не ПДн cross=None
+  ИТОГО ложных ADDRESS: 14
+
+Ложные PER (fp on non-PER):
+  agency_0008                    'Гагарина'                                    neg=None cross=ADDRESS
+  agency_0008__m2718_case        'ГАГАРИНА'                                    neg=None cross=ADDRESS
+  labor_0003__m2718_case         'Г. СЕРГИЕВ'                                  neg=None cross=ADDRESS
+  labor_0006__m2718_linebreak    'Полев\nая'                                   neg=None cross=ADDRESS
+  labor_0010__m2718_invisible    'Баум\xa0ана'                                 neg=None cross=ADDRESS
+  lease_0010__m1337_linebreak    'УСЛОВ\nИЯ'                                   neg=None cross=None
+  services_0012__m2718_case      'ГАГАРИНА'                                    neg=None cross=ADDRESS
+  services_0014__m2718_linebreak 'московскому време'                           neg=часовой пояс — не ПДн cross=None
+  works_0008__m1337_combo        'Ш. \u200bПУШКИНA'                            neg=None cross=ADDRESS
+  ИТОГО ложных PER: 9

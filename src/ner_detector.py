@@ -79,6 +79,25 @@ _ADDR_ANCHOR_RE = re.compile(
 # Кластеризация: два адресных куска склеиваются в один, если разрыв между ними не
 # длиннее — закрывает многословные названия улиц, которые грамматика yargy рвёт на
 # части («г. СПб» ‖ «наб. реки Фонтанки» ‖ «д. 15»).
+# ЭТАП C: БОЛЕЕ ШИРОКИЙ триггер ЗАПУСКА yargy на сегменте (в дополнение к LOC и
+# _ADDR_ANCHOR_RE). Раньше сегмент без LOC-хита и без маркера НЕ отдавался yargy —
+# адреса «А/Я 27, Г. ОДИНЦОВО, 143000» (ALL-CAPS город, LOC молчит) и «г. Казань,
+# 420111» (город + индекс, _ADDR_ANCHOR_RE требует СТРОЧНУЮ после «г.») не сеялись.
+# Теперь строгий ЯКОРНЫЙ гейт (_addr_span_strong) фильтрует ложные раскрытия, поэтому
+# сеять можно шире без роста FP: а/я, «г./город» ЛЮБОГО регистра, 6-значный индекс.
+_ADDR_SEED_RE = re.compile(
+    r"(?i)(?:а\s*/\s*я\s*\d"
+    r"|\bг(?:ор)?\.\s*[а-яёa-z]|\bгород\s+[а-яёa-z]"
+    r"|(?<!\d)\d{6}(?!\d))"
+)
+
+
+def _addr_has_seed(text: str) -> bool:
+    """Стоит ли запускать yargy на сегменте: сильный маркер места ИЛИ широкий
+    seed-триггер (а/я, город любого регистра, индекс). Гейт отфильтрует лишнее."""
+    return _ADDR_ANCHOR_RE.search(text) is not None or _ADDR_SEED_RE.search(text) is not None
+
+
 _ADDR_CLUSTER_GAP = 35
 # Предел консервативного расширения края в ОДНУ сторону. Типовой хвост адреса
 # («, д. 5, кв. 12, стр. 1» / «, помещение 4») короче — предел не даёт расширению
@@ -93,13 +112,284 @@ _ADDR_MARKER_WORDS = frozenset(
     "ул улица пр пр-т пр-кт пркт проспект пер переулок наб набережная ш шоссе б-р бульвар "
     "проезд линия тупик аллея пл площадь квартал тракт "
     "дом корп корпус к стр строение кв квартира оф офис пом помещение лит литера влд "
-    "владение зд здание "
+    "владение зд здание уч участок тер снт днт "
     "км рф россия федерация а/я".split()
 )
 
 # Один «токен» при расширении — максимальный кусок без пробелов и запятых.
 _ADDR_TOKEN_FWD_RE = re.compile(r"[\s,]*([^\s,]+)")
 _ADDR_TOKEN_RE = re.compile(r"[^\s,]+")
+
+# --- Этап C: ЯКОРНАЯ модель адреса (строгий якорь + ограниченный захват) ---------
+#
+# Адрес НЕ гуляет по падежам (в отличие от ORG/PER) — он встречается 1-2 раза почти
+# дословно. Поэтому НЕ реестр+проход2, а СТРОГИЙ ЯКОРЬ: адресный спан-кандидат
+# (из LOC/yargy) ПРИНИМАЕТСЯ, только если несёт сильный адресный якорь, и его края
+# ОБРЕЗАЮТСЯ по стоп-словам/меткам/границе предложения. Это укрощает жадный yargy:
+#   * «3. Споры между Покупателем и Меркурием…» — нет якоря (только «города Москвы» —
+#     локальность-одиночка) → НЕ адрес;
+#   * «Покупателю»/«Российская Федерация»/«Реквизиты» — нет якоря → НЕ адрес;
+#   * «…выдан ОВД … района города Москвы …» — только локальность (район+город), нет
+#     улицы/дома/индекса → НЕ адрес (паспортный хвост не тянется, БЕЗ стоп-словаря);
+#   * «по адресу: 630099, …, кв. 5» — якорь есть, но «по адресу:» обрезается слева.
+#
+# КАТЕГОРИИ МАРКЕРОВ. Локальность (город/район/область/страна) САМА ПО СЕБЕ адрес НЕ
+# анкорит — иначе одиночный топоним («г. Москва») и паспортный «район города Москвы»
+# метились бы адресом. Реальный адрес субъекта несёт УЛИЦУ, ДОМ или ИНДЕКС.
+_ADDR_STREET_MK = frozenset(
+    "ул улица пер переул переулок пр прт пр-т пр-кт пркт проспект наб набережн набережная "
+    "ш шоссе бр б-р бульвар проезд линия туп тупик аллея пл площадь квартал тракт".split()
+)
+_ADDR_PREMISE_MK = frozenset(
+    "дом корп корпус стр строен строение кв квартира оф офис пом помещен помещение "
+    "влд владение зд здание лит литера уч участок".split()
+)
+_ADDR_LOCALITY_MK = frozenset(
+    "г гор город пос пгт рп дер деревня село ст станица хутор мкр мкрн мкр-н "
+    "обл область кра край респ республика рн р-н район ао округ тер".split()
+)
+# Однобуквенные/двухбуквенные маркеры распознаём ТОЛЬКО в абревиатурной форме «с точкой»
+# («г.», «д.», «ш.», «к.») — иначе предлог «с»/«в»/«к» посреди прозы стал бы «маркером».
+_ADDR_SHORT_MK = frozenset("г с п х ш д к".split())
+# Токен: НОМЕР-дома (цифры + дробь/дефис + опц. буквенный суффикс: «132/3», «22-й»,
+# «6А», «32а») ИЛИ слово (буквы + внутр. дефис, БЕЗ точки). Точка — разделитель:
+# «ул.Ленина» без пробела распадается на «ул»+«Ленина» (форма-аббревиатура), а
+# принадлежность точки маркеру определяется по СЛЕДУЮЩЕМУ символу (had_dot).
+_ADDR_WORD_RE = re.compile(r"\d[\d/\-]*[а-яёa-zА-ЯЁA-Z]{0,3}|[^\W\d_][\w\-]*", re.UNICODE)
+_ADDR_INDEX_RE = re.compile(r"(?<!\d)\d{6}(?!\d)")
+_ADDR_HOUSENUM_RE = re.compile(r"^\d{1,4}(?:[/\-][\dа-яёa-z]{1,4})?[а-яёa-z]{0,2}$", re.I)
+
+
+def _addr_marker_cat(tok: str, next_is_digit: bool, had_dot: bool):
+    """Категория адресного маркера токена: 'street'|'premise'|'locality'|None.
+    «д.» перед числом — дом (premise), «д.» перед именем — деревня (locality); «к.»
+    перед числом — корпус. Короткие маркеры требуют точку СЛЕДОМ (форма «г.»)."""
+    core = tok.strip(" \t.,;:()«»\"'").lower().replace(".", "")
+    if not core:
+        return None
+    if core in _ADDR_SHORT_MK and not had_dot:
+        return None                      # «с»/«в»/«ш» без точки — не маркер
+    if core == "д":
+        return "premise" if next_is_digit else "locality"
+    if core == "к":
+        return "premise" if next_is_digit else None
+    if core in _ADDR_STREET_MK:
+        return "street"
+    if core in _ADDR_PREMISE_MK:
+        return "premise"
+    if core in _ADDR_LOCALITY_MK:
+        return "locality"
+    return None
+
+
+def _addr_scan_tokens(text: str, s: int, e: int):
+    """Токенизирует [s,e) для якоря: список (tok_start, tok_end, word, cat, is_num,
+    is_cap). cat — категория маркера (или None), is_num — токен-число, is_cap —
+    слово-ТОПОНИМ: Titlecase (первая заглавная, НЕ целиком заглавное). ALL-CAPS
+    аббревиатуры («ГОСТ», «Р», «ОВД») is_cap НЕ считаются — иначе «ГОСТ Р 52044»
+    прошёл бы как «Город Улица Дом»."""
+    toks = list(_ADDR_WORD_RE.finditer(text, s, e))
+    out = []
+    for k, m in enumerate(toks):
+        w = m.group(0)
+        nxt = toks[k + 1].group(0) if k + 1 < len(toks) else ""
+        next_is_digit = bool(nxt) and nxt[0].isdigit()
+        had_dot = m.end() < len(text) and text[m.end()] == "."
+        cat = _addr_marker_cat(w, next_is_digit, had_dot)
+        is_num = w[0].isdigit()
+        core = w.strip(" \t.,;:()«»\"'")
+        is_cap = (bool(core) and core[0].isupper() and not core.isupper()
+                  and cat is None and not is_num)
+        out.append((m.start(), m.end(), w, cat, is_num, is_cap))
+    return out
+
+
+_ADDR_HOUSE_GAP = frozenset(" \t.,")
+
+
+def _addr_house_pattern(text, toks) -> bool:
+    """Безмаркерный якорь «улица+дом»: Titlecase-топоним ВПЛОТНУЮ перед коротким
+    номером дома («Ленина 5», «Светланская 22», «Мира 68»), И в прогоне >=2 топонима
+    (город+улица). «Вплотную» = между ними только пробелы/запятые/точки (не «№»/слова).
+    Отсекает «Статья 5» (1 топоним), «ГОСТ Р 52044» (не Titlecase, длинный номер),
+    «Приложение № 1 … Договору» («№» между), «Комната переговоров 5» (строчное перед
+    числом)."""
+    ncap = sum(1 for (_, _, _, _, _, cap) in toks if cap)
+    if ncap < 2:
+        return False
+    for k in range(len(toks) - 1):
+        _, e_k, _, _, _, cap = toks[k]
+        s_n, e_n, w_n, _, is_num, _ = toks[k + 1]
+        gap = text[e_k:s_n]
+        # номер-дома НЕ должен быть началом ДАТЫ/десятичной дроби («Москвы 14.05.2015»):
+        # если сразу за ним «.цифра» — это дата, не дом (даты — не часть адреса, ТЗ п.2).
+        date_tail = re.match(r"\.\d", text[e_n:e_n + 2])
+        # За номером дома НЕ должна идти ЕЩЁ группа цифр («Паспорт 43 15 415582» —
+        # это реквизит, а не «улица дом»: настоящий номер дома одиночный).
+        nn = toks[k + 2] if k + 2 < len(toks) else None
+        num_run = nn is not None and nn[4] and all(
+            ch in _ADDR_HOUSE_GAP for ch in text[e_n:nn[0]])
+        if (cap and is_num and _ADDR_HOUSENUM_RE.match(w_n) and not date_tail
+                and not num_run and all(ch in _ADDR_HOUSE_GAP for ch in gap)):
+            return True
+    return False
+
+
+# «а/я 15» (абонентский ящик) — премис-эквивалент.
+_ADDR_PO_BOX_RE = re.compile(r"(?i)а\s*/\s*я\s*\d")
+
+
+def _addr_valid_index(text, toks) -> bool:
+    """Почтовый индекс как якорь — ТОЛЬКО когда 6-значная группа ВПЛОТНУЮ (через
+    пробелы/запятые) прилегает к городу/локальности/топониму: «420111, г. Казань»,
+    «Одинцово, 143000». Голая 6-значная группа паспорта/кода подразделения к городу
+    не прилегает («…подразделения 770091», «412957, выдан …») — не якорь. Так индекс
+    возвращает адреса «город+индекс» без улицы, НЕ воскрешая паспортные FP."""
+    for k, (s_k, e_k, w_k, cat_k, is_num_k, cap_k) in enumerate(toks):
+        if not (is_num_k and _ADDR_INDEX_RE.fullmatch(w_k)):
+            continue
+        # сосед слева/справа — локальность-маркер ИЛИ Titlecase-топоним, вплотную
+        for j in (k - 1, k + 1):
+            if not (0 <= j < len(toks)):
+                continue
+            s_j, e_j, w_j, cat_j, is_num_j, cap_j = toks[j]
+            lo, hi = (e_j, s_k) if j < k else (e_k, s_j)
+            gap = text[lo:hi]
+            if (cat_j in ("locality", "street", "premise") or cap_j) and \
+                    all(ch in _ADDR_HOUSE_GAP for ch in gap):
+                return True
+    return False
+
+
+def _addr_span_strong(text: str, s: int, e: int) -> bool:
+    """Сильный адресный якорь на спане [s,e). Локальность-одиночка и ГОЛЫЙ ИНДЕКС
+    (не прилегающий к городу) НЕ якорь: 6-значная группа паспорта/кода подразделения —
+    ложный «индекс». Якорь =
+      * УЛИЦА с топонимом/номером рядом («ул. Ленина», «ш. Тверская»); ИЛИ
+      * ПОМЕЩЕНИЕ с номером («д. 18», «кв. 5», «а/я 15»); ИЛИ
+      * БЕЗМАРКЕРНЫЙ «улица+дом» (Titlecase-топоним + номер, >=2 топонима); ИЛИ
+      * ИНДЕКС, ПРИЛЕГАЮЩИЙ к городу/топониму («420111, г. Казань»)."""
+    toks = _addr_scan_tokens(text, s, e)
+    cats = {c for (_, _, _, c, _, _) in toks if c}
+    has_num = any(n for (_, _, _, _, n, _) in toks)
+    has_cap = any(c for (_, _, _, _, _, c) in toks)
+    if "street" in cats and (has_cap or has_num):
+        return True
+    if "premise" in cats and has_num:
+        return True
+    if _ADDR_PO_BOX_RE.search(text[s:e]):
+        return True
+    if _addr_house_pattern(text, toks):
+        return True
+    if _addr_valid_index(text, toks):
+        return True
+    return False
+
+
+# Граница предложения внутри адресного кандидата: «Федерации. Стороны» — точка после
+# слова-НЕ-аббревиатуры, за которой (через пробелы) заглавная. «д. 18»/«стр. 1» —
+# точка после адресной аббревиатуры, НЕ граница. Перенос строки — всегда граница.
+_ADDR_ABBR_BEFORE_DOT = (
+    _ADDR_STREET_MK | _ADDR_PREMISE_MK | _ADDR_LOCALITY_MK | _ADDR_SHORT_MK
+)
+
+
+def _addr_split_sentences(text: str, s: int, e: int):
+    """Дробит [s,e) по границам предложений (перенос строки; точка/!/? после
+    слова-не-аббревиатуры перед заглавной). Возвращает список подспанов."""
+    parts = []
+    cut = s
+    i = s
+    while i < e:
+        ch = text[i]
+        boundary = False
+        if ch in "\n\r":
+            boundary = True
+            end_here = i
+        elif ch in ".!?":
+            # токен непосредственно слева (слово ИЛИ число)
+            j = i - 1
+            while j >= s and (text[j].isalnum() or text[j] == "-"):
+                j -= 1
+            word = text[j + 1:i].lower().replace(".", "")
+            k = i + 1
+            while k < e and text[k] in " \t":
+                k += 1
+            nxt_upper = k < e and text[k].isupper()
+            # граница, если слева НЕ адресная аббревиатура (обычное слово ИЛИ число —
+            # «…кв. 5. Покупателю»: точка после номера дома завершает адрес), а справа
+            # заглавная. Одиночная БУКВА слева — инициал/аббревиатура («В.О.», «А.С.»),
+            # не конец предложения. Пустой токен (двойная пунктуация) — не граница.
+            is_abbr = (
+                (word in _ADDR_ABBR_BEFORE_DOT and not word.isdigit())
+                or (len(word) == 1 and word.isalpha())
+            )
+            if word and not is_abbr and nxt_upper:
+                boundary = True
+                end_here = i + 1
+        if boundary:
+            if end_here > cut:
+                parts.append((cut, end_here))
+            cut = i + 1
+        i += 1
+    if e > cut:
+        parts.append((cut, e))
+    return parts
+
+
+# Лениентный набор маркерных слов для ОБРЕЗКИ КРАЁВ (без требования точки к коротким):
+# ведущее «г»/«д»/«ул» — часть адреса, не обрезаем; ведущее «по»/«адресу»/«место» — метка.
+_ADDR_MARKER_ANY = (
+    _ADDR_STREET_MK | _ADDR_PREMISE_MK | _ADDR_LOCALITY_MK | _ADDR_SHORT_MK
+)
+
+
+def _addr_is_marker_word(tok: str) -> bool:
+    core = tok.strip(" \t.,;:()«»\"'").lower().replace(".", "")
+    return core in _ADDR_MARKER_ANY
+
+
+def _addr_strip_edges(text: str, s: int, e: int) -> tuple[int, int]:
+    """Обрезает ТОЛЬКО ведущие метки/предлоги («по адресу:», «Реквизиты») и краевую
+    пунктуацию. Внутренность и правый край НЕ трогаем: _build_address_spans уже
+    останавливает расширение на стоп-словах, а над-закрытие метки золотой контракт
+    допускает. Ведущий строчный токен снимаем, лишь если он НЕ маркер, НЕ топоним
+    (Titlecase), НЕ число — то есть предлог/метка/глагол."""
+    toks = _addr_scan_tokens(text, s, e)
+    i = 0
+    while i < len(toks):
+        _, _, w, cat, is_num, is_cap = toks[i]
+        if cat or is_num or is_cap or _addr_is_marker_word(w):
+            break
+        i += 1
+    if i >= len(toks):
+        return s, s
+    ns = toks[i][0]
+    ne = e
+    while ne > ns and text[ne - 1] in " \t.,;:":
+        ne -= 1
+    return ns, ne
+
+
+def _finalize_address_spans(text, raw_spans, occupied):
+    """Этап C: из сырых адресных спанов (LOC∪yargy, кластеризованных/расширенных)
+    оставляет только НАСТОЯЩИЕ адреса. Каждый спан: режем по границам предложений →
+    обрезаем края до якорного содержимого → ПОДРЕЗАЕМ к барьерам ORG/PER/реквизитов
+    → пропускаем ТОЛЬКО при сильном якоре. Барьеры подрезаются ДО проверки якоря:
+    иначе «Паспорт 43 15 415582, выдан…» проходит через ложный house-pattern
+    «Паспорт 43», а подрезка паспорта оставляет ложный адресный хвост «, выдан …»."""
+    out = []
+    for rs, re_ in raw_spans:
+        for ss, se in _addr_split_sentences(text, rs, re_):
+            ts, te = _addr_strip_edges(text, ss, se)
+            if ts >= te:
+                continue
+            if occupied:
+                ts, te = _clip_edges(ts, te, occupied)
+                ts, te = _addr_strip_edges(text, ts, te)   # снять край, оголённый подрезкой
+            if ts < te and _addr_span_strong(text, ts, te):
+                out.append((ts, te))
+    return out
 
 
 def _overlaps_any(s: int, e: int, spans) -> bool:
@@ -511,8 +801,7 @@ def detect_ner(
         # полный спан → консервативное расширение закрывает хвост». yargy НЕ гоняется
         # по сегментам без хита (главный источник ускорения этапа A). ---
         if addr_types:
-            has_marker = _ADDR_ANCHOR_RE.search(text) is not None
-            if loc_spans or has_marker:
+            if loc_spans or _addr_has_seed(text):
                 # yargy — только здесь (окрестность хита), не по всему тексту
                 yargy_spans = _glue_address_matches(text, list(_addr_extractor(text)))
                 # Структурные ORG/PER-спаны (anchor_registry, этапы A/B) в координатах
@@ -539,9 +828,11 @@ def detect_ner(
                 occupied = _address_barriers(
                     text, ner_spans, regex_norm, list(org_norm) + list(per_norm)
                 )
-                for start, end in _build_address_spans(
+                raw_addr = _build_address_spans(
                     text, loc_spans + yargy_spans, occupied
-                ):
+                )
+                # ЭТАП C: строгий якорь + обрезка краёв поверх сырых спанов yargy/LOC.
+                for start, end in _finalize_address_spans(text, raw_addr, occupied):
                     src_start, src_end = norm_to_src(offset_map, start, end)
                     for addr_type in addr_types:
                         entities.append(Entity(

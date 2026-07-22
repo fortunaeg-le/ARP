@@ -320,9 +320,10 @@ def _detect_boundary_entities(
         _glue_address_matches,
         _addr_extractor,
         _build_address_spans,
+        _finalize_address_spans,
         _filter_suspect_yargy,
         _address_barriers,
-        _ADDR_ANCHOR_RE,
+        _addr_has_seed,
     )
     from natasha import Doc
 
@@ -412,7 +413,7 @@ def _detect_boundary_entities(
 
         if addr_types:
             for k, wt in enumerate(win_texts):
-                if loc_by_win[k] or _ADDR_ANCHOR_RE.search(wt):
+                if loc_by_win[k] or _addr_has_seed(wt):
                     yargy_spans = _glue_address_matches(wt, list(_addr_extractor(wt)))
                     yargy_spans = _filter_suspect_yargy(wt, yargy_spans, ner_by_win[k], loc_by_win[k])
                     # Барьеры в окне: regex-реквизиты + настоящие PER/ORG (симметрично
@@ -425,7 +426,10 @@ def _detect_boundary_entities(
                         if det != "regex" and et in ("PERSON", "ORG")
                     ]
                     occupied = _address_barriers(wt, perorg_spans, regex_spans)
-                    for s, e in _build_address_spans(wt, loc_by_win[k] + yargy_spans, occupied):
+                    raw_addr = _build_address_spans(wt, loc_by_win[k] + yargy_spans, occupied)
+                    # ЭТАП C: тот же строгий якорь+обрезка, что в основном проходе —
+                    # иначе жадный адрес возвращается через кросс-сегментный B3-путь.
+                    for s, e in _finalize_address_spans(wt, raw_addr, occupied):
                         for addr_type in addr_types:
                             per_win[k].append((s, e, addr_type, "ner", 1.0))
 
