@@ -409,3 +409,6 @@ byte-diff CLI↔UI подтверждён. См. [`archive/reports/HANDOFF_UI.md
   относительно текущего кода) — [`archive/INDEX.md`](archive/INDEX.md).
 - Замерный харнесс — `bench/` (`bench/README.md`).
 - Отладочная подвыборка корпуса (не для baseline/коммита) — `tests/corpus/subsample.py`.
+- Аудит лицензий зависимостей (прод+эксперимент, GPL/AGPL/non-commercial НЕТ; единственная
+  жёлтая — CC BY-SA у словаря OpenCorpora) — [`LICENSES_AUDIT.md`](LICENSES_AUDIT.md) +
+  черновик [`THIRD_PARTY_LICENSES.md`](THIRD_PARTY_LICENSES.md).
