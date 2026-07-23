@@ -17,6 +17,7 @@ ORG/PER + составные). Токенизацию/сохранение се�
 """
 
 from anchor_registry import detect_structural, suppress_conflicts
+from multispan import collect_multispan
 from ner_detector import detect_ner
 from regex_detector import detect_regex
 from syntax_compound import merge_compound_entities
@@ -41,6 +42,11 @@ def run_detection(doc, config_path):
          в сочинительной конструкции теперь корректна, т.к. PER-арбитраж развёл стороны.
     """
     regex_e = detect_regex(doc, config_path)
+    # ЭТАП E (1b): мультиспан-сборщик — PHONE в произвольной группировке,
+    # \n-рваные ACCOUNT/BIRTHDATE. Часть regex-слоя: его сущности точно так же
+    # служат барьерами адресу и участвуют в разрешении пересечений блока 4
+    # (дубль со штатным матчем схлопывается там же — длиннейший hull побеждает).
+    regex_e = regex_e + collect_multispan(doc, config_path)
     struct_e = detect_structural(doc, regex_entities=regex_e)
     org_e = [e for e in struct_e if e.entity_type == "ORG"]
     per_e = [e for e in struct_e if e.entity_type == "PERSON"]

@@ -489,11 +489,15 @@ def tokenize(
     kept.sort(key=lambda e: (seg_index[e.segment_id], e.start))
 
     # --- Присвоение токенов ---
-    # Единое правило: переиспользование по (entity_type, original_text). Половины
-    # разорванной границей сущности НЕ получают общий токен — у них разный
-    # original_text, поэтому каждая берёт свой токен со своим значением. Это делает
-    # восстановление посимвольно точным в обоих сегментах и превращает ложное
-    # срабатывание B3 из разрушительного (порча данных) в терпимо-шумное.
+    # Правило переиспользования (этап E, часть 2 — ЕДИНЫЙ ID НА СУЩНОСТЬ):
+    #   * у сущности есть group_key (реестр кореференции ORG/PER) — токен один на
+    #     ГРУППУ: «Меркурий»/«Меркурия»/«Меркурием» -> один [ORG_N]; номер берётся
+    #     из записи реестра (первое появление группы в документе), не из формы;
+    #   * иначе — по (entity_type, original_text), как раньше (ADDRESS, regex-типы).
+    # Пространства ключей разделены префиксами "G:"/"T:" — group_key не может
+    # случайно совпасть с original_text другой сущности. Половины разорванной
+    # границей B3-сущности group_key не имеют — каждая берёт свой токен со своим
+    # значением (восстановление посимвольно точно, см. Вариант А).
     token_map: dict[tuple[str, str], str] = {}
     counters: dict[str, int] = {}
 
@@ -503,7 +507,10 @@ def tokenize(
         return f"[{prefix}_{counters[prefix]}]"
 
     for e in kept:
-        key = (e.entity_type, e.original_text)
+        if e.group_key is not None:
+            key = (e.entity_type, "G:" + e.group_key)
+        else:
+            key = (e.entity_type, "T:" + e.original_text)
         token = token_map.get(key)
         if token is None:
             token = _new_token(e.entity_type)

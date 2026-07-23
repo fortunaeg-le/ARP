@@ -164,9 +164,14 @@ def process_doc(d, allow_lossy=ALLOW_LOSSY):
     entities = run_detection(doc, CONFIG)
     anon_text, kept = tokenize(doc, entities, CONFIG)
 
-    # round-trip
+    # round-trip — СТРУКТУРНЫЙ (этап E, приёмка 1a): mode="exact" восстанавливает
+    # n-е вхождение токена его собственной поверхностной формой из occurrences.
+    # Это ИНВАРИАНТ (masking A обязана быть 100%). Продуктовое восстановление
+    # (mode="canonical", умолчание detokenize) подставляет канон и с оригиналом
+    # побайтно НЕ совпадает на склоняемых формах — это осознанное следствие
+    # канона (приёмка 1b), меряется отдельно, не здесь.
     sid = save_session(kept, session_id=None, ttl_hours=24, storage_dir=STORAGE)
-    restored, unresolved = detokenize(anon_text, sid, storage_dir=STORAGE)
+    restored, unresolved = detokenize(anon_text, sid, storage_dir=STORAGE, mode="exact")
     plain = build_plain_text(doc)
     roundtrip_ok = (restored == plain)
     rt = {"ok": roundtrip_ok}

@@ -134,8 +134,26 @@ def save_session(
     """Сохраняет список Entity с токенами в зашифрованный файл сессии.
 
     Возвращает session_id (сгенерированный uuid4, если на вход пришёл None).
-    Дедупликация записей по token; при повторе токена сохраняется segment_id
-    первого по порядку вхождения. Пустой список entities — валиден.
+    Пустой список entities — валиден.
+
+    ФОРМАТ v2 (этап E). Запись — ОДНА НА ТОКЕН, но хранит ВСЕ вхождения:
+      token, entity_type — как раньше;
+      original_text, segment_id — форма/сегмент ПЕРВОГО вхождения (поле v1,
+        сохранено ради обратной совместимости читателей: старый детокенизатор
+        строит mapping token->original_text и продолжает работать);
+      canonical — каноническая форма сущности из реестра (ORG — юридическая
+        форма, PER — ФИО в именительном) или null; восстановление текста
+        подставляет её (см. detokenizer);
+      occurrences — СПИСОК ВСЕХ вхождений токена в порядке документа, каждое:
+        {segment_id, start, end, spans, surface}. surface — точная поверхностная
+        форма ЭТОГО вхождения («Меркурием»/«Меркурия»); spans — диапазоны значения
+        мультиспан-сущности (список [s,e]) или null. Пишем ВСЁ, читаем пока только
+        канон: без записанных форм будущие режимы (склонение по контексту, точное
+        восстановление) были бы невозможны для старых сессий — хранить дёшево,
+        потерять необратимо.
+    Старые сессии (v1, без "format"/"canonical"/"occurrences") продолжают
+    читаться: load_session формат не валидирует, detokenize берёт canonical
+    с fallback на original_text.
     """
     if session_id is None:
         import uuid
@@ -152,26 +170,38 @@ def save_session(
     key = _load_or_create_key(store)
     fernet = Fernet(key)
 
-    # Дедупликация по token, сохраняя порядок первого появления.
-    seen_tokens: set[str] = set()
+    # Одна запись на token (порядок первого появления); occurrences копят ВСЕ
+    # вхождения токена в порядке entities (= порядок документа из tokenize).
+    by_token: dict[str, dict] = {}
     entity_records = []
     for e in entities:
-        if e.token in seen_tokens:
-            continue
-        seen_tokens.add(e.token)
-        entity_records.append(
-            {
+        rec = by_token.get(e.token)
+        if rec is None:
+            rec = {
                 "token": e.token,
                 "entity_type": e.entity_type,
                 "original_text": e.original_text,
                 "segment_id": e.segment_id,
+                "canonical": e.canonical,
+                "occurrences": [],
             }
-        )
+            by_token[e.token] = rec
+            entity_records.append(rec)
+        elif rec["canonical"] is None and e.canonical is not None:
+            rec["canonical"] = e.canonical
+        rec["occurrences"].append({
+            "segment_id": e.segment_id,
+            "start": e.start,
+            "end": e.end,
+            "spans": [list(sp) for sp in e.spans] if e.spans else None,
+            "surface": e.original_text,
+        })
 
     created_at = datetime.now().astimezone()
     expires_at = created_at + timedelta(hours=ttl_hours)
 
     payload = {
+        "format": 2,
         "session_id": session_id,
         "created_at": created_at.isoformat(),
         "expires_at": expires_at.isoformat(),

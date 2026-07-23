@@ -439,6 +439,155 @@ def _addr_type_left(low: str, s: int) -> bool:
 
 
 # --------------------------------------------------------------------------- #
+#     ЭТАП E — идентичность ПЕРСОНЫ (кореференция) + именительный канон        #
+# --------------------------------------------------------------------------- #
+# Реестр PER ключуется леммой ФАМИЛИИ — этого хватает для ДЕТЕКЦИИ (проход 2),
+# но НЕ для ЕДИНОГО ID: два однофамильца («Иванов Иван» и «Иванов Пётр») делят
+# ключ, а id обязаны иметь разные (приёмка 3). PersonBook различает персон по
+# СОВМЕСТИМОСТИ имени/отчества/инициалов; неатрибутируемое вхождение (голая
+# фамилия при ДВУХ известных тёзках) получает нейтральную «фамильную» персону
+# со скромным каноном (только фамилия) — ложная атрибуция хуже неатрибуции.
+
+def _nominative_word(word: str, role: str) -> str:
+    """Именительный падеж слова-части имени (role: 'surn'|'name'|'patr') через
+    pymorphy inflect. Род/число сохраняются разбором («Новиковой» femn → «Новикова»,
+    не «Новиков»). Не разобралось — слово как есть. Титульный регистр."""
+    tag_marker = {"surn": "Surn", "name": "Name", "patr": "Patr"}[role]
+    best = None
+    for p in _MORPH(word):
+        if p.score < _NAMEPART_MIN_SCORE or tag_marker not in p.tag:
+            continue
+        if best is None or p.score > best.score:
+            best = p
+    out = word
+    if best is not None:
+        # _MORPH — natasha.MorphVocab: её inflect принимает UD-граммемы ('Nom'),
+        # а не opencorpora ('nomn'). Род/число сохраняются из разбора.
+        try:
+            nom = best.inflect({"Nom"})
+        except Exception:
+            nom = None
+        if nom is not None and getattr(nom, "word", None):
+            out = nom.word
+    return out[:1].upper() + out[1:]
+
+
+def _per_signature(text: str):
+    """Сигнатура персоны из поверхностной формы ФИО-спана: (surn_lemma, name_lemma,
+    patr_lemma, initials, canon_words). Любой компонент может быть None; initials —
+    кортеж заглавных букв-инициалов в порядке появления. canon_words — словарь
+    role -> слово в именительном (для канона)."""
+    surn = name = patr = None
+    canon = {}
+    initials = []
+    for w in _WORD_RE.findall(text):
+        if _is_initial(w):
+            initials.append(w.upper())
+            continue
+        roles = _nameparts(w)
+        if "surn" in roles and surn is None:
+            surn = _lemma_first(w)
+            canon["surn"] = _nominative_word(w, "surn")
+        elif "name" in roles and name is None:
+            name = _lemma_first(w)
+            canon["name"] = _nominative_word(w, "name")
+        elif "patr" in roles and patr is None:
+            patr = _lemma_first(w)
+            canon["patr"] = _nominative_word(w, "patr")
+    return surn, name, patr, tuple(initials), canon
+
+
+class PersonBook:
+    """Идентичность персон документа. resolve() возвращает индекс персоны для
+    сигнатуры вхождения, создавая/пополняя записи. Правила:
+      * совместимость: фамилия совпала И имя/отчество не противоречат (равные
+        леммы; инициал совместим с именем по первой букве; отсутствие — не
+        противоречие);
+      * ровно один совместимый кандидат -> он (запись пополняется новой
+        информацией, канон достраивается);
+      * ноль ИЛИ >=2 (неоднозначность тёзок) -> отдельная запись: при
+        неоднозначности — нейтральная «фамильная» (канон — только фамилия),
+        переиспользуемая для всех таких вхождений той же фамилии."""
+
+    def __init__(self):
+        self.persons: list[dict] = []
+        self._ambiguous_by_surn: dict = {}
+
+    @staticmethod
+    def _compatible(p: dict, surn, name, patr, initials) -> bool:
+        if p["surn"] != surn:
+            return False
+        if name is not None and p["name"] is not None and p["name"] != name:
+            return False
+        if patr is not None and p["patr"] is not None and p["patr"] != patr:
+            return False
+        # инициалы против известных имени/отчества: первая буква обязана совпасть
+        known = [p["name"], p["patr"]]
+        for k, ini in enumerate(initials[:2]):
+            kn = known[k] if k < len(known) else None
+            if kn is not None and not kn.upper().startswith(ini):
+                return False
+        # и симметрично: известные инициалы записи против пришедших имени/отчества
+        for k, val in enumerate((name, patr)):
+            ini = p["initials"][k] if k < len(p["initials"]) else None
+            if val is not None and ini is not None and not val.upper().startswith(ini):
+                return False
+        return True
+
+    def _new_person(self, surn, name, patr, initials, canon) -> int:
+        self.persons.append({
+            "surn": surn, "name": name, "patr": patr,
+            "initials": tuple(initials), "canon": dict(canon),
+        })
+        return len(self.persons) - 1
+
+    def resolve(self, sig) -> int:
+        surn, name, patr, initials, canon = sig
+        if surn is None:
+            # спан без фамилии (осиротевшее «Имя Отчество» по вторичному ключу):
+            # атрибутируем по имени+отчеству, если ровно один кандидат.
+            cand = [i for i, p in enumerate(self.persons)
+                    if name is not None and p["name"] == name
+                    and (patr is None or p["patr"] is None or p["patr"] == patr)]
+            if len(cand) == 1:
+                return cand[0]
+            return self._new_person(None, name, patr, initials, canon)
+        cand = [i for i, p in enumerate(self.persons)
+                if p["surn"] is not None and self._compatible(p, surn, name, patr, initials)]
+        if len(cand) == 1:
+            i = cand[0]
+            p = self.persons[i]
+            # пополняем запись новой информацией (канон достраивается)
+            if p["name"] is None and name is not None:
+                p["name"] = name
+                p["canon"]["name"] = canon.get("name", "")
+            if p["patr"] is None and patr is not None:
+                p["patr"] = patr
+                p["canon"]["patr"] = canon.get("patr", "")
+            if not p["initials"] and initials:
+                p["initials"] = tuple(initials)
+            return i
+        if not cand:
+            return self._new_person(surn, name, patr, initials, canon)
+        # >=2 тёзок: неатрибутируемо -> нейтральная «фамильная» персона
+        amb = self._ambiguous_by_surn.get(surn)
+        if amb is None:
+            amb = self._new_person(surn, None, None, (),
+                                   {"surn": canon.get("surn", "")})
+            self._ambiguous_by_surn[surn] = amb
+        return amb
+
+    def canonical(self, idx: int) -> str | None:
+        p = self.persons[idx]
+        c = p["canon"]
+        words = [c.get("surn"), c.get("name"), c.get("patr")]
+        words = [w for w in words if w]
+        if len(words) < 2 and p["initials"]:
+            words += ["%s." % i for i in p["initials"]]
+        return " ".join(words) if words else None
+
+
+# --------------------------------------------------------------------------- #
 #                         Реестр документа (Registry)                         #
 # --------------------------------------------------------------------------- #
 @dataclass
@@ -448,6 +597,11 @@ class RegistryRecord:
     canonical: str
     evidence: set = field(default_factory=set)
     confidence: int = 0
+    # ЭТАП E: ПОВЕРХНОСТНАЯ каноническая форма из ИСХОДНОГО текста лучшего якоря
+    # (для ORG — юридическая форма введения: «ООО «Меркурий»»). Заполняется первым
+    # (сильнейшим — collected отсортирован по убыванию уверенности) якорем ключа;
+    # последующие якоря того же типа её НЕ перетирают.
+    canonical_src: str | None = None
 
 
 class Registry:
@@ -459,18 +613,22 @@ class Registry:
     def __init__(self):
         self._by_key: dict[tuple, RegistryRecord] = {}
 
-    def add(self, key, entity_type, canonical, evidence, confidence):
+    def add(self, key, entity_type, canonical, evidence, confidence,
+            canonical_src=None):
         rec = self._by_key.get(key)
         if rec is None:
             self._by_key[key] = RegistryRecord(
                 key=key, entity_type=entity_type, canonical=canonical,
                 evidence=set(evidence), confidence=confidence,
+                canonical_src=canonical_src,
             )
             return
         # ключ уже есть.
         if rec.entity_type == entity_type:
             rec.evidence |= set(evidence)
             rec.confidence = max(rec.confidence, confidence)
+            if rec.canonical_src is None:
+                rec.canonical_src = canonical_src
         else:
             # АРБИТРАЖ ТИПОВ: сильнейшая уверенность выигрывает тип ключа.
             if confidence > rec.confidence:
@@ -478,6 +636,7 @@ class Registry:
                 rec.canonical = canonical
                 rec.evidence = set(evidence)
                 rec.confidence = confidence
+                rec.canonical_src = canonical_src
 
     def get(self, key):
         return self._by_key.get(key)
@@ -501,6 +660,19 @@ class Anchor:
     canonical: str
     evidence: set
     confidence: int
+    # ЭТАП E: поверхностная форма полного упоминания из ИСХОДНОГО segment.text
+    # (для ORG-канона «ООО «Меркурий»»). None — канон не носится этим якорем.
+    canonical_src: str | None = None
+
+
+def _src_surface(seg, omap, ns, ne):
+    """Поверхностная форма норм-спана [ns,ne) в исходном segment.text (через ту же
+    карту, что и эмит масок). Однострочная канонизация: внутренние переносы строки
+    в каноне заменяются пробелом (канон — предъявляемая форма, не байтовая копия)."""
+    if ne <= ns:
+        return None
+    s, e = norm_to_src(omap, ns, ne)
+    return " ".join(seg.text[s:e].split()) or None
 
 
 class AnchorDetector:
@@ -627,6 +799,7 @@ class OrgAnchorDetector(AnchorDetector):
                 ev.add("intro")
             anchors.append(Anchor(
                 seg.id, form_start, cq, key, core, ev, len(ev),
+                canonical_src=_src_surface(seg, omap, form_start, cq),
             ))
 
         # --- Признак: org-форма + ГОЛОЕ имя без кавычек (пАттерн B) ---
@@ -681,6 +854,7 @@ class OrgAnchorDetector(AnchorDetector):
             anchors.append(Anchor(
                 seg.id, m.start(), re_, key, norm[rs:re_].strip(),
                 {"orgform"}, 1,
+                canonical_src=_src_surface(seg, omap, m.start(), re_),
             ))
 
         # --- Признак: соседство с валидированным ИНН(10)/ОГРН(13) юрлица ---
@@ -697,6 +871,7 @@ class OrgAnchorDetector(AnchorDetector):
             anchors.append(Anchor(
                 seg.id, rs, re_, key, norm[rs:re_].strip(),
                 {kind}, 1,
+                canonical_src=_src_surface(seg, omap, rs, re_),
             ))
 
         # Конструкция введения как САМОСТОЯТЕЛЬНЫЙ якорь («X, именуемое …» без
@@ -1035,15 +1210,30 @@ class AnchorEngine:
         _type_rank = {"ORG": 0, "PERSON": 1}
         collected.sort(key=lambda c: (-c[4].confidence, _type_rank.get(c[1].entity_type, 9)))
         for (seg, det, norm, omap, a) in collected:
-            registry.add(a.core_key, det.entity_type, a.canonical, a.evidence, a.confidence)
+            registry.add(a.core_key, det.entity_type, a.canonical, a.evidence,
+                         a.confidence, canonical_src=a.canonical_src)
+
+        # ЭТАП E: книга персон документа — единый id/канон для PER (кореференция
+        # тоньше, чем ключ-фамилия реестра: тёзки различаются, см. PersonBook).
+        book = PersonBook()
+
+        def group_of(entity_type, rec_key, ns, ne, norm):
+            """(group_key, person_idx|None) вхождения. ORG — ключ записи реестра
+            (реестр уже кореферирует падежи); PER — персона PersonBook по сигнатуре
+            поверхностной формы спана."""
+            if entity_type == "PERSON":
+                idx = book.resolve(_per_signature(norm[ns:ne]))
+                return "PER:%d" % idx, idx
+            return "ORG:" + "|".join(rec_key), None
 
         # --- PASS 1c: ЭМИТ спанов якорей ПОБЕДИВШЕГО типа ---
         for (seg, det, norm, omap, a) in collected:
             rec = registry.get(a.core_key)
             if rec is None or rec.entity_type != det.entity_type:
                 continue   # этот якорь проиграл арбитраж — эмитит победивший тип
+            gk, _ = group_of(det.entity_type, a.core_key, a.span_start, a.span_end, norm)
             self._emit(entities, emitted_src, seg, norm, omap,
-                       a.span_start, a.span_end, det.entity_type)
+                       a.span_start, a.span_end, det.entity_type, group_key=gk)
 
         # --- PASS 2: падежные вхождения по реестру + guard ---
         for seg in doc.segments:
@@ -1062,12 +1252,25 @@ class AnchorEngine:
                     if det.entity_type == "PERSON" else None
                 for rec in recs:
                     self._match_key(entities, emitted_src, seg, norm, low, omap,
-                                    tokens, lemsets, npar, rec, det)
+                                    tokens, lemsets, npar, rec, det, group_of)
+
+        # --- ЭТАП E: канон по группам (после прогона — PersonBook мог достроиться
+        # более полной формой позже первого вхождения) ---
+        org_canon = {"ORG:" + "|".join(r.key): (r.canonical_src or r.canonical)
+                     for r in registry.records() if r.entity_type == "ORG"}
+        for e in entities:
+            gk = e.group_key
+            if gk is None:
+                continue
+            if gk.startswith("PER:"):
+                e.canonical = book.canonical(int(gk[4:]))
+            else:
+                e.canonical = org_canon.get(gk)
 
         return entities
 
     def _match_key(self, entities, emitted_src, seg, norm, low, omap,
-                   tokens, lemsets, npar, rec, det):
+                   tokens, lemsets, npar, rec, det, group_of):
         klen = len(rec.key)
         n = len(tokens)
         i = 0
@@ -1084,8 +1287,9 @@ class AnchorEngine:
             if not det.guard(norm, low, s, e):
                 i += klen
                 continue
+            gk, _ = group_of(rec.entity_type, rec.key, s, e, norm)
             self._emit(entities, emitted_src, seg, norm, omap, s, e,
-                       rec.entity_type)
+                       rec.entity_type, group_key=gk)
             i += klen
 
     @staticmethod
@@ -1096,7 +1300,8 @@ class AnchorEngine:
         return False
 
     @staticmethod
-    def _emit(entities, emitted_src, seg, norm, omap, ns, ne, entity_type):
+    def _emit(entities, emitted_src, seg, norm, omap, ns, ne, entity_type,
+              group_key=None):
         # обрезаем крайние пробелы/кавычки-скобки норм-спана
         while ns < ne and norm[ns] in " \t":
             ns += 1
@@ -1118,6 +1323,7 @@ class AnchorEngine:
             entity_type=entity_type,
             detector="ner",
             confidence=1.0,
+            group_key=group_key,
         ))
         emitted_src.setdefault(seg.id, []).append((src_start, src_end))
 

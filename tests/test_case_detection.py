@@ -342,7 +342,14 @@ class TestRoundTrip:
         anon, result = tokenize(doc, entities, config_path)
 
         session_id = save_session(result, storage_dir=str(tmp_path / "sessions"))
-        restored, unresolved = detokenize(anon, session_id, storage_dir=str(tmp_path / "sessions"))
+        # ЭТАП E: посимвольная сверка — контракт РЕЖИМА exact (структурный
+        # round-trip 1a). Умолчание detokenize теперь canonical (подставляет канон
+        # сущности — ФИО в именительном Titlecase), поэтому строчный оригинал
+        # гарантирует ровно exact. Инвариант теста прежний: нормализованная версия
+        # НЕ попадает в сессию, surface вхождения хранится строчным.
+        restored, unresolved = detokenize(anon, session_id,
+                                          storage_dir=str(tmp_path / "sessions"),
+                                          mode="exact")
 
         assert unresolved == []
         assert restored == build_plain_text(doc), (
@@ -542,7 +549,10 @@ class TestStyleCapsRoundTripAndLength:
         entities = run_detection(d, config_path)
         anon, result = tokenize(d, entities, config_path)
         session_id = save_session(result, storage_dir=str(tmp_path / "sessions"))
-        restored, unresolved = detokenize(anon, session_id, storage_dir=str(tmp_path / "sessions"))
+        # ЭТАП E: посимвольная сверка = режим exact (см. TestRoundTrip выше).
+        restored, unresolved = detokenize(anon, session_id,
+                                          storage_dir=str(tmp_path / "sessions"),
+                                          mode="exact")
 
         assert unresolved == []
         assert restored == build_plain_text(d)

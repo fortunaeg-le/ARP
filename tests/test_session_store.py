@@ -53,7 +53,11 @@ class TestSaveLoadRoundtrip:
         """HANDOFF_5, Инварианты: ключи session_id/created_at/expires_at/entities всегда присутствуют."""
         sid = save_session([], storage_dir=str(tmp_path))
         session = load_session(sid, storage_dir=str(tmp_path))
-        assert set(session.keys()) == {"session_id", "created_at", "expires_at", "entities"}
+        # ЭТАП E: формат v2 добавил маркер "format" (=2). Прежние 4 ключа обязаны
+        # оставаться (обратная совместимость читателей v1).
+        assert set(session.keys()) == {"format", "session_id", "created_at",
+                                       "expires_at", "entities"}
+        assert session["format"] == 2
 
     def test_new_process_can_load_session_saved_by_another(self, tmp_path):
         """Спека, блок 5, Приёмка: load_session в новом процессе (перезапуск интерпретатора) находит данные."""
@@ -100,11 +104,17 @@ class TestSaveSessionDeduplication:
         assert org_record["segment_id"] == "p3"
 
     def test_each_entity_record_has_exactly_four_keys(self, tmp_path):
-        """HANDOFF_5, Инварианты: каждая запись entities содержит ровно 4 ключа."""
+        """HANDOFF_5 (обновлено этапом E): 4 инвариантных ключа v1 ПЛЮС поля v2
+        (canonical, occurrences). Прежние ключи не исчезают — обратная
+        совместимость читателей v1 (file_detokenizer читает original_text)."""
         entities = [_entity("p3", "[ORG_1]", "ORG", "ООО «Ромашка»")]
         sid = save_session(entities, storage_dir=str(tmp_path))
         session = load_session(sid, storage_dir=str(tmp_path))
-        assert set(session["entities"][0].keys()) == {"token", "entity_type", "original_text", "segment_id"}
+        rec = session["entities"][0]
+        assert set(rec.keys()) == {"token", "entity_type", "original_text",
+                                   "segment_id", "canonical", "occurrences"}
+        assert [o["surface"] for o in rec["occurrences"]] == ["ООО «Ромашка»"]
+        assert {"segment_id", "start", "end", "spans", "surface"} <= set(rec["occurrences"][0])
 
 
 class TestSaveSessionEmptyEntities:
