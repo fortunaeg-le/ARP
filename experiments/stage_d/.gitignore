@@ -1,0 +1,3 @@
+# Крупный (7 МБ) результат полного прогона — воспроизводится run_head.py.
+# Коммитим код (gate_d.py/run_head.py), baseline_d.json, .txt-отчёты.
+results_d_head.json

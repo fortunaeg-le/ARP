@@ -1061,3 +1061,67 @@ def aggregate_results(results):
         # честно печатает «нет данных» вместо выдуманных 100%.
         "masking_correctness": mc_aggregate(mask_records),
     }
+
+
+# =========================================================================== #
+#            ЭТАП D — метрика PRECISION NER (единая FP-дефиниция)              #
+# =========================================================================== #
+# Precision в ЕДИНОЙ дефиниции разбора C (HANDOFF_STAGE_C §9.1): FP = kept-МАСКА
+# (после разрешения пересечений в tokenize, НЕ сырой спан), пересекающая
+# ОБЪЯВЛЕННЫЙ негатив (gold['negatives']); TP = kept-маска на gold-сущности СВОЕГО
+# типа.  precision_T = TP_T / (TP_T + FP_neg_T).  Уровень — kept-маска, набор — весь
+# корпус.  Совпадает по FP с aggregate_results()['fp_on_neg'] (итого 650 на этапе C).
+#
+# ПОЧЕМУ это НЕ masking_correctness.  masking_correctness B/C считаются ТОЛЬКО по
+# маскам, легшим на gold (mc_check_bc: scored=False → в знаменатель не идёт), то есть
+# СЛЕПЫ к over-маскированию: маска на негативе/прозе в masking_correctness не
+# существует.  Поэтому «masking C = 90.81%» — НЕ precision (см. FINDINGS «90%
+# фикция»); честный precision считает ИМЕННО ложные размещения масок.
+#
+# ДИАГНОСТИКА (не в precision, не в гейт): cross — маска на gold ДРУГОГО типа (ошибка
+# ТИПА, домен masking C); nothing — маска на НЕАННОТИРОВАННОЙ прозе (over-mask,
+# on-nothing, неоднозначный набор).  Считаются отдельно, чтобы over-маскирование было
+# ВИДНО в отчёте, но не роняло precision молча и не входило в гейт.
+
+# Типы-хребет NER этапа D (по ним precision — гейтовый). Прочие (regex-реквизиты, SUM)
+# считаются тоже — для полноты таблицы, — но гейт precision держит на ORG/PER/ADDRESS.
+NER_SPINE_TYPES = ("ORG", "PER", "ADDRESS")
+
+
+def _empty_prec():
+    return {"tp": 0, "fp_neg": 0, "cross": 0, "nothing": 0}
+
+
+def precision_by_type(results):
+    """Precision + диагностика по типам из списка записей run_measurement.process_doc.
+
+    Возвращает {"per_type": {T: {tp, fp_neg, cross, nothing, precision}},
+                "fp_neg_total", "cross_total", "nothing_total"}.
+    precision = None, если знаменатель (tp+fp_neg) пуст (нет ни одной маски-решения
+    по типу — считать «нет данных», а не 100%)."""
+    per = {t: _empty_prec() for t in ALL_ENTITY_TYPES}
+    for r in results:
+        if r.get("outcome") != "processed":
+            continue
+        for m in r.get("masks", []):
+            d = per.setdefault(m["gtype"], _empty_prec())
+            # TP: маска легла на gold СВОЕГО типа (scored=лёгла на gold, c_ok=тип совпал).
+            if m.get("scored") and m.get("c_ok"):
+                d["tp"] += 1
+        for f in r.get("false_positives", []):
+            d = per.setdefault(f["gtype"], _empty_prec())
+            if f.get("on_negative") is not None:
+                d["fp_neg"] += 1                 # FP гейтовый: маска на объявленном негативе
+            elif f.get("cross_type") is not None:
+                d["cross"] += 1                  # диагностика: маска на gold другого типа
+            else:
+                d["nothing"] += 1                # диагностика: over-mask неаннотированной прозы
+    for t, d in per.items():
+        denom = d["tp"] + d["fp_neg"]
+        d["precision"] = (100.0 * d["tp"] / denom) if denom else None
+    return {
+        "per_type": per,
+        "fp_neg_total": sum(d["fp_neg"] for d in per.values()),
+        "cross_total": sum(d["cross"] for d in per.values()),
+        "nothing_total": sum(d["nothing"] for d in per.values()),
+    }

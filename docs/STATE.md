@@ -18,11 +18,10 @@
 ```
 venv/Scripts/python.exe -m pytest -q
 ```
-Эталон: **854 passed, 1 deselected, 10 xfailed** (~335 c; этап C-fix, 2026-07-23:
-xfail стадии 5 `test_marker_less_address_names_do_not_survive` СНЯТ — house-pattern-
-якорь+сеяние маскируют безмаркерный `dense_line` «Красногорск Гагарина 74», город/улица
-не утекают). Другой интерпретатор (`natasha` не установлена) — ошибки сбора; рабочий
-только `venv/Scripts/python.exe`.
+Эталон: **871 passed, 1 deselected, 10 xfailed** (~335 c; этап D, 2026-07-23: +17
+тестов — 10 зеркал метрики precision `tests/test_precision_metric.py` + 7 само-тестов
+гейта `tests/test_gate_d.py`). Другой интерпретатор (`natasha` не установлена) — ошибки
+сбора; рабочий только `venv/Scripts/python.exe`.
 
 10 `xfailed` — намеренно отложенные дефекты/дыры покрытия, помечены `@xfail(strict=True)`:
 если станут проходить незамеченно — тест «покраснеет» (XPASS→FAIL), это сигнал снять метку.
@@ -57,6 +56,12 @@ xfail стадии 5 `test_marker_less_address_names_do_not_survive` СНЯТ �
 | **masking_correctness A** (round-trip, знам. — 18571 масок) | **100.0%** |
 | **masking_correctness B** (границы, знам. — 10207 масок на эталоне) | **79.59%** |
 | masking_correctness C (тип, мягкий, тот же знам.) | 90.81% |
+
+⚠ **masking_correctness C = 90.81% — это НЕ precision** (частая путаница, помечена в
+FINDINGS D-PRECISION-90): знаменатель B/C — только маски, ЛЁГШИЕ НА GOLD, поэтому C
+СЛЕП к over-маскированию (маска на негативе/прозе в него не входит). Честная precision
+(этап D, единая FP-дефиниция) — ORG 99.77% / PER 99.96% / ADDRESS 99.92% на C
+(ADDRESS 66.86% на HEAD b-per). См. §«Этап D» ниже.
 
 **Этап 2b (регистр ФИО), 2026-07-19** — правка только в `src/extractor.py`:
 PER recall 68.9→**72.0%**, PER leak_v2 44.0→**37.6%** (−217 сущностей); на сплошь
@@ -299,6 +304,26 @@ byte-diff CLI↔UI подтверждён. См. [`archive/reports/HANDOFF_UI.md
   `docs/known_leaks_stage_c.json` — **ровно 61** известного долга ADDRESS (адверсариальные
   мутации, `closes_on: entity-spans`), agency_0009 ИСКЛЮЧЁН (покрыт). Реестр — для гейта D,
   детектор его не читает. См. HANDOFF §10.
+
+- **Этап D (метрика precision + гейт), 2026-07-23** — КАПСТОУН precision-хребта. Детекцию
+  НЕ трогали (0 правок в `src/`): построен ИЗМЕРИТЕЛЬ + ГЕЙТ, замораживающий достигнутый
+  precision, чтобы будущая recall-работа не уронила его тихо. **Метрика** —
+  `measure_lib.precision_by_type` (единая FP-дефиниция разбора C §9.1: FP = kept-маска на
+  ОБЪЯВЛЕННОМ негативе; TP = kept-маска на gold своего типа; precision_T = TP/(TP+FP_neg)).
+  cross-type и on-nothing — ОТДЕЛЬНАЯ диагностика, НЕ в precision и НЕ в гейт. **Precision
+  HEAD b-per → C+фикс**: ORG 99.77→99.77%, PER 99.96→99.96%, **ADDRESS 66.86→99.92%**
+  (fp_neg 634→1, over-mask прозы 2610→1); fp_neg TOTAL 1283→650. **Гейт**
+  `experiments/stage_d/gate_d.py` краснеет по: (2a) precision NER-типа < baseline−0.5пп;
+  (2b) FP>650+5; (2c) утечка-долг(ADDRESS found=False&leak) >116+3. Диагностика состава vs
+  known_leaks: подмена «N на другой N» → ПРЕДУПРЕЖДЕНИЕ (не красит). Baseline D зафиксирован
+  (`experiments/stage_d/baseline_d.json`): precision выше, FP=650, утечка-долг=116 (=61
+  документированных + 55 пред-существующих, HEAD b-per тоже не брал — ЧЕСТНО показано, не
+  подогнано под 61). **Зеркала**: `tests/test_precision_metric.py` (метрика двигается на
+  маске-на-негативе, не двигается на корректной; over-mask не тонет), `tests/test_gate_d.py`
+  (само-тест: искусственный регресс precision→красный 2a, лишняя утечка→2c, подмена
+  состава→предупреждение). Старая «precision 90%» (=masking C, слеп к over-mask) помечена
+  ФИКЦИЕЙ (FINDINGS D-PRECISION-90). Детекция байт-в-байт, round-trip 100%; sha256 656 OK.
+  См. [`archive/reports/HANDOFF_STAGE_D_PRECISION.md`](archive/reports/HANDOFF_STAGE_D_PRECISION.md).
 
 **UI второй фикс — старый процесс отвечал вместо нового** (2026-07-20): `http.server`
 даёт Windows молча забиндить новый `server.py` на занятый порт (`allow_reuse_address`)
