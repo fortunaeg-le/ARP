@@ -365,6 +365,21 @@ byte-diff CLI↔UI подтверждён. См. [`archive/reports/HANDOFF_UI.md
   file_detokenizer НЕ тронут (подставляет форму 1-го вхождения — задокументировано).
   См. [`archive/reports/HANDOFF_STAGE_E_SPANS.md`](archive/reports/HANDOFF_STAGE_E_SPANS.md).
 
+- **Этап E″ (детерминизм детекции), 2026-07-23** — ветка `stage-eprime-determinism`,
+  поверх HEAD этапа E (без E′, та на отдельной нерслитой ветке `stage-e-prime-apply`).
+  Находка Eprime-A (недетерминизм на реальном ~2500-сегментном документе, 239/226/226
+  масок) **НЕ воспроизведена** на синтетическом двойнике (`tests/fixtures/
+  synthetic_corporate_large.docx`, коммитится навсегда — заменяет удалённый владельцем
+  `real_docs/`) на двух масштабах (2641/5051 сегментов) и в изолированном NER-стрессе
+  (до 508K символов). Внесена защитная мера класса дефекта (не диагностированный фикс):
+  `src/ner_detector.py`/`src/syntax_compound.py` фиксируют потоки BLAS
+  (`OMP/OPENBLAS/MKL/NUMEXPR_NUM_THREADS=1`, `setdefault`) до импорта `natasha` и
+  прогревают модели при импорте модуля. pytest 903+2 (новый `test_determinism.py`),
+  гейт D побайтно = baseline, sha256 корпуса 656 OK, round-trip синтетики 100%.
+  Автономный `experiments/stage_eprime_determinism/owner_repro.py` — для проверки
+  гипотезы владельцем на реальном документе. Находка остаётся ОТКРЫТОЙ. См.
+  [`archive/reports/HANDOFF_STAGE_EPRIME_DETERMINISM.md`](archive/reports/HANDOFF_STAGE_EPRIME_DETERMINISM.md).
+
 **UI второй фикс — старый процесс отвечал вместо нового** (2026-07-20): `http.server`
 даёт Windows молча забиндить новый `server.py` на занятый порт (`allow_reuse_address`)
 — старые процессы после перезапусков не умирали, ОС отдавала запросы то старому коду,
