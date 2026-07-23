@@ -365,6 +365,28 @@ byte-diff CLI↔UI подтверждён. См. [`archive/reports/HANDOFF_UI.md
   file_detokenizer НЕ тронут (подставляет форму 1-го вхождения — задокументировано).
   См. [`archive/reports/HANDOFF_STAGE_E_SPANS.md`](archive/reports/HANDOFF_STAGE_E_SPANS.md).
 
+- **Этап E′ (мультиспан на отложенных классах), 2026-07-23** — ветка
+  `stage-e-prime-apply`. «Расплетающий» вид адреса (`_addr_deweave`: разрыв в слове —
+  \n при строчном продолжении/NBSP/невидимые — и в числе вырезается, рваный индекс
+  «420 111» склеивается) + тот же конвейер/строгий якорь C по виду: в сегменте и в
+  B3-окнах (cross-segment .txt); cross-segment ORG — OrgAnchorDetector на окнах
+  (только якоря через стык, half-pair). Якоря НЕ ослаблены; 3 страховки точности
+  (эмит только со склейкой deweave, \n-склейка только к строчному, подрезка краёв
+  через бывший \n). **Утечка-долг ADDRESS 116→57** (−59, 0 новых; поимённо
+  `experiments/stage_e_prime/debt_final.json`); остаток: case 26/combo 24 (регистровый
+  класс, вне темы), 6 linebreak-остатков (3 = B-ADDR-HOMONYM, 3 гибрида с case),
+  1 homoglyph-edge. **known_leaks_stage_c.json пересобран = ровно 57** (включая 55
+  пред-существующих, которых в файле не было). **Cross-segment ORG: 14/14 собраны**
+  (ORG found 435→449). Гейт D ЗЕЛЁНЫЙ до и после обновления baseline
+  (baseline_d: precision заморожен выше — ORG 99.79/ADDRESS 99.93, долг 57);
+  ADDRESS fp_neg 1→1, GOLDEN 195/195. 1a: FAIL=0 на 324 (ws_only 44→61 — рост
+  известного класса Aprime-3 от новых \n-hull-масок, per-mask A=100%, доложено);
+  1b: 2447 расхождений = все канон. pytest 914; sha256 656 OK. **Находка Eprime-A:
+  недетерминизм детекции на ОГРОМНЫХ доках (~2500 сегментов, реальный договор) —
+  ПРЕД-существующий (HEAD тоже), корпус детерминирован; инвариант round-trip
+  держится в каждом прогоне.** Полный корпус ~1.6× дороже (двойной NER на \n-сегментах).
+  См. [`archive/reports/HANDOFF_STAGE_E_PRIME.md`](archive/reports/HANDOFF_STAGE_E_PRIME.md).
+
 **UI второй фикс — старый процесс отвечал вместо нового** (2026-07-20): `http.server`
 даёт Windows молча забиндить новый `server.py` на занятый порт (`allow_reuse_address`)
 — старые процессы после перезапусков не умирали, ОС отдавала запросы то старому коду,

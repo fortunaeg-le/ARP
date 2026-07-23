@@ -433,6 +433,86 @@ def _detect_boundary_entities(
                         for addr_type in addr_types:
                             per_win[k].append((s, e, addr_type, "ner", 1.0))
 
+            # --- ЭТАП E′: РАСПЛЕТЁННЫЙ вид окна — адрес, рваный переносом ЧЕРЕЗ
+            # ГРАНИЦУ СЕГМЕНТОВ (в .txt строка = сегмент: «Ленинградск\nая 36» —
+            # это два сегмента). Тот же вид/конвейер/строгий якорь, что во втором
+            # проходе detect_ner; анти-склейка двух адресов по позициям \n (обе
+            # половины строгие -> деление; после деления спан не пересекает стык
+            # и отбрасывается фильтром шага 4 как дубль посегментной детекции). ---
+            from ner_detector import _addr_deweave, _addr_split_at_newlines
+            from normalizer import normalize_for_detection, src_to_norm
+            for k, wt in enumerate(win_texts):
+                woven, w_idx, changed = _addr_deweave(wt)
+                # ТОЛЬКО окна с реальной СКЛЕЙКОЙ (рваное слово/индекс через стык).
+                # Гонять вид по каждому окну (стык всегда '\n') нельзя: пропадает
+                # граница предложения, расширение краёв ползёт через стык в чужие
+                # метки/номера пунктов («ИНН», «3.2») — 182 мусорных маски на
+                # ЧИСТЫХ доках в замере. Не-склеенные стыки полностью покрывает
+                # штатный посегментный проход.
+                if not changed:
+                    continue
+                vnorm, n_idx = normalize_for_detection(woven)
+                vmap = [w_idx[i] for i in n_idx]          # view -> окно
+                loc_v = [src_to_norm(vmap, s, e) for s, e in loc_by_win[k]]
+                # склейка (changed) — сама по себе сид: LOC/маркер на рваном
+                # тексте молчат, а строгий якорь всё равно решает после сборки.
+                if not (loc_v or _addr_has_seed(vnorm) or changed):
+                    continue
+                yargy_v = _glue_address_matches(vnorm, list(_addr_extractor(vnorm)))
+                ner_v = [src_to_norm(vmap, s, e) for s, e in ner_by_win[k]]
+                yargy_v = _filter_suspect_yargy(vnorm, yargy_v, ner_v, loc_v)
+                regex_v = [src_to_norm(vmap, ls, le)
+                           for (ls, le, _et, det, _cf) in per_win[k] if det == "regex"]
+                perorg_v = [src_to_norm(vmap, ls, le)
+                            for (ls, le, et, det, _cf) in per_win[k]
+                            if det != "regex" and et in ("PERSON", "ORG")]
+                occ_v = _address_barriers(vnorm, perorg_v, regex_v)
+                raw_v = _build_address_spans(vnorm, loc_v + yargy_v, occ_v)
+                final_v = _finalize_address_spans(vnorm, raw_v, occ_v)
+                nl_pos = [i for i, si in enumerate(vmap) if wt[si] in "\n\r"]
+                final_v = _addr_split_at_newlines(vnorm, final_v, nl_pos)
+                from ner_detector import _addr_trim_tail_lines
+                final_v = _addr_trim_tail_lines(vnorm, final_v, nl_pos)
+                from ner_detector import _deweave_glue_positions, _span_has_glue
+                glue_w = _deweave_glue_positions(w_idx)
+                for s, e in final_v:
+                    ws_, we_ = vmap[s], vmap[e - 1] + 1
+                    # эмитим ТОЛЬКО спан, содержащий точку СКЛЕЙКИ deweave: окно
+                    # могло стать changed из-за легитимного NBSP-разделителя цифр
+                    # в другом месте — тогда этот адрес полностью покрыт штатным
+                    # посегментным проходом, а видовой спан без склейки лишь
+                    # тащит края через стык. Скачки normalize (дефисы) — не склейка.
+                    if not _span_has_glue(ws_, we_, glue_w):
+                        continue
+                    for addr_type in addr_types:
+                        per_win[k].append((ws_, we_, addr_type, "ner", 1.0))
+
+    # --- ЭТАП E′: ORG, РВАНЫЙ ГРАНИЦЕЙ СЕГМЕНТОВ (cross-segment, контракт
+    # SplitEntities / находка A-1). OrgAnchorDetector на тексте окна: его
+    # anchor_search_view вырезает \n, «ПАО «Альтаи\nр»» склеивается в
+    # «ПАО «Альтаир»» — якорные правила C′ НЕ трогаются, детектору просто дают
+    # целый текст. Берём ТОЛЬКО якоря, пересекающие стык (прочие — дубли
+    # посегментного прохода detect_structural); шаг 4 разрежет их на пару
+    # половин B3-стилем (каждая — свой токен, восстановление посимвольно). ---
+    import anchor_registry as _AR
+    _org_det = _AR.OrgAnchorDetector()
+    for k, w in enumerate(wins):
+        wt = w["window"]
+        seg_tmp = TextSegment(id="__win__", text=wt, source_type="txt_line", metadata={})
+        norm_w, omap_w = _AR.anchor_search_view(seg_tmp)
+        low_w = norm_w.lower()
+        try:
+            org_anchors = _org_det.detect(seg_tmp, norm_w, low_w, omap_w, [])
+        except Exception:
+            org_anchors = []
+        for a in org_anchors:
+            if a.span_end <= a.span_start:
+                continue
+            ws_ = omap_w[a.span_start]
+            we_ = omap_w[a.span_end - 1] + 1
+            if ws_ < w["tail_end"] and we_ > w["head_start"]:
+                per_win[k].append((ws_, we_, "ORG", "ner", 1.0))
+
     # 4. Пересекающие стык спаны -> пары Entity_A/Entity_B (та же логика, что и раньше).
     extra: list[Entity] = []
     for k, w in enumerate(wins):
