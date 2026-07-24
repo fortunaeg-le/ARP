@@ -75,6 +75,8 @@
   .t-PHONE{background:#c6ecf5}.t-EMAIL{background:#e4e0c0}.t-SNILS{background:#f0d4f0}
   .t-BIRTHDATE{background:#ffe0cc}.t-SUM{background:#e8eab0}.t-DATE{background:#e2e6ea}
 
+  footer.build-mark{color:var(--muted);font-size:11px;text-align:center;padding:10px 20px 22px;user-select:text}
+
   /* --- sidebar list --- */
   .side{background:var(--panel);border:1px solid var(--line);border-radius:12px;max-height:70vh;overflow:auto;position:sticky;top:70px}
   .side h4{margin:0;padding:12px 14px;font-size:14px;border-bottom:1px solid var(--line)}
@@ -404,5 +406,6 @@ async function doDecrypt(){
 }
 function downloadRestored(){ const sid=document.getElementById('r-sid').value.trim()||'restored'; saveText(sid+'_restored.txt',RESTORED); }
 </script>
+<footer class="build-mark">сборка: {{BUILD_MARK}}</footer>
 </body>
 </html>

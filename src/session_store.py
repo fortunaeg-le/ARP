@@ -369,6 +369,46 @@ def purge_expired(storage_dir: str | None = None, exclude_session_id: str | None
     return removed
 
 
+def list_sessions(storage_dir: str | None = None) -> list[dict]:
+    """Список сессий в хранилище: [{session_id, created_at, expires_at, entities_count}].
+
+    Отсортирован по created_at, новые первыми. Файлы, которые не расшифровываются
+    или не парсятся, пропускаются молча (та же терпимость, что purge_expired) —
+    список сессий не должен падать из-за одного повреждённого файла. Просроченные
+    сессии тоже включены (задел под storage.py); фильтрацию по TTL делает вызывающий.
+    """
+    store = _resolve_storage_dir(storage_dir)
+    if not store.exists():
+        return []
+
+    key_path = store / _KEY_FILENAME
+    if not key_path.exists():
+        return []
+    try:
+        fernet = Fernet(key_path.read_bytes())
+    except ValueError:
+        return []
+
+    out = []
+    for entry in store.iterdir():
+        if not entry.is_file() or entry.suffix != ".enc":
+            continue
+        try:
+            raw = fernet.decrypt(entry.read_bytes())
+            data = json.loads(raw.decode("utf-8"))
+            out.append({
+                "session_id": data["session_id"],
+                "created_at": data["created_at"],
+                "expires_at": data["expires_at"],
+                "entities_count": len(data.get("entities", [])),
+            })
+        except (InvalidToken, json.JSONDecodeError, KeyError, ValueError, OSError):
+            continue
+
+    out.sort(key=lambda r: r["created_at"], reverse=True)
+    return out
+
+
 def delete_session(session_id: str, storage_dir: str | None = None) -> bool:
     """Удаляет файлы сессии {storage_dir}/{session_id}.enc и {session_id}.txt.
 

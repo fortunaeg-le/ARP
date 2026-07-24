@@ -92,7 +92,7 @@ def cmd_encrypt(path, config_path, allow_lossy=False):
     from extractor import extract
     from pipeline import run_detection
     from tokenizer import tokenize
-    from session_store import save_session, default_storage_dir
+    from storage import save_session, default_storage_dir
     from ooxml_core import OoxmlError
     from unread_zones import UnreadZoneError
 
@@ -167,7 +167,7 @@ def cmd_encrypt(path, config_path, allow_lossy=False):
 
 
 def cmd_decrypt(session_id):
-    from session_store import purge_expired, SessionNotFoundError, SessionExpiredError
+    from storage import purge_expired, SessionNotFoundError, SessionExpiredError
     from detokenizer import detokenize
 
     # Автоочистка чужих просроченных сессий выполняется ВСЕГДА в начале decrypt —
@@ -211,7 +211,7 @@ def cmd_decrypt_file(session_id, path, out):
     # должен тянуть тяжёлые модули при обычном encrypt/decrypt. file_detokenizer сам
     # ничего тяжёлого не грузит — импорт мгновенный.
     from file_detokenizer import detokenize_file
-    from session_store import SessionNotFoundError, SessionExpiredError
+    from storage import SessionNotFoundError, SessionExpiredError
     from ooxml_core import OoxmlError
 
     # В отличие от decrypt, purge_expired здесь НЕ вызывается — чтобы не менять
@@ -256,7 +256,7 @@ def cmd_decrypt_file(session_id, path, out):
 
 
 def cmd_delete(session_id):
-    from session_store import delete_session
+    from storage import delete_session
 
     if delete_session(session_id):
         print(f"Сессия {session_id} удалена")

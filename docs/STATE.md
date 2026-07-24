@@ -399,6 +399,16 @@ byte-diff CLI↔UI подтверждён. См. [`archive/reports/HANDOFF_UI.md
   при отсутствии ключа кидают ошибку, а не генерируют новый — тихое
   пересоздание хоронит все прочие сессии директории.
 
+**Этап U1 (упаковка для конечного пользователя), 2026-07-24** — ветка
+`u1-desktop-packaging`, детекция не тронута. PyInstaller `--onedir`
+(`packaging/shifrator.spec`) + лаунчер `app/launcher.py` (self-check моделей
+до старта, файл-замок против зомби-процессов, динамический порт, окно
+tkinter вместо консоли) + `src/storage.py` (интерфейс хранения сессий, задел
+серверной версии). Проверено на собранном exe: CLI↔UI паритет, self-check на
+удалённом файле модели даёт человеческий текст, PATH без Python/без админа.
+См. [`archive/reports/HANDOFF_U1_PACKAGING.md`](archive/reports/HANDOFF_U1_PACKAGING.md),
+[`README_USER.md`](../README_USER.md).
+
 ## 7. Куда за подробностями (не читать по умолчанию)
 
 - Инварианты кода/архитектурные решения — [`ARCHITECTURE.md`](ARCHITECTURE.md).

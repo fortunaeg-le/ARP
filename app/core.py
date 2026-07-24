@@ -17,15 +17,19 @@ import html
 import os
 import sys
 
+sys.path.insert(0, os.path.dirname(os.path.abspath(__file__)))
+from paths import app_root  # noqa: E402
+
 # src/ на пути — тот же приём, что в shifrator.py (плоские импорты — контракт проекта).
-_ROOT = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
+# В frozen-сборке это no-op (модули уже вкомпилированы), но безвреден.
+_ROOT = app_root()
 _SRC = os.path.join(_ROOT, "src")
 if _SRC not in sys.path:
     sys.path.insert(1, _SRC)
 
 DEFAULT_CONFIG = os.path.join(_ROOT, "entity_types.yaml")
 
-BUILD_MARK = "stage-b-per"
+BUILD_MARK = "u1-desktop-packaging"
 
 
 # --- Человекочитаемые названия типов ПДн (для юриста, не коды) ---------------
@@ -64,7 +68,7 @@ def type_label(entity_type: str) -> str:
 
 def storage_dir():
     """Директория хранилища сессий CLI (~/.shifrator/sessions)."""
-    from session_store import default_storage_dir
+    from storage import default_storage_dir
     return default_storage_dir()
 
 
@@ -153,7 +157,7 @@ def run_encrypt(path: str, allow_lossy: bool = False, config_path: str = DEFAULT
     from extractor import extract
     from pipeline import run_detection
     from tokenizer import tokenize, _assemble
-    from session_store import save_session, default_storage_dir
+    from storage import save_session, default_storage_dir
     import json
 
     doc = extract(path)   # FileNotFoundError / ValueError наружу

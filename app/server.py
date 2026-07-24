@@ -10,6 +10,7 @@
 
 import json
 import os
+import socket
 import sys
 import tempfile
 import threading
@@ -18,16 +19,42 @@ from http.server import BaseHTTPRequestHandler, ThreadingHTTPServer
 
 sys.path.insert(0, os.path.dirname(os.path.abspath(__file__)))
 import core  # noqa: E402
+from paths import app_root  # noqa: E402
 
 print(f"[BUILD_MARK={core.BUILD_MARK}]", file=sys.stderr)
 
 HOST = "127.0.0.1"
-PORT = int(os.environ.get("SHIFRATOR_UI_PORT", "8765"))
-_HERE = os.path.dirname(os.path.abspath(__file__))
-_INDEX = os.path.join(_HERE, "index.html")
+DEFAULT_PORT = int(os.environ.get("SHIFRATOR_UI_PORT", "8765"))
+_INDEX = os.path.join(app_root(), "app", "index.html")
 
 _ALLOWED_EXT = (".docx", ".txt")
 _MAX_UPLOAD = 50 * 1024 * 1024   # 50 МБ — договор столько не весит; защита от случайностей
+
+
+def find_free_port(preferred: int, host: str = HOST, attempts: int = 50) -> int:
+    """Возвращает preferred, если он свободен, иначе следующий свободный порт.
+
+    Не хардкодит порт (был инцидент с портовым конфликтом на этапе UI-фикса):
+    пробует preferred, preferred+1, … до attempts раз, затем отдаёт порт,
+    выбранный ОС (bind на 0). Каждая попытка — реальный bind+close, а не
+    эвристика "похоже, свободен" (TOCTOU-гонка возможна, но окно исчезающе
+    мало для локального однопользовательского инструмента).
+    """
+    for port in range(preferred, preferred + attempts):
+        s = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
+        try:
+            s.bind((host, port))
+            return port
+        except OSError:
+            continue
+        finally:
+            s.close()
+    s = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
+    try:
+        s.bind((host, 0))
+        return s.getsockname()[1]
+    finally:
+        s.close()
 
 
 def _friendly_encrypt_error(exc: Exception) -> str:
@@ -43,7 +70,7 @@ def _friendly_encrypt_error(exc: Exception) -> str:
 
 
 def _friendly_decrypt_error(exc: Exception) -> str:
-    from session_store import SessionNotFoundError, SessionExpiredError
+    from storage import SessionNotFoundError, SessionExpiredError
 
     if isinstance(exc, SessionExpiredError):
         return ("Сессия истекла (срок хранения — 24 часа с момента шифрации). "
@@ -78,6 +105,11 @@ class Handler(BaseHTTPRequestHandler):
 
     # --- routes ---
     def do_GET(self):
+        if self.path == "/api/ping":
+            # Хендшейк для лаунчера: отличить "уже запущенный наш процесс" от
+            # "порт занят чужим приложением" и от зомби старого билда.
+            self._send_json({"build_mark": core.BUILD_MARK, "pid": os.getpid()})
+            return
         if self.path in ("/", "/index.html"):
             try:
                 with open(_INDEX, "rb") as f:
@@ -85,6 +117,7 @@ class Handler(BaseHTTPRequestHandler):
             except OSError:
                 self.send_error(500, "index.html not found")
                 return
+            body = body.replace(b"{{BUILD_MARK}}", core.BUILD_MARK.encode("utf-8"))
             self.send_response(200)
             self.send_header("Content-Type", "text/html; charset=utf-8")
             self.send_header("Content-Length", str(len(body)))
@@ -186,16 +219,18 @@ class Server(ThreadingHTTPServer):
 
 
 def main():
+    port = find_free_port(DEFAULT_PORT)
+    if port != DEFAULT_PORT:
+        print(f"  Порт {DEFAULT_PORT} занят — использую {port}.", file=sys.stderr)
     try:
-        server = Server((HOST, PORT), Handler)
+        server = Server((HOST, port), Handler)
     except OSError as e:
         print("=" * 60)
-        print(f"  [ОШИБКА] Порт {PORT} уже занят — похоже, интерфейс уже запущен")
-        print(f"  в другом окне. Закройте то окно (или его процесс) и запустите заново.")
+        print(f"  [ОШИБКА] Не удалось запустить сервер на порту {port}.")
         print(f"  Системная ошибка: {e}")
         print("=" * 60)
         sys.exit(1)
-    url = f"http://{HOST}:{PORT}/"
+    url = f"http://{HOST}:{port}/"
     print("=" * 60)
     print("  SHIFRATOR — десктоп-интерфейс")
     print(f"  Открыт локально: {url}")
