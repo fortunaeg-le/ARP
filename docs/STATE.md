@@ -386,6 +386,29 @@ byte-diff CLI↔UI подтверждён. См. [`archive/reports/HANDOFF_UI.md
   ПРЕД-существующий (HEAD тоже), корпус детерминирован; инвариант round-trip
   держится в каждом прогоне.** Полный корпус ~1.6× дороже (двойной NER на \n-сегментах).
   См. [`archive/reports/HANDOFF_STAGE_E_PRIME.md`](archive/reports/HANDOFF_STAGE_E_PRIME.md).
+- **Этап E″ (детерминизм детекции), 2026-07-23** — ветка `stage-eprime-determinism`,
+  поверх этапа E; E′ слита в main отдельно (этап S2, 2026-07-25).
+  Находка Eprime-A (недетерминизм на реальном ~2500-сегментном документе, 239/226/226
+  масок) **НЕ воспроизведена** на синтетическом двойнике (`tests/fixtures/
+  synthetic_corporate_large.docx`, коммитится навсегда — заменяет удалённый владельцем
+  `real_docs/`) на двух масштабах (2641/5051 сегментов) и в изолированном NER-стрессе
+  (до 508K символов). Внесена защитная мера класса дефекта (не диагностированный фикс):
+  `src/ner_detector.py`/`src/syntax_compound.py` фиксируют потоки BLAS
+  (`OMP/OPENBLAS/MKL/NUMEXPR_NUM_THREADS=1`, `setdefault`) до импорта `natasha` и
+  прогревают модели при импорте модуля. pytest 903+2 (новый `test_determinism.py`),
+  гейт D побайтно = baseline, sha256 корпуса 656 OK, round-trip синтетики 100%.
+  Автономный `experiments/stage_eprime_determinism/owner_repro.py` — для проверки
+  гипотезы владельцем на реальном документе. Находка остаётся ОТКРЫТОЙ. См.
+  [`archive/reports/HANDOFF_STAGE_EPRIME_DETERMINISM.md`](archive/reports/HANDOFF_STAGE_EPRIME_DETERMINISM.md).
+  **ОБНОВЛЕНИЕ 2026-07-24 (данные владельца):** на реальном документе воспроизвелось —
+  counts `[237,224,226,224,233,224]`, СЛУЧАЙНЫЙ разброс (не «первый≠остальные»),
+  гипотеза «холодный BLAS/прогрев» ОПРОВЕРГНУТА. Плавают только Natasha-зависимые
+  типы (ADDRESS 27-37, ORG/PER ±2), regex+КС стабильны. Анализ: ADDRESS уже
+  порядко-канонизирован (`sorted` в `_build_address_spans`), `_resolve_overlaps` —
+  тотальный порядок → причина в РАЗНЫХ НАБОРАХ спанов от инференса Natasha, не в
+  порядке. `owner_repro.py` переписан на послойную диагностику (L1-L4), потоки
+  фиксируются ПЕРВОЙ строкой до импорта numpy; один прогон владельца локализует слой.
+  Спекулятивная переупорядочка в пайплайн НЕ внесена (нет доказательств, риск корпусу).
 
 **UI второй фикс — старый процесс отвечал вместо нового** (2026-07-20): `http.server`
 даёт Windows молча забиндить новый `server.py` на занятый порт (`allow_reuse_address`)
@@ -431,3 +454,6 @@ byte-diff CLI↔UI подтверждён. См. [`archive/reports/HANDOFF_UI.md
   относительно текущего кода) — [`archive/INDEX.md`](archive/INDEX.md).
 - Замерный харнесс — `bench/` (`bench/README.md`).
 - Отладочная подвыборка корпуса (не для baseline/коммита) — `tests/corpus/subsample.py`.
+- Аудит лицензий зависимостей (прод+эксперимент, GPL/AGPL/non-commercial НЕТ; единственная
+  жёлтая — CC BY-SA у словаря OpenCorpora) — [`LICENSES_AUDIT.md`](LICENSES_AUDIT.md) +
+  черновик [`THIRD_PARTY_LICENSES.md`](THIRD_PARTY_LICENSES.md).
