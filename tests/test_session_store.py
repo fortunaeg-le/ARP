@@ -104,17 +104,20 @@ class TestSaveSessionDeduplication:
         assert org_record["segment_id"] == "p3"
 
     def test_each_entity_record_has_exactly_four_keys(self, tmp_path):
-        """HANDOFF_5 (обновлено этапом E): 4 инвариантных ключа v1 ПЛЮС поля v2
-        (canonical, occurrences). Прежние ключи не исчезают — обратная
-        совместимость читателей v1 (file_detokenizer читает original_text)."""
+        """HANDOFF_5 (обновлено этапом E, затем этапом S1): 4 инвариантных ключа
+        v1 ПЛЮС поля v2 (canonical, occurrences) ПЛЮС провенанс S1 (detector,
+        group_key). Прежние ключи не исчезают — обратная совместимость
+        читателей v1 (file_detokenizer читает original_text)."""
         entities = [_entity("p3", "[ORG_1]", "ORG", "ООО «Ромашка»")]
         sid = save_session(entities, storage_dir=str(tmp_path))
         session = load_session(sid, storage_dir=str(tmp_path))
         rec = session["entities"][0]
         assert set(rec.keys()) == {"token", "entity_type", "original_text",
-                                   "segment_id", "canonical", "occurrences"}
+                                   "segment_id", "canonical", "occurrences",
+                                   "detector", "group_key"}
         assert [o["surface"] for o in rec["occurrences"]] == ["ООО «Ромашка»"]
-        assert {"segment_id", "start", "end", "spans", "surface"} <= set(rec["occurrences"][0])
+        assert {"segment_id", "start", "end", "spans", "surface",
+                "detector", "group_key"} <= set(rec["occurrences"][0])
 
 
 class TestSaveSessionEmptyEntities:

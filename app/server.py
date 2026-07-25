@@ -212,6 +212,9 @@ class Handler(BaseHTTPRequestHandler):
         if self.path.startswith("/api/markup/list"):
             self._handle_markup_list()
             return
+        if self.path == "/api/markup/summary":
+            self._handle_markup_summary()
+            return
         if self.path in ("/", "/index.html"):
             try:
                 with open(_INDEX, "rb") as f:
@@ -249,6 +252,8 @@ class Handler(BaseHTTPRequestHandler):
             self._handle_markup_op(self._op_markup_delete)
         elif self.path == "/api/markup/apply":
             self._handle_markup_op(self._op_markup_apply)
+        elif self.path == "/api/markup/delete-all":
+            self._handle_markup_delete_all()
         else:
             self.send_error(404)
 
@@ -397,14 +402,27 @@ class Handler(BaseHTTPRequestHandler):
         try:
             payload = json.loads(data.decode("utf-8"))
             session_id = (payload.get("session_id") or "").strip()
+            delete_markup = bool(payload.get("delete_markup", False))
         except (ValueError, AttributeError):
             self._send_json({"status": "error", "message": "Некорректный запрос."})
             return
         if not session_id:
             self._send_json({"status": "error", "message": "Укажите ID сессии."})
             return
-        deleted = delete_session(session_id)
+        # S1: разметка сессии по умолчанию ПЕРЕЖИВАЕТ удаление сессии (отдельный
+        # актив, см. src/storage.py §ЭТАП S1) — delete_markup=True удаляет и её,
+        # это явный дополнительный выбор пользователя в диалоге подтверждения.
+        deleted = delete_session(session_id, delete_markup=delete_markup)
         self._send_json({"status": "ok", "deleted": deleted})
+
+    def _handle_markup_summary(self):
+        from storage import markup_summary
+        self._send_json({"status": "ok", **markup_summary()})
+
+    def _handle_markup_delete_all(self):
+        from storage import delete_all_markup
+        removed = delete_all_markup()
+        self._send_json({"status": "ok", "removed_sessions": removed})
 
     # ------------------------------------------------------------------ #
     # U3 — разметка экрана проверки.
@@ -479,7 +497,23 @@ class Server(ThreadingHTTPServer):
     allow_reuse_address = False
 
 
+def _migrate_legacy_markup_once():
+    """S1: разметка (U3), сохранённая ДО этой сессии, лежит в старом
+    расположении (директория сессий) — переносим в отдельное хранилище разметки
+    ОДИН раз при старте, иначе она бы осиротела там и не участвовала ни в
+    новой политике срока, ни в «удалить всю разметку». Некритично для запуска:
+    сбой переноса (диск/права) не должен блокировать интерфейс."""
+    try:
+        from storage import migrate_legacy_markup
+        n = migrate_legacy_markup()
+        if n:
+            print(f"  Перенесена разметка {n} сессий в новое хранилище (этап S1).", file=sys.stderr)
+    except Exception as e:  # noqa: BLE001
+        print(f"  [предупреждение] перенос старой разметки не удался: {e}", file=sys.stderr)
+
+
 def main():
+    _migrate_legacy_markup_once()
     port = find_free_port(DEFAULT_PORT)
     if port != DEFAULT_PORT:
         print(f"  Порт {DEFAULT_PORT} занят — использую {port}.", file=sys.stderr)

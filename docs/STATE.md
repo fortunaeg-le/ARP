@@ -18,10 +18,9 @@
 ```
 venv/Scripts/python.exe -m pytest -q
 ```
-Эталон: **871 passed, 1 deselected, 10 xfailed** (~335 c; этап D, 2026-07-23: +17
-тестов — 10 зеркал метрики precision `tests/test_precision_metric.py` + 7 само-тестов
-гейта `tests/test_gate_d.py`). Другой интерпретатор (`natasha` не установлена) — ошибки
-сбора; рабочий только `venv/Scripts/python.exe`.
+Эталон: **933 passed, 2 deselected, 10 xfailed** (~485 c; этап S1, 2026-07-25: +13
+тестов `tests/test_storage_s1.py`, см. §6). Другой интерпретатор (`natasha` не
+установлена) — ошибки сбора; рабочий только `venv/Scripts/python.exe`.
 
 10 `xfailed` — намеренно отложенные дефекты/дыры покрытия, помечены `@xfail(strict=True)`:
 если станут проходить незамеченно — тест «покраснеет» (XPASS→FAIL), это сигнал снять метку.
@@ -453,6 +452,28 @@ tkinter вместо консоли) + `src/storage.py` (интерфейс хр
 удалённом файле модели даёт человеческий текст, PATH без Python/без админа.
 См. [`archive/reports/HANDOFF_U1_PACKAGING.md`](archive/reports/HANDOFF_U1_PACKAGING.md),
 [`README_USER.md`](../README_USER.md).
+
+**Этап S1 (гигиена данных и жизненный цикл разметки), 2026-07-25** — ветка
+`u1-desktop-packaging`, детекция НЕ тронута (0 правок в `src/` за пределами
+`storage.py`/`session_store.py`). Три правки в слое хранения: (1) разметка
+(U3) вынесена в отдельное хранилище `~/.shifrator/markup/` со своей политикой
+срока (30 дней, не 24ч TTL сессии) — переживает удаление/просрочку сессии;
+явное удаление (одна сессия/вся разметка), миграция старых `.markup.json`,
+видимость в интерфейсе (`GET /api/markup/summary`); (2) `{sid}.doc.json`
+больше не сериализует служебные кеши видов текста детекции
+(`detection_text`/`_norm_cache`/`_anchor_search_cache`/`_per_search_cache`) —
+файл меньше в 6.7–7.8× на реальных документах, копий ПДн в файле стало 1
+(было до 4); (3) провенанс маски: `session_store.save_session` теперь пишет
+`detector`/`group_key` (уже существовавшие поля `Entity`, раньше терялись при
+сериализации) на уровне записи и каждого вхождения; ручные маски U3 явно
+`detector="manual"`, отличимы от автоматических; попутно исправлен дефект
+`apply_pending_markup`, стиравший провенанс ВСЕХ масок сессии при любой
+пересборке. Обратная совместимость: старые сессии без этих полей читаются
+(`.get(...)`). `pytest -q`: **933 passed, 10 xfailed** (+13 новых тестов
+`tests/test_storage_s1.py`, остальное байт-в-байт); гейт D зелёный; корпус
+`MANIFEST.sha256` OK; агрегат E″ (`corpus_anon_sha.py`) — `6c9b5bd5a1ab2227…`,
+совпадает с эталоном. См.
+[`archive/reports/HANDOFF_S1.md`](archive/reports/HANDOFF_S1.md).
 
 ## 7. Куда за подробностями (не читать по умолчанию)
 

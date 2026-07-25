@@ -222,7 +222,13 @@
 
       <div class="markup-panel">
         <h4>Ваши правки <span class="badge" id="markup-count">0</span></h4>
-        <div class="note" style="margin-bottom:10px">Каждая правка сохраняется сразу — это и есть будущая эталонная разметка, она хранится <b>только на этом компьютере</b>, в той же папке, что и сессии (<code id="markup-storage-dir"></code>), и никуда не отправляется. Документ не меняется, пока вы не нажмёте «Применить правки и пересобрать».</div>
+        <div class="note" style="margin-bottom:10px">Каждая правка сохраняется сразу — это и есть будущая эталонная разметка для улучшения системы, она хранится <b>только на этом компьютере</b>, никуда не отправляется. Документ не меняется, пока вы не нажмёте «Применить правки и пересобрать».</div>
+        <div class="warn" style="background:#fff7e6;border-color:#f0d78c;color:#7a5a00;margin-bottom:10px">
+          <div class="note" style="color:#7a5a00">⚠️ <b>Разметка хранится ОТДЕЛЬНО от сессии и ДОЛЬШЕ</b> (<span id="markup-ttl-days">30</span> дней, а не 24 часа) — она нужна для накопления эталонных примеров и <b>содержит фрагменты текста вашего документа</b> (то самое выделение и его значение). Удаление сессии эту разметку НЕ стирает — управляйте ей отдельно.
+            <span id="markup-summary-line"></span>
+            <br><button class="ghost" style="margin-top:6px;padding:4px 10px;font-size:12px" onclick="deleteAllMarkupUI()">Удалить всю накопленную разметку (все сессии)</button>
+          </div>
+        </div>
         <div id="markup-list"></div>
         <div class="verify-actions" style="margin-top:10px">
           <button class="primary" id="markup-apply-btn" onclick="applyMarkup()">Применить правки и пересобрать</button>
@@ -393,7 +399,6 @@ function esc(s){ return (s||'').replace(/&/g,'&amp;').replace(/</g,'&lt;').repla
 function renderVerify(d){
   document.getElementById('v-sid').textContent=d.session_id;
   document.getElementById('v-count').textContent='спрятано '+d.values_hidden+' знач. · '+d.entities_total+' замен';
-  if(d.storage_dir) document.getElementById('markup-storage-dir').textContent=d.storage_dir;
   document.getElementById('pane-orig').innerHTML=d.original_html||'<span class="note">(пусто)</span>';
   document.getElementById('pane-anon').innerHTML=d.anon_html||'<span class="note">(пусто)</span>';
 
@@ -506,9 +511,12 @@ function selectSession(sid){
 }
 async function deleteSessionUI(sid){
   if(!confirm('Удалить эту сессию? Восстановление исходных данных по ней станет НЕВОЗМОЖНЫМ. Продолжить?')) return;
+  // S1: разметка (правки экрана проверки) хранится ОТДЕЛЬНО от сессии и по
+  // умолчанию переживает её удаление — спрашиваем явным вторым вопросом.
+  const alsoMarkup=confirm('Также удалить накопленную разметку по этой сессии?\n\nОна хранится отдельно от сессии (дольше, для будущего улучшения системы) и по умолчанию НЕ удаляется вместе с ней. Если не уверены — нажмите «Отмена»: сессия удалится, разметка останется.');
   try{
     const resp=await fetch('/api/session-delete',{method:'POST',headers:{'Content-Type':'application/json'},
-      body:JSON.stringify({session_id:sid})});
+      body:JSON.stringify({session_id:sid, delete_markup:alsoMarkup})});
     await resp.json();
   }catch(err){ /* сеть — покажет loadSessions при следующей попытке */ }
   loadSessions();
@@ -750,10 +758,38 @@ function markupToast(msg,kind){
   _markupToastTimer=setTimeout(()=>{ el.className=''; }, 4500);
 }
 
+/* ---- сводка по НАКОПЛЕННОЙ разметке (S1: отдельный от сессии актив) ---- */
+async function loadMarkupSummary(){
+  try{
+    const resp=await fetch('/api/markup/summary');
+    const d=await resp.json();
+    if(d.status!=='ok') return;
+    document.getElementById('markup-ttl-days').textContent=d.ttl_days;
+    const line=document.getElementById('markup-summary-line');
+    if(d.entries>0){
+      line.textContent=' Сейчас накоплено: '+d.entries+' записей по '+d.sessions+' сессиям'+
+        (d.oldest_created_at?' (самая старая — '+fmtDate(d.oldest_created_at)+').':'.');
+    } else {
+      line.textContent=' Сейчас накопленной разметки нет.';
+    }
+  }catch(err){ /* сводка не критична для работы экрана */ }
+}
+async function deleteAllMarkupUI(){
+  if(!confirm('Удалить ВСЮ накопленную разметку по ВСЕМ сессиям (не только текущей)? Действие необратимо. Сами сессии и текущий документ не пострадают.')) return;
+  try{
+    const resp=await fetch('/api/markup/delete-all',{method:'POST'});
+    const d=await resp.json();
+    markupToast(d.status==='ok' ? 'Удалена разметка '+d.removed_sessions+' сессий.' : (d.message||'Не удалось удалить разметку.'), d.status==='ok'?'ok':'err');
+  }catch(err){ markupToast('Ошибка связи с сервером: '+err,'err'); }
+  loadMarkupSummary();
+  loadMarkupPanel();
+}
+
 /* ---- панель "Ваши правки" + применение пачкой ---- */
 const MARKUP_KIND_LABEL={missed:'Пропущено',false_mask:'Ложная маска',boundary:'Граница',type:'Тип'};
 async function loadMarkupPanel(){
   if(!CUR) return;
+  loadMarkupSummary();
   const box=document.getElementById('markup-list');
   try{
     const resp=await fetch('/api/markup/list?session_id='+encodeURIComponent(CUR.session_id));

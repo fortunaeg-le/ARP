@@ -227,6 +227,9 @@ def _entities_from_session(session: dict) -> list:
                 segment_id=occ["segment_id"], start=occ["start"], end=occ["end"],
                 original_text=occ["surface"], spans=occ.get("spans"),
                 canonical=rec.get("canonical"),
+                # Провенанс (этап S1) — отсутствует (None) на сессиях до S1.
+                detector=occ.get("detector", rec.get("detector")),
+                group_key=occ.get("group_key", rec.get("group_key")),
             ))
     return out
 
@@ -459,8 +462,11 @@ def _add_missed(doc, session: dict, segment_id: str, start: int, end: int,
     session["entities"].append({
         "token": token, "entity_type": entity_type, "original_text": value,
         "segment_id": segment_id, "canonical": None,
+        # Провенанс (этап S1): вручную добавленная маска отличима от автоматической.
+        "detector": "manual", "group_key": None,
         "occurrences": [{"segment_id": segment_id, "start": start, "end": end,
-                          "spans": None, "surface": value}],
+                          "spans": None, "surface": value,
+                          "detector": "manual", "group_key": None}],
     })
     return token, value
 
@@ -650,11 +656,18 @@ def apply_pending_markup(session_id: str, config_path: str = DEFAULT_CONFIG) -> 
         for rec in session["entities"]:
             for occ in rec["occurrences"]:
                 spans = [tuple(sp) for sp in occ["spans"]] if occ.get("spans") else None
+                # Провенанс (этап S1): КАЖДОЕ вхождение несёт СВОЙ реальный detector/
+                # group_key (regex/ner для уже стоявших масок, "manual" для тех, что
+                # добавила разметка), а не единый "manual" на ВСЮ сессию — иначе любая
+                # пересборка стирала бы провенанс всех ранее автоматических масок.
+                # occ.get(...) с fallback на None — старые occurrences (сессия
+                # сохранена до этапа S1) провенанса не несут.
                 entities.append(Entity(
                     id=f"ui-{session_id}-{len(entities)}", segment_id=occ["segment_id"],
                     start=occ["start"], end=occ["end"], original_text=occ["surface"],
-                    entity_type=rec["entity_type"], detector="manual", confidence=1.0,
-                    token=rec["token"], spans=spans, group_key=None, canonical=rec.get("canonical"),
+                    entity_type=rec["entity_type"], detector=occ.get("detector"), confidence=1.0,
+                    token=rec["token"], spans=spans, group_key=occ.get("group_key"),
+                    canonical=rec.get("canonical"),
                 ))
         expires_at = datetime.fromisoformat(session["expires_at"])
         replace_session_entities(session_id, entities, expires_at)

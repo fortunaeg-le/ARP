@@ -43,12 +43,44 @@
   - update_markup(session_id, markup_id, **patch) -> bool
   - delete_markup(session_id, markup_id) -> bool
 
+ЭТАП S1 (гигиена данных и жизненный цикл разметки, 2026-07-25). Разметка (U3) —
+ДОЛГОЖИВУЩИЙ АКТИВ (эталонный корпус для будущего анализатора/замеров), а не
+часть сессии восстановления: живёт в ОТДЕЛЬНОМ хранилище (`default_markup_dir()`,
+не `default_storage_dir()`), не удаляется вместе с сессией и не подчищается
+`purge_expired` по TTL сессии (24 ч). Своя, более долгая политика срока —
+`_MARKUP_TTL_DAYS`, обоснование см. там же. Разметка по-прежнему содержит
+фрагмент РЕАЛЬНОГО текста (`value`) — это ПДн, поэтому срок не бесконечен и
+пользователю должно быть явно видно, что она хранится (интерфейс — вне
+`storage.py`, см. `app/index.html`/`app/server.py`).
+
+  - default_markup_dir() -> Path — отдельная директория разметки, сосед
+    `default_storage_dir()` (не внутри неё — чтобы сканы `*.enc`/сайдкаров
+    сессии её не задевали).
+  - purge_expired_markup(ttl_days=_MARKUP_TTL_DAYS) -> int — удаляет ЗАПИСИ
+    разметки старше ttl_days (по created_at КАЖДОЙ записи, не по сессии);
+    возвращает число удалённых записей. Не связана с purge_expired сессий.
+  - delete_session_markup(session_id) -> bool — удаляет НАКОПЛЕННУЮ разметку
+    ОДНОЙ сессии отдельным действием (сессию не трогает).
+  - delete_all_markup() -> int — удаляет ВСЮ накопленную разметку (все сессии),
+    одно явное действие пользователя («удалить всю накопленную разметку»).
+  - markup_summary() -> dict — {sessions, entries, oldest_created_at, ttl_days}
+    для интерфейса (сколько накоплено, когда истечёт).
+  - migrate_legacy_markup() -> int — переносит {sid}.markup.json, сохранённые
+    ДО этапа S1 в старом расположении (директория сессий), в новое; сливает по
+    id, если файл уже есть в обоих местах. Идемпотентна. Вызывается один раз
+    при старте UI (`app/server.py::main`), НЕ на каждый запрос.
+
+`delete_session(session_id, delete_markup=False)` — по умолчанию разметку
+сессии больше НЕ удаляет (только .meta.json/.doc.json — сайдкары сессии, не
+разметку); `delete_markup=True` — явный дополнительный выбор пользователя,
+удаляет и разметку этой сессии через delete_session_markup().
+
 Исключения SessionNotFoundError / SessionExpiredError реэкспортированы отсюда же.
 """
 
 import json
 import uuid
-from datetime import datetime
+from datetime import datetime, timedelta
 from pathlib import Path
 
 from session_store import (
@@ -69,6 +101,7 @@ __all__ = [
     "delete_session",
     "purge_expired",
     "default_storage_dir",
+    "default_markup_dir",
     "save_session_meta",
     "replace_session_entities",
     "save_doc_segments",
@@ -77,9 +110,30 @@ __all__ = [
     "list_markup",
     "update_markup",
     "delete_markup",
+    "purge_expired_markup",
+    "delete_session_markup",
+    "delete_all_markup",
+    "markup_summary",
+    "migrate_legacy_markup",
     "SessionNotFoundError",
     "SessionExpiredError",
 ]
+
+# Разметка (U3) — отдельный от сессий актив, см. докстринг модуля §ЭТАП S1.
+# Своя политика срока: 24ч (TTL сессии) хватает на один цикл проверки, но не на
+# накопление эталонного корпуса для будущего анализатора — это недели пилота.
+# 30 дней — компромисс: достаточно долго, чтобы разметка не терялась между
+# рабочими сессиями пользователя, но не «хранить вечно молча» (ПДн-фрагмент в
+# `value` — открытый текст, инвариант «срок не бесконечен» соблюдён). Меняется
+# централизованно здесь же.
+_MARKUP_TTL_DAYS = 30
+_MARKUP_DIRNAME = "markup"
+
+
+def default_markup_dir() -> Path:
+    """Отдельная директория разметки — СОСЕД default_storage_dir(), не внутри
+    неё (см. докстринг модуля §ЭТАП S1: разные жизненные циклы)."""
+    return default_storage_dir().parent / _MARKUP_DIRNAME
 
 
 def save_session(entities, session_id=None, ttl_hours=24):
@@ -143,29 +197,43 @@ def list_sessions():
     return out
 
 
-def delete_session(session_id):
-    """Удаляет сессию (session_store: .enc/.txt) + все sidecar-файлы этапов
-    U2/U3 (.meta.json/.doc.json/.markup.json), если есть."""
+def delete_session(session_id, delete_markup: bool = False):
+    """Удаляет сессию (session_store: .enc/.txt) + sidecar-файлы этапа U2/U3
+    краткоживущего цикла (.meta.json/.doc.json), если есть.
+
+    Разметка (.markup.json) — ДОЛГОЖИВУЩИЙ актив в ОТДЕЛЬНОМ хранилище
+    (см. §ЭТАП S1 докстринга модуля) и по умолчанию НЕ трогается: она нужна
+    ПОСЛЕ удаления сессии для накопления эталонного корпуса. `delete_markup=True`
+    — явный дополнительный выбор пользователя («удалить и разметку тоже»),
+    удаляет разметку именно ЭТОЙ сессии через delete_session_markup().
+    """
     deleted = _delete_session(session_id)
     store = default_storage_dir()
-    for suffix in (".meta.json", ".doc.json", ".markup.json"):
+    for suffix in (".meta.json", ".doc.json"):
         try:
             store.joinpath(f"{session_id}{suffix}").unlink(missing_ok=True)
         except OSError:
             pass
+    if delete_markup:
+        delete_session_markup(session_id)
     return deleted
 
 
 def purge_expired(exclude_session_id=None):
     """Удаляет просроченные .enc (session_store) и подчищает ОСИРОТЕВШИЕ
-    sidecar-файлы (.meta/.doc/.markup.json), для которых .enc уже удалён —
-    session_store ничего не знает про sidecar-и этапов U2/U3, поэтому без этого
-    прохода они копились бы в хранилище бессрочно после истечения TTL сессии."""
+    sidecar-файлы краткоживущего цикла (.meta/.doc.json), для которых .enc уже
+    удалён — session_store ничего не знает про sidecar-и этапа U2/U3, поэтому
+    без этого прохода они копились бы в хранилище бессрочно после истечения
+    TTL сессии.
+
+    Разметка (.markup.json) сюда НЕ входит — с этапа S1 она живёт в отдельном
+    хранилище (`default_markup_dir()`) с собственной, более долгой политикой
+    срока (`purge_expired_markup`), не привязанной к TTL сессии."""
     removed = _purge_expired(exclude_session_id=exclude_session_id)
     store = default_storage_dir()
     if store.exists():
         live_ids = {p.stem for p in store.glob("*.enc")}
-        for suffix in (".meta.json", ".doc.json", ".markup.json"):
+        for suffix in (".meta.json", ".doc.json"):
             for p in store.glob(f"*{suffix}"):
                 sid = p.name[: -len(suffix)]
                 if sid not in live_ids:
@@ -195,18 +263,50 @@ def _doc_path(store: Path, session_id: str) -> Path:
     return store / f"{session_id}.doc.json"
 
 
+# ЭТАП S1 (задача 2): ключи segment.metadata, которые detect-время кладёт как
+# СЛУЖЕБНЫЕ КЕШИ производных видов текста для детекторов (`_norm_cache` —
+# normalizer.detection_view, `_anchor_search_cache`/`_per_search_cache` —
+# anchor_registry.anchor_search_view/per_search_view, `detection_text` —
+# регистро-нормализованная копия extractor'а) — каждый ЕЩЁ ОДНА полная копия
+# текста сегмента ОТКРЫТЫМ ТЕКСТОМ (+карта индексов у _norm_cache). Ни один из
+# них НЕ читается после run_detection/tokenize: экран проверки и пересборка
+# (app/core.py::_render_state/_validate_missed/_add_missed, tokenizer._assemble/
+# _render_segment) работают ТОЛЬКО с s.text/s.source_type/s.metadata структурными
+# полями (paragraph_index/style/table_index/row_index/col_index) — проверено
+# grep'ом по app/ и tokenizer.py (см. HANDOFF_S1). Значит это чистый сайдэффект
+# детекции, раздувающий {sid}.doc.json на диске пользователя без пользы —
+# не сериализуем. Восстановление НЕ пострадает: сама детекция здесь не
+# перезапускается (сегменты читаются для рендера/добавления РУЧНЫХ масок, не для
+# повторного прогона детекторов), а если это когда-нибудь изменится — тест
+# `tests/test_storage_s1.py::test_doc_segments_roundtrip_survives_cache_strip`
+# упадёт первым (round-trip реального экрана проверки, не unit на strip-функции).
+_DOC_METADATA_DROP_KEYS = frozenset({
+    "_norm_cache", "_anchor_search_cache", "_per_search_cache", "detection_text",
+})
+
+
+def _strip_detection_caches(metadata: dict) -> dict:
+    return {k: v for k, v in metadata.items() if k not in _DOC_METADATA_DROP_KEYS}
+
+
 def save_doc_segments(session_id: str, doc) -> None:
     """Sidecar {session_id}.doc.json — сегменты исходного документа (текст +
     структура), нужны для пересборки анонимизированного текста после ручной
     правки разметки (U3). СОДЕРЖИТ ПОЛНЫЙ ИСХОДНЫЙ ТЕКСТ (ПДн) — тот же профиль
     пользователя, та же осторожность, что у файла сессии; никуда не отправляется,
-    не входит в git (```~/.shifrator``` вне репозитория)."""
+    не входит в git (```~/.shifrator``` вне репозитория).
+
+    ЭТАП S1: `metadata` каждого сегмента очищается от служебных кешей
+    детекции (`_strip_detection_caches`) ПЕРЕД записью — это единственные лишние
+    копии ПДн в этом файле (см. `_DOC_METADATA_DROP_KEYS`); `s.text` — ОДНА
+    оставшаяся копия, необходимая для восстановления/рендера."""
     store = default_storage_dir()
     store.mkdir(parents=True, exist_ok=True)
     payload = {
         "source_format": doc.source_format,
         "segments": [
-            {"id": s.id, "text": s.text, "source_type": s.source_type, "metadata": s.metadata}
+            {"id": s.id, "text": s.text, "source_type": s.source_type,
+             "metadata": _strip_detection_caches(s.metadata)}
             for s in doc.segments
         ],
     }
@@ -261,10 +361,12 @@ def _write_markup_list(store: Path, session_id: str, entries: list[dict]) -> Non
 def save_markup(session_id: str, entry: dict) -> str:
     """Сохраняет ОДНУ запись ручной разметки (см. app/core.py — форма записи:
     kind/entity_type/segment_id/start/end/value/created_at/build_mark/applied).
-    Список копится в {session_id}.markup.json — тот же профиль, что сессия
-    (содержит фрагмент РЕАЛЬНОГО текста — ПДн). Возвращает id новой записи.
+    Список копится в {session_id}.markup.json в `default_markup_dir()` —
+    ОТДЕЛЬНОМ от сессии хранилище (см. §ЭТАП S1): содержит фрагмент РЕАЛЬНОГО
+    текста (`value`) — ПДн, поэтому своя, более долгая политика срока
+    (`_MARKUP_TTL_DAYS`), а не TTL сессии. Возвращает id новой записи.
     """
-    store = default_storage_dir()
+    store = default_markup_dir()
     entries = _load_markup_list(store, session_id)
     markup_id = str(uuid.uuid4())
     entries.append({**entry, "id": markup_id})
@@ -273,13 +375,13 @@ def save_markup(session_id: str, entry: dict) -> str:
 
 
 def list_markup(session_id: str) -> list[dict]:
-    return _load_markup_list(default_storage_dir(), session_id)
+    return _load_markup_list(default_markup_dir(), session_id)
 
 
 def update_markup(session_id: str, markup_id: str, **patch) -> bool:
     """Точечно обновляет поля записи разметки (напр. entity_type при
     пере-выборе типа ДО применения). Возвращает False, если запись не найдена."""
-    store = default_storage_dir()
+    store = default_markup_dir()
     entries = _load_markup_list(store, session_id)
     for e in entries:
         if e["id"] == markup_id:
@@ -290,10 +392,136 @@ def update_markup(session_id: str, markup_id: str, **patch) -> bool:
 
 
 def delete_markup(session_id: str, markup_id: str) -> bool:
-    store = default_storage_dir()
+    store = default_markup_dir()
     entries = _load_markup_list(store, session_id)
     new_entries = [e for e in entries if e["id"] != markup_id]
     if len(new_entries) == len(entries):
         return False
     _write_markup_list(store, session_id, new_entries)
     return True
+
+
+def delete_session_markup(session_id: str) -> bool:
+    """Удаляет НАКОПЛЕННУЮ разметку одной сессии отдельным действием (сессию —
+    её .enc/.txt/.meta/.doc — не трогает). Возвращает True, если файл был и
+    удалён; False, если разметки по этой сессии не было."""
+    path = _markup_path(default_markup_dir(), session_id)
+    try:
+        path.unlink()
+        return True
+    except FileNotFoundError:
+        return False
+
+
+def delete_all_markup() -> int:
+    """Удаляет ВСЮ накопленную разметку (все сессии) — одно явное действие
+    пользователя («удалить всю накопленную разметку»), приёмка задачи S1-2.
+    Возвращает число удалённых файлов (= число сессий, у которых была разметка)."""
+    store = default_markup_dir()
+    if not store.exists():
+        return 0
+    removed = 0
+    for p in store.glob("*.markup.json"):
+        try:
+            p.unlink()
+            removed += 1
+        except OSError:
+            pass
+    return removed
+
+
+def purge_expired_markup(ttl_days: int = _MARKUP_TTL_DAYS) -> int:
+    """Удаляет ЗАПИСИ разметки старше ttl_days (по created_at КАЖДОЙ записи),
+    независимо от жизни сессии, к которой они относятся, — сессия могла быть
+    удалена/просрочена уже давно, разметка живёт своим сроком (§ЭТАП S1).
+    Файл сессии, у которой все записи истекли, удаляется целиком; частично
+    истекший — переписывается с оставшимися. Записи без валидного created_at
+    НЕ трогает (безопасный дефолт — не терять данные без даты по ошибке).
+    Возвращает число удалённых ЗАПИСЕЙ (не файлов)."""
+    store = default_markup_dir()
+    if not store.exists():
+        return 0
+    cutoff = datetime.now().astimezone() - timedelta(days=ttl_days)
+    removed = 0
+    for path in store.glob("*.markup.json"):
+        try:
+            entries = json.loads(path.read_text(encoding="utf-8"))
+        except (OSError, ValueError):
+            continue
+        kept = []
+        for e in entries:
+            try:
+                created = datetime.fromisoformat(e["created_at"])
+            except (KeyError, TypeError, ValueError):
+                kept.append(e)
+                continue
+            if created < cutoff:
+                removed += 1
+            else:
+                kept.append(e)
+        if not kept:
+            try:
+                path.unlink()
+            except OSError:
+                pass
+        elif len(kept) != len(entries):
+            path.write_text(json.dumps(kept, ensure_ascii=False, indent=2), encoding="utf-8")
+    return removed
+
+
+def markup_summary() -> dict:
+    """Свод по накопленной разметке для интерфейса (задача S1-1: пользователь
+    должен ВИДЕТЬ, что разметка хранится дольше сессий и что она есть):
+    {sessions, entries, oldest_created_at, ttl_days}."""
+    store = default_markup_dir()
+    sessions = 0
+    entries_total = 0
+    oldest = None
+    if store.exists():
+        for path in store.glob("*.markup.json"):
+            try:
+                data = json.loads(path.read_text(encoding="utf-8"))
+            except (OSError, ValueError):
+                continue
+            if not data:
+                continue
+            sessions += 1
+            entries_total += len(data)
+            for e in data:
+                ca = e.get("created_at")
+                if ca and (oldest is None or ca < oldest):
+                    oldest = ca
+    return {"sessions": sessions, "entries": entries_total, "oldest_created_at": oldest,
+            "ttl_days": _MARKUP_TTL_DAYS}
+
+
+def migrate_legacy_markup() -> int:
+    """Переносит {sid}.markup.json, сохранённые ДО этапа S1 (в директории
+    сессий), в новое отдельное хранилище (`default_markup_dir()`) — иначе
+    существующая разметка потерялась бы вместе со следующим `purge_expired`
+    (старое поведение удаляло sidecar при просрочке .enc). Идемпотентна: если
+    в старом месте ничего нет — no-op. Сливает по id, если в НОВОМ месте уже
+    есть файл того же session_id (не должно случаться в норме, но безопасно).
+    Возвращает число мигрированных файлов (= сессий). Вызывать один раз при
+    старте UI, не на каждый запрос."""
+    old_dir = default_storage_dir()
+    if not old_dir.exists():
+        return 0
+    new_dir = default_markup_dir()
+    migrated = 0
+    for old_path in old_dir.glob("*.markup.json"):
+        sid = old_path.name[: -len(".markup.json")]
+        try:
+            old_entries = json.loads(old_path.read_text(encoding="utf-8"))
+        except (OSError, ValueError):
+            continue
+        existing = _load_markup_list(new_dir, sid)
+        existing_ids = {e.get("id") for e in existing}
+        merged = existing + [e for e in old_entries if e.get("id") not in existing_ids]
+        _write_markup_list(new_dir, sid, merged)
+        try:
+            old_path.unlink()
+        except OSError:
+            pass
+        migrated += 1
+    return migrated

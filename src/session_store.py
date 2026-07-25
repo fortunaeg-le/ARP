@@ -144,16 +144,27 @@ def save_session(
       canonical — каноническая форма сущности из реестра (ORG — юридическая
         форма, PER — ФИО в именительном) или null; восстановление текста
         подставляет её (см. detokenizer);
+      detector — ПРОВЕНАНС маски (этап S1): значение Entity.detector ПЕРВОГО
+        вхождения ("regex"/"ner"/"manual", как проставляют детекторы — см.
+        models.Entity), verbatim, без переинтерпретации.
+      group_key — рег.ключ ПЕРВОГО вхождения (этап E, "PER:5"/"ORG:12" и т.п.)
+        или null — "какое правило" из задачи S1-3 (запись в реестре
+        кореференции); regex-типы/ADDRESS его не имеют (было null и до S1).
       occurrences — СПИСОК ВСЕХ вхождений токена в порядке документа, каждое:
-        {segment_id, start, end, spans, surface}. surface — точная поверхностная
-        форма ЭТОГО вхождения («Меркурием»/«Меркурия»); spans — диапазоны значения
-        мультиспан-сущности (список [s,e]) или null. Пишем ВСЁ, читаем пока только
-        канон: без записанных форм будущие режимы (склонение по контексту, точное
-        восстановление) были бы невозможны для старых сессий — хранить дёшево,
-        потерять необратимо.
-    Старые сессии (v1, без "format"/"canonical"/"occurrences") продолжают
-    читаться: load_session формат не валидирует, detokenize берёт canonical
-    с fallback на original_text.
+        {segment_id, start, end, spans, surface, detector, group_key}. surface —
+        точная поверхностная форма ЭТОГО вхождения («Меркурием»/«Меркурия»);
+        spans — диапазоны значения мультиспан-сущности (список [s,e]) или null;
+        detector/group_key — ТЕ ЖЕ поля, что в записи, но ЭТОГО КОНКРЕТНОГО
+        вхождения (может отличаться от первого — напр. одно вхождение поправлено
+        вручную, остальные остались автоматическими). Пишем ВСЁ, читаем пока
+        только канон/detector: без записанных форм будущие режимы (склонение по
+        контексту, точное восстановление, провенанс по вхождению) были бы
+        невозможны для старых сессий — хранить дёшево, потерять необратимо.
+    Старые сессии (v1/v2 до этапа S1, без "format"/"canonical"/"occurrences"/
+    "detector"/"group_key") продолжают читаться: load_session формат не
+    валидирует, detokenize берёт canonical с fallback на original_text;
+    потребители провенанса читают detector/group_key через .get(...) с
+    None-дефолтом (см. app/core.py::_entities_from_session).
     """
     if session_id is None:
         import uuid
@@ -183,6 +194,8 @@ def save_session(
                 "original_text": e.original_text,
                 "segment_id": e.segment_id,
                 "canonical": e.canonical,
+                "detector": e.detector,
+                "group_key": e.group_key,
                 "occurrences": [],
             }
             by_token[e.token] = rec
@@ -195,6 +208,8 @@ def save_session(
             "end": e.end,
             "spans": [list(sp) for sp in e.spans] if e.spans else None,
             "surface": e.original_text,
+            "detector": e.detector,
+            "group_key": e.group_key,
         })
 
     created_at = datetime.now().astimezone()

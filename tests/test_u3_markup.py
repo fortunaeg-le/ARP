@@ -361,7 +361,11 @@ def test_markup_and_doc_sidecars_live_under_home_not_repo(live_server):
     from pathlib import Path
     store = Path(storage_dir)
     assert (store / f"{session_id}.doc.json").exists()
-    assert (store / f"{session_id}.markup.json").exists()
+    # ЭТАП S1: разметка — отдельный от сессий актив, живёт в соседней директории
+    # ("markup"), не внутри storage_dir сессии (см. storage.py §ЭТАП S1).
+    markup_store = store.parent / "markup"
+    assert str(home) in str(markup_store)
+    assert (markup_store / f"{session_id}.markup.json").exists()
 
     # gitignore repo-wide: ~/.shifrator/ паттерн покрывает любую such-директорию
     gitignore = (Path(_ROOT) / ".gitignore").read_text(encoding="utf-8")
