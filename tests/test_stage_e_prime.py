@@ -125,13 +125,21 @@ class TestAddressAssemblyMinus:
 
 class TestCrossSegmentOrg:
     def test_plus_org_torn_across_segments(self):
-        """(+) «ПАО «Альтаи|р»» через границу сегментов: обе половины ORG."""
+        """(+) «ПАО «Альтаи|р»» через границу сегментов: имя маскируется.
+
+        КОНТРАКТ ОБНОВЛЁН ЭТАПОМ S3 (регрессия M-1). Было: «обе половины ORG» —
+        то есть вторая маска накрывала огрызок «р»». Одиночная буква/двухсимвольный
+        огрызок под маской ничего не прячет, а документ портит (в замере на корпусе
+        этот класс дал маски «к» ×8, «с»»), поэтому S3 эмитит только половину,
+        несущую кусок ИМЕНИ. Сборка при этом НЕ теряется: организация найдена,
+        тип верный. См. tests/test_stage_s3.py (зеркала обеих границ)."""
         doc = _lines_doc("Работодатель: ПАО «Альтаи", "р», в лице директора.")
         ents = run_detection(doc, CFG)
         anon, kept = tokenize(doc, ents, CFG)
         orgs = [e for e in kept if e.entity_type == "ORG"]
         texts = {e.original_text for e in orgs}
-        assert "ПАО «Альтаи" in texts and "р»" in texts, texts
+        assert "ПАО «Альтаи" in texts, texts
+        assert "р»" not in texts, texts
 
     def test_minus_no_org_without_anchor_in_window(self):
         """(−) якорные правила НЕ ослаблены: рваный текст без орг-формы/кавычек

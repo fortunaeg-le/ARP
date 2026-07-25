@@ -138,6 +138,26 @@
   .restored{margin-top:16px;white-space:pre-wrap;word-break:break-word;background:#fafbfd;border:1px solid var(--line);border-radius:10px;padding:14px;font-size:13.5px;max-height:52vh;overflow:auto;line-height:1.7}
   .legend{display:flex;flex-wrap:wrap;gap:8px 14px;margin:4px 0 0;font-size:12px;color:var(--muted)}
   .hidden{display:none}
+
+  /* --- U4: аналитика и отчёт --- */
+  .metrics{display:flex;flex-wrap:wrap;gap:12px;margin:14px 0}
+  .metric{flex:1 1 170px;border:1px solid var(--line);border-radius:10px;padding:12px 14px;background:#fafbfd}
+  .metric .val{font-size:24px;font-weight:700;letter-spacing:-.5px}
+  .metric .lbl{font-size:12px;color:var(--muted);margin-top:2px;line-height:1.35}
+  table.grid{width:100%;border-collapse:collapse;font-size:13px;margin-top:8px}
+  table.grid th,table.grid td{border:1px solid var(--line);padding:6px 9px;text-align:right}
+  table.grid th:first-child,table.grid td:first-child{text-align:left}
+  table.grid th{background:#f7f9fc;color:var(--muted);font-weight:600;font-size:12px}
+  .ana-sec{margin-top:22px}
+  .ana-sec h3{font-size:15px;margin:0 0 4px}
+  .scope-row{display:flex;flex-wrap:wrap;gap:10px;align-items:center;margin-bottom:12px}
+  .scope-row label{font-size:13.5px;display:flex;align-items:center;gap:6px;cursor:pointer}
+  .tabs{display:flex;gap:4px;margin:12px 0 0}
+  .tabs button{border:1px solid var(--line);background:#fafbfd;color:var(--muted);padding:5px 12px;border-radius:8px 8px 0 0;cursor:pointer;font-size:13px}
+  .tabs button.active{background:#fff;color:var(--accent-d);font-weight:600;border-bottom-color:#fff}
+  pre.preview{margin:0;border:1px solid var(--line);border-top:none;border-radius:0 8px 8px 8px;padding:14px;
+    background:#fff;font:12.5px/1.55 ui-monospace,Consolas,monospace;white-space:pre-wrap;word-break:break-word;
+    max-height:56vh;overflow:auto}
 </style>
 </head>
 <body>
@@ -147,6 +167,7 @@
     <button id="nav-enc" class="active" onclick="show('enc')">1 · Шифрация</button>
     <button id="nav-ver" onclick="show('ver')" disabled>2 · Проверка</button>
     <button id="nav-res" onclick="show('res')">3 · Восстановление</button>
+    <button id="nav-ana" onclick="show('ana')">4 · Аналитика</button>
   </nav>
 </header>
 
@@ -280,6 +301,59 @@
       </div>
     </div>
   </section>
+
+  <!-- ===================== SCREEN 4: ANALYTICS (U4) ===================== -->
+  <section id="scr-ana" class="screen">
+    <div class="card">
+      <h2>Аналитика по вашей проверке</h2>
+      <p class="sub">Считается <b>по вашей разметке</b> — по тому, что вы отмечали на экране проверки. Всё считается на этом компьютере; ничего никуда не отправляется. Ниже можно собрать отчёт для разработчика — он <b>не содержит текста ваших документов</b>.</p>
+
+      <div class="scope-row">
+        <label><input type="radio" name="ana-scope" value="all" checked onchange="loadAnalytics()"> Вся накопленная разметка</label>
+        <label><input type="radio" name="ana-scope" value="session" onchange="loadAnalytics()"> Только текущий документ</label>
+        <span class="note" id="ana-scope-note"></span>
+      </div>
+
+      <div id="ana-status" class="status"><span id="ana-spin" class="spinner"></span><span id="ana-msg"></span></div>
+
+      <div id="ana-body" class="hidden">
+        <div class="metrics" id="ana-metrics"></div>
+        <div class="note" id="ana-sample"></div>
+
+        <div class="ana-sec">
+          <h3>По типам персональных данных</h3>
+          <div id="ana-by-type"></div>
+        </div>
+        <div class="ana-sec">
+          <h3>По механизмам детекции</h3>
+          <div id="ana-by-detector"></div>
+        </div>
+        <div class="ana-sec">
+          <h3>Динамика по версиям сборки</h3>
+          <p class="sub" style="margin:2px 0 0">Одна и та же разметка на разных сборках движка — видно, что изменилось между версиями.</p>
+          <div id="ana-by-build"></div>
+        </div>
+
+        <div class="ana-sec">
+          <h3>Отчёт для разработчика</h3>
+          <p class="sub" style="margin:2px 0 10px">Ниже — <b>ровно тот файл</b>, который скачается. Прочитайте его целиком перед отправкой: то, что вы видите, и есть то, что уйдёт наружу.</p>
+          <div class="warn" style="margin-bottom:12px">
+            <div class="note" id="ana-contents"></div>
+          </div>
+          <div class="tabs">
+            <button id="tab-md" class="active" onclick="showPreview('md')">Читаемый вид (.md)</button>
+            <button id="tab-json" onclick="showPreview('json')">Машинный вид (.json)</button>
+          </div>
+          <pre class="preview" id="ana-preview"></pre>
+          <div class="row" style="margin-top:12px;display:flex;gap:10px;flex-wrap:wrap">
+            <button class="primary" onclick="downloadReport('md')">Скачать .md</button>
+            <button class="primary" onclick="downloadReport('json')">Скачать .json</button>
+            <span class="note" style="align-self:center">Оба файла — по одной схеме, одни и те же числа.</span>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
 </main>
 
 <div id="tip"></div>
@@ -292,12 +366,13 @@ let PENDING_FILE = null;    // файл, ждущий решения по зон
 const TYPE_LABELS = {PERSON:"ФИО",ORG:"Организация",ADDRESS:"Адрес",INN:"ИНН",OGRN:"ОГРН/ОГРНИП",KPP:"КПП",BANK_ACCOUNT:"Банковский счёт",BIK:"БИК",PASSPORT:"Паспорт",PHONE:"Телефон",EMAIL:"E-mail",SNILS:"СНИЛС",BIRTHDATE:"Дата рождения",SUM:"Сумма",DATE:"Дата"};
 
 function show(which){
-  for(const s of ['enc','ver','res']){
+  for(const s of ['enc','ver','res','ana']){
     document.getElementById('scr-'+s).classList.toggle('active', s===which);
     document.getElementById('nav-'+s).classList.toggle('active', s===which);
   }
   if(which==='res') loadSessions();
   if(which==='ver' && CUR) loadMarkupPanel();
+  if(which==='ana') loadAnalytics();
   closeMarkupMenu();
   BOUNDARY_EDIT=null;
 }
@@ -818,6 +893,112 @@ async function deleteMarkupRow(id){
       body:JSON.stringify({session_id:CUR.session_id, markup_id:id})});
   }catch(err){ /* обновление списка ниже покажет актуальное состояние */ }
   loadMarkupPanel();
+}
+
+/* ================= U4: аналитика и отчёт для разработчика =================
+   Один запрос /api/report отдаёт и числа для экрана, и ДВА готовых текста
+   отчёта. Скачивание берёт текст ИЗ ТОГО ЖЕ УЗЛА <pre>, который пользователь
+   только что прочитал (см. downloadReport) — совпадение предпросмотра и файла
+   получается структурно, а не «мы старались, чтобы совпало».                */
+let REPORT=null;            // {json_text, md_text, report}
+let PREVIEW_FMT='md';
+const DETECTOR_LABELS={regex:'регулярные выражения + якоря',ner:'NER / структурные якоря',
+  manual:'ручная маска пользователя',none:'не сработал ни один детектор',unknown:'механизм неизвестен'};
+
+function pct(v){ return v===null||v===undefined ? '—' : v+'%'; }
+function num(v){ return v===null||v===undefined ? '—' : v; }
+
+function anaScope(){
+  const el=document.querySelector('input[name="ana-scope"]:checked');
+  return el ? el.value : 'all';
+}
+
+function gridTable(head, rows){
+  if(!rows.length) return '<div class="note">Пока нет данных — отметьте что-нибудь на экране проверки.</div>';
+  return '<table class="grid"><thead><tr>'+head.map(h=>'<th>'+esc(h)+'</th>').join('')+'</tr></thead><tbody>'+
+    rows.map(r=>'<tr>'+r.map(c=>'<td>'+esc(String(c))+'</td>').join('')+'</tr>').join('')+'</tbody></table>';
+}
+
+async function loadAnalytics(){
+  const scope=anaScope();
+  const note=document.getElementById('ana-scope-note');
+  if(scope==='session' && !CUR){
+    note.textContent='Текущего документа нет — сначала зашифруйте документ на шаге 1.';
+    document.getElementById('ana-body').classList.add('hidden');
+    hideStatus('ana');
+    return;
+  }
+  note.textContent='';
+  status('ana','Считаю метрики…','busy');
+  let url='/api/report?scope='+scope;
+  if(scope==='session') url+='&session_id='+encodeURIComponent(CUR.session_id);
+  try{
+    const resp=await fetch(url);
+    const d=await resp.json();
+    if(d.status!=='ok'){ status('ana', d.message||'Не удалось собрать отчёт.','err');
+      document.getElementById('ana-body').classList.add('hidden'); return; }
+    REPORT=d;
+    hideStatus('ana');
+    renderAnalytics(d.report);
+    document.getElementById('ana-body').classList.remove('hidden');
+    showPreview(PREVIEW_FMT);
+  }catch(err){ status('ana','Ошибка связи с сервером: '+err,'err'); }
+}
+
+function renderAnalytics(r){
+  const m=r.metrics, t=r.totals, s=r.sample;
+  document.getElementById('ana-metrics').innerHTML=[
+    ['<div class="val">'+num(t.masks_total)+'</div><div class="lbl">масок поставил движок<br>(знаменатель метрик)</div>'],
+    ['<div class="val">'+pct(m.precision_reviewed_pct)+'</div><div class="lbl">precision по просмотренному<br>верхняя оценка</div>'],
+    ['<div class="val">'+pct(m.recall_reviewed_pct)+'</div><div class="lbl">recall по замеченному<br>верхняя оценка</div>'],
+    ['<div class="val">'+t.missed+'</div><div class="lbl">пропущено<br>(вы отметили сами)</div>'],
+    ['<div class="val">'+t.false_mask+'</div><div class="lbl">ложных масок<br>(сняли как не ПДн)</div>'],
+    ['<div class="val">'+(t.boundary+t.type)+'</div><div class="lbl">правок границы и типа<br>('+t.boundary+' + '+t.type+')</div>'],
+  ].map(x=>'<div class="metric">'+x+'</div>').join('');
+
+  document.getElementById('ana-sample').innerHTML=
+    'Документов в выборке: <b>'+s.documents+'</b> (со знаменателем '+s.documents_with_denominator+
+    ', без знаменателя '+s.documents_without_denominator+'), правок всего <b>'+s.edits+'</b>. '+
+    'Период: '+(r.period.from?fmtDate(r.period.from):'—')+' — '+(r.period.to?fmtDate(r.period.to):'—')+'.';
+
+  document.getElementById('ana-by-type').innerHTML=gridTable(
+    ['тип','масок','пропущено','ложных','границ','типов','precision','recall'],
+    Object.entries(r.by_type).map(([k,v])=>[TYPE_LABELS[k]||k, v.masks, v.missed, v.false_mask,
+      v.boundary, v.type, pct(v.precision_reviewed_pct), pct(v.recall_reviewed_pct)]));
+
+  document.getElementById('ana-by-detector').innerHTML=gridTable(
+    ['механизм','масок','пропущено','ложных','границ','типов','precision'],
+    Object.entries(r.by_detector).map(([k,v])=>[DETECTOR_LABELS[k]||k, v.masks, v.missed,
+      v.false_mask, v.boundary, v.type, pct(v.precision_reviewed_pct)]));
+
+  document.getElementById('ana-by-build').innerHTML=gridTable(
+    ['сборка','документов','пропущено','ложных','границ','типов'],
+    Object.entries(r.by_build).map(([k,v])=>[k, v.documents_touched, v.missed, v.false_mask,
+      v.boundary, v.type]));
+
+  document.getElementById('ana-contents').innerHTML=
+    '<b>Что уйдёт в отчёте:</b><ul style="margin:6px 0 8px 18px;padding:0">'+
+    r.contents.included.map(x=>'<li>'+esc(x)+'</li>').join('')+'</ul>'+
+    '<b>Чего в нём нет:</b><ul style="margin:6px 0 0 18px;padding:0">'+
+    r.contents.excluded.map(x=>'<li>'+esc(x)+'</li>').join('')+'</ul>';
+}
+
+function showPreview(fmt){
+  PREVIEW_FMT=fmt;
+  document.getElementById('tab-md').classList.toggle('active', fmt==='md');
+  document.getElementById('tab-json').classList.toggle('active', fmt==='json');
+  if(!REPORT) return;
+  // textContent, не innerHTML: в <pre> кладётся РОВНО строка ответа, без
+  // экранирования и без изменений — именно её потом и скачивает downloadReport.
+  document.getElementById('ana-preview').textContent = fmt==='md' ? REPORT.md_text : REPORT.json_text;
+}
+
+function downloadReport(fmt){
+  if(!REPORT){ markupToast('Отчёт ещё не собран.','err'); return; }
+  showPreview(fmt);   // сначала ПОКАЗАТЬ то, что скачиваем
+  const shown=document.getElementById('ana-preview').textContent;
+  const scope=REPORT.report.scope==='session' ? 'document' : 'all';
+  saveText('shifrator_report_'+scope+'.'+fmt, shown);
 }
 
 async function applyMarkup(){

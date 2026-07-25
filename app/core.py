@@ -31,6 +31,12 @@
      пользователя на экране проверки (пропущено/ложная маска/граница/тип), ДО
      решения о пересборке. Разметка = побочный продукт обычной проверки
      (продуктовое требование постановки), не отдельная функция.
+  4a. ЭТАП U4: в каждую запись разметки дополнительно кладётся `census`
+     (слепок «сколько масок и какие» на момент правки, см. `_markup_census`) и
+     `old_detector` (какой механизм поставил правленую маску). Это ЗНАМЕНАТЕЛЬ
+     и ПРОВЕНАНС для метрик `app/report.py`: без слепка метрика по разметке
+     старше суток осталась бы без знаменателя (разметка живёт 30 дней, сессия —
+     24 часа). Детекцию и пересборку эти поля не затрагивают.
   4. Пересборка (`apply_pending_markup`) — единый примитив: КАЖДАЯ правка это
      «убрать старое вхождение маски (если было) + добавить новое (если не
      false_mask)», применяется последовательно к ОДНОЙ и той же сессии, что
@@ -514,8 +520,9 @@ def mark_missed(session_id: str, segment_id: str, start: int, end: int,
         "kind": "missed", "entity_type": entity_type,
         "segment_id": segment_id, "start": start, "end": end, "value": value,
         "old_token": None, "old_segment_id": None, "old_start": None, "old_end": None,
-        "old_entity_type": None,
+        "old_entity_type": None, "old_detector": None,
         "created_at": _now_iso(), "build_mark": BUILD_MARK, "applied": False, "apply_error": None,
+        "census": _markup_census(session),
     })
     return {"markup_id": markup_id, "value": value}
 
@@ -532,7 +539,11 @@ def mark_false_positive(session_id: str, segment_id: str, start: int, end: int, 
         "segment_id": segment_id, "start": start, "end": end, "value": occ["surface"],
         "old_token": token, "old_segment_id": segment_id, "old_start": start, "old_end": end,
         "old_entity_type": rec["entity_type"],
+        # U4: КАКОЙ механизм поставил отклонённую маску — без этого отчёт не может
+        # сказать «ложные срабатывания дал regex, а не NER» (приёмка U4-4).
+        "old_detector": occ.get("detector", rec.get("detector")),
         "created_at": _now_iso(), "build_mark": BUILD_MARK, "applied": False, "apply_error": None,
+        "census": _markup_census(session),
     })
     return {"markup_id": markup_id}
 
@@ -550,7 +561,7 @@ def mark_replace(session_id: str, old_token: str, old_segment_id: str, old_start
 
     session = load_session(session_id)
     doc = load_doc_segments(session_id)
-    old_rec, _old_occ = _find_occurrence(session, old_token, old_segment_id, old_start, old_end)
+    old_rec, old_occ = _find_occurrence(session, old_token, old_segment_id, old_start, old_end)
 
     # Валидация новой границы — на КОПИИ сессии без старого вхождения (граница
     # имеет право пересекаться сама с собой/сузиться на месте старой маски).
@@ -564,9 +575,33 @@ def mark_replace(session_id: str, old_token: str, old_segment_id: str, old_start
         "segment_id": new_segment_id, "start": new_start, "end": new_end, "value": value,
         "old_token": old_token, "old_segment_id": old_segment_id,
         "old_start": old_start, "old_end": old_end, "old_entity_type": old_rec["entity_type"],
+        "old_detector": old_occ.get("detector", old_rec.get("detector")),
         "created_at": _now_iso(), "build_mark": BUILD_MARK, "applied": False, "apply_error": None,
+        "census": _markup_census(session),
     })
     return {"markup_id": markup_id, "value": value, "kind": kind}
+
+
+def _markup_census(session: dict) -> dict | None:
+    """ЭТАП U4: компактный слепок «сколько масок и какие» на момент правки.
+
+    Кладётся в КАЖДУЮ запись разметки, потому что знаменатель метрик (сколько
+    масок поставил движок) — это состояние СЕССИИ, а сессия живёт 24 часа против
+    30 дней у разметки (этап S1). Без слепка любая метрика по разметке старше
+    суток осталась бы без знаменателя. Слепок — только числа, ПДн в нём нет.
+
+    Отчёт берёт слепок САМОЙ РАННЕЙ записи сессии (состояние до ручных правок,
+    т.е. чистая автоматика) — см. app/report.py.
+
+    Сбой (нет report.py в сборке, неожиданный формат сессии) не должен ронять
+    сохранение правки: разметка важнее метрики, запись просто останется без
+    слепка, и отчёт честно посчитает документ «без знаменателя».
+    """
+    try:
+        import report
+        return report.census_from_session(session)
+    except Exception:  # noqa: BLE001 — метрика не имеет права ломать разметку
+        return None
 
 
 def list_markup_entries(session_id: str) -> list[dict]:

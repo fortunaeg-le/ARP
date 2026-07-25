@@ -283,9 +283,54 @@ def _boundary_sep(seg_a: TextSegment, seg_b: TextSegment) -> str:
 _BATCH_SEP = "\n⁣⁣⁣\n"
 
 
+# --------------------------------------------------------------------------- #
+#   ЭТАП S3 — cross-segment ORG: ремонт разорванного имени, а не расползание   #
+# --------------------------------------------------------------------------- #
+# Регрессия M-1 (вскрыта пересборкой baseline после мержа E′): проход ORG по
+# граничным окнам эмитил ОБЕ половины всякого якоря, пересёкшего стык, — включая
+# те, где никакого разрыва не было. anchor_search_view вырезает \n НАПРОЧЬ,
+# поэтому «ПАО Сбербанк\nк/с 30101810…» в виде окна становится «…Сбербанкк/с…»,
+# name-run переползает стык, и в соседний сегмент уходит маска из ОДНОЙ буквы
+# («к» ×8, «Юридический» ×2, «с»»). Одиночная буква под маской не прячет ничего
+# — это порча документа.
+#
+# Два структурных условия (списков слов не заводим — форма юрлица берётся из
+# того же _ABBR_FORM_RE, на котором стоит якорь ORG этапов A/C′):
+#   1. ПАРА ЭМИТИТСЯ, ТОЛЬКО ЕСЛИ СТЫК ДЕЙСТВИТЕЛЬНО РАЗОРВАЛ ИМЯ. Признак
+#      «разорвал» — ни одна половина не накрыта посегментным ORG: ровно ради
+#      этого класса E′ и делал проход («ПАО «Альтаи|р»» не находит никто). Если
+#      организация уже найдена посегментно, через стык ползёт хвост якоря, а не
+#      половина названия.
+#   2. ПОЛОВИНА ЭМИТИТСЯ, ТОЛЬКО ЕСЛИ НЕСЁТ КУСОК ИМЕНИ: не короче 3 значащих
+#      символов и не голая орг-форма («ПАО»/«ООО» без имени — не сущность).
+_ORG_MIN_HALF = 3
+
+
+def _org_half_carries_name(text: str) -> bool:
+    """Несёт ли половина разорванного ORG кусок ИМЕНИ (условие 2 выше)."""
+    import anchor_registry as _AR
+    core = "".join(ch for ch in text if ch.isalnum())
+    if len(core) < _ORG_MIN_HALF:
+        return False
+    return _AR._ABBR_FORM_RE.fullmatch(core.lower()) is None
+
+
+def _org_pair_is_a_repair(win, ls: int, le: int, org_seg_spans) -> bool:
+    """Условие 1 выше: разорвал ли стык имя, или якорь просто переполз в соседа."""
+    start_a = win["tail_off"] + ls
+    end_a = len(win["text_a"])
+    end_b = le - win["head_start"]
+    for seg, s, e in ((win["seg_a"], start_a, end_a), (win["seg_b"], 0, end_b)):
+        for os_, oe_ in org_seg_spans.get(seg.id, ()):
+            if max(s, os_) < min(e, oe_):
+                return False
+    return True
+
+
 def _detect_boundary_entities(
     doc: SourceDocument,
     config_path: str,
+    segment_entities: list[Entity] = (),
 ) -> list[Entity]:
     """B3-fix: находит сущности, РАЗОРВАННЫЕ границей соседних сегментов.
 
@@ -308,6 +353,10 @@ def _detect_boundary_entities(
     анкором — блоб-скан yargy (256 с) НЕ воскрешается. Результат идентичен посегментному
     (батчинг меняет скорость, не состав сущностей); лишние чтения конфига исчезают сами
     (кэш конфига отдельно не нужен, см. RECON_REPORT).
+
+    ЭТАП S3: `segment_entities` — сущности ПОСЕГМЕНТНОЙ детекции (результат
+    `pipeline.run_detection`). Нужны cross-segment ORG этапа E′ как проверка
+    «а разорвано ли вообще»: см. _org_pair_is_a_repair.
     """
     import bisect
 
@@ -496,6 +545,12 @@ def _detect_boundary_entities(
     # половин B3-стилем (каждая — свой токен, восстановление посимвольно). ---
     import anchor_registry as _AR
     _org_det = _AR.OrgAnchorDetector()
+    # ЭТАП S3: посегментные ORG-спаны — по ним видно, БЫЛА ЛИ сущность разорвана
+    # стыком (см. _org_pair_is_a_repair).
+    org_seg_spans: dict[str, list[tuple[int, int]]] = {}
+    for e in segment_entities or ():
+        if e.entity_type == "ORG":
+            org_seg_spans.setdefault(e.segment_id, []).append((e.start, e.end))
     for k, w in enumerate(wins):
         wt = w["window"]
         seg_tmp = TextSegment(id="__win__", text=wt, source_type="txt_line", metadata={})
@@ -511,6 +566,8 @@ def _detect_boundary_entities(
             ws_ = omap_w[a.span_start]
             we_ = omap_w[a.span_end - 1] + 1
             if ws_ < w["tail_end"] and we_ > w["head_start"]:
+                if not _org_pair_is_a_repair(w, ws_, we_, org_seg_spans):
+                    continue
                 per_win[k].append((ws_, we_, "ORG", "ner", 1.0))
 
     # 4. Пересекающие стык спаны -> пары Entity_A/Entity_B (та же логика, что и раньше).
@@ -524,16 +581,20 @@ def _detect_boundary_entities(
             start_a = tail_off + ls
             end_a = len(text_a)
             end_b = le - head_start
-            extra.append(Entity(
-                id=str(uuid.uuid4()), segment_id=w["seg_a"].id,
-                start=start_a, end=end_a, original_text=text_a[start_a:end_a],
-                entity_type=entity_type, detector=detector, confidence=confidence,
-            ))
-            extra.append(Entity(
-                id=str(uuid.uuid4()), segment_id=w["seg_b"].id,
-                start=0, end=end_b, original_text=text_b[0:end_b],
-                entity_type=entity_type, detector=detector, confidence=confidence,
-            ))
+            halves = [
+                (w["seg_a"].id, start_a, end_a, text_a[start_a:end_a]),
+                (w["seg_b"].id, 0, end_b, text_b[0:end_b]),
+            ]
+            # ЭТАП S3, условие 2 (только ORG — у реквизитов короткая половина
+            # это кусок ЗНАЧЕНИЯ и обязана быть закрыта).
+            if entity_type == "ORG":
+                halves = [h for h in halves if _org_half_carries_name(h[3])]
+            for seg_id, hs, he, htext in halves:
+                extra.append(Entity(
+                    id=str(uuid.uuid4()), segment_id=seg_id,
+                    start=hs, end=he, original_text=htext,
+                    entity_type=entity_type, detector=detector, confidence=confidence,
+                ))
 
     return extra
 
@@ -551,7 +612,7 @@ def tokenize(
     # алгоритм. Каждая половина пары — обычная независимая сущность со своим
     # original_text (и, значит, своим токеном): так восстановление в каждом
     # сегменте посимвольно точно (см. Вариант А в отчёте о фиксе порчи B3).
-    boundary_entities = _detect_boundary_entities(doc, config_path)
+    boundary_entities = _detect_boundary_entities(doc, config_path, entities)
     entities = list(entities) + boundary_entities
 
     # --- Разрешение пересечений внутри каждого сегмента ---

@@ -51,7 +51,12 @@ a = Analysis(
         "anchor_registry", "syntax_compound", "multispan", "detokenizer",
         "file_detokenizer", "unread_zones", "ooxml_core", "docx_rewriter",
         "pptx_rewriter", "xlsx_rewriter",
-        "core", "selfcheck", "procutil", "server", "paths",
+        # ЭТАП U4: `report` импортируется ЛЕНИВО (внутри функций core/server) —
+        # ровно тот случай, ради которого этот список и существует. Без него в
+        # собранном exe экран «Аналитика» отвалился бы, а `core._markup_census`
+        # молча (он ловит Exception) перестал бы писать слепок знаменателя — то
+        # есть метрика деградировала бы БЕЗ ошибки, что хуже падения.
+        "core", "report", "selfcheck", "procutil", "server", "paths",
         "pymorphy2_dicts_ru",
     ],
     hookspath=[],

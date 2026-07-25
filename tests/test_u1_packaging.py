@@ -189,3 +189,31 @@ def test_stale_lock_with_live_responding_process_is_left_alone(isolated_home, mo
             proc.wait(timeout=5)
         except subprocess.TimeoutExpired:
             proc.kill()
+
+
+# --------------------------------------------------------------------------- #
+# Спека PyInstaller обязана знать про КАЖДЫЙ модуль app/.
+#
+# Найдено этапом U4: новый `app/report.py` импортируется ЛЕНИВО (внутри функций
+# core/server), в hiddenimports его не было — в собранном exe экран «Аналитика»
+# отвалился бы, а `core._markup_census` (он ловит Exception) молча перестал бы
+# писать слепок знаменателя метрик. То есть отказ был бы ТИХИМ. Обычный прогон
+# тестов идёт из исходников и такого не видит вовсе; поэтому проверяем спеку
+# как данные, а не собираем exe.
+# --------------------------------------------------------------------------- #
+
+def test_pyinstaller_spec_lists_every_app_module():
+    spec_path = os.path.join(_ROOT, "packaging", "shifrator.spec")
+    spec = open(spec_path, encoding="utf-8").read()
+
+    app_modules = {
+        os.path.splitext(name)[0]
+        for name in os.listdir(_APP)
+        if name.endswith(".py") and name != "launcher.py"   # launcher — точка входа
+    }
+    missing = sorted(m for m in app_modules if f'"{m}"' not in spec)
+    assert not missing, (
+        f"модули app/ отсутствуют в hiddenimports спеки PyInstaller: {missing}. "
+        "В собранном exe они не окажутся, а ленивый импорт внутри функции даст "
+        "тихую деградацию вместо явной ошибки."
+    )

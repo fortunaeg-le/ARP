@@ -215,6 +215,9 @@ class Handler(BaseHTTPRequestHandler):
         if self.path == "/api/markup/summary":
             self._handle_markup_summary()
             return
+        if self.path.startswith("/api/report"):
+            self._handle_report()
+            return
         if self.path in ("/", "/index.html"):
             try:
                 with open(_INDEX, "rb") as f:
@@ -423,6 +426,52 @@ class Handler(BaseHTTPRequestHandler):
         from storage import delete_all_markup
         removed = delete_all_markup()
         self._send_json({"status": "ok", "removed_sessions": removed})
+
+    # ------------------------------------------------------------------ #
+    # U4 — метрики и отчёт для разработчика.
+    # ------------------------------------------------------------------ #
+
+    def _handle_report(self):
+        """GET /api/report?scope=all|session&session_id=…
+
+        Отдаёт ОДИН объект и ДВА готовых текста — ровно те байты, которые
+        пользователь увидит в предпросмотре и скачает файлом (задача U4-3:
+        предпросмотр обязан совпадать с выгрузкой). Второго запроса «а теперь
+        скачай» нет намеренно: два ответа сервера — два места, где они могут
+        разойтись, а совпадение должно быть структурным, а не проверяемым.
+
+        ReportLeakError (часовой app/report.py нашёл строку вне закрытого
+        словаря) — это ОТКАЗ отдать отчёт, а не предупреждение: пользователь
+        получает ошибку, а не файл с текстом документа внутри.
+        """
+        import json as _json
+        from urllib.parse import urlsplit, parse_qs
+
+        import report as report_mod
+
+        qs = parse_qs(urlsplit(self.path).query)
+        scope = (qs.get("scope") or ["all"])[0]
+        session_id = (qs.get("session_id") or [""])[0].strip() or None
+        try:
+            data = report_mod.build_report(scope, session_id)
+        except report_mod.ReportLeakError as e:
+            self._send_json({"status": "error", "message":
+                             f"Отчёт не сформирован: сработала защита от утечки. {e}"})
+            return
+        except ValueError as e:
+            self._send_json({"status": "error", "message": str(e)})
+            return
+        except Exception as e:  # noqa: BLE001
+            self._send_json({"status": "error",
+                             "message": f"Не удалось собрать отчёт: {type(e).__name__}: {e}"})
+            return
+
+        self._send_json({
+            "status": "ok",
+            "report": data,
+            "json_text": _json.dumps(data, ensure_ascii=False, indent=2),
+            "md_text": report_mod.render_markdown(data),
+        })
 
     # ------------------------------------------------------------------ #
     # U3 — разметка экрана проверки.
