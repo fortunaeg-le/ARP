@@ -7,9 +7,24 @@
 сотни МБ памяти — см. HANDOFF_3, раздел "Побочные эффекты импорта").
 """
 
+import os
 import re
 import sys
 import uuid
+
+# Этап E'' (детерминизм детекции). НЕ вокруг конкретного найденного бага (репро на
+# синтетике не подтвердило недетерминизм — см. HANDOFF), а защитная мера от КЛАССА
+# дефекта: NewsEmbedding/NewsNERTagger используют numpy, а numpy на этой машине
+# собран с OpenBLAS (DYNAMIC_ARCH, до 24 потоков). Многопоточный BLAS может давать
+# разный порядок float-редукций в зависимости от того, сколько потоков реально
+# участвовало в конкретном вызове (планировщик ОС, разогрев пула) — на порогах
+# уверенности NER это теоретически способно перекинуть решение туда-сюда между
+# вызовами. Фиксируем ОДИН поток ДО первого импорта natasha (numpy читает эти
+# переменные при инициализации BLAS-библиотеки, значит выставлять нужно раньше
+# `from natasha import ...`). `setdefault` — не перебивает явную настройку окружения,
+# если владелец процесса сам задал число потоков.
+for _var in ("OMP_NUM_THREADS", "OPENBLAS_NUM_THREADS", "MKL_NUM_THREADS", "NUMEXPR_NUM_THREADS"):
+    os.environ.setdefault(_var, "1")
 
 import yaml
 
@@ -30,6 +45,16 @@ _morph_vocab = MorphVocab()
 _emb = NewsEmbedding()
 _ner_tagger = NewsNERTagger(_emb)
 _addr_extractor = AddrExtractor(_morph_vocab)
+
+# Прогрев: первый вызов tag_ner лениво довычисляет/дозагружает внутренности модели
+# (см. HANDOFF_STAGE_EPRIME_DETERMINISM) — если бы "холодный" первый вызов отличался
+# от прогретых последующих, различие досталось бы ПЕРВОМУ документу процесса, а не
+# фиктивному тексту. Прогреваем здесь, при импорте модуля, а не на первом реальном
+# документе пользователя.
+_warmup_doc = Doc("прогрев модели")
+_warmup_doc.segment(_segmenter)
+_warmup_doc.tag_ner(_ner_tagger)
+del _warmup_doc
 
 # Расширение PERSON-спана инициалами вида "И.И." справа/слева от спана.
 # Паттерны из ТЗ применяются к срезам text[end:] / text[:start], поэтому якоря
@@ -717,6 +742,201 @@ def _glue_address_matches(text: str, matches: list) -> list[tuple[int, int]]:
     return spans
 
 
+# --------------------------------------------------------------------------- #
+#   ЭТАП E′ — «расплетающий» вид адреса (сборка рваных мутациями кандидатов)   #
+# --------------------------------------------------------------------------- #
+# Мутации рвут адрес ВНУТРИ слова переносом строки («Ленинградск\nая 36») или
+# NBSP/невидимым («Мир\xa0а 18», «ОДИНЦO\xadВО») — yargy/LOC/house-pattern не
+# видят целых токенов, адрес не собирается (116 позиций утечки-долга гейта D).
+# Решение ЭТАПА C НЕ ослабляется: строим ОТДЕЛЬНЫЙ поисковый вид, где разрыв
+# внутри слова СКЛЕЕН, и прогоняем по нему ТОТ ЖЕ конвейер (LOC/yargy → строгий
+# якорь → обрезка). Решение «адрес или нет» принимает прежний гейт — сборка лишь
+# отдаёт ему целый текст. Правила расплетания:
+#   * разрывающий символ МЕЖДУ буквами -> ВЫРЕЗАТЬ (слово склеивается);
+#   * разрывающий символ МЕЖДУ цифрами -> ВЫРЕЗАТЬ (индекс «1430 00»);
+#   * иначе -> ' ' (перенос между словами = обычный разделитель; НЕ граница
+#     предложения в этом виде — см. анти-склейку двух адресов ниже);
+#   * ОДИНОЧНЫЙ обычный пробел между цифровыми группами, дающими РОВНО 6 цифр,
+#     -> вырезать («420 111» -> «420111»: рваный мутацией digit_spaces индекс;
+#     паспортные группы 2+2+6/серия 4+6 шестёрку не образуют и не склеиваются).
+# АНТИ-СКЛЕЙКА (зеркало −): два РАЗНЫХ адреса в столбик, разделённые \n, в этом
+# виде оказались бы соседями. Поэтому финальный спан, накрывший позицию бывшего
+# \n, ДЕЛИТСЯ в ней, если ОБЕ половины НЕЗАВИСИМО держат сильный якорь (каждый
+# полный адрес самодостаточен); рваный адрес половинного якоря не имеет и
+# остаётся целым. См. _addr_split_at_newlines.
+_ADDR_BREAKING = frozenset("\n\r\xad​⁠‌‍ \xa0")
+# Максимальный цифро-пробельный прогон («420 111», «143 0 00»); в коде ниже
+# склеивается, только если В СУММЕ ровно 6 цифр (почтовый индекс) и был пробел.
+_SIX_DIGIT_GLUE_RE = re.compile(r"\d[\d ]*\d")
+
+
+def _addr_deweave(base: str) -> tuple[str, list[int], bool]:
+    """(view, idx, changed): view — расплетённая копия base, idx[k] — позиция
+    view[k] в base (строго возрастает), changed — были ли СКЛЕЙКИ (вырезания).
+    Замена \\n->' ' сама по себе changed не поднимает (эквивалентна пробелу для
+    конвейера) — но наличие \\n в base учитывает вызывающий (поведение
+    сентенс-сплита меняется)."""
+    out: list[str] = []
+    idx: list[int] = []
+    changed = False
+    n = len(base)
+    for i, ch in enumerate(base):
+        if ch not in _ADDR_BREAKING:
+            out.append(ch)
+            idx.append(i)
+            continue
+        prev = out[-1] if out else ""
+        j = i + 1
+        while j < n and base[j] in _ADDR_BREAKING:
+            j += 1
+        nxt = base[j] if j < n else ""
+        if prev.isalpha() and nxt.isalpha():
+            # Для \n/\r склейка ТОЛЬКО при СТРОЧНОМ продолжении: рваное слово
+            # продолжается строчными («Ленинградск|ая», «Нов|осибирская»), а
+            # настоящая граница строк сшивала бы два РАЗНЫХ токена («…пом.
+            # VII|ИНН…» на чистом документе — мусорная склейка через стык B3).
+            # Невидимые/NBSP внутри слова склеиваем без этого требования (мутация
+            # вставляет их в середину слова, регистр продолжения любой).
+            if ch in "\n\r" and not nxt.islower():
+                pass
+            else:
+                changed = True          # разрыв внутри слова — склеить
+                continue
+        if prev.isdigit() and nxt.isdigit():
+            changed = True          # разрыв внутри числа (индекса) — склеить
+            continue
+        out.append(" ")
+        idx.append(i)
+
+    # одиночные ОБЫЧНЫЕ пробелы внутри цифровой группы, дающей ровно 6 цифр
+    # (рваный индекс «420 111»/«143 0 00») — вырезать. Скан по уже собранному out.
+    s = "".join(out)
+    drop: set[int] = set()
+    for m in _SIX_DIGIT_GLUE_RE.finditer(s):
+        frag = m.group(0)
+        digits = frag.replace(" ", "")
+        if " " in frag and len(digits) == 6:
+            for k in range(m.start(), m.end()):
+                if s[k] == " ":
+                    drop.add(k)
+    if drop:
+        changed = True
+        out2, idx2 = [], []
+        for k in range(len(out)):
+            if k in drop:
+                continue
+            out2.append(out[k])
+            idx2.append(idx[k])
+        out, idx = out2, idx2
+
+    return "".join(out), idx, changed
+
+
+def _deweave_glue_positions(w_idx: list[int]) -> list[int]:
+    """ИСХОДНЫЕ позиции, где deweave ВЫРЕЗАЛ символ(ы): src-индекс последнего
+    символа ПЕРЕД вырезкой. Только склейки самого deweave — скачки карты
+    normalize (схлопнутые дефисы/невидимые Stage 2) сюда не попадают."""
+    return [w_idx[i] for i in range(len(w_idx) - 1) if w_idx[i + 1] - w_idx[i] > 1]
+
+
+def _span_has_glue(src_s: int, src_e: int, glue_src: list[int]) -> bool:
+    """Содержит ли исходный интервал [src_s, src_e) точку склейки deweave."""
+    return any(src_s <= g < src_e for g in glue_src)
+
+
+def _addr_view(segment) -> tuple[str, list[int], list[int]]:
+    """Расплетённый НОРМАЛИЗОВАННЫЙ вид сегмента для второго адресного прохода:
+    (norm_view, offset_map->segment.text, glue_src). glue_src — ИСХОДНЫЕ позиции
+    склеек deweave (пустой список при пустом виде). Пустой norm_view — второй
+    проход не нужен. Кэшируется в metadata."""
+    md = segment.metadata
+    cached = md.get("_addr_view_cache")
+    if cached is not None:
+        return cached
+    base = md.get("detection_text", segment.text)
+    woven, w_idx, changed = _addr_deweave(base)
+    need = changed or ("\n" in base) or ("\r" in base)
+    if not need:
+        result = ("", [], [])
+        md["_addr_view_cache"] = result
+        return result
+    from normalizer import normalize_for_detection
+    norm, n_idx = normalize_for_detection(woven)
+    offset_map = [w_idx[i] for i in n_idx]
+    # glue_src: где deweave СКЛЕИЛ (рваное слово/индекс). Склейка — «сид» запуска
+    # yargy (LOC/маркер на рваном тексте молчат) И обязательное условие эмита
+    # (спан без склейки полностью покрыт штатным проходом с его \n-границей
+    # предложения — видовой эмит без склейки лишь тащит LOC-хиты паспортного
+    # хвоста к адресу соседней строки). Скачки карты normalize (дефисы в числах)
+    # склейкой НЕ считаются. Якорь не ослабляется: решает прежний _addr_span_strong.
+    result = (norm, offset_map, _deweave_glue_positions(w_idx))
+    md["_addr_view_cache"] = result
+    return result
+
+
+def _addr_tail_has_value(view: str, s: int, e: int) -> bool:
+    """Несёт ли хвост [s,e) адресное ЗНАЧЕНИЕ: цифру (дом/индекс) или адресный
+    маркер. Голая метка следующей строки («ИНН», «Телефон») значения не несёт."""
+    toks = _addr_scan_tokens(view, s, e)
+    return any(is_num or cat for (_, _, _, cat, is_num, _) in toks)
+
+
+def _addr_trim_tail_lines(view: str, spans, nl_view_positions):
+    """Подрезка КРАЁВ, перелезших через бывший \\n на соседнюю строку без
+    адресного значения: в расплетённом виде \\n стал пробелом, и расширение
+    краёв впитывает метку соседней строки («…кв 33 | ИНН …» -> «…кв 33 ИНН»;
+    «…ОГРНИП | 3.2. Место: Москва…» — слева). В штатном проходе \\n рвал
+    предложение — возвращаем эту границу с ОБОИХ краёв там, где за ней нет ни
+    цифры, ни адресного маркера (адресные продолжения «ая 36», «г. Казань»
+    остаются)."""
+    if not nl_view_positions:
+        return spans
+    out = []
+    for s, e in spans:
+        inner = sorted(p for p in nl_view_positions if s < p < e)
+        while inner and not _addr_tail_has_value(view, inner[-1], e):
+            e = inner.pop()
+        while inner and not _addr_tail_has_value(view, s, inner[0]):
+            s = inner.pop(0)
+        if s < e:
+            out.append((s, e))
+    return out
+
+
+def _addr_split_at_newlines(view: str, spans, nl_view_positions):
+    """АНТИ-СКЛЕЙКА двух адресов (зеркало −). Для каждого спана: в каждой
+    накрытой позиции бывшего \\n делим, если ОБЕ стороны НЕЗАВИСИМО держат
+    сильный якорь (_addr_span_strong). Итеративно слева направо (колонка из
+    трёх адресов делится дважды). Рваный ОДИН адрес половинного якоря не имеет —
+    остаётся целым."""
+    out = []
+    for s, e in spans:
+        cur = s
+        for p in sorted(nl_view_positions):
+            if not (cur < p < e):
+                continue
+            if _addr_span_strong(view, cur, p) and _addr_span_strong(view, p, e):
+                out.append((cur, p))
+                cur = p
+        out.append((cur, e))
+    return [(s, e) for s, e in out if s < e]
+
+
+def _addr_value_spans(seg_text: str, src_s: int, src_e: int):
+    """Куски значения для Entity.spans: hull, разбитый по прогонам \\n/\\r
+    (края кусков подрезаны от пробелов). Один кусок -> None (однодиапазонная)."""
+    spans = []
+    for m in re.finditer(r"[^\n\r]+", seg_text[src_s:src_e]):
+        piece = m.group(0)
+        lead = len(piece) - len(piece.lstrip(" \t"))
+        trail = len(piece) - len(piece.rstrip(" \t"))
+        s = src_s + m.start() + lead
+        e = src_s + m.end() - trail
+        if e > s:
+            spans.append((s, e))
+    return spans if len(spans) > 1 else None
+
+
 def detect_ner(
     doc: SourceDocument,
     config_path: str,
@@ -859,6 +1079,70 @@ def detect_ner(
                             detector="ner",
                             confidence=1.0,
                         ))
+
+            # --- ЭТАП E′: ВТОРОЙ адресный проход по «расплетённому» виду ---
+            # Только если вид отличается от штатного (склейка рваных слов/индексов
+            # или \n в сегменте). Тот же конвейер, тот же строгий якорь; плюс
+            # анти-склейка двух адресов по позициям бывших \n (зеркало −). Дубли
+            # со штатным проходом схлопывает разрешение пересечений блока 4.
+            view, vmap, glue_src = _addr_view(segment)
+            if view:
+                v_doc = Doc(view)
+                v_doc.segment(_segmenter)
+                v_doc.tag_ner(_ner_tagger)
+                v_loc = [(sp.start, sp.stop) for sp in v_doc.spans if sp.type == "LOC"]
+                if v_loc or _addr_has_seed(view) or glue_src:
+                    v_yargy = _glue_address_matches(view, list(_addr_extractor(view)))
+                    regex_v = [src_to_norm(vmap, s, e)
+                               for s, e in regex_by_seg.get(segment.id, [])]
+                    org_v = [src_to_norm(vmap, s, e)
+                             for s, e in org_by_seg.get(segment.id, [])]
+                    per_v = [src_to_norm(vmap, s, e)
+                             for s, e in per_by_seg.get(segment.id, [])]
+                    name_v = list(org_v) + list(per_v)
+                    v_yargy = _filter_suspect_yargy(view, v_yargy, name_v, v_loc)
+                    occ_v = _address_barriers(view, [], regex_v, name_v)
+                    raw_v = _build_address_spans(view, v_loc + v_yargy, occ_v)
+                    final_v = _finalize_address_spans(view, raw_v, occ_v)
+                    # позиции бывших \n в координатах вида (для анти-склейки):
+                    # символ вида, чей исходный символ — \n/\r (заменён пробелом)
+                    base_txt = segment.metadata.get("detection_text", orig_text)
+                    nl_pos = [k for k, si in enumerate(vmap)
+                              if base_txt[si] in "\n\r"]
+                    final_v = _addr_split_at_newlines(view, final_v, nl_pos)
+                    final_v = _addr_trim_tail_lines(view, final_v, nl_pos)
+                    for start, end in final_v:
+                        src_start, src_end = norm_to_src(vmap, start, end)
+                        # эмитим ТОЛЬКО спан, содержащий точку СКЛЕЙКИ deweave:
+                        # на не-склеенной многострочной ячейке видовой проход
+                        # лишь сливает строки (пропадает сентенс-граница \n) —
+                        # кластеризация тащит LOC-хиты паспортного хвоста («выдан
+                        # ОУФМС России по…») к реальному адресу соседней строки,
+                        # и обрезка блока 4 рождает хвост-маску на ЧИСТОМ
+                        # документе (35 шт. в замере). Скачки карты normalize
+                        # (дефисы «358-877») склейкой НЕ считаются. Всё
+                        # не-склеенное покрывает штатный проход.
+                        if not _span_has_glue(src_start, src_end, glue_src):
+                            continue
+                        # крайние \n/пробелы (бывшие границы строк) в hull не берём
+                        while src_start < src_end and orig_text[src_start] in " \t\n\r":
+                            src_start += 1
+                        while src_end > src_start and orig_text[src_end - 1] in " \t\n\r":
+                            src_end -= 1
+                        if src_start >= src_end:
+                            continue
+                        for addr_type in addr_types:
+                            entities.append(Entity(
+                                id=str(uuid.uuid4()),
+                                segment_id=segment.id,
+                                start=src_start,
+                                end=src_end,
+                                original_text=orig_text[src_start:src_end],
+                                entity_type=addr_type,
+                                detector="ner",
+                                confidence=1.0,
+                                spans=_addr_value_spans(orig_text, src_start, src_end),
+                            ))
 
     # Инвариант блока 3: original_text строго равен срезу сегмента по [start:end].
     for e in entities:

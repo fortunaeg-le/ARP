@@ -29,8 +29,15 @@ docs/reports/DETECTION_REBUILD.md.
 Модели Natasha (морфология+синтаксис) инициализируются один раз при импорте.
 """
 
+import os
 import re
 import uuid
+
+# Этап E'' — см. ner_detector.py (тот же аргумент: numpy/OpenBLAS многопоточность,
+# фиксация потоков ДО импорта natasha). setdefault — идемпотентно с ner_detector.py,
+# независимо от порядка импорта модулей.
+for _var in ("OMP_NUM_THREADS", "OPENBLAS_NUM_THREADS", "MKL_NUM_THREADS", "NUMEXPR_NUM_THREADS"):
+    os.environ.setdefault(_var, "1")
 
 from models import Entity, SourceDocument
 from natasha import (
@@ -45,6 +52,13 @@ _segmenter = Segmenter()
 _emb = NewsEmbedding()
 _morph_tagger = NewsMorphTagger(_emb)
 _syntax_parser = NewsSyntaxParser(_emb)
+
+# Прогрев (см. ner_detector.py) — тот же аргумент, свой набор моделей.
+_warmup_doc = Doc("прогрев модели")
+_warmup_doc.segment(_segmenter)
+_warmup_doc.tag_morph(_morph_tagger)
+_warmup_doc.parse_syntax(_syntax_parser)
+del _warmup_doc
 
 # Максимальный разрыв (в символах) между ORG и PER, при котором пара считается
 # СОСЕДНЕЙ и потому кандидатом на составную сущность. «ИП Пирогова» — разрыв 1 (пробел),
