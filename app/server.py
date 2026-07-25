@@ -14,6 +14,8 @@ import socket
 import sys
 import tempfile
 import threading
+import time
+import uuid
 import webbrowser
 from http.server import BaseHTTPRequestHandler, ThreadingHTTPServer
 
@@ -83,6 +85,94 @@ def _friendly_decrypt_error(exc: Exception) -> str:
     return f"Не удалось восстановить текст: {type(exc).__name__}: {exc}"
 
 
+def _friendly_markup_error(exc: Exception) -> str:
+    """U3: ошибки правки/пересборки разметки -> человеческий текст (без трейсбека).
+
+    Те же типизированные ошибки хранилища, что и decrypt, плюс FileNotFoundError
+    (сессия создана до этапа разметки — нет {sid}.doc.json) и ValueError
+    (некорректное выделение/пересечение и т.п. — уже человеческий текст, см.
+    app/core.py::_validate_missed)."""
+    from storage import SessionNotFoundError, SessionExpiredError
+
+    if isinstance(exc, SessionExpiredError):
+        return ("Сессия истекла (срок хранения — 24 часа с момента шифрации). "
+                "Разметку по ней сохранить уже нельзя.")
+    if isinstance(exc, SessionNotFoundError):
+        return "Сессия не найдена или повреждена — обновите страницу."
+    if isinstance(exc, FileNotFoundError):
+        return str(exc)
+    if isinstance(exc, ValueError):
+        return str(exc)
+    return f"Не удалось сохранить правку: {type(exc).__name__}: {exc}"
+
+
+# --------------------------------------------------------------------------- #
+# U3-4: индикатор прогресса шифрации крупного документа.
+#
+# Детекцию инструментировать НЕЛЬЗЯ (граница этой сессии — src/, кроме
+# storage.py, не трогать; поэтапный колбэк потребовал бы правки
+# src/pipeline.py и трёх детекторов). Минимальное изменение в её границах:
+# /api/encrypt стал асинхронным (фоновый поток + опрос статуса), что даёт ДВЕ
+# честные вещи без единой правки в src/, кроме storage.py:
+#   1) точное число сегментов документа — известно сразу после extract()
+#      (core.run_encrypt(on_extracted=...), извлечение быстрое, детекция — нет);
+#   2) процент как оценка по прошедшему времени/числу сегментов (не точный
+#      прогресс стадий, а честная линейная экстраполяция, доезжающая до 95% и
+#      прыгающая на 100% только по факту готовности — не создаёт иллюзию точности).
+# Если позже понадобится НАСТОЯЩИЙ прогресс по стадиям — минимальная точка
+# входа: 4 callback-точки в src/pipeline.py::run_detection (после каждого шага),
+# см. HANDOFF_U3 §4.
+# --------------------------------------------------------------------------- #
+
+_JOBS: dict[str, dict] = {}
+_JOBS_LOCK = threading.Lock()
+_JOB_TTL_SECONDS = 30 * 60
+_SECONDS_PER_SEGMENT = 0.03   # грубая калибровка (documents из STATE.md: ~2500 сегм. => десятки с)
+_MIN_ESTIMATE_SECONDS = 2.0
+
+
+def _purge_old_jobs_locked():
+    now = time.time()
+    for jid in [jid for jid, j in _JOBS.items() if now - j["started_at"] > _JOB_TTL_SECONDS]:
+        del _JOBS[jid]
+
+
+def _run_encrypt_job(job_id: str, tmp_path: str, allow_lossy: bool, filename: str):
+    def on_extracted(doc):
+        with _JOBS_LOCK:
+            job = _JOBS.get(job_id)
+            if job is not None:
+                job["segment_count"] = len(doc.segments)
+
+    try:
+        result = core.run_encrypt(tmp_path, allow_lossy=allow_lossy, source_name=filename,
+                                   on_extracted=on_extracted)
+        with _JOBS_LOCK:
+            job = _JOBS.get(job_id)
+            if job is not None:
+                job["status"] = "done"
+                result["status"] = "ok"
+                job["result"] = result
+    except core.EncryptRefused as e:
+        with _JOBS_LOCK:
+            job = _JOBS.get(job_id)
+            if job is not None:
+                job["status"] = "done"
+                job["result"] = {"status": "refused", "zones": e.zones, "source_name": filename}
+    except Exception as e:  # noqa: BLE001 — переводим в человеческий текст
+        msg = _friendly_encrypt_error(e).replace(tmp_path, filename)
+        with _JOBS_LOCK:
+            job = _JOBS.get(job_id)
+            if job is not None:
+                job["status"] = "done"
+                job["result"] = {"status": "error", "message": msg}
+    finally:
+        try:
+            os.remove(tmp_path)
+        except OSError:
+            pass
+
+
 class Handler(BaseHTTPRequestHandler):
     # Тихий лог: без строки на каждый запрос в консоль пилота.
     def log_message(self, *args):
@@ -110,6 +200,18 @@ class Handler(BaseHTTPRequestHandler):
             # "порт занят чужим приложением" и от зомби старого билда.
             self._send_json({"build_mark": core.BUILD_MARK, "pid": os.getpid()})
             return
+        if self.path == "/api/sessions":
+            self._handle_list_sessions()
+            return
+        if self.path == "/api/markup/types":
+            self._send_json({"status": "ok", "types": core.markup_type_options()})
+            return
+        if self.path.startswith("/api/encrypt/status"):
+            self._handle_encrypt_status()
+            return
+        if self.path.startswith("/api/markup/list"):
+            self._handle_markup_list()
+            return
         if self.path in ("/", "/index.html"):
             try:
                 with open(_INDEX, "rb") as f:
@@ -129,8 +231,24 @@ class Handler(BaseHTTPRequestHandler):
     def do_POST(self):
         if self.path == "/api/encrypt":
             self._handle_encrypt()
+        elif self.path == "/api/encrypt/start":
+            self._handle_encrypt_start()
         elif self.path == "/api/decrypt":
             self._handle_decrypt()
+        elif self.path == "/api/session-delete":
+            self._handle_session_delete()
+        elif self.path == "/api/markup/mark-missed":
+            self._handle_markup_op(self._op_mark_missed)
+        elif self.path == "/api/markup/false-positive":
+            self._handle_markup_op(self._op_mark_false_positive)
+        elif self.path == "/api/markup/replace":
+            self._handle_markup_op(self._op_mark_replace)
+        elif self.path == "/api/markup/update":
+            self._handle_markup_op(self._op_markup_update)
+        elif self.path == "/api/markup/delete":
+            self._handle_markup_op(self._op_markup_delete)
+        elif self.path == "/api/markup/apply":
+            self._handle_markup_op(self._op_markup_apply)
         else:
             self.send_error(404)
 
@@ -160,7 +278,7 @@ class Handler(BaseHTTPRequestHandler):
             with os.fdopen(fd, "wb") as f:
                 f.write(data)
             try:
-                result = core.run_encrypt(tmp, allow_lossy=allow_lossy)
+                result = core.run_encrypt(tmp, allow_lossy=allow_lossy, source_name=filename)
             except core.EncryptRefused as e:
                 self._send_json({"status": "refused", "zones": e.zones,
                                  "source_name": filename})
@@ -171,13 +289,69 @@ class Handler(BaseHTTPRequestHandler):
                 self._send_json({"status": "error", "message": msg})
                 return
             result["status"] = "ok"
-            result["source_name"] = filename
             self._send_json(result)
         finally:
             try:
                 os.remove(tmp)
             except OSError:
                 pass
+
+    def _handle_encrypt_start(self):
+        """U3-4: асинхронный запуск шифрации — возвращает job_id немедленно,
+        фактическая обработка идёт в фоновом потоке (см. _run_encrypt_job)."""
+        from urllib.parse import unquote
+        filename = unquote(self.headers.get("X-Filename", "document.docx"))
+        allow_lossy = self.headers.get("X-Allow-Lossy", "0") == "1"
+        ext = os.path.splitext(filename)[1].lower()
+        if ext not in _ALLOWED_EXT:
+            self._send_json({"status": "error",
+                             "message": "Поддерживаются только файлы .docx и .txt."})
+            return
+
+        data = self._read_body()
+        if data is None:
+            self._send_json({"status": "error",
+                             "message": "Файл слишком большой (ограничение 50 МБ)."})
+            return
+        if not data:
+            self._send_json({"status": "error", "message": "Пустой файл."})
+            return
+
+        fd, tmp = tempfile.mkstemp(suffix=ext, prefix="shifrator_ui_")
+        with os.fdopen(fd, "wb") as f:
+            f.write(data)
+
+        job_id = str(uuid.uuid4())
+        with _JOBS_LOCK:
+            _purge_old_jobs_locked()
+            _JOBS[job_id] = {"status": "running", "started_at": time.time(),
+                              "segment_count": None, "result": None}
+        threading.Thread(target=_run_encrypt_job, args=(job_id, tmp, allow_lossy, filename),
+                          daemon=True).start()
+        self._send_json({"status": "ok", "job_id": job_id})
+
+    def _handle_encrypt_status(self):
+        from urllib.parse import urlsplit, parse_qs
+        qs = parse_qs(urlsplit(self.path).query)
+        job_id = (qs.get("job_id") or [""])[0]
+        with _JOBS_LOCK:
+            job = _JOBS.get(job_id)
+            if job is None:
+                self._send_json({"status": "error", "message": "Задача не найдена (истекла или сервер перезапущен)."})
+                return
+            elapsed = time.time() - job["started_at"]
+            segment_count = job["segment_count"]
+            if job["status"] == "done":
+                percent = 100
+            else:
+                estimate = max(_MIN_ESTIMATE_SECONDS,
+                                (segment_count or 0) * _SECONDS_PER_SEGMENT)
+                percent = min(95, round(100 * elapsed / estimate))
+            payload = {"status": job["status"], "segment_count": segment_count,
+                       "percent": percent, "elapsed": round(elapsed, 1)}
+            if job["status"] == "done":
+                payload["result"] = job["result"]
+        self._send_json(payload)
 
     def _handle_decrypt(self):
         data = self._read_body()
@@ -207,6 +381,93 @@ class Handler(BaseHTTPRequestHandler):
             return
         result["status"] = "ok"
         self._send_json(result)
+
+    def _handle_list_sessions(self):
+        # Список сессий пользователя (Задача U2-3) — только storage.py, файлы напрямую не трогаем.
+        from storage import list_sessions
+        self._send_json({"status": "ok", "sessions": list_sessions()})
+
+    def _handle_session_delete(self):
+        from storage import delete_session
+
+        data = self._read_body()
+        if data is None:
+            self._send_json({"status": "error", "message": "Слишком большой запрос."})
+            return
+        try:
+            payload = json.loads(data.decode("utf-8"))
+            session_id = (payload.get("session_id") or "").strip()
+        except (ValueError, AttributeError):
+            self._send_json({"status": "error", "message": "Некорректный запрос."})
+            return
+        if not session_id:
+            self._send_json({"status": "error", "message": "Укажите ID сессии."})
+            return
+        deleted = delete_session(session_id)
+        self._send_json({"status": "ok", "deleted": deleted})
+
+    # ------------------------------------------------------------------ #
+    # U3 — разметка экрана проверки.
+    # ------------------------------------------------------------------ #
+
+    def _handle_markup_list(self):
+        from urllib.parse import urlsplit, parse_qs
+        qs = parse_qs(urlsplit(self.path).query)
+        session_id = (qs.get("session_id") or [""])[0]
+        if not session_id:
+            self._send_json({"status": "error", "message": "Укажите ID сессии."})
+            return
+        self._send_json({"status": "ok", "entries": core.list_markup_entries(session_id)})
+
+    def _handle_markup_op(self, op):
+        """Общая обвязка для всех POST /api/markup/*: разобрать JSON, вызвать
+        op(payload) -> dict, перевести типизированные ошибки в человеческий текст."""
+        data = self._read_body()
+        if data is None:
+            self._send_json({"status": "error", "message": "Слишком большой запрос."})
+            return
+        try:
+            payload = json.loads(data.decode("utf-8"))
+        except (ValueError, AttributeError):
+            self._send_json({"status": "error", "message": "Некорректный запрос."})
+            return
+        try:
+            result = op(payload)
+        except Exception as e:  # noqa: BLE001
+            self._send_json({"status": "error", "message": _friendly_markup_error(e)})
+            return
+        result["status"] = "ok"
+        self._send_json(result)
+
+    @staticmethod
+    def _op_mark_missed(p):
+        return core.mark_missed(p["session_id"], p["segment_id"], int(p["start"]), int(p["end"]),
+                                 p["entity_type"])
+
+    @staticmethod
+    def _op_mark_false_positive(p):
+        return core.mark_false_positive(p["session_id"], p["segment_id"], int(p["start"]),
+                                         int(p["end"]), p["token"])
+
+    @staticmethod
+    def _op_mark_replace(p):
+        return core.mark_replace(
+            p["session_id"], p["old_token"], p["old_segment_id"], int(p["old_start"]), int(p["old_end"]),
+            p["segment_id"], int(p["start"]), int(p["end"]), p["entity_type"],
+        )
+
+    @staticmethod
+    def _op_markup_update(p):
+        core.update_markup_entry(p["session_id"], p["markup_id"], p["entity_type"])
+        return {}
+
+    @staticmethod
+    def _op_markup_delete(p):
+        return core.delete_markup_entry(p["session_id"], p["markup_id"])
+
+    @staticmethod
+    def _op_markup_apply(p):
+        return core.apply_pending_markup(p["session_id"])
 
 
 class Server(ThreadingHTTPServer):

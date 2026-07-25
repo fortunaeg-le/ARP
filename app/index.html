@@ -98,6 +98,37 @@
   #tip .arrow{color:#8fb2ff}
   #tip code{font:11.5px ui-monospace,Consolas,monospace;background:rgba(255,255,255,.15);padding:1px 4px;border-radius:4px}
 
+  /* --- U3: прогресс шифрации --- */
+  .progress-track{height:6px;background:#e3e8f0;border-radius:4px;overflow:hidden;margin-top:10px}
+  .progress-fill{height:100%;background:var(--accent);transition:width .3s;width:0%}
+
+  /* --- U3: разметка на экране проверки --- */
+  .lit{cursor:text}
+  mark.ent.pending{outline:2px dashed #9a5b00;outline-offset:1px}
+  #markup-menu{position:fixed;z-index:70;background:#fff;border:1px solid var(--line);border-radius:10px;
+    box-shadow:var(--shadow);padding:10px;display:none;max-width:300px}
+  #markup-menu .mm-title{font-size:12px;color:var(--muted);margin-bottom:8px;word-break:break-word}
+  #markup-menu .mm-types{display:flex;flex-wrap:wrap;gap:6px;max-width:280px}
+  #markup-menu button.mm-type{border:1px solid var(--line);background:#fafbfd;border-radius:7px;padding:5px 9px;font-size:12.5px;cursor:pointer}
+  #markup-menu button.mm-type:hover{border-color:var(--accent);color:var(--accent-d)}
+  #markup-menu .mm-actions{display:flex;flex-direction:column;gap:6px}
+  #markup-menu button.mm-action{text-align:left;border:1px solid var(--line);background:#fafbfd;border-radius:7px;padding:7px 10px;font-size:13px;cursor:pointer}
+  #markup-menu button.mm-action.danger{color:var(--err);border-color:#f2c9c9}
+  #markup-menu button.mm-action:hover{border-color:var(--accent)}
+  #markup-menu .mm-cancel{margin-top:8px;font-size:12px;color:var(--muted);cursor:pointer;text-align:right}
+  .markup-panel{margin-top:16px}
+  .markup-panel h4{margin:0 0 8px;font-size:14px;display:flex;align-items:center;gap:8px}
+  .markup-row{display:flex;gap:8px;align-items:center;padding:8px 10px;border:1px solid var(--line);border-radius:8px;margin-bottom:6px;font-size:13px;background:#fafbfd}
+  .markup-row .mk-kind{font-weight:600;color:var(--accent-d);flex:0 0 auto;font-size:12px;text-transform:uppercase;letter-spacing:.3px}
+  .markup-row .mk-snip{flex:1;overflow:hidden;text-overflow:ellipsis;white-space:nowrap;color:var(--ink)}
+  .markup-row.applied{opacity:.55}
+  .markup-row.error{border-color:#f2c9c9;background:var(--errbg)}
+  #markup-toast{display:none}
+  #markup-toast.show{display:block;position:fixed;left:50%;transform:translateX(-50%);bottom:24px;
+    padding:10px 18px;border-radius:10px;box-shadow:var(--shadow);z-index:80;font-size:13.5px;max-width:70vw}
+  #markup-toast.ok{background:var(--okbg);color:var(--ok)}
+  #markup-toast.err{background:var(--errbg);color:var(--err)}
+
   /* --- restore --- */
   .field{margin-bottom:14px}
   .field label{display:block;font-size:13px;color:var(--muted);margin-bottom:5px;font-weight:600}
@@ -136,6 +167,8 @@
         <span id="enc-spin" class="spinner"></span>
         <span id="enc-msg"></span>
       </div>
+      <div id="enc-progress" class="progress-track hidden"><div id="enc-progress-fill" class="progress-fill"></div></div>
+      <div id="enc-progress-note" class="note hidden" style="margin-top:6px"></div>
 
       <!-- zones refusal choice -->
       <div id="zones-box" class="warn hidden">
@@ -171,7 +204,7 @@
 
       <div class="warn" style="background:#eef3ff;border-color:#cddcff;color:var(--accent-d)">
         <h3 style="color:var(--accent-d)">🔍 Проверьте глазами</h3>
-        <div class="note" style="color:#33507f">Система прячет данные, но <b>не гарантирует полноту</b> — просмотрите обезличенный текст справа: не осталось ли ФИО, номеров, адресов открытым текстом. Наведите курсор на подсветку, чтобы увидеть, что и на что заменено.</div>
+        <div class="note" style="color:#33507f">Система прячет данные, но <b>не гарантирует полноту</b> — просмотрите обезличенный текст справа: не осталось ли ФИО, номеров, адресов открытым текстом. Наведите курсор на подсветку, чтобы увидеть, что и на что заменено. <b>Нашли пропуск — выделите его мышью прямо в тексте справа</b> и выберите тип; уже стоящую маску можно поправить щелчком по ней (снять как ложную, изменить тип или границу).</div>
       </div>
 
       <div class="legend" id="v-legend"></div>
@@ -179,11 +212,21 @@
       <div class="verify-grid" style="margin-top:14px">
         <div class="panes">
           <div class="pane"><h4>Исходный текст</h4><div class="body" id="pane-orig"></div></div>
-          <div class="pane"><h4>Обезличенный текст</h4><div class="body" id="pane-anon"></div></div>
+          <div class="pane"><h4>Обезличенный текст — выделяйте пропуски здесь</h4><div class="body" id="pane-anon"></div></div>
         </div>
         <div class="side">
           <h4>Что спрятано <span class="note" id="v-side-count"></span></h4>
           <div id="v-list"></div>
+        </div>
+      </div>
+
+      <div class="markup-panel">
+        <h4>Ваши правки <span class="badge" id="markup-count">0</span></h4>
+        <div class="note" style="margin-bottom:10px">Каждая правка сохраняется сразу — это и есть будущая эталонная разметка, она хранится <b>только на этом компьютере</b>, в той же папке, что и сессии (<code id="markup-storage-dir"></code>), и никуда не отправляется. Документ не меняется, пока вы не нажмёте «Применить правки и пересобрать».</div>
+        <div id="markup-list"></div>
+        <div class="verify-actions" style="margin-top:10px">
+          <button class="primary" id="markup-apply-btn" onclick="applyMarkup()">Применить правки и пересобрать</button>
+          <button class="ghost" onclick="loadMarkupPanel()">Обновить список</button>
         </div>
       </div>
 
@@ -197,9 +240,16 @@
 
   <!-- ===================== SCREEN 3: RESTORE ===================== -->
   <section id="scr-res" class="screen">
+    <div class="card" style="max-width:820px;margin:0 auto 16px">
+      <h2 style="font-size:17px">Ваши сессии</h2>
+      <div class="warn" style="background:#eef3ff;border-color:#cddcff;color:var(--accent-d)">
+        <div class="note" style="color:#33507f"><b>Без файла сессии восстановление невозможно.</b> Сессия — это единственное место, где хранится соответствие меток (<code>[PERSON_1]</code> и т.п.) исходным данным; без неё систему нельзя попросить «вспомнить», что было спрятано, и оригинал не восстановить. Срок хранения — 24 часа с момента шифрации, затем сессия становится непригодной для восстановления.</div>
+      </div>
+      <div id="sess-list" style="margin-top:12px"></div>
+    </div>
     <div class="card" style="max-width:820px;margin:0 auto">
       <h2>Восстановление оригинала</h2>
-      <p class="sub">Введите ID сессии и вставьте обезличенный текст (или загрузите скачанный <code>{ID}.txt</code>). Система вернёт исходные значения на место замен.</p>
+      <p class="sub">Выберите сессию выше или введите ID сессии вручную, и вставьте обезличенный текст (или загрузите скачанный <code>{ID}.txt</code>). Система вернёт исходные значения на место замен.</p>
       <div class="field">
         <label>ID сессии</label>
         <input id="r-sid" placeholder="напр. 3f2a1c9e-...-...-...-............" spellcheck="false">
@@ -227,6 +277,8 @@
 </main>
 
 <div id="tip"></div>
+<div id="markup-menu"></div>
+<div id="markup-toast"></div>
 
 <script>
 let CUR = null;             // текущий результат шифрации
@@ -238,6 +290,10 @@ function show(which){
     document.getElementById('scr-'+s).classList.toggle('active', s===which);
     document.getElementById('nav-'+s).classList.toggle('active', s===which);
   }
+  if(which==='res') loadSessions();
+  if(which==='ver' && CUR) loadMarkupPanel();
+  closeMarkupMenu();
+  BOUNDARY_EDIT=null;
 }
 
 /* ---------- upload wiring ---------- */
@@ -262,28 +318,59 @@ function resetEnc(){
   PENDING_FILE=null;
 }
 
+// Точного прогресса по стадиям детекции от бэкенда нет и в этой сессии не
+// появится (граница U3: src/, кроме storage.py, не трогать — инструментировать
+// pipeline.run_detection нельзя). Вместо этого /api/encrypt асинхронный:
+// сервер сразу отдаёт job_id, а число сегментов документа (известно уже после
+// извлечения текста, задолго до конца детекции) + оценка процента по
+// прошедшему времени показываются, пока фоновый поток дообрабатывает документ —
+// юрист видит, что программа жива и документ немаленький, а не гадает по
+// зависшему спиннеру. Подробнее и что нужно, чтобы получить ТОЧНЫЙ прогресс —
+// см. HANDOFF_U3 §4.
+function _encProgressUI(show){
+  document.getElementById('enc-progress').classList.toggle('hidden', !show);
+  document.getElementById('enc-progress-note').classList.toggle('hidden', !show);
+}
+
 async function startEncrypt(file, allowLossy){
   const ext=(file.name.match(/\.[^.]+$/)||[''])[0].toLowerCase();
   if(ext!=='.docx' && ext!=='.txt'){ status('enc','Поддерживаются только .docx и .txt.','err'); return; }
   document.getElementById('zones-box').classList.add('hidden');
-  status('enc','Обрабатывается «'+file.name+'»…','busy');
+  const fillEl=document.getElementById('enc-progress-fill'), noteEl=document.getElementById('enc-progress-note');
+  fillEl.style.width='0%';
+  _encProgressUI(true);
+  status('enc','Читаю документ… («'+file.name+'»)','busy');
   try{
     const buf=await file.arrayBuffer();
-    const resp=await fetch('/api/encrypt',{method:'POST',
+    const startResp=await fetch('/api/encrypt/start',{method:'POST',
       headers:{'X-Filename':encodeURIComponent(file.name),'X-Allow-Lossy':allowLossy?'1':'0',
                'Content-Type':'application/octet-stream'},
       body:buf});
-    const data=await resp.json();
-    if(data.status==='refused'){ PENDING_FILE=file; showZones(data); status('enc','Требуется ваше решение по непрочитанным зонам ниже.','err'); return; }
-    if(data.status==='error'){ status('enc',data.message,'err'); return; }
-    // header X-Filename был url-encoded — вернём читаемое имя
-    data.source_name=file.name;
+    const started=await startResp.json();
+    if(started.status==='error'){ status('enc',started.message,'err'); _encProgressUI(false); return; }
+
+    let data=null;
+    while(true){
+      await new Promise(r=>setTimeout(r,400));
+      const stResp=await fetch('/api/encrypt/status?job_id='+encodeURIComponent(started.job_id));
+      const st=await stResp.json();
+      if(st.status==='error'){ status('enc',st.message,'err'); _encProgressUI(false); return; }
+      fillEl.style.width=st.percent+'%';
+      noteEl.textContent = st.segment_count!=null
+        ? 'Документ: '+st.segment_count+' фрагм. · '+st.percent+'% (оценка по времени, не точный прогресс стадий)'
+        : 'Читаю документ…';
+      status('enc', (st.segment_count!=null ? 'Ищу персональные данные… ' : 'Читаю документ… ')+'(«'+file.name+'»)', 'busy');
+      if(st.status==='done'){ data=st.result; break; }
+    }
+
+    if(data.status==='refused'){ PENDING_FILE=file; showZones(data); status('enc','Требуется ваше решение по непрочитанным зонам ниже.','err'); _encProgressUI(false); return; }
+    if(data.status==='error'){ status('enc',data.message,'err'); _encProgressUI(false); return; }
     CUR=data;
     renderVerify(data);
-    hideStatus('enc');
+    hideStatus('enc'); _encProgressUI(false);
     document.getElementById('nav-ver').disabled=false;
     show('ver');
-  }catch(err){ status('enc','Ошибка связи с локальным сервером: '+err,'err'); }
+  }catch(err){ status('enc','Ошибка связи с локальным сервером: '+err,'err'); _encProgressUI(false); }
 }
 
 /* ---------- zones choice ---------- */
@@ -306,6 +393,7 @@ function esc(s){ return (s||'').replace(/&/g,'&amp;').replace(/</g,'&lt;').repla
 function renderVerify(d){
   document.getElementById('v-sid').textContent=d.session_id;
   document.getElementById('v-count').textContent='спрятано '+d.values_hidden+' знач. · '+d.entities_total+' замен';
+  if(d.storage_dir) document.getElementById('markup-storage-dir').textContent=d.storage_dir;
   document.getElementById('pane-orig').innerHTML=d.original_html||'<span class="note">(пусто)</span>';
   document.getElementById('pane-anon').innerHTML=d.anon_html||'<span class="note">(пусто)</span>';
 
@@ -337,6 +425,11 @@ function renderVerify(d){
   document.getElementById('v-list').innerHTML=html||'<div class="rep note">Ничего не найдено — проверьте документ вручную.</div>';
   document.getElementById('v-legend').innerHTML=legend;
   document.getElementById('v-side-count').textContent='('+d.replacements.length+')';
+  // Поиск по полю ri, НЕ по позиции в массиве: d.replacements отсортирован для
+  // отображения (по типу/значению), поэтому позиция i !== значению ri записи i
+  // (баг тултипа — CUR.replacements[ri] брал не ту запись при >1 типе/значении).
+  CUR.byRi={};
+  d.replacements.forEach(r=>{ CUR.byRi[r.ri]=r; });
   wireMarks();
 }
 
@@ -351,12 +444,17 @@ function jump(ri){
 const tip=document.getElementById('tip');
 function wireMarks(){
   document.querySelectorAll('.pane .body mark.ent').forEach(m=>{
-    const ri=+m.dataset.ri, r=CUR.replacements[ri];
+    const ri=+m.dataset.ri, r=CUR.byRi[ri];
     m.addEventListener('mouseenter',e=>{ hi(ri,1);
-      tip.innerHTML='<b>'+esc(r.type_label)+'</b><br>'+esc(r.original_text)+' <span class="arrow">→</span> <code>'+esc(r.token)+'</code>';
+      let html='<b>'+esc(r.type_label)+'</b><br>'+esc(r.original_text)+' <span class="arrow">→</span> <code>'+esc(r.token)+'</code>';
+      if(m.closest('#pane-anon')) html+='<br><span style="color:#9fb3e8">щёлкните — снять/поправить</span>';
+      tip.innerHTML=html;
       tip.style.display='block'; moveTip(e); });
     m.addEventListener('mousemove',moveTip);
     m.addEventListener('mouseleave',()=>{ hi(ri,0); tip.style.display='none'; });
+    if(m.closest('#pane-anon') && m.dataset.token){
+      m.addEventListener('click', e=>{ e.stopPropagation(); tip.style.display='none'; openMarkMenu(e, m); });
+    }
   });
 }
 function moveTip(e){
@@ -374,6 +472,47 @@ function saveText(name,text){
   document.body.appendChild(a); a.click(); a.remove(); URL.revokeObjectURL(a.href);
 }
 function downloadAnon(){ if(CUR) saveText(CUR.session_id+'.txt', CUR.anon_text); }
+
+/* ---------- sessions list ---------- */
+function fmtDate(iso){
+  try{ const d=new Date(iso); return d.toLocaleString('ru-RU',{day:'2-digit',month:'2-digit',year:'numeric',hour:'2-digit',minute:'2-digit'}); }
+  catch(e){ return iso; }
+}
+async function loadSessions(){
+  const box=document.getElementById('sess-list');
+  box.innerHTML='<div class="note">Загрузка списка сессий…</div>';
+  try{
+    const resp=await fetch('/api/sessions');
+    const data=await resp.json();
+    if(data.status!=='ok' || !data.sessions.length){
+      box.innerHTML='<div class="note">Сессий пока нет — они появляются после первой шифрации документа.</div>';
+      return;
+    }
+    box.innerHTML=data.sessions.map(s=>{
+      const name=esc(s.source_name||'(имя документа не сохранено)');
+      const expiredTag=s.expired?' · <b style="color:var(--err)">истекла</b>':'';
+      return '<div class="rep" style="cursor:default">'+
+        '<span class="orig" title="'+esc(s.session_id)+'">'+name+' · '+fmtDate(s.created_at)+' · '+s.entities_count+' замен'+expiredTag+'</span>'+
+        '<span style="display:flex;gap:6px;flex:0 0 auto">'+
+        '<button class="ghost" style="padding:4px 10px;font-size:12px" '+(s.expired?'disabled':'')+' onclick="selectSession(\''+s.session_id+'\')">Выбрать</button>'+
+        '<button class="ghost" style="padding:4px 10px;font-size:12px" onclick="deleteSessionUI(\''+s.session_id+'\')">Удалить</button>'+
+        '</span></div>';
+    }).join('');
+  }catch(err){ box.innerHTML='<div class="note">Не удалось загрузить список сессий: '+esc(String(err))+'</div>'; }
+}
+function selectSession(sid){
+  document.getElementById('r-sid').value=sid;
+  document.getElementById('r-text').focus();
+}
+async function deleteSessionUI(sid){
+  if(!confirm('Удалить эту сессию? Восстановление исходных данных по ней станет НЕВОЗМОЖНЫМ. Продолжить?')) return;
+  try{
+    const resp=await fetch('/api/session-delete',{method:'POST',headers:{'Content-Type':'application/json'},
+      body:JSON.stringify({session_id:sid})});
+    await resp.json();
+  }catch(err){ /* сеть — покажет loadSessions при следующей попытке */ }
+  loadSessions();
+}
 
 /* ---------- restore ---------- */
 document.getElementById('r-file').onchange=async e=>{
@@ -405,6 +544,266 @@ async function doDecrypt(){
   }catch(err){ status('res','Ошибка связи с локальным сервером: '+err,'err'); }
 }
 function downloadRestored(){ const sid=document.getElementById('r-sid').value.trim()||'restored'; saveText(sid+'_restored.txt',RESTORED); }
+
+/* ================= U3: разметка экрана проверки ================= */
+// Модель: КАЖДАЯ правка (пометить пропущенное / снять ложную маску / поправить
+// границу / поправить тип) сохраняется на сервере СРАЗУ (см. app/core.py —
+// "разметка = побочный продукт проверки"), но документ НЕ меняется, пока
+// пользователь не нажмёт «Применить правки и пересобрать» (задача 3
+// постановки). Выделение мышью работает ТОЛЬКО внутри `.lit` — фрагментов
+// обезличенного текста, не покрытых маской (см. app/core.py::_lit); выделение,
+// задевающее существующую маску или уходящее за пределы одного такого
+// фрагмента, отклоняется с понятным сообщением (задача 1: "без терминов вроде
+// спан/оффсет" — пользователь никогда не вводит координаты руками).
+
+const MARKUP_TYPES_FALLBACK=[["PERSON","ФИО"],["ORG","Организация"],["ADDRESS","Адрес"],["INN","ИНН"],
+  ["PASSPORT","Паспорт"],["PHONE","Телефон"],["BANK_ACCOUNT","Банковский счёт"],["EMAIL","E-mail"],
+  ["BIRTHDATE","Дата рождения"],["SNILS","СНИЛС"],["OGRN","ОГРН/ОГРНИП"],["KPP","КПП"],["SUM","Сумма"]]
+  .map(([type,label])=>({type,label}));
+let MARKUP_TYPES=null;
+async function ensureMarkupTypes(){
+  if(MARKUP_TYPES) return;
+  try{
+    const r=await fetch('/api/markup/types'); const d=await r.json();
+    MARKUP_TYPES=(d.status==='ok' && d.types && d.types.length) ? d.types : MARKUP_TYPES_FALLBACK;
+  }catch(e){ MARKUP_TYPES=MARKUP_TYPES_FALLBACK; }
+}
+
+let BOUNDARY_EDIT=null;   // {token,seg,oldStart,oldEnd,oldType} — активен между "Исправить границу" и новым выделением
+
+/* ---- выделение мышью -> координаты в ИСХОДНОМ сегменте (без ввода вручную) ---- */
+function closestLit(node){
+  const el = node.nodeType===3 ? node.parentElement : node;
+  return el ? el.closest('.lit') : null;
+}
+function litOffset(litEl, node, offset){
+  if(node.nodeType===3 && node.parentElement===litEl) return offset;
+  if(node===litEl) return offset<=0 ? 0 : litEl.textContent.length;
+  return offset; // не должно происходить (.lit — один текстовый узел без вложенных тегов)
+}
+
+function onAnonSelectionUp(e){
+  const sel=window.getSelection();
+  if(!sel || sel.rangeCount===0 || sel.isCollapsed) return;
+  const range=sel.getRangeAt(0);
+  const startLit=closestLit(range.startContainer), endLit=closestLit(range.endContainer);
+  if(!startLit || !endLit || startLit!==endLit){
+    markupToast('Нельзя выделить фрагмент, задевающий существующую маску или уходящий за пределы одного куска текста.','err');
+    sel.removeAllRanges();
+    return;
+  }
+  const so=litOffset(startLit,range.startContainer,range.startOffset);
+  const eo=litOffset(startLit,range.endContainer,range.endOffset);
+  const s=Math.min(so,eo), en=Math.max(so,eo);
+  if(s>=en) return;   // выделение нулевой длины — молча игнорируем (не ошибка пользователя)
+  const segId=startLit.dataset.seg, base=+startLit.dataset.s;
+  const srcStart=base+s, srcEnd=base+en;
+  const text=startLit.textContent.slice(s,en);
+
+  if(BOUNDARY_EDIT){
+    const be=BOUNDARY_EDIT; BOUNDARY_EDIT=null;
+    openTypeMenu(e, {mode:'replace', seg:segId, start:srcStart, end:srcEnd, text,
+      oldToken:be.token, oldSeg:be.seg, oldStart:be.oldStart, oldEnd:be.oldEnd});
+  } else {
+    openTypeMenu(e, {mode:'missed', seg:segId, start:srcStart, end:srcEnd, text, range});
+  }
+}
+document.getElementById('pane-anon').addEventListener('mouseup', onAnonSelectionUp);
+
+function clearSelection(){ const s=window.getSelection(); if(s) s.removeAllRanges(); }
+function resetAnonView(){ if(CUR && CUR.anon_html!=null){ document.getElementById('pane-anon').innerHTML=CUR.anon_html; wireMarks(); } }
+
+/* ---- плавающее меню: тип / действия над существующей маской ---- */
+function positionMenu(menu, e){
+  menu.style.display='block'; menu.style.left='-9999px'; menu.style.top='-9999px';
+  const pad=8, r=menu.getBoundingClientRect();
+  let x=e.clientX+pad, y=e.clientY+pad;
+  if(x+r.width>innerWidth-8) x=innerWidth-r.width-8;
+  if(y+r.height>innerHeight-8) y=innerHeight-r.height-8;
+  menu.style.left=Math.max(8,x)+'px'; menu.style.top=Math.max(8,y)+'px';
+}
+function closeMarkupMenu(){ const m=document.getElementById('markup-menu'); if(m) m.style.display='none'; }
+document.addEventListener('click', e=>{
+  const menu=document.getElementById('markup-menu');
+  if(menu && menu.style.display==='block' && !menu.contains(e.target) && !e.target.closest('mark.ent')) closeMarkupMenu();
+});
+
+function typeButtonsHtml(){
+  return '<div class="mm-types">'+MARKUP_TYPES.map(t=>'<button type="button" class="mm-type" data-type="'+esc(t.type)+'">'+esc(t.label)+'</button>').join('')+'</div>';
+}
+function wireTypeButtons(menu, onPick){
+  menu.querySelectorAll('.mm-type').forEach(b=>{ b.onclick=()=>{ closeMarkupMenu(); onPick(b.dataset.type); }; });
+}
+
+async function openTypeMenu(e, ctx){
+  await ensureMarkupTypes();
+  const menu=document.getElementById('markup-menu');
+  const title = ctx.mode==='replace' ? 'Исправленный фрагмент — какой тип?' : 'Что это за данные?';
+  menu.innerHTML='<div class="mm-title">'+title+'<br>«'+esc(ctx.text)+'»</div>'+typeButtonsHtml()+'<div class="mm-cancel">Отмена</div>';
+  wireTypeButtons(menu, type => ctx.mode==='replace' ? submitReplace(ctx,type) : submitMissed(ctx,type));
+  menu.querySelector('.mm-cancel').onclick=()=>{ closeMarkupMenu(); clearSelection(); if(ctx.mode==='replace') resetAnonView(); };
+  positionMenu(menu, e);
+}
+
+async function showTypePicker(menu, e, ctx){
+  await ensureMarkupTypes();
+  menu.innerHTML='<div class="mm-title">Выберите правильный тип</div>'+typeButtonsHtml()+'<div class="mm-cancel">Отмена</div>';
+  wireTypeButtons(menu, type=>submitReplace(ctx,type));
+  menu.querySelector('.mm-cancel').onclick=closeMarkupMenu;
+  positionMenu(menu, e);
+}
+
+function openMarkMenu(e, markEl){
+  const menu=document.getElementById('markup-menu');
+  const token=markEl.dataset.token, seg=markEl.dataset.seg,
+        start=+markEl.dataset.start, end=+markEl.dataset.end,
+        etype=markEl.dataset.etype, orig=markEl.dataset.orig;
+  menu.innerHTML=
+    '<div class="mm-title"><b>'+esc(TYPE_LABELS[etype]||etype)+'</b><br>«'+esc(orig)+'»</div>'+
+    '<div class="mm-actions">'+
+    '<button type="button" class="mm-action danger" data-act="fp">🚫 Это не персональные данные</button>'+
+    '<button type="button" class="mm-action" data-act="type">✏️ Изменить тип</button>'+
+    '<button type="button" class="mm-action" data-act="bound">↔️ Исправить границу</button>'+
+    '</div><div class="mm-cancel">Отмена</div>';
+  menu.querySelector('[data-act="fp"]').onclick=()=>{ closeMarkupMenu(); confirmFalsePositive(seg,start,end,token,orig); };
+  menu.querySelector('[data-act="type"]').onclick=()=>{
+    showTypePicker(menu, e, {mode:'replace', seg, start, end, oldToken:token, oldSeg:seg, oldStart:start, oldEnd:end});
+  };
+  menu.querySelector('[data-act="bound"]').onclick=()=>{ closeMarkupMenu(); enterBoundaryEdit(markEl); };
+  menu.querySelector('.mm-cancel').onclick=closeMarkupMenu;
+  positionMenu(menu, e);
+}
+
+/* ---- "Исправить границу": временно раскрываем маску + соседний текст в один
+   выделяемый фрагмент; пользователь выделяет исправленный вариант мышью —
+   ровно тем же механизмом, что и "пометить пропущенное". Документ на сервере
+   пока не меняется, это чисто визуальная подготовка к новому выделению. ---- */
+function enterBoundaryEdit(markEl){
+  const seg=markEl.dataset.seg, token=markEl.dataset.token,
+        oldStart=+markEl.dataset.start, oldEnd=+markEl.dataset.end, oldType=markEl.dataset.etype,
+        orig=markEl.dataset.orig;
+  let text=orig, s=oldStart, en=oldEnd;
+  const prev=markEl.previousElementSibling, next=markEl.nextElementSibling;
+  let prevLit=null, nextLit=null;
+  if(prev && prev.classList && prev.classList.contains('lit') && prev.dataset.seg===seg){ prevLit=prev; text=prev.textContent+text; s=+prev.dataset.s; }
+  if(next && next.classList && next.classList.contains('lit') && next.dataset.seg===seg){ nextLit=next; text=text+next.textContent; en=+next.dataset.e; }
+  const merged=document.createElement('span');
+  merged.className='lit'; merged.dataset.seg=seg; merged.dataset.s=s; merged.dataset.e=en;
+  merged.textContent=text;
+  markEl.replaceWith(merged);
+  if(prevLit) prevLit.remove();
+  if(nextLit) nextLit.remove();
+  BOUNDARY_EDIT={token, seg, oldStart, oldEnd, oldType};
+  markupToast('Выделите исправленный фрагмент мышью в тексте справа.','ok');
+}
+
+/* ---- отправка правок на сервер (сохраняется сразу, документ не меняется) ---- */
+async function submitMissed(ctx, type){
+  try{
+    const resp=await fetch('/api/markup/mark-missed',{method:'POST',headers:{'Content-Type':'application/json'},
+      body:JSON.stringify({session_id:CUR.session_id, segment_id:ctx.seg, start:ctx.start, end:ctx.end, entity_type:type})});
+    const d=await resp.json();
+    if(d.status==='error'){ markupToast(d.message,'err'); return; }
+    if(ctx.range){ try{ const wrap=document.createElement('span'); wrap.className='pending'; ctx.range.surroundContents(wrap); }catch(err){} }
+    clearSelection();
+    markupToast('Помечено: «'+ctx.text+'» → '+(TYPE_LABELS[type]||type)+'. Не забудьте «Применить правки».','ok');
+    loadMarkupPanel();
+  }catch(err){ markupToast('Ошибка связи с сервером: '+err,'err'); }
+}
+
+async function submitReplace(ctx, type){
+  try{
+    const resp=await fetch('/api/markup/replace',{method:'POST',headers:{'Content-Type':'application/json'},
+      body:JSON.stringify({session_id:CUR.session_id, old_token:ctx.oldToken, old_segment_id:ctx.oldSeg,
+        old_start:ctx.oldStart, old_end:ctx.oldEnd, segment_id:ctx.seg, start:ctx.start, end:ctx.end, entity_type:type})});
+    const d=await resp.json();
+    if(d.status==='error'){ markupToast(d.message,'err'); resetAnonView(); return; }
+    clearSelection(); resetAnonView();
+    markupToast('Правка сохранена ('+(d.kind==='type'?'изменён тип':'исправлена граница')+'). Не забудьте «Применить правки».','ok');
+    loadMarkupPanel();
+  }catch(err){ markupToast('Ошибка связи с сервером: '+err,'err'); resetAnonView(); }
+}
+
+function confirmFalsePositive(seg,start,end,token,orig){
+  if(!confirm('Пометить «'+orig+'» как НЕ персональные данные? Маска будет снята при следующем нажатии «Применить правки».')) return;
+  submitFalsePositive(seg,start,end,token);
+}
+async function submitFalsePositive(seg,start,end,token){
+  try{
+    const resp=await fetch('/api/markup/false-positive',{method:'POST',headers:{'Content-Type':'application/json'},
+      body:JSON.stringify({session_id:CUR.session_id, segment_id:seg, start, end, token})});
+    const d=await resp.json();
+    if(d.status==='error'){ markupToast(d.message,'err'); return; }
+    const m=document.querySelector('#pane-anon mark.ent[data-seg="'+seg+'"][data-start="'+start+'"][data-end="'+end+'"][data-token="'+token+'"]');
+    if(m) m.classList.add('pending');
+    markupToast('Отмечено как не ПДн. Не забудьте «Применить правки».','ok');
+    loadMarkupPanel();
+  }catch(err){ markupToast('Ошибка связи с сервером: '+err,'err'); }
+}
+
+/* ---- уведомления ---- */
+let _markupToastTimer=null;
+function markupToast(msg,kind){
+  const el=document.getElementById('markup-toast');
+  el.textContent=msg; el.className='show '+(kind||'');
+  clearTimeout(_markupToastTimer);
+  _markupToastTimer=setTimeout(()=>{ el.className=''; }, 4500);
+}
+
+/* ---- панель "Ваши правки" + применение пачкой ---- */
+const MARKUP_KIND_LABEL={missed:'Пропущено',false_mask:'Ложная маска',boundary:'Граница',type:'Тип'};
+async function loadMarkupPanel(){
+  if(!CUR) return;
+  const box=document.getElementById('markup-list');
+  try{
+    const resp=await fetch('/api/markup/list?session_id='+encodeURIComponent(CUR.session_id));
+    const d=await resp.json();
+    if(d.status!=='ok'){ box.innerHTML='<div class="note">'+esc(d.message||'Не удалось загрузить разметку.')+'</div>'; return; }
+    const entries=d.entries||[];
+    const pendingCount=entries.filter(en=>!en.applied).length;
+    document.getElementById('markup-count').textContent=pendingCount;
+    document.getElementById('markup-apply-btn').disabled = pendingCount===0;
+    if(!entries.length){ box.innerHTML='<div class="note">Пока ничего не отмечено — правки появятся здесь сразу, как только вы что-то пометите в тексте.</div>'; return; }
+    box.innerHTML=entries.slice().reverse().map(en=>{
+      const cls='markup-row'+(en.applied?' applied':'')+(en.apply_error?' error':'');
+      const status = en.applied ? ' · применено' : (en.apply_error ? ' · не применилось: '+en.apply_error : ' · ожидает применения');
+      return '<div class="'+cls+'">'+
+        '<span class="mk-kind">'+(MARKUP_KIND_LABEL[en.kind]||en.kind)+'</span>'+
+        '<span class="mk-snip">'+esc(TYPE_LABELS[en.entity_type]||en.entity_type)+': «'+esc(en.value||'')+'»'+esc(status)+'</span>'+
+        (en.applied?'':'<button class="ghost" style="padding:3px 8px;font-size:12px;flex:0 0 auto" onclick="deleteMarkupRow(\''+en.id+'\')">Удалить</button>')+
+        '</div>';
+    }).join('');
+  }catch(err){ box.innerHTML='<div class="note">Не удалось загрузить разметку: '+esc(String(err))+'</div>'; }
+}
+
+async function deleteMarkupRow(id){
+  try{
+    await fetch('/api/markup/delete',{method:'POST',headers:{'Content-Type':'application/json'},
+      body:JSON.stringify({session_id:CUR.session_id, markup_id:id})});
+  }catch(err){ /* обновление списка ниже покажет актуальное состояние */ }
+  loadMarkupPanel();
+}
+
+async function applyMarkup(){
+  const btn=document.getElementById('markup-apply-btn');
+  const oldLabel=btn.textContent;
+  btn.disabled=true; btn.textContent='Применяю…';
+  try{
+    const resp=await fetch('/api/markup/apply',{method:'POST',headers:{'Content-Type':'application/json'},
+      body:JSON.stringify({session_id:CUR.session_id})});
+    const d=await resp.json();
+    if(d.status==='error'){ markupToast(d.message,'err'); return; }
+    Object.assign(CUR, {original_html:d.original_html, anon_html:d.anon_html, anon_text:d.anon_text,
+      replacements:d.replacements, entities_total:d.entities_total, values_hidden:d.values_hidden});
+    renderVerify(CUR);
+    const results=d.results||[];
+    const ok=results.filter(r=>r.applied).length, fail=results.filter(r=>!r.applied).length;
+    if(!results.length) markupToast('Нечего применять — новых правок нет.','ok');
+    else markupToast('Применено правок: '+ok+(fail?', не удалось: '+fail:'')+'. Документ пересобран.', fail?'err':'ok');
+    loadMarkupPanel();
+  }catch(err){ markupToast('Ошибка связи с сервером: '+err,'err'); }
+  finally{ btn.disabled=false; btn.textContent=oldLabel; }
+}
 </script>
 <footer class="build-mark">сборка: {{BUILD_MARK}}</footer>
 </body>

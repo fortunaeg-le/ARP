@@ -151,10 +151,27 @@ class _CapsResolver:
     Кэширует результат прохода по цепочке base_style ПО ОБЪЕКТУ СТИЛЯ (стилей в
     документе десятки, ранов — тысячи): без кэша каждый ран заново шёл бы вверх по
     цепочке. Защита от циклов (битые .docx с циклическим base_style существуют) —
-    множество уже посещённых элементов стиля в пределах одного прохода."""
+    множество уже посещённых элементов стиля в пределах одного прохода.
+
+    ЭТАП E'' — КЛЮЧ ТОЛЬКО ПО ОБЪЕКТУ, НИКОГДА ПО id(). Раньше и кеш, и защита от
+    циклов ключевались ЧИСЛОМ `id(element)`, не удерживая ссылку на сам элемент.
+    Это давало НЕДЕТЕРМИНИЗМ детекции: `paragraph.style`/`run.style` в python-docx —
+    не кешированные свойства (новый прокси на каждое обращение), прокси lxml живёт,
+    пока на него есть ссылка, а CPython ПЕРЕИСПОЛЬЗУЕТ освободившийся адрес. Поэтому
+    другой стиль мог получить тот же id() и вернуть ЧУЖОЙ вердикт (ложное попадание),
+    а в `seen` — сойти за уже посещённый (ложный цикл, обход обрывался и возвращал
+    None). На реальном договоре (1097 стилей) это давало 1290 ложных попаданий на
+    2396 вызовов и 4 разных detection_text на 4 попытки одного файла. Отсюда плыли
+    и L2 (ORG/PER), и L3 (ADDRESS): detection_text лежит в metadata и читается
+    per_search_view/anchor_search_view и detection_view, поэтому segment.text
+    оставался побайтно стабильным, а детекция — нет.
+    Ключ по САМОМУ объекту: dict/set удерживают ссылку → элемент не собирается →
+    адрес не может быть переиспользован; lxml-элементы хешируются по идентичности,
+    семантика прежняя. Память: несколько десятков элементов уже живого дерева."""
 
     def __init__(self, document) -> None:
-        self._chain_cache: dict[tuple[int, str], bool | None] = {}
+        # ключ — (объект элемента стиля, attr); НЕ id(): см. docstring класса
+        self._chain_cache: dict[tuple, bool | None] = {}
         self._docdefaults = {
             attr: _read_docdefaults_caps(document, attr)
             for attr in _CAPS_TAG
@@ -165,19 +182,19 @@ class _CapsResolver:
         база → ...), с защитой от циклов и мемоизацией по стартовому стилю."""
         if style is None:
             return None
-        key = (id(style._element), attr)
+        key = (style._element, attr)   # объект, НЕ id() — см. docstring класса
         cached = self._chain_cache.get(key, _MISSING)
         if cached is not _MISSING:
             return cached
 
         result: bool | None = None
-        seen: set[int] = set()
+        seen = set()          # объекты элементов, НЕ id(): множество держит ссылку
         cur = style
         while cur is not None:
-            el_id = id(cur._element)
-            if el_id in seen:   # циклическая цепочка стилей битого .docx
+            el = cur._element
+            if el in seen:   # циклическая цепочка стилей битого .docx
                 break
-            seen.add(el_id)
+            seen.add(el)
             value = getattr(cur.font, attr)   # прямое значение rPr этого стиля
             if value is not None:
                 result = value
