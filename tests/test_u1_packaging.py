@@ -217,3 +217,76 @@ def test_pyinstaller_spec_lists_every_app_module():
         "В собранном exe они не окажутся, а ленивый импорт внутри функции даст "
         "тихую деградацию вместо явной ошибки."
     )
+
+
+# --------------------------------------------------------------------------- #
+# ЭТАП U1b. Тот же класс отказа для src/: модуль детекции, попавший в проект
+# после прошлой сборки, обязан быть в спеке. Зеркало проверки, которую спека с
+# этого этапа делает и сама (`_assert_every_local_module_listed`) — здесь она
+# ловится обычным прогоном тестов, до того как кто-то запустит pyinstaller.
+# --------------------------------------------------------------------------- #
+
+def test_pyinstaller_spec_lists_every_src_module():
+    spec = open(os.path.join(_ROOT, "packaging", "shifrator.spec"), encoding="utf-8").read()
+
+    src_modules = {
+        os.path.splitext(name)[0]
+        for name in os.listdir(os.path.join(_ROOT, "src"))
+        if name.endswith(".py")
+    }
+    missing = sorted(m for m in src_modules if f'"{m}"' not in spec)
+    assert not missing, (
+        f"модули src/ отсутствуют в hiddenimports спеки PyInstaller: {missing}"
+    )
+
+
+# --------------------------------------------------------------------------- #
+# ЭТАП U1b: версии зависимостей поставки зафиксированы ТОЧНО, не диапазонами.
+# Численное окружение и версии моделей влияют на результат детекции — у клиента
+# должно стоять ровно то, на чём мы мерили.
+# --------------------------------------------------------------------------- #
+
+_LOCK_CRITICAL = (
+    "natasha", "navec", "slovnet", "razdel", "yargy", "pymorphy2",
+    "pymorphy2-dicts-ru", "numpy", "lxml", "cryptography", "python-docx",
+    "pyyaml",
+)
+
+
+def _read_lock():
+    path = os.path.join(_ROOT, "packaging", "requirements-build.lock.txt")
+    pins = {}
+    for line in open(path, encoding="utf-8"):
+        line = line.strip()
+        if not line or line.startswith("#"):
+            continue
+        assert "==" in line, f"нефиксированная версия в lock-файле: {line!r}"
+        name, ver = line.split("==", 1)
+        pins[name.strip().lower().replace("_", "-")] = ver.strip()
+    return pins
+
+
+def test_build_lock_pins_every_critical_package_exactly():
+    pins = _read_lock()
+    missing = sorted(p for p in _LOCK_CRITICAL if p not in pins)
+    assert not missing, f"нет точного пина для критичных пакетов сборки: {missing}"
+
+
+def test_build_lock_matches_installed_environment():
+    """Lock, разошедшийся с окружением, — документ, а не пин."""
+    from importlib.metadata import PackageNotFoundError, version
+
+    pins = _read_lock()
+    mismatched = []
+    for name in _LOCK_CRITICAL:
+        try:
+            have = version(name)
+        except PackageNotFoundError:
+            mismatched.append(f"{name}: не установлен")
+            continue
+        if have != pins[name]:
+            mismatched.append(f"{name}: установлено {have}, в lock {pins[name]}")
+    assert not mismatched, (
+        "окружение разошлось с packaging/requirements-build.lock.txt: "
+        + "; ".join(mismatched)
+    )
