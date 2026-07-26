@@ -42,14 +42,30 @@ for _var in ("OMP_NUM_THREADS", "OPENBLAS_NUM_THREADS", "MKL_NUM_THREADS", "NUME
 from models import Entity, SourceDocument
 from natasha import (
     Segmenter,
-    NewsEmbedding,
     NewsMorphTagger,
     NewsSyntaxParser,
     Doc,
 )
 
+# ЭТАП O2 — ОДНА КОПИЯ ЭМБЕДДИНГА НА ПРОЦЕСС.
+# Здесь стоял свой `NewsEmbedding()`, второй в процессе: `ner_detector` создаёт
+# такой же. Замер: КАЖДЫЙ экземпляр — 96 МБ рабочего множества и 0.32 c загрузки
+# (12->128->224 МБ на двух последовательных конструкциях). Веса одинаковы —
+# обе конструкции читают один и тот же файл navec без аргументов, — поэтому
+# вторая копия была чистой платой за то, что модули не знали друг о друге.
+# БЕЗОПАСНО ПО ПОСТРОЕНИЮ: slovnet НЕ мутирует эмбеддинг, а ЧИТАЕТ его —
+# `API.navec()` зовёт `model.inject_navec(navec)`, а `InjectNavecVisitor` строит
+# НОВЫЙ модуль модели (`item.replace(...)`), ссылающийся на те же массивы
+# `navec.pq.indexes`/`navec.pq.codes` только на чтение. Ни NER-тэггер, ни
+# синтаксический парсер не пишут в общий объект, поэтому разделить его между
+# ними — тождество, а не компромисс.
+# Направление импорта (`syntax_compound` -> `ner_detector`) повторяет уже
+# существующее `anchor_registry` -> `ner_detector` (`_morph_vocab`): единственное
+# место, где живут модели natasha, — `ner_detector`. Фиксация потоков BLAS выше
+# остаётся на месте и срабатывает первой при любом порядке импорта.
+from ner_detector import _emb
+
 _segmenter = Segmenter()
-_emb = NewsEmbedding()
 _morph_tagger = NewsMorphTagger(_emb)
 _syntax_parser = NewsSyntaxParser(_emb)
 

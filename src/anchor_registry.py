@@ -35,6 +35,7 @@ NER, а СОПОСТАВЛЕНИЕМ по лемме (pymorphy, тот же, ч�
 import re
 import uuid
 from dataclasses import dataclass, field
+from functools import lru_cache
 
 from models import Entity, SourceDocument
 from normalizer import norm_to_src, normalize_for_detection, src_to_norm
@@ -71,6 +72,10 @@ _BREAKING_CHARS = frozenset(
     "\u202f"     # NARROW NO-BREAK SPACE
     "\xa0"       # NO-BREAK SPACE
 )
+# ЭТАП O2: тот же класс символов регуляркой — для быстрой проверки «есть ли тут
+# вообще что вырезать» (см. _strip_breaking). Строится ИЗ _BREAKING_CHARS,
+# поэтому разъехаться с ним не может.
+_BREAKING_RE = re.compile("[" + re.escape("".join(sorted(_BREAKING_CHARS))) + "]")
 
 
 def _strip_breaking(text: str, nl_to_space: bool = False) -> tuple[str, list[int]]:
@@ -85,6 +90,11 @@ def _strip_breaking(text: str, nl_to_space: bool = False) -> tuple[str, list[int
     ложится на ГРАНИЦУ слов; вырезание склеило бы «БеляевОлег» в один нераспознаваемый
     токен. Прочие разрывы (NBSP/ZWSP/…) мутация t_invisible вставляет ВНУТРИ слова, не
     трогая исходный пробел, поэтому их вырезаем в обоих режимах."""
+    # ЭТАП O2: ни одного разрывающего символа — цикл ниже вернул бы ровно вход и
+    # карту range(len). Один C-уровневый поиск вместо посимвольного прохода со
+    # сборкой двух списков длины текста. Поведение то же (см. HANDOFF_O2).
+    if _BREAKING_RE.search(text) is None:
+        return text, list(range(len(text)))
     out: list[str] = []
     idx: list[int] = []
     for i, ch in enumerate(text):
@@ -318,9 +328,19 @@ _INITIAL_RE = re.compile(r"^[А-ЯЁA-Z]$")   # одиночная заглав�
 _NAMEPART_MIN_SCORE = 0.01
 
 
+@lru_cache(maxsize=100000)
 def _nameparts(word: str) -> frozenset:
     """Множество ролей ФИО, которые pymorphy приписывает слову с ПРАВДОПОДОБНЫМ счётом:
-    {'surn','name','patr'}. Пустое — слово не часть имени собственного (по морфологии)."""
+    {'surn','name','patr'}. Пустое — слово не часть имени собственного (по морфологии).
+
+    ЭТАП O2 — мемоизация. Функция ЧИСТАЯ: строка -> frozenset, разбор pymorphy
+    детерминирован, состояния не трогает. Проход 2 зовёт её на КАЖДЫЙ токен КАЖДОГО
+    сегмента, а словарь документа на порядки меньше числа токенов (на крупной
+    фикстуре 73893 вызова). Сам `_MORPH(word)` уже кэширован в natasha
+    (lru_cache 10000), но пересборка множества помет по разборам — нет.
+    Ключ — СТРОКА (значение), не id() объекта: класс дефекта E'' здесь невозможен
+    по построению. Размер ограничен, поэтому долгоживущий процесс интерфейса
+    не растёт неограниченно."""
     tags = set()
     for f in _MORPH(word):
         if f.score < _NAMEPART_MIN_SCORE:
@@ -1271,12 +1291,25 @@ class AnchorEngine:
 
     def _match_key(self, entities, emitted_src, seg, norm, low, omap,
                    tokens, lemsets, npar, rec, det, group_of):
-        klen = len(rec.key)
+        key = rec.key
+        klen = len(key)
+        # ЭТАП O2: проход 2 — это (сегменты x детекторы x записи реестра) запусков
+        # этого цикла, а внутри — позиция за позицией по токенам. На крупном .docx
+        # это 448 тыс. вызовов и 6 млн вычислений all(...) с созданием генератора
+        # на КАЖДОЙ позиции — 4.4% пайплайна, притом что подавляющее большинство
+        # позиций отсеивается уже ПЕРВОЙ леммой ключа. Проверяем её отдельно и
+        # дёшево (frozenset-вхождение, без генератора), а полный all(...) строим
+        # только для многословных ключей на позициях, которые первую лемму прошли.
+        # Условие тождественно прежнему: all(...) по j=0..klen-1 истинно ровно
+        # тогда, когда истинны j=0 и все j>=1.
+        k0 = key[0]
         n = len(tokens)
         i = 0
         while i + klen <= n:
-            ok = all(rec.key[j] in lemsets[i + j] for j in range(klen))
-            if not ok:
+            if k0 not in lemsets[i]:
+                i += 1
+                continue
+            if klen > 1 and not all(key[j] in lemsets[i + j] for j in range(1, klen)):
                 i += 1
                 continue
             s, e = det.expand_match(norm, low, tokens, npar, i, klen)

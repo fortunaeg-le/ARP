@@ -5,6 +5,7 @@ import zipfile
 from pathlib import Path
 
 from docx import Document
+from docx.enum.style import WD_STYLE_TYPE
 from docx.opc.exceptions import PackageNotFoundError
 from docx.table import Table
 from docx.text.paragraph import Paragraph
@@ -176,6 +177,36 @@ class _CapsResolver:
             attr: _read_docdefaults_caps(document, attr)
             for attr in _CAPS_TAG
         }
+        # ЭТАП O2: кэш «styleId -> объект стиля» НА ДОКУМЕНТ (см. style_of).
+        self._style_by_id: dict[tuple, object] = {}
+
+    def style_of(self, holder, style_type):
+        """`paragraph.style` / `run.style` python-docx, но с кэшем по styleId.
+
+        ЭТАП O2 (замер): геттер `.style` каждый раз идёт
+        `part.get_style(styleId, type)` -> `styles.get_by_id` -> при styleId=None
+        `styles.default(type)` -> `default_for(type)`, а тот ЛИНЕЙНО обходит ВСЕ
+        стили документа, декодируя XML-атрибут типа у каждого. Получается
+        O(абзацев x стилей): на фикстуре synthetic_corporate_large (5051 сегмент)
+        это 12983 вызова и 18.5 c из 59 c пайплайна — 15% ТОЛЬКО на разрешение
+        стиля по умолчанию, при том что ответ один и тот же.
+
+        Результат `.style` зависит ТОЛЬКО от styleId элемента и от part документа
+        (part у нас один на резолвер), поэтому кэш по (styleId, тип) — тождество,
+        а не эвристика. Возвращается ТОТ ЖЕ объект-прокси вместо нового на каждое
+        обращение; это безопасно (прокси только читают) и вдобавок стабилизирует
+        ключи _chain_cache, которые и так были по `_element`.
+
+        ВНИМАНИЕ (урок E''): ключ — СТРОКА styleId (или None), не id() объекта.
+        Значение кэша удерживает сам прокси, поэтому переиспользования адреса,
+        погубившего прошлую реализацию, здесь нет по построению."""
+        element = holder._p if style_type is WD_STYLE_TYPE.PARAGRAPH else holder._element
+        key = (element.style, style_type)
+        style = self._style_by_id.get(key, _MISSING)
+        if style is _MISSING:
+            style = holder.style
+            self._style_by_id[key] = style
+        return style
 
     def _style_chain(self, style, attr: str) -> bool | None:
         """Первое НЕ-None значение attr вдоль цепочки base_style (сам стиль → его
@@ -209,7 +240,7 @@ class _CapsResolver:
         docDefaults) ОДИН РАЗ на абзац — они одинаковы для всех его ран. Возвращает
         {attr: True/False/None}. Вынесено из горячего пути: paragraph.style —
         дорогой геттер python-docx, звать его на каждый ран (×2 атрибута) незачем."""
-        para_style = paragraph.style
+        para_style = self.style_of(paragraph, WD_STYLE_TYPE.PARAGRAPH)
         baseline: dict[str, bool | None] = {}
         for attr in _CAPS_TAG:
             value = self._style_chain(para_style, attr)
@@ -235,7 +266,7 @@ class _CapsResolver:
                 # 2. стиль рана — только если он вообще назначен
                 if run._element.style is not None:
                     if rstyle is _MISSING:
-                        rstyle = run.style
+                        rstyle = self.style_of(run, WD_STYLE_TYPE.CHARACTER)
                     value = self._style_chain(rstyle, attr)
                 if value is None:
                     value = baseline[attr]    # 3. абзац-и-ниже (уже разрешён)
@@ -636,7 +667,11 @@ def _extract_docx(path: str) -> SourceDocument:
     for child in document.element.body.iterchildren():
         if child.tag == qn("w:p"):
             paragraph = Paragraph(child, document)
-            style_name = paragraph.style.name if paragraph.style is not None else None
+            # ЭТАП O2: через кэш резолвера — раньше это были ДВА полных разрешения
+            # стиля на абзац (проверка на None и .name), плюс третье в
+            # paragraph_baseline. См. _CapsResolver.style_of.
+            _p_style = caps_resolver.style_of(paragraph, WD_STYLE_TYPE.PARAGRAPH)
+            style_name = _p_style.name if _p_style is not None else None
             seg_id = f"p{paragraph_counter}"
             metadata = {"paragraph_index": paragraph_counter, "style": style_name}
             # Изменение 1: detection_text из форматирования all_caps/small_caps

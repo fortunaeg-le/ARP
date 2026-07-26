@@ -102,10 +102,24 @@ def _winner(a: Entity, b: Entity) -> Entity:
 
 
 def _has_overlapping_pair(entities: list[Entity]) -> bool:
-    for i in range(len(entities)):
-        for j in range(i + 1, len(entities)):
-            if _overlaps(entities[i], entities[j]):
-                return True
+    """Есть ли среди сущностей хоть одна пересекающаяся пара.
+
+    ЭТАП O2: было попарное сравнение O(E^2), и звалось оно ИЗ ЦИКЛА
+    _resolve_overlaps (по одному витку на зафиксированного победителя) — то есть
+    O(E^3) на сегменте с плотной разметкой. Теперь заметание по отсортированному
+    началу, O(E log E), результат тот же БУЛЕВ.
+    Эквивалентность: после сортировки по start у пары i<j имеем
+    max(start_i, start_j) = start_j, поэтому _overlaps(i, j) ⟺
+    start_j < end_i И start_j < end_j. Значит пересечение существует ⟺ найдётся j,
+    у которого start_j меньше максимума end по всем предыдущим И меньше своего
+    конца (вырожденный пустой интервал не пересекает ничего — как и в _overlaps).
+    """
+    max_end = None
+    for e in sorted(entities, key=lambda x: x.start):
+        if max_end is not None and e.start < max_end and e.start < e.end:
+            return True
+        if max_end is None or e.end > max_end:
+            max_end = e.end
     return False
 
 
