@@ -30,6 +30,8 @@ DOCS = os.path.join(CORPUS_V2, "docs")
 GOLD_V2 = os.path.join(CORPUS_V2, "gold_v2.json")
 sys.path.insert(0, CORPUS_V2)
 
+import values as V  # noqa: E402
+
 GROUPS = ("simple", "complex")
 
 # Конструкции, ради которых существует сложная группа, и их след в OOXML.
@@ -132,9 +134,8 @@ def test_deleted_text_never_reaches_markup(gold):
     породит величину, которой в документе нет. Такое обязано считаться ЛОЖНЫМ
     СРАБАТЫВАНИЕМ, а не находкой, — значит, в эталоне фантома быть не должно.
     """
-    from generate import _DEL_GHOST
     hits = [d["doc_id"] for d in gold
-            for e in d["entities"] if _DEL_GHOST in e["text"]]
+            for e in d["entities"] if V.DEL_GHOST in e["text"]]
     assert not hits, (
         "Удалённый правкой текст попал в разметку: %s" % hits[:5])
 

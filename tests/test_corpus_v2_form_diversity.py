@@ -159,13 +159,17 @@ def test_all_forms_present_in_simple_group(gold, type_):
         % (type_, ", ".join(missing)))
 
 
-def test_report_form_distribution(gold, capsys):
-    """Не проверка, а печать распределения: цифры для отчёта сессии."""
-    lines = []
-    for t in sorted(V.DECLARED_FORMS):
-        c = _forms(gold, t)
-        lines.append("%s: %d вхождений, %d разных форм" % (t, sum(c.values()), len(c)))
-        for k, v in sorted(c.items()):
-            lines.append("    %-34s %4d" % (k, v))
-    with capsys.disabled():
-        print("\n" + "\n".join(lines))
+def test_every_new_value_has_a_form(gold):
+    """Величина нового вида без идентификатора формы делает счёт форм ложным.
+
+    Печати распределения здесь СОЗНАТЕЛЬНО НЕТ. Она тут была и её пришлось
+    убрать: `tests/component2/test_g_regression.py` гоняет набор дочерним
+    процессом и читает его вывод с локальной кодировкой (cp1251), а кириллица
+    в выводе дочернего pytest ломает декодирование и красит регрессионный тест
+    без единого дефекта в продукте. Распределение форм печатает
+    `tests/corpus_v2/validate.py` — там оно и место."""
+    bad = [(d["doc_id"], e["type"], e["start"])
+           for d in gold for e in d["entities"]
+           if e["type"] in V.DECLARED_FORMS and not e.get("form")]
+    assert not bad, (
+        "Величины новых видов без идентификатора формы записи: %s" % bad[:10])

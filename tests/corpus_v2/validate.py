@@ -101,14 +101,14 @@ def main():
     # разметке: он живёт только в <w:delText>. Если он всплыл — либо
     # сериализатор перестал пропускать `del`, либо реестр форм научился его
     # порождать, и класс потерь стал неизмеримым.
-    from generate import _DEL_GHOST
+    import values as V
     ghost_hits = []
     for g in gold:
         text = doc_text(g["doc_id"], g["format"])
-        if _DEL_GHOST in text:
+        if V.DEL_GHOST in text:
             ghost_hits.append(g["doc_id"] + " (в тексте)")
         for e in g["entities"]:
-            if _DEL_GHOST in e["text"]:
+            if V.DEL_GHOST in e["text"]:
                 ghost_hits.append(g["doc_id"] + " (в разметке)")
     print("фантом удалённой правки в тексте/разметке: %d (должно быть 0)"
           % len(ghost_hits))
