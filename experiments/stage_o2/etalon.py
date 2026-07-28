@@ -26,6 +26,26 @@ O2 — БАЙТОВЫЙ ЭТАЛОН выхода пайплайна.
 Опции:
     --corpus-only / --fixtures-only  — снять часть (для быстрых итераций)
     --repeat N                       — N прогонов подряд (детерминизм)
+    --subset                         — взять зафиксированный итерационный срез
+                                       (tests/corpus/subset_iter.json) вместо
+                                       листинга каталога
+
+О `--subset` (добавлен позже, поведение ПО УМОЛЧАНИЮ не изменено)
+-----------------------------------------------------------------
+Без флага набор строится как и раньше: `sorted(os.listdir(DOCS))`, фильтр
+`.docx`, срез `[:--corpus-limit]`. Умолчание менять НЕЛЬЗЯ: все исторические
+снимки `_etalon_*.json` сняты именно так, а `--compare` сверяет их подокументно
+по ключам `corpus/<имя файла>` — смена состава по умолчанию сделала бы прежние
+эталоны несравнимыми (пересечение схлопнулось бы до 25 документов, а агрегаты
+вообще перестали бы считаться).
+
+С флагом берётся зафиксированный срез — и тогда `etalon.py` ВПЕРВЫЕ видит
+`.txt`-половину корпуса: раньше она отсекалась фильтром по расширению
+(docs/PERF_REPORT.md §4.1). Ключи снимка остаются в том же формате
+`corpus/<имя файла>`, поэтому снимок `--subset` корректно сверяется с полным
+снимком: `--compare` сам сообщает о разнице наборов и сверяет пересечение.
+Снимки `--subset` и без него — РАЗНЫЕ точки отсчёта, смешивать их в одной
+приёмке нельзя.
 """
 import argparse
 import hashlib
@@ -47,6 +67,23 @@ FIXTURE_FILES = [
     "synthetic_corporate_large.txt",
     "synthetic_many_styles.docx",
 ]
+
+
+def subset_corpus_names():
+    """Имена файлов зафиксированного итерационного среза (и .docx, и .txt).
+
+    Читается tests/corpus/subset_lib — тот же единственный источник, что у
+    subsample.py и acceptance.py. Расширение берётся из gold.json (поле
+    `format`), а не угадывается."""
+    sys.path.insert(0, os.path.join(ROOT, "tests", "corpus"))
+    import subset_lib as SL
+    fmt = {d["doc_id"]: d["format"] for d in SL.load_gold()}
+    names = []
+    for doc_id in SL.load_subset_ids():
+        fn = "%s.%s" % (doc_id, fmt[doc_id])
+        if os.path.exists(os.path.join(DOCS, fn)):
+            names.append(fn)
+    return sorted(names)
 
 
 def _sha(s):
@@ -95,16 +132,26 @@ def process(path):
 HASH_KEYS = ("anon", "ents", "plain")
 
 
-def snapshot(do_corpus=True, do_fixtures=True, verbose=True, corpus_limit=None):
+def snapshot(do_corpus=True, do_fixtures=True, verbose=True, corpus_limit=None,
+             use_subset=False):
     rows = {}
     if do_corpus:
-        names = sorted(f for f in os.listdir(DOCS) if f.lower().endswith(".docx"))
+        if use_subset:
+            # Зафиксированный срез: и .docx, и .txt. --corpus-limit к нему не
+            # применяется намеренно — срез уже зафиксирован, урезать его
+            # префиксом значило бы снова получить произвольный набор.
+            names = subset_corpus_names()
+            if verbose:
+                print("--subset: %d документов зафиксированного среза "
+                      "(.docx + .txt)" % len(names), flush=True)
+        else:
+            names = sorted(f for f in os.listdir(DOCS) if f.lower().endswith(".docx"))
         # Подвыборка для ПРОМЕЖУТОЧНЫХ сверок: полный корпус — 5 минут, а между
         # шагами нужен только ответ «не сломалось ли». Сверка идёт подокументно,
         # поэтому снимок по части корпуса корректно сравнивается с полным
         # (--compare печатает пересечение и явно сообщает о разнице наборов).
         # ФИНАЛЬНАЯ сверка — всегда без лимита.
-        if corpus_limit:
+        if corpus_limit and not use_subset:
             names = names[:corpus_limit]
         t0 = time.time()
         for i, fn in enumerate(names):
@@ -153,7 +200,7 @@ def cmd_snapshot(args):
     for r in range(reps):
         t0 = time.time()
         rows = snapshot(not args.fixtures_only, not args.corpus_only,
-                        corpus_limit=args.corpus_limit)
+                        corpus_limit=args.corpus_limit, use_subset=args.subset)
         agg = aggregates(rows)
         wall = time.time() - t0
         total_detect = sum(v["t_detect"] for v in rows.values())
@@ -231,6 +278,10 @@ def main():
     ap.add_argument("--repeat", type=int, default=1)
     ap.add_argument("--corpus-limit", type=int,
                     help="взять только первые N документов корпуса (промежуточные сверки)")
+    ap.add_argument("--subset", action="store_true",
+                    help="взять зафиксированный итерационный срез "
+                         "(tests/corpus/subset_iter.json, .docx И .txt) вместо "
+                         "листинга каталога; --corpus-limit при этом игнорируется")
     args = ap.parse_args()
     if args.compare:
         sys.exit(cmd_compare(*args.compare))

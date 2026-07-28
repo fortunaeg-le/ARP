@@ -5,9 +5,25 @@ O2 — приёмка: детерминизм и пик памяти.
   --determinism-corpus N   N прогонов ВСЕГО корпуса, sha агрегата обязан совпасть
   --determinism-large N    N прогонов крупной фикстуры, один хеш
   --memory <load>          пик рабочего множества процесса на нагрузке
+  --subset                 взять зафиксированный итерационный срез
+                           (tests/corpus/subset_iter.json) вместо листинга каталога
 
 Каждый прогон детерминизма — В ОДНОМ процессе (именно так ловились Eprime-A и
 дефект _CapsResolver: между процессами всё совпадало, внутри одного — нет).
+
+О `--subset` (добавлен позже, поведение ПО УМОЛЧАНИЮ не изменено)
+-----------------------------------------------------------------
+Без флага набор строится как раньше: `sorted(os.listdir(DOCS))`, фильтр `.docx`,
+префикс `[:--limit]`. Умолчание менять нельзя — агрегатный sha `run_paths()`
+считается по ВСЕМУ набору, поэтому смена состава по умолчанию обесценила бы все
+исторические хеши детерминизма из отчётов O2 (числа 60/120/162 в
+docs/PERF_REPORT.md §4.3 — именно такие префиксы).
+
+С флагом берутся 25 документов зафиксированного среза, включая `.txt`, которых
+`acceptance.py` не видел никогда. Для проверки детерминизма это строго лучше:
+§1.2 показывает, что `.txt`-половина даёт в 1.55 раза больше сегментов, а
+открытая находка Eprime-A наблюдалась именно на многосегментных документах.
+Хеши `--subset` и без него — разные величины; сравнивать их между собой нельзя.
 """
 import argparse
 import ctypes
@@ -39,6 +55,30 @@ _gpmi = getattr(_k32, "K32GetProcessMemoryInfo", None) or \
     ctypes.WinDLL("psapi", use_last_error=True).GetProcessMemoryInfo
 _gpmi.argtypes = [ctypes.c_void_p, ctypes.POINTER(PMC), ctypes.c_uint32]
 _gpmi.restype = ctypes.c_int
+
+
+def subset_corpus_names():
+    """Имена файлов зафиксированного итерационного среза (.docx И .txt).
+
+    Тот же единственный источник состава, что у subsample.py и etalon.py —
+    tests/corpus/subset_lib поверх tests/corpus/subset_iter.json."""
+    sys.path.insert(0, os.path.join(ROOT, "tests", "corpus"))
+    import subset_lib as SL
+    fmt = {d["doc_id"]: d["format"] for d in SL.load_gold()}
+    names = []
+    for doc_id in SL.load_subset_ids():
+        fn = "%s.%s" % (doc_id, fmt[doc_id])
+        if os.path.exists(os.path.join(DOCS, fn)):
+            names.append(fn)
+    return sorted(names)
+
+
+def corpus_names(use_subset, limit):
+    """Набор документов корпуса: срез по флагу либо ПРЕЖНИЙ листинг каталога."""
+    if use_subset:
+        return subset_corpus_names()
+    names = sorted(f for f in os.listdir(DOCS) if f.lower().endswith(".docx"))
+    return names[:limit] if limit else names
 
 
 def mem():
@@ -85,15 +125,19 @@ def main():
     ap.add_argument("--memory")
     ap.add_argument("--limit", type=int,
                     help="взять только первые N документов корпуса")
+    ap.add_argument("--subset", action="store_true",
+                    help="взять зафиксированный итерационный срез "
+                         "(tests/corpus/subset_iter.json, .docx И .txt); "
+                         "--limit при этом игнорируется")
     args = ap.parse_args()
 
     if args.determinism_corpus:
-        names = sorted(f for f in os.listdir(DOCS) if f.lower().endswith(".docx"))
-        if args.limit:
-            names = names[:args.limit]
+        names = corpus_names(args.subset, args.limit)
         paths = [os.path.join(DOCS, f) for f in names]
-        print("ДЕТЕРМИНИЗМ: %d прогонов ВСЕГО корпуса (%d док.) в ОДНОМ процессе"
-              % (args.determinism_corpus, len(paths)))
+        print("ДЕТЕРМИНИЗМ: %d прогонов %s (%d док.) в ОДНОМ процессе"
+              % (args.determinism_corpus,
+                 "ЗАФИКСИРОВАННОГО СРЕЗА" if args.subset else "ВСЕГО корпуса",
+                 len(paths)))
         hs = []
         for i in range(args.determinism_corpus):
             t = time.perf_counter()
@@ -123,9 +167,8 @@ def main():
         elif load == "styles":
             paths = [os.path.join(FIX, "synthetic_many_styles.docx")]
         else:
-            names = sorted(f for f in os.listdir(DOCS) if f.lower().endswith(".docx"))
-            if ":" in load:
-                names = names[:int(load.split(":")[1])]
+            limit = int(load.split(":")[1]) if ":" in load else None
+            names = corpus_names(args.subset, limit)
             paths = [os.path.join(DOCS, f) for f in names]
         p_imp, _ = mem()
         t = time.perf_counter()
