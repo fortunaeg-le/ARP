@@ -22,25 +22,23 @@ subsample.py — быстрая подвыборка корпуса для ОТ�
     venv/Scripts/python.exe tests/corpus/subsample.py --type INN --type OGRN
     venv/Scripts/python.exe tests/corpus/subsample.py --feature nested_table
 
-Состав подвыборки — ЗАФИКСИРОВАННЫЙ СПИСОК tests/corpus/subset_iter.json
-(25 документов), читаемый через subset_lib. Состав БОЛЬШЕ НЕ ВЫЧИСЛЯЕТСЯ при
-запуске: он покрывает 100% страт корпуса (все 191 класс «тип x категория x
-trick / features / contract_type / parties / формат», все 14 структурных
-конфигураций .docx и все 14 adversarial-мутаций по обоим маркерам), и
-пересчёт при каждом запуске обесценил бы сравнение с замороженным
-results_iter_baseline.json. Пересобирается только вручную —
-tests/corpus/build_subset_iter.py.
+Состав подвыборки — ОБЪЕДИНЕНИЕ:
+  * по 2 base-документа каждого contract_type (детерминированно — первые два
+    в отсортированном порядке doc_id; те же 18, что в
+    tests/test_corpus_no_crash.py::_fast_doc_ids);
+  * граничные документы, явно названные в docs/FINDINGS.md как редкие
+    вскрытые дефекты (Stage4-B, PER-B) — точечная проверка одного документа
+    исторически их пропускала, поэтому они в подвыборке ВСЕГДА, независимо
+    от фильтров;
+  * ВСЕ документы, где хоть одна gold-сущность имеет entities[].trick,
+    входящий в --trick (если задан, можно указать несколько раз);
+  * ВСЕ документы, где хоть одна gold-сущность имеет entities[].type,
+    входящий в --type (если задан);
+  * ВСЕ документы, у которых features содержит хоть один из --feature
+    (если задан).
 
-Прежний состав («2 base-документа на contract_type» + 4 граничных, 22 док.)
-покрывал 70.2% классов и 64% структурных конфигураций и не видел почти всю
-мутационную матрицу реквизитов — docs/PERF_REPORT.md §4.2. Граничные
-документы (Stage4-B, PER-B) в новом составе тоже есть: они включаются
-принудительно, см. subset_lib.BOUNDARY_DOC_IDS.
-
-Фильтры --trick/--type/--feature работают КАК ПРЕЖДЕ — расширяют состав
-объединением (ВСЕ документы корпуса с этим trick/type/feature добавляются к
-зафиксированному списку). Менялась только база объединения: раньше 22
-вычисляемых документа, теперь 25 зафиксированных. Без фильтров — ровно 25.
+Без фильтров — типично 20-25 документов. С --trick/--type/--feature — до
+30-50, в зависимости от того, сколько документов корпуса несут эту фичу.
 
 Гоняет ТОТ ЖЕ харнесс (run_measurement.process_doc/run_all), что gate.py —
 формат отчёта (recall/leak_v2/FP по типу) сопоставим построчно с
@@ -49,7 +47,6 @@ results_gate_current.json, НО НЕ по абсолютным числам (д�
 Финальную приёмку/сравнение с baseline делает исключительно gate.py.
 """
 import argparse
-import json
 import os
 import sys
 
@@ -58,7 +55,6 @@ sys.path.insert(0, HERE)
 
 import measure_lib as ML  # noqa: E402
 import run_measurement as RM  # noqa: E402
-import subset_lib as SL  # noqa: E402
 
 _WARNING = (
     "\n" + "=" * 78 + "\n"
@@ -68,10 +64,33 @@ _WARNING = (
     + "=" * 78 + "\n"
 )
 
-# Граничные документы (Stage4-B, PER-B) переехали в subset_lib.BOUNDARY_DOC_IDS
-# и включены в зафиксированный состав subset_iter.json принудительно. Имя ниже
-# оставлено как алиас: на него ссылаются docs/PERF_REPORT.md §4.1 и отчёты.
-_BOUNDARY_DOC_IDS = SL.BOUNDARY_DOC_IDS
+# Документы, явно названные в docs/FINDINGS.md как редкие вскрытые дефекты
+# (Stage4-B, PER-B) — всегда часть подвыборки, независимо от --trick/--type/
+# --feature: иначе один из мотивов появления этого скрипта (точечная проверка
+# одного документа пропускает именно такие классы) остаётся непокрытым самой
+# подвыборкой.
+_BOUNDARY_DOC_IDS = [
+    "loan_0006__m2718_homoglyph",       # Stage4-B: PHONE не детектируется под гомоглифом
+    "services_0002__m1337_linebreak",   # Stage4-B: то же
+    "works_0009",                       # PER-B: косвенный падеж рвётся двумя спанами
+    "sale_0006",                        # PER-B: то же
+]
+
+
+def _base_two_per_type(gold):
+    """Те же 18 документов, что tests/test_corpus_no_crash.py::_fast_doc_ids
+    (без учёта _PREVIOUSLY_CRASHED — те не относятся к подвыборке метрик)."""
+    seen = {}
+    picked = []
+    for d in gold:
+        if d["source"] != "base":
+            continue
+        ct = d["contract_type"]
+        n = seen.get(ct, 0)
+        if n < 2:
+            picked.append(d["doc_id"])
+            seen[ct] = n + 1
+    return picked
 
 
 def _matches_trick(d, tricks):
@@ -87,14 +106,8 @@ def _matches_feature(d, features):
 
 
 def select_doc_ids(gold, tricks=None, types=None, features=None):
-    """База — ЗАФИКСИРОВАННЫЙ список subset_iter.json, а не вычисление.
-
-    Раньше здесь считались «2 base-документа на contract_type» — 22 документа,
-    70.2% классов (PERF_REPORT §4.2). Теперь состав читается из файла; логика
-    расширения фильтрами --trick/--type/--feature не изменилась.
-    """
     by_id = {d["doc_id"]: d for d in gold}
-    picked = [i for i in SL.load_subset_ids() if i in by_id]
+    picked = list(_base_two_per_type(gold))
     for doc_id in _BOUNDARY_DOC_IDS:
         if doc_id in by_id and doc_id not in picked:
             picked.append(doc_id)
@@ -141,66 +154,6 @@ def print_report(agg, n_docs):
           % (len(agg["crashed"]), n_docs))
 
 
-ITER_BASELINE = os.path.join(HERE, "results_iter_baseline.json")
-
-
-def compare_with_iter_baseline(results, doc_ids, filtered):
-    """Сверка среза с ЕГО СОБСТВЕННЫМ замороженным baseline.
-
-    Сравнение идёт по ПЕРЕСЕЧЕНИЮ документов: с --trick/--type/--feature состав
-    шире зафиксированного, и лишние документы просто не с чем сопоставлять —
-    молча включить их в агрегат значило бы сравнить разные знаменатели, ровно
-    ту ошибку, из-за которой срез нельзя сверять с results_baseline.json.
-
-    Оценивает gate.evaluate — ТОТ ЖЕ код, что в полном гейте, чтобы «регресс на
-    срезе» и «регресс в гейте» означали одно и то же. Но это НЕ приёмка:
-    зелёный срез не заменяет полный прогон (см. баннер)."""
-    if not os.path.isfile(ITER_BASELINE):
-        print("\n[baseline среза] %s нет — сверять не с чем. "
-              "Снять: venv/Scripts/python.exe tests/corpus/run_iter_baseline.py"
-              % os.path.basename(ITER_BASELINE))
-        return
-    import gate as G  # импорт, не правка: gate.py в этом этапе не изменялся
-
-    with open(ITER_BASELINE, encoding="utf-8") as f:
-        base = json.load(f)
-    base_ids = {r["doc_id"] for r in base}
-    cur_ids = {r["doc_id"] for r in results}
-    common = base_ids & cur_ids
-    if base_ids != cur_ids:
-        print("\n[baseline среза] наборы документов различаются "
-              "(baseline %d, прогон %d, общих %d) — сверяется пересечение."
-              % (len(base_ids), len(cur_ids), len(common)))
-        if base_ids - cur_ids:
-            print("  ВНИМАНИЕ: baseline содержит документы, которых нет в прогоне: %d "
-                  "— состав среза менялся без пересборки baseline?"
-                  % len(base_ids - cur_ids))
-    base_sub = [r for r in base if r["doc_id"] in common]
-    cur_sub = [r for r in results if r["doc_id"] in common]
-
-    kl_ids, _ = G._known_leaks()
-    v = G.evaluate(base_sub, cur_sub, kl_ids)
-    print("\n=== СРЕЗ против results_iter_baseline.json (%d док.) ===" % len(common))
-    G.print_report(v["rows"], v["base_agg"], v["cur_agg"])
-    G.print_precision(v["base_prec"], v["cur_prec"], 0.0)
-    G.print_masking_correctness(v["base_agg"], v["cur_agg"])
-    if v["improvements"]:
-        print("\nУлучшения на срезе (%d):" % len(v["improvements"]))
-        for m in v["improvements"]:
-            print("  + " + m)
-    if v["regressions"]:
-        print("\nРЕГРЕССЫ НА СРЕЗЕ (%d) — это НАХОДКА, а не приёмка:" % len(v["regressions"]))
-        for m in v["regressions"]:
-            print("  - " + m)
-    else:
-        print("\nНа срезе регрессов нет. Это НЕ значит, что их нет в корпусе: "
-              "срез видит все классы, но ~8-10% конкретных значений "
-              "(docs/PERF_REPORT.md, «Что при этом теряется», п.1).")
-    if filtered:
-        print("  (прогон был с фильтрами: документы сверх зафиксированного "
-              "состава в сверку не вошли)")
-
-
 def main():
     ap = argparse.ArgumentParser(description=__doc__,
                                  formatter_class=argparse.RawDescriptionHelpFormatter)
@@ -210,8 +163,6 @@ def main():
                      help="включить все документы с сущностью этого типа (PER/INN/...)")
     ap.add_argument("--feature", action="append", default=[],
                      help="включить все документы с этим features[] (см. gold.json)")
-    ap.add_argument("--no-compare", action="store_true",
-                     help="не сверять с results_iter_baseline.json (только срез)")
     args = ap.parse_args()
 
     print(_WARNING)
@@ -220,19 +171,14 @@ def main():
     doc_ids = select_doc_ids(gold, tricks=args.trick, types=args.type, features=args.feature)
     subset = [by_id[i] for i in doc_ids]
 
-    filtered = bool(args.trick or args.type or args.feature)
-    print(f"Подвыборка: {len(subset)}/{len(gold)} документов корпуса "
-          f"(зафиксированный состав subset_iter.json"
-          f"{' + фильтры' if filtered else ''}).")
-    if filtered:
+    print(f"Подвыборка: {len(subset)}/{len(gold)} документов корпуса.")
+    if args.trick or args.type or args.feature:
         print(f"  фильтры: trick={args.trick} type={args.type} feature={args.feature}")
 
     results = RM.run_all(subset, verbose=True)
     agg = ML.aggregate_results(results)
     print()
     print_report(agg, len(subset))
-    if not args.no_compare:
-        compare_with_iter_baseline(results, doc_ids, filtered)
     print(_WARNING)
 
 
