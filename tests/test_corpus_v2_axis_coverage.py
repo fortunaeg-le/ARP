@@ -1,0 +1,261 @@
+# -*- coding: utf-8 -*-
+"""
+Тест ПОКРЫТИЯ ОСЕЙ корпуса V2 (задача 2 этапа CORPUS-V2-B).
+
+ЧЕМ ЭТОТ ТЕСТ ОТЛИЧАЕТСЯ ОТ ПРЕДЫДУЩЕГО
+Предыдущий тест считал ЧИСЛО РАЗНЫХ ФОРМ и сверял его с объявленным списком.
+Он честно ловил «генератор замолчал», но был бессилен против главного: список
+форм был коротким, формы жили каждая сама по себе, и корпус из 478 сумм на 12
+обликов проходил его с отличием. Двенадцать заученных шаблонов — это не
+разнообразие.
+
+Здесь формулировка разложена на ОСИ (values.AXES), и проверяется покрытие:
+
+  1. КАЖДОЕ ЗНАЧЕНИЕ КАЖДОЙ ОСИ ВСТРЕЧАЕТСЯ. Не «форм не меньше N», а
+     поимённо: если пропало «в т.ч. НДС 18%» — тест назовёт ось «НДС» и это
+     значение. Значение, которого нет в корпусе, — это дыра в измерении,
+     которую по агрегату не увидеть.
+
+  2. НИ ОДНО ЗНАЧЕНИЕ НЕ ЗАНИМАЕТ БОЛЬШЕ ПОЛОВИНЫ вхождений вида данных.
+     Это и есть случай из ТЗ: вхождений много, а корпус на деле учит одному
+     способу записи. Знаменатель — ВСЕ вхождения вида данных, как написано в
+     ТЗ, а не только те, к которым ось применима: иначе редкая ось с двумя
+     значениями «проходила» бы по доле, ничего не покрывая.
+
+  3. ОСЬ ПРИМЕНИМА НЕ К НУЛЮ ВХОЖДЕНИЙ. Оси зависимы (см. список D1–D8 в
+     values.py): «разделитель разрядов» неприменим к сумме прописью, «вид
+     дней» — к сроку, заданному датой. Неприменимость законна, МОЛЧАЛИВОЕ
+     ИСЧЕЗНОВЕНИЕ оси — нет. Ось, не применимая ни к одному вхождению,
+     выпала из измерения, и её значения «не встретились» бы по причине,
+     которую проверка 1 объяснить не может.
+
+  4. ФОРМ БОЛЬШЕ, ЧЕМ ОСЕЙ. Форма теперь — комбинация значений осей. Если
+     число разных комбинаций сползло к длине одной оси, значит оси снова
+     пошли в ногу (такой дефект уже был: две оси считались от одного
+     счётчика, и половина значений «прописи» не появилась ни разу).
+
+  5. ЗНАЧЕНИЯ ЕСТЬ В ПРОСТОЙ ГРУППЕ. Метрики новых видов данных меряются на
+     `structure_group == "simple"`. Значение, живущее только в сложной
+     группе, из измерения выпадает молча, и потерю спишут на потери чтения.
+
+ЧТО СЧИТАЕТСЯ ВХОЖДЕНИЕМ. И величина, и ТИПИЗИРОВАННЫЙ НЕГАТИВ. Пустое место
+под сумму, «Без НДС», номер договора и дата документа — вхождения вида данных,
+у которых маскировать нечего; они размечены негативами (срабатывание на них
+ложное), но разнообразие их записи проверяет ТОЧНОСТЬ ровно так же, как
+разнообразие величин проверяет полноту. Считать только сущности значило бы
+потерять их из покрытия.
+
+ЧЕГО ЭТОТ ТЕСТ НЕ ДЕЛАЕТ. Он не знает, похожи ли оси на реальные договоры. Он
+сверяет корпус с реестром осей, а реестр — с техническим заданием. КРАСНАЯ
+ЛИНИЯ остаётся в силе: цифры на порождённом корпусе — верхняя граница, а не
+измерение. Настоящая проверка — ручная разметка реальных договоров владельцем.
+"""
+import json
+import os
+import sys
+from collections import Counter
+
+import pytest
+
+ROOT = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
+CORPUS_V2 = os.path.join(ROOT, "tests", "corpus_v2")
+sys.path.insert(0, CORPUS_V2)
+
+import values as V  # noqa: E402
+
+GOLD_V2 = os.path.join(CORPUS_V2, "gold_v2.json")
+
+# Пороги вынесены константами, чтобы их нельзя было «подкрутить» незаметно
+# внутри проверки.
+DOMINANCE = 0.50        # ни одно значение — не больше половины вхождений вида
+NEUTRAL_CEILING = 0.85  # для значений-нейтралей (values.NEUTRAL)
+NEUTRAL_FLOOR = 0.10    # включённая часть такой оси обязана быть заметной
+
+
+@pytest.fixture(scope="module")
+def gold():
+    if not os.path.exists(GOLD_V2):
+        pytest.fail(
+            "Нет %s. Корпус V2 не собран — соберите:\n"
+            "    venv/Scripts/python.exe tests/corpus_v2/generate.py" % GOLD_V2)
+    with open(GOLD_V2, encoding="utf-8") as f:
+        return json.load(f)
+
+
+def occurrences(gold, type_, group=None):
+    """Вхождения вида данных: величины И типизированные негативы."""
+    out = []
+    for d in gold:
+        if group is not None and d["structure_group"] != group:
+            continue
+        for e in list(d["entities"]) + list(d.get("negatives", [])):
+            if e.get("type") == type_:
+                out.append(e)
+    return out
+
+
+def axis_counts(occ, name):
+    c = Counter()
+    for e in occ:
+        a = e.get("axes") or {}
+        if name in a:
+            c[a[name]] += 1
+    return c
+
+
+TYPES = sorted(V.AXES)
+
+
+@pytest.mark.parametrize("type_", TYPES)
+def test_every_axis_value_occurs(gold, type_):
+    """Проверка 1: поимённо — какой оси какого значения не хватает."""
+    occ = occurrences(gold, type_)
+    assert occ, "ВИД ДАННЫХ %s: в корпусе нет ни одного вхождения." % type_
+    missing = []
+    for name in V.AXIS_ORDER[type_]:
+        c = axis_counts(occ, name)
+        for value in V.AXES[type_][name]:
+            if not c.get(value):
+                missing.append((name, value))
+    assert not missing, (
+        "ВИД ДАННЫХ %s: значения осей объявлены реестром values.AXES, но в "
+        "корпусе НЕ ВСТРЕТИЛИСЬ НИ РАЗУ:\n%s\n"
+        "Каждое такое значение — дыра в измерении: детектор на нём не "
+        "проверен, а по агрегату этого не видно. Лечится генератором или "
+        "реестром, НЕ ослаблением теста."
+        % (type_, "\n".join("    ось «%s», значение «%s»" % (n, v)
+                            for n, v in missing)))
+
+
+@pytest.mark.parametrize("type_", TYPES)
+def test_no_axis_value_dominates(gold, type_):
+    """Проверка 2: случай из ТЗ — вхождений много, а способ записи по сути один."""
+    occ = occurrences(gold, type_)
+    total = len(occ)
+    fat = []
+    for name in V.AXIS_ORDER[type_]:
+        c = axis_counts(occ, name)
+        neutral = V.NEUTRAL.get((type_, name))
+        for value, n in sorted(c.items()):
+            limit = NEUTRAL_CEILING if value == neutral else DOMINANCE
+            if n > total * limit:
+                fat.append((name, value, n, limit))
+    assert not fat, (
+        "ВИД ДАННЫХ %s: значение оси доминирует при %d вхождениях всего.\n%s\n"
+        "Много вхождений одного способа записи — это НЕ разнообразие: "
+        "детектор выучит его и покажет цифры, которые ничего не значат."
+        % (type_, total,
+           "\n".join("    ось «%s», значение «%s»: %d вхождений = %.0f%% "
+                     "(порог %.0f%%)" % (n, v, k, 100.0 * k / total, 100 * lim)
+                     for n, v, k, lim in fat)))
+
+
+@pytest.mark.parametrize("type_", TYPES)
+def test_neutral_axes_are_not_dead(gold, type_):
+    """Проверка 2-бис: у осей-флагов включённая часть обязана быть заметной.
+
+    Значениям-нейтралям (values.NEUTRAL) разрешён потолок выше половины —
+    иначе половина договоров корпуса обязана была бы иметь потолок неустойки,
+    а половина сроков — быть датами. Плата за послабление: ВКЛЮЧЁННАЯ часть
+    оси проверяется отдельно и не имеет права выродиться в след.
+    """
+    occ = occurrences(gold, type_)
+    total = len(occ)
+    thin = []
+    for name in V.AXIS_ORDER[type_]:
+        neutral = V.NEUTRAL.get((type_, name))
+        if neutral is None:
+            continue
+        c = axis_counts(occ, name)
+        on = sum(n for v, n in c.items() if v != neutral)
+        if on < total * NEUTRAL_FLOOR:
+            thin.append((name, neutral, on))
+    assert not thin, (
+        "ВИД ДАННЫХ %s: ось-флаг практически всегда выключена (%d вхождений "
+        "вида всего):\n%s\n"
+        "Послабление по потолку выдано этим осям авансом — при вырожденной "
+        "включённой части оно перестаёт быть оправданным."
+        % (type_, total,
+           "\n".join("    ось «%s» (нейтраль «%s»): включена лишь в %d "
+                     "вхождениях, нужно не меньше %d"
+                     % (n, neu, on, int(total * NEUTRAL_FLOOR))
+                     for n, neu, on in thin)))
+
+
+@pytest.mark.parametrize("type_", TYPES)
+def test_no_axis_is_silently_inapplicable(gold, type_):
+    """Проверка 3: ось, не применимая НИ К ОДНОМУ вхождению, выпала молча."""
+    occ = occurrences(gold, type_)
+    dead = [name for name in V.AXIS_ORDER[type_]
+            if not sum(axis_counts(occ, name).values())]
+    assert not dead, (
+        "ВИД ДАННЫХ %s: оси не применимы ни к одному вхождению: %s.\n"
+        "Зависимости осей (D1–D8 в values.py) делают неприменимость законной, "
+        "но ось, исчезнувшая ЦЕЛИКОМ, из измерения выпала — и её значения "
+        "«не встретились» по причине, которой проверка значений не объяснит."
+        % (type_, ", ".join("«%s»" % d for d in dead)))
+
+
+@pytest.mark.parametrize("type_", TYPES)
+def test_forms_are_combinations_not_a_single_axis(gold, type_):
+    """Проверка 4: оси не идут в ногу.
+
+    Форма — комбинация значений осей. У вида данных с несколькими осями число
+    разных комбинаций обязано превышать длину САМОЙ ДЛИННОЙ оси: иначе оси
+    связаны, и «много форм» — это одна ось, переодетая в несколько.
+    Виды данных с единственной осью (DOCNUM, DATE, TRANCHE) проверке не
+    подлежат — у них комбинация и есть значение оси.
+    """
+    axes = V.AXIS_ORDER[type_]
+    if len(axes) < 2:
+        pytest.skip("%s: ось одна, комбинировать нечего" % type_)
+    occ = occurrences(gold, type_)
+    forms = {e.get("form") for e in occ}
+    longest = max(len(V.AXES[type_][n]) for n in axes)
+    assert len(forms) > longest, (
+        "ВИД ДАННЫХ %s: разных форм %d при самой длинной оси в %d значений. "
+        "Формы перестали быть комбинациями — оси идут в ногу и одна "
+        "определяет другую (такой дефект уже был: две оси считались от одного "
+        "счётчика, и половина значений «прописи» не встретилась ни разу)."
+        % (type_, len(forms), longest))
+
+
+@pytest.mark.parametrize("type_", TYPES)
+def test_axis_values_present_in_simple_group(gold, type_):
+    """Проверка 5: значение, живущее только в сложной группе, выпадает из метрик."""
+    everywhere = occurrences(gold, type_)
+    simple = occurrences(gold, type_, group="simple")
+    missing = []
+    for name in V.AXIS_ORDER[type_]:
+        have = axis_counts(everywhere, name)
+        got = axis_counts(simple, name)
+        for value in have:
+            if not got.get(value):
+                missing.append((name, value))
+    assert not missing, (
+        "ВИД ДАННЫХ %s: значения осей есть в корпусе, но отсутствуют в группе "
+        "«простая структура»:\n%s\n"
+        "Метрики новых видов данных меряются на простой структуре — эти "
+        "значения в измерение не попадут, а их отсутствие спишут на потери "
+        "чтения."
+        % (type_, "\n".join("    ось «%s», значение «%s»" % (n, v)
+                            for n, v in missing)))
+
+
+def test_every_occurrence_has_a_form_and_axes(gold):
+    """Вхождение без формы и без осей делает счёт покрытия ложным.
+
+    Печати распределения здесь СОЗНАТЕЛЬНО НЕТ. Она тут была и её пришлось
+    убрать: `tests/component2/test_g_regression.py` гоняет набор дочерним
+    процессом и читает его вывод с локальной кодировкой (cp1251), а кириллица
+    в выводе дочернего pytest ломает декодирование и красит регрессионный тест
+    без единого дефекта в продукте. Распределение печатает
+    `tests/corpus_v2/validate.py` — там ему и место.
+    """
+    bad = []
+    for d in gold:
+        for e in list(d["entities"]) + list(d.get("negatives", [])):
+            if e.get("type") in V.AXES and not (e.get("form") and e.get("axes")):
+                bad.append((d["doc_id"], e.get("type"), e["start"]))
+    assert not bad, (
+        "Вхождения новых видов без формы или без набора признаков: %s" % bad[:10])

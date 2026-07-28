@@ -20,10 +20,14 @@ from collections import Counter
 
 from corpus_lib import extract_docx, GOLD_NAME
 
+import values as V
+
 ROOT = os.path.dirname(os.path.abspath(__file__))
 
-# Виды данных, ради которых корпус V2 и делался.
-NEW_TYPES = ("MONEY", "PERCENT", "TERM", "TRANCHE")
+# Виды данных, ради которых корпус V2 и делался. Список берётся из реестра, а
+# не дублируется здесь: разъехавшись, копия молча перестала бы проверять
+# новый вид данных.
+NEW_TYPES = V.NEW_TYPES
 
 
 def doc_text(doc_id, fmt):
@@ -41,7 +45,26 @@ def main():
     by_type = Counter()
     by_form = {}
     by_group = Counter()
+    by_axis = {}
+    by_trick = Counter()
     checked_new = 0
+
+    def account(e):
+        """Учесть вхождение нового вида данных (величину ИЛИ типизированный
+        негатив) в покрытии осей."""
+        t = e.get("type")
+        if t not in NEW_TYPES:
+            return None
+        if not e.get("form"):
+            return "без идентификатора формы записи"
+        if not e.get("axes"):
+            return "без набора признаков (осей)"
+        by_form.setdefault(t, Counter())[e["form"]] += 1
+        for name, value in e["axes"].items():
+            by_axis.setdefault(t, {}).setdefault(name, Counter())[value] += 1
+        if e.get("trick"):
+            by_trick[e["trick"]] += 1
+        return None
 
     for g in gold:
         by_group[g["structure_group"]] += 1
@@ -60,12 +83,10 @@ def main():
                             % (g["doc_id"], e["start"], e["end"], got, e["text"]))
             elif e["type"] in NEW_TYPES:
                 checked_new += 1
-            if e["type"] in NEW_TYPES:
-                if not e.get("form"):
-                    errs.append("%s: %s %d-%d без идентификатора формы записи"
-                                % (g["doc_id"], e["type"], e["start"], e["end"]))
-                else:
-                    by_form.setdefault(e["type"], Counter())[e["form"]] += 1
+            bad = account(e)
+            if bad:
+                errs.append("%s: %s %d-%d %s"
+                            % (g["doc_id"], e["type"], e["start"], e["end"], bad))
             spans.append((e["start"], e["end"], "ENT"))
         for e in g.get("negatives", []):
             n_neg += 1
@@ -73,6 +94,16 @@ def main():
             if got != e["text"]:
                 errs.append("%s: негатив %d-%d: в файле %r, в разметке %r"
                             % (g["doc_id"], e["start"], e["end"], got, e["text"]))
+            elif e.get("type") in NEW_TYPES:
+                checked_new += 1
+            # Типизированный негатив — полноценное вхождение вида данных: он
+            # участвует в покрытии осей наравне с величиной.
+            bad = account(e)
+            if bad:
+                errs.append("%s: негатив %s %d-%d %s"
+                            % (g["doc_id"], e["type"], e["start"], e["end"], bad))
+            if e.get("type") in NEW_TYPES:
+                by_type[e["type"]] += 1
             spans.append((e["start"], e["end"], "NEG"))
         for e in g.get("ignore", []):
             n_ign += 1
@@ -89,19 +120,39 @@ def main():
     print("документов: %d (простая %d, сложная %d) | сущностей: %d | негативов: %d "
           "| серых зон: %d" % (len(gold), by_group["simple"], by_group["complex"],
                                n_ent, n_neg, n_ign))
-    print("--- новые виды данных: вхождений / разных форм записи ---")
+    print("--- новые виды данных: вхождений / разных форм (комбинаций осей) ---")
     for t in NEW_TYPES:
         forms = by_form.get(t, Counter())
-        print("  %-9s %5d вхождений | %d разных форм" % (t, by_type[t], len(forms)))
-        for f, c in sorted(forms.items()):
-            print("        %-34s %4d" % (f, c))
+        total = by_type[t]
+        possible = 1
+        for vals in V.AXES[t].values():
+            possible *= len(vals)
+        print("  %-9s %5d вхождений | %4d разных форм (предел комбинаций %d)"
+              % (t, total, len(forms), possible))
+        for name in V.AXIS_ORDER[t]:
+            hits = by_axis.get(t, {}).get(name, Counter())
+            applies = sum(hits.values())
+            miss = [v for v in V.AXES[t][name] if not hits.get(v)]
+            neutral = V.NEUTRAL.get((t, name))
+            print("        ось «%s»%s — применима к %d из %d"
+                  % (name, " [нейтраль: «%s»]" % neutral if neutral else "",
+                     applies, total))
+            for v in V.AXES[t][name]:
+                n = hits.get(v, 0)
+                print("            %-58s %4d  %5.1f%%"
+                      % (v, n, 100.0 * n / total if total else 0.0))
+            if miss:
+                errs.append("%s: ось «%s» — значения не встретились: %s"
+                            % (t, name, ", ".join(miss)))
+    print("--- состязательные приёмы над новыми видами данных ---")
+    for t, c in sorted(by_trick.items(), key=lambda z: -z[1]):
+        print("  %-16s %4d" % (t, c))
     print("сверено координат у новых видов данных: %d" % checked_new)
 
     # Фантом удалённой правки не имеет права появиться ни в тексте, ни в
     # разметке: он живёт только в <w:delText>. Если он всплыл — либо
     # сериализатор перестал пропускать `del`, либо реестр форм научился его
     # порождать, и класс потерь стал неизмеримым.
-    import values as V
     ghost_hits = []
     for g in gold:
         text = doc_text(g["doc_id"], g["format"])

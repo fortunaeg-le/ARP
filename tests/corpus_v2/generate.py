@@ -39,7 +39,7 @@ import sys
 import data as DT
 import values as V
 from corpus_lib import (NBSP, NNBSP, ZWSP, ZWJ, SHY, WJ, CYR2LAT, DIGIT2CYR,
-                        chunk, ent, para, table, cell, textbox,
+                        chunk, ent, neg as cl_neg, para, table, cell, textbox,
                         render, update_gold, serialize, gold_entry)
 
 ROOT = os.path.dirname(os.path.abspath(__file__))
@@ -105,40 +105,64 @@ class D:
         return chunk(s)
 
     def E(self, s, type_, cat="canonical", trick=None, note=None, checksum=None,
-          eid=None, bs=False, form=None, wrap=None, instr=None):
+          eid=None, bs=False, form=None, wrap=None, instr=None, axes=None):
         return chunk(s, ent=ent(type_, cat, eid or self.nid(), trick, note,
-                                checksum, form),
+                                checksum, form, axes),
                      bold_split=bs, wrap=wrap, instr=instr)
 
-    def N(self, s, why):
-        return chunk(s, neg={"why": why})
+    def N(self, s, why, type_=None, form=None, axes=None, trick=None, nid=None):
+        n = cl_neg(why, type_, form, axes)
+        if trick:
+            n["trick"] = trick
+        if nid:
+            # Общий id — негатив, разорванный границей ячейки, остаётся ОДНИМ
+            # вхождением (см. corpus_lib._Out.emit).
+            n["id"] = nid
+        return chunk(s, neg=n)
 
     def I(self, s, why):
         return chunk(s, ignore={"why": why})
 
     # ---------------------------------------------------------- новые виды
     def P(self, parts, wrap=None):
-        """Части values.T/values.E -> чанки.
+        """Части values.T / values.E / values.NEG -> чанки.
 
         ЭТО И ЕСТЬ «каждый вставленный кусок данных сам записывает: что это за
-        вид данных, где начинается, где кончается» (задача 1). Координаты
-        считает сериализатор из модели — здесь их никто не ищет в тексте.
+        вид данных, где начинается, где кончается». Координаты считает
+        сериализатор из модели — здесь их никто не ищет в тексте.
         """
         out = []
         for p in parts:
             if p[0] == "t":
                 out.append(chunk(p[1], wrap=wrap))
+            elif p[0] == "n":
+                _, s, type_, why, form, axes = p
+                out.append(chunk(s, neg=cl_neg(why, type_, form, axes), wrap=wrap))
             else:
-                _, s, type_, form, note, cat = p
-                out.append(self.E(s, type_, cat, note=note, form=form, wrap=wrap))
+                _, s, type_, form, note, cat, axes = p
+                out.append(self.E(s, type_, cat, note=note, form=form, wrap=wrap,
+                                  axes=axes))
         return out
 
     def val(self, kind):
-        """Следующая форма записи вида данных `kind` (по кругу, со смещением)."""
-        forms = V.ALL_FORMS[kind]
-        i = self._form_cursor.get(kind, self._form_start)
-        self._form_cursor[kind] = i + 1
-        return forms[i % len(forms)](self.rnd)
+        """Очередная КОМБИНАЦИЯ ЗНАЧЕНИЙ ОСЕЙ вида данных `kind`.
+
+        Раньше здесь брали следующую функцию из списка форм. Теперь список
+        форм не существует: реестр values.py раздаёт значения по каждой оси
+        независимым счётчиком, а форма — их комбинация. Счётчик `k` свой у
+        каждого вида данных внутри документа, смещение `_form_start` — своё у
+        каждого документа: иначе все документы начинали бы обход осей с одной
+        и той же точки и корпус получил бы перекос.
+        """
+        k = self._form_cursor.get(kind, 0)
+        self._form_cursor[kind] = k + 1
+        return V.BUILDERS[kind](k, self._form_start, self.rnd)
+
+    def adv_val(self, kind):
+        """Величина под состязательный приём — гарантированно с цифрами."""
+        k = self._form_cursor.get(kind, 0)
+        self._form_cursor[kind] = k + 1
+        return V.adversarial_source(kind, k, self._form_start, self.rnd)
 
     def model(self):
         m = {"doc_id": self.doc_id, "format": self.format, "source": "base_v2",
@@ -383,10 +407,13 @@ def preamble(d, p1, p2, r1, r2):
                        % ("ая" if p["person"]["gender"] == "f" else "ый", role))]
         if p is p1:
             ch += [d.t(", с одной стороны, и ")]
-    ch += [d.t(", с другой стороны, совместно именуемые «Стороны», заключили настоящий "),
-           d.N("Договор № %d/%d-%s" % (rnd.randint(1, 99), rnd.choice([2023, 2024, 2025]),
-                                       rnd.choice("ПАСКД")), "номер договора — не ПДн"),
-           d.t(" (далее — Договор) о нижеследующем:")]
+    # Номер договора — типизированный негатив с собственной осью формата
+    # (задача 1 CORPUS-V2-B): форматы взяты из реестра контрактов, и детектор
+    # обязан не срабатывать ни на одном из них.
+    ch += [d.t(", с другой стороны, совместно именуемые «Стороны», заключили "
+               "настоящий Договор № ")] \
+        + d.P(d.val("DOCNUM")) \
+        + [d.t(" (далее — Договор) о нижеследующем:")]
     return para(ch)
 
 
@@ -636,6 +663,156 @@ def adversarial_block(d, p1, p2):
     return L
 
 
+# ============================================================================
+#   СОСТЯЗАТЕЛЬНЫЕ ПРИЁМЫ НАД НОВЫМИ ВИДАМИ ДАННЫХ (задача 3 CORPUS-V2-B)
+# ============================================================================
+# До этого этапа приёмов у сумм, процентов, сроков и номеров НЕ БЫЛО ВОВСЕ:
+# гомоглифы, невидимые символы и разрывы применялись только к ПДн старого
+# набора (ФИО, ИНН, счета, адреса). Метрика новых видов измерялась на чистом
+# тексте и потому была заведомо оптимистичной.
+#
+# ПОЧЕМУ РАЗРЫВУ ФОРМАТИРОВАНИЕМ ОТДАНО БОЛЬШЕ ВСЕГО ВХОЖДЕНИЙ. Это самый
+# вероятный реальный случай, и он не «атака»: Word разрывает ран на границе
+# любой правки — сменили начертание половине числа, вставили и удалили символ,
+# прошлись проверкой орфографии. Число «10 000» лежит в документе двумя ранами
+# сплошь и рядом, безо всякого умысла. Остальные приёмы реже, но каждый
+# встречается.
+#
+# ГДЕ РАЗРЫВ. Разрыв обязан приходиться ВНУТРЬ ЧИСЛА, между двумя цифрами.
+# Разрыв «10 000 | (Десять тысяч) рублей» проверял бы не то, что заявлено, —
+# он не рвёт число. Поэтому позиция считается по самой длинной цепочке цифр.
+def digit_cut(s):
+    """Позиция разрыва между двумя цифрами самой длинной цепочки цифр."""
+    best, cur, start = (0, 0), 0, 0
+    for i, ch in enumerate(s + " "):
+        if ch.isdigit():
+            if not cur:
+                start = i
+            cur += 1
+        else:
+            if cur > best[1]:
+                best = (start, cur)
+            cur = 0
+    start, ln = best
+    if ln >= 2:
+        return start + ln // 2
+    raise ValueError("в %r нет цепочки хотя бы из двух цифр" % s)
+
+
+def digit_spaces(s):
+    """Пробелы внутри цифр: «10000» -> «10 0 00». Реальный случай ручного
+    набора и вставки из таблицы."""
+    i = digit_cut(s)
+    return s[:i] + " " + s[i:i + 1] + " " + s[i + 1:]
+
+
+def _adv_apply(d, part, trick, note):
+    """Приём над ОДНОЙ величиной. Возвращает список чанков.
+
+    Возвращается список, а не чанк, потому что граница ячейки и вправду делает
+    из величины два куска; остальные приёмы дают один.
+    """
+    rnd = d.rnd
+    if part[0] == "n":
+        _, s, type_, why, form, axes = part
+        kind, cat = "n", None
+    else:
+        _, s, type_, form, pnote, cat, axes = part
+        kind = "e"
+
+    bs = False
+    if trick == "format_split":
+        bs = digit_cut(s)
+    elif trick == "homoglyph":
+        s = homoglyph_text(s, rnd, "digits")
+    elif trick == "invisible":
+        s = invisible_text(s, rnd)
+    elif trick == "digit_spaces":
+        s = digit_spaces(s)
+    elif trick == "linebreak":
+        i = digit_cut(s)
+        s = s[:i] + "\n" + s[i:]
+    elif trick == "cell_split":
+        i = digit_cut(s)
+        eid = d.nid()
+        if kind == "n":
+            return [d.N(s[:i], why, type_, form, axes, trick=trick, nid=eid),
+                    d.N(s[i:], why, type_, form, axes, trick=trick, nid=eid)]
+        return [d.E(s[:i], type_, "adversarial", trick=trick, note=note, eid=eid,
+                    form=form, axes=axes),
+                d.E(s[i:], type_, "adversarial", trick=trick, eid=eid,
+                    form=form, axes=axes)]
+    else:
+        raise ValueError(trick)
+
+    if kind == "n":
+        return [d.N(s, why, type_, form, axes, trick=trick)]
+    return [d.E(s, type_, "adversarial", trick=trick, note=note, form=form,
+                bs=bs, axes=axes)]
+
+
+# Приёмы, выполнимые в .txt (там нет ни ранов, ни ячеек).
+TXT_TRICKS = ["homoglyph", "invisible", "digit_spaces", "linebreak"]
+DOCX_TRICKS = TXT_TRICKS + ["cell_split"]
+
+TRICK_NOTE = {
+    "format_split": "число разорвано форматированием: половина цифр в одном ране, "
+                    "половина в другом",
+    "homoglyph": "кириллические О/З/Ч на месте цифр 0/3/4",
+    "invisible": "NBSP/ZWSP/SHY внутри величины",
+    "digit_spaces": "пробелы внутри цифр",
+    "linebreak": "величина разорвана переводом строки",
+    "cell_split": "число разорвано границей ячейки таблицы",
+}
+
+
+def adversarial_values_block(d, doc_no):
+    """Раздел состязательных записей НОВЫХ видов данных.
+
+    Есть в КАЖДОМ документе обеих групп структуры: иначе приёмы жили бы только
+    там, где включён соответствующий флаг, а метрика новых видов на чистой
+    группе так и осталась бы измеренной по чистому тексту.
+    """
+    L = [para([]), para([d.t("9. КОНТРОЛЬНЫЕ ВЕЛИЧИНЫ")], style="bold")]
+    n = 0
+    docx = d.format == "docx"
+    types = list(V.NUMERIC_TYPES)
+
+    if docx:
+        # Разрыв форматированием — трижды, на трёх разных видах данных.
+        for j in range(3):
+            t = types[(doc_no + j) % len(types)]
+            n += 1
+            L.append(para([d.t("9.%d. Контрольная запись: " % n)]
+                          + _adv_apply(d, d.adv_val(t), "format_split",
+                                       TRICK_NOTE["format_split"])
+                          + [d.t(".")]))
+        others = [DOCX_TRICKS[doc_no % len(DOCX_TRICKS)]]
+    else:
+        # ЧЁТНОСТЬ. Формат документа выбран по чётности сквозного номера
+        # (docx — нечётные), поэтому у .txt-документов `doc_no` всегда чётный,
+        # и остаток от деления на 4 принимал бы только значения 0 и 2:
+        # половина приёмов не встретилась бы в .txt НИ РАЗУ. Делим номер
+        # пополам — так .txt-документы нумеруются подряд.
+        j = doc_no // 2
+        others = [TXT_TRICKS[j % len(TXT_TRICKS)],
+                  TXT_TRICKS[(j + 2) % len(TXT_TRICKS)]]
+
+    for j, tr in enumerate(others):
+        t = types[(doc_no + 3 + j) % len(types)]
+        chunks = _adv_apply(d, d.adv_val(t), tr, TRICK_NOTE[tr])
+        n += 1
+        if tr == "cell_split":
+            # Граница ячейки — это и есть таблица: половина числа в одной
+            # ячейке, половина в соседней.
+            L.append(para([d.t("9.%d. Контрольная запись (таблица):" % n)]))
+            L.append(table([[cell([para([chunks[0]])]), cell([para([chunks[1]])])]]))
+        else:
+            L.append(para([d.t("9.%d. Контрольная запись: " % n)] + chunks
+                          + [d.t(".")]))
+    return L
+
+
 # --------------------------------------------------------------------- клаузы
 def negatives_clause(d):
     rnd = d.rnd
@@ -881,17 +1058,14 @@ def build_doc(idx, ctype, cname, fmt, flags, seed, parties_kind, long_doc,
         d.body.append(para([d.t(TITLES[ctype].lower())], style="capsstyle"))
     else:
         d.body.append(para([d.t(TITLES[ctype])], style="title"))
-    d.body.append(para([d.N("№ %d/%d-%s" % (rnd.randint(1, 199), rnd.choice([2023, 2024, 2025]),
-                                            rnd.choice("ПАСКД")), "номер договора — не ПДн")],
-                       style="title"))
+    d.body.append(para([d.t("№ ")] + d.P(d.val("DOCNUM")), style="title"))
     d.body.append(para([]))
     city = rnd.choice(DT.CITIES)[1]
+    # Дата документа — тоже типизированный негатив с осью записи. Форма с
+    # кавычками («24» июля 2007 г.) — одно из значений оси, а не единственная
+    # запись, как было до этого этапа.
     dl = [d.I(city, "город без улицы/дома в шапке — серая зона: не пропуск и не ложное "
-                    "срабатывание"), d.t("     "),
-          d.N("«%02d» %s %d г." % (rnd.randint(1, 28),
-                                   rnd.choice(["января", "марта", "мая", "июля", "сентября",
-                                               "ноября"]), rnd.choice([2023, 2024, 2025])),
-              "дата документа — не ПДн")]
+                    "срабатывание"), d.t("     ")] + d.P(d.val("DATE"))
     d.body.append(para(dl))
     d.body.append(para([]))
 
@@ -959,8 +1133,15 @@ def build_doc(idx, ctype, cname, fmt, flags, seed, parties_kind, long_doc,
                             ADDR(d), d.t(".")]))
     d.body.append(para([]))
 
-    # ------- состязательный раздел
+    # ------- состязательный раздел (ПДн старого набора — по флагам)
     d.body.extend(adversarial_block(d, p1, p2))
+    d.body.append(para([]))
+
+    # ------- состязательные записи НОВЫХ видов данных (задача 3) — ВЕЗДЕ
+    # Ключ раскладки приёмов — СКВОЗНОЙ номер документа (form_start), а не
+    # номер внутри своего типа договора: иначе поставки и подряды получали бы
+    # один и тот же приём на одном и том же виде данных.
+    d.body.extend(adversarial_values_block(d, form_start))
     d.body.append(para([]))
 
     # ------- сложная структура (только группа complex)
@@ -1163,6 +1344,8 @@ def main():
     entries = []
     stats = {}
     forms = {}
+    axis_hits = {}
+    tricks = {}
     for x in docs:
         d = build_doc(x["doc_no"], x["ctype"], x["cname"], x["fmt"], x["flags"],
                       1000 + x["idx"], x["kinds"], x["long"],
@@ -1174,10 +1357,21 @@ def main():
         render(m, root)
         e = gold_entry(m)
         entries.append(e)
-        for en in e["entities"]:
-            stats[en["type"]] = stats.get(en["type"], 0) + 1
+        # Вхождение вида данных — это и величина, и ТИПИЗИРОВАННЫЙ НЕГАТИВ
+        # (пустое место под сумму, «Без НДС», номер договора, дата). Считать
+        # только величины значило бы потерять половину покрытия осей.
+        for en in list(e["entities"]) + list(e["negatives"]):
+            t = en.get("type")
+            if not t:
+                continue
+            stats[t] = stats.get(t, 0) + 1
             if en.get("form"):
-                forms.setdefault(en["type"], set()).add(en["form"])
+                forms.setdefault(t, set()).add(en["form"])
+            for name, val in (en.get("axes") or {}).items():
+                axis_hits.setdefault(t, {}).setdefault(name, {})
+                axis_hits[t][name][val] = axis_hits[t][name].get(val, 0) + 1
+            if en.get("trick") and t in V.NEW_TYPES:
+                tricks[en["trick"]] = tricks.get(en["trick"], 0) + 1
     n = update_gold(root, entries)
 
     n_simple = sum(1 for e in entries if e["structure_group"] == "simple")
@@ -1191,10 +1385,25 @@ def main():
         nf = len(forms.get(k, ()))
         print("  %-10s %5d %s" % (k, stats[k],
                                   ("| разных форм записи: %d" % nf) if nf else ""))
-    print("--- формы записи новых видов ---")
-    for k in sorted(V.DECLARED_FORMS):
-        got = sorted(forms.get(k, ()))
-        print("  %-9s %d/%d: %s" % (k, len(got), V.DECLARED_FORMS[k], ", ".join(got)))
+    print("--- покрытие осей (вхождений на значение) ---")
+    for k in sorted(V.AXES):
+        total = stats.get(k, 0)
+        possible = 1
+        for vals in V.AXES[k].values():
+            possible *= len(vals)
+        print("  %s: %d вхождений, %d разных форм (комбинаций осей), "
+              "теоретический предел %d" % (k, total, len(forms.get(k, ())), possible))
+        for name in V.AXIS_ORDER[k]:
+            hits = axis_hits.get(k, {}).get(name, {})
+            applies = sum(hits.values())
+            miss = [v for v in V.AXES[k][name] if v not in hits]
+            print("    %-24s применима к %4d | %s%s"
+                  % (name, applies,
+                     ", ".join("%s=%d" % (v, hits[v]) for v in V.AXES[k][name] if v in hits),
+                     ("  НЕ ВСТРЕТИЛИСЬ: " + ", ".join(miss)) if miss else ""))
+    print("--- состязательные приёмы над новыми видами ---")
+    for t in sorted(tricks, key=lambda z: -tricks[z]):
+        print("  %-16s %4d" % (t, tricks[t]))
 
 
 if __name__ == "__main__":

@@ -75,6 +75,14 @@ WRAPS = ("ins", "del", "fld", "fldcomplex", "smarttag", "sdt")
 
 def chunk(s, ent=None, neg=None, bold_split=False, ignore=None, wrap=None,
           instr=None):
+    """`bold_split` — «слово разорвано форматированием».
+
+    True   — разрыв посередине чанка (как в старом корпусе);
+    целое N — разрыв РОВНО ПОСЛЕ N-го символа. Второй вид добавлен этапом
+    CORPUS-V2-B: приём требуется применить «посреди ЧИСЛА», а середина чанка у
+    формулировки вроде «10 000 (Десять тысяч) рублей» приходится на слова, а
+    не на цифры, и приём проверял бы не то, что заявлено.
+    """
     c = {"s": s}
     if ent:
         c["e"] = ent
@@ -83,7 +91,7 @@ def chunk(s, ent=None, neg=None, bold_split=False, ignore=None, wrap=None,
     if ignore:
         c["i"] = ignore
     if bold_split:
-        c["bs"] = True
+        c["bs"] = True if bold_split is True else int(bold_split)
     if wrap:
         if wrap not in WRAPS:
             raise ValueError("unknown wrap %r" % wrap)
@@ -97,7 +105,8 @@ def chunk(s, ent=None, neg=None, bold_split=False, ignore=None, wrap=None,
     return c
 
 
-def ent(type_, cat, eid, trick=None, note=None, checksum=None, form=None):
+def ent(type_, cat, eid, trick=None, note=None, checksum=None, form=None,
+        axes=None):
     e = {"type": type_, "cat": cat, "id": eid}
     if trick:
         e["trick"] = trick
@@ -106,10 +115,37 @@ def ent(type_, cat, eid, trick=None, note=None, checksum=None, form=None):
     if checksum:
         e["checksum"] = checksum
     if form:
-        # Идентификатор ФОРМЫ ЗАПИСИ (задача 2). По нему тест разнообразия
-        # считает, сколькими разными способами вид данных записан в корпусе.
+        # Идентификатор ФОРМЫ ЗАПИСИ. С этапа CORPUS-V2-B это не номер функции
+        # в списке, а КОМБИНАЦИЯ ЗНАЧЕНИЙ ОСЕЙ (values.form_id).
         e["form"] = form
+    if axes:
+        # Набор признаков формулировки: {ось -> значение}. По нему тест
+        # разнообразия считает покрытие осей и умеет назвать КОНКРЕТНУЮ ось и
+        # КОНКРЕТНОЕ значение, которого не хватает.
+        e["axes"] = axes
     return e
+
+
+def neg(why, type_=None, form=None, axes=None):
+    """Негатив. С этапа CORPUS-V2-B он может быть ТИПИЗИРОВАННЫМ.
+
+    Обычный негатив («ГОСТ 7.32-2017 — не ПДн») несёт только причину.
+    Типизированный несёт вид данных, форму и оси: так размечаются вхождения,
+    у которых вид данных есть, а МАСКИРОВАТЬ НЕЧЕГО, — пустое место под сумму
+    («______ рублей ______ копеек»), «Без НДС», номер договора, дата
+    документа. Срабатывание детектора на них — ложное, а не находка, поэтому
+    сущностями они быть не имеют права; но в покрытие осей они входят: их
+    разнообразие проверяет ТОЧНОСТЬ ровно так же, как разнообразие величин
+    проверяет полноту.
+    """
+    n = {"why": why}
+    if type_:
+        n["type"] = type_
+    if form:
+        n["form"] = form
+    if axes:
+        n["axes"] = axes
+    return n
 
 
 def para(chunks, style="normal", footnote=None):
@@ -138,6 +174,7 @@ class _Out:
         self.pos = 0
         self.ents = {}      # eid -> {meta, start, end}
         self.negs = []
+        self.neg_by_id = {}
         self.igns = []
 
     def emit(self, ch):
@@ -159,7 +196,19 @@ class _Out:
             else:
                 self.ents[eid] = {"meta": e, "start": start, "end": end}
         if "n" in ch:
-            self.negs.append({"start": start, "end": end, "why": ch["n"]["why"]})
+            m = ch["n"]
+            nid = m.get("id")
+            if nid is not None and nid in self.neg_by_id:
+                # Негатив, разорванный границей ячейки, — ОДНО вхождение из
+                # двух чанков, ровно как сущность с общим id.
+                rec = self.neg_by_id[nid]
+                rec["start"] = min(rec["start"], start)
+                rec["end"] = max(rec["end"], end)
+            else:
+                rec = {"start": start, "end": end, "meta": m}
+                if nid is not None:
+                    self.neg_by_id[nid] = rec
+                self.negs.append(rec)
         if "i" in ch:
             self.igns.append({"start": start, "end": end, "why": ch["i"]["why"]})
 
@@ -232,12 +281,24 @@ def serialize(model):
             e["checksum"] = m["checksum"]
         if m.get("form"):
             e["form"] = m["form"]
+        if m.get("axes"):
+            # Без этой строки признаки формулировки оставались бы в модели и
+            # не доходили до эталона: тест осей видел бы «ось применима к 0
+            # вхождений» и краснел бы на пустом месте.
+            e["axes"] = m["axes"]
         ents.append(e)
     ents.sort(key=lambda x: (x["start"], x["end"]))
-    negs = sorted(o.negs, key=lambda x: x["start"])
-    for n in negs:
-        n["text"] = text[n["start"]:n["end"]]
-    negs = [{"start": n["start"], "end": n["end"], "text": n["text"], "why": n["why"]} for n in negs]
+    negs = []
+    for rec in sorted(o.negs, key=lambda x: x["start"]):
+        m = rec["meta"]
+        n = {"start": rec["start"], "end": rec["end"],
+             "text": text[rec["start"]:rec["end"]], "why": m["why"]}
+        # Типизированный негатив несёт вид данных, форму и оси — он участвует
+        # в покрытии осей наравне с величинами (см. corpus_lib.neg).
+        for key in ("type", "form", "axes", "trick"):
+            if m.get(key):
+                n[key] = m[key]
+        negs.append(n)
     igns = sorted(o.igns, key=lambda x: x["start"])
     igns = [{"start": g["start"], "end": g["end"], "text": text[g["start"]:g["end"]],
              "why": g["why"]} for g in igns]
@@ -355,8 +416,11 @@ def _runs_xml(chunks, caps=False, bold=False, rev=None):
         # Удалённый правкой текст пишется в <w:delText> — именно поэтому он не
         # виден ни Word'у, ни эталонному экстрактору, ни в канонтексте.
         tag = "w:delText" if ch.get("w") == "del" else "w:t"
-        if ch.get("bs") and "\n" not in s and len(s) > 3:
-            k = len(s) // 2
+        bs = ch.get("bs")
+        if bs and "\n" not in s and len(s) > 3:
+            # bs is True -> разрыв посередине; целое -> разрыв после N-го
+            # символа (нужен, чтобы рвать ЧИСЛО, а не слово рядом с ним).
+            k = len(s) // 2 if bs is True else max(1, min(int(bs), len(s) - 1))
             xml = run(s[:k], True, tag) + run(s[k:], False, tag)
         else:
             xml = run(s, bold, tag)
