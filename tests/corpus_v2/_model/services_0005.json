@@ -17,13 +17,13 @@
     {
      "n": {
       "axes": {
-       "формат": "2/17"
+       "формат": "2/2025-П"
       },
-      "form": "docnum|формат=2/17",
+      "form": "docnum|формат=2/2025-П",
       "type": "DOCNUM",
       "why": "номер договора — не ПДн"
      },
-     "s": "5/14"
+     "s": "33/2025-А"
     }
    ],
    "style": "title",
@@ -760,14 +760,14 @@
     {
      "n": {
       "axes": {
-       "формат": "27/16"
+       "формат": "17595/001-сс"
       },
-      "form": "docnum|формат=27/16",
+      "form": "docnum|формат=17595/001-сс",
       "trick": "digit_spaces",
       "type": "DOCNUM",
       "why": "номер договора — не ПДн"
      },
-     "s": "7 2 /18"
+     "s": "73 8 72/261-сс"
     },
     {
      "s": "."
@@ -799,6 +799,52 @@
       "type": "MONEY"
      },
      "s": "нe менее 25000,8 (Двадцати пяти тысяч) RUB"
+    },
+    {
+     "s": "."
+    }
+   ],
+   "style": "normal",
+   "t": "p"
+  },
+  {
+   "chunks": [
+    {
+     "s": "9.3. Цена по протоколу разногласий: "
+    },
+    {
+     "e": {
+      "axes": {
+       "заполненность": "значение",
+       "разделитель разрядов": "неразрывный пробел"
+      },
+      "cat": "adversarial",
+      "form": "money|разделитель разрядов=неразрывный пробел|заполненность=значение",
+      "id": "services_0005-e20",
+      "note": "цифровая часть суммы, расходящейся с прописью",
+      "trick": "words_mismatch",
+      "type": "MONEY"
+     },
+     "s": "9 300 000"
+    },
+    {
+     "s": ", а прописью: "
+    },
+    {
+     "e": {
+      "axes": {
+       "валюта": "рублей",
+       "заполненность": "значение",
+       "пропись": "вместо цифр"
+      },
+      "cat": "adversarial",
+      "form": "money|валюта=рублей|пропись=вместо цифр|заполненность=значение",
+      "id": "services_0005-e21",
+      "note": "пропись, не совпадающая с цифрами (и неграмматичная)",
+      "trick": "words_mismatch",
+      "type": "MONEY"
+     },
+     "s": "девять триста тысяч рублей"
     },
     {
      "s": "."
@@ -840,7 +886,7 @@
     {
      "e": {
       "cat": "ugly",
-      "id": "services_0005-e20",
+      "id": "services_0005-e22",
       "note": "организация без кавычек / нестандартные кавычки",
       "type": "ORG"
      },
@@ -858,11 +904,29 @@
     {
      "e": {
       "cat": "ugly",
-      "id": "services_0005-e21",
+      "id": "services_0005-e23",
       "note": "стиль адреса: no_marker",
       "type": "ADDRESS"
      },
-     "s": "Самара, Советская 34"
+     "s": "Екатеринбург, Победы 3"
+    }
+   ],
+   "style": "normal",
+   "t": "p"
+  },
+  {
+   "chunks": [
+    {
+     "s": "Почтовый адрес: "
+    },
+    {
+     "e": {
+      "cat": "ugly",
+      "id": "services_0005-e24",
+      "note": "стиль адреса: no_marker",
+      "type": "ADDRESS"
+     },
+     "s": "Екатеринбург, Садовая 56"
     }
    ],
    "style": "normal",
@@ -877,7 +941,7 @@
      "e": {
       "cat": "canonical",
       "checksum": "valid",
-      "id": "services_0005-e22",
+      "id": "services_0005-e25",
       "type": "INN"
      },
      "s": "6884460724"
@@ -888,7 +952,7 @@
     {
      "e": {
       "cat": "canonical",
-      "id": "services_0005-e23",
+      "id": "services_0005-e26",
       "type": "KPP"
      },
      "s": "174178763"
@@ -906,7 +970,7 @@
      "e": {
       "cat": "canonical",
       "checksum": "valid",
-      "id": "services_0005-e24",
+      "id": "services_0005-e27",
       "type": "OGRN"
      },
      "s": "1726911266817"
@@ -924,7 +988,7 @@
      "e": {
       "cat": "canonical",
       "checksum": "valid",
-      "id": "services_0005-e25",
+      "id": "services_0005-e28",
       "type": "ACCOUNT"
      },
      "s": "40702810970663241225"
@@ -944,7 +1008,7 @@
     {
      "e": {
       "cat": "canonical",
-      "id": "services_0005-e26",
+      "id": "services_0005-e29",
       "note": "корреспондентский счёт банка",
       "type": "ACCOUNT"
      },
@@ -956,7 +1020,7 @@
     {
      "e": {
       "cat": "canonical",
-      "id": "services_0005-e27",
+      "id": "services_0005-e30",
       "type": "BIK"
      },
      "s": "044525700"
@@ -973,11 +1037,11 @@
     {
      "e": {
       "cat": "canonical",
-      "id": "services_0005-e28",
+      "id": "services_0005-e31",
       "note": "формат: canonical",
       "type": "PHONE"
      },
-     "s": "+7 (843) 577-13-58"
+     "s": "+7 (812) 454-25-55"
     }
    ],
    "style": "normal",
@@ -991,10 +1055,10 @@
     {
      "e": {
       "cat": "canonical",
-      "id": "services_0005-e29",
+      "id": "services_0005-e32",
       "type": "EMAIL"
      },
-     "s": "mihaylov@list.ru"
+     "s": "mihaylov@romashka.ru"
     }
    ],
    "style": "normal",
@@ -1013,7 +1077,7 @@
     {
      "e": {
       "cat": "ugly",
-      "id": "services_0005-e30",
+      "id": "services_0005-e33",
       "note": "инициалы перед фамилией",
       "type": "PER"
      },
@@ -1042,7 +1106,7 @@
     {
      "e": {
       "cat": "canonical",
-      "id": "services_0005-e31",
+      "id": "services_0005-e34",
       "type": "PER"
      },
      "s": "Воробьёв Николай Алексеевич"
@@ -1059,7 +1123,7 @@
     {
      "e": {
       "cat": "canonical",
-      "id": "services_0005-e32",
+      "id": "services_0005-e35",
       "type": "BIRTHDATE"
      },
      "s": "26.01.1986"
@@ -1076,11 +1140,11 @@
     {
      "e": {
       "cat": "ugly",
-      "id": "services_0005-e33",
+      "id": "services_0005-e36",
       "note": "стиль адреса: no_marker2",
       "type": "ADDRESS"
      },
-     "s": "Химки Заречная 46/1 кв 56"
+     "s": "Воронеж Космонавтов 29/4 кв 43"
     }
    ],
    "style": "normal",
@@ -1094,7 +1158,7 @@
     {
      "e": {
       "cat": "canonical",
-      "id": "services_0005-e34",
+      "id": "services_0005-e37",
       "type": "PASSPORT"
      },
      "s": "26 04 644140"
@@ -1108,7 +1172,7 @@
     {
      "e": {
       "cat": "ugly",
-      "id": "services_0005-e35",
+      "id": "services_0005-e38",
       "note": "код подразделения",
       "type": "PASSPORT"
      },
@@ -1127,7 +1191,7 @@
      "e": {
       "cat": "canonical",
       "checksum": "valid",
-      "id": "services_0005-e36",
+      "id": "services_0005-e39",
       "type": "SNILS"
      },
      "s": "680-244-155 83"
@@ -1139,7 +1203,7 @@
      "e": {
       "cat": "ugly",
       "checksum": "valid",
-      "id": "services_0005-e37",
+      "id": "services_0005-e40",
       "note": "ИНН физлица (12 знаков)",
       "type": "INN"
      },
@@ -1157,11 +1221,11 @@
     {
      "e": {
       "cat": "canonical",
-      "id": "services_0005-e38",
+      "id": "services_0005-e41",
       "note": "формат: canonical",
       "type": "PHONE"
      },
-     "s": "+7 (846) 559-38-63"
+     "s": "+7 (499) 526-45-34"
     }
    ],
    "style": "normal",
@@ -1175,10 +1239,10 @@
     {
      "e": {
       "cat": "canonical",
-      "id": "services_0005-e39",
+      "id": "services_0005-e42",
       "type": "EMAIL"
      },
-     "s": "vorobev@list.ru"
+     "s": "vorobev@yandex.ru"
     }
    ],
    "style": "normal",
@@ -1197,7 +1261,7 @@
     {
      "e": {
       "cat": "ugly",
-      "id": "services_0005-e40",
+      "id": "services_0005-e43",
       "note": "фамилия + инициалы",
       "type": "PER"
      },
@@ -1234,7 +1298,7 @@
     {
      "e": {
       "cat": "ugly",
-      "id": "services_0005-e41",
+      "id": "services_0005-e44",
       "note": "подпись: фамилия+инициалы",
       "type": "PER"
      },
@@ -1255,7 +1319,7 @@
     {
      "e": {
       "cat": "ugly",
-      "id": "services_0005-e42",
+      "id": "services_0005-e45",
       "note": "подпись: фамилия+инициалы",
       "type": "PER"
      },

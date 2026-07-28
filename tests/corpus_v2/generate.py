@@ -761,6 +761,7 @@ TXT_TRICKS = ["homoglyph", "invisible", "digit_spaces", "linebreak"]
 DOCX_TRICKS = TXT_TRICKS + ["cell_split"]
 
 TRICK_NOTE = {
+    "words_mismatch": "цифры и пропись обозначают РАЗНЫЕ величины",
     "format_split": "число разорвано форматированием: половина цифр в одном ране, "
                     "половина в другом",
     "homoglyph": "кириллические О/З/Ч на месте цифр 0/3/4",
@@ -815,6 +816,25 @@ def adversarial_values_block(d, doc_no):
         else:
             L.append(para([d.t("9.%d. Контрольная запись: " % n)] + chunks
                           + [d.t(".")]))
+
+    # Цифры против прописи — каждый четвёртый документ. Приём текстовый, ему
+    # безразличен формат, поэтому он есть и в .txt, и в .docx. Реже прочих
+    # намеренно: он даёт ДВА спана за раз, и на каждом документе он перекосил
+    # бы вид данных MONEY вхождениями одного происхождения.
+    if doc_no % 4 == 0:
+        n += 1
+        parts = V.money_mismatch(d._form_cursor.setdefault("MONEY", 0), doc_no, d.rnd)
+        d._form_cursor["MONEY"] += 1
+        out = []
+        for p in parts:
+            if p[0] == "t":
+                out.append(d.t(p[1]))
+            else:
+                _, s, type_, form, note, cat, axes = p
+                out.append(d.E(s, type_, cat, trick="words_mismatch", note=note,
+                               form=form, axes=axes))
+        L.append(para([d.t("9.%d. Цена по протоколу разногласий: " % n)] + out
+                      + [d.t(".")]))
     return L
 
 
