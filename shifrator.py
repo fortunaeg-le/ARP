@@ -89,6 +89,7 @@ def _print_refusal(exc):
 
 
 def cmd_encrypt(path, config_path, allow_lossy=False):
+    import type_policy
     from extractor import extract
     from pipeline import run_detection
     from tokenizer import tokenize
@@ -125,7 +126,12 @@ def cmd_encrypt(path, config_path, allow_lossy=False):
         # (run_measurement.py). Копии порядка в этом файле больше нет (устраняет класс
         # UI-рассинхрона, см. src/pipeline.py).
         entities = run_detection(doc, config_path)
-        anon_text, final_entities = tokenize(doc, entities, config_path)
+        # ЭТАП T1: детекция ПОЛНАЯ всегда; настройка «что маскировать» применяется
+        # ВНУТРИ tokenize, после разрешения пересечений (см. src/type_policy.py —
+        # выключенный тип обязан остаться барьером для границ соседних масок).
+        anon_text, final_entities = tokenize(
+            doc, entities, config_path, enabled_types=type_policy.enabled_types(config_path),
+        )
     except FileNotFoundError:
         print(f"Ошибка: конфиг не найден: {config_path}", file=sys.stderr)
         sys.exit(1)

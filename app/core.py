@@ -68,6 +68,28 @@ DEFAULT_CONFIG = os.path.join(_ROOT, "entity_types.yaml")
 BUILD_MARK = "u1b-rebuild-20260725"
 
 
+# --- ЭТАП T1: какие типы маскировать (набор + перекрытия пользователя) --------
+def current_policy(config_path: str = None) -> dict:
+    """Действующая настройка «что маскировать»: профиль + состав включённых
+    типов. Читается из `~/.shifrator/settings.json` ПРИ КАЖДОМ вызове — файл
+    правит человек, и перезапуск интерфейса ради смены набора не нужен.
+
+    Возвращает {"profile", "enabled_types", "disabled_types", "enabled"} —
+    первые три структурны (годятся в отчёт и в sidecar сессии), `enabled` —
+    frozenset|None для `tokenizer.tokenize(..., enabled_types=...)`.
+    """
+    import type_policy
+
+    cfg = config_path or DEFAULT_CONFIG
+    settings = type_policy.load_settings()
+    enabled = type_policy.enabled_types(cfg, settings=settings)
+    return {
+        "profile": settings["profile"],
+        **type_policy.describe(cfg, enabled),
+        "enabled": enabled,
+    }
+
+
 # --- Человекочитаемые названия типов ПДн (для юриста, не коды) ---------------
 TYPE_LABELS = {
     "PERSON": "ФИО",
@@ -337,10 +359,21 @@ def run_encrypt(path: str, allow_lossy: bool = False, config_path: str = DEFAULT
     # больше не держит копию порядка и не может отстать от этапа (был инцидент, см.
     # archive/reports/HANDOFF_UI.md и src/pipeline.py).
     entities = run_detection(doc, config_path)
-    _anon_text_unused, final_entities = tokenize(doc, entities, config_path)
+    # ЭТАП T1: детекция выше — ПОЛНАЯ, всеми слоями, независимо от настройки.
+    # Фильтр типов живёт ВНУТРИ tokenize, ПОСЛЕ разрешения пересечений: выключенный
+    # тип обязан отработать барьером, иначе поедут границы масок соседних,
+    # ВКЛЮЧЁННЫХ типов (см. src/type_policy.py).
+    policy = current_policy(config_path)
+    _anon_text_unused, final_entities = tokenize(
+        doc, entities, config_path, enabled_types=policy["enabled"],
+    )
 
     session_id = save_session(final_entities, session_id=None, ttl_hours=24)
-    save_session_meta(session_id, display_name)
+    save_session_meta(session_id, display_name, policy={
+        "profile": policy["profile"],
+        "enabled_types": policy["enabled_types"],
+        "disabled_types": policy["disabled_types"],
+    })
     # U3: сегменты исходного документа — нужны для пересборки после ручной
     # правки разметки, см. модульный docstring и storage.save_doc_segments.
     save_doc_segments(session_id, doc)
@@ -525,7 +558,7 @@ def mark_missed(session_id: str, segment_id: str, start: int, end: int,
         "old_token": None, "old_segment_id": None, "old_start": None, "old_end": None,
         "old_entity_type": None, "old_detector": None,
         "created_at": _now_iso(), "build_mark": BUILD_MARK, "applied": False, "apply_error": None,
-        "census": _markup_census(session),
+        "census": _markup_census(session_id, session),
     })
     return {"markup_id": markup_id, "value": value}
 
@@ -546,7 +579,7 @@ def mark_false_positive(session_id: str, segment_id: str, start: int, end: int, 
         # сказать «ложные срабатывания дал regex, а не NER» (приёмка U4-4).
         "old_detector": occ.get("detector", rec.get("detector")),
         "created_at": _now_iso(), "build_mark": BUILD_MARK, "applied": False, "apply_error": None,
-        "census": _markup_census(session),
+        "census": _markup_census(session_id, session),
     })
     return {"markup_id": markup_id}
 
@@ -580,12 +613,12 @@ def mark_replace(session_id: str, old_token: str, old_segment_id: str, old_start
         "old_start": old_start, "old_end": old_end, "old_entity_type": old_rec["entity_type"],
         "old_detector": old_occ.get("detector", old_rec.get("detector")),
         "created_at": _now_iso(), "build_mark": BUILD_MARK, "applied": False, "apply_error": None,
-        "census": _markup_census(session),
+        "census": _markup_census(session_id, session),
     })
     return {"markup_id": markup_id, "value": value, "kind": kind}
 
 
-def _markup_census(session: dict) -> dict | None:
+def _markup_census(session_id: str, session: dict) -> dict | None:
     """ЭТАП U4: компактный слепок «сколько масок и какие» на момент правки.
 
     Кладётся в КАЖДУЮ запись разметки, потому что знаменатель метрик (сколько
@@ -599,10 +632,20 @@ def _markup_census(session: dict) -> dict | None:
     Сбой (нет report.py в сборке, неожиданный формат сессии) не должен ронять
     сохранение правки: разметка важнее метрики, запись просто останется без
     слепка, и отчёт честно посчитает документ «без знаменателя».
+
+    ЭТАП T1: в слепок добавлен `policy` — СОСТАВ ВКЛЮЧЁННЫХ ТИПОВ, которым
+    документ маскировался (из sidecar сессии, `storage.load_session_policy`).
+    Без него числа отчёта двусмысленны: ноль масок типа значит либо «детектор не
+    нашёл», либо «тип был выключен пользователем». Слепок берётся МОМЕНТА
+    ШИФРАЦИИ, а не момента отчёта — настройка между ними могла измениться.
     """
     try:
         import report
-        return report.census_from_session(session)
+        from storage import load_session_policy
+
+        census = report.census_from_session(session)
+        census["policy"] = load_session_policy(session_id)
+        return census
     except Exception:  # noqa: BLE001 — метрика не имеет права ломать разметку
         return None
 

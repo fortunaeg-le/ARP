@@ -22,7 +22,7 @@
   - delete_session(session_id) -> bool
   - purge_expired(exclude_session_id=None) -> int
   - default_storage_dir() -> Path
-  - save_session_meta(session_id, source_name) -> None — имя исходного документа
+  - save_session_meta(session_id, source_name, policy=None) -> None — имя исходного документа
     для списка сессий (Задача U2-3, "какой документ"); sidecar {sid}.meta.json,
     НЕ входит в зашифрованный payload session_store — тот формат вне границ этой
     сессии (только storage.py).
@@ -103,6 +103,7 @@ __all__ = [
     "default_storage_dir",
     "default_markup_dir",
     "save_session_meta",
+    "load_session_policy",
     "replace_session_entities",
     "save_doc_segments",
     "load_doc_segments",
@@ -148,22 +149,41 @@ def _meta_path(store: Path, session_id: str) -> Path:
     return store / f"{session_id}.meta.json"
 
 
-def save_session_meta(session_id: str, source_name: str) -> None:
+def save_session_meta(session_id: str, source_name: str, policy: dict | None = None) -> None:
     """Пишет sidecar {session_id}.meta.json с именем исходного документа.
+
+    `policy` (ЭТАП T1) — слепок состава включённых типов, которым документ
+    маскировался: {"profile": ..., "enabled_types": [...], "disabled_types": [...]}.
+    Хранится ЗДЕСЬ, а не в сессии, потому что формат {sid}.enc — контракт блока 5
+    (та же причина, по которой lossy-пометка живёт отдельным sidecar-файлом), и
+    расширять его ради пометки нельзя. Настройка может измениться между
+    шифрацией и отчётом, поэтому отчёт обязан читать слепок момента шифрации, а
+    не текущие настройки.
 
     Некритичный побочный файл: сбой записи (нет прав, диск полон) НЕ должен
     ронять шифрацию — сессия уже сохранена session_store к моменту вызова,
     список сессий просто не покажет имя документа для этой записи.
     """
     store = default_storage_dir()
+    payload = {"source_name": source_name}
+    if policy is not None:
+        payload["policy"] = policy
     try:
         store.mkdir(parents=True, exist_ok=True)
         _meta_path(store, session_id).write_text(
-            json.dumps({"source_name": source_name}, ensure_ascii=False),
+            json.dumps(payload, ensure_ascii=False),
             encoding="utf-8",
         )
     except OSError:
         pass
+
+
+def load_session_policy(session_id: str) -> dict | None:
+    """Слепок состава включённых типов из sidecar сессии (ЭТАП T1) или None —
+    сессия удалена/старая/без слепка. Отчёт обязан отличать «состав неизвестен»
+    от «состав полный», поэтому None здесь содержателен."""
+    policy = _load_session_meta(default_storage_dir(), session_id).get("policy")
+    return policy if isinstance(policy, dict) else None
 
 
 def _load_session_meta(store: Path, session_id: str) -> dict:

@@ -34,6 +34,7 @@ from extractor import extract  # noqa: E402
 from unread_zones import scan_unread_zones  # noqa: E402
 from pipeline import run_detection  # noqa: E402
 from tokenizer import tokenize, build_plain_text  # noqa: E402
+import type_policy  # noqa: E402
 from session_store import save_session  # noqa: E402
 from detokenizer import detokenize  # noqa: E402
 
@@ -180,7 +181,13 @@ def process_doc(d, allow_lossy=ALLOW_LOSSY):
     # ЕДИНЫЙ конвейер детекции (этап B): та же pipeline.run_detection, что зовут CLI и
     # UI — замер меряет ровно то, что видит пользователь (см. src/pipeline.py).
     entities = run_detection(doc, CONFIG)
-    anon_text, kept = tokenize(doc, entities, CONFIG)
+    # ЭТАП T1, шаг 3 — ЗАМЕР ВСЕГДА НА МАКСИМУМЕ. Набор передаётся ЯВНО
+    # (type_policy.MAXIMUM, он же None = фильтр не применяется), а НЕ берётся из
+    # файла настроек пользователя: иначе гейт мерил бы настройку, а не работу
+    # программы, и падение полноты стало бы неотличимо от выключенного типа.
+    # Явная константа вместо умолчания — чтобы смена умолчания не проехала сюда
+    # молча.
+    anon_text, kept = tokenize(doc, entities, CONFIG, enabled_types=type_policy.MAXIMUM)
 
     # round-trip — СТРУКТУРНЫЙ (этап E, приёмка 1a): mode="exact" восстанавливает
     # n-е вхождение токена его собственной поверхностной формой из occurrences.

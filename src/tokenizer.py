@@ -6,7 +6,13 @@
 и собирает анонимизированный текст всего документа.
 
 Публичные функции:
-  - tokenize(doc, entities, config_path) -> (анонимизированный текст, list[Entity] с token)
+  - tokenize(doc, entities, config_path, enabled_types=None) -> (анонимизированный
+    текст, list[Entity] с token)
+  - resolve_for_masking(doc, entities, config_path) -> list[Entity] — дорогая
+    первая половина tokenize (границы B3 + разрешение пересечений), общая для
+    ВСЕХ наборов типов;
+  - apply_masking(doc, kept, config_path, enabled_types=None) -> вторая половина;
+    ЭТАП T1: единственное место, где выключенный тип не получает маску.
   - build_plain_text(doc) -> str  — та же сборка текста, но без подстановки токенов
     (эталон для сквозной приёмки блока 7).
 
@@ -613,23 +619,24 @@ def _detect_boundary_entities(
     return extra
 
 
-def tokenize(
+def resolve_for_masking(
     doc: SourceDocument,
     entities: list[Entity],
     config_path: str,
-) -> tuple[str, list[Entity]]:
-    token_prefixes = _load_token_prefixes(config_path)
-    seg_index = {seg.id: idx for idx, seg in enumerate(doc.segments)}
+) -> list[Entity]:
+    """Всё, что предшествует простановке масок: B3-сущности границ + разрешение
+    пересечений + порядок появления. Результат — сущности ВСЕХ типов, включая
+    выключенные пользователем (этап T1: выключенный тип обязан доучаствовать в
+    разрешении пересечений барьером, иначе поедут границы соседей).
 
-    # --- B3-fix: сущности, разорванные границей соседних сегментов ---
-    # Добавляются к обычным ДО разрешения пересечений и проходят через тот же
-    # алгоритм. Каждая половина пары — обычная независимая сущность со своим
-    # original_text (и, значит, своим токеном): так восстановление в каждом
-    # сегменте посимвольно точно (см. Вариант А в отчёте о фиксе порчи B3).
+    Вынесено из `tokenize` отдельной функцией, потому что это дорогая часть
+    (внутри — второй проход детекции по граничным окнам), а простановка масок
+    поверх готового результата дешёвая: приёмка этапа T1 (14 наборов «все типы
+    кроме одного») считает эту функцию ОДИН раз и рендерит 15 вариантов.
+    """
     boundary_entities = _detect_boundary_entities(doc, config_path, entities)
     entities = list(entities) + boundary_entities
 
-    # --- Разрешение пересечений внутри каждого сегмента ---
     by_segment: dict[str, list[Entity]] = {}
     for e in entities:
         by_segment.setdefault(e.segment_id, []).append(e)
@@ -640,8 +647,31 @@ def tokenize(
         if group:
             kept.extend(_resolve_overlaps(group))
 
-    # --- Порядок появления: (индекс сегмента, start) ---
+    seg_index = {seg.id: idx for idx, seg in enumerate(doc.segments)}
     kept.sort(key=lambda e: (seg_index[e.segment_id], e.start))
+    return kept
+
+
+def apply_masking(
+    doc: SourceDocument,
+    kept: list[Entity],
+    config_path: str,
+    enabled_types=None,
+) -> tuple[str, list[Entity]]:
+    """Простановка масок поверх РАЗРЕШЁННОГО списка сущностей.
+
+    ЭТАП T1 — ЕДИНСТВЕННАЯ точка фильтра типов. `enabled_types` — множество
+    включённых `entity_type` (или None = набор «Максимум», фильтр не
+    применяется). Сущность выключенного типа уже отработала барьером в
+    `resolve_for_masking` и здесь просто не получает токена: границы масок
+    остальных типов от этого не меняются НИ НА СИМВОЛ, потому что решались до
+    фильтра. Нумерация токенов ведётся отдельным счётчиком на префикс
+    (`counters`), поэтому выпадение целого типа не сдвигает номера чужих масок.
+    """
+    token_prefixes = _load_token_prefixes(config_path)
+
+    if enabled_types is not None:
+        kept = [e for e in kept if e.entity_type in enabled_types]
 
     # --- Присвоение токенов ---
     # Правило переиспользования (этап E, часть 2 — ЕДИНЫЙ ID НА СУЩНОСТЬ):
@@ -683,3 +713,20 @@ def tokenize(
     )
 
     return anonymized, kept
+
+
+def tokenize(
+    doc: SourceDocument,
+    entities: list[Entity],
+    config_path: str,
+    enabled_types=None,
+) -> tuple[str, list[Entity]]:
+    """Разрешение пересечений + простановка масок (публичный контракт блока 4).
+
+    `enabled_types=None` (умолчание) — набор «Максимум»: поведение побайтно то
+    же, что до этапа T1. Замер и гейт зовут ИМЕННО так, всегда: иначе они мерили
+    бы настройку пользователя, а не работу программы, и падение полноты стало бы
+    неотличимо от выключенного типа.
+    """
+    kept = resolve_for_masking(doc, entities, config_path)
+    return apply_masking(doc, kept, config_path, enabled_types)

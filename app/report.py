@@ -132,6 +132,24 @@ CASE_SHAPES = ("upper", "lower", "title", "mixed", "no_letters")
 
 SCOPES = ("session", "all")
 
+#: ЭТАП T1 — наборы типов (`src/type_policy.PROFILES`) плюс два служебных кода:
+#: "mixed" — документы выборки маскировались РАЗНЫМИ наборами (или часть без
+#: слепка), поэтому один состав назвать нельзя; "unknown" — слепка нет ни у
+#: одного документа (разметка старше этапа T1). Оба содержательны: отчёт обязан
+#: отличать «состав неизвестен» от «состав полный», иначе ноль масок типа читается
+#: как «детектор не нашёл», хотя тип мог быть просто выключен.
+MIXED = "mixed"
+POLICY_PROFILES = ("personal", "personal_requisites", "with_money", "maximum",
+                   MIXED, UNKNOWN)
+POLICY_PROFILE_LABELS = {
+    "personal": "Только персональные данные",
+    "personal_requisites": "Персональные данные и реквизиты",
+    "with_money": "Всё, включая деньги",
+    "maximum": "Максимум (все типы)",
+    MIXED: "разные наборы в выборке — единый состав назвать нельзя",
+    UNKNOWN: "состав не записан (разметка старше этапа T1)",
+}
+
 #: Белый список полей находки. Единственное место, где решается, ЧТО вообще
 #: может оказаться в findings. Добавление поля сюда — осознанное действие,
 #: которое обязано пройти часового.
@@ -167,6 +185,7 @@ LIMITATIONS = (
     "Выборка мала и смещена: в агрегате за период преобладают документы, в которых было что отмечать.",
     "Документы, чья сессия истекла до этапа U4, входят в отчёт без знаменателя — только абсолютными числами правок.",
     "Эти числа не заменяют полный замер на корпусе и не являются приёмочными.",
+    "Считайте числа только по ВКЛЮЧЁННЫМ типам (раздел «Состав»): у выключенного типа маска не ставится вовсе, и ноль в его строке — это настройка, а не работа детектора.",
 )
 
 _SCHEMA_NOTE = "Отчёт собран по белому списку полей; текст документа в него не попадает по построению."
@@ -189,6 +208,8 @@ _SCHEMA_KEYS = frozenset({
     "boundary_edit_rate_pct", "type_error_rate_pct",
     "by_type", "by_detector", "by_build", "findings",
     "masks", "documents_touched",
+    # ЭТАП T1 — состав включённых типов (шаг 4 задания).
+    "policy", "profile", "enabled_types", "disabled_types", "documents_without_policy",
 }) | frozenset(_FINDING_FIELDS)
 
 _ISO_RE = re.compile(r"^\d{4}-\d{2}-\d{2}T\d{2}:\d{2}:\d{2}(\.\d+)?([+-]\d{2}:\d{2})?$")
@@ -345,6 +366,49 @@ def census_from_session(session: dict) -> dict:
             det = _norm_detector(occ.get("detector", rec.get("detector")))
             by_detector[det] = by_detector.get(det, 0) + 1
     return {"masks_total": total, "by_type": by_type, "by_detector": by_detector}
+
+
+def _policy_block(docs: list[dict]) -> dict:
+    """ЭТАП T1 — СОСТАВ ВКЛЮЧЁННЫХ ТИПОВ по выборке отчёта.
+
+    Слепок состава лежит в `census["policy"]` каждого документа (положен
+    `app/core._markup_census` из sidecar сессии, момент ШИФРАЦИИ). Правило
+    сведения намеренно грубое и честное:
+      * все документы выборки имеют слепок И слепки совпадают -> печатаем состав;
+      * иначе -> profile="mixed"/"unknown", а списки типов — null.
+    Пересекать/объединять составы разных документов НЕЛЬЗЯ: получилось бы число,
+    не соответствующее ни одному документу выборки, а смысл раздела ровно в том,
+    чтобы читатель знал, к какому составу относятся цифры выше.
+    """
+    snapshots = []
+    without = 0
+    for d in docs:
+        pol = (d.get("census") or {}).get("policy")
+        if isinstance(pol, dict) and isinstance(pol.get("enabled_types"), list):
+            snapshots.append((
+                pol.get("profile"),
+                tuple(pol.get("enabled_types") or ()),
+                tuple(pol.get("disabled_types") or ()),
+            ))
+        else:
+            without += 1
+
+    if not snapshots:
+        profile, enabled, disabled = UNKNOWN, None, None
+    elif without or len(set(snapshots)) > 1:
+        profile, enabled, disabled = MIXED, None, None
+    else:
+        profile, en, dis = snapshots[0]
+        if profile not in POLICY_PROFILES:
+            profile = UNKNOWN
+        enabled, disabled = [_norm_type(t) for t in en], [_norm_type(t) for t in dis]
+
+    return {
+        "profile": profile,
+        "enabled_types": enabled,
+        "disabled_types": disabled,
+        "documents_without_policy": without,
+    }
 
 
 def _collect_documents(scope: str, session_id: str | None) -> list[dict]:
@@ -512,6 +576,9 @@ def build_report(scope: str = "all", session_id: str | None = None,
                    "to": max(stamps) if stamps else None},
         "contents": {"included": list(CONTENTS_INCLUDED), "excluded": list(CONTENTS_EXCLUDED)},
         "limitations": list(LIMITATIONS),
+        # ЭТАП T1: состав включённых типов — БЕЗ него цифры ниже двусмысленны
+        # (ноль масок типа = «не нашли» или «тип был выключен»?).
+        "policy": _policy_block(docs),
         "sample": {
             "documents": len(docs),
             "documents_with_denominator": with_denominator,
@@ -542,7 +609,7 @@ def build_report(scope: str = "all", session_id: str | None = None,
 
 _ALLOWED_VALUES = frozenset(
     KINDS + ENTITY_TYPES + DETECTORS + CONTAINERS + CASE_SHAPES + SCOPES
-    + (REPORT_VERSION, UNKNOWN)
+    + POLICY_PROFILES + (REPORT_VERSION, UNKNOWN)
 )
 
 
@@ -639,6 +706,19 @@ def render_markdown(report: dict) -> str:
     lines += [f"- {x}" for x in report["contents"]["excluded"]]
     lines += ["", "## Как читать эти числа (ограничения)", ""]
     lines += [f"- {x}" for x in report["limitations"]]
+
+    pol = report["policy"]
+    lines += ["", "## Состав: какие типы маскировались", "",
+              f"- Набор: {POLICY_PROFILE_LABELS.get(pol['profile'], pol['profile'])}"]
+    if pol["enabled_types"] is None:
+        lines += ["- Перечислить включённые типы нельзя: в выборке разные наборы "
+                  "или документы без записанного состава.",
+                  f"- Документов без записанного состава: {pol['documents_without_policy']}"]
+    else:
+        on = ", ".join(core.TYPE_LABELS.get(t, t) for t in pol["enabled_types"]) or "—"
+        off = ", ".join(core.TYPE_LABELS.get(t, t) for t in pol["disabled_types"]) or "—"
+        lines += [f"- Включены (маска ставится): {on}",
+                  f"- Выключены (найдены, но не маскируются): {off}"]
 
     lines += [
         "", "## Выборка", "",
