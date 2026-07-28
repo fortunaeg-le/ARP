@@ -59,6 +59,26 @@ def _xml(doc_id):
         return z.read("word/document.xml").decode("utf-8")
 
 
+def _corpus_v2_lib():
+    """Ядро корпуса V2, загруженное ПО ПУТИ, а не по имени.
+
+    Обычный `import corpus_lib` здесь недопустим: такой же модуль есть у
+    СТАРОГО корпуса, его каталог тоже попадает в sys.path при полном прогоне
+    набора, и какой из двух достанется — зависит от порядка тестов. Тест,
+    молча проверяющий чужой корпус, хуже отсутствующего.
+    """
+    import importlib.util
+    name = "corpus_v2_lib_for_tests"
+    if name in sys.modules:
+        return sys.modules[name]
+    spec = importlib.util.spec_from_file_location(
+        name, os.path.join(CORPUS_V2, "corpus_lib.py"))
+    mod = importlib.util.module_from_spec(spec)
+    sys.modules[name] = mod
+    spec.loader.exec_module(mod)
+    return mod
+
+
 def test_every_doc_declares_its_group(gold):
     """Пометка группы обязательна у каждого документа."""
     bad = [d["doc_id"] for d in gold if d.get("structure_group") not in GROUPS]
@@ -140,8 +160,7 @@ def test_docx_bytes_do_not_depend_on_the_process(gold):
     сохранённой модели. Разойтись они могут только на значении, зависящем от
     состояния интерпретатора, а не от модели.
     """
-    import corpus_lib as CL  # noqa: E402
-
+    CL = _corpus_v2_lib()
     checked = 0
     bad = []
     for d in gold:
