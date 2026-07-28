@@ -56,6 +56,8 @@ import sys
 
 import pytest
 
+import conftest
+
 _PROJECT_ROOT = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 _CORPUS_DIR = os.path.join(_PROJECT_ROOT, "tests", "corpus")
 _DOCS_DIR = os.path.join(_CORPUS_DIR, "docs")
@@ -94,6 +96,10 @@ def encrypt_doc(tmp_path_factory):
         fmt = _GOLD[doc_id]["format"]
         path = os.path.join(_DOCS_DIR, "{}.{}".format(doc_id, fmt))
         home = tmp_path_factory.mktemp("home")
+        # ЭТАП T1: контракты этого файла — про ДЕТЕКТОРЫ (ИНН с битой КС, СНИЛС,
+        # разрыв через ячейку), а не про набор типов по умолчанию. Набор пришпилен
+        # к «Максимуму» тем же файлом настроек, которым пользуется человек.
+        conftest.pin_all_types(home)
         env = dict(os.environ, PYTHONIOENCODING="utf-8",
                    USERPROFILE=str(home), HOME=str(home))
         args = [sys.executable, _SHIFRATOR, "encrypt", path]

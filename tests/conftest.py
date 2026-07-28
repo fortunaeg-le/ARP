@@ -21,6 +21,29 @@ def config_path():
     return CONFIG_PATH
 
 
+def pin_all_types(home_dir):
+    """ЭТАП T1 — пришпилить набор «Максимум» для теста, ПРОВЕРЯЮЩЕГО ДЕТЕКЦИЮ.
+
+    С этапа T1 набор ПО УМОЛЧАНИЮ — «только персональные данные»: реквизиты
+    (ИНН/ОГРН/КПП/БИК/счета) и организации найдены, но не маскируются. Тест,
+    который спрашивает «замаскировался ли ИНН», спрашивает про ДЕТЕКТОР, а не
+    про настройку пользователя, и потому обязан задать набор явно — иначе он
+    молча начнёт мерить умолчание (та же причина, по которой замер и гейт зовут
+    токенизацию с `type_policy.MAXIMUM`, см. run_measurement.py).
+
+    Пришпиливание идёт через НАСТОЯЩИЙ файл настроек в подменённом HOME, а не
+    через хук в коде: тест обязан ходить тем же путём, что пользователь.
+    """
+    import json
+    from pathlib import Path
+
+    d = Path(home_dir) / ".shifrator"
+    d.mkdir(parents=True, exist_ok=True)
+    (d / "settings.json").write_text(
+        json.dumps({"profile": "maximum"}), encoding="utf-8")
+    return d / "settings.json"
+
+
 @pytest.fixture(scope="session")
 def ner_detector_module():
     """Импортирует ner_detector (и тем самым natasha) один раз за сессию тестов."""

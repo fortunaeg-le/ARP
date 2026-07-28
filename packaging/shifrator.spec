@@ -119,7 +119,7 @@ hiddenimports = [
     "models", "normalizer", "regex_detector", "ner_detector",
     "anchor_registry", "syntax_compound", "multispan", "detokenizer",
     "file_detokenizer", "unread_zones", "ooxml_core", "docx_rewriter",
-    "pptx_rewriter", "xlsx_rewriter",
+    "pptx_rewriter", "xlsx_rewriter", "type_policy",
     # ЭТАП U4: `report` импортируется ЛЕНИВО (внутри функций core/server) —
     # ровно тот случай, ради которого этот список и существует. Без него в
     # собранном exe экран «Аналитика» отвалился бы, а `core._markup_census`

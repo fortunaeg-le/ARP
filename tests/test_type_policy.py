@@ -217,6 +217,62 @@ def test_filter_does_not_shift_token_numbering_of_other_types():
 
 
 # --------------------------------------------------------------------------- #
+# Умолчание конечного продукта (реальный процесс, реальный файл настроек)
+# --------------------------------------------------------------------------- #
+
+def _cli_encrypt(tmp_path, text, settings=None):
+    import subprocess
+
+    home = tmp_path / "home"
+    if settings is not None:
+        (home / ".shifrator").mkdir(parents=True, exist_ok=True)
+        (home / ".shifrator" / "settings.json").write_text(settings, encoding="utf-8")
+    src = tmp_path / "d.txt"
+    src.write_text(text, encoding="utf-8")
+    env = dict(os.environ, PYTHONIOENCODING="utf-8",
+               USERPROFILE=str(home), HOME=str(home))
+    proc = subprocess.run(
+        [sys.executable, os.path.join(ROOT, "shifrator.py"), "encrypt", str(src)],
+        capture_output=True, text=True, encoding="utf-8", env=env, cwd=ROOT)
+    assert proc.returncode == 0, proc.stderr
+    sid = proc.stdout.strip()
+    return (home / ".shifrator" / "sessions" / f"{sid}.txt").read_text(encoding="utf-8")
+
+
+_CLI_TEXT = "ИНН 7707083893, e-mail ivanov@example.com, сумма 5 000 руб."
+
+
+def test_default_run_masks_personal_data_only(tmp_path):
+    """Умолчание продукта с этапа T1 — «только персональные данные»: e-mail
+    спрятан, ИНН и сумма НАЙДЕНЫ, но не замаскированы."""
+    anon = _cli_encrypt(tmp_path, _CLI_TEXT)
+    assert "[EMAIL_1]" in anon
+    assert "7707083893" in anon and "[INN_" not in anon
+    assert "5 000 руб." in anon and "[SUM_" not in anon
+
+
+def test_settings_file_switches_the_set(tmp_path):
+    anon = _cli_encrypt(tmp_path, _CLI_TEXT, settings='{"profile": "with_money"}')
+    assert "[EMAIL_1]" in anon and "[INN_1]" in anon and "[SUM_1]" in anon
+
+
+def test_single_type_override_on_top_of_the_set(tmp_path):
+    anon = _cli_encrypt(tmp_path, _CLI_TEXT,
+                        settings='{"profile": "personal", "types": {"INN": true}}')
+    assert "[INN_1]" in anon and "[EMAIL_1]" in anon
+    assert "[SUM_" not in anon
+
+
+def test_settings_file_with_unknown_type_does_not_crash_the_cli(tmp_path):
+    """Приёмка 4 на РЕАЛЬНОМ процессе: несуществующий тип в файле настроек
+    игнорируется, encrypt отрабатывает и печатает session_id."""
+    anon = _cli_encrypt(
+        tmp_path, _CLI_TEXT,
+        settings='{"profile": "personal", "types": {"КРИПТОКОШЕЛЁК": true, "SUM": true}}')
+    assert "[EMAIL_1]" in anon and "[SUM_1]" in anon
+
+
+# --------------------------------------------------------------------------- #
 # Отчёт программы (шаг 4) и его сторож
 # --------------------------------------------------------------------------- #
 
