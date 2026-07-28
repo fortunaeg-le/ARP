@@ -28,6 +28,7 @@ corpus_lib (КОРПУС V2) — ядро второго корпуса.
 и продублирован независимым экстрактором extract_docx(), который читает уже
 записанный .docx. Генератор падает, если эти два результата разошлись хоть на символ.
 """
+import hashlib
 import io
 import json
 import os
@@ -446,12 +447,20 @@ def _para_xml(p, fn_id=None):
 
 def _textbox_xml(tb):
     inner = "<w:p>%s</w:p>" % _runs_xml(tb["chunks"])
+    # Идентификатор фигуры считается УСТОЙЧИВЫМ хешем, а не встроенным hash().
+    # Здесь был hash(inner): для строк он рандомизируется при каждом запуске
+    # интерпретатора (PYTHONHASHSEED), и десять .docx с текстбоксом выходили
+    # РАЗНЫМИ БАЙТАМИ при каждой пересборке. Внутри одного прогона это не
+    # видно — гниль вылезала только сверкой MANIFEST.sha256 после повторной
+    # сборки, то есть ровно там, где корпус обязан быть побайтно
+    # воспроизводимым.
+    shape_id = int(hashlib.sha256(inner.encode("utf-8")).hexdigest()[:8], 16)
     return (
         '<w:p><w:r><w:pict>'
         '<v:shape id="tb%d" type="#_x0000_t202" style="position:absolute;'
         'margin-left:0;margin-top:0;width:400pt;height:40pt">'
         '<v:textbox><w:txbxContent>%s</w:txbxContent></v:textbox>'
-        '</v:shape></w:pict></w:r></w:p>' % (abs(hash(inner)) % 9000 + 1000, inner)
+        '</v:shape></w:pict></w:r></w:p>' % (shape_id % 9000 + 1000, inner)
     )
 
 
