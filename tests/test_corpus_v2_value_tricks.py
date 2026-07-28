@@ -32,6 +32,7 @@ import re
 import sys
 import zipfile
 from collections import Counter
+from xml.sax.saxutils import escape
 
 import pytest
 
@@ -49,6 +50,21 @@ REQUIRED = ["format_split", "homoglyph", "invisible", "digit_spaces",
             "linebreak", "cell_split"]
 MOST_FREQUENT = "format_split"
 MIN_TYPES = 3            # приёмы обязаны лечь не на один вид данных
+
+# Символы, которых в величине с разрывом форматированием быть НЕ ДОЛЖНО:
+# следы других приёмов. Записаны кодами намеренно — в исходнике они
+# неотличимы от пустоты, и правка «на глаз» их бы потеряла.
+# NBSP (\u00a0) здесь СОЗНАТЕЛЬНО ОТСУТСТВУЕТ: это законное значение оси
+# «разделитель разрядов» («10\u00a0000 рублей»), а не состязательный приём.
+FORBIDDEN = (
+    "\u200b",   # zero-width space
+    "\u200c",   # zero-width non-joiner
+    "\u200d",   # zero-width joiner
+    "\u00ad",   # мягкий перенос
+    "\u2060",   # word joiner
+    "\u202f",   # narrow no-break space
+    "\u200e",   # left-to-right mark
+)
 
 
 @pytest.fixture(scope="module")
@@ -104,26 +120,92 @@ def test_tricks_hit_several_data_types(gold):
         % (MIN_TYPES, thin))
 
 
-def test_format_split_and_cell_split_reach_the_docx(gold):
-    """Приём, не дошедший до файла, — это пометка в разметке и ничего больше."""
-    seen_runs = seen_cells = 0
+def _split_chunks(model):
+    """Чанки модели, помеченные разрывом форматированием, с позицией разрыва."""
+    out = []
+
+    def walk(blocks):
+        for b in blocks:
+            if b.get("t") == "tbl":
+                for row in b["rows"]:
+                    for c in row:
+                        walk(c["blocks"])
+                continue
+            for ch in b.get("chunks", ()):
+                mark = (ch.get("e") or {}).get("trick") or \
+                       (ch.get("n") or {}).get("trick")
+                if mark == "format_split" and isinstance(ch.get("bs"), int) \
+                        and ch["bs"] is not True:
+                    out.append((ch["s"], ch["bs"]))
+    walk(model["body"])
+    return out
+
+
+def test_format_split_really_splits_the_run(gold):
+    """Приём, не дошедший до файла, — это пометка в разметке и ничего больше.
+
+    Проверка ТОЧНАЯ, и обе более простые её версии оказались негодны:
+
+      * «в документе есть <w:b/>» — зелено всегда: жирные заголовки есть в
+        каждом документе, приём мог не ставиться вовсе;
+      * «текста величины нет в XML сплошным куском» — ЛОЖНО КРАСНЕЕТ, когда
+        точно такая же величина встречается в документе ещё раз, уже без
+        приёма. Так и вышло на cx_agency_0016.
+
+    Поэтому строится ОЖИДАЕМЫЙ фрагмент XML: два рана, первый жирный, граница
+    между ними — в позиции разрыва, взятой ИЗ МОДЕЛИ (а не пересчитанной здесь
+    заново: пересчёт дублировал бы логику генератора и проверял бы её саму).
+    """
+    CL_dir = CORPUS_V2
+    checked, missing = 0, []
     for d in gold:
         if d["format"] != "docx":
             continue
-        marks = {e.get("trick") for e in d["entities"] if e.get("trick")}
-        marks |= {e.get("trick") for e in d.get("negatives", []) if e.get("trick")}
-        if not ({"format_split", "cell_split"} & marks):
+        with open(os.path.join(CL_dir, "_model", d["doc_id"] + ".json"),
+                  encoding="utf-8") as f:
+            model = json.load(f)
+        pairs = _split_chunks(model)
+        if not pairs:
             continue
         with zipfile.ZipFile(os.path.join(DOCS, d["doc_id"] + ".docx")) as z:
             xml = z.read("word/document.xml").decode("utf-8")
-        if "format_split" in marks and re.search(r"<w:b/>", xml):
-            seen_runs += 1
-        if "cell_split" in marks and re.search(r"<w:tbl[ >]", xml):
-            seen_cells += 1
-    assert seen_runs, ("Ни в одном .docx с пометкой format_split нет разорванных "
-                       "форматированием ранов — приём до файла не дошёл.")
-    assert seen_cells, ("Ни в одном .docx с пометкой cell_split нет таблицы — "
-                        "приём до файла не дошёл.")
+        for s, k in pairs:
+            checked += 1
+            want = ('<w:r><w:rPr><w:b/></w:rPr>'
+                    '<w:t xml:space="preserve">%s</w:t></w:r>'
+                    '<w:r><w:t xml:space="preserve">%s</w:t></w:r>'
+                    % (escape(s[:k]), escape(s[k:])))
+            if want not in xml:
+                missing.append((d["doc_id"], s, k))
+    assert checked, "Ни одного .docx с пометкой format_split — приём не поставлен."
+    assert not missing, (
+        "Разрыв форматированием помечен в разметке, но в .docx величина на два "
+        "рана не разорвана: %s" % missing[:5])
+
+
+def test_cell_split_really_crosses_a_cell_boundary(gold):
+    """Половины величины обязаны лежать в РАЗНЫХ ячейках.
+
+    Признак в каноническом тексте — табуляция внутри спана: разделитель ячеек
+    по правилу PT-1 (corpus_lib._emit_blocks). Спан без неё границу ячейки не
+    пересёк, чем бы его ни пометили.
+    """
+    marked = [(d["doc_id"], e) for d in gold
+              for e in list(d["entities"]) + list(d.get("negatives", []))
+              if e.get("trick") == "cell_split"]
+    assert marked, "Приём «граница ячейки» в корпусе отсутствует."
+    flat = [(doc, e["text"]) for doc, e in marked if "\t" not in e["text"]]
+    assert not flat, (
+        "Величины с пометкой cell_split не содержат разделителя ячеек: %s.\n"
+        "Значит, границу ячейки они не пересекают." % flat[:5])
+    with_tbl = 0
+    for doc, _ in marked:
+        with zipfile.ZipFile(os.path.join(DOCS, doc + ".docx")) as z:
+            if re.search(r"<w:tbl[ >]", z.read("word/document.xml").decode("utf-8")):
+                with_tbl += 1
+    assert with_tbl == len(marked), (
+        "В %d из %d документов с cell_split нет таблицы в OOXML."
+        % (len(marked) - with_tbl, len(marked)))
 
 
 def test_format_split_does_not_change_the_text(gold):
@@ -139,7 +221,7 @@ def test_format_split_does_not_change_the_text(gold):
             if e.get("trick") != "format_split":
                 continue
             t = e["text"]
-            if "\n" in t or "\t" in t or any(ch in t for ch in ("​", "­")):
+            if "\n" in t or "\t" in t or any(ch in t for ch in FORBIDDEN):
                 bad.append((d["doc_id"], t))
     assert not bad, (
         "Величины с разрывом форматированием содержат следы ДРУГИХ приёмов "

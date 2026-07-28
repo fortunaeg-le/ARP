@@ -110,7 +110,12 @@ class D:
                                 checksum, form, axes),
                      bold_split=bs, wrap=wrap, instr=instr)
 
-    def N(self, s, why, type_=None, form=None, axes=None, trick=None, nid=None):
+    def N(self, s, why, type_=None, form=None, axes=None, trick=None, nid=None,
+          bs=False):
+        # `bs` здесь обязателен наравне с сущностями: номер договора — тоже
+        # вхождение вида данных, и разрыв форматированием ему полагается такой
+        # же. Без этого приём проставлялся бы в разметке, но до .docx не
+        # доходил — пометка есть, ловушки нет.
         n = cl_neg(why, type_, form, axes)
         if trick:
             n["trick"] = trick
@@ -118,7 +123,7 @@ class D:
             # Общий id — негатив, разорванный границей ячейки, остаётся ОДНИМ
             # вхождением (см. corpus_lib._Out.emit).
             n["id"] = nid
-        return chunk(s, neg=n)
+        return chunk(s, neg=n, bold_split=bs)
 
     def I(self, s, why):
         return chunk(s, ignore={"why": why})
@@ -746,7 +751,7 @@ def _adv_apply(d, part, trick, note):
         raise ValueError(trick)
 
     if kind == "n":
-        return [d.N(s, why, type_, form, axes, trick=trick)]
+        return [d.N(s, why, type_, form, axes, trick=trick, bs=bs)]
     return [d.E(s, type_, "adversarial", trick=trick, note=note, form=form,
                 bs=bs, axes=axes)]
 
