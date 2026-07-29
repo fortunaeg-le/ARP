@@ -10,12 +10,14 @@ gate.py — ЕДИНЫЙ регресс-гейт SHIFRATOR (этап 0d, рас�
 (ARCHITECTURE_AUDIT §4.7, §5.8). Теперь база ОДНА (`results_baseline.json` —
 полный дамп прогона, из него считаются ВСЕ метрики) и прогон ОДИН.
 
-ЧЕТЫРЕ ЛИНИИ (любая красная -> exit 1):
+ШЕСТЬ ЛИНИЙ (любая красная -> exit 1); «д» и «е» добавлены этапом GATE-2:
 
-  (а) PRECISION NER-хребта (ORG/PER/ADDRESS) не упал ниже baseline − допуск.
+  (а) PRECISION не упал ниже baseline − допуск — по КАЖДОМУ типу эталона.
       FP = kept-маска на ОБЪЯВЛЕННОМ негативе, TP = kept-маска на gold своего
       типа (единая дефиниция этапа D, measure_lib.precision_by_type). Ловит
       «стали маскировать лишнее» — то, к чему слепа masking C.
+      ЭТАП GATE-2: линия держала только NER-хребет (ORG/PER/ADDRESS), а все
+      реквизиты были вне охраны — их точность могла упасть до нуля незаметно.
   (б) LEAK_V2 не вырос — по каждому ИЗ 14 типов отдельно И по агрегату
       BIK-excl, оба порога (>=6 и >=8). Ловит «стали хуже прятать ПДн».
   (в) MASKING A (round-trip) не упала И равна 100%. Инвариант: замаскированное
@@ -23,6 +25,19 @@ gate.py — ЕДИНЫЙ регресс-гейт SHIFRATOR (этап 0d, рас�
   (г) MASKING B (границы: эталон закрыт масками целиком) не упала.
       C (тип маски) — МЯГКИЙ уровень по решению владельца: печатается,
       падение даёт ПРЕДУПРЕЖДЕНИЕ, гейт НЕ роняет (gate_config.MASKING_C_WARN_PP).
+  (д) OVER-MASK ПРОЗЫ не вырос — по каждому типу и по агрегату. Маска, не
+      легшая НИ на эталонную сущность, НИ на объявленный негатив, закрыла
+      обычный текст (номер пункта договора, кусок прозы). Гейт такие маски
+      печатал, но НЕ СРАВНИВАЛ: порча документа проходила зелёной в любом
+      объёме. Набор неоднозначен (банки-контрагенты корпус не размечает) —
+      см. обоснование в gate_config.OVERMASK_NOTHING_TOLERANCE.
+  (е) ГРАНИЦЫ ПО НАПРАВЛЕНИЮ ОШИБКИ, два числа раздельно, по каждому типу:
+      НЕДОБОР (маска короче эталона — часть значения открыта, УТЕЧКА) и
+      ПЕРЕБОР (маска длиннее эталона — закрыт лишний текст, ПОРЧА). Линия «г»
+      (masking B) видит ТОЛЬКО недобор: маска шире эталона по B не нарушение
+      вообще, поэтому перебор мог расти неограниченно при зелёном гейте.
+      Прибор этапа ADDR-B (experiments/stage_addr_b/addr_probe.py) считал это
+      для ADDRESS; здесь та же логика (тот же код measure_lib) для всех типов.
 
 Линии «в»/«г» проверяются И ПО АГРЕГАТУ, И ПО КАЖДОМУ ТИПУ МАСКИ ОТДЕЛЬНО.
 Причина — находка этапа S2: на дельте 2b -> HEAD агрегат B вырос 79.59% ->
@@ -275,9 +290,17 @@ def missed_leak_ids(results):
 
 
 def compare_precision(baseline_prec, current_prec, tol_pp):
-    """Линия «а». Возвращает (regressions, improvements) по NER-хребту."""
+    """Линия «а». Возвращает (regressions, improvements) по ВСЕМ типам эталона.
+
+    ЭТАП GATE-2: линия расширена с NER-хребта (ORG/PER/ADDRESS) на все типы, у
+    которых precision вообще определён (есть знаменатель tp+fp_neg в ОБОИХ
+    прогонах). До этого реквизиты — оба ИНН, ОГРН, КПП, счета, БИК, телефон,
+    e-mail, паспорт, СНИЛС, дата рождения, суммы — не охранялись НИЧЕМ: их
+    точность могла упасть до нуля, и гейт остался бы зелёным. Тип, у которого
+    precision is None (масок-решений по типу нет вовсе), пропускается — как и
+    раньше, «нет данных» не приравнивается ни к 100%, ни к регрессу."""
     regressions, improvements = [], []
-    for t in ML.NER_SPINE_TYPES:
+    for t in ML.ALL_ENTITY_TYPES:
         base = baseline_prec["per_type"].get(t, {}).get("precision")
         cur = current_prec["per_type"].get(t, {}).get("precision")
         if base is None or cur is None:
@@ -288,6 +311,104 @@ def compare_precision(baseline_prec, current_prec, tol_pp):
                 % (t, base, cur, tol_pp))
         elif cur > base + 1e-9:
             improvements.append("precision[%s]: %.2f%% -> %.2f%%" % (t, base, cur))
+    return regressions, improvements
+
+
+# --------------------------------------------------------------------------- #
+#   Линия «д» (порча документа: маски, не легшие ни на что) — этап GATE-2      #
+# --------------------------------------------------------------------------- #
+def compare_overmask(baseline_prec, current_prec, tol):
+    """Линия «д». Маска, не пересёкшая НИ эталонную сущность (любого типа), НИ
+    объявленный негатив, — это закрытый маской кусок обычного текста: номер
+    пункта договора, слово прозы, обрывок таблицы. Гейт такие маски считал
+    (диагностический `nothing` этапа D) и ПЕЧАТАЛ, но ни с чем не сравнивал —
+    то есть порча документа проходила зелёной в любом объёме.
+
+    Считается ПО ТИПАМ и по агрегату, по тому же правилу «рост одного типа не
+    должен гаситься падением другого», что и leak_v2/masking.
+
+    Возвращает (regressions, improvements)."""
+    regressions, improvements = [], []
+    for t in ML.ALL_ENTITY_TYPES:
+        b = (baseline_prec["per_type"].get(t) or {}).get("nothing", 0)
+        c = (current_prec["per_type"].get(t) or {}).get("nothing", 0)
+        if c > b + tol:
+            regressions.append(
+                "(д) over-mask прозы[%s]: %d -> %d (+%d масок) — система закрыла "
+                "маской текст, который не является ни эталонной сущностью, ни "
+                "объявленным негативом (порча документа)" % (t, b, c, c - b))
+        elif c < b:
+            improvements.append("over-mask прозы[%s]: %d -> %d (-%d)" % (t, b, c, b - c))
+    b_tot, c_tot = baseline_prec["nothing_total"], current_prec["nothing_total"]
+    if c_tot > b_tot + tol:
+        regressions.append(
+            "(д) over-mask прозы[ВСЕГО]: %d -> %d (+%d масок)" % (b_tot, c_tot, c_tot - b_tot))
+    elif c_tot < b_tot:
+        improvements.append("over-mask прозы[ВСЕГО]: %d -> %d (-%d)"
+                            % (b_tot, c_tot, b_tot - c_tot))
+    return regressions, improvements
+
+
+# --------------------------------------------------------------------------- #
+#   Линия «е» (границы по НАПРАВЛЕНИЮ ошибки) — этап GATE-2                    #
+# --------------------------------------------------------------------------- #
+#: Что считаем и как называем в человеческом тексте регресса.
+_BND_METRICS = (
+    ("shorter", "недобор, сущностей", "under"),
+    ("under_chars", "недобор, символов", "under"),
+    ("longer", "перебор, сущностей", "over"),
+    ("over_chars", "перебор, символов", "over"),
+)
+
+
+def compare_boundaries(baseline_bnd, current_bnd, tol_under, tol_over):
+    """Линия «е». Две цены раздельно, по каждому типу и по агрегату:
+
+      НЕДОБОР — маска КОРОЧЕ эталона: часть значения осталась открытым текстом.
+                Это утечка ПДн.
+      ПЕРЕБОР — маска ДЛИННЕЕ эталона: закрыт лишний текст. Данные защищены,
+                документ хуже читается.
+
+    masking B (линия «г») видит только первое: маска шире эталона по B не
+    нарушение ВООБЩЕ (measure_lib.mc_check_bc), поэтому перебор мог расти
+    неограниченно при зелёном гейте. Отсюда отдельная линия.
+
+    Возвращает (regressions, improvements). Если поля нет в baseline или в
+    текущем прогоне — это РЕГРЕСС, а не молчание: линия, которой нечем мерить,
+    обязана сказать об этом вслух (тот же приём, что у masking в compare())."""
+    regressions, improvements = [], []
+    if not current_bnd["n_with_field"]:
+        regressions.append(
+            "(е) границы по направлению: в ТЕКУЩЕМ прогоне нет поля '%s' — дамп "
+            "снят до появления линии; перегоните корпус текущим run_measurement.py"
+            % ML.BND_FIELD)
+        return regressions, improvements
+    if not baseline_bnd["n_with_field"]:
+        regressions.append(
+            "(е) границы по направлению: в BASELINE нет поля '%s' — точка отсчёта "
+            "снята до появления линии, сравнивать не с чем. Пересоберите "
+            "results_baseline.json текущим run_measurement.py, иначе линия «е» слепа"
+            % ML.BND_FIELD)
+        return regressions, improvements
+
+    for t in list(ML.ALL_ENTITY_TYPES) + ["ВСЕГО"]:
+        if t == "ВСЕГО":
+            b, c = baseline_bnd["total"], current_bnd["total"]
+        else:
+            b = baseline_bnd["per_type"].get(t) or ML._empty_bnd()
+            c = current_bnd["per_type"].get(t) or ML._empty_bnd()
+        for key, label, side in _BND_METRICS:
+            tol = tol_under if side == "under" else tol_over
+            if c[key] > b[key] + tol:
+                regressions.append(
+                    "(е) границы[%s / %s]: %d -> %d (+%d) — %s"
+                    % (t, label, b[key], c[key], c[key] - b[key],
+                       "часть эталона осталась ОТКРЫТЫМ текстом (утечка)"
+                       if side == "under" else
+                       "маска закрыла лишний текст (порча читаемости)"))
+            elif c[key] < b[key]:
+                improvements.append("границы[%s / %s]: %d -> %d (-%d)"
+                                    % (t, label, b[key], c[key], b[key] - c[key]))
     return regressions, improvements
 
 
@@ -339,6 +460,8 @@ def evaluate(baseline_results, current_results, known_leaks_ids, cfg=GC):
     cur_agg = ML.aggregate_results(current_results)
     base_prec = ML.precision_by_type(baseline_results)
     cur_prec = ML.precision_by_type(current_results)
+    base_bnd = ML.boundaries_by_type(baseline_results)
+    cur_bnd = ML.boundaries_by_type(current_results)
 
     rows, regressions, improvements = compare(
         base_agg, cur_agg,
@@ -352,6 +475,15 @@ def evaluate(baseline_results, current_results, known_leaks_ids, cfg=GC):
     p_reg, p_imp = compare_precision(base_prec, cur_prec, cfg.PRECISION_TOLERANCE_PP)
     regressions += p_reg
     improvements += p_imp
+
+    o_reg, o_imp = compare_overmask(base_prec, cur_prec, cfg.OVERMASK_NOTHING_TOLERANCE)
+    regressions += o_reg
+    improvements += o_imp
+
+    e_reg, e_imp = compare_boundaries(
+        base_bnd, cur_bnd, cfg.BOUNDARY_UNDER_TOLERANCE, cfg.BOUNDARY_OVER_TOLERANCE)
+    regressions += e_reg
+    improvements += e_imp
 
     d_reg, d_warn, composition = compare_debt(
         baseline_results, current_results, known_leaks_ids, cfg.MISSED_LEAK_TOLERANCE)
@@ -376,6 +508,7 @@ def evaluate(baseline_results, current_results, known_leaks_ids, cfg=GC):
         "rows": rows, "composition": composition,
         "base_agg": base_agg, "cur_agg": cur_agg,
         "base_prec": base_prec, "cur_prec": cur_prec,
+        "base_bnd": base_bnd, "cur_bnd": cur_bnd,
     }
 
 
@@ -465,6 +598,60 @@ def print_masking_correctness(baseline_agg, current_agg):
           "в ячейке таблицы при сборке plain, само значение при этом цело." % (ch_b, ch_c))
 
 
+def print_overmask(base_prec, cur_prec, tol):
+    """Линия «д» отдельным блоком — не строкой-припиской к precision, как было
+    до этапа GATE-2 (тогда число печаталось, но ни с чем не сравнивалось)."""
+    print("\n(д) OVER-MASK ПРОЗЫ — маски, не легшие НИ на эталон, НИ на объявленный негатив")
+    print("  (порча документа: закрыт обычный текст. Допуск +%d по каждому типу и по агрегату)" % tol)
+    for t in ML.ALL_ENTITY_TYPES:
+        b = (base_prec["per_type"].get(t) or {}).get("nothing", 0)
+        c = (cur_prec["per_type"].get(t) or {}).get("nothing", 0)
+        if not b and not c:
+            continue
+        print("  %s %-10s %6d -> %-6d" % (_delta_mark(b, c), t, b, c))
+    print("  %s %-10s %6d -> %-6d"
+          % (_delta_mark(base_prec["nothing_total"], cur_prec["nothing_total"]),
+             "ВСЕГО", base_prec["nothing_total"], cur_prec["nothing_total"]))
+
+
+def print_boundaries(base_bnd, cur_bnd):
+    """Линия «е»: две цены раздельно. Печатается ВСЕГДА, в том числе когда
+    сравнивать не с чем, — число текущего прогона видно и в этом случае."""
+    print("\n(е) ГРАНИЦЫ ПО НАПРАВЛЕНИЮ ОШИБКИ — «короче эталона» и «длиннее эталона» раздельно")
+    print("  (недобор = часть значения открыта, УТЕЧКА; перебор = закрыт лишний текст, ПОРЧА)")
+    if not cur_bnd["n_with_field"]:
+        print("  НЕТ ДАННЫХ: в прогоне нет поля '%s' (дамп старше линии)." % ML.BND_FIELD)
+        return
+    if not base_bnd["n_with_field"]:
+        print("  BASELINE БЕЗ ПОЛЯ '%s' — сравнивать не с чем, ниже только текущие числа."
+              % ML.BND_FIELD)
+    head = "  %-10s | %13s | %13s | %13s | %13s" % (
+        "тип", "недобор шт", "недобор симв", "перебор шт", "перебор симв")
+    print(head)
+    print("  " + "-" * (len(head) - 2))
+    rows = list(ML.ALL_ENTITY_TYPES) + ["ВСЕГО"]
+    for t in rows:
+        if t == "ВСЕГО":
+            b, c = base_bnd["total"], cur_bnd["total"]
+        else:
+            b = base_bnd["per_type"].get(t) or ML._empty_bnd()
+            c = cur_bnd["per_type"].get(t) or ML._empty_bnd()
+        if not c["n"] and not b["n"]:
+            continue
+        cells = []
+        for key, _label, _side in _BND_METRICS:
+            cells.append("%s%5d->%-5d" % (_delta_mark(b[key], c[key]), b[key], c[key]))
+        print("  %-10s | %13s | %13s | %13s | %13s"
+              % (t, cells[0], cells[1], cells[2], cells[3]))
+    tot, tob = cur_bnd["total"], base_bnd["total"]
+    print("  сущностей с измеренной границей: %d -> %d; маска своего типа приписана: "
+          "%d -> %d; ровно по эталону: %d -> %d"
+          % (tob["n"], tot["n"], tob["assigned"], tot["assigned"], tob["exact"], tot["exact"]))
+    print("  КОНТЕКСТ (в линию «е» НЕ входит, это домен recall/утечки): без маски своего "
+          "типа %d -> %d сущностей, открыто символов %d -> %d"
+          % (tob["not_found"], tot["not_found"], tob["not_found_chars"], tot["not_found_chars"]))
+
+
 def print_debt(composition, kl_count):
     c = composition
     print("\n(5) ИЗВЕСТНЫЙ ДОЛГ — ADDRESS found=False & leak_v2 (реестр docs/known_leaks_stage_c.json)")
@@ -490,7 +677,8 @@ def main(argv=None):
     if argv and argv[0] == "--results":
         results_path = argv[1]
 
-    print("=== gate.py — ЕДИНЫЙ регресс-гейт (4 линии: precision / leak_v2 / masking A / masking B) ===\n")
+    print("=== gate.py — ЕДИНЫЙ регресс-гейт (6 линий: precision / leak_v2 / masking A / "
+          "masking B / over-mask прозы / границы по направлению) ===\n")
 
     ok_before, bad_before, n_checked = check_manifest()
     print(f"MANIFEST.sha256 (до прогона): {n_checked} файлов — {'OK' if ok_before else 'FAIL'}")
@@ -529,6 +717,8 @@ def main(argv=None):
     print_report(v["rows"], v["base_agg"], v["cur_agg"])
     print_precision(v["base_prec"], v["cur_prec"], GC.PRECISION_TOLERANCE_PP)
     print_masking_correctness(v["base_agg"], v["cur_agg"])
+    print_overmask(v["base_prec"], v["cur_prec"], GC.OVERMASK_NOTHING_TOLERANCE)
+    print_boundaries(v["base_bnd"], v["cur_bnd"])
     print_debt(v["composition"], kl_count)
 
     regressions = list(v["regressions"])
@@ -550,8 +740,9 @@ def main(argv=None):
             print("  - " + m)
         return 1
 
-    print("\nГейт ЗЕЛЁНЫЙ: регрессов не найдено по всем четырём линиям "
-          "(а precision / б leak_v2 / в masking A / г masking B) + креши/FP/MANIFEST/долг.")
+    print("\nГейт ЗЕЛЁНЫЙ: регрессов не найдено по всем шести линиям "
+          "(а precision по всем типам / б leak_v2 / в masking A / г masking B / "
+          "д over-mask прозы / е границы по направлению) + креши/FP/MANIFEST/долг.")
     return 0
 
 
