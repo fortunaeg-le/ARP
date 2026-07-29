@@ -230,6 +230,74 @@ _ADDR_INDEX_RE = re.compile(r"(?<!\d)\d{6}(?!\d)")
 _ADDR_HOUSENUM_RE = re.compile(r"^\d{1,4}(?:[/\-][\dа-яёa-z]{1,4})?[а-яёa-z]{0,2}$", re.I)
 
 
+# --- ЭТАП ADDR-B: аббревиатура = УСЕЧЕНИЕ полного адресного слова -------------
+#
+# ПРИЧИНА (разбор 30 худших случаев, experiments/stage_addr_b): «бул.» и «просп.»
+# не опознавались адресными маркерами НИГДЕ — ни в категоризации токена, ни в
+# границе предложения, ни в расширении краёв. Следствие было не косметическим:
+# «630099, Республика Татарстан, г. Новосибирск, бул. Кутузовский, вл. 69» ->
+# маска «Кутузовский, вл. 69…», а индекс, регион и город оставались ОТКРЫТЫМИ
+# (51 символ ПДн), потому что точка после «бул» читалась как граница предложения,
+# а слева расширение упиралось в «незнакомое строчное слово».
+#
+# Наборы выше уже содержали РУЧНЫЕ усечения («переул», «набережн», «помещен»,
+# «строен») — то есть механизм был, но заполнялся поимённо и потому дырявый.
+# Здесь он заменён ПРАВИЛОМ: русская аббревиатура — это начало слова, обрезанное
+# точкой. Токен, за которым СТОИТ ТОЧКА и который является СТРОГИМ началом
+# полного адресного слова, — тот же маркер, что это слово.
+#
+# Ограничения правила названы явно (иначе оно ловило бы прозу):
+#   * только при точке следом — без точки это обычное слово, не аббревиатура;
+#   * длина >= _ADDR_ABBR_MIN (2): ОДНОбуквенные («г.», «д.», «к.», «т.»)
+#     остаются на прежнем ЯВНОМ списке — одна буква с точкой это и предлог, и
+#     инициал, и «т. е.», правилу её отдавать нельзя. Порог именно 2, а не 3,
+#     потому что «вл.» (владение) встречается в корпусе 128 раз и без него
+#     адрес, КОНЧАЮЩИЙСЯ на «вл. 7», терял хвост. Риск порога 2 измерен по
+#     тексту корпуса: двухбуквенных токенов с точкой девять видов — «кв. рф.
+#     см. вл. ул. оф. уч. им. рп.», из них началом полного адресного слова
+#     являются только адресные же («кв.», «вл.», «ул.», «оф.», «уч.»);
+#   * полное слово — длиной >= _ADDR_FULL_MIN (5), иначе «кра.» от «край» и
+#     «сел.» от «село» делали бы маркер из трёхбуквенного огрызка почти любого
+#     слова;
+#   * усечение СТРОГОЕ (короче полного слова) — полные слова уже в наборах.
+_ADDR_ABBR_MIN = 2
+_ADDR_FULL_MIN = 5
+
+
+def _full_words(*sets):
+    """Полные (не усечённые) слова наборов — база для правила аббревиатуры."""
+    return frozenset(w for s in sets for w in s
+                     if len(w) >= _ADDR_FULL_MIN and w.isalpha())
+
+
+_ADDR_FULL_BY_CAT = (
+    ("street", _full_words(_ADDR_STREET_MK)),
+    ("premise", _full_words(_ADDR_PREMISE_MK)),
+    ("locality", _full_words(_ADDR_LOCALITY_MK)),
+)
+
+
+def _addr_abbrev_cat(core: str):
+    """Категория маркера для АББРЕВИАТУРЫ core (без точки, в нижнем регистре):
+    строгое начало полного адресного слова -> категория этого слова, иначе None.
+    Вызывающий обязан сам убедиться, что за токеном стоит точка."""
+    if len(core) < _ADDR_ABBR_MIN or not core.isalpha():
+        return None
+    for cat, words in _ADDR_FULL_BY_CAT:
+        for w in words:
+            if len(core) < len(w) and w.startswith(core):
+                return cat
+    return None
+
+
+def _addr_dotted_abbrev_cat(tok: str):
+    """То же для токена «как он в тексте»: маркер, только если токен КОНЧАЕТСЯ
+    точкой («бул.»). Нужен расширению краёв, где токен приходит вместе с точкой."""
+    if not tok.endswith("."):
+        return None
+    return _addr_abbrev_cat(tok.strip(" \t.,;:()«»\"'").lower())
+
+
 def _addr_marker_cat(tok: str, next_is_digit: bool, had_dot: bool):
     """Категория адресного маркера токена: 'street'|'premise'|'locality'|None.
     «д.» перед числом — дом (premise), «д.» перед именем — деревня (locality); «к.»
@@ -249,7 +317,7 @@ def _addr_marker_cat(tok: str, next_is_digit: bool, had_dot: bool):
         return "premise"
     if core in _ADDR_LOCALITY_MK:
         return "locality"
-    return None
+    return _addr_abbrev_cat(core) if had_dot else None
 
 
 def _addr_scan_tokens(text: str, s: int, e: int):
@@ -393,6 +461,11 @@ def _addr_split_sentences(text: str, s: int, e: int):
             is_abbr = (
                 (word in _ADDR_ABBR_BEFORE_DOT and not word.isdigit())
                 or (len(word) == 1 and word.isalpha())
+                # ЭТАП ADDR-B: усечение полного адресного слова — такая же
+                # аббревиатура, как явно перечисленные («бул.», «просп.»).
+                # Без этого точка в «бул. Кутузовский» рвала адрес пополам, и
+                # левая половина (индекс+регион+город) оставалась открытой.
+                or _addr_abbrev_cat(word) is not None
             )
             if word and not is_abbr and nxt_upper:
                 boundary = True
@@ -424,7 +497,24 @@ def _addr_strip_edges(text: str, s: int, e: int) -> tuple[int, int]:
     пунктуацию. Внутренность и правый край НЕ трогаем: _build_address_spans уже
     останавливает расширение на стоп-словах, а над-закрытие метки золотой контракт
     допускает. Ведущий строчный токен снимаем, лишь если он НЕ маркер, НЕ топоним
-    (Titlecase), НЕ число — то есть предлог/метка/глагол."""
+    (Titlecase), НЕ число — то есть предлог/метка/глагол.
+
+    ЭТАП ADDR-B, две правки — обе про НЕДОБОР (маска короче эталона = утечка):
+
+    (1) АБОНЕНТСКИЙ ЯЩИК. «а/я 27, г. Одинцово, 143000» -> обрезка снимала «а/я »
+        (114 адресов корпуса): её токенизатор видит «а» и «я» как два отдельных
+        односимвольных слова — не маркер, не топоним, не число, — и честно
+        принимал их за метку. Правило то же, по которому а/я СЧИТАЕТСЯ ЯКОРЕМ в
+        _addr_span_strong (_ADDR_PO_BOX_RE): раз конструкция признана адресной,
+        обрезка не имеет права резать сквозь её начало.
+
+    (2) ТОЧКА АББРЕВИАТУРЫ НА ХВОСТЕ. «…, Московская обл.» -> обрезка снимала
+        точку (187 адресов), эталон её содержит, и маска оказывалась короче на
+        символ: ПДн это не раскрывает, но masking B (границы) считает эталон
+        незакрытым. Точка возвращается ТОЛЬКО когда она принадлежит адресной
+        аббревиатуре («обл.», «стр.»); после НОМЕРА («…, д. 5.») точка остаётся
+        снаружи — там она конец предложения, ровно как её читает
+        _addr_split_sentences."""
     toks = _addr_scan_tokens(text, s, e)
     i = 0
     while i < len(toks):
@@ -432,13 +522,42 @@ def _addr_strip_edges(text: str, s: int, e: int) -> tuple[int, int]:
         if cat or is_num or is_cap or _addr_is_marker_word(w):
             break
         i += 1
-    if i >= len(toks):
+    ns = toks[i][0] if i < len(toks) else s
+    box = _ADDR_PO_BOX_RE.search(text, s, e)
+    if box is not None and box.start() < ns:
+        ns = box.start()                      # (1) не режем сквозь «а/я»
+    elif i >= len(toks):
         return s, s
-    ns = toks[i][0]
     ne = e
     while ne > ns and text[ne - 1] in " \t.,;:":
         ne -= 1
+    if ne < e and text[ne] == ".":            # (2) точка адресной аббревиатуры
+        tail = _addr_scan_tokens(text, ns, ne)
+        if tail and tail[-1][3] is not None and tail[-1][1] == ne:
+            ne += 1
     return ns, ne
+
+
+def _addr_cut_label(text: str, s: int, e: int) -> tuple[int, int]:
+    """ЭТАП ADDR-B, ПЕРЕБОР. Срезает ведущую МЕТКУ ПОЛЯ по двоеточию.
+
+    _addr_strip_edges снимает ведущий токен, только если он строчный: метка с
+    заглавной («Почтовый адрес: Химки Баумана 75/3 кв 69») выглядит для неё
+    топонимом, и 35 масок корпуса начинались с метки. Признак структурный, а не
+    словарный: двоеточие — конец имени поля, а в САМОМ адресе его не бывает
+    (проверено на эталоне: 0 из 1308 адресов содержат ':').
+
+    Режем по ПОСЛЕДНЕМУ двоеточию и только если остаток САМ держит сильный якорь:
+    иначе спан осыпался бы в ничто, а потеря детекции дороже лишней метки."""
+    k = text.rfind(":", s, e)
+    if k < 0:
+        return s, e
+    ns = k + 1
+    while ns < e and text[ns] in " \t":
+        ns += 1
+    if ns >= e or not _addr_span_strong(text, ns, e):
+        return s, e
+    return ns, e
 
 
 def _finalize_address_spans(text, raw_spans, occupied):
@@ -457,6 +576,8 @@ def _finalize_address_spans(text, raw_spans, occupied):
             if occupied:
                 ts, te = _clip_edges(ts, te, occupied)
                 ts, te = _addr_strip_edges(text, ts, te)   # снять край, оголённый подрезкой
+            if ts < te:
+                ts, te = _addr_cut_label(text, ts, te)
             if ts < te and _addr_span_strong(text, ts, te):
                 out.append((ts, te))
     return out
@@ -532,6 +653,8 @@ def _classify_addr_token(tok: str) -> str:
     low = core.lower().rstrip(".")
     if low in _ADDR_MARKER_WORDS:
         return "addr"                         # адресный маркер (тип улицы/дома/поселения)
+    if _addr_dotted_abbrev_cat(tok) is not None:
+        return "addr"                         # усечение полного адресного слова («бул.»)
     if core[0].isupper():
         return "addr"                         # топоним / название улицы (имя собственное)
     return "stop"                             # слово нижнего регистра, не маркер — конец адреса
@@ -586,6 +709,8 @@ def _classify_addr_left_token(tok: str) -> str:
     low = core.lower().rstrip(".")
     if low in _ADDR_MARKER_WORDS or low in _ADDR_LEFT_WORDS:
         return "commit"
+    if _addr_dotted_abbrev_cat(tok) is not None:
+        return "commit"                       # усечение полного адресного слова («просп.»)
     if core[0].isupper():
         return "pass"
     return "stop"
