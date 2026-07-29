@@ -305,6 +305,67 @@ def test_no_crash_stays_green_on_condition_1():
 
 
 # --------------------------------------------------------------------------- #
+#   ЭТАП T2-INN — НОВЫЙ ТИП ПОД ОХРАНОЙ (тип, на котором гейт ни разу не       #
+#   краснел, охраняется только на словах)                                      #
+# --------------------------------------------------------------------------- #
+def _inn_pair():
+    """Зелёная пара с ОБОИМИ типами ИНН: организации (10 цифр) и человека (12)."""
+    results = [
+        _doc("doc_inn",
+             entities=[_entity("INN", "7707083893"), _entity("INN_PER", "500100732259")],
+             masks=[_mask("INN", "7707083893"), _mask("INN_PER", "500100732259")]),
+    ]
+    return results, copy.deepcopy(results)
+
+
+def test_t2_new_inn_type_is_green_when_nothing_changed():
+    baseline, current = _inn_pair()
+    v = _verdict(baseline, current)
+    assert not v["red"], "Гейт красный на идентичных прогонах с INN_PER: %s" % _reasons(v)
+
+
+def test_t2_leak_of_the_person_inn_reddens_line_b():
+    """Утечка ИНН ФИЗЛИЦА обязана краснить линию «б» ИМЕННО под своим именем.
+    До этапа T2-INN такой утечки не существовало как отдельного события: она
+    растворялась в общей строке INN вместе с ИНН организаций."""
+    baseline, current = _inn_pair()
+    current[0]["entities"][1]["leak_v2"] = {"status": "full", "fragments": ["500100732259"],
+                                            "window_len": 12, "core_len": 12}
+
+    v = _verdict(baseline, current)
+
+    assert v["red"], "Новая утечка INN_PER не покраснела: %s" % v
+    assert any(r.startswith("(б) INN_PER[leak_v2>=6]") for r in v["regressions"]),         "Красный не по линии «б» для INN_PER: %s" % _reasons(v)
+
+
+def test_t2_broken_round_trip_of_the_person_inn_reddens_line_v():
+    """Линия «в» по типу: значение нового типа перестало восстанавливаться."""
+    baseline, current = _inn_pair()
+    current[0]["masks"][1]["a_ok"] = False
+
+    v = _verdict(baseline, current)
+
+    assert v["red"], "Сломанный round-trip INN_PER не покраснел: %s" % v
+    assert any("INN_PER" in r and "round-trip" in r for r in v["regressions"]), _reasons(v)
+
+
+def test_t2_mask_of_the_person_inn_on_a_negative_counts_as_fp():
+    """Условие 3 — единственная линия, охраняющая ТОЧНОСТЬ нового типа: линия
+    «а» держит только NER-хребет (ORG/PER/ADDRESS), реквизиты в неё не входят
+    (см. docs/T2_INN_REPORT §1г). Проверяем, что хотя бы общий счёт FP его
+    ловит, — иначе тип не охраняется по точности ВООБЩЕ."""
+    baseline, current = _inn_pair()
+    current[0]["false_positives"].append(
+        _fp("INN_PER", "18210102010011000110", on_negative="КБК — не ПДн"))
+
+    v = _verdict(baseline, current)
+
+    assert v["red"], "Ложная маска INN_PER на негативе не покраснела: %s" % v
+    assert any(r.startswith("(3) FP по негативам") for r in v["regressions"]), _reasons(v)
+    assert not any(r.startswith("(а) precision[INN_PER]") for r in v["regressions"]),         "Линия «а» неожиданно охватила реквизитный тип — обновите §1г отчёта T2-INN"
+
+
+# --------------------------------------------------------------------------- #
 #      УСЛОВИЕ 5 — известный долг + ДИАГНОСТИКА СОСТАВА (перенос из этапа D)   #
 # --------------------------------------------------------------------------- #
 def _debt_entity(text):

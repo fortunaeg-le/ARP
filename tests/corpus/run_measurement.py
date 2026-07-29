@@ -41,7 +41,7 @@ from detokenizer import detokenize  # noqa: E402
 CONFIG = os.path.join(ROOT, "entity_types.yaml")
 GOLD = os.path.join(HERE, "gold.json")
 DOCS = os.path.join(HERE, "docs")
-COMMIT = "tgolda"  # этап T-GOLD-A (суммы -> эталон); НЕ перезатираем results_baseline.json
+COMMIT = "t2inn"  # этап T2-INN (два типа ИНН); НЕ перезатираем results_baseline.json
 OUT = os.path.join(HERE, f"results_{COMMIT}.json")
 
 # INN_PER (ИНН физлица, 12 цифр) — этап T2-INN: тот же числовой класс, что INN,
