@@ -171,8 +171,8 @@ def test_cli_ui_parity_byte_identical(tmp_path):
     # набор пришпилен к «Максимуму» (умолчание с T1 — только персональные данные,
     # ORG в него не входит). Обе точки входа читают ОДИН и тот же файл настроек,
     # так что паритет проверяется вместе с политикой, а не в обход неё.
-    import conftest
-    conftest.pin_all_types(home)
+    from testlib_policy import pin_all_types
+    pin_all_types(home)
     env = dict(os.environ, PYTHONIOENCODING="utf-8",
                USERPROFILE=str(home), HOME=str(home))
 

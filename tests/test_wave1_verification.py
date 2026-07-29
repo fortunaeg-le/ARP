@@ -343,8 +343,8 @@ SHIFRATOR = str(_PROJECT_ROOT / "shifrator.py")
 def _run_cli(args, tmp_path, cwd=None):
     import os as _os
 
-    import conftest
-    conftest.pin_all_types(tmp_path / "home")   # ЭТАП T1: набор «Максимум», см. conftest
+    from testlib_policy import pin_all_types
+    pin_all_types(tmp_path / "home")   # ЭТАП T1: набор «Максимум», см. testlib_policy
     env = dict(
         _os.environ, PYTHONIOENCODING="utf-8",
         USERPROFILE=str(tmp_path / "home"), HOME=str(tmp_path / "home"),

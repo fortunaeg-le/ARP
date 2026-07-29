@@ -10,7 +10,7 @@ import sys
 
 import pytest
 
-import conftest
+from testlib_policy import pin_all_types
 
 SHIFRATOR = os.path.join(
     os.path.dirname(os.path.dirname(os.path.abspath(__file__))), "shifrator.py"
@@ -20,8 +20,8 @@ SHIFRATOR = os.path.join(
 def _run(args, tmp_path, stdin_text=None):
     # ЭТАП T1: тесты CLI проверяют КОНВЕЙЕР (какие маски встали, round-trip), а не
     # набор типов по умолчанию — набор пришпилен к «Максимуму» настоящим файлом
-    # настроек в подменённом HOME (см. conftest.pin_all_types).
-    conftest.pin_all_types(tmp_path / "home")
+    # настроек в подменённом HOME (см. testlib_policy.pin_all_types).
+    pin_all_types(tmp_path / "home")
     env = dict(os.environ, PYTHONIOENCODING="utf-8", USERPROFILE=str(tmp_path / "home"), HOME=str(tmp_path / "home"))
     return subprocess.run(
         [sys.executable, SHIFRATOR] + args,

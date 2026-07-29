@@ -56,7 +56,7 @@ import sys
 
 import pytest
 
-import conftest
+from testlib_policy import pin_all_types
 
 _PROJECT_ROOT = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 _CORPUS_DIR = os.path.join(_PROJECT_ROOT, "tests", "corpus")
@@ -99,7 +99,7 @@ def encrypt_doc(tmp_path_factory):
         # ЭТАП T1: контракты этого файла — про ДЕТЕКТОРЫ (ИНН с битой КС, СНИЛС,
         # разрыв через ячейку), а не про набор типов по умолчанию. Набор пришпилен
         # к «Максимуму» тем же файлом настроек, которым пользуется человек.
-        conftest.pin_all_types(home)
+        pin_all_types(home)
         env = dict(os.environ, PYTHONIOENCODING="utf-8",
                    USERPROFILE=str(home), HOME=str(home))
         args = [sys.executable, _SHIFRATOR, "encrypt", path]

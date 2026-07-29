@@ -17,7 +17,7 @@ import sys
 
 import pytest
 
-import conftest
+from testlib_policy import pin_all_types
 from docx import Document
 
 SHIFRATOR = os.path.join(
@@ -32,7 +32,7 @@ ZONE_PII = "Смирнов Пётр Иванович, ИНН 7707083893"
 def _run(args, tmp_path):
     env = dict(os.environ, PYTHONIOENCODING="utf-8",
                USERPROFILE=str(tmp_path / "home"), HOME=str(tmp_path / "home"))
-    conftest.pin_all_types(tmp_path / "home")   # ЭТАП T1: набор «Максимум», см. conftest
+    pin_all_types(tmp_path / "home")   # ЭТАП T1: набор «Максимум», см. testlib_policy
     return subprocess.run(
         [sys.executable, SHIFRATOR] + args,
         capture_output=True, text=True, encoding="utf-8",
