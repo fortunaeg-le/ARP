@@ -660,27 +660,85 @@ def _classify_addr_token(tok: str) -> str:
     return "stop"                             # слово нижнего регистра, не маркер — конец адреса
 
 
+def _addr_token_is_type_word(tok: str) -> bool:
+    """Токен — АДРЕСНОЕ ТИПОВОЕ СЛОВО (улица/помещение/поселение), полное или
+    усечённое точкой. Уже: не всякий «адресный» токен, а именно тот, за которым
+    по построению стоит ЗНАЧЕНИЕ (название или номер). Страна/«рф»/цифры сюда
+    НЕ входят — иначе правило «маркер требует значения» ниже разрешило бы
+    впитывать слово после чего угодно."""
+    core = tok.strip(" \t.,;:()«»\"'")
+    if not core or any(ch.isdigit() for ch in core):
+        return False
+    low = core.lower().rstrip(".")
+    if low in _ADDR_STREET_MK or low in _ADDR_PREMISE_MK or low in _ADDR_LOCALITY_MK:
+        return True
+    if low in _ADDR_SHORT_MK and tok.rstrip(" ,").endswith("."):
+        return True
+    return _addr_dotted_abbrev_cat(tok) is not None
+
+
+# ЭТАП ADDR-B: МАРКЕР ТРЕБУЕТ ЗНАЧЕНИЯ.
+#
+# ПРИЧИНА. Классификация края смотрит на РЕГИСТР: строчное незнакомое слово —
+# «конец адреса». На документах с испорченным регистром (мутации case/combo, а в
+# жизни — просто набранный строчными реквизит) это рвало адрес прямо посреди
+# конструкции «тип + значение»: «…, стр. 2, пом. vii» -> маска обрывалась на
+# «пом», «пом. vii» оставалось открытым; «просп. ленинградская» -> название
+# улицы открыто.
+#
+# ПРАВИЛО. Значение непосредственно ПОСЛЕ адресного типового слова принадлежит
+# адресу независимо от регистра и алфавита: «пом.» без своего номера бессмысленно.
+# Ограничения, чтобы правило не стало «глотаем ещё одно слово всегда»:
+#   * ровно ОДИН токен — маркер требует одного значения, а не хвоста прозы;
+#   * между маркером и значением НЕ должно быть запятой (запятая заканчивает
+#     компонент адреса: «обл., дмитровский р-н» — «дмитровский» уже не значение
+#     «обл.»);
+#   * типовым словом считается только улица/помещение/поселение
+#     (_addr_token_is_type_word), не страна и не число.
+_ADDR_ARG_SEP = ","
+
+
+def _addr_tail_type_word_end(text: str, end: int) -> int | None:
+    """Конец АДРЕСНОГО ТИПОВОГО СЛОВА, если спан обрывается сразу на нём
+    («…, стр. 2, пом» -> позиция после «пом»). Иначе None."""
+    last = None
+    for m in _ADDR_TOKEN_RE.finditer(text, max(0, end - 24), end):
+        last = m
+    if last is None or last.end() != end:
+        return None
+    return end if _addr_token_is_type_word(last.group(0)) else None
+
+
 def _expand_addr_right(text: str, end: int, occupied=()) -> int:
     """Тянет правый край адреса по адресным токенам, НИКОГДА не сужая.
     Останавливается на первом не-адресном слове, на пределе _ADDR_EXPAND_MAX
     или ВПЛОТНУЮ ДО начала чужой сущности (occupied): расширение не наступает на
     территорию, уже занятую regex/PER/ORG-токеном — там ничего не утекает, зона
     покрыта другим токеном. Асимметрия «при сомнении шире» действует только на
-    свободном тексте между концом адреса и началом чужой сущности."""
+    свободном тексте между концом адреса и началом чужой сущности.
+
+    Исключение — «маркер требует значения» (см. блок выше): один токен после
+    адресного типового слова берём, даже если он строчный/латинский."""
     p = end
     limit = min(len(text), end + _ADDR_EXPAND_MAX)
+    marker_end = _addr_tail_type_word_end(text, end)
     while p < len(text):
         m = _ADDR_TOKEN_FWD_RE.match(text, p)
         if m is None or m.start(1) >= limit:
             break
         if _overlaps_any(m.start(1), m.end(1), occupied):
             break                                 # уткнулись в чужую сущность — стоп
-        cls = _classify_addr_token(m.group(1))
+        tok = m.group(1)
+        cls = _classify_addr_token(tok)
         if cls == "stop":
-            break
+            if marker_end is None or _ADDR_ARG_SEP in text[marker_end:m.start(1)]:
+                break
+            cls = "addr"                          # значение своего маркера
         p = m.end(1)
         if cls == "addr":
             end = p
+        if cls != "skip":                         # «.» между «пом» и «vii» — не сброс
+            marker_end = m.end(1) if _addr_token_is_type_word(tok) else None
     return end
 
 
@@ -725,13 +783,25 @@ def _expand_addr_left(text: str, start: int, occupied=()) -> int:
     bound = max(0, start - _ADDR_EXPAND_MAX)
     prefix = text[bound:start]
     new_start = start
-    for m in reversed(list(_ADDR_TOKEN_RE.finditer(prefix))):
+    toks = list(_ADDR_TOKEN_RE.finditer(prefix))
+    for i in range(len(toks) - 1, -1, -1):
+        m = toks[i]
         abs_s, abs_e = bound + m.start(), bound + m.end()
         if _overlaps_any(abs_s, abs_e, occupied):
             break                                 # уткнулись в чужую сущность — стоп
         cls = _classify_addr_left_token(m.group(0))
         if cls == "stop":
-            break
+            # «маркер требует значения», зеркально правому расширению: слово
+            # слева-вплотную от которого стоит адресное типовое слово — это его
+            # ЗНАЧЕНИЕ («просп. ленинградская»), и регистр тут ни при чём.
+            # Не фиксируем ('pass'): войдёт, только если сам маркер левее
+            # окажется 'commit' — так одиночное строчное слово границу не двигает.
+            left = toks[i - 1] if i else None
+            if (left is None
+                    or not _addr_token_is_type_word(left.group(0))
+                    or _ADDR_ARG_SEP in prefix[left.end():m.start()]):
+                break
+            cls = "pass"
         if cls == "commit":
             new_start = abs_s
         # 'pass': идём влево, не фиксируя (впитается ретроспективно при commit)
