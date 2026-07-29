@@ -302,24 +302,25 @@ def test_report_guard_is_red_on_a_field_outside_the_whitelist():
         report.assert_structural({"policy": {"profile": "мой_личный_набор"}})
 
 
-@pytest.mark.xfail(strict=True, reason="находка T1-A: латинский ключ проходит сторожа "
-                                       "через ветку слага сборки (_BUILD_RE)")
 def test_report_guard_should_also_catch_a_latin_field_outside_the_whitelist():
-    """НАХОДКА T1-A (пред-существующая, этап U4; НЕ внесена T1).
+    """НАХОДКА T1-A — ЗАКРЫТА этапом U4-FIX, метка xfail снята.
 
-    `_string_ok` пропускает любую строку, совпавшую с `_BUILD_RE`
+    Было: `_string_ok` пропускал любую строку, совпавшую с `_BUILD_RE`
     (`^[A-Za-z0-9][A-Za-z0-9._-]{0,63}$`), — ветка заведена под слаг сборки, но
-    применяется к КАЖДОЙ строке отчёта и к каждому ключу. Поэтому поле, которого
-    нет ни в одном белом списке, проходит сторожа, если названо латиницей; и,
+    применялась к КАЖДОЙ строке отчёта и к каждому ключу. Поэтому поле, которого
+    нет ни в одном белом списке, проходило сторожа, если названо латиницей; и,
     что важнее, латинское имя файла («dogovor.docx») в качестве ЗНАЧЕНИЯ тоже
-    прошло бы. Кириллический текст документа сторож ловит, латинский — нет.
+    прошло бы. Кириллический текст документа сторож ловил, латинский — нет.
 
-    Тест намеренно красный (xfail strict): станет зелёным — значит дыру закрыли,
-    метку снять."""
+    Стало: ветка слага привязана к МЕСТУ в схеме (`tool_build`,
+    `findings[].build`, ключи `by_build`). Полный маркерный набор —
+    `tests/test_u4_report.py::test_guard_rejects_marker_everywhere`."""
     import report
 
     with pytest.raises(report.ReportLeakError):
         report.assert_structural({"totally_new_field": 1})
+    with pytest.raises(report.ReportLeakError):
+        report.assert_structural({"scope": "dogovor.docx"})
 
 
 def test_report_policy_block_says_mixed_when_documents_disagree():

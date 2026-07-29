@@ -337,6 +337,77 @@ def test_guard_rejects_prose_not_from_module_constants(iso_store):
         report_mod.assert_structural(r)
 
 
+# --------------------------------------------------------------------------- #
+# ЭТАП U4-FIX (находка T1-A) — маркерный тест САМОГО ЧАСОВОГО.
+#
+# Приём тот же, что у теста на утечку выше: кладём в отчёт заведомые маркеры и
+# требуем, чтобы они не прошли. Разница в том, ЧТО проверяется: там — что сборка
+# отчёта маркер не кладёт, здесь — что часовой его не пропустит, если положат.
+#
+# Латинские маркеры подобраны ПО ФОРМЕ слага сборки (`^[A-Za-z0-9][A-Za-z0-9._-]*$`):
+# именно они и проходили насквозь до починки — ветка слага применялась к каждой
+# строке отчёта, а не только к полю сборки. «dogovor.docx» — имя файла,
+# «Ivanov-Petrov» — фамилия транслитом, «sberbank.ru» — домен.
+# --------------------------------------------------------------------------- #
+
+#: (описание, строка) — маркер в пяти видах из постановки.
+_GUARD_MARKERS = [
+    ("маркер целиком",                MARK_PERSON),
+    ("маркер в другом регистре",      MARK_PERSON.lower()),
+    ("подстрока маркера (6 символов)", MARK_PERSON[3:3 + _WINDOW]),
+    ("маркер латиницей (имя файла)",  "dogovor.docx"),
+    ("маркер латиницей (транслит)",   "Ivanov-Petrov"),
+    ("маркер латиницей (домен)",      "sberbank.ru"),
+    ("маркер кириллицей",             MARK_ORG),
+]
+
+#: (описание, как внести) — все три способа строке оказаться в отчёте.
+_GUARD_PLACES = [
+    ("значением поля находки", lambda r, s: r["findings"][0].__setitem__("entity_type", s)),
+    ("ключом словаря",         lambda r, s: r["by_type"].__setitem__(s, {"masks": 1})),
+    ("элементом списка",       lambda r, s: r["limitations"].append(s)),
+    ("новым полем отчёта",     lambda r, s: r.__setitem__(s, 1)),
+]
+
+
+@pytest.mark.parametrize("place", [p[0] for p in _GUARD_PLACES])
+@pytest.mark.parametrize("marker", [m[0] for m in _GUARD_MARKERS])
+def test_guard_rejects_marker_everywhere(iso_store, marker, place):
+    """U4-FIX: маркер обязан быть отсечён В ЛЮБОМ ВИДЕ И В ЛЮБОМ МЕСТЕ отчёта.
+
+    КРАСНОЕ СОСТОЯНИЕ (возврат старого поведения): убрать привязку ветки слага
+    к месту, то есть вернуть в `report._string_ok` безусловное
+    `if _BUILD_RE.match(s): return True` — тогда все латинские случаи здесь
+    зеленеть перестанут (проверено, см. отчёт этапа U4-FIX)."""
+    string = dict(_GUARD_MARKERS)[marker]
+    mutate = dict(_GUARD_PLACES)[place]
+
+    _seed_known_answer()
+    r = report_mod.build_report("all")
+    mutate(r, string)
+    with pytest.raises(report_mod.ReportLeakError):
+        report_mod.assert_structural(r)
+
+
+def test_guard_still_lets_the_build_slug_through_where_it_belongs(iso_store):
+    """Обратная сторона починки: слаг сборки — ЕДИНСТВЕННАЯ строка отчёта, которую
+    нельзя перечислить заранее, и в своих трёх местах он обязан проходить. Иначе
+    «починка» свелась бы к запрету латиницы вообще и сломала реальный отчёт."""
+    _seed_known_answer()
+    r = report_mod.build_report("all")
+    assert r["tool_build"], "в отчёте обязан быть слаг сборки"
+    assert r["findings"][0]["build"] == "u4-test-build"
+    assert "u4-test-build" in r["by_build"]
+    report_mod.assert_structural(r)          # исходный отчёт проходит
+
+    # ... и ровно тот же слаг НЕ проходит там, где ему не место.
+    slug = r["findings"][0]["build"]
+    r2 = report_mod.build_report("all")
+    r2["scope"] = slug
+    with pytest.raises(report_mod.ReportLeakError):
+        report_mod.assert_structural(r2)
+
+
 def test_guard_error_message_does_not_echo_the_offending_text(iso_store):
     """Часовой, ловящий вынос текста, НЕ ИМЕЕТ ПРАВА выносить его сам — ни
     значением, ни ключом. Сообщение уходит на экран через server.py, а оттуда —

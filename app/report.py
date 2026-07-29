@@ -30,8 +30,10 @@
      кодом, а не пронесённые из данных.
   3. СТРУКТУРНЫЙ ЧАСОВОЙ (`assert_structural`). Готовый отчёт обходится целиком,
      и КАЖДАЯ строка — и ключи, и значения — обязана принадлежать закрытому
-     множеству: словарь кодов, схемные ключи, ISO-дата, слаг сборки, либо
-     дословно один из текстов-констант этого модуля (`_FIXED_PROSE`). Иначе
+     множеству: словарь кодов, схемные ключи, ISO-дата, либо дословно один из
+     текстов-констант этого модуля (`_FIXED_PROSE`); свободная форма разрешена
+     ровно одна — слаг сборки, и только в трёх местах схемы, где он и живёт
+     (`tool_build`, `findings[].build`, ключи `by_build`), см. U4-FIX. Иначе
      `ReportLeakError` и отчёт не отдаётся вообще. Если завтра кто-то допишет в
      находку поле с фрагментом текста — упадёт здесь, а не у клиента.
 
@@ -613,16 +615,40 @@ _ALLOWED_VALUES = frozenset(
 )
 
 
-def _string_ok(s: str, *, as_key: bool) -> bool:
+#: ЭТАП U4-FIX (находка T1-A). Слаг сборки — ЕДИНСТВЕННАЯ строка отчёта,
+#: которую нельзя перечислить заранее: он приходит из версии инструмента. Поэтому
+#: под него заведена ветка-регексп `_BUILD_RE` — и раньше она применялась к
+#: КАЖДОМУ ключу и КАЖДОМУ значению, то есть открывала часового для любой
+#: латиницы: имени файла («dogovor.docx»), домена, названия организации
+#: латиницей, фамилии транслитом, любого нового поля с латинским именем.
+#: Теперь ветка привязана к МЕСТУ: разрешена ровно в тех трёх точках схемы, ради
+#: которых заведена, и нигде больше. Место задаётся путём обхода (`_walk`), а не
+#: содержимым строки — подсунуть текст документа «под видом сборки» можно только
+#: положив его именно в это поле, а туда кладёт `_norm_build`.
+_BUILD_VALUE_PATHS = frozenset({"report.tool_build"})
+_BUILD_VALUE_PATH_RE = re.compile(r"^report\.findings\[\d+\]\.build$")
+#: Ключи разбивки по сборкам — сами слаги сборок (`report.by_build` — словарь
+#: «слаг -> счётчики»), поэтому здесь ветка нужна для КЛЮЧА, а не для значения.
+_BUILD_KEY_PARENT = "report.by_build"
+
+
+def _build_slug_allowed(path: str, *, as_key: bool) -> bool:
+    """Разрешена ли в ЭТОМ месте схемы строка-слаг сборки."""
+    if as_key:
+        return path == _BUILD_KEY_PARENT
+    return path in _BUILD_VALUE_PATHS or bool(_BUILD_VALUE_PATH_RE.match(path))
+
+
+def _string_ok(s: str, *, as_key: bool, path: str) -> bool:
     if as_key and s in _SCHEMA_KEYS:
         return True
     if s in _ALLOWED_VALUES:
         return True
     if not as_key and s in _FIXED_PROSE:
         return True
-    if _ISO_RE.match(s):
+    if not as_key and _ISO_RE.match(s):
         return True
-    if _BUILD_RE.match(s):
+    if _build_slug_allowed(path, as_key=as_key) and _BUILD_RE.match(s):
         return True
     return False
 
@@ -648,7 +674,7 @@ def _walk(node, path: str) -> None:
         for key, value in node.items():
             if not isinstance(key, str):
                 raise ReportLeakError(f"{path}: нестроковый ключ типа {type(key).__name__}")
-            if not _string_ok(key, as_key=True):
+            if not _string_ok(key, as_key=True, path=path):
                 raise ReportLeakError(
                     f"{path}: ключ вне закрытого словаря отчёта "
                     f"(длина {len(key)}) — возможен вынос текста документа наружу"
@@ -658,7 +684,7 @@ def _walk(node, path: str) -> None:
         for i, item in enumerate(node):
             _walk(item, f"{path}[{i}]")
     elif isinstance(node, str):
-        if not _string_ok(node, as_key=False):
+        if not _string_ok(node, as_key=False, path=path):
             raise ReportLeakError(
                 f"{path}: строка вне закрытого словаря отчёта "
                 f"(длина {len(node)}) — возможен вынос текста документа наружу"
