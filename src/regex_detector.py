@@ -51,8 +51,32 @@ def ogrn_checksum(value: str) -> bool:
     return False
 
 
+def inn10_checksum(value: str) -> bool:
+    """КС ИНН ЮРИДИЧЕСКОГО ЛИЦА — ровно 10 знаков (этап T2-INN).
+
+    Длина проверяется ЗДЕСЬ, а не только паттерном: у 10- и 12-значного ИНН
+    РАЗНЫЕ алгоритмы (одно контрольное число против двух), и после разделения
+    типов каждый тип обязан звать СВОЙ. Прибитая к длине проверка не даёт
+    будущему ослаблению паттерна тихо отдать 12-значное значение в 10-значный
+    алгоритм — там оно вернуло бы False, то есть без якоря просто пропало бы.
+    """
+    return len(_strip_requisite_separators(value)) == 10 and inn_checksum(value)
+
+
+def inn12_checksum(value: str) -> bool:
+    """КС ИНН ФИЗИЧЕСКОГО ЛИЦА — ровно 12 знаков (этап T2-INN). Симметрично
+    inn10_checksum; сам алгоритм (два контрольных числа) не менялся."""
+    return len(_strip_requisite_separators(value)) == 12 and inn_checksum(value)
+
+
+#: `inn_checksum` оставлен в реестре: он по-прежнему единственная реализация
+#: обоих алгоритмов ФНС (10 и 12), а inn10/inn12 — лишь прибитые к длине входы в
+#: него. Конфиг после этапа T2-INN зовёт inn10/inn12, но имя `inn_checksum`
+#: остаётся рабочим (валидный `validate:` для тех, кому нужны обе длины сразу).
 VALIDATORS = {
     "inn_checksum": inn_checksum,
+    "inn10_checksum": inn10_checksum,
+    "inn12_checksum": inn12_checksum,
     "ogrn_checksum": ogrn_checksum,
 }
 

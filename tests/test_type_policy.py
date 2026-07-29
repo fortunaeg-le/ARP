@@ -53,6 +53,9 @@ def test_default_profile_is_personal_only():
     assert type_policy.DEFAULT_PROFILE == type_policy.PROFILE_PERSONAL
     assert set(type_policy.PERSONAL) == {
         "PERSON", "ADDRESS", "PHONE", "EMAIL", "PASSPORT", "SNILS", "BIRTHDATE",
+        # ЭТАП T2-INN: ИНН физлица (12 цифр) — персональные данные, и с
+        # разделением типов он входит в набор по умолчанию.
+        "INN_PERSON",
     }
 
 
@@ -66,16 +69,35 @@ def test_profiles_are_nested_and_maximum_is_everything():
     assert set(type_policy.WITH_MONEY) <= known
 
 
-def test_inn_is_one_type_so_it_cannot_live_in_the_personal_set():
-    """Факт 0г: ИНН физлица (12 цифр) и ИНН юрлица (10) — ОДИН тип `INN`.
-    Пока это так, «только персональные данные» не может включать ИНН."""
+def test_inn_of_a_person_is_personal_data_and_inn_of_a_company_is_not():
+    """ЭТАП T2-INN. До него в этом файле стоял обратный тест: «ИНН — ОДИН тип,
+    поэтому набор 1 не может его включать». Та формулировка описывала не
+    решение, а ОГРАНИЧЕНИЕ, ценой которого был открытый ИНН предпринимателя.
+    Ограничение снято разделением типов, и контракт перевёрнут:
+
+      * `INN`        — 10 цифр, ИНН ОРГАНИЗАЦИИ, персональными данными НЕ
+                       является, живёт в наборе 2 «данные и реквизиты»;
+      * `INN_PERSON` — 12 цифр, ИНН ЧЕЛОВЕКА, персональные данные, живёт в
+                       наборе 1 «только персональные данные».
+
+    Тест краснеет и в обратную сторону: если типы снова сольют в один или
+    перепутают местами в наборах, это будет видно здесь, а не на документе
+    пользователя."""
     import yaml
     with open(CONFIG, encoding="utf-8") as f:
         cfg = yaml.safe_load(f)["entity_types"]
-    inn_keys = [k for k in cfg if k.startswith("INN")]
-    assert inn_keys == ["INN"], "появился отдельный тип ИНН физлица — состав набора 1 пора пересмотреть"
+    inn_keys = sorted(k for k in cfg if k.startswith("INN"))
+    assert inn_keys == ["INN", "INN_PERSON"], (
+        "типов ИНН должно быть ровно два — организации (10 цифр) и человека (12)")
+    assert "INN_PERSON" in type_policy.PERSONAL
     assert "INN" not in type_policy.PERSONAL
     assert "INN" in type_policy.PERSONAL_REQUISITES
+    # Длина — не комментарий, а часть конфига: паттерны обязаны различаться
+    # именно числом цифр, иначе типы разошлись бы только на словах.
+    assert "{9}" in cfg["INN"]["pattern"] and "{11}" in cfg["INN_PERSON"]["pattern"]
+    # У каждой длины СВОЯ контрольная сумма (шаг 0б: алгоритмы разные).
+    assert cfg["INN"]["validate"] == "inn10_checksum"
+    assert cfg["INN_PERSON"]["validate"] == "inn12_checksum"
 
 
 def test_resolve_overrides_switch_single_type_both_ways():

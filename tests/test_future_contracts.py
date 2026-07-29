@@ -161,7 +161,7 @@ def _gold_entity(doc_id, entity_type, text):
 # Диспетчер повторяет run_measurement.leak_v2 (тот же порог strict=8/soft=6, та же
 # ветка на тип). Он здесь, а не импортом из run_measurement, потому что тот модуль —
 # скрипт: на импорте он создаёт временное хранилище и тянет весь конвейер.
-_V2_NUMERIC_TYPES = {"INN", "OGRN", "KPP", "ACCOUNT", "BIK", "PHONE", "PASSPORT", "SNILS"}
+_V2_NUMERIC_TYPES = {"INN", "INN_PER", "OGRN", "KPP", "ACCOUNT", "BIK", "PHONE", "PASSPORT", "SNILS"}
 
 
 def _leak(entity_type, gold_text, anon):
@@ -402,10 +402,12 @@ class TestStage4InvalidChecksumIsRejectedAndLeaks:
     # ЭТАП 4 ПОГАСИЛ ЭТОТ КОНТРАКТ (метка xfail снята). Под якорем «ИНН» значение
     # маскируется независимо от КС (src/regex_detector.py `_has_anchor`).
     def test_inn_with_invalid_checksum_is_still_masked(self, encrypt_doc):
-        gold = _gold_entity(_S4_DOC, "INN", _S4_INN_INVALID)
+        # ЭТАП T2-INN: значение 12-значное, то есть ИНН ФИЗЛИЦА, и в эталоне
+        # лежит под типом INN_PER. Сам контракт (КС — не шлагбаум) не изменился.
+        gold = _gold_entity(_S4_DOC, "INN_PER", _S4_INN_INVALID)
         assert gold["checksum"] == "invalid"
         anon = _anon(encrypt_doc(_S4_DOC))
-        _assert_masked("INN", gold["text"], anon, "ИНН с невалидной КС")
+        _assert_masked("INN_PER", gold["text"], anon, "ИНН физлица с невалидной КС")
 
     # ЭТАП 4 ПОГАСИЛ ЭТОТ КОНТРАКТ (метка xfail снята). Под якорем «ОГРН»/«ОГРНИП»
     # значение маскируется независимо от КС.
@@ -433,10 +435,10 @@ class TestStage4InvalidChecksumIsRejectedAndLeaks:
         """ЗЕРКАЛО «тот же тип на чистом каноническом документе»: ИНН с ВАЛИДНОЙ КС в
         services_0001 маскируется. Вместе с xfail выше это запирает причину с двух
         сторон: детектор ИНН работает, ломает его ровно невалидная контрольная сумма."""
-        gold = _gold_entity(_S3_DOC, "INN", _S3_INN)
+        gold = _gold_entity(_S3_DOC, "INN_PER", _S3_INN)   # 12 цифр, этап T2-INN
         assert gold["checksum"] == "valid"
         anon = _anon(encrypt_doc(_S3_DOC))
-        _assert_masked("INN", gold["text"], anon, "зеркало: ИНН с валидной КС")
+        _assert_masked("INN_PER", gold["text"], anon, "зеркало: ИНН с валидной КС")
 
     def test_invalid_checksum_values_are_restorable_after_decrypt(self, encrypt_doc):
         """Round-trip-контракт, который этап 4 обязан СОХРАНИТЬ: перестав
@@ -563,9 +565,12 @@ class TestStage6UnreadZones:
         assert run.returncode == 0, (
             "docx без зон обязан обрабатываться в строгом режиме: rc={}, {}"
             .format(run.returncode, (run.stderr or "")[:200]))
+        # Тип не важен для смысла зеркала (проверяется, что .docx-конвейер в
+        # строгом режиме маскирует ПДн), но после этапа T2-INN канонические ИНН
+        # этого документа — 12-значные, то есть INN_PER.
         inn = [e for e in _GOLD["supply_0004"]["entities"]
-               if e["type"] == "INN" and e["category"] == "canonical"][0]
-        _assert_masked("INN", inn["text"], run.anon, "зеркало: ИНН в docx без зон")
+               if e["type"] in ("INN", "INN_PER") and e["category"] == "canonical"][0]
+        _assert_masked(inn["type"], inn["text"], run.anon, "зеркало: ИНН в docx без зон")
 
 
 # =========================================================================== #
@@ -618,10 +623,10 @@ class TestSplitEntitiesAcrossLineBreak:
         значение есть в документе ещё раз — омоглифной копией (у sale_0010 это видно
         прямо: «Контрольный ИНН: І226865248» с кириллической «І»). Это дефект B4
         (этап 2), а не разрыв ячейки. xfail здесь пометил бы чужую дыру своим этапом."""
-        gold = _gold_entity(_SPLIT_CELL_DOC, "INN", _SPLIT_CELL_INN)
+        gold = _gold_entity(_SPLIT_CELL_DOC, "INN_PER", _SPLIT_CELL_INN)  # 12 цифр
         assert gold["trick"] == "cell_boundary_split"
         anon = _anon(encrypt_doc(_SPLIT_CELL_DOC))
-        _assert_masked("INN", gold["text"], anon, "зеркало: ИНН через границу ячейки")
+        _assert_masked("INN_PER", gold["text"], anon, "зеркало: ИНН через границу ячейки")
 
     def test_split_account_is_restorable_after_decrypt(self, encrypt_doc):
         """Round-trip-контракт для будущего многодиапазонного Entity: собрав

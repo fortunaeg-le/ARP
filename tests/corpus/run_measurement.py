@@ -44,7 +44,10 @@ DOCS = os.path.join(HERE, "docs")
 COMMIT = "tgolda"  # этап T-GOLD-A (суммы -> эталон); НЕ перезатираем results_baseline.json
 OUT = os.path.join(HERE, f"results_{COMMIT}.json")
 
-NUMERIC_TYPES = {"INN", "OGRN", "KPP", "ACCOUNT", "BIK", "PHONE",
+# INN_PER (ИНН физлица, 12 цифр) — этап T2-INN: тот же числовой класс, что INN,
+# просто отделённый по смыслу; без записи здесь его утечка считалась бы по
+# буквенной ветке и метрика молча ослабла бы на целом типе.
+NUMERIC_TYPES = {"INN", "INN_PER", "OGRN", "KPP", "ACCOUNT", "BIK", "PHONE",
                  "PASSPORT", "SNILS", "BIRTHDATE", "SUM"}
 
 # Числовые типы для метрики leak_v2 (по ЗАДАНИЮ этапа 0b): реквизиты, у которых
@@ -68,7 +71,7 @@ NUMERIC_TYPES = {"INN", "OGRN", "KPP", "ACCOUNT", "BIK", "PHONE",
 # Чинить это склейкой запятой внутри v2_digit_runs НЕЛЬЗЯ: поле общее для всех
 # типов, и склейка «21.01.2024» -> «21012024» изменила бы утечку чужих типов
 # (для дат по этой же причине заведено отдельное поле v2_date_field).
-V2_NUMERIC_TYPES = {"INN", "OGRN", "KPP", "ACCOUNT", "BIK", "PHONE",
+V2_NUMERIC_TYPES = {"INN", "INN_PER", "OGRN", "KPP", "ACCOUNT", "BIK", "PHONE",
                     "PASSPORT", "SNILS", "SUM"}
 
 # храним сессии во временной директории — ~/.shifrator НЕ трогаем

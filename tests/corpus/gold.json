@@ -1431,7 +1431,7 @@
     "note": "составная форма: ИП+ФИО"
    },
    {
-    "type": "INN",
+    "type": "INN_PER",
     "start": 285,
     "end": 297,
     "text": "366822495272",
@@ -1623,7 +1623,7 @@
     "note": "стиль адреса: no_marker2"
    },
    {
-    "type": "INN",
+    "type": "INN_PER",
     "start": 3110,
     "end": 3122,
     "text": "366822495272",
@@ -1871,7 +1871,7 @@
     "note": "мутация invisible; исходно: составная форма: ИП+ФИО"
    },
    {
-    "type": "INN",
+    "type": "INN_PER",
     "start": 299,
     "end": 313,
     "text": "36⁠682249­5272",
@@ -2089,7 +2089,7 @@
     "note": "мутация invisible; исходно: стиль адреса: no_marker2"
    },
    {
-    "type": "INN",
+    "type": "INN_PER",
     "start": 3201,
     "end": 3215,
     "text": "3668⁠224952 72",
@@ -2345,7 +2345,7 @@
     "note": "составная форма: ИП+ФИО"
    },
    {
-    "type": "INN",
+    "type": "INN_PER",
     "start": 287,
     "end": 302,
     "text": "366822 49 5 272",
@@ -2549,7 +2549,7 @@
     "note": "стиль адреса: no_marker2"
    },
    {
-    "type": "INN",
+    "type": "INN_PER",
     "start": 3147,
     "end": 3162,
     "text": "3668 2249 5 272",
@@ -3016,7 +3016,7 @@
     "checksum": "valid"
    },
    {
-    "type": "INN",
+    "type": "INN_PER",
     "start": 3382,
     "end": 3394,
     "text": "864067395705",
@@ -3480,7 +3480,7 @@
     "checksum": "valid"
    },
    {
-    "type": "INN",
+    "type": "INN_PER",
     "start": 3491,
     "end": 3505,
     "text": "8‍6­4067395705",
@@ -3926,7 +3926,7 @@
     "checksum": "valid"
    },
    {
-    "type": "INN",
+    "type": "INN_PER",
     "start": 3382,
     "end": 3394,
     "text": "864067395705",
@@ -4103,7 +4103,7 @@
     "note": "составная форма: ИП+ФИО"
    },
    {
-    "type": "INN",
+    "type": "INN_PER",
     "start": 94,
     "end": 106,
     "text": "489255107291",
@@ -4120,7 +4120,7 @@
     "note": "составная форма: ИП+ФИО"
    },
    {
-    "type": "INN",
+    "type": "INN_PER",
     "start": 252,
     "end": 264,
     "text": "045595103100",
@@ -4211,7 +4211,7 @@
     "note": "стиль адреса: city_middle"
    },
    {
-    "type": "INN",
+    "type": "INN_PER",
     "start": 2754,
     "end": 2766,
     "text": "489255107291",
@@ -4291,7 +4291,7 @@
     "note": "стиль адреса: city_middle"
    },
    {
-    "type": "INN",
+    "type": "INN_PER",
     "start": 3117,
     "end": 3129,
     "text": "045595103100",
@@ -4502,7 +4502,7 @@
     "note": "составная форма: ИП+ФИО"
    },
    {
-    "type": "INN",
+    "type": "INN_PER",
     "start": 94,
     "end": 110,
     "text": "4892-5510-7-291-",
@@ -4520,7 +4520,7 @@
     "note": "составная форма: ИП+ФИО"
    },
    {
-    "type": "INN",
+    "type": "INN_PER",
     "start": 256,
     "end": 270,
     "text": "0455 95103 100",
@@ -4613,7 +4613,7 @@
     "note": "стиль адреса: city_middle"
    },
    {
-    "type": "INN",
+    "type": "INN_PER",
     "start": 2765,
     "end": 2782,
     "text": "489-255-10-7-291-",
@@ -4700,7 +4700,7 @@
     "note": "стиль адреса: city_middle"
    },
    {
-    "type": "INN",
+    "type": "INN_PER",
     "start": 3145,
     "end": 3159,
     "text": "045 59510 3100",
@@ -4919,7 +4919,7 @@
     "note": "мутация combo; исходно: составная форма: ИП+ФИО"
    },
    {
-    "type": "INN",
+    "type": "INN_PER",
     "start": 100,
     "end": 114,
     "text": "4⁠8925510729­І",
@@ -4938,7 +4938,7 @@
     "note": "мутация combo; исходно: составная форма: ИП+ФИО"
    },
    {
-    "type": "INN",
+    "type": "INN_PER",
     "start": 262,
     "end": 276,
     "text": "045595 1031О 0",
@@ -5036,7 +5036,7 @@
     "note": "мутация combo; исходно: стиль адреса: city_middle"
    },
    {
-    "type": "INN",
+    "type": "INN_PER",
     "start": 2806,
     "end": 2820,
     "text": "48‍925510‍729І",
@@ -5129,7 +5129,7 @@
     "note": "мутация combo; исходно: стиль адреса: city_middle"
    },
    {
-    "type": "INN",
+    "type": "INN_PER",
     "start": 3197,
     "end": 3211,
     "text": "ОЧ5 595І‍0310О",
@@ -5349,7 +5349,7 @@
     "note": "составная форма: Индивидуальный предприниматель+ФИО"
    },
    {
-    "type": "INN",
+    "type": "INN_PER",
     "start": 122,
     "end": 134,
     "text": "407829931573",
@@ -5485,7 +5485,7 @@
     "note": "стиль адреса: km"
    },
    {
-    "type": "INN",
+    "type": "INN_PER",
     "start": 2954,
     "end": 2966,
     "text": "407829931573",
@@ -5586,7 +5586,7 @@
     "checksum": "valid"
    },
    {
-    "type": "INN",
+    "type": "INN_PER",
     "start": 3442,
     "end": 3454,
     "text": "933483538805",
@@ -5759,7 +5759,7 @@
     "note": "составная форма: Индивидуальный предприниматель+ФИО"
    },
    {
-    "type": "INN",
+    "type": "INN_PER",
     "start": 123,
     "end": 137,
     "text": "4078 2993 1573",
@@ -5899,7 +5899,7 @@
     "note": "стиль адреса: km"
    },
    {
-    "type": "INN",
+    "type": "INN_PER",
     "start": 2961,
     "end": 2975,
     "text": "407829 93 1573",
@@ -6014,7 +6014,7 @@
     "checksum": "valid"
    },
    {
-    "type": "INN",
+    "type": "INN_PER",
     "start": 3474,
     "end": 3488,
     "text": "933 4 83538805",
@@ -6190,7 +6190,7 @@
     "note": "мутация linebreak; исходно: составная форма: Индивидуальный предприниматель+ФИО"
    },
    {
-    "type": "INN",
+    "type": "INN_PER",
     "start": 125,
     "end": 138,
     "text": "40782\n9931573",
@@ -6342,7 +6342,7 @@
     "note": "мутация linebreak; исходно: стиль адреса: km"
    },
    {
-    "type": "INN",
+    "type": "INN_PER",
     "start": 2981,
     "end": 2994,
     "text": "4078299315\n73",
@@ -6463,7 +6463,7 @@
     "checksum": "valid"
    },
    {
-    "type": "INN",
+    "type": "INN_PER",
     "start": 3483,
     "end": 3496,
     "text": "933\n483538805",
@@ -6754,7 +6754,7 @@
     "note": "счёт разбит на группы по 4"
    },
    {
-    "type": "INN",
+    "type": "INN_PER",
     "start": 4586,
     "end": 4600,
     "text": "569-736-761884",
@@ -6817,7 +6817,7 @@
     "checksum": "valid"
    },
    {
-    "type": "INN",
+    "type": "INN_PER",
     "start": 4913,
     "end": 4925,
     "text": "569736761884",
@@ -6894,7 +6894,7 @@
     "checksum": "valid"
    },
    {
-    "type": "INN",
+    "type": "INN_PER",
     "start": 5228,
     "end": 5240,
     "text": "447842063561",
@@ -6926,7 +6926,7 @@
     "note": "фамилия + инициалы"
    },
    {
-    "type": "INN",
+    "type": "INN_PER",
     "start": 5318,
     "end": 5331,
     "text": "5697\t36761884",
@@ -7247,7 +7247,7 @@
     "note": "мутация combo; исходно: счёт разбит на группы по 4"
    },
    {
-    "type": "INN",
+    "type": "INN_PER",
     "start": 4667,
     "end": 4683,
     "text": "5б9-​7‍Зб-7б1884",
@@ -7320,7 +7320,7 @@
     "checksum": "valid"
    },
    {
-    "type": "INN",
+    "type": "INN_PER",
     "start": 5016,
     "end": 5030,
     "text": "56​97 З676188Ч",
@@ -7412,7 +7412,7 @@
     "checksum": "valid"
    },
    {
-    "type": "INN",
+    "type": "INN_PER",
     "start": 5351,
     "end": 5365,
     "text": "ЧЧ‍784206З56​І",
@@ -7449,7 +7449,7 @@
     "note": "мутация combo; исходно: фамилия + инициалы"
    },
    {
-    "type": "INN",
+    "type": "INN_PER",
     "start": 5449,
     "end": 5464,
     "text": "5б9­7\t3 67б188Ч",
@@ -7771,7 +7771,7 @@
     "note": "мутация homoglyph; исходно: счёт разбит на группы по 4"
    },
    {
-    "type": "INN",
+    "type": "INN_PER",
     "start": 4586,
     "end": 4600,
     "text": "569-73б-76188Ч",
@@ -7844,7 +7844,7 @@
     "checksum": "valid"
    },
    {
-    "type": "INN",
+    "type": "INN_PER",
     "start": 4913,
     "end": 4925,
     "text": "5б9736761884",
@@ -7936,7 +7936,7 @@
     "checksum": "valid"
    },
    {
-    "type": "INN",
+    "type": "INN_PER",
     "start": 5228,
     "end": 5240,
     "text": "4Ч78420б35бІ",
@@ -7973,7 +7973,7 @@
     "note": "мутация homoglyph; исходно: фамилия + инициалы"
    },
    {
-    "type": "INN",
+    "type": "INN_PER",
     "start": 5318,
     "end": 5331,
     "text": "5б97\t367б188Ч",
@@ -9600,7 +9600,7 @@
     "note": "составная форма: ИП+ФИО"
    },
    {
-    "type": "INN",
+    "type": "INN_PER",
     "start": 252,
     "end": 264,
     "text": "554976248706",
@@ -9816,7 +9816,7 @@
     "note": "стиль адреса: canonical"
    },
    {
-    "type": "INN",
+    "type": "INN_PER",
     "start": 3110,
     "end": 3122,
     "text": "554976248706",
@@ -10046,7 +10046,7 @@
     "note": "мутация homoglyph; исходно: составная форма: ИП+ФИО"
    },
    {
-    "type": "INN",
+    "type": "INN_PER",
     "start": 252,
     "end": 264,
     "text": "5549762487О6",
@@ -10291,7 +10291,7 @@
     "note": "мутация homoglyph; исходно: стиль адреса: canonical"
    },
    {
-    "type": "INN",
+    "type": "INN_PER",
     "start": 3110,
     "end": 3122,
     "text": "55Ч97624870б",
@@ -10533,7 +10533,7 @@
     "note": "мутация case; исходно: составная форма: ИП+ФИО"
    },
    {
-    "type": "INN",
+    "type": "INN_PER",
     "start": 252,
     "end": 264,
     "text": "554976248706",
@@ -10760,7 +10760,7 @@
     "note": "мутация case; исходно: стиль адреса: canonical"
    },
    {
-    "type": "INN",
+    "type": "INN_PER",
     "start": 3110,
     "end": 3122,
     "text": "554976248706",
@@ -11218,7 +11218,7 @@
     "checksum": "valid"
    },
    {
-    "type": "INN",
+    "type": "INN_PER",
     "start": 3241,
     "end": 3253,
     "text": "277134838781",
@@ -11673,7 +11673,7 @@
     "checksum": "valid"
    },
    {
-    "type": "INN",
+    "type": "INN_PER",
     "start": 3351,
     "end": 3365,
     "text": "2​771348⁠38781",
@@ -12113,7 +12113,7 @@
     "checksum": "valid"
    },
    {
-    "type": "INN",
+    "type": "INN_PER",
     "start": 3241,
     "end": 3253,
     "text": "277134838781",
@@ -12292,7 +12292,7 @@
     "note": "составная форма: Индивидуальный предприниматель+ФИО"
    },
    {
-    "type": "INN",
+    "type": "INN_PER",
     "start": 119,
     "end": 131,
     "text": "937553250915",
@@ -12309,7 +12309,7 @@
     "note": "составная форма: ИП+ФИО"
    },
    {
-    "type": "INN",
+    "type": "INN_PER",
     "start": 274,
     "end": 286,
     "text": "715823370604",
@@ -12431,7 +12431,7 @@
     "note": "стиль адреса: index_first"
    },
    {
-    "type": "INN",
+    "type": "INN_PER",
     "start": 2958,
     "end": 2970,
     "text": "937553250915",
@@ -12511,7 +12511,7 @@
     "note": "стиль адреса: index_first"
    },
    {
-    "type": "INN",
+    "type": "INN_PER",
     "start": 3323,
     "end": 3335,
     "text": "715823370604",
@@ -12723,7 +12723,7 @@
     "note": "мутация case; исходно: составная форма: Индивидуальный предприниматель+ФИО"
    },
    {
-    "type": "INN",
+    "type": "INN_PER",
     "start": 119,
     "end": 131,
     "text": "937553250915",
@@ -12741,7 +12741,7 @@
     "note": "мутация case; исходно: составная форма: ИП+ФИО"
    },
    {
-    "type": "INN",
+    "type": "INN_PER",
     "start": 274,
     "end": 286,
     "text": "715823370604",
@@ -12874,7 +12874,7 @@
     "note": "мутация case; исходно: стиль адреса: index_first"
    },
    {
-    "type": "INN",
+    "type": "INN_PER",
     "start": 2958,
     "end": 2970,
     "text": "937553250915",
@@ -12958,7 +12958,7 @@
     "note": "мутация case; исходно: стиль адреса: index_first"
    },
    {
-    "type": "INN",
+    "type": "INN_PER",
     "start": 3323,
     "end": 3335,
     "text": "715823370604",
@@ -13175,7 +13175,7 @@
     "note": "мутация linebreak; исходно: составная форма: Индивидуальный предприниматель+ФИО"
    },
    {
-    "type": "INN",
+    "type": "INN_PER",
     "start": 121,
     "end": 134,
     "text": "9375532509\n15",
@@ -13194,7 +13194,7 @@
     "note": "мутация linebreak; исходно: составная форма: ИП+ФИО"
    },
    {
-    "type": "INN",
+    "type": "INN_PER",
     "start": 278,
     "end": 291,
     "text": "7158\n23370604",
@@ -13329,7 +13329,7 @@
     "note": "мутация linebreak; исходно: стиль адреса: index_first"
    },
    {
-    "type": "INN",
+    "type": "INN_PER",
     "start": 2988,
     "end": 3001,
     "text": "937553\n250915",
@@ -13422,7 +13422,7 @@
     "note": "мутация linebreak; исходно: стиль адреса: index_first"
    },
    {
-    "type": "INN",
+    "type": "INN_PER",
     "start": 3365,
     "end": 3378,
     "text": "71582337\n0604",
@@ -13642,7 +13642,7 @@
     "note": "составная форма: ИП+ФИО"
    },
    {
-    "type": "INN",
+    "type": "INN_PER",
     "start": 126,
     "end": 138,
     "text": "122145752606",
@@ -13778,7 +13778,7 @@
     "note": "стиль адреса: pobox"
    },
    {
-    "type": "INN",
+    "type": "INN_PER",
     "start": 2797,
     "end": 2809,
     "text": "122145752606",
@@ -13879,7 +13879,7 @@
     "checksum": "valid"
    },
    {
-    "type": "INN",
+    "type": "INN_PER",
     "start": 3218,
     "end": 3230,
     "text": "747496672725",
@@ -14052,7 +14052,7 @@
     "note": "составная форма: ИП+ФИО"
    },
    {
-    "type": "INN",
+    "type": "INN_PER",
     "start": 127,
     "end": 141,
     "text": "122 14575 2606",
@@ -14193,7 +14193,7 @@
     "note": "стиль адреса: pobox"
    },
    {
-    "type": "INN",
+    "type": "INN_PER",
     "start": 2804,
     "end": 2818,
     "text": "122145 752 606",
@@ -14304,7 +14304,7 @@
     "checksum": "valid"
    },
    {
-    "type": "INN",
+    "type": "INN_PER",
     "start": 3245,
     "end": 3260,
     "text": "7474 96 67 2725",
@@ -14480,7 +14480,7 @@
     "note": "мутация linebreak; исходно: составная форма: ИП+ФИО"
    },
    {
-    "type": "INN",
+    "type": "INN_PER",
     "start": 128,
     "end": 141,
     "text": "1221\n45752606",
@@ -14632,7 +14632,7 @@
     "note": "мутация linebreak; исходно: стиль адреса: pobox"
    },
    {
-    "type": "INN",
+    "type": "INN_PER",
     "start": 2822,
     "end": 2835,
     "text": "1221457526\n06",
@@ -14753,7 +14753,7 @@
     "checksum": "valid"
    },
    {
-    "type": "INN",
+    "type": "INN_PER",
     "start": 3260,
     "end": 3273,
     "text": "747496\n672725",
@@ -15039,7 +15039,7 @@
     "note": "счёт разбит на группы по 4"
    },
    {
-    "type": "INN",
+    "type": "INN_PER",
     "start": 2621,
     "end": 2635,
     "text": "912-792-722564",
@@ -15102,7 +15102,7 @@
     "checksum": "valid"
    },
    {
-    "type": "INN",
+    "type": "INN_PER",
     "start": 2976,
     "end": 2988,
     "text": "912792722564",
@@ -15188,7 +15188,7 @@
     "checksum": "valid"
    },
    {
-    "type": "INN",
+    "type": "INN_PER",
     "start": 3368,
     "end": 3380,
     "text": "240385375248",
@@ -15516,7 +15516,7 @@
     "note": "мутация linebreak; исходно: счёт разбит на группы по 4"
    },
    {
-    "type": "INN",
+    "type": "INN_PER",
     "start": 2645,
     "end": 2660,
     "text": "912-792-72\n2564",
@@ -15589,7 +15589,7 @@
     "checksum": "valid"
    },
    {
-    "type": "INN",
+    "type": "INN_PER",
     "start": 3009,
     "end": 3022,
     "text": "91\n2792722564",
@@ -15690,7 +15690,7 @@
     "checksum": "valid"
    },
    {
-    "type": "INN",
+    "type": "INN_PER",
     "start": 3412,
     "end": 3425,
     "text": "24038\n5375248",
@@ -16016,7 +16016,7 @@
     "note": "счёт разбит на группы по 4"
    },
    {
-    "type": "INN",
+    "type": "INN_PER",
     "start": 2621,
     "end": 2635,
     "text": "912-792-722564",
@@ -16079,7 +16079,7 @@
     "checksum": "valid"
    },
    {
-    "type": "INN",
+    "type": "INN_PER",
     "start": 2976,
     "end": 2988,
     "text": "912792722564",
@@ -16165,7 +16165,7 @@
     "checksum": "valid"
    },
    {
-    "type": "INN",
+    "type": "INN_PER",
     "start": 3368,
     "end": 3380,
     "text": "240385375248",
@@ -17686,7 +17686,7 @@
     "note": "составная форма: ИП+ФИО"
    },
    {
-    "type": "INN",
+    "type": "INN_PER",
     "start": 306,
     "end": 318,
     "text": "432199202258",
@@ -17911,7 +17911,7 @@
     "note": "стиль адреса: no_marker2"
    },
    {
-    "type": "INN",
+    "type": "INN_PER",
     "start": 3135,
     "end": 3147,
     "text": "432199202258",
@@ -18156,7 +18156,7 @@
     "note": "составная форма: ИП+ФИО"
    },
    {
-    "type": "INN",
+    "type": "INN_PER",
     "start": 306,
     "end": 318,
     "text": "432199202258",
@@ -18382,7 +18382,7 @@
     "note": "стиль адреса: no_marker2"
    },
    {
-    "type": "INN",
+    "type": "INN_PER",
     "start": 3135,
     "end": 3147,
     "text": "432199202258",
@@ -18630,7 +18630,7 @@
     "note": "мутация invisible; исходно: составная форма: ИП+ФИО"
    },
    {
-    "type": "INN",
+    "type": "INN_PER",
     "start": 322,
     "end": 336,
     "text": "43⁠21​99202258",
@@ -18884,7 +18884,7 @@
     "note": "мутация invisible; исходно: стиль адреса: no_marker2"
    },
    {
-    "type": "INN",
+    "type": "INN_PER",
     "start": 3242,
     "end": 3256,
     "text": "4321992022⁠5‍8",
@@ -19359,7 +19359,7 @@
     "checksum": "valid"
    },
    {
-    "type": "INN",
+    "type": "INN_PER",
     "start": 3427,
     "end": 3439,
     "text": "884051899450",
@@ -19806,7 +19806,7 @@
     "checksum": "valid"
    },
    {
-    "type": "INN",
+    "type": "INN_PER",
     "start": 3525,
     "end": 3539,
     "text": "884051​899​450",
@@ -20235,7 +20235,7 @@
     "checksum": "valid"
    },
    {
-    "type": "INN",
+    "type": "INN_PER",
     "start": 3427,
     "end": 3439,
     "text": "884051899450",
@@ -20414,7 +20414,7 @@
     "note": "составная форма: ИП+ФИО"
    },
    {
-    "type": "INN",
+    "type": "INN_PER",
     "start": 133,
     "end": 145,
     "text": "118277362822",
@@ -20431,7 +20431,7 @@
     "note": "составная форма: ИП+ФИО"
    },
    {
-    "type": "INN",
+    "type": "INN_PER",
     "start": 302,
     "end": 314,
     "text": "542490082080",
@@ -20544,7 +20544,7 @@
     "note": "стиль адреса: city_middle"
    },
    {
-    "type": "INN",
+    "type": "INN_PER",
     "start": 2945,
     "end": 2957,
     "text": "118277362822",
@@ -20615,7 +20615,7 @@
     "note": "стиль адреса: city_middle"
    },
    {
-    "type": "INN",
+    "type": "INN_PER",
     "start": 3293,
     "end": 3305,
     "text": "542490082080",
@@ -20836,7 +20836,7 @@
     "note": "мутация invisible; исходно: составная форма: ИП+ФИО"
    },
    {
-    "type": "INN",
+    "type": "INN_PER",
     "start": 136,
     "end": 150,
     "text": "118⁠27736282­2",
@@ -20855,7 +20855,7 @@
     "note": "мутация invisible; исходно: составная форма: ИП+ФИО"
    },
    {
-    "type": "INN",
+    "type": "INN_PER",
     "start": 310,
     "end": 324,
     "text": "542‍4 90082080",
@@ -20980,7 +20980,7 @@
     "note": "мутация invisible; исходно: стиль адреса: city_middle"
    },
    {
-    "type": "INN",
+    "type": "INN_PER",
     "start": 3006,
     "end": 3020,
     "text": "118277362 8‍22",
@@ -21064,7 +21064,7 @@
     "note": "мутация invisible; исходно: стиль адреса: city_middle"
    },
    {
-    "type": "INN",
+    "type": "INN_PER",
     "start": 3376,
     "end": 3390,
     "text": "5424 90⁠082080",
@@ -21296,7 +21296,7 @@
     "note": "составная форма: ИП+ФИО"
    },
    {
-    "type": "INN",
+    "type": "INN_PER",
     "start": 133,
     "end": 147,
     "text": "11827736 2 822",
@@ -21314,7 +21314,7 @@
     "note": "составная форма: ИП+ФИО"
    },
    {
-    "type": "INN",
+    "type": "INN_PER",
     "start": 304,
     "end": 318,
     "text": "5424 90082 080",
@@ -21429,7 +21429,7 @@
     "note": "стиль адреса: city_middle"
    },
    {
-    "type": "INN",
+    "type": "INN_PER",
     "start": 2949,
     "end": 2963,
     "text": "118 277 362822",
@@ -21506,7 +21506,7 @@
     "note": "стиль адреса: city_middle"
    },
    {
-    "type": "INN",
+    "type": "INN_PER",
     "start": 3311,
     "end": 3326,
     "text": "542 490 082 080",
@@ -21729,7 +21729,7 @@
     "note": "составная форма: Индивидуальный предприниматель+ФИО"
    },
    {
-    "type": "INN",
+    "type": "INN_PER",
     "start": 159,
     "end": 171,
     "text": "052361386407",
@@ -21857,7 +21857,7 @@
     "note": "стиль адреса: nonres"
    },
    {
-    "type": "INN",
+    "type": "INN_PER",
     "start": 4864,
     "end": 4876,
     "text": "052361386407",
@@ -21958,7 +21958,7 @@
     "checksum": "valid"
    },
    {
-    "type": "INN",
+    "type": "INN_PER",
     "start": 5349,
     "end": 5361,
     "text": "518219186449",
@@ -22131,7 +22131,7 @@
     "note": "составная форма: Индивидуальный предприниматель+ФИО"
    },
    {
-    "type": "INN",
+    "type": "INN_PER",
     "start": 161,
     "end": 175,
     "text": "052361 38 6407",
@@ -22263,7 +22263,7 @@
     "note": "мутация digit_spaces; исходно: стиль адреса: nonres"
    },
    {
-    "type": "INN",
+    "type": "INN_PER",
     "start": 4875,
     "end": 4891,
     "text": "052-3-6138-6407-",
@@ -22376,7 +22376,7 @@
     "checksum": "valid"
    },
    {
-    "type": "INN",
+    "type": "INN_PER",
     "start": 5383,
     "end": 5397,
     "text": "518 21918 6449",
@@ -22552,7 +22552,7 @@
     "note": "мутация linebreak; исходно: составная форма: Индивидуальный предприниматель+ФИО"
    },
    {
-    "type": "INN",
+    "type": "INN_PER",
     "start": 162,
     "end": 175,
     "text": "0523613\n86407",
@@ -22695,7 +22695,7 @@
     "note": "мутация linebreak; исходно: стиль адреса: nonres"
    },
    {
-    "type": "INN",
+    "type": "INN_PER",
     "start": 4893,
     "end": 4906,
     "text": "05236\n1386407",
@@ -22816,7 +22816,7 @@
     "checksum": "valid"
    },
    {
-    "type": "INN",
+    "type": "INN_PER",
     "start": 5392,
     "end": 5405,
     "text": "518219186\n449",
@@ -23147,7 +23147,7 @@
     "checksum": "valid"
    },
    {
-    "type": "INN",
+    "type": "INN_PER",
     "start": 2818,
     "end": 2830,
     "text": "713589443954",
@@ -23233,7 +23233,7 @@
     "checksum": "valid"
    },
    {
-    "type": "INN",
+    "type": "INN_PER",
     "start": 3182,
     "end": 3194,
     "text": "027097229238",
@@ -23620,7 +23620,7 @@
     "checksum": "valid"
    },
    {
-    "type": "INN",
+    "type": "INN_PER",
     "start": 2830,
     "end": 2843,
     "text": "7135 89443954",
@@ -23716,7 +23716,7 @@
     "checksum": "valid"
    },
    {
-    "type": "INN",
+    "type": "INN_PER",
     "start": 3202,
     "end": 3218,
     "text": "0270 97 22 9 238",
@@ -24119,7 +24119,7 @@
     "checksum": "valid"
    },
    {
-    "type": "INN",
+    "type": "INN_PER",
     "start": 2895,
     "end": 2909,
     "text": "7​1358944З‍954",
@@ -24220,7 +24220,7 @@
     "checksum": "valid"
    },
    {
-    "type": "INN",
+    "type": "INN_PER",
     "start": 3286,
     "end": 3300,
     "text": "027О97­2292­38",
@@ -24456,7 +24456,7 @@
     "note": "составная форма: ИП+ФИО"
    },
    {
-    "type": "INN",
+    "type": "INN_PER",
     "start": 107,
     "end": 119,
     "text": "744017202705",
@@ -24561,7 +24561,7 @@
     "note": "стиль адреса: city_middle"
    },
    {
-    "type": "INN",
+    "type": "INN_PER",
     "start": 2809,
     "end": 2821,
     "text": "744017202705",
@@ -24662,7 +24662,7 @@
     "checksum": "valid"
    },
    {
-    "type": "INN",
+    "type": "INN_PER",
     "start": 3255,
     "end": 3267,
     "text": "516418543998",
@@ -24836,7 +24836,7 @@
     "note": "мутация combo; исходно: составная форма: ИП+ФИО"
    },
    {
-    "type": "INN",
+    "type": "INN_PER",
     "start": 111,
     "end": 125,
     "text": "7​44ОІ720­27О5",
@@ -24952,7 +24952,7 @@
     "note": "мутация combo; исходно: стиль адреса: city_middle"
    },
    {
-    "type": "INN",
+    "type": "INN_PER",
     "start": 2868,
     "end": 2882,
     "text": "74Ч0І7202 70 5",
@@ -25073,7 +25073,7 @@
     "checksum": "valid"
    },
    {
-    "type": "INN",
+    "type": "INN_PER",
     "start": 3348,
     "end": 3362,
     "text": "5­Іб⁠4185ЧЗ998",
@@ -25254,7 +25254,7 @@
     "note": "мутация homoglyph; исходно: составная форма: ИП+ФИО"
    },
    {
-    "type": "INN",
+    "type": "INN_PER",
     "start": 107,
     "end": 119,
     "text": "744ОІ72027О5",
@@ -25370,7 +25370,7 @@
     "note": "мутация homoglyph; исходно: стиль адреса: city_middle"
    },
    {
-    "type": "INN",
+    "type": "INN_PER",
     "start": 2809,
     "end": 2821,
     "text": "744О172027О5",
@@ -25491,7 +25491,7 @@
     "checksum": "valid"
    },
    {
-    "type": "INN",
+    "type": "INN_PER",
     "start": 3255,
     "end": 3267,
     "text": "51б418543998",
@@ -25919,7 +25919,7 @@
     "checksum": "valid"
    },
    {
-    "type": "INN",
+    "type": "INN_PER",
     "start": 3446,
     "end": 3458,
     "text": "101556923290",
@@ -26376,7 +26376,7 @@
     "checksum": "valid"
    },
    {
-    "type": "INN",
+    "type": "INN_PER",
     "start": 3543,
     "end": 3557,
     "text": "1О15⁠5692З2​90",
@@ -26841,7 +26841,7 @@
     "checksum": "valid"
    },
    {
-    "type": "INN",
+    "type": "INN_PER",
     "start": 3446,
     "end": 3458,
     "text": "10155б92329О",
@@ -27288,7 +27288,7 @@
     "checksum": "valid"
    },
    {
-    "type": "INN",
+    "type": "INN_PER",
     "start": 5336,
     "end": 5348,
     "text": "693750713322",
@@ -27771,7 +27771,7 @@
     "checksum": "valid"
    },
    {
-    "type": "INN",
+    "type": "INN_PER",
     "start": 5457,
     "end": 5471,
     "text": "69375‍071 3322",
@@ -28234,7 +28234,7 @@
     "checksum": "valid"
    },
    {
-    "type": "INN",
+    "type": "INN_PER",
     "start": 5336,
     "end": 5348,
     "text": "693750713322",
@@ -28413,7 +28413,7 @@
     "note": "составная форма: Индивидуальный предприниматель+ФИО"
    },
    {
-    "type": "INN",
+    "type": "INN_PER",
     "start": 124,
     "end": 136,
     "text": "110056673254",
@@ -28536,7 +28536,7 @@
     "note": "стиль адреса: canonical"
    },
    {
-    "type": "INN",
+    "type": "INN_PER",
     "start": 2924,
     "end": 2936,
     "text": "110056673254",
@@ -28637,7 +28637,7 @@
     "checksum": "valid"
    },
    {
-    "type": "INN",
+    "type": "INN_PER",
     "start": 3380,
     "end": 3392,
     "text": "102273455677",
@@ -28669,7 +28669,7 @@
     "note": "фамилия + инициалы"
    },
    {
-    "type": "INN",
+    "type": "INN_PER",
     "start": 3476,
     "end": 3489,
     "text": "1100\t56673254",
@@ -28879,7 +28879,7 @@
     "note": "мутация homoglyph; исходно: составная форма: Индивидуальный предприниматель+ФИО"
    },
    {
-    "type": "INN",
+    "type": "INN_PER",
     "start": 124,
     "end": 136,
     "text": "ІІ0056б73254",
@@ -29013,7 +29013,7 @@
     "note": "мутация homoglyph; исходно: стиль адреса: canonical"
    },
    {
-    "type": "INN",
+    "type": "INN_PER",
     "start": 2924,
     "end": 2936,
     "text": "11О05бб73254",
@@ -29134,7 +29134,7 @@
     "checksum": "valid"
    },
    {
-    "type": "INN",
+    "type": "INN_PER",
     "start": 3380,
     "end": 3392,
     "text": "10227З455б77",
@@ -29171,7 +29171,7 @@
     "note": "мутация homoglyph; исходно: фамилия + инициалы"
    },
    {
-    "type": "INN",
+    "type": "INN_PER",
     "start": 3476,
     "end": 3489,
     "text": "1І0О\t5б673254",
@@ -29386,7 +29386,7 @@
     "note": "мутация case; исходно: составная форма: Индивидуальный предприниматель+ФИО"
    },
    {
-    "type": "INN",
+    "type": "INN_PER",
     "start": 124,
     "end": 136,
     "text": "110056673254",
@@ -29516,7 +29516,7 @@
     "note": "мутация case; исходно: стиль адреса: canonical"
    },
    {
-    "type": "INN",
+    "type": "INN_PER",
     "start": 2924,
     "end": 2936,
     "text": "110056673254",
@@ -29623,7 +29623,7 @@
     "checksum": "valid"
    },
    {
-    "type": "INN",
+    "type": "INN_PER",
     "start": 3380,
     "end": 3392,
     "text": "102273455677",
@@ -29658,7 +29658,7 @@
     "note": "мутация case; исходно: фамилия + инициалы"
    },
    {
-    "type": "INN",
+    "type": "INN_PER",
     "start": 3476,
     "end": 3489,
     "text": "1100\t56673254",
@@ -30118,7 +30118,7 @@
     "checksum": "invalid"
    },
    {
-    "type": "INN",
+    "type": "INN_PER",
     "start": 3226,
     "end": 3238,
     "text": "030292728066",
@@ -30564,7 +30564,7 @@
     "checksum": "invalid"
    },
    {
-    "type": "INN",
+    "type": "INN_PER",
     "start": 3274,
     "end": 3288,
     "text": "030292 72 8066",
@@ -31030,7 +31030,7 @@
     "checksum": "invalid"
    },
    {
-    "type": "INN",
+    "type": "INN_PER",
     "start": 3268,
     "end": 3281,
     "text": "03029272\n8066",
@@ -31439,7 +31439,7 @@
     "checksum": "valid"
    },
    {
-    "type": "INN",
+    "type": "INN_PER",
     "start": 3241,
     "end": 3253,
     "text": "273243543406",
@@ -31883,7 +31883,7 @@
     "checksum": "valid"
    },
    {
-    "type": "INN",
+    "type": "INN_PER",
     "start": 3241,
     "end": 3253,
     "text": "273243543406",
@@ -32354,7 +32354,7 @@
     "checksum": "valid"
    },
    {
-    "type": "INN",
+    "type": "INN_PER",
     "start": 3281,
     "end": 3294,
     "text": "2732435\n43406",
@@ -32560,7 +32560,7 @@
     "note": "составная форма: ИП+ФИО"
    },
    {
-    "type": "INN",
+    "type": "INN_PER",
     "start": 92,
     "end": 104,
     "text": "545584153208",
@@ -32696,7 +32696,7 @@
     "note": "стиль адреса: index_first"
    },
    {
-    "type": "INN",
+    "type": "INN_PER",
     "start": 3011,
     "end": 3023,
     "text": "545584153208",
@@ -32797,7 +32797,7 @@
     "checksum": "valid"
    },
    {
-    "type": "INN",
+    "type": "INN_PER",
     "start": 3472,
     "end": 3484,
     "text": "826559812077",
@@ -32971,7 +32971,7 @@
     "note": "мутация combo; исходно: составная форма: ИП+ФИО"
    },
    {
-    "type": "INN",
+    "type": "INN_PER",
     "start": 95,
     "end": 109,
     "text": "54558Ч­1­53208",
@@ -33123,7 +33123,7 @@
     "note": "мутация combo; исходно: стиль адреса: index_first"
    },
    {
-    "type": "INN",
+    "type": "INN_PER",
     "start": 3064,
     "end": 3078,
     "text": "5Ч5584​І53 208",
@@ -33244,7 +33244,7 @@
     "checksum": "valid"
    },
    {
-    "type": "INN",
+    "type": "INN_PER",
     "start": 3554,
     "end": 3568,
     "text": "8 265598І2 077",
@@ -33425,7 +33425,7 @@
     "note": "мутация homoglyph; исходно: составная форма: ИП+ФИО"
    },
    {
-    "type": "INN",
+    "type": "INN_PER",
     "start": 92,
     "end": 104,
     "text": "5Ч558Ч15З208",
@@ -33576,7 +33576,7 @@
     "note": "мутация homoglyph; исходно: стиль адреса: index_first"
    },
    {
-    "type": "INN",
+    "type": "INN_PER",
     "start": 3011,
     "end": 3023,
     "text": "54558Ч15З2О8",
@@ -33696,7 +33696,7 @@
     "checksum": "valid"
    },
    {
-    "type": "INN",
+    "type": "INN_PER",
     "start": 3472,
     "end": 3484,
     "text": "8265598І2077",
@@ -34124,7 +34124,7 @@
     "checksum": "valid"
    },
    {
-    "type": "INN",
+    "type": "INN_PER",
     "start": 3343,
     "end": 3355,
     "text": "201727300597",
@@ -34599,7 +34599,7 @@
     "checksum": "valid"
    },
    {
-    "type": "INN",
+    "type": "INN_PER",
     "start": 3389,
     "end": 3402,
     "text": "2017\n27300597",
@@ -35047,7 +35047,7 @@
     "checksum": "valid"
    },
    {
-    "type": "INN",
+    "type": "INN_PER",
     "start": 3343,
     "end": 3355,
     "text": "201727300597",
@@ -35465,7 +35465,7 @@
     "checksum": "valid"
    },
    {
-    "type": "INN",
+    "type": "INN_PER",
     "start": 3214,
     "end": 3226,
     "text": "061718579747",
@@ -35904,7 +35904,7 @@
     "checksum": "valid"
    },
    {
-    "type": "INN",
+    "type": "INN_PER",
     "start": 3299,
     "end": 3313,
     "text": "0 6​1718579747",
@@ -36326,7 +36326,7 @@
     "checksum": "valid"
    },
    {
-    "type": "INN",
+    "type": "INN_PER",
     "start": 3214,
     "end": 3226,
     "text": "061718579747",
@@ -36523,7 +36523,7 @@
     "note": "составная форма: Индивидуальный предприниматель+ФИО"
    },
    {
-    "type": "INN",
+    "type": "INN_PER",
     "start": 182,
     "end": 194,
     "text": "599393588895",
@@ -36618,7 +36618,7 @@
     "note": "стиль адреса: pobox"
    },
    {
-    "type": "INN",
+    "type": "INN_PER",
     "start": 4616,
     "end": 4628,
     "text": "457І030Ч8585",
@@ -36653,7 +36653,7 @@
     "note": "инициалы слитно"
    },
    {
-    "type": "INN",
+    "type": "INN_PER",
     "start": 4711,
     "end": 4723,
     "text": "599393588895",
@@ -36692,7 +36692,7 @@
     "note": "стиль адреса: pobox"
    },
    {
-    "type": "INN",
+    "type": "INN_PER",
     "start": 4911,
     "end": 4923,
     "text": "599393588895",
@@ -36793,7 +36793,7 @@
     "checksum": "valid"
    },
    {
-    "type": "INN",
+    "type": "INN_PER",
     "start": 5311,
     "end": 5323,
     "text": "457103048585",
@@ -37034,7 +37034,7 @@
     "note": "составная форма: Индивидуальный предприниматель+ФИО"
    },
    {
-    "type": "INN",
+    "type": "INN_PER",
     "start": 182,
     "end": 194,
     "text": "599393588895",
@@ -37129,7 +37129,7 @@
     "note": "стиль адреса: pobox"
    },
    {
-    "type": "INN",
+    "type": "INN_PER",
     "start": 4616,
     "end": 4628,
     "text": "457І030Ч8585",
@@ -37164,7 +37164,7 @@
     "note": "инициалы слитно"
    },
    {
-    "type": "INN",
+    "type": "INN_PER",
     "start": 4711,
     "end": 4723,
     "text": "599393588895",
@@ -37203,7 +37203,7 @@
     "note": "стиль адреса: pobox"
    },
    {
-    "type": "INN",
+    "type": "INN_PER",
     "start": 4911,
     "end": 4923,
     "text": "599393588895",
@@ -37305,7 +37305,7 @@
     "checksum": "valid"
    },
    {
-    "type": "INN",
+    "type": "INN_PER",
     "start": 5311,
     "end": 5323,
     "text": "457103048585",
@@ -37547,7 +37547,7 @@
     "note": "мутация invisible; исходно: составная форма: Индивидуальный предприниматель+ФИО"
    },
    {
-    "type": "INN",
+    "type": "INN_PER",
     "start": 195,
     "end": 209,
     "text": "5­99393588 895",
@@ -37655,7 +37655,7 @@
     "note": "мутация invisible; исходно: стиль адреса: pobox"
    },
    {
-    "type": "INN",
+    "type": "INN_PER",
     "start": 4675,
     "end": 4689,
     "text": "457​І030Ч8 585",
@@ -37691,7 +37691,7 @@
     "note": "мутация invisible; исходно: инициалы слитно"
    },
    {
-    "type": "INN",
+    "type": "INN_PER",
     "start": 4777,
     "end": 4791,
     "text": "5⁠99393 588895",
@@ -37736,7 +37736,7 @@
     "note": "мутация invisible; исходно: стиль адреса: pobox"
    },
    {
-    "type": "INN",
+    "type": "INN_PER",
     "start": 4995,
     "end": 5009,
     "text": "5 9939⁠3588895",
@@ -37857,7 +37857,7 @@
     "checksum": "valid"
    },
    {
-    "type": "INN",
+    "type": "INN_PER",
     "start": 5425,
     "end": 5439,
     "text": "45​71​03048585",
@@ -38322,7 +38322,7 @@
     "checksum": "invalid"
    },
    {
-    "type": "INN",
+    "type": "INN_PER",
     "start": 3324,
     "end": 3336,
     "text": "732366993586",
@@ -38751,7 +38751,7 @@
     "checksum": "invalid"
    },
    {
-    "type": "INN",
+    "type": "INN_PER",
     "start": 3365,
     "end": 3378,
     "text": "73236699 3586",
@@ -39199,7 +39199,7 @@
     "checksum": "invalid"
    },
    {
-    "type": "INN",
+    "type": "INN_PER",
     "start": 3367,
     "end": 3380,
     "text": "732\n366993586",
@@ -39645,7 +39645,7 @@
     "checksum": "valid"
    },
    {
-    "type": "INN",
+    "type": "INN_PER",
     "start": 3400,
     "end": 3412,
     "text": "880620101315",
@@ -40147,7 +40147,7 @@
     "checksum": "valid"
    },
    {
-    "type": "INN",
+    "type": "INN_PER",
     "start": 3509,
     "end": 3523,
     "text": "8806 2010131⁠5",
@@ -40631,7 +40631,7 @@
     "checksum": "valid"
    },
    {
-    "type": "INN",
+    "type": "INN_PER",
     "start": 3428,
     "end": 3443,
     "text": "8806 20 10 1315",
@@ -42051,7 +42051,7 @@
     "note": "составная форма: ИП+ФИО"
    },
    {
-    "type": "INN",
+    "type": "INN_PER",
     "start": 254,
     "end": 266,
     "text": "413387948979",
@@ -42207,7 +42207,7 @@
     "note": "стиль адреса: pobox"
    },
    {
-    "type": "INN",
+    "type": "INN_PER",
     "start": 2891,
     "end": 2903,
     "text": "413387948979",
@@ -42479,7 +42479,7 @@
     "note": "составная форма: ИП+ФИО"
    },
    {
-    "type": "INN",
+    "type": "INN_PER",
     "start": 255,
     "end": 269,
     "text": "413387 94 8979",
@@ -42652,7 +42652,7 @@
     "note": "мутация digit_spaces; исходно: стиль адреса: pobox"
    },
    {
-    "type": "INN",
+    "type": "INN_PER",
     "start": 2924,
     "end": 2940,
     "text": "413 3 8794 8 979",
@@ -42937,7 +42937,7 @@
     "note": "мутация combo; исходно: составная форма: ИП+ФИО"
    },
    {
-    "type": "INN",
+    "type": "INN_PER",
     "start": 261,
     "end": 275,
     "text": "4133 87 9Ч8979",
@@ -43119,7 +43119,7 @@
     "note": "мутация combo; исходно: стиль адреса: pobox"
    },
    {
-    "type": "INN",
+    "type": "INN_PER",
     "start": 2959,
     "end": 2973,
     "text": "Ч133⁠8794897 9",
@@ -43595,7 +43595,7 @@
     "checksum": "invalid"
    },
    {
-    "type": "INN",
+    "type": "INN_PER",
     "start": 3146,
     "end": 3158,
     "text": "721566853972",
@@ -44012,7 +44012,7 @@
     "checksum": "invalid"
    },
    {
-    "type": "INN",
+    "type": "INN_PER",
     "start": 3225,
     "end": 3239,
     "text": "7 2156685 3972",
@@ -44414,7 +44414,7 @@
     "checksum": "invalid"
    },
    {
-    "type": "INN",
+    "type": "INN_PER",
     "start": 3146,
     "end": 3158,
     "text": "721566853972",
@@ -44591,7 +44591,7 @@
     "note": "составная форма: ИП+ФИО"
    },
    {
-    "type": "INN",
+    "type": "INN_PER",
     "start": 109,
     "end": 121,
     "text": "130662212672",
@@ -44608,7 +44608,7 @@
     "note": "составная форма: Индивидуальный предприниматель+ФИО"
    },
    {
-    "type": "INN",
+    "type": "INN_PER",
     "start": 302,
     "end": 314,
     "text": "659305081513",
@@ -44672,7 +44672,7 @@
     "note": "стиль адреса: no_marker2"
    },
    {
-    "type": "INN",
+    "type": "INN_PER",
     "start": 2613,
     "end": 2625,
     "text": "130662212672",
@@ -44743,7 +44743,7 @@
     "note": "стиль адреса: no_marker"
    },
    {
-    "type": "INN",
+    "type": "INN_PER",
     "start": 2901,
     "end": 2913,
     "text": "659305081513",
@@ -44962,7 +44962,7 @@
     "note": "мутация combo; исходно: составная форма: ИП+ФИО"
    },
    {
-    "type": "INN",
+    "type": "INN_PER",
     "start": 111,
     "end": 125,
     "text": "1ЗО66­22126⁠72",
@@ -44981,7 +44981,7 @@
     "note": "мутация combo; исходно: составная форма: Индивидуальный предприниматель+ФИО"
    },
    {
-    "type": "INN",
+    "type": "INN_PER",
     "start": 308,
     "end": 322,
     "text": "б59ЗО508І​5 13",
@@ -45052,7 +45052,7 @@
     "note": "мутация combo; исходно: стиль адреса: no_marker2"
    },
    {
-    "type": "INN",
+    "type": "INN_PER",
     "start": 2659,
     "end": 2673,
     "text": "1ЗО6 62 212672",
@@ -45136,7 +45136,7 @@
     "note": "мутация combo; исходно: стиль адреса: no_marker"
    },
    {
-    "type": "INN",
+    "type": "INN_PER",
     "start": 2970,
     "end": 2984,
     "text": "65​930­50815ІЗ",
@@ -45367,7 +45367,7 @@
     "note": "мутация homoglyph; исходно: составная форма: ИП+ФИО"
    },
    {
-    "type": "INN",
+    "type": "INN_PER",
     "start": 109,
     "end": 121,
     "text": "1ЗО6б2212672",
@@ -45386,7 +45386,7 @@
     "note": "мутация homoglyph; исходно: составная форма: Индивидуальный предприниматель+ФИО"
    },
    {
-    "type": "INN",
+    "type": "INN_PER",
     "start": 302,
     "end": 314,
     "text": "б5930508І513",
@@ -45457,7 +45457,7 @@
     "note": "мутация homoglyph; исходно: стиль адреса: no_marker2"
    },
    {
-    "type": "INN",
+    "type": "INN_PER",
     "start": 2613,
     "end": 2625,
     "text": "1З06622І2672",
@@ -45541,7 +45541,7 @@
     "note": "мутация homoglyph; исходно: стиль адреса: no_marker"
    },
    {
-    "type": "INN",
+    "type": "INN_PER",
     "start": 2901,
     "end": 2913,
     "text": "б5930508І51З",
@@ -45768,7 +45768,7 @@
     "note": "составная форма: ИП+ФИО"
    },
    {
-    "type": "INN",
+    "type": "INN_PER",
     "start": 100,
     "end": 112,
     "text": "613632550279",
@@ -45855,7 +45855,7 @@
     "note": "стиль адреса: index_first"
    },
    {
-    "type": "INN",
+    "type": "INN_PER",
     "start": 2660,
     "end": 2672,
     "text": "613632550279",
@@ -45956,7 +45956,7 @@
     "checksum": "valid"
    },
    {
-    "type": "INN",
+    "type": "INN_PER",
     "start": 3136,
     "end": 3148,
     "text": "916997467665",
@@ -46127,7 +46127,7 @@
     "note": "составная форма: ИП+ФИО"
    },
    {
-    "type": "INN",
+    "type": "INN_PER",
     "start": 100,
     "end": 114,
     "text": "613632550-279-",
@@ -46219,7 +46219,7 @@
     "note": "мутация digit_spaces; исходно: стиль адреса: index_first"
    },
    {
-    "type": "INN",
+    "type": "INN_PER",
     "start": 2669,
     "end": 2682,
     "text": "6136 32550279",
@@ -46331,7 +46331,7 @@
     "checksum": "valid"
    },
    {
-    "type": "INN",
+    "type": "INN_PER",
     "start": 3163,
     "end": 3177,
     "text": "916 99746 7665",
@@ -46505,7 +46505,7 @@
     "note": "мутация linebreak; исходно: составная форма: ИП+ФИО"
    },
    {
-    "type": "INN",
+    "type": "INN_PER",
     "start": 102,
     "end": 115,
     "text": "61\n3632550279",
@@ -46603,7 +46603,7 @@
     "note": "мутация linebreak; исходно: стиль адреса: index_first"
    },
    {
-    "type": "INN",
+    "type": "INN_PER",
     "start": 2678,
     "end": 2691,
     "text": "6136325502\n79",
@@ -46724,7 +46724,7 @@
     "checksum": "valid"
    },
    {
-    "type": "INN",
+    "type": "INN_PER",
     "start": 3169,
     "end": 3182,
     "text": "9169974\n67665",
@@ -47058,7 +47058,7 @@
     "checksum": "valid"
    },
    {
-    "type": "INN",
+    "type": "INN_PER",
     "start": 4843,
     "end": 4855,
     "text": "060834305664",
@@ -47144,7 +47144,7 @@
     "checksum": "valid"
    },
    {
-    "type": "INN",
+    "type": "INN_PER",
     "start": 5222,
     "end": 5234,
     "text": "264710252405",
@@ -47522,7 +47522,7 @@
     "checksum": "valid"
    },
    {
-    "type": "INN",
+    "type": "INN_PER",
     "start": 4843,
     "end": 4855,
     "text": "Об0834З0566Ч",
@@ -47623,7 +47623,7 @@
     "checksum": "valid"
    },
    {
-    "type": "INN",
+    "type": "INN_PER",
     "start": 5222,
     "end": 5234,
     "text": "2647І02524О5",
@@ -47994,7 +47994,7 @@
     "checksum": "valid"
    },
    {
-    "type": "INN",
+    "type": "INN_PER",
     "start": 4843,
     "end": 4855,
     "text": "060834305664",
@@ -48086,7 +48086,7 @@
     "checksum": "valid"
    },
    {
-    "type": "INN",
+    "type": "INN_PER",
     "start": 5222,
     "end": 5234,
     "text": "264710252405",
@@ -49557,7 +49557,7 @@
     "note": "составная форма: Индивидуальный предприниматель+ФИО"
    },
    {
-    "type": "INN",
+    "type": "INN_PER",
     "start": 339,
     "end": 351,
     "text": "596193293994",
@@ -49706,7 +49706,7 @@
     "note": "стиль адреса: pobox"
    },
    {
-    "type": "INN",
+    "type": "INN_PER",
     "start": 2935,
     "end": 2947,
     "text": "596193293994",
@@ -49952,7 +49952,7 @@
     "note": "мутация case; исходно: составная форма: Индивидуальный предприниматель+ФИО"
    },
    {
-    "type": "INN",
+    "type": "INN_PER",
     "start": 339,
     "end": 351,
     "text": "596193293994",
@@ -50111,7 +50111,7 @@
     "note": "мутация case; исходно: стиль адреса: pobox"
    },
    {
-    "type": "INN",
+    "type": "INN_PER",
     "start": 2935,
     "end": 2947,
     "text": "596193293994",
@@ -50362,7 +50362,7 @@
     "note": "мутация linebreak; исходно: составная форма: Индивидуальный предприниматель+ФИО"
    },
    {
-    "type": "INN",
+    "type": "INN_PER",
     "start": 344,
     "end": 357,
     "text": "59619\n3293994",
@@ -50535,7 +50535,7 @@
     "note": "мутация linebreak; исходно: стиль адреса: pobox"
    },
    {
-    "type": "INN",
+    "type": "INN_PER",
     "start": 2965,
     "end": 2978,
     "text": "59619329\n3994",
@@ -50960,7 +50960,7 @@
     "checksum": "valid"
    },
    {
-    "type": "INN",
+    "type": "INN_PER",
     "start": 3161,
     "end": 3173,
     "text": "401261268407",
@@ -51408,7 +51408,7 @@
     "checksum": "valid"
    },
    {
-    "type": "INN",
+    "type": "INN_PER",
     "start": 3256,
     "end": 3270,
     "text": "401​261268⁠407",
@@ -51843,7 +51843,7 @@
     "checksum": "valid"
    },
    {
-    "type": "INN",
+    "type": "INN_PER",
     "start": 3161,
     "end": 3173,
     "text": "401261268407",
@@ -52052,7 +52052,7 @@
     "note": "составная форма: ИП+ФИО"
    },
    {
-    "type": "INN",
+    "type": "INN_PER",
     "start": 120,
     "end": 132,
     "text": "361220201569",
@@ -52069,7 +52069,7 @@
     "note": "составная форма: Индивидуальный предприниматель+ФИО"
    },
    {
-    "type": "INN",
+    "type": "INN_PER",
     "start": 312,
     "end": 324,
     "text": "417855050890",
@@ -52133,7 +52133,7 @@
     "note": "стиль адреса: canonical"
    },
    {
-    "type": "INN",
+    "type": "INN_PER",
     "start": 2634,
     "end": 2646,
     "text": "361220201569",
@@ -52213,7 +52213,7 @@
     "note": "стиль адреса: canonical"
    },
    {
-    "type": "INN",
+    "type": "INN_PER",
     "start": 2974,
     "end": 2986,
     "text": "417855050890",
@@ -52423,7 +52423,7 @@
     "note": "мутация linebreak; исходно: составная форма: ИП+ФИО"
    },
    {
-    "type": "INN",
+    "type": "INN_PER",
     "start": 123,
     "end": 136,
     "text": "36\n1220201569",
@@ -52442,7 +52442,7 @@
     "note": "мутация linebreak; исходно: составная форма: Индивидуальный предприниматель+ФИО"
    },
    {
-    "type": "INN",
+    "type": "INN_PER",
     "start": 317,
     "end": 330,
     "text": "41785505\n0890",
@@ -52513,7 +52513,7 @@
     "note": "мутация linebreak; исходно: стиль адреса: canonical"
    },
    {
-    "type": "INN",
+    "type": "INN_PER",
     "start": 2651,
     "end": 2664,
     "text": "361\n220201569",
@@ -52606,7 +52606,7 @@
     "note": "мутация linebreak; исходно: стиль адреса: canonical"
    },
    {
-    "type": "INN",
+    "type": "INN_PER",
     "start": 3003,
     "end": 3016,
     "text": "4178550508\n90",
@@ -52827,7 +52827,7 @@
     "note": "составная форма: ИП+ФИО"
    },
    {
-    "type": "INN",
+    "type": "INN_PER",
     "start": 120,
     "end": 132,
     "text": "361220201569",
@@ -52844,7 +52844,7 @@
     "note": "составная форма: Индивидуальный предприниматель+ФИО"
    },
    {
-    "type": "INN",
+    "type": "INN_PER",
     "start": 312,
     "end": 324,
     "text": "417855050890",
@@ -52908,7 +52908,7 @@
     "note": "стиль адреса: canonical"
    },
    {
-    "type": "INN",
+    "type": "INN_PER",
     "start": 2634,
     "end": 2646,
     "text": "361220201569",
@@ -52988,7 +52988,7 @@
     "note": "стиль адреса: canonical"
    },
    {
-    "type": "INN",
+    "type": "INN_PER",
     "start": 2974,
     "end": 2986,
     "text": "417855050890",
@@ -53196,7 +53196,7 @@
     "note": "составная форма: ИП+ФИО"
    },
    {
-    "type": "INN",
+    "type": "INN_PER",
     "start": 111,
     "end": 123,
     "text": "540495492954",
@@ -53332,7 +53332,7 @@
     "note": "стиль адреса: no_marker2"
    },
    {
-    "type": "INN",
+    "type": "INN_PER",
     "start": 2854,
     "end": 2866,
     "text": "540495492954",
@@ -53433,7 +53433,7 @@
     "checksum": "valid"
    },
    {
-    "type": "INN",
+    "type": "INN_PER",
     "start": 3289,
     "end": 3301,
     "text": "566795548129",
@@ -53606,7 +53606,7 @@
     "note": "составная форма: ИП+ФИО"
    },
    {
-    "type": "INN",
+    "type": "INN_PER",
     "start": 111,
     "end": 125,
     "text": "5404 95 492954",
@@ -53745,7 +53745,7 @@
     "note": "стиль адреса: no_marker2"
    },
    {
-    "type": "INN",
+    "type": "INN_PER",
     "start": 2861,
     "end": 2875,
     "text": "5404 95492 954",
@@ -53857,7 +53857,7 @@
     "checksum": "valid"
    },
    {
-    "type": "INN",
+    "type": "INN_PER",
     "start": 3313,
     "end": 3328,
     "text": "566 7 95 548129",
@@ -54033,7 +54033,7 @@
     "note": "мутация linebreak; исходно: составная форма: ИП+ФИО"
    },
    {
-    "type": "INN",
+    "type": "INN_PER",
     "start": 116,
     "end": 129,
     "text": "5404954929\n54",
@@ -54185,7 +54185,7 @@
     "note": "мутация linebreak; исходно: стиль адреса: no_marker2"
    },
    {
-    "type": "INN",
+    "type": "INN_PER",
     "start": 2881,
     "end": 2894,
     "text": "5404954929\n54",
@@ -54306,7 +54306,7 @@
     "checksum": "valid"
    },
    {
-    "type": "INN",
+    "type": "INN_PER",
     "start": 3333,
     "end": 3346,
     "text": "566\n795548129",
@@ -54574,7 +54574,7 @@
     "note": "счёт разбит на группы по 4"
    },
    {
-    "type": "INN",
+    "type": "INN_PER",
     "start": 2656,
     "end": 2670,
     "text": "313-168-327750",
@@ -54637,7 +54637,7 @@
     "checksum": "valid"
    },
    {
-    "type": "INN",
+    "type": "INN_PER",
     "start": 3028,
     "end": 3040,
     "text": "313168327750",
@@ -54714,7 +54714,7 @@
     "checksum": "valid"
    },
    {
-    "type": "INN",
+    "type": "INN_PER",
     "start": 3437,
     "end": 3449,
     "text": "243592564376",
@@ -54746,7 +54746,7 @@
     "note": "фамилия + инициалы"
    },
    {
-    "type": "INN",
+    "type": "INN_PER",
     "start": 3535,
     "end": 3548,
     "text": "3131\t68327750",
@@ -55027,7 +55027,7 @@
     "note": "счёт разбит на группы по 4"
    },
    {
-    "type": "INN",
+    "type": "INN_PER",
     "start": 2656,
     "end": 2670,
     "text": "313-168-327750",
@@ -55090,7 +55090,7 @@
     "checksum": "valid"
    },
    {
-    "type": "INN",
+    "type": "INN_PER",
     "start": 3028,
     "end": 3040,
     "text": "313168327750",
@@ -55168,7 +55168,7 @@
     "checksum": "valid"
    },
    {
-    "type": "INN",
+    "type": "INN_PER",
     "start": 3437,
     "end": 3449,
     "text": "243592564376",
@@ -55200,7 +55200,7 @@
     "note": "фамилия + инициалы"
    },
    {
-    "type": "INN",
+    "type": "INN_PER",
     "start": 3535,
     "end": 3548,
     "text": "3131\t68327750",
@@ -55493,7 +55493,7 @@
     "note": "мутация invisible; исходно: счёт разбит на группы по 4"
    },
    {
-    "type": "INN",
+    "type": "INN_PER",
     "start": 2700,
     "end": 2716,
     "text": "313​-168-32‍7750",
@@ -55566,7 +55566,7 @@
     "checksum": "valid"
    },
    {
-    "type": "INN",
+    "type": "INN_PER",
     "start": 3088,
     "end": 3102,
     "text": "3131⁠6832­7750",
@@ -55658,7 +55658,7 @@
     "checksum": "valid"
    },
    {
-    "type": "INN",
+    "type": "INN_PER",
     "start": 3524,
     "end": 3538,
     "text": "24­359­2564376",
@@ -55695,7 +55695,7 @@
     "note": "мутация invisible; исходно: фамилия + инициалы"
    },
    {
-    "type": "INN",
+    "type": "INN_PER",
     "start": 3632,
     "end": 3647,
     "text": "313 1\t6832775 0",
@@ -57221,7 +57221,7 @@
     "note": "составная форма: Индивидуальный предприниматель+ФИО"
    },
    {
-    "type": "INN",
+    "type": "INN_PER",
     "start": 362,
     "end": 374,
     "text": "066739141431",
@@ -57438,7 +57438,7 @@
     "note": "стиль адреса: city_middle"
    },
    {
-    "type": "INN",
+    "type": "INN_PER",
     "start": 3287,
     "end": 3299,
     "text": "066739141431",
@@ -57686,7 +57686,7 @@
     "note": "мутация invisible; исходно: составная форма: Индивидуальный предприниматель+ФИО"
    },
    {
-    "type": "INN",
+    "type": "INN_PER",
     "start": 383,
     "end": 397,
     "text": "0667‍3​9141431",
@@ -57931,7 +57931,7 @@
     "note": "мутация invisible; исходно: стиль адреса: city_middle"
    },
    {
-    "type": "INN",
+    "type": "INN_PER",
     "start": 3390,
     "end": 3404,
     "text": "066‍73914­1431",
@@ -58188,7 +58188,7 @@
     "note": "составная форма: Индивидуальный предприниматель+ФИО"
    },
    {
-    "type": "INN",
+    "type": "INN_PER",
     "start": 364,
     "end": 378,
     "text": "0667 3914 1431",
@@ -58421,7 +58421,7 @@
     "note": "стиль адреса: city_middle"
    },
    {
-    "type": "INN",
+    "type": "INN_PER",
     "start": 3321,
     "end": 3336,
     "text": "0667 39 14 1431",
@@ -58905,7 +58905,7 @@
     "checksum": "valid"
    },
    {
-    "type": "INN",
+    "type": "INN_PER",
     "start": 5552,
     "end": 5564,
     "text": "935023064684",
@@ -59387,7 +59387,7 @@
     "checksum": "valid"
    },
    {
-    "type": "INN",
+    "type": "INN_PER",
     "start": 5668,
     "end": 5682,
     "text": "935023‍06⁠4684",
@@ -59856,7 +59856,7 @@
     "checksum": "valid"
    },
    {
-    "type": "INN",
+    "type": "INN_PER",
     "start": 5552,
     "end": 5564,
     "text": "935023064684",
@@ -60035,7 +60035,7 @@
     "note": "составная форма: ИП+ФИО"
    },
    {
-    "type": "INN",
+    "type": "INN_PER",
     "start": 93,
     "end": 105,
     "text": "396405716712",
@@ -60052,7 +60052,7 @@
     "note": "составная форма: Индивидуальный предприниматель+ФИО"
    },
    {
-    "type": "INN",
+    "type": "INN_PER",
     "start": 294,
     "end": 306,
     "text": "893814420023",
@@ -60165,7 +60165,7 @@
     "note": "стиль адреса: pobox"
    },
    {
-    "type": "INN",
+    "type": "INN_PER",
     "start": 2889,
     "end": 2901,
     "text": "396405716712",
@@ -60245,7 +60245,7 @@
     "note": "стиль адреса: pobox"
    },
    {
-    "type": "INN",
+    "type": "INN_PER",
     "start": 3218,
     "end": 3230,
     "text": "893814420023",
@@ -60456,7 +60456,7 @@
     "note": "составная форма: ИП+ФИО"
    },
    {
-    "type": "INN",
+    "type": "INN_PER",
     "start": 93,
     "end": 106,
     "text": "3964 05716712",
@@ -60474,7 +60474,7 @@
     "note": "составная форма: Индивидуальный предприниматель+ФИО"
    },
    {
-    "type": "INN",
+    "type": "INN_PER",
     "start": 295,
     "end": 311,
     "text": "893-814-42-0023-",
@@ -60591,7 +60591,7 @@
     "note": "мутация digit_spaces; исходно: стиль адреса: pobox"
    },
    {
-    "type": "INN",
+    "type": "INN_PER",
     "start": 2895,
     "end": 2911,
     "text": "396-405-716-712-",
@@ -60679,7 +60679,7 @@
     "note": "мутация digit_spaces; исходно: стиль адреса: pobox"
    },
    {
-    "type": "INN",
+    "type": "INN_PER",
     "start": 3241,
     "end": 3256,
     "text": "8938 1442 0 023",
@@ -60898,7 +60898,7 @@
     "note": "мутация combo; исходно: составная форма: ИП+ФИО"
    },
    {
-    "type": "INN",
+    "type": "INN_PER",
     "start": 96,
     "end": 110,
     "text": "39б‍Ч​05716712",
@@ -60917,7 +60917,7 @@
     "note": "мутация combo; исходно: составная форма: Индивидуальный предприниматель+ФИО"
    },
    {
-    "type": "INN",
+    "type": "INN_PER",
     "start": 308,
     "end": 322,
     "text": "89З8І­4 42002З",
@@ -61042,7 +61042,7 @@
     "note": "мутация combo; исходно: стиль адреса: pobox"
    },
    {
-    "type": "INN",
+    "type": "INN_PER",
     "start": 2947,
     "end": 2961,
     "text": "З9‍б40⁠57167І2",
@@ -61135,7 +61135,7 @@
     "note": "мутация combo; исходно: стиль адреса: pobox"
    },
    {
-    "type": "INN",
+    "type": "INN_PER",
     "start": 3304,
     "end": 3318,
     "text": "8938144‍20О2​З",
@@ -61355,7 +61355,7 @@
     "note": "составная форма: Индивидуальный предприниматель+ФИО"
    },
    {
-    "type": "INN",
+    "type": "INN_PER",
     "start": 109,
     "end": 121,
     "text": "723011171132",
@@ -61460,7 +61460,7 @@
     "note": "стиль адреса: canonical"
    },
    {
-    "type": "INN",
+    "type": "INN_PER",
     "start": 2751,
     "end": 2763,
     "text": "723011171132",
@@ -61561,7 +61561,7 @@
     "checksum": "valid"
    },
    {
-    "type": "INN",
+    "type": "INN_PER",
     "start": 3205,
     "end": 3217,
     "text": "492241725767",
@@ -61764,7 +61764,7 @@
     "note": "составная форма: Индивидуальный предприниматель+ФИО"
    },
    {
-    "type": "INN",
+    "type": "INN_PER",
     "start": 109,
     "end": 122,
     "text": "723011 171132",
@@ -61874,7 +61874,7 @@
     "note": "мутация digit_spaces; исходно: стиль адреса: canonical"
    },
    {
-    "type": "INN",
+    "type": "INN_PER",
     "start": 2760,
     "end": 2776,
     "text": "7230-11-17-1132-",
@@ -61989,7 +61989,7 @@
     "checksum": "valid"
    },
    {
-    "type": "INN",
+    "type": "INN_PER",
     "start": 3234,
     "end": 3251,
     "text": "492-241-72-5-767-",
@@ -62197,7 +62197,7 @@
     "note": "мутация linebreak; исходно: составная форма: Индивидуальный предприниматель+ФИО"
    },
    {
-    "type": "INN",
+    "type": "INN_PER",
     "start": 112,
     "end": 125,
     "text": "7230111711\n32",
@@ -62313,7 +62313,7 @@
     "note": "мутация linebreak; исходно: стиль адреса: canonical"
    },
    {
-    "type": "INN",
+    "type": "INN_PER",
     "start": 2776,
     "end": 2789,
     "text": "7230111711\n32",
@@ -62434,7 +62434,7 @@
     "checksum": "valid"
    },
    {
-    "type": "INN",
+    "type": "INN_PER",
     "start": 3245,
     "end": 3258,
     "text": "492241\n725767",
@@ -62789,7 +62789,7 @@
     "checksum": "invalid"
    },
    {
-    "type": "INN",
+    "type": "INN_PER",
     "start": 2940,
     "end": 2952,
     "text": "906410809811",
@@ -62866,7 +62866,7 @@
     "checksum": "invalid"
    },
    {
-    "type": "INN",
+    "type": "INN_PER",
     "start": 3292,
     "end": 3304,
     "text": "044561040997",
@@ -62898,7 +62898,7 @@
     "note": "фамилия + инициалы"
    },
    {
-    "type": "INN",
+    "type": "INN_PER",
     "start": 3390,
     "end": 3403,
     "text": "9064\t10809811",
@@ -63254,7 +63254,7 @@
     "checksum": "invalid"
    },
    {
-    "type": "INN",
+    "type": "INN_PER",
     "start": 3002,
     "end": 3016,
     "text": "906 4І08 О981І",
@@ -63346,7 +63346,7 @@
     "checksum": "invalid"
    },
    {
-    "type": "INN",
+    "type": "INN_PER",
     "start": 3374,
     "end": 3388,
     "text": "044 561ОЧО99​7",
@@ -63383,7 +63383,7 @@
     "note": "мутация combo; исходно: фамилия + инициалы"
    },
    {
-    "type": "INN",
+    "type": "INN_PER",
     "start": 3482,
     "end": 3497,
     "text": "9О 64\tІ08О⁠98І1",
@@ -63741,7 +63741,7 @@
     "checksum": "invalid"
    },
    {
-    "type": "INN",
+    "type": "INN_PER",
     "start": 2940,
     "end": 2952,
     "text": "9О6Ч1080981І",
@@ -63831,7 +63831,7 @@
     "checksum": "invalid"
    },
    {
-    "type": "INN",
+    "type": "INN_PER",
     "start": 3292,
     "end": 3304,
     "text": "0445610ЧО997",
@@ -63868,7 +63868,7 @@
     "note": "мутация homoglyph; исходно: фамилия + инициалы"
    },
    {
-    "type": "INN",
+    "type": "INN_PER",
     "start": 3390,
     "end": 3403,
     "text": "9О64\t108О98ІІ",
@@ -65432,7 +65432,7 @@
     "note": "составная форма: ИП+ФИО"
    },
    {
-    "type": "INN",
+    "type": "INN_PER",
     "start": 300,
     "end": 312,
     "text": "269474191788",
@@ -65617,7 +65617,7 @@
     "note": "стиль адреса: index_first"
    },
    {
-    "type": "INN",
+    "type": "INN_PER",
     "start": 3298,
     "end": 3310,
     "text": "269474191788",
@@ -65847,7 +65847,7 @@
     "note": "мутация homoglyph; исходно: составная форма: ИП+ФИО"
    },
    {
-    "type": "INN",
+    "type": "INN_PER",
     "start": 300,
     "end": 312,
     "text": "2б9Ч7Ч191788",
@@ -66056,7 +66056,7 @@
     "note": "мутация homoglyph; исходно: стиль адреса: index_first"
    },
    {
-    "type": "INN",
+    "type": "INN_PER",
     "start": 3298,
     "end": 3310,
     "text": "2б9474191788",
@@ -66298,7 +66298,7 @@
     "note": "мутация case; исходно: составная форма: ИП+ФИО"
    },
    {
-    "type": "INN",
+    "type": "INN_PER",
     "start": 300,
     "end": 312,
     "text": "269474191788",
@@ -66493,7 +66493,7 @@
     "note": "мутация case; исходно: стиль адреса: index_first"
    },
    {
-    "type": "INN",
+    "type": "INN_PER",
     "start": 3298,
     "end": 3310,
     "text": "269474191788",
@@ -66964,7 +66964,7 @@
     "checksum": "valid"
    },
    {
-    "type": "INN",
+    "type": "INN_PER",
     "start": 3305,
     "end": 3317,
     "text": "226974655412",
@@ -67437,7 +67437,7 @@
     "checksum": "valid"
    },
    {
-    "type": "INN",
+    "type": "INN_PER",
     "start": 3394,
     "end": 3408,
     "text": "22697‍46554⁠12",
@@ -67890,7 +67890,7 @@
     "checksum": "valid"
    },
    {
-    "type": "INN",
+    "type": "INN_PER",
     "start": 3305,
     "end": 3317,
     "text": "226974655412",
@@ -68069,7 +68069,7 @@
     "note": "составная форма: ИП+ФИО"
    },
    {
-    "type": "INN",
+    "type": "INN_PER",
     "start": 103,
     "end": 115,
     "text": "993956596508",
@@ -68086,7 +68086,7 @@
     "note": "составная форма: Индивидуальный предприниматель+ФИО"
    },
    {
-    "type": "INN",
+    "type": "INN_PER",
     "start": 294,
     "end": 306,
     "text": "807081454847",
@@ -68209,7 +68209,7 @@
     "note": "стиль адреса: nonres"
    },
    {
-    "type": "INN",
+    "type": "INN_PER",
     "start": 4987,
     "end": 4999,
     "text": "993956596508",
@@ -68289,7 +68289,7 @@
     "note": "стиль адреса: km"
    },
    {
-    "type": "INN",
+    "type": "INN_PER",
     "start": 5353,
     "end": 5365,
     "text": "807081454847",
@@ -68501,7 +68501,7 @@
     "note": "мутация case; исходно: составная форма: ИП+ФИО"
    },
    {
-    "type": "INN",
+    "type": "INN_PER",
     "start": 103,
     "end": 115,
     "text": "993956596508",
@@ -68519,7 +68519,7 @@
     "note": "мутация case; исходно: составная форма: Индивидуальный предприниматель+ФИО"
    },
    {
-    "type": "INN",
+    "type": "INN_PER",
     "start": 294,
     "end": 306,
     "text": "807081454847",
@@ -68650,7 +68650,7 @@
     "note": "мутация case; исходно: стиль адреса: nonres"
    },
    {
-    "type": "INN",
+    "type": "INN_PER",
     "start": 4987,
     "end": 4999,
     "text": "993956596508",
@@ -68736,7 +68736,7 @@
     "note": "мутация case; исходно: стиль адреса: km"
    },
    {
-    "type": "INN",
+    "type": "INN_PER",
     "start": 5353,
     "end": 5365,
     "text": "807081454847",
@@ -68951,7 +68951,7 @@
     "note": "мутация linebreak; исходно: составная форма: ИП+ФИО"
    },
    {
-    "type": "INN",
+    "type": "INN_PER",
     "start": 104,
     "end": 117,
     "text": "993956\n596508",
@@ -68970,7 +68970,7 @@
     "note": "мутация linebreak; исходно: составная форма: Индивидуальный предприниматель+ФИО"
    },
    {
-    "type": "INN",
+    "type": "INN_PER",
     "start": 297,
     "end": 310,
     "text": "8070\n81454847",
@@ -69104,7 +69104,7 @@
     "note": "мутация linebreak; исходно: стиль адреса: nonres"
    },
    {
-    "type": "INN",
+    "type": "INN_PER",
     "start": 5018,
     "end": 5031,
     "text": "9939565\n96508",
@@ -69197,7 +69197,7 @@
     "note": "мутация linebreak; исходно: стиль адреса: km"
    },
    {
-    "type": "INN",
+    "type": "INN_PER",
     "start": 5396,
     "end": 5409,
     "text": "8070\n81454847",
@@ -69417,7 +69417,7 @@
     "note": "составная форма: Индивидуальный предприниматель+ФИО"
    },
    {
-    "type": "INN",
+    "type": "INN_PER",
     "start": 127,
     "end": 139,
     "text": "860574875284",
@@ -69522,7 +69522,7 @@
     "note": "стиль адреса: index_first"
    },
    {
-    "type": "INN",
+    "type": "INN_PER",
     "start": 2779,
     "end": 2791,
     "text": "860574875284",
@@ -69623,7 +69623,7 @@
     "checksum": "valid"
    },
    {
-    "type": "INN",
+    "type": "INN_PER",
     "start": 3247,
     "end": 3259,
     "text": "526806720273",
@@ -69796,7 +69796,7 @@
     "note": "составная форма: Индивидуальный предприниматель+ФИО"
    },
    {
-    "type": "INN",
+    "type": "INN_PER",
     "start": 127,
     "end": 140,
     "text": "86057487 5284",
@@ -69906,7 +69906,7 @@
     "note": "мутация digit_spaces; исходно: стиль адреса: index_first"
    },
    {
-    "type": "INN",
+    "type": "INN_PER",
     "start": 2788,
     "end": 2802,
     "text": "860574 87 5284",
@@ -70022,7 +70022,7 @@
     "checksum": "valid"
    },
    {
-    "type": "INN",
+    "type": "INN_PER",
     "start": 3276,
     "end": 3290,
     "text": "526 806 720273",
@@ -70198,7 +70198,7 @@
     "note": "мутация linebreak; исходно: составная форма: Индивидуальный предприниматель+ФИО"
    },
    {
-    "type": "INN",
+    "type": "INN_PER",
     "start": 129,
     "end": 142,
     "text": "860574875\n284",
@@ -70315,7 +70315,7 @@
     "note": "мутация linebreak; исходно: стиль адреса: index_first"
    },
    {
-    "type": "INN",
+    "type": "INN_PER",
     "start": 2795,
     "end": 2808,
     "text": "86057487\n5284",
@@ -70436,7 +70436,7 @@
     "checksum": "valid"
    },
    {
-    "type": "INN",
+    "type": "INN_PER",
     "start": 3276,
     "end": 3289,
     "text": "52680672\n0273",
@@ -70758,7 +70758,7 @@
     "checksum": "valid"
    },
    {
-    "type": "INN",
+    "type": "INN_PER",
     "start": 2882,
     "end": 2894,
     "text": "969286997422",
@@ -70835,7 +70835,7 @@
     "checksum": "valid"
    },
    {
-    "type": "INN",
+    "type": "INN_PER",
     "start": 3221,
     "end": 3233,
     "text": "286275023810",
@@ -70867,7 +70867,7 @@
     "note": "фамилия + инициалы"
    },
    {
-    "type": "INN",
+    "type": "INN_PER",
     "start": 3321,
     "end": 3334,
     "text": "9692\t86997422",
@@ -71223,7 +71223,7 @@
     "checksum": "valid"
    },
    {
-    "type": "INN",
+    "type": "INN_PER",
     "start": 2909,
     "end": 2922,
     "text": "9692\n86997422",
@@ -71315,7 +71315,7 @@
     "checksum": "valid"
    },
    {
-    "type": "INN",
+    "type": "INN_PER",
     "start": 3261,
     "end": 3274,
     "text": "286\n275023810",
@@ -71352,7 +71352,7 @@
     "note": "мутация linebreak; исходно: фамилия + инициалы"
    },
    {
-    "type": "INN",
+    "type": "INN_PER",
     "start": 3365,
     "end": 3380,
     "text": "96\n92\t86\n997422",
@@ -71689,7 +71689,7 @@
     "checksum": "valid"
    },
    {
-    "type": "INN",
+    "type": "INN_PER",
     "start": 2882,
     "end": 2894,
     "text": "969286997422",
@@ -71767,7 +71767,7 @@
     "checksum": "valid"
    },
    {
-    "type": "INN",
+    "type": "INN_PER",
     "start": 3221,
     "end": 3233,
     "text": "286275023810",
@@ -71799,7 +71799,7 @@
     "note": "фамилия + инициалы"
    },
    {
-    "type": "INN",
+    "type": "INN_PER",
     "start": 3321,
     "end": 3334,
     "text": "9692\t86997422",
@@ -73385,7 +73385,7 @@
     "note": "составная форма: ИП+ФИО"
    },
    {
-    "type": "INN",
+    "type": "INN_PER",
     "start": 285,
     "end": 297,
     "text": "557717287940",
@@ -73570,7 +73570,7 @@
     "note": "стиль адреса: pobox"
    },
    {
-    "type": "INN",
+    "type": "INN_PER",
     "start": 3078,
     "end": 3090,
     "text": "557717287940",
@@ -73797,7 +73797,7 @@
     "note": "составная форма: ИП+ФИО"
    },
    {
-    "type": "INN",
+    "type": "INN_PER",
     "start": 285,
     "end": 297,
     "text": "557717287940",
@@ -73983,7 +73983,7 @@
     "note": "стиль адреса: pobox"
    },
    {
-    "type": "INN",
+    "type": "INN_PER",
     "start": 3078,
     "end": 3090,
     "text": "557717287940",
@@ -74213,7 +74213,7 @@
     "note": "мутация invisible; исходно: составная форма: ИП+ФИО"
    },
    {
-    "type": "INN",
+    "type": "INN_PER",
     "start": 303,
     "end": 317,
     "text": "5‍57‍717287940",
@@ -74422,7 +74422,7 @@
     "note": "мутация invisible; исходно: стиль адреса: pobox"
    },
    {
-    "type": "INN",
+    "type": "INN_PER",
     "start": 3167,
     "end": 3181,
     "text": "5577172⁠87­940",
@@ -74923,7 +74923,7 @@
     "checksum": "valid"
    },
    {
-    "type": "INN",
+    "type": "INN_PER",
     "start": 5290,
     "end": 5302,
     "text": "394922597234",
@@ -75453,7 +75453,7 @@
     "checksum": "valid"
    },
    {
-    "type": "INN",
+    "type": "INN_PER",
     "start": 5400,
     "end": 5414,
     "text": "39492​259723 4",
@@ -75968,7 +75968,7 @@
     "checksum": "valid"
    },
    {
-    "type": "INN",
+    "type": "INN_PER",
     "start": 5290,
     "end": 5302,
     "text": "394922597234",
@@ -76179,7 +76179,7 @@
     "note": "составная форма: ИП+ФИО"
    },
    {
-    "type": "INN",
+    "type": "INN_PER",
     "start": 91,
     "end": 103,
     "text": "771089145681",
@@ -76196,7 +76196,7 @@
     "note": "составная форма: Индивидуальный предприниматель+ФИО"
    },
    {
-    "type": "INN",
+    "type": "INN_PER",
     "start": 278,
     "end": 290,
     "text": "625254571021",
@@ -76296,7 +76296,7 @@
     "note": "стиль адреса: canonical"
    },
    {
-    "type": "INN",
+    "type": "INN_PER",
     "start": 2771,
     "end": 2783,
     "text": "771089145681",
@@ -76376,7 +76376,7 @@
     "note": "стиль адреса: canonical"
    },
    {
-    "type": "INN",
+    "type": "INN_PER",
     "start": 3132,
     "end": 3144,
     "text": "625254571021",
@@ -76588,7 +76588,7 @@
     "note": "мутация invisible; исходно: составная форма: ИП+ФИО"
    },
    {
-    "type": "INN",
+    "type": "INN_PER",
     "start": 97,
     "end": 111,
     "text": "77​1089‍145681",
@@ -76607,7 +76607,7 @@
     "note": "мутация invisible; исходно: составная форма: Индивидуальный предприниматель+ФИО"
    },
    {
-    "type": "INN",
+    "type": "INN_PER",
     "start": 288,
     "end": 302,
     "text": "625­2545‍71021",
@@ -76714,7 +76714,7 @@
     "note": "мутация invisible; исходно: стиль адреса: canonical"
    },
    {
-    "type": "INN",
+    "type": "INN_PER",
     "start": 2821,
     "end": 2835,
     "text": "77‍108 9145681",
@@ -76807,7 +76807,7 @@
     "note": "мутация invisible; исходно: стиль адреса: canonical"
    },
    {
-    "type": "INN",
+    "type": "INN_PER",
     "start": 3209,
     "end": 3223,
     "text": "625 25457102­1",
@@ -77030,7 +77030,7 @@
     "note": "составная форма: ИП+ФИО"
    },
    {
-    "type": "INN",
+    "type": "INN_PER",
     "start": 93,
     "end": 108,
     "text": "771 0 89145 681",
@@ -77048,7 +77048,7 @@
     "note": "составная форма: Индивидуальный предприниматель+ФИО"
    },
    {
-    "type": "INN",
+    "type": "INN_PER",
     "start": 283,
     "end": 299,
     "text": "625 2 5457 1 021",
@@ -77153,7 +77153,7 @@
     "note": "мутация digit_spaces; исходно: стиль адреса: canonical"
    },
    {
-    "type": "INN",
+    "type": "INN_PER",
     "start": 2787,
     "end": 2801,
     "text": "7710-89145681-",
@@ -77241,7 +77241,7 @@
     "note": "мутация digit_spaces; исходно: стиль адреса: canonical"
    },
    {
-    "type": "INN",
+    "type": "INN_PER",
     "start": 3162,
     "end": 3178,
     "text": "6252 54 57 1 021",
@@ -77456,7 +77456,7 @@
     "note": "составная форма: ИП+ФИО"
    },
    {
-    "type": "INN",
+    "type": "INN_PER",
     "start": 95,
     "end": 107,
     "text": "206283390845",
@@ -77592,7 +77592,7 @@
     "note": "стиль адреса: no_marker"
    },
    {
-    "type": "INN",
+    "type": "INN_PER",
     "start": 2773,
     "end": 2785,
     "text": "206283390845",
@@ -77693,7 +77693,7 @@
     "checksum": "valid"
    },
    {
-    "type": "INN",
+    "type": "INN_PER",
     "start": 3173,
     "end": 3185,
     "text": "144021744341",
@@ -77866,7 +77866,7 @@
     "note": "составная форма: ИП+ФИО"
    },
    {
-    "type": "INN",
+    "type": "INN_PER",
     "start": 95,
     "end": 110,
     "text": "206 28339 0 845",
@@ -78005,7 +78005,7 @@
     "note": "стиль адреса: no_marker"
    },
    {
-    "type": "INN",
+    "type": "INN_PER",
     "start": 2781,
     "end": 2797,
     "text": "206 283 39 0 845",
@@ -78117,7 +78117,7 @@
     "checksum": "valid"
    },
    {
-    "type": "INN",
+    "type": "INN_PER",
     "start": 3201,
     "end": 3214,
     "text": "1440 21744341",
@@ -78293,7 +78293,7 @@
     "note": "мутация linebreak; исходно: составная форма: ИП+ФИО"
    },
    {
-    "type": "INN",
+    "type": "INN_PER",
     "start": 97,
     "end": 110,
     "text": "2062833908\n45",
@@ -78445,7 +78445,7 @@
     "note": "мутация linebreak; исходно: стиль адреса: no_marker"
    },
    {
-    "type": "INN",
+    "type": "INN_PER",
     "start": 2797,
     "end": 2810,
     "text": "206283390\n845",
@@ -78566,7 +78566,7 @@
     "checksum": "valid"
    },
    {
-    "type": "INN",
+    "type": "INN_PER",
     "start": 3212,
     "end": 3225,
     "text": "144021744\n341",
@@ -78852,7 +78852,7 @@
     "note": "счёт разбит на группы по 4"
    },
    {
-    "type": "INN",
+    "type": "INN_PER",
     "start": 2651,
     "end": 2665,
     "text": "228-296-234127",
@@ -78915,7 +78915,7 @@
     "checksum": "valid"
    },
    {
-    "type": "INN",
+    "type": "INN_PER",
     "start": 3036,
     "end": 3048,
     "text": "228296234127",
@@ -79001,7 +79001,7 @@
     "checksum": "valid"
    },
    {
-    "type": "INN",
+    "type": "INN_PER",
     "start": 3441,
     "end": 3453,
     "text": "007458484451",
@@ -79291,7 +79291,7 @@
     "note": "мутация digit_spaces; исходно: счёт разбит на группы по 4"
    },
    {
-    "type": "INN",
+    "type": "INN_PER",
     "start": 2666,
     "end": 2681,
     "text": "228-296-234 127",
@@ -79361,7 +79361,7 @@
     "checksum": "valid"
    },
    {
-    "type": "INN",
+    "type": "INN_PER",
     "start": 3059,
     "end": 3075,
     "text": "2282 96 23 4 127",
@@ -79452,7 +79452,7 @@
     "checksum": "valid"
    },
    {
-    "type": "INN",
+    "type": "INN_PER",
     "start": 3474,
     "end": 3488,
     "text": "007 458484 451",
@@ -79751,7 +79751,7 @@
     "note": "мутация combo; исходно: счёт разбит на группы по 4"
    },
    {
-    "type": "INN",
+    "type": "INN_PER",
     "start": 2697,
     "end": 2713,
     "text": "228-296-23 ЧІ2​7",
@@ -79824,7 +79824,7 @@
     "checksum": "valid"
    },
    {
-    "type": "INN",
+    "type": "INN_PER",
     "start": 3098,
     "end": 3112,
     "text": "22829б23 4‍І27",
@@ -79925,7 +79925,7 @@
     "checksum": "valid"
    },
    {
-    "type": "INN",
+    "type": "INN_PER",
     "start": 3527,
     "end": 3541,
     "text": "0074 58Ч 84Ч51",
@@ -81422,7 +81422,7 @@
     "note": "составная форма: Индивидуальный предприниматель+ФИО"
    },
    {
-    "type": "INN",
+    "type": "INN_PER",
     "start": 288,
     "end": 300,
     "text": "334436024710",
@@ -81641,7 +81641,7 @@
     "note": "стиль адреса: snt"
    },
    {
-    "type": "INN",
+    "type": "INN_PER",
     "start": 3231,
     "end": 3243,
     "text": "334436024710",
@@ -81889,7 +81889,7 @@
     "note": "мутация combo; исходно: составная форма: Индивидуальный предприниматель+ФИО"
    },
    {
-    "type": "INN",
+    "type": "INN_PER",
     "start": 297,
     "end": 311,
     "text": "334­ЧЗб024 71О",
@@ -82135,7 +82135,7 @@
     "note": "мутация combo; исходно: стиль адреса: snt"
    },
    {
-    "type": "INN",
+    "type": "INN_PER",
     "start": 3319,
     "end": 3333,
     "text": "ЗЗ 4​4З6024710",
@@ -82395,7 +82395,7 @@
     "note": "мутация homoglyph; исходно: составная форма: Индивидуальный предприниматель+ФИО"
    },
    {
-    "type": "INN",
+    "type": "INN_PER",
     "start": 288,
     "end": 300,
     "text": "33443бО24710",
@@ -82640,7 +82640,7 @@
     "note": "мутация homoglyph; исходно: стиль адреса: snt"
    },
    {
-    "type": "INN",
+    "type": "INN_PER",
     "start": 3231,
     "end": 3243,
     "text": "3З44Зб0247І0",
@@ -83123,7 +83123,7 @@
     "checksum": "valid"
    },
    {
-    "type": "INN",
+    "type": "INN_PER",
     "start": 3196,
     "end": 3208,
     "text": "106252884915",
@@ -83578,7 +83578,7 @@
     "checksum": "valid"
    },
    {
-    "type": "INN",
+    "type": "INN_PER",
     "start": 3283,
     "end": 3297,
     "text": "10‍62528849​15",
@@ -84017,7 +84017,7 @@
     "checksum": "valid"
    },
    {
-    "type": "INN",
+    "type": "INN_PER",
     "start": 3196,
     "end": 3208,
     "text": "106252884915",
@@ -84196,7 +84196,7 @@
     "note": "составная форма: Индивидуальный предприниматель+ФИО"
    },
    {
-    "type": "INN",
+    "type": "INN_PER",
     "start": 121,
     "end": 133,
     "text": "023866622169",
@@ -84213,7 +84213,7 @@
     "note": "составная форма: Индивидуальный предприниматель+ФИО"
    },
    {
-    "type": "INN",
+    "type": "INN_PER",
     "start": 309,
     "end": 321,
     "text": "903385418892",
@@ -84349,7 +84349,7 @@
     "note": "стиль адреса: canonical"
    },
    {
-    "type": "INN",
+    "type": "INN_PER",
     "start": 4976,
     "end": 4988,
     "text": "023866622169",
@@ -84420,7 +84420,7 @@
     "note": "стиль адреса: canonical"
    },
    {
-    "type": "INN",
+    "type": "INN_PER",
     "start": 5275,
     "end": 5287,
     "text": "903385418892",
@@ -84671,7 +84671,7 @@
     "note": "мутация homoglyph; исходно: составная форма: Индивидуальный предприниматель+ФИО"
    },
    {
-    "type": "INN",
+    "type": "INN_PER",
     "start": 121,
     "end": 133,
     "text": "О2386б622169",
@@ -84690,7 +84690,7 @@
     "note": "мутация homoglyph; исходно: составная форма: Индивидуальный предприниматель+ФИО"
    },
    {
-    "type": "INN",
+    "type": "INN_PER",
     "start": 309,
     "end": 321,
     "text": "903З85Ч18892",
@@ -84842,7 +84842,7 @@
     "note": "мутация homoglyph; исходно: стиль адреса: canonical"
    },
    {
-    "type": "INN",
+    "type": "INN_PER",
     "start": 4976,
     "end": 4988,
     "text": "02386б6221б9",
@@ -84926,7 +84926,7 @@
     "note": "мутация homoglyph; исходно: стиль адреса: canonical"
    },
    {
-    "type": "INN",
+    "type": "INN_PER",
     "start": 5275,
     "end": 5287,
     "text": "90З385418892",
@@ -85190,7 +85190,7 @@
     "note": "мутация case; исходно: составная форма: Индивидуальный предприниматель+ФИО"
    },
    {
-    "type": "INN",
+    "type": "INN_PER",
     "start": 121,
     "end": 133,
     "text": "023866622169",
@@ -85208,7 +85208,7 @@
     "note": "мутация case; исходно: составная форма: Индивидуальный предприниматель+ФИО"
    },
    {
-    "type": "INN",
+    "type": "INN_PER",
     "start": 309,
     "end": 321,
     "text": "903385418892",
@@ -85357,7 +85357,7 @@
     "note": "мутация case; исходно: стиль адреса: canonical"
    },
    {
-    "type": "INN",
+    "type": "INN_PER",
     "start": 4976,
     "end": 4988,
     "text": "023866622169",
@@ -85432,7 +85432,7 @@
     "note": "мутация case; исходно: стиль адреса: canonical"
    },
    {
-    "type": "INN",
+    "type": "INN_PER",
     "start": 5275,
     "end": 5287,
     "text": "903385418892",
@@ -85686,7 +85686,7 @@
     "note": "составная форма: ИП+ФИО"
    },
    {
-    "type": "INN",
+    "type": "INN_PER",
     "start": 98,
     "end": 110,
     "text": "390311240192",
@@ -85791,7 +85791,7 @@
     "note": "стиль адреса: canonical"
    },
    {
-    "type": "INN",
+    "type": "INN_PER",
     "start": 2713,
     "end": 2725,
     "text": "390311240192",
@@ -85892,7 +85892,7 @@
     "checksum": "invalid"
    },
    {
-    "type": "INN",
+    "type": "INN_PER",
     "start": 3183,
     "end": 3195,
     "text": "171132624221",
@@ -86065,7 +86065,7 @@
     "note": "составная форма: ИП+ФИО"
    },
    {
-    "type": "INN",
+    "type": "INN_PER",
     "start": 99,
     "end": 116,
     "text": "390-3-11-240-192-",
@@ -86174,7 +86174,7 @@
     "note": "стиль адреса: canonical"
    },
    {
-    "type": "INN",
+    "type": "INN_PER",
     "start": 2733,
     "end": 2747,
     "text": "3903 1124 0192",
@@ -86288,7 +86288,7 @@
     "checksum": "invalid"
    },
    {
-    "type": "INN",
+    "type": "INN_PER",
     "start": 3223,
     "end": 3237,
     "text": "1711 32 624221",
@@ -86463,7 +86463,7 @@
     "note": "мутация linebreak; исходно: составная форма: ИП+ФИО"
    },
    {
-    "type": "INN",
+    "type": "INN_PER",
     "start": 101,
     "end": 114,
     "text": "39031124\n0192",
@@ -86579,7 +86579,7 @@
     "note": "мутация linebreak; исходно: стиль адреса: canonical"
    },
    {
-    "type": "INN",
+    "type": "INN_PER",
     "start": 2734,
     "end": 2747,
     "text": "39031124\n0192",
@@ -86700,7 +86700,7 @@
     "checksum": "invalid"
    },
    {
-    "type": "INN",
+    "type": "INN_PER",
     "start": 3218,
     "end": 3231,
     "text": "171132624\n221",
@@ -87031,7 +87031,7 @@
     "checksum": "valid"
    },
    {
-    "type": "INN",
+    "type": "INN_PER",
     "start": 2842,
     "end": 2854,
     "text": "261054962458",
@@ -87117,7 +87117,7 @@
     "checksum": "valid"
    },
    {
-    "type": "INN",
+    "type": "INN_PER",
     "start": 3203,
     "end": 3215,
     "text": "536829669559",
@@ -87475,7 +87475,7 @@
     "checksum": "valid"
    },
    {
-    "type": "INN",
+    "type": "INN_PER",
     "start": 2842,
     "end": 2854,
     "text": "261054962458",
@@ -87565,7 +87565,7 @@
     "checksum": "valid"
    },
    {
-    "type": "INN",
+    "type": "INN_PER",
     "start": 3203,
     "end": 3215,
     "text": "536829669559",
@@ -87940,7 +87940,7 @@
     "checksum": "valid"
    },
    {
-    "type": "INN",
+    "type": "INN_PER",
     "start": 2871,
     "end": 2884,
     "text": "2610549624\n58",
@@ -88041,7 +88041,7 @@
     "checksum": "valid"
    },
    {
-    "type": "INN",
+    "type": "INN_PER",
     "start": 3245,
     "end": 3258,
     "text": "53682966\n9559",
@@ -88238,7 +88238,7 @@
     "note": "составная форма: ИП+ФИО"
    },
    {
-    "type": "INN",
+    "type": "INN_PER",
     "start": 130,
     "end": 142,
     "text": "215707879877",
@@ -88325,7 +88325,7 @@
     "note": "стиль адреса: canonical"
    },
    {
-    "type": "INN",
+    "type": "INN_PER",
     "start": 2688,
     "end": 2700,
     "text": "215707879877",
@@ -88426,7 +88426,7 @@
     "checksum": "valid"
    },
    {
-    "type": "INN",
+    "type": "INN_PER",
     "start": 3143,
     "end": 3155,
     "text": "582455613841",
@@ -88595,7 +88595,7 @@
     "note": "мутация combo; исходно: составная форма: ИП+ФИО"
    },
    {
-    "type": "INN",
+    "type": "INN_PER",
     "start": 134,
     "end": 148,
     "text": "2І 570787 9877",
@@ -88693,7 +88693,7 @@
     "note": "мутация combo; исходно: стиль адреса: canonical"
    },
    {
-    "type": "INN",
+    "type": "INN_PER",
     "start": 2744,
     "end": 2758,
     "text": "2І5707​8798 77",
@@ -88814,7 +88814,7 @@
     "checksum": "valid"
    },
    {
-    "type": "INN",
+    "type": "INN_PER",
     "start": 3230,
     "end": 3244,
     "text": "582455​6138­Ч1",
@@ -88990,7 +88990,7 @@
     "note": "мутация homoglyph; исходно: составная форма: ИП+ФИО"
    },
    {
-    "type": "INN",
+    "type": "INN_PER",
     "start": 130,
     "end": 142,
     "text": "2І5707879877",
@@ -89088,7 +89088,7 @@
     "note": "мутация homoglyph; исходно: стиль адреса: canonical"
    },
    {
-    "type": "INN",
+    "type": "INN_PER",
     "start": 2688,
     "end": 2700,
     "text": "2157О7879877",
@@ -89209,7 +89209,7 @@
     "checksum": "valid"
    },
    {
-    "type": "INN",
+    "type": "INN_PER",
     "start": 3143,
     "end": 3155,
     "text": "5824556І38ЧІ",
@@ -89505,7 +89505,7 @@
     "checksum": "valid"
    },
    {
-    "type": "INN",
+    "type": "INN_PER",
     "start": 2766,
     "end": 2778,
     "text": "541440478663",
@@ -89582,7 +89582,7 @@
     "checksum": "valid"
    },
    {
-    "type": "INN",
+    "type": "INN_PER",
     "start": 3107,
     "end": 3119,
     "text": "093816584667",
@@ -89900,7 +89900,7 @@
     "checksum": "valid"
    },
    {
-    "type": "INN",
+    "type": "INN_PER",
     "start": 2789,
     "end": 2802,
     "text": "5414404\n78663",
@@ -89992,7 +89992,7 @@
     "checksum": "valid"
    },
    {
-    "type": "INN",
+    "type": "INN_PER",
     "start": 3141,
     "end": 3154,
     "text": "0938165846\n67",
@@ -90296,7 +90296,7 @@
     "checksum": "valid"
    },
    {
-    "type": "INN",
+    "type": "INN_PER",
     "start": 2766,
     "end": 2778,
     "text": "541440478663",
@@ -90374,7 +90374,7 @@
     "checksum": "valid"
    },
    {
-    "type": "INN",
+    "type": "INN_PER",
     "start": 3107,
     "end": 3119,
     "text": "093816584667",
@@ -91838,7 +91838,7 @@
     "note": "составная форма: ИП+ФИО"
    },
    {
-    "type": "INN",
+    "type": "INN_PER",
     "start": 326,
     "end": 338,
     "text": "634737393389",
@@ -91994,7 +91994,7 @@
     "note": "стиль адреса: canonical"
    },
    {
-    "type": "INN",
+    "type": "INN_PER",
     "start": 3069,
     "end": 3081,
     "text": "634737393389",
@@ -92236,7 +92236,7 @@
     "note": "составная форма: ИП+ФИО"
    },
    {
-    "type": "INN",
+    "type": "INN_PER",
     "start": 326,
     "end": 338,
     "text": "634737393389",
@@ -92393,7 +92393,7 @@
     "note": "стиль адреса: canonical"
    },
    {
-    "type": "INN",
+    "type": "INN_PER",
     "start": 3069,
     "end": 3081,
     "text": "634737393389",
@@ -92639,7 +92639,7 @@
     "note": "мутация invisible; исходно: составная форма: ИП+ФИО"
    },
    {
-    "type": "INN",
+    "type": "INN_PER",
     "start": 339,
     "end": 353,
     "text": "6347373933­8‍9",
@@ -92821,7 +92821,7 @@
     "note": "мутация invisible; исходно: стиль адреса: canonical"
    },
    {
-    "type": "INN",
+    "type": "INN_PER",
     "start": 3142,
     "end": 3156,
     "text": "634­7​37393389",
@@ -93248,7 +93248,7 @@
     "checksum": "valid"
    },
    {
-    "type": "INN",
+    "type": "INN_PER",
     "start": 3068,
     "end": 3080,
     "text": "582962138433",
@@ -93650,7 +93650,7 @@
     "checksum": "valid"
    },
    {
-    "type": "INN",
+    "type": "INN_PER",
     "start": 3099,
     "end": 3114,
     "text": "582-9-62138433-",
@@ -94068,7 +94068,7 @@
     "checksum": "valid"
    },
    {
-    "type": "INN",
+    "type": "INN_PER",
     "start": 3106,
     "end": 3119,
     "text": "58296213\n8433",
@@ -94247,7 +94247,7 @@
     "note": "составная форма: Индивидуальный предприниматель+ФИО"
    },
    {
-    "type": "INN",
+    "type": "INN_PER",
     "start": 134,
     "end": 146,
     "text": "696651174202",
@@ -94264,7 +94264,7 @@
     "note": "составная форма: ИП+ФИО"
    },
    {
-    "type": "INN",
+    "type": "INN_PER",
     "start": 310,
     "end": 322,
     "text": "532770768180",
@@ -94351,7 +94351,7 @@
     "note": "стиль адреса: index_first"
    },
    {
-    "type": "INN",
+    "type": "INN_PER",
     "start": 4786,
     "end": 4798,
     "text": "696651174202",
@@ -94431,7 +94431,7 @@
     "note": "стиль адреса: index_first"
    },
    {
-    "type": "INN",
+    "type": "INN_PER",
     "start": 5177,
     "end": 5189,
     "text": "532770768180",
@@ -94641,7 +94641,7 @@
     "note": "мутация invisible; исходно: составная форма: Индивидуальный предприниматель+ФИО"
    },
    {
-    "type": "INN",
+    "type": "INN_PER",
     "start": 136,
     "end": 150,
     "text": "69665⁠117‍4202",
@@ -94660,7 +94660,7 @@
     "note": "мутация invisible; исходно: составная форма: ИП+ФИО"
    },
    {
-    "type": "INN",
+    "type": "INN_PER",
     "start": 317,
     "end": 331,
     "text": "5⁠327707​68180",
@@ -94758,7 +94758,7 @@
     "note": "мутация invisible; исходно: стиль адреса: index_first"
    },
    {
-    "type": "INN",
+    "type": "INN_PER",
     "start": 4857,
     "end": 4871,
     "text": "69665117​4­202",
@@ -94851,7 +94851,7 @@
     "note": "мутация invisible; исходно: стиль адреса: index_first"
    },
    {
-    "type": "INN",
+    "type": "INN_PER",
     "start": 5276,
     "end": 5290,
     "text": "5⁠32 770768180",
@@ -95072,7 +95072,7 @@
     "note": "составная форма: Индивидуальный предприниматель+ФИО"
    },
    {
-    "type": "INN",
+    "type": "INN_PER",
     "start": 134,
     "end": 150,
     "text": "696651-17-4-202-",
@@ -95090,7 +95090,7 @@
     "note": "составная форма: ИП+ФИО"
    },
    {
-    "type": "INN",
+    "type": "INN_PER",
     "start": 314,
     "end": 327,
     "text": "53277076 8180",
@@ -95183,7 +95183,7 @@
     "note": "мутация digit_spaces; исходно: стиль адреса: index_first"
    },
    {
-    "type": "INN",
+    "type": "INN_PER",
     "start": 4798,
     "end": 4811,
     "text": "69665117 4202",
@@ -95271,7 +95271,7 @@
     "note": "мутация digit_spaces; исходно: стиль адреса: index_first"
    },
    {
-    "type": "INN",
+    "type": "INN_PER",
     "start": 5203,
     "end": 5218,
     "text": "532770 76 8 180",
@@ -95484,7 +95484,7 @@
     "note": "составная форма: ИП+ФИО"
    },
    {
-    "type": "INN",
+    "type": "INN_PER",
     "start": 117,
     "end": 129,
     "text": "168153604750",
@@ -95571,7 +95571,7 @@
     "note": "стиль адреса: city_middle"
    },
    {
-    "type": "INN",
+    "type": "INN_PER",
     "start": 2647,
     "end": 2659,
     "text": "168153604750",
@@ -95672,7 +95672,7 @@
     "checksum": "valid"
    },
    {
-    "type": "INN",
+    "type": "INN_PER",
     "start": 3073,
     "end": 3085,
     "text": "823611959626",
@@ -95844,7 +95844,7 @@
     "note": "мутация combo; исходно: составная форма: ИП+ФИО"
    },
    {
-    "type": "INN",
+    "type": "INN_PER",
     "start": 121,
     "end": 135,
     "text": "1 68І5 360Ч750",
@@ -95944,7 +95944,7 @@
     "note": "мутация combo; исходно: стиль адреса: city_middle"
    },
    {
-    "type": "INN",
+    "type": "INN_PER",
     "start": 2702,
     "end": 2716,
     "text": "16­8І5З6047⁠50",
@@ -96065,7 +96065,7 @@
     "checksum": "valid"
    },
    {
-    "type": "INN",
+    "type": "INN_PER",
     "start": 3163,
     "end": 3177,
     "text": "823­6І195 962б",
@@ -96244,7 +96244,7 @@
     "note": "мутация homoglyph; исходно: составная форма: ИП+ФИО"
    },
    {
-    "type": "INN",
+    "type": "INN_PER",
     "start": 117,
     "end": 129,
     "text": "І6815360Ч750",
@@ -96342,7 +96342,7 @@
     "note": "мутация homoglyph; исходно: стиль адреса: city_middle"
    },
    {
-    "type": "INN",
+    "type": "INN_PER",
     "start": 2647,
     "end": 2659,
     "text": "16815З6О4750",
@@ -96463,7 +96463,7 @@
     "checksum": "valid"
    },
    {
-    "type": "INN",
+    "type": "INN_PER",
     "start": 3073,
     "end": 3085,
     "text": "8236ІІ959626",
@@ -96765,7 +96765,7 @@
     "checksum": "valid"
    },
    {
-    "type": "INN",
+    "type": "INN_PER",
     "start": 2826,
     "end": 2838,
     "text": "264065556630",
@@ -96842,7 +96842,7 @@
     "checksum": "valid"
    },
    {
-    "type": "INN",
+    "type": "INN_PER",
     "start": 3229,
     "end": 3241,
     "text": "530306987355",
@@ -96874,7 +96874,7 @@
     "note": "фамилия + инициалы"
    },
    {
-    "type": "INN",
+    "type": "INN_PER",
     "start": 3343,
     "end": 3356,
     "text": "2640\t65556630",
@@ -97197,7 +97197,7 @@
     "checksum": "valid"
    },
    {
-    "type": "INN",
+    "type": "INN_PER",
     "start": 2833,
     "end": 2848,
     "text": "2640-65556-630-",
@@ -97282,7 +97282,7 @@
     "checksum": "valid"
    },
    {
-    "type": "INN",
+    "type": "INN_PER",
     "start": 3244,
     "end": 3258,
     "text": "530 30698 7355",
@@ -97316,7 +97316,7 @@
     "note": "фамилия + инициалы"
    },
    {
-    "type": "INN",
+    "type": "INN_PER",
     "start": 3361,
     "end": 3376,
     "text": "264 0\t655566 30",
@@ -97653,7 +97653,7 @@
     "checksum": "valid"
    },
    {
-    "type": "INN",
+    "type": "INN_PER",
     "start": 2883,
     "end": 2897,
     "text": "2б4 Об55566‍3О",
@@ -97745,7 +97745,7 @@
     "checksum": "valid"
    },
    {
-    "type": "INN",
+    "type": "INN_PER",
     "start": 3310,
     "end": 3324,
     "text": "5303О­б9873​55",
@@ -97782,7 +97782,7 @@
     "note": "мутация combo; исходно: фамилия + инициалы"
    },
    {
-    "type": "INN",
+    "type": "INN_PER",
     "start": 3437,
     "end": 3452,
     "text": "26 4О\t65556б3­0",
@@ -99176,7 +99176,7 @@
     "note": "составная форма: ИП+ФИО"
    },
    {
-    "type": "INN",
+    "type": "INN_PER",
     "start": 312,
     "end": 324,
     "text": "549433590299",
@@ -99324,7 +99324,7 @@
     "note": "стиль адреса: canonical"
    },
    {
-    "type": "INN",
+    "type": "INN_PER",
     "start": 2965,
     "end": 2977,
     "text": "549433590299",
@@ -99582,7 +99582,7 @@
     "note": "мутация combo; исходно: составная форма: ИП+ФИО"
    },
    {
-    "type": "INN",
+    "type": "INN_PER",
     "start": 324,
     "end": 338,
     "text": "5Ч94 3З59­0299",
@@ -99755,7 +99755,7 @@
     "note": "мутация combo; исходно: стиль адреса: canonical"
    },
    {
-    "type": "INN",
+    "type": "INN_PER",
     "start": 3028,
     "end": 3042,
     "text": "54943­З‍590299",
@@ -100028,7 +100028,7 @@
     "note": "мутация homoglyph; исходно: составная форма: ИП+ФИО"
    },
    {
-    "type": "INN",
+    "type": "INN_PER",
     "start": 312,
     "end": 324,
     "text": "5Ч943З59О299",
@@ -100201,7 +100201,7 @@
     "note": "мутация homoglyph; исходно: стиль адреса: canonical"
    },
    {
-    "type": "INN",
+    "type": "INN_PER",
     "start": 2965,
     "end": 2977,
     "text": "549Ч33590299",
@@ -100649,7 +100649,7 @@
     "checksum": "invalid"
    },
    {
-    "type": "INN",
+    "type": "INN_PER",
     "start": 3029,
     "end": 3041,
     "text": "548946159827",
@@ -101038,7 +101038,7 @@
     "checksum": "invalid"
    },
    {
-    "type": "INN",
+    "type": "INN_PER",
     "start": 3067,
     "end": 3082,
     "text": "548 9 46 159827",
@@ -101448,7 +101448,7 @@
     "checksum": "invalid"
    },
    {
-    "type": "INN",
+    "type": "INN_PER",
     "start": 3069,
     "end": 3082,
     "text": "5489461598\n27",
@@ -101627,7 +101627,7 @@
     "note": "составная форма: Индивидуальный предприниматель+ФИО"
    },
    {
-    "type": "INN",
+    "type": "INN_PER",
     "start": 129,
     "end": 141,
     "text": "730968088080",
@@ -101644,7 +101644,7 @@
     "note": "составная форма: ИП+ФИО"
    },
    {
-    "type": "INN",
+    "type": "INN_PER",
     "start": 292,
     "end": 304,
     "text": "182244802662",
@@ -101717,7 +101717,7 @@
     "note": "стиль адреса: no_marker"
    },
    {
-    "type": "INN",
+    "type": "INN_PER",
     "start": 2593,
     "end": 2605,
     "text": "730968088080",
@@ -101797,7 +101797,7 @@
     "note": "стиль адреса: no_marker2"
    },
    {
-    "type": "INN",
+    "type": "INN_PER",
     "start": 2916,
     "end": 2928,
     "text": "182244802662",
@@ -102007,7 +102007,7 @@
     "note": "мутация homoglyph; исходно: составная форма: Индивидуальный предприниматель+ФИО"
    },
    {
-    "type": "INN",
+    "type": "INN_PER",
     "start": 129,
     "end": 141,
     "text": "7З09б8088О80",
@@ -102026,7 +102026,7 @@
     "note": "мутация homoglyph; исходно: составная форма: ИП+ФИО"
    },
    {
-    "type": "INN",
+    "type": "INN_PER",
     "start": 292,
     "end": 304,
     "text": "18224Ч802662",
@@ -102107,7 +102107,7 @@
     "note": "мутация homoglyph; исходно: стиль адреса: no_marker"
    },
    {
-    "type": "INN",
+    "type": "INN_PER",
     "start": 2593,
     "end": 2605,
     "text": "7З096808808О",
@@ -102200,7 +102200,7 @@
     "note": "мутация homoglyph; исходно: стиль адреса: no_marker2"
    },
    {
-    "type": "INN",
+    "type": "INN_PER",
     "start": 2916,
     "end": 2928,
     "text": "І82244802662",
@@ -102422,7 +102422,7 @@
     "note": "мутация case; исходно: составная форма: Индивидуальный предприниматель+ФИО"
    },
    {
-    "type": "INN",
+    "type": "INN_PER",
     "start": 129,
     "end": 141,
     "text": "730968088080",
@@ -102440,7 +102440,7 @@
     "note": "мутация case; исходно: составная форма: ИП+ФИО"
    },
    {
-    "type": "INN",
+    "type": "INN_PER",
     "start": 292,
     "end": 304,
     "text": "182244802662",
@@ -102518,7 +102518,7 @@
     "note": "мутация case; исходно: стиль адреса: no_marker"
    },
    {
-    "type": "INN",
+    "type": "INN_PER",
     "start": 2593,
     "end": 2605,
     "text": "730968088080",
@@ -102602,7 +102602,7 @@
     "note": "мутация case; исходно: стиль адреса: no_marker2"
    },
    {
-    "type": "INN",
+    "type": "INN_PER",
     "start": 2916,
     "end": 2928,
     "text": "182244802662",
@@ -102813,7 +102813,7 @@
     "note": "составная форма: ИП+ФИО"
    },
    {
-    "type": "INN",
+    "type": "INN_PER",
     "start": 118,
     "end": 130,
     "text": "758630011374",
@@ -102923,7 +102923,7 @@
     "note": "стиль адреса: index_first"
    },
    {
-    "type": "INN",
+    "type": "INN_PER",
     "start": 4777,
     "end": 4789,
     "text": "758630011374",
@@ -103024,7 +103024,7 @@
     "checksum": "valid"
    },
    {
-    "type": "INN",
+    "type": "INN_PER",
     "start": 5237,
     "end": 5249,
     "text": "294272907109",
@@ -103196,7 +103196,7 @@
     "note": "мутация combo; исходно: составная форма: ИП+ФИО"
    },
    {
-    "type": "INN",
+    "type": "INN_PER",
     "start": 124,
     "end": 138,
     "text": "75863​00113⁠7Ч",
@@ -103321,7 +103321,7 @@
     "note": "мутация combo; исходно: стиль адреса: index_first"
    },
    {
-    "type": "INN",
+    "type": "INN_PER",
     "start": 4833,
     "end": 4847,
     "text": "75 86300ІІ3‍74",
@@ -103442,7 +103442,7 @@
     "checksum": "valid"
    },
    {
-    "type": "INN",
+    "type": "INN_PER",
     "start": 5322,
     "end": 5336,
     "text": "29​4272907⁠І09",
@@ -103621,7 +103621,7 @@
     "note": "мутация homoglyph; исходно: составная форма: ИП+ФИО"
    },
    {
-    "type": "INN",
+    "type": "INN_PER",
     "start": 118,
     "end": 130,
     "text": "75863001137Ч",
@@ -103746,7 +103746,7 @@
     "note": "мутация homoglyph; исходно: стиль адреса: index_first"
    },
    {
-    "type": "INN",
+    "type": "INN_PER",
     "start": 4777,
     "end": 4789,
     "text": "758б300І137Ч",
@@ -103867,7 +103867,7 @@
     "checksum": "valid"
    },
    {
-    "type": "INN",
+    "type": "INN_PER",
     "start": 5237,
     "end": 5249,
     "text": "2942729О71О9",
@@ -104187,7 +104187,7 @@
     "checksum": "valid"
    },
    {
-    "type": "INN",
+    "type": "INN_PER",
     "start": 2803,
     "end": 2815,
     "text": "886465145429",
@@ -104273,7 +104273,7 @@
     "checksum": "valid"
    },
    {
-    "type": "INN",
+    "type": "INN_PER",
     "start": 3182,
     "end": 3194,
     "text": "013510008834",
@@ -104602,7 +104602,7 @@
     "checksum": "valid"
    },
    {
-    "type": "INN",
+    "type": "INN_PER",
     "start": 2803,
     "end": 2815,
     "text": "886465145429",
@@ -104694,7 +104694,7 @@
     "checksum": "valid"
    },
    {
-    "type": "INN",
+    "type": "INN_PER",
     "start": 3182,
     "end": 3194,
     "text": "013510008834",
@@ -105041,7 +105041,7 @@
     "checksum": "valid"
    },
    {
-    "type": "INN",
+    "type": "INN_PER",
     "start": 2837,
     "end": 2850,
     "text": "88\n6465145429",
@@ -105142,7 +105142,7 @@
     "checksum": "valid"
    },
    {
-    "type": "INN",
+    "type": "INN_PER",
     "start": 3228,
     "end": 3241,
     "text": "013510\n008834",
@@ -106586,7 +106586,7 @@
     "note": "составная форма: ИП+ФИО"
    },
    {
-    "type": "INN",
+    "type": "INN_PER",
     "start": 248,
     "end": 260,
     "text": "328739005668",
@@ -106742,7 +106742,7 @@
     "note": "стиль адреса: canonical"
    },
    {
-    "type": "INN",
+    "type": "INN_PER",
     "start": 3253,
     "end": 3265,
     "text": "328739005668",
@@ -106947,7 +106947,7 @@
     "note": "мутация linebreak; исходно: составная форма: ИП+ФИО"
    },
    {
-    "type": "INN",
+    "type": "INN_PER",
     "start": 255,
     "end": 268,
     "text": "328739005\n668",
@@ -107129,7 +107129,7 @@
     "note": "мутация linebreak; исходно: стиль адреса: canonical"
    },
    {
-    "type": "INN",
+    "type": "INN_PER",
     "start": 3287,
     "end": 3300,
     "text": "32873900\n5668",
@@ -107342,7 +107342,7 @@
     "note": "составная форма: ИП+ФИО"
    },
    {
-    "type": "INN",
+    "type": "INN_PER",
     "start": 248,
     "end": 260,
     "text": "328739005668",
@@ -107499,7 +107499,7 @@
     "note": "стиль адреса: canonical"
    },
    {
-    "type": "INN",
+    "type": "INN_PER",
     "start": 3253,
     "end": 3265,
     "text": "328739005668",
@@ -107882,7 +107882,7 @@
     "checksum": "valid"
    },
    {
-    "type": "INN",
+    "type": "INN_PER",
     "start": 3352,
     "end": 3364,
     "text": "201161707415",
@@ -108271,7 +108271,7 @@
     "checksum": "valid"
    },
    {
-    "type": "INN",
+    "type": "INN_PER",
     "start": 3389,
     "end": 3406,
     "text": "2011-61-70-7-415-",
@@ -108678,7 +108678,7 @@
     "checksum": "valid"
    },
    {
-    "type": "INN",
+    "type": "INN_PER",
     "start": 3392,
     "end": 3405,
     "text": "2011\n61707415",
@@ -108851,7 +108851,7 @@
     "note": "составная форма: Индивидуальный предприниматель+ФИО"
    },
    {
-    "type": "INN",
+    "type": "INN_PER",
     "start": 125,
     "end": 137,
     "text": "787605178708",
@@ -108868,7 +108868,7 @@
     "note": "составная форма: ИП+ФИО"
    },
    {
-    "type": "INN",
+    "type": "INN_PER",
     "start": 287,
     "end": 299,
     "text": "633473229920",
@@ -108932,7 +108932,7 @@
     "note": "стиль адреса: canonical"
    },
    {
-    "type": "INN",
+    "type": "INN_PER",
     "start": 2910,
     "end": 2922,
     "text": "787605178708",
@@ -109003,7 +109003,7 @@
     "note": "стиль адреса: canonical"
    },
    {
-    "type": "INN",
+    "type": "INN_PER",
     "start": 3241,
     "end": 3253,
     "text": "633473229920",
@@ -109189,7 +109189,7 @@
     "note": "составная форма: Индивидуальный предприниматель+ФИО"
    },
    {
-    "type": "INN",
+    "type": "INN_PER",
     "start": 125,
     "end": 137,
     "text": "787605178708",
@@ -109206,7 +109206,7 @@
     "note": "составная форма: ИП+ФИО"
    },
    {
-    "type": "INN",
+    "type": "INN_PER",
     "start": 287,
     "end": 299,
     "text": "633473229920",
@@ -109270,7 +109270,7 @@
     "note": "стиль адреса: canonical"
    },
    {
-    "type": "INN",
+    "type": "INN_PER",
     "start": 2910,
     "end": 2922,
     "text": "787605178708",
@@ -109342,7 +109342,7 @@
     "note": "стиль адреса: canonical"
    },
    {
-    "type": "INN",
+    "type": "INN_PER",
     "start": 3241,
     "end": 3253,
     "text": "633473229920",
@@ -109529,7 +109529,7 @@
     "note": "мутация invisible; исходно: составная форма: Индивидуальный предприниматель+ФИО"
    },
    {
-    "type": "INN",
+    "type": "INN_PER",
     "start": 130,
     "end": 144,
     "text": "78­76⁠05178708",
@@ -109548,7 +109548,7 @@
     "note": "мутация invisible; исходно: составная форма: ИП+ФИО"
    },
    {
-    "type": "INN",
+    "type": "INN_PER",
     "start": 296,
     "end": 310,
     "text": "6334732 2992⁠0",
@@ -109619,7 +109619,7 @@
     "note": "мутация invisible; исходно: стиль адреса: canonical"
    },
    {
-    "type": "INN",
+    "type": "INN_PER",
     "start": 2947,
     "end": 2961,
     "text": "787​6051787⁠08",
@@ -109703,7 +109703,7 @@
     "note": "мутация invisible; исходно: стиль адреса: canonical"
    },
    {
-    "type": "INN",
+    "type": "INN_PER",
     "start": 3300,
     "end": 3314,
     "text": "6334​73⁠229920",
@@ -109899,7 +109899,7 @@
     "note": "составная форма: Индивидуальный предприниматель+ФИО"
    },
    {
-    "type": "INN",
+    "type": "INN_PER",
     "start": 123,
     "end": 135,
     "text": "833502951888",
@@ -109986,7 +109986,7 @@
     "note": "стиль адреса: canonical"
    },
    {
-    "type": "INN",
+    "type": "INN_PER",
     "start": 2935,
     "end": 2947,
     "text": "833502951888",
@@ -110087,7 +110087,7 @@
     "checksum": "valid"
    },
    {
-    "type": "INN",
+    "type": "INN_PER",
     "start": 3368,
     "end": 3380,
     "text": "767672372200",
@@ -110256,7 +110256,7 @@
     "note": "мутация combo; исходно: составная форма: Индивидуальный предприниматель+ФИО"
    },
    {
-    "type": "INN",
+    "type": "INN_PER",
     "start": 127,
     "end": 141,
     "text": "8 335О29​51888",
@@ -110354,7 +110354,7 @@
     "note": "мутация combo; исходно: стиль адреса: canonical"
    },
    {
-    "type": "INN",
+    "type": "INN_PER",
     "start": 2975,
     "end": 2989,
     "text": "83​35О2951‍888",
@@ -110475,7 +110475,7 @@
     "checksum": "valid"
    },
    {
-    "type": "INN",
+    "type": "INN_PER",
     "start": 3439,
     "end": 3453,
     "text": "76767 2З72­2О0",
@@ -110651,7 +110651,7 @@
     "note": "мутация homoglyph; исходно: составная форма: Индивидуальный предприниматель+ФИО"
    },
    {
-    "type": "INN",
+    "type": "INN_PER",
     "start": 123,
     "end": 135,
     "text": "8ЗЗ502951888",
@@ -110749,7 +110749,7 @@
     "note": "мутация homoglyph; исходно: стиль адреса: canonical"
    },
    {
-    "type": "INN",
+    "type": "INN_PER",
     "start": 2935,
     "end": 2947,
     "text": "8З35О295І888",
@@ -110870,7 +110870,7 @@
     "checksum": "valid"
    },
    {
-    "type": "INN",
+    "type": "INN_PER",
     "start": 3368,
     "end": 3380,
     "text": "767672З722О0",
@@ -111166,7 +111166,7 @@
     "checksum": "valid"
    },
    {
-    "type": "INN",
+    "type": "INN_PER",
     "start": 3041,
     "end": 3053,
     "text": "458271955379",
@@ -111243,7 +111243,7 @@
     "checksum": "valid"
    },
    {
-    "type": "INN",
+    "type": "INN_PER",
     "start": 3383,
     "end": 3395,
     "text": "648593978267",
@@ -111561,7 +111561,7 @@
     "checksum": "valid"
    },
    {
-    "type": "INN",
+    "type": "INN_PER",
     "start": 3100,
     "end": 3114,
     "text": "458‍27​1955379",
@@ -111653,7 +111653,7 @@
     "checksum": "valid"
    },
    {
-    "type": "INN",
+    "type": "INN_PER",
     "start": 3465,
     "end": 3479,
     "text": "6485 9397826 7",
@@ -111969,7 +111969,7 @@
     "checksum": "valid"
    },
    {
-    "type": "INN",
+    "type": "INN_PER",
     "start": 3058,
     "end": 3071,
     "text": "45827195 5379",
@@ -112054,7 +112054,7 @@
     "checksum": "valid"
    },
    {
-    "type": "INN",
+    "type": "INN_PER",
     "start": 3407,
     "end": 3422,
     "text": "648 5 93978 267",
@@ -113440,7 +113440,7 @@
     "note": "составная форма: ИП+ФИО"
    },
    {
-    "type": "INN",
+    "type": "INN_PER",
     "start": 269,
     "end": 281,
     "text": "230877927338",
@@ -113619,7 +113619,7 @@
     "note": "стиль адреса: canonical"
    },
    {
-    "type": "INN",
+    "type": "INN_PER",
     "start": 5340,
     "end": 5352,
     "text": "230877927338",
@@ -113820,7 +113820,7 @@
     "note": "составная форма: ИП+ФИО"
    },
    {
-    "type": "INN",
+    "type": "INN_PER",
     "start": 269,
     "end": 284,
     "text": "230 8 77927 338",
@@ -114017,7 +114017,7 @@
     "note": "стиль адреса: canonical"
    },
    {
-    "type": "INN",
+    "type": "INN_PER",
     "start": 5373,
     "end": 5388,
     "text": "230877 92 7 338",
@@ -114229,7 +114229,7 @@
     "note": "мутация combo; исходно: составная форма: ИП+ФИО"
    },
    {
-    "type": "INN",
+    "type": "INN_PER",
     "start": 279,
     "end": 293,
     "text": "2З087 79273​38",
@@ -114438,7 +114438,7 @@
     "note": "мутация combo; исходно: стиль адреса: canonical"
    },
    {
-    "type": "INN",
+    "type": "INN_PER",
     "start": 5435,
     "end": 5449,
     "text": "2З 08779273­38",
@@ -114841,7 +114841,7 @@
     "checksum": "valid"
    },
    {
-    "type": "INN",
+    "type": "INN_PER",
     "start": 3401,
     "end": 3413,
     "text": "508837240373",
@@ -115238,7 +115238,7 @@
     "checksum": "valid"
    },
    {
-    "type": "INN",
+    "type": "INN_PER",
     "start": 3439,
     "end": 3455,
     "text": "508-8-3724-0373-",
@@ -115653,7 +115653,7 @@
     "checksum": "valid"
    },
    {
-    "type": "INN",
+    "type": "INN_PER",
     "start": 3438,
     "end": 3451,
     "text": "50883724\n0373",
@@ -115826,7 +115826,7 @@
     "note": "составная форма: ИП+ФИО"
    },
    {
-    "type": "INN",
+    "type": "INN_PER",
     "start": 94,
     "end": 106,
     "text": "728334103386",
@@ -115843,7 +115843,7 @@
     "note": "составная форма: ИП+ФИО"
    },
    {
-    "type": "INN",
+    "type": "INN_PER",
     "start": 256,
     "end": 268,
     "text": "550784532225",
@@ -115907,7 +115907,7 @@
     "note": "стиль адреса: canonical"
    },
    {
-    "type": "INN",
+    "type": "INN_PER",
     "start": 2878,
     "end": 2890,
     "text": "728334103386",
@@ -115978,7 +115978,7 @@
     "note": "стиль адреса: canonical"
    },
    {
-    "type": "INN",
+    "type": "INN_PER",
     "start": 3205,
     "end": 3217,
     "text": "550784532225",
@@ -116165,7 +116165,7 @@
     "note": "мутация combo; исходно: составная форма: ИП+ФИО"
    },
    {
-    "type": "INN",
+    "type": "INN_PER",
     "start": 99,
     "end": 113,
     "text": "72833​41⁠0ЗЗ8б",
@@ -116184,7 +116184,7 @@
     "note": "мутация combo; исходно: составная форма: ИП+ФИО"
    },
    {
-    "type": "INN",
+    "type": "INN_PER",
     "start": 265,
     "end": 279,
     "text": "55078Ч532 22⁠5",
@@ -116255,7 +116255,7 @@
     "note": "мутация combo; исходно: стиль адреса: canonical"
    },
    {
-    "type": "INN",
+    "type": "INN_PER",
     "start": 2918,
     "end": 2932,
     "text": "728⁠3З410­338б",
@@ -116339,7 +116339,7 @@
     "note": "мутация combo; исходно: стиль адреса: canonical"
    },
    {
-    "type": "INN",
+    "type": "INN_PER",
     "start": 3275,
     "end": 3289,
     "text": "5 5 078Ч532225",
@@ -116538,7 +116538,7 @@
     "note": "мутация homoglyph; исходно: составная форма: ИП+ФИО"
    },
    {
-    "type": "INN",
+    "type": "INN_PER",
     "start": 94,
     "end": 106,
     "text": "7283З4І0З386",
@@ -116557,7 +116557,7 @@
     "note": "мутация homoglyph; исходно: составная форма: ИП+ФИО"
    },
    {
-    "type": "INN",
+    "type": "INN_PER",
     "start": 256,
     "end": 268,
     "text": "55О784532225",
@@ -116629,7 +116629,7 @@
     "note": "мутация homoglyph; исходно: стиль адреса: canonical"
    },
    {
-    "type": "INN",
+    "type": "INN_PER",
     "start": 2878,
     "end": 2890,
     "text": "72833410З38б",
@@ -116713,7 +116713,7 @@
     "note": "мутация homoglyph; исходно: стиль адреса: canonical"
    },
    {
-    "type": "INN",
+    "type": "INN_PER",
     "start": 3205,
     "end": 3217,
     "text": "55О784532225",
@@ -116909,7 +116909,7 @@
     "note": "составная форма: Индивидуальный предприниматель+ФИО"
    },
    {
-    "type": "INN",
+    "type": "INN_PER",
     "start": 116,
     "end": 128,
     "text": "622631885485",
@@ -116996,7 +116996,7 @@
     "note": "стиль адреса: canonical"
    },
    {
-    "type": "INN",
+    "type": "INN_PER",
     "start": 2915,
     "end": 2927,
     "text": "622631885485",
@@ -117097,7 +117097,7 @@
     "checksum": "valid"
    },
    {
-    "type": "INN",
+    "type": "INN_PER",
     "start": 3364,
     "end": 3376,
     "text": "043313494310",
@@ -117266,7 +117266,7 @@
     "note": "мутация combo; исходно: составная форма: Индивидуальный предприниматель+ФИО"
    },
    {
-    "type": "INN",
+    "type": "INN_PER",
     "start": 119,
     "end": 133,
     "text": "б22­6З‍1885Ч85",
@@ -117364,7 +117364,7 @@
     "note": "мутация combo; исходно: стиль адреса: canonical"
    },
    {
-    "type": "INN",
+    "type": "INN_PER",
     "start": 2959,
     "end": 2973,
     "text": "62263188 5Ч⁠85",
@@ -117485,7 +117485,7 @@
     "checksum": "valid"
    },
    {
-    "type": "INN",
+    "type": "INN_PER",
     "start": 3439,
     "end": 3453,
     "text": "О4З31349⁠4ЗІ​0",
@@ -117661,7 +117661,7 @@
     "note": "мутация homoglyph; исходно: составная форма: Индивидуальный предприниматель+ФИО"
    },
    {
-    "type": "INN",
+    "type": "INN_PER",
     "start": 116,
     "end": 128,
     "text": "622бЗ1885Ч85",
@@ -117759,7 +117759,7 @@
     "note": "мутация homoglyph; исходно: стиль адреса: canonical"
    },
    {
-    "type": "INN",
+    "type": "INN_PER",
     "start": 2915,
     "end": 2927,
     "text": "б22631885Ч85",
@@ -117880,7 +117880,7 @@
     "checksum": "valid"
    },
    {
-    "type": "INN",
+    "type": "INN_PER",
     "start": 3364,
     "end": 3376,
     "text": "04331349Ч310",
@@ -118176,7 +118176,7 @@
     "checksum": "valid"
    },
    {
-    "type": "INN",
+    "type": "INN_PER",
     "start": 3015,
     "end": 3027,
     "text": "767842174632",
@@ -118253,7 +118253,7 @@
     "checksum": "valid"
    },
    {
-    "type": "INN",
+    "type": "INN_PER",
     "start": 3367,
     "end": 3379,
     "text": "218760225201",
@@ -118571,7 +118571,7 @@
     "checksum": "valid"
    },
    {
-    "type": "INN",
+    "type": "INN_PER",
     "start": 3015,
     "end": 3027,
     "text": "7678Ч2174632",
@@ -118663,7 +118663,7 @@
     "checksum": "valid"
    },
    {
-    "type": "INN",
+    "type": "INN_PER",
     "start": 3367,
     "end": 3379,
     "text": "2187бО2252ОІ",
@@ -118976,7 +118976,7 @@
     "checksum": "valid"
    },
    {
-    "type": "INN",
+    "type": "INN_PER",
     "start": 3015,
     "end": 3027,
     "text": "767842174632",
@@ -119059,7 +119059,7 @@
     "checksum": "valid"
    },
    {
-    "type": "INN",
+    "type": "INN_PER",
     "start": 3367,
     "end": 3379,
     "text": "218760225201",
@@ -120450,7 +120450,7 @@
     "note": "составная форма: Индивидуальный предприниматель+ФИО"
    },
    {
-    "type": "INN",
+    "type": "INN_PER",
     "start": 300,
     "end": 312,
     "text": "446776144245",
@@ -120606,7 +120606,7 @@
     "note": "стиль адреса: canonical"
    },
    {
-    "type": "INN",
+    "type": "INN_PER",
     "start": 3301,
     "end": 3313,
     "text": "446776144245",
@@ -120811,7 +120811,7 @@
     "note": "мутация case; исходно: составная форма: Индивидуальный предприниматель+ФИО"
    },
    {
-    "type": "INN",
+    "type": "INN_PER",
     "start": 300,
     "end": 312,
     "text": "446776144245",
@@ -120979,7 +120979,7 @@
     "note": "мутация case; исходно: стиль адреса: canonical"
    },
    {
-    "type": "INN",
+    "type": "INN_PER",
     "start": 3301,
     "end": 3313,
     "text": "446776144245",
@@ -121187,7 +121187,7 @@
     "note": "мутация linebreak; исходно: составная форма: Индивидуальный предприниматель+ФИО"
    },
    {
-    "type": "INN",
+    "type": "INN_PER",
     "start": 304,
     "end": 317,
     "text": "44677\n6144245",
@@ -121369,7 +121369,7 @@
     "note": "мутация linebreak; исходно: стиль адреса: canonical"
    },
    {
-    "type": "INN",
+    "type": "INN_PER",
     "start": 3330,
     "end": 3343,
     "text": "4467761\n44245",
@@ -121795,7 +121795,7 @@
     "checksum": "valid"
    },
    {
-    "type": "INN",
+    "type": "INN_PER",
     "start": 5437,
     "end": 5449,
     "text": "883117617330",
@@ -122215,7 +122215,7 @@
     "checksum": "valid"
    },
    {
-    "type": "INN",
+    "type": "INN_PER",
     "start": 5470,
     "end": 5483,
     "text": "883117617 330",
@@ -122658,7 +122658,7 @@
     "checksum": "valid"
    },
    {
-    "type": "INN",
+    "type": "INN_PER",
     "start": 5485,
     "end": 5498,
     "text": "883117617\n330",
@@ -122831,7 +122831,7 @@
     "note": "составная форма: ИП+ФИО"
    },
    {
-    "type": "INN",
+    "type": "INN_PER",
     "start": 105,
     "end": 117,
     "text": "646947909125",
@@ -122848,7 +122848,7 @@
     "note": "составная форма: Индивидуальный предприниматель+ФИО"
    },
    {
-    "type": "INN",
+    "type": "INN_PER",
     "start": 294,
     "end": 306,
     "text": "288066013322",
@@ -122912,7 +122912,7 @@
     "note": "стиль адреса: canonical"
    },
    {
-    "type": "INN",
+    "type": "INN_PER",
     "start": 2918,
     "end": 2930,
     "text": "646947909125",
@@ -122983,7 +122983,7 @@
     "note": "стиль адреса: canonical"
    },
    {
-    "type": "INN",
+    "type": "INN_PER",
     "start": 3239,
     "end": 3251,
     "text": "288066013322",
@@ -123170,7 +123170,7 @@
     "note": "мутация linebreak; исходно: составная форма: ИП+ФИО"
    },
    {
-    "type": "INN",
+    "type": "INN_PER",
     "start": 106,
     "end": 119,
     "text": "6469479091\n25",
@@ -123189,7 +123189,7 @@
     "note": "мутация linebreak; исходно: составная форма: Индивидуальный предприниматель+ФИО"
    },
    {
-    "type": "INN",
+    "type": "INN_PER",
     "start": 298,
     "end": 311,
     "text": "28806601\n3322",
@@ -123260,7 +123260,7 @@
     "note": "мутация linebreak; исходно: стиль адреса: canonical"
    },
    {
-    "type": "INN",
+    "type": "INN_PER",
     "start": 2939,
     "end": 2952,
     "text": "6469\n47909125",
@@ -123344,7 +123344,7 @@
     "note": "мутация linebreak; исходно: стиль адреса: canonical"
    },
    {
-    "type": "INN",
+    "type": "INN_PER",
     "start": 3269,
     "end": 3282,
     "text": "2880\n66013322",
@@ -123542,7 +123542,7 @@
     "note": "составная форма: ИП+ФИО"
    },
    {
-    "type": "INN",
+    "type": "INN_PER",
     "start": 105,
     "end": 117,
     "text": "646947909125",
@@ -123559,7 +123559,7 @@
     "note": "составная форма: Индивидуальный предприниматель+ФИО"
    },
    {
-    "type": "INN",
+    "type": "INN_PER",
     "start": 294,
     "end": 306,
     "text": "288066013322",
@@ -123623,7 +123623,7 @@
     "note": "стиль адреса: canonical"
    },
    {
-    "type": "INN",
+    "type": "INN_PER",
     "start": 2918,
     "end": 2930,
     "text": "646947909125",
@@ -123695,7 +123695,7 @@
     "note": "стиль адреса: canonical"
    },
    {
-    "type": "INN",
+    "type": "INN_PER",
     "start": 3239,
     "end": 3251,
     "text": "288066013322",
@@ -125276,7 +125276,7 @@
     "note": "составная форма: ИП+ФИО"
    },
    {
-    "type": "INN",
+    "type": "INN_PER",
     "start": 262,
     "end": 274,
     "text": "838388960851",
@@ -125495,7 +125495,7 @@
     "note": "стиль адреса: snt"
    },
    {
-    "type": "INN",
+    "type": "INN_PER",
     "start": 3169,
     "end": 3181,
     "text": "838388960851",
@@ -125721,7 +125721,7 @@
     "note": "составная форма: ИП+ФИО"
    },
    {
-    "type": "INN",
+    "type": "INN_PER",
     "start": 262,
     "end": 274,
     "text": "838388960851",
@@ -125941,7 +125941,7 @@
     "note": "стиль адреса: snt"
    },
    {
-    "type": "INN",
+    "type": "INN_PER",
     "start": 3169,
     "end": 3181,
     "text": "838388960851",
@@ -126171,7 +126171,7 @@
     "note": "мутация invisible; исходно: составная форма: ИП+ФИО"
    },
    {
-    "type": "INN",
+    "type": "INN_PER",
     "start": 272,
     "end": 286,
     "text": "8383889 608 51",
@@ -126416,7 +126416,7 @@
     "note": "мутация invisible; исходно: стиль адреса: snt"
    },
    {
-    "type": "INN",
+    "type": "INN_PER",
     "start": 3246,
     "end": 3260,
     "text": "838​3­88960851",
@@ -126873,7 +126873,7 @@
     "checksum": "valid"
    },
    {
-    "type": "INN",
+    "type": "INN_PER",
     "start": 3141,
     "end": 3153,
     "text": "943352390816",
@@ -127319,7 +127319,7 @@
     "checksum": "valid"
    },
    {
-    "type": "INN",
+    "type": "INN_PER",
     "start": 3237,
     "end": 3251,
     "text": "9​4335​2390816",
@@ -127748,7 +127748,7 @@
     "checksum": "valid"
    },
    {
-    "type": "INN",
+    "type": "INN_PER",
     "start": 3141,
     "end": 3153,
     "text": "943352390816",
@@ -127927,7 +127927,7 @@
     "note": "составная форма: ИП+ФИО"
    },
    {
-    "type": "INN",
+    "type": "INN_PER",
     "start": 93,
     "end": 105,
     "text": "771725772850",
@@ -127944,7 +127944,7 @@
     "note": "составная форма: Индивидуальный предприниматель+ФИО"
    },
    {
-    "type": "INN",
+    "type": "INN_PER",
     "start": 283,
     "end": 295,
     "text": "753460451753",
@@ -128066,7 +128066,7 @@
     "note": "стиль адреса: canonical"
    },
    {
-    "type": "INN",
+    "type": "INN_PER",
     "start": 2912,
     "end": 2924,
     "text": "771725772850",
@@ -128146,7 +128146,7 @@
     "note": "стиль адреса: canonical"
    },
    {
-    "type": "INN",
+    "type": "INN_PER",
     "start": 3277,
     "end": 3289,
     "text": "753460451753",
@@ -128388,7 +128388,7 @@
     "note": "мутация invisible; исходно: составная форма: ИП+ФИО"
    },
    {
-    "type": "INN",
+    "type": "INN_PER",
     "start": 97,
     "end": 111,
     "text": "77172577⁠285⁠0",
@@ -128407,7 +128407,7 @@
     "note": "мутация invisible; исходно: составная форма: Индивидуальный предприниматель+ФИО"
    },
    {
-    "type": "INN",
+    "type": "INN_PER",
     "start": 291,
     "end": 305,
     "text": "7534604­5175​3",
@@ -128541,7 +128541,7 @@
     "note": "мутация invisible; исходно: стиль адреса: canonical"
    },
    {
-    "type": "INN",
+    "type": "INN_PER",
     "start": 2969,
     "end": 2983,
     "text": "77172 57­72850",
@@ -128634,7 +128634,7 @@
     "note": "мутация invisible; исходно: стиль адреса: canonical"
    },
    {
-    "type": "INN",
+    "type": "INN_PER",
     "start": 3360,
     "end": 3374,
     "text": "753 46045175 3",
@@ -128890,7 +128890,7 @@
     "note": "составная форма: ИП+ФИО"
    },
    {
-    "type": "INN",
+    "type": "INN_PER",
     "start": 93,
     "end": 109,
     "text": "771 725 77 2 850",
@@ -128908,7 +128908,7 @@
     "note": "составная форма: Индивидуальный предприниматель+ФИО"
    },
    {
-    "type": "INN",
+    "type": "INN_PER",
     "start": 287,
     "end": 303,
     "text": "753 4 60 451 753",
@@ -129034,7 +129034,7 @@
     "note": "мутация digit_spaces; исходно: стиль адреса: canonical"
    },
    {
-    "type": "INN",
+    "type": "INN_PER",
     "start": 2928,
     "end": 2943,
     "text": "771 7 25772 850",
@@ -129122,7 +129122,7 @@
     "note": "мутация digit_spaces; исходно: стиль адреса: canonical"
    },
    {
-    "type": "INN",
+    "type": "INN_PER",
     "start": 3311,
     "end": 3327,
     "text": "753-4-60451-753-",
@@ -129369,7 +129369,7 @@
     "note": "составная форма: Индивидуальный предприниматель+ФИО"
    },
    {
-    "type": "INN",
+    "type": "INN_PER",
     "start": 113,
     "end": 125,
     "text": "320214436879",
@@ -129474,7 +129474,7 @@
     "note": "стиль адреса: canonical"
    },
    {
-    "type": "INN",
+    "type": "INN_PER",
     "start": 2754,
     "end": 2766,
     "text": "320214436879",
@@ -129575,7 +129575,7 @@
     "checksum": "invalid"
    },
    {
-    "type": "INN",
+    "type": "INN_PER",
     "start": 3183,
     "end": 3195,
     "text": "005735285458",
@@ -129748,7 +129748,7 @@
     "note": "составная форма: Индивидуальный предприниматель+ФИО"
    },
    {
-    "type": "INN",
+    "type": "INN_PER",
     "start": 114,
     "end": 128,
     "text": "320 214 436879",
@@ -129860,7 +129860,7 @@
     "note": "мутация digit_spaces; исходно: стиль адреса: canonical"
    },
    {
-    "type": "INN",
+    "type": "INN_PER",
     "start": 2763,
     "end": 2777,
     "text": "320 214436 879",
@@ -129972,7 +129972,7 @@
     "checksum": "invalid"
    },
    {
-    "type": "INN",
+    "type": "INN_PER",
     "start": 3209,
     "end": 3225,
     "text": "0057-3528-5-458-",
@@ -130148,7 +130148,7 @@
     "note": "мутация linebreak; исходно: составная форма: Индивидуальный предприниматель+ФИО"
    },
    {
-    "type": "INN",
+    "type": "INN_PER",
     "start": 115,
     "end": 128,
     "text": "320214436\n879",
@@ -130265,7 +130265,7 @@
     "note": "мутация linebreak; исходно: стиль адреса: canonical"
    },
    {
-    "type": "INN",
+    "type": "INN_PER",
     "start": 2780,
     "end": 2793,
     "text": "320\n214436879",
@@ -130386,7 +130386,7 @@
     "checksum": "invalid"
    },
    {
-    "type": "INN",
+    "type": "INN_PER",
     "start": 3224,
     "end": 3237,
     "text": "0057352854\n58",
@@ -130726,7 +130726,7 @@
     "checksum": "valid"
    },
    {
-    "type": "INN",
+    "type": "INN_PER",
     "start": 2872,
     "end": 2884,
     "text": "672583211125",
@@ -130812,7 +130812,7 @@
     "checksum": "valid"
    },
    {
-    "type": "INN",
+    "type": "INN_PER",
     "start": 3218,
     "end": 3230,
     "text": "526444921956",
@@ -131161,7 +131161,7 @@
     "checksum": "valid"
    },
    {
-    "type": "INN",
+    "type": "INN_PER",
     "start": 2881,
     "end": 2898,
     "text": "672-5-8321-1-125-",
@@ -131256,7 +131256,7 @@
     "checksum": "valid"
    },
    {
-    "type": "INN",
+    "type": "INN_PER",
     "start": 3238,
     "end": 3255,
     "text": "526-444-92-1-956-",
@@ -131619,7 +131619,7 @@
     "checksum": "valid"
    },
    {
-    "type": "INN",
+    "type": "INN_PER",
     "start": 2929,
     "end": 2943,
     "text": "67258​З‍211І25",
@@ -131720,7 +131720,7 @@
     "checksum": "valid"
    },
    {
-    "type": "INN",
+    "type": "INN_PER",
     "start": 3301,
     "end": 3315,
     "text": "52б 444​92І95б",
@@ -133274,7 +133274,7 @@
     "note": "составная форма: ИП+ФИО"
    },
    {
-    "type": "INN",
+    "type": "INN_PER",
     "start": 277,
     "end": 289,
     "text": "428433524073",
@@ -133492,7 +133492,7 @@
     "note": "стиль адреса: city_middle"
    },
    {
-    "type": "INN",
+    "type": "INN_PER",
     "start": 5264,
     "end": 5276,
     "text": "428433524073",
@@ -133740,7 +133740,7 @@
     "note": "мутация combo; исходно: составная форма: ИП+ФИО"
    },
    {
-    "type": "INN",
+    "type": "INN_PER",
     "start": 285,
     "end": 299,
     "text": "428Ч⁠3352Ч07 3",
@@ -133985,7 +133985,7 @@
     "note": "мутация combo; исходно: стиль адреса: city_middle"
    },
    {
-    "type": "INN",
+    "type": "INN_PER",
     "start": 5387,
     "end": 5401,
     "text": "4284З352 407‍3",
@@ -134245,7 +134245,7 @@
     "note": "мутация homoglyph; исходно: составная форма: ИП+ФИО"
    },
    {
-    "type": "INN",
+    "type": "INN_PER",
     "start": 277,
     "end": 289,
     "text": "4284ЗЗ524О73",
@@ -134490,7 +134490,7 @@
     "note": "мутация homoglyph; исходно: стиль адреса: city_middle"
    },
    {
-    "type": "INN",
+    "type": "INN_PER",
     "start": 5264,
     "end": 5276,
     "text": "42843З52407З",
@@ -134980,7 +134980,7 @@
     "checksum": "valid"
    },
    {
-    "type": "INN",
+    "type": "INN_PER",
     "start": 3364,
     "end": 3376,
     "text": "995668289430",
@@ -135445,7 +135445,7 @@
     "checksum": "valid"
    },
    {
-    "type": "INN",
+    "type": "INN_PER",
     "start": 3471,
     "end": 3485,
     "text": "9956‍6828943‍0",
@@ -135891,7 +135891,7 @@
     "checksum": "valid"
    },
    {
-    "type": "INN",
+    "type": "INN_PER",
     "start": 3364,
     "end": 3376,
     "text": "995668289430",
@@ -136070,7 +136070,7 @@
     "note": "составная форма: ИП+ФИО"
    },
    {
-    "type": "INN",
+    "type": "INN_PER",
     "start": 90,
     "end": 102,
     "text": "470173276698",
@@ -136087,7 +136087,7 @@
     "note": "составная форма: Индивидуальный предприниматель+ФИО"
    },
    {
-    "type": "INN",
+    "type": "INN_PER",
     "start": 291,
     "end": 303,
     "text": "096962238928",
@@ -136178,7 +136178,7 @@
     "note": "стиль адреса: pobox"
    },
    {
-    "type": "INN",
+    "type": "INN_PER",
     "start": 2776,
     "end": 2788,
     "text": "470173276698",
@@ -136249,7 +136249,7 @@
     "note": "стиль адреса: pobox"
    },
    {
-    "type": "INN",
+    "type": "INN_PER",
     "start": 3066,
     "end": 3078,
     "text": "096962238928",
@@ -136500,7 +136500,7 @@
     "note": "мутация homoglyph; исходно: составная форма: ИП+ФИО"
    },
    {
-    "type": "INN",
+    "type": "INN_PER",
     "start": 90,
     "end": 102,
     "text": "47017З276б98",
@@ -136519,7 +136519,7 @@
     "note": "мутация homoglyph; исходно: составная форма: Индивидуальный предприниматель+ФИО"
    },
    {
-    "type": "INN",
+    "type": "INN_PER",
     "start": 291,
     "end": 303,
     "text": "О96962238928",
@@ -136617,7 +136617,7 @@
     "note": "мутация homoglyph; исходно: стиль адреса: pobox"
    },
    {
-    "type": "INN",
+    "type": "INN_PER",
     "start": 2776,
     "end": 2788,
     "text": "47ОІ73276698",
@@ -136701,7 +136701,7 @@
     "note": "мутация homoglyph; исходно: стиль адреса: pobox"
    },
    {
-    "type": "INN",
+    "type": "INN_PER",
     "start": 3066,
     "end": 3078,
     "text": "О96962238928",
@@ -136967,7 +136967,7 @@
     "note": "мутация case; исходно: составная форма: ИП+ФИО"
    },
    {
-    "type": "INN",
+    "type": "INN_PER",
     "start": 90,
     "end": 102,
     "text": "470173276698",
@@ -136985,7 +136985,7 @@
     "note": "мутация case; исходно: составная форма: Индивидуальный предприниматель+ФИО"
    },
    {
-    "type": "INN",
+    "type": "INN_PER",
     "start": 291,
     "end": 303,
     "text": "096962238928",
@@ -137081,7 +137081,7 @@
     "note": "мутация case; исходно: стиль адреса: pobox"
    },
    {
-    "type": "INN",
+    "type": "INN_PER",
     "start": 2776,
     "end": 2788,
     "text": "470173276698",
@@ -137158,7 +137158,7 @@
     "note": "мутация case; исходно: стиль адреса: pobox"
    },
    {
-    "type": "INN",
+    "type": "INN_PER",
     "start": 3066,
     "end": 3078,
     "text": "096962238928",
@@ -137410,7 +137410,7 @@
     "note": "составная форма: ИП+ФИО"
    },
    {
-    "type": "INN",
+    "type": "INN_PER",
     "start": 92,
     "end": 104,
     "text": "277340727414",
@@ -137546,7 +137546,7 @@
     "note": "стиль адреса: canonical"
    },
    {
-    "type": "INN",
+    "type": "INN_PER",
     "start": 2897,
     "end": 2909,
     "text": "277340727414",
@@ -137647,7 +137647,7 @@
     "checksum": "invalid"
    },
    {
-    "type": "INN",
+    "type": "INN_PER",
     "start": 3351,
     "end": 3363,
     "text": "165761330524",
@@ -137820,7 +137820,7 @@
     "note": "составная форма: ИП+ФИО"
    },
    {
-    "type": "INN",
+    "type": "INN_PER",
     "start": 92,
     "end": 108,
     "text": "277 340 72 7 414",
@@ -137962,7 +137962,7 @@
     "note": "мутация digit_spaces; исходно: стиль адреса: canonical"
    },
    {
-    "type": "INN",
+    "type": "INN_PER",
     "start": 2909,
     "end": 2923,
     "text": "277340 727 414",
@@ -138076,7 +138076,7 @@
     "checksum": "invalid"
    },
    {
-    "type": "INN",
+    "type": "INN_PER",
     "start": 3382,
     "end": 3395,
     "text": "165761330 524",
@@ -138252,7 +138252,7 @@
     "note": "мутация linebreak; исходно: составная форма: ИП+ФИО"
    },
    {
-    "type": "INN",
+    "type": "INN_PER",
     "start": 95,
     "end": 108,
     "text": "277340\n727414",
@@ -138405,7 +138405,7 @@
     "note": "мутация linebreak; исходно: стиль адреса: canonical"
    },
    {
-    "type": "INN",
+    "type": "INN_PER",
     "start": 2923,
     "end": 2936,
     "text": "27\n7340727414",
@@ -138526,7 +138526,7 @@
     "checksum": "invalid"
    },
    {
-    "type": "INN",
+    "type": "INN_PER",
     "start": 3395,
     "end": 3408,
     "text": "1657613305\n24",
@@ -138794,7 +138794,7 @@
     "note": "счёт разбит на группы по 4"
    },
    {
-    "type": "INN",
+    "type": "INN_PER",
     "start": 2565,
     "end": 2579,
     "text": "356-951-827018",
@@ -138866,7 +138866,7 @@
     "checksum": "valid"
    },
    {
-    "type": "INN",
+    "type": "INN_PER",
     "start": 2925,
     "end": 2937,
     "text": "356951827018",
@@ -138952,7 +138952,7 @@
     "checksum": "valid"
    },
    {
-    "type": "INN",
+    "type": "INN_PER",
     "start": 3275,
     "end": 3287,
     "text": "235674468078",
@@ -139244,7 +139244,7 @@
     "note": "счёт разбит на группы по 4"
    },
    {
-    "type": "INN",
+    "type": "INN_PER",
     "start": 2565,
     "end": 2579,
     "text": "356-951-827018",
@@ -139319,7 +139319,7 @@
     "checksum": "valid"
    },
    {
-    "type": "INN",
+    "type": "INN_PER",
     "start": 2925,
     "end": 2937,
     "text": "356951827018",
@@ -139411,7 +139411,7 @@
     "checksum": "valid"
    },
    {
-    "type": "INN",
+    "type": "INN_PER",
     "start": 3275,
     "end": 3287,
     "text": "235674468078",
@@ -139713,7 +139713,7 @@
     "note": "мутация linebreak; исходно: счёт разбит на группы по 4"
    },
    {
-    "type": "INN",
+    "type": "INN_PER",
     "start": 2585,
     "end": 2600,
     "text": "356-951\n-827018",
@@ -139795,7 +139795,7 @@
     "checksum": "valid"
    },
    {
-    "type": "INN",
+    "type": "INN_PER",
     "start": 2955,
     "end": 2968,
     "text": "35695182\n7018",
@@ -139896,7 +139896,7 @@
     "checksum": "valid"
    },
    {
-    "type": "INN",
+    "type": "INN_PER",
     "start": 3319,
     "end": 3332,
     "text": "23\n5674468078",

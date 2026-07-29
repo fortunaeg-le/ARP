@@ -789,6 +789,8 @@ class OrgAnchorDetector(AnchorDetector):
     def detect(self, seg, norm, low, omap, requisites) -> list:
         # ЮРЛИЦО-реквизиты для якоря ORG: ИНН из 10 цифр и ОГРН из 13 цифр.
         # 12-значный ИНН / 15-значный ОГРНИП — физлицо/ИП (работают на PER).
+        # ЭТАП T2-INN: `kind == "INN"` теперь И ЕСТЬ ИНН юрлица (12-значный ушёл
+        # в отдельный тип INN_PERSON); условие dc == 10 сохранено как страховка.
         inn_ogrn_norm = [
             (ns, kind) for (ns, ne, kind, dc) in requisites
             if (kind == "INN" and dc == 10) or (kind == "OGRN" and dc == 13)
@@ -1043,7 +1045,13 @@ class PerAnchorDetector(AnchorDetector):
     def detect(self, seg, norm, low, omap, requisites) -> list:
         req_phys = [
             (ns, ne) for (ns, ne, kind, dc) in requisites
-            if kind == "SNILS" or (kind == "INN" and dc == 12)
+            # ЭТАП T2-INN: 12-значный ИНН приезжает теперь под типом INN_PERSON.
+            # Проверка длины (dc == 12) СОХРАНЕНА намеренно, хотя тип её уже
+            # подразумевает: она держит поведение якоря побайтно прежним. dc
+            # считается по ИСХОДНОМУ тексту, где омоглиф на месте цифры даёт
+            # dc < 12 — такие значения якорем PER не были и не становятся, иначе
+            # этап «разделение типов» тихо изменил бы полноту по людям.
+            if kind == "SNILS" or (kind == "INN_PERSON" and dc == 12)
         ]
         anchors: list[Anchor] = []
         tokens = list(_WORD_RE.finditer(norm))
@@ -1165,7 +1173,11 @@ def _requisites_src_by_seg(regex_entities):
     движок (у ORG и PER разные виды, поэтому единой norm-координаты нет)."""
     out: dict[str, list] = {}
     for e in regex_entities or []:
-        if e.entity_type not in ("INN", "OGRN", "SNILS"):
+        # ЭТАП T2-INN: типов ИНН стало два. `INN_PERSON` обязан быть в этом
+        # списке — иначе 12-значный ИНН, сменивший тип, перестанет доезжать до
+        # PerAnchorDetector, и якорь «рядом ИНН физлица» молча исчезнет
+        # (полнота по людям упадёт, ничего при этом не покраснев в детекции ИНН).
+        if e.entity_type not in ("INN", "INN_PERSON", "OGRN", "SNILS"):
             continue
         dc = _digit_count(e.original_text)
         out.setdefault(e.segment_id, []).append((e.start, e.end, e.entity_type, dc))

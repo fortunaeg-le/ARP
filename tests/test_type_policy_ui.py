@@ -204,7 +204,7 @@ def test_result_line_says_the_set_is_not_full_and_names_what_was_left(home):
     )
     assert s["is_full"] is False
     assert s["profile_label"] == type_policy.PROFILE_LABELS["personal"]
-    assert s["disabled_labels"] == ["Организация", "ИНН"]   # DATE не обещаем
+    assert s["disabled_labels"] == ["Организация", "ИНН организации (10 цифр)"]   # DATE не обещаем
     assert "ФИО" in s["enabled_labels"]
 
 
@@ -250,7 +250,11 @@ def test_turning_a_type_on_and_off_changes_the_masks(home, txt_factory):
     assert "INN" not in _tokens(narrow)
     assert "PERSON" in _tokens(narrow)
     assert narrow["policy"]["is_full"] is False
-    assert "ИНН" in narrow["policy"]["disabled_labels"]
+    # ЭТАП T2-INN: в наборе «только персональные данные» выключен ИНН
+    # ОРГАНИЗАЦИИ, а ИНН человека, наоборот, включён — подпись обязана
+    # называть именно тот, что остался в тексте.
+    assert "ИНН организации (10 цифр)" in narrow["policy"]["disabled_labels"]
+    assert "ИНН человека (12 цифр)" in narrow["policy"]["enabled_labels"]
 
     core.save_settings("personal", {"INN": True}, config_path=CONFIG)
     with_inn = _encrypt(path)

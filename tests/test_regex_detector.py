@@ -68,8 +68,23 @@ class TestValidatorsRegistry:
     """Спека, блок 2: VALIDATORS — реестр {'inn_checksum': ..., 'ogrn_checksum': ...}."""
 
     def test_registry_contains_both_validators(self):
-        """Спека, блок 2: VALIDATORS резолвит имена inn_checksum/ogrn_checksum из конфига."""
-        assert set(VALIDATORS.keys()) == {"inn_checksum", "ogrn_checksum"}
+        """Спека, блок 2: VALIDATORS резолвит имена inn_checksum/ogrn_checksum из конфига.
+        ЭТАП T2-INN: к ним добавились inn10_checksum/inn12_checksum — прибитые к
+        длине входы в тот же алгоритм ФНС (типов ИНН стало два, и каждый обязан
+        звать СВОЙ). Множество проверяется целиком: незамеченное появление
+        валидатора значило бы, что конфиг может сослаться на непроверенное имя."""
+        assert set(VALIDATORS.keys()) == {
+            "inn_checksum", "inn10_checksum", "inn12_checksum", "ogrn_checksum"}
+
+    def test_length_pinned_validators_reject_the_other_length(self):
+        """ЭТАП T2-INN: 10-значный валидатор обязан отвергать 12-значное значение
+        и наоборот — даже когда КС по «своему» алгоритму сошлась бы. Это защита
+        от будущего ослабления паттерна, а не украшение."""
+        from regex_detector import inn10_checksum, inn12_checksum
+        assert inn10_checksum("7707083893") is True
+        assert inn10_checksum("500100732259") is False   # валидный ИНН физлица
+        assert inn12_checksum("500100732259") is True
+        assert inn12_checksum("7707083893") is False     # валидный ИНН юрлица
 
     def test_registry_functions_match_module_level_functions(self):
         """Спека, блок 2: VALIDATORS['inn_checksum'] — та же функция, что и inn_checksum."""

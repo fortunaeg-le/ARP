@@ -33,7 +33,7 @@ from corpus_lib import (CYR2LAT, LAT2CYR, DIGIT2CYR, NBSP, NNBSP, ZWSP, ZWJ, SHY
                         gold_entry, render, update_gold)
 
 ROOT = os.path.dirname(os.path.abspath(__file__))
-NUMERIC = {"INN", "OGRN", "KPP", "ACCOUNT", "BIK", "PHONE", "SNILS", "PASSPORT", "BIRTHDATE"}
+NUMERIC = {"INN", "INN_PER", "OGRN", "KPP", "ACCOUNT", "BIK", "PHONE", "SNILS", "PASSPORT", "BIRTHDATE"}
 TEXTUAL = {"PER", "ORG", "ADDRESS", "EMAIL"}
 NOISE_P = 0.15          # доля НЕ-сущностных чанков, которые тоже мутируем
                         # (иначе «странный символ» = маркер сущности, и замер врёт)
