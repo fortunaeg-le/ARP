@@ -89,6 +89,22 @@ PROFILE_LABELS = {
     PROFILE_MAXIMUM: "Максимум (все типы)",
 }
 
+#: Одна строка на набор — что он маскирует, ЧЕЛОВЕЧЕСКИМ языком, без имён типов
+#: из кода (этап T1-UI, шаг 2: экран читает юрист, а не программист). Строки
+#: живут рядом с составом наборов НАМЕРЕННО: разошедшись, состав и его описание
+#: обманут пользователя молча — здесь они правятся в одном месте.
+PROFILE_HINTS = {
+    PROFILE_PERSONAL:
+        "ФИО, адреса, телефоны, почта, паспорта, СНИЛС, даты рождения",
+    PROFILE_PERSONAL_REQUISITES:
+        "всё перечисленное выше и, кроме того, названия организаций, ИНН, ОГРН, "
+        "КПП, БИК, банковские счета",
+    PROFILE_WITH_MONEY:
+        "всё перечисленное выше и, кроме того, денежные суммы",
+    PROFILE_MAXIMUM:
+        "все типы данных, которые программа умеет находить, без исключений",
+}
+
 DEFAULT_PROFILE = PROFILE_PERSONAL
 
 SETTINGS_FILENAME = "settings.json"
@@ -182,6 +198,92 @@ def load_settings(path=None) -> dict:
         types = {}
     types = {t: bool(v) for t, v in types.items() if isinstance(t, str)}
     return {"profile": profile, "types": types}
+
+
+def save_settings(profile, types=None, path=None) -> Path:
+    """Записать файл настроек — ТО ЖЕ место и ТОТ ЖЕ формат, что читает
+    `load_settings` (второго хранилища настроек в программе нет и не заводится).
+
+    Запись атомарная (временный файл рядом + `os.replace`): настройку правит
+    экран интерфейса, и оборванная на середине запись оставила бы юриста с битым
+    JSON, то есть молча сброшенным набором. Неизвестное имя набора не пишется —
+    сводится к умолчанию здесь же, чтобы в файле не оседал мусор.
+    """
+    import os
+
+    if profile not in PROFILES:
+        profile = DEFAULT_PROFILE
+    types = {t: bool(v) for t, v in dict(types or {}).items() if isinstance(t, str)}
+
+    p = Path(path) if path is not None else settings_path()
+    p.parent.mkdir(parents=True, exist_ok=True)
+    tmp = p.with_name(p.name + ".tmp")
+    tmp.write_text(
+        json.dumps({"profile": profile, "types": types}, ensure_ascii=False, indent=2),
+        encoding="utf-8",
+    )
+    os.replace(tmp, p)
+    return p
+
+
+#: Следы прошлой работы программы в `~/.shifrator` (этап T1-UI, шаг 1). Список
+#: ЗАКРЫТЫЙ и намеренно не «в каталоге вообще что-то есть»: рядом лежит
+#: `launcher.lock`, который создаёт САМ запуск интерфейса — по нему первая
+#: установка выглядела бы обновлением. Здесь только то, что появляется
+#: исключительно от РАБОТЫ пользователя: хранилище сессий, ключ шифрования
+#: сессий, ручная разметка.
+_WORK_TRACES = (
+    ("sessions", "dir"),          # storage/session_store: ~/.shifrator/sessions
+    ("sessions/key.bin", "file"),  # ключ Fernet — создаётся первой шифрацией
+    ("markup", "dir"),            # ручная разметка (U3): ~/.shifrator/markup
+)
+
+
+def has_previous_work(base=None) -> bool:
+    """Есть ли на диске следы прошлой работы программы. Каталог-след считается
+    следом, только если он НЕПУСТ: пустую папку могла создать неудавшаяся
+    попытка, а решение «это обновление» она обосновывать не должна."""
+    base = Path(base) if base is not None else settings_path().parent
+    for name, kind in _WORK_TRACES:
+        p = base / name
+        try:
+            if kind == "dir":
+                if p.is_dir() and any(p.iterdir()):
+                    return True
+            elif p.is_file():
+                return True
+        except OSError:
+            continue
+    return False
+
+
+def ensure_settings(path=None) -> dict:
+    """Однократное решение при ПЕРВОМ запуске версии с настройкой типов
+    (этап T1-UI, шаг 1). Возвращает {"created": bool, "profile": str}.
+
+    * файл настроек ЕСТЬ — не трогаем ничего, выбор пользователя уважается;
+    * файла нет, но есть следы прошлой работы (`has_previous_work`) — это
+      ОБНОВЛЕНИЕ: пишем «Максимум», то есть сохраняем прежнее поведение
+      программы (до T1 маскировалось всё). Молча сузить набор у человека,
+      который уже работает, — значит изменить результат его работы без спроса;
+    * файла нет и следов нет — ПЕРВАЯ УСТАНОВКА: пишем умолчание
+      (`DEFAULT_PROFILE` = только персональные данные).
+
+    Решение принимается один раз: дальше файл существует, и ветка «файл есть»
+    закрывает вопрос навсегда. Ошибка записи (нет прав, только чтение) не
+    считается фатальной — программа продолжит работать на умолчаниях
+    `load_settings`, а не откажется обезличивать документ.
+    """
+    p = Path(path) if path is not None else settings_path()
+    if p.exists():
+        return {"created": False, "profile": load_settings(p)["profile"]}
+
+    profile = PROFILE_MAXIMUM if has_previous_work(p.parent) else DEFAULT_PROFILE
+    try:
+        save_settings(profile, {}, path=p)
+    except OSError:
+        return {"created": False, "profile": profile}
+    return {"created": True, "profile": profile}
 
 
 def enabled_types(config_path: str, settings=None, path=None) -> frozenset[str] | None:

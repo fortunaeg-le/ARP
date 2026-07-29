@@ -129,6 +129,9 @@ def cmd_encrypt(path, config_path, allow_lossy=False):
         # ЭТАП T1: детекция ПОЛНАЯ всегда; настройка «что маскировать» применяется
         # ВНУТРИ tokenize, после разрешения пересечений (см. src/type_policy.py —
         # выключенный тип обязан остаться барьером для границ соседних масок).
+        # T1-UI шаг 1: то же однократное решение, что в UI (app/core.current_policy) —
+        # CLI и интерфейс обязаны видеть ОДИН файл настроек в одном состоянии.
+        type_policy.ensure_settings()
         anon_text, final_entities = tokenize(
             doc, entities, config_path, enabled_types=type_policy.enabled_types(config_path),
         )

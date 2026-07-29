@@ -81,6 +81,9 @@ def current_policy(config_path: str = None) -> dict:
     import type_policy
 
     cfg = config_path or DEFAULT_CONFIG
+    # T1-UI шаг 1: однократное решение «обновление или первая установка». Файл
+    # есть — не трогает ничего; см. type_policy.ensure_settings.
+    type_policy.ensure_settings()
     settings = type_policy.load_settings()
     enabled = type_policy.enabled_types(cfg, settings=settings)
     return {
@@ -132,6 +135,104 @@ MARKUP_TYPES = [
 
 def type_label(entity_type: str) -> str:
     return TYPE_LABELS.get(entity_type, entity_type)
+
+
+def settings_view(config_path: str = None) -> dict:
+    """ЭТАП T1-UI: всё, что нужно экрану настроек, одним ответом.
+
+    Наборы (имя + строка «что маскирует» человеческим языком) и ПОЛНЫЙ список
+    типов с человеческими названиями и тремя признаками на каждый: входит ли в
+    выбранный набор (`in_profile`), включён ли сейчас фактически (`enabled`),
+    есть ли на нём ручное перекрытие (`override`, null если нет).
+
+    Экран не хранит собственного представления о составе наборов — иначе он
+    разошёлся бы с `type_policy` при добавлении типа (тот же класс рассинхрона,
+    против которого заведён `src/pipeline.py`).
+    """
+    import type_policy
+
+    cfg = config_path or DEFAULT_CONFIG
+    type_policy.ensure_settings()
+    settings = type_policy.load_settings()
+    known = type_policy.known_types(cfg)
+    profile = settings["profile"]
+    overrides = {t: v for t, v in settings["types"].items() if t in known}
+
+    base = type_policy.resolve(profile, {}, known=known)
+    base_set = set(known) if base is None else set(base)
+    enabled = type_policy.enabled_types(cfg, settings=settings)
+    enabled_set = set(known) if enabled is None else set(enabled)
+
+    return {
+        "profile": profile,
+        "profiles": [
+            {"id": p, "label": type_policy.PROFILE_LABELS[p],
+             "hint": type_policy.PROFILE_HINTS[p]}
+            for p in type_policy.PROFILES
+        ],
+        # DATE на экран не выводится: его ДЕТЕКТОР выключен в entity_types.yaml
+        # (`enabled: false`), масок этого типа не будет ни при какой галочке —
+        # предложить её значило бы обещать невыполнимое. Из состава политики тип
+        # при этом не выкинут (там он значим для набора «Максимум»).
+        "types": [
+            {"type": t, "label": type_label(t), "in_profile": t in base_set,
+             "enabled": t in enabled_set, "override": overrides.get(t)}
+            for t in known if t != "DATE"
+        ],
+        "settings_path": str(type_policy.settings_path()),
+    }
+
+
+def save_settings(profile: str, types: dict = None, config_path: str = None) -> dict:
+    """Записать выбор экрана в ТОТ ЖЕ файл настроек, что читает механизм T1.
+
+    Перекрытия чистятся от совпадающих с набором: перекрытие «включить то, что
+    и так включено набором» — не выбор пользователя, а шум, который вдобавок
+    залипнет при последующей смене набора. В файл идёт только реальное
+    отличие от набора.
+    """
+    import type_policy
+
+    cfg = config_path or DEFAULT_CONFIG
+    known = type_policy.known_types(cfg)
+    if profile not in type_policy.PROFILES:
+        profile = type_policy.DEFAULT_PROFILE
+
+    base = type_policy.resolve(profile, {}, known=known)
+    base_set = set(known) if base is None else set(base)
+
+    clean = {}
+    for t, v in dict(types or {}).items():
+        if t not in known:
+            continue          # неизвестный тип с экрана не пишем (как и load_settings его игнорирует)
+        if bool(v) != (t in base_set):
+            clean[t] = bool(v)
+
+    type_policy.save_settings(profile, clean)
+    return settings_view(cfg)
+
+
+def policy_summary(policy: dict, config_path: str = None) -> dict:
+    """Строка «чем обезличено» для экрана результата (T1-UI, шаг 3).
+
+    Показывает не только ЧТО маскировалось, но и — если набор не полный — что
+    осталось В ТЕКСТЕ НАМЕРЕННО. Без этого юрист читает отсутствие маски как
+    «программа не нашла», хотя это был его собственный выбор.
+    """
+    import type_policy
+
+    profile = policy.get("profile")
+    # DATE из перечня «осталось намеренно» исключён: его детектор выключен в
+    # entity_types.yaml (`enabled: false`), маски этого типа не появятся ни при
+    # каком наборе — обещать пользователю обратное было бы неправдой.
+    disabled = [t for t in policy.get("disabled_types") or [] if t != "DATE"]
+    return {
+        "profile": profile,
+        "profile_label": type_policy.PROFILE_LABELS.get(profile, profile),
+        "is_full": not disabled,
+        "enabled_labels": [type_label(t) for t in policy.get("enabled_types") or []],
+        "disabled_labels": [type_label(t) for t in disabled],
+    }
 
 
 def markup_type_options() -> list[dict]:
@@ -406,6 +507,9 @@ def run_encrypt(path: str, allow_lossy: bool = False, config_path: str = DEFAULT
         "zones": zones,
         "lossy": bool(zones and allow_lossy),
         "storage_dir": str(store),
+        # T1-UI шаг 3: чем обезличено — слепок МОМЕНТА ШИФРАЦИИ (тот же, что ушёл
+        # в sidecar сессии), а не текущего состояния файла настроек.
+        "policy": policy_summary(policy, config_path),
     }
 
 

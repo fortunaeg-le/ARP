@@ -152,6 +152,15 @@
   .ana-sec h3{font-size:15px;margin:0 0 4px}
   .scope-row{display:flex;flex-wrap:wrap;gap:10px;align-items:center;margin-bottom:12px}
   .scope-row label{font-size:13.5px;display:flex;align-items:center;gap:6px;cursor:pointer}
+  /* T1-UI: экран «Что маскировать» */
+  .set-prof{display:block;border:1px solid var(--line);border-radius:10px;padding:10px 12px;margin-bottom:8px;cursor:pointer}
+  .set-prof.on{border-color:var(--accent);background:#f5f8ff}
+  .set-prof .t{font-weight:600;font-size:14px}
+  .set-prof .h{font-size:13px;color:var(--muted);margin-top:2px}
+  .set-types{display:flex;flex-wrap:wrap;gap:6px 18px}
+  .set-types label{font-size:13.5px;display:flex;align-items:center;gap:6px;cursor:pointer;min-width:190px}
+  .set-types label .off{color:var(--muted)}
+  .policy-line{margin-top:10px;font-size:13px}
   .tabs{display:flex;gap:4px;margin:12px 0 0}
   .tabs button{border:1px solid var(--line);background:#fafbfd;color:var(--muted);padding:5px 12px;border-radius:8px 8px 0 0;cursor:pointer;font-size:13px}
   .tabs button.active{background:#fff;color:var(--accent-d);font-weight:600;border-bottom-color:#fff}
@@ -168,6 +177,7 @@
     <button id="nav-ver" onclick="show('ver')" disabled>2 · Проверка</button>
     <button id="nav-res" onclick="show('res')">3 · Восстановление</button>
     <button id="nav-ana" onclick="show('ana')">4 · Аналитика</button>
+    <button id="nav-set" onclick="show('set')">5 · Что маскировать</button>
   </nav>
 </header>
 
@@ -227,6 +237,9 @@
         <h3 style="color:var(--accent-d)">🔍 Проверьте глазами</h3>
         <div class="note" style="color:#33507f">Система прячет данные, но <b>не гарантирует полноту</b> — просмотрите обезличенный текст справа: не осталось ли ФИО, номеров, адресов открытым текстом. Наведите курсор на подсветку, чтобы увидеть, что и на что заменено. <b>Нашли пропуск — выделите его мышью прямо в тексте справа</b> и выберите тип; уже стоящую маску можно поправить щелчком по ней (снять как ложную, изменить тип или границу).</div>
       </div>
+
+      <!-- T1-UI шаг 3: каким набором получен ЭТОТ результат -->
+      <div id="v-policy" class="policy-line"></div>
 
       <div class="legend" id="v-legend"></div>
 
@@ -354,6 +367,32 @@
       </div>
     </div>
   </section>
+
+  <!-- ===================== SCREEN 5: SETTINGS (T1-UI) ===================== -->
+  <section id="scr-set" class="screen">
+    <div class="card">
+      <h2>Что маскировать</h2>
+      <p class="sub">Выберите набор данных, которые программа будет прятать. <b>Поиск всегда идёт по всем типам</b> — набор решает только, что заменять на маску. Настройка применяется к следующему обезличиванию; уже готовые документы не меняются.</p>
+
+      <div id="set-status" class="status"><span id="set-spin" class="spinner"></span><span id="set-msg"></span></div>
+
+      <div id="set-body" class="hidden">
+        <div id="set-profiles"></div>
+
+        <div class="ana-sec">
+          <h3>Отдельные типы</h3>
+          <p class="sub" style="margin:2px 0 10px">Галочки показывают состав выбранного набора. Можно включить или выключить любой тип отдельно — это переопределит набор.</p>
+          <div id="set-types" class="set-types"></div>
+        </div>
+
+        <div class="row" style="margin-top:14px;display:flex;gap:10px;flex-wrap:wrap;align-items:center">
+          <button class="primary" onclick="saveSettings()">Сохранить</button>
+          <span class="note" id="set-saved"></span>
+        </div>
+        <div class="note" style="margin-top:10px">Настройка хранится на этом компьютере: <code id="set-path"></code></div>
+      </div>
+    </div>
+  </section>
 </main>
 
 <div id="tip"></div>
@@ -366,13 +405,14 @@ let PENDING_FILE = null;    // файл, ждущий решения по зон
 const TYPE_LABELS = {PERSON:"ФИО",ORG:"Организация",ADDRESS:"Адрес",INN:"ИНН",OGRN:"ОГРН/ОГРНИП",KPP:"КПП",BANK_ACCOUNT:"Банковский счёт",BIK:"БИК",PASSPORT:"Паспорт",PHONE:"Телефон",EMAIL:"E-mail",SNILS:"СНИЛС",BIRTHDATE:"Дата рождения",SUM:"Сумма",DATE:"Дата"};
 
 function show(which){
-  for(const s of ['enc','ver','res','ana']){
+  for(const s of ['enc','ver','res','ana','set']){
     document.getElementById('scr-'+s).classList.toggle('active', s===which);
     document.getElementById('nav-'+s).classList.toggle('active', s===which);
   }
   if(which==='res') loadSessions();
   if(which==='ver' && CUR) loadMarkupPanel();
   if(which==='ana') loadAnalytics();
+  if(which==='set') loadSettings();
   closeMarkupMenu();
   BOUNDARY_EDIT=null;
 }
@@ -468,6 +508,76 @@ function showZones(data){
 function proceedLossy(){ if(PENDING_FILE) startEncrypt(PENDING_FILE,true); }
 function cancelZones(){ resetEnc(); status('enc','Отменено. Перенесите содержимое зон в тело документа и загрузите снова.','err'); }
 
+/* ---------- T1-UI: экран «Что маскировать» ---------- */
+let SET = null;   // последний ответ /api/settings
+
+async function loadSettings(){
+  document.getElementById('set-body').classList.add('hidden');
+  status('set','Читаю настройки…','busy');
+  try{
+    const r = await fetch('/api/settings');
+    const d = await r.json();
+    if(d.status!=='ok'){ status('set', d.message||'Не удалось прочитать настройки.','err'); return; }
+    SET = d; renderSettings();
+    hideStatus('set');
+    document.getElementById('set-body').classList.remove('hidden');
+  }catch(err){ status('set','Ошибка связи с локальным сервером: '+err,'err'); }
+}
+
+function renderSettings(){
+  document.getElementById('set-profiles').innerHTML = SET.profiles.map(p=>
+    '<label class="set-prof'+(p.id===SET.profile?' on':'')+'">'+
+      '<input type="radio" name="set-prof" value="'+p.id+'"'+(p.id===SET.profile?' checked':'')+
+      ' onchange="pickProfile(this.value)"> '+
+      '<span class="t">'+esc(p.label)+'</span>'+
+      '<div class="h">'+esc(p.hint)+'</div>'+
+    '</label>').join('');
+  document.getElementById('set-types').innerHTML = SET.types.map(t=>
+    '<label><input type="checkbox" data-type="'+t.type+'"'+(t.enabled?' checked':'')+
+    ' onchange="markDirty()"><span'+(t.enabled?'':' class="off"')+'>'+esc(t.label)+'</span></label>').join('');
+  document.getElementById('set-path').textContent = SET.settings_path;
+  document.getElementById('set-saved').textContent = '';
+}
+
+// Смена набора перерисовывает галочки ПО НАБОРУ: пользователь выбрал набор, а
+// не «набор плюс мои прошлые исключения» — прежние перекрытия при этом
+// сбрасываются, и это видно глазами до нажатия «Сохранить».
+// Состав набора знает только сервер (src/type_policy.py) — выбор набора сразу
+// уходит туда и возвращается готовыми галочками. В браузере состав не
+// вычисляется вовсе, иначе экран разошёлся бы с механизмом при появлении типа.
+async function pickProfile(id){
+  status('set','Применяю набор…','busy');
+  try{
+    const r = await fetch('/api/settings', {method:'POST', headers:{'Content-Type':'application/json'},
+      body: JSON.stringify({profile:id, types:{}})});
+    const d = await r.json();
+    if(d.status!=='ok'){ status('set', d.message||'Не удалось сохранить.','err'); return; }
+    SET = d; renderSettings();
+    hideStatus('set');
+    document.getElementById('set-saved').textContent = 'Набор «'+ (SET.profiles.find(p=>p.id===SET.profile)||{}).label +'» сохранён.';
+  }catch(err){ status('set','Ошибка связи с локальным сервером: '+err,'err'); }
+}
+
+function markDirty(){
+  const box=document.getElementById('set-saved');
+  box.textContent='Есть несохранённые изменения — нажмите «Сохранить».';
+}
+
+async function saveSettings(){
+  const types={};
+  document.querySelectorAll('#set-types input[type=checkbox]').forEach(cb=>{ types[cb.dataset.type]=cb.checked; });
+  status('set','Сохраняю…','busy');
+  try{
+    const r = await fetch('/api/settings', {method:'POST', headers:{'Content-Type':'application/json'},
+      body: JSON.stringify({profile:SET.profile, types:types})});
+    const d = await r.json();
+    if(d.status!=='ok'){ status('set', d.message||'Не удалось сохранить.','err'); return; }
+    SET = d; renderSettings();
+    hideStatus('set');
+    document.getElementById('set-saved').textContent='Сохранено. Применится к следующему обезличиванию.';
+  }catch(err){ status('set','Ошибка связи с локальным сервером: '+err,'err'); }
+}
+
 /* ---------- verify render ---------- */
 function esc(s){ return (s||'').replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;'); }
 
@@ -485,6 +595,22 @@ function renderVerify(d){
       '<b>'+d.zones.length+'</b> зон(ы) документа не прочитаны и НЕ обезличены (их текст отсутствует в результате): '+
       d.zones.map(z=>esc(z.kind_label)).join(', ')+'. Сырой текст сохранён локально в <code>'+esc(d.session_id)+'.unread.json</code>.';
   } else lb.classList.add('hidden');
+
+  // T1-UI шаг 3: каким набором получен результат. Пользователь обязан видеть,
+  // что часть данных осталась в тексте ПО ЕГО НАСТРОЙКЕ, а не потому что
+  // программа их не нашла. Слепок берётся момента шифрации (d.policy),
+  // поэтому при пересборке после правок он не подменяется текущей настройкой.
+  if(d.policy) CUR.policy=d.policy;
+  const pol=(CUR&&CUR.policy)||null, pe=document.getElementById('v-policy');
+  if(pol){
+    pe.className='policy-line '+(pol.is_full?'':'warn');
+    pe.innerHTML = pol.is_full
+      ? '<span class="note">Обезличено набором <b>«'+esc(pol.profile_label)+'»</b> — маскировались все типы данных, которые программа умеет находить.</span>'
+      : '<b>Обезличено набором «'+esc(pol.profile_label)+'» — это не все типы данных.</b>'+
+        '<div class="note" style="margin-top:4px">Намеренно НЕ маскировались: '+
+        esc(pol.disabled_labels.join(', '))+'. Если они есть в документе, они остались открытым текстом — '+
+        'это ваша настройка, а не пропуск программы. Изменить — вкладка «5 · Что маскировать».</div>';
+  } else pe.innerHTML='';
 
   // sidebar grouped by type
   const byType={};

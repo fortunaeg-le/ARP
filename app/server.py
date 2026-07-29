@@ -203,6 +203,9 @@ class Handler(BaseHTTPRequestHandler):
         if self.path == "/api/sessions":
             self._handle_list_sessions()
             return
+        if self.path == "/api/settings":
+            self._handle_settings_get()
+            return
         if self.path == "/api/markup/types":
             self._send_json({"status": "ok", "types": core.markup_type_options()})
             return
@@ -239,6 +242,8 @@ class Handler(BaseHTTPRequestHandler):
             self._handle_encrypt()
         elif self.path == "/api/encrypt/start":
             self._handle_encrypt_start()
+        elif self.path == "/api/settings":
+            self._handle_settings_post()
         elif self.path == "/api/decrypt":
             self._handle_decrypt()
         elif self.path == "/api/session-delete":
@@ -259,6 +264,35 @@ class Handler(BaseHTTPRequestHandler):
             self._handle_markup_delete_all()
         else:
             self.send_error(404)
+
+    # --- ЭТАП T1-UI: экран «Что маскировать» ---------------------------------
+    def _handle_settings_get(self):
+        try:
+            self._send_json({"status": "ok", **core.settings_view()})
+        except Exception as e:  # noqa: BLE001
+            self._send_json({"status": "error", "message": f"Не удалось прочитать настройки: {e}"})
+
+    def _handle_settings_post(self):
+        """Записывает выбор набора и точечных перекрытий. Хранилище одно — тот же
+        `~/.shifrator/settings.json`, который читает механизм T1; своего формата
+        и своего места у экрана нет."""
+        data = self._read_body()
+        try:
+            body = json.loads(data or b"{}")
+            if not isinstance(body, dict):
+                raise ValueError("ожидался объект")
+            types = body.get("types")
+            view = core.save_settings(
+                body.get("profile"), types if isinstance(types, dict) else {},
+            )
+        except ValueError as e:
+            self._send_json({"status": "error", "message": f"Неверный запрос: {e}"})
+            return
+        except OSError as e:
+            self._send_json({"status": "error",
+                             "message": f"Не удалось сохранить настройки: {e}"})
+            return
+        self._send_json({"status": "ok", **view})
 
     def _handle_encrypt(self):
         from urllib.parse import unquote
