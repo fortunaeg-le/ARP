@@ -17,6 +17,10 @@
   (ii)  утечка одного типа     -> красный по линии «б»
   (iii) round-trip одной маски -> красный по линии «в»
   (iv)  граница одной маски    -> красный по линии «г»
+  (v)   маска на прозе         -> красный по линии «д»   (этап GATE-2)
+  (vi)  недобор/перебор границ -> красный по линии «е»   (этап GATE-2)
+  (vii) precision реквизита    -> красный по линии «а»   (этап GATE-2:
+        линия «а» расширена с NER-хребта на ВСЕ типы эталона)
 
 Отдельно проверяются условие 1 (креши, историческая часть этапа 0d),
 условие 5 (известный долг + ДИАГНОСТИКА СОСТАВА: подмена «N на другой N»
@@ -37,8 +41,12 @@ import measure_lib as ML  # noqa: E402
 # --------------------------------------------------------------------------- #
 #                    Конструкторы синтетических results-записей                #
 # --------------------------------------------------------------------------- #
-def _entity(etype, text, found=True, leak=False):
-    """Запись эталонной сущности в форме run_measurement.process_doc."""
+def _entity(etype, text, found=True, leak=False, under=0, over=0, direction="exact"):
+    """Запись эталонной сущности в форме run_measurement.process_doc.
+
+    ЭТАП GATE-2: поле `bnd` (границы по направлению ошибки) присутствует ВСЕГДА
+    — линия «е» считает его отсутствие регрессом («нечем мерить»), и зелёная
+    пара обязана быть зелёной по всем шести линиям, иначе она не эталон."""
     status = "full" if leak else "none"
     return {
         "type": etype, "category": "", "trick": None, "checksum": None,
@@ -47,6 +55,7 @@ def _entity(etype, text, found=True, leak=False):
         "miss_reason": None if found else "nothing", "in_body": True,
         "leaked": leak, "leak_pieces": [], "leak_v1": leak,
         "leak_v2": {"status": status, "fragments": []},
+        ML.BND_FIELD: {"under": under, "over": over, "direction": direction},
     }
 
 
@@ -350,10 +359,14 @@ def test_t2_broken_round_trip_of_the_person_inn_reddens_line_v():
 
 
 def test_t2_mask_of_the_person_inn_on_a_negative_counts_as_fp():
-    """Условие 3 — единственная линия, охраняющая ТОЧНОСТЬ нового типа: линия
-    «а» держит только NER-хребет (ORG/PER/ADDRESS), реквизиты в неё не входят
-    (см. docs/T2_INN_REPORT §1г). Проверяем, что хотя бы общий счёт FP его
-    ловит, — иначе тип не охраняется по точности ВООБЩЕ."""
+    """ТОЧНОСТЬ нового типа охраняется ДВУМЯ линиями.
+
+    ИЗМЕНЕНО ЭТАПОМ GATE-2, намеренно. Раньше этот тест закреплял ОБРАТНОЕ:
+    «линия «а» держит только NER-хребет, реквизиты в неё не входят» (T2_INN
+    §1г) — то есть фиксировал слепое место как норму, и точность реквизита
+    охранял только общий счёт FP (условие 3), который агрегатный: падение
+    точности одного типа в нём тонет. Линия «а» расширена на ВСЕ типы, поэтому
+    ожидание перевёрнуто: INN_PER обязан краснеть И по precision тоже."""
     baseline, current = _inn_pair()
     current[0]["false_positives"].append(
         _fp("INN_PER", "18210102010011000110", on_negative="КБК — не ПДн"))
@@ -362,7 +375,9 @@ def test_t2_mask_of_the_person_inn_on_a_negative_counts_as_fp():
 
     assert v["red"], "Ложная маска INN_PER на негативе не покраснела: %s" % v
     assert any(r.startswith("(3) FP по негативам") for r in v["regressions"]), _reasons(v)
-    assert not any(r.startswith("(а) precision[INN_PER]") for r in v["regressions"]),         "Линия «а» неожиданно охватила реквизитный тип — обновите §1г отчёта T2-INN"
+    assert any(r.startswith("(а) precision[INN_PER]") for r in v["regressions"]), \
+        "Линия «а» не охватила реквизитный тип — расширение этапа GATE-2 потеряно: %s" \
+        % _reasons(v)
 
 
 # --------------------------------------------------------------------------- #
@@ -405,3 +420,145 @@ def test_debt_substitution_at_same_count_warns_not_reddens():
     comp = v["composition"]
     assert comp["joined_undocumented"] == [("doc_a", "ул. Мира, 7")], comp
     assert comp["registry_not_leaking"] == [("doc_a", "ул. Ленина, 5")], comp
+
+
+# --------------------------------------------------------------------------- #
+#        (v) ЛИНИЯ «д» — ПОРЧА ДОКУМЕНТА (маски, не легшие ни на что)          #
+#                              этап GATE-2                                     #
+# --------------------------------------------------------------------------- #
+def test_v_overmask_of_prose_reddens_line_d():
+    """Система замаскировала кусок обычного текста: маска не легла ни на
+    эталонную сущность, ни на объявленный негатив. До этапа GATE-2 гейт такие
+    маски ПЕЧАТАЛ, но не сравнивал — можно было закрыть масками номера пунктов
+    договора и куски прозы, оставшись зелёным."""
+    baseline, current = _green_pair()
+    current[0]["false_positives"].append(_fp("ADDRESS", "3.2"))   # ни негатив, ни cross
+
+    v = _verdict(baseline, current)
+
+    assert v["red"], "Маска на неаннотированной прозе не покраснела: %s" % v
+    assert any(r.startswith("(д) over-mask прозы[ADDRESS]") for r in v["regressions"]), \
+        "Красный не по линии «д»: %s" % _reasons(v)
+
+
+def test_v_overmask_growth_of_one_type_not_hidden_by_drop_of_another():
+    """То же правило «по каждому типу отдельно», что у leak_v2 и masking:
+    рост порчи по ADDRESS не должен гаситься её падением по ORG."""
+    baseline, current = _green_pair()
+    baseline[0]["false_positives"].append(_fp("ORG", "к"))
+    current[0]["false_positives"].append(_fp("ADDRESS", "п. 4.1"))
+
+    v = _verdict(baseline, current)
+
+    assert v["red"], "Рост порчи ADDRESS спрятался за падением ORG: %s" % _reasons(v)
+    assert any(r.startswith("(д) over-mask прозы[ADDRESS]") for r in v["regressions"]), \
+        _reasons(v)
+
+
+def test_v_overmask_drop_is_improvement_not_regression():
+    """Улучшения гейт не роняют (общее правило файла): стало меньше порчи —
+    это плюс, а не красный."""
+    baseline, current = _green_pair()
+    baseline[0]["false_positives"].append(_fp("ADDRESS", "3.2"))
+
+    v = _verdict(baseline, current)
+
+    assert not v["red"], "Падение over-mask уронило гейт: %s" % _reasons(v)
+    assert any("over-mask прозы[ADDRESS]" in i for i in v["improvements"]), v["improvements"]
+
+
+# --------------------------------------------------------------------------- #
+#       (vi) ЛИНИЯ «е» — ГРАНИЦЫ ПО НАПРАВЛЕНИЮ ОШИБКИ (этап GATE-2)           #
+# --------------------------------------------------------------------------- #
+def test_vi_boundary_under_growth_reddens_line_e():
+    """Маска стала КОРОЧЕ эталона: часть значения осталась открытым текстом.
+    Это утечка, и она обязана быть видна отдельно от перебора."""
+    baseline, current = _green_pair()
+    current[0]["entities"][0][ML.BND_FIELD] = {"under": 6, "over": 0, "direction": "shorter"}
+
+    v = _verdict(baseline, current)
+
+    assert v["red"], "Недобор границы не покраснел: %s" % v
+    assert any(r.startswith("(е) границы[ORG / недобор") for r in v["regressions"]), \
+        "Красный не по недобору линии «е»: %s" % _reasons(v)
+    assert any("утечка" in r for r in v["regressions"]), _reasons(v)
+
+
+def test_vi_boundary_over_growth_reddens_line_e():
+    """Маска стала ДЛИННЕЕ эталона: закрыт лишний текст. masking B (линия «г»)
+    этого не видит ВООБЩЕ (mc_check_bc: маска шире эталона — не нарушение),
+    поэтому до линии «е» перебор мог расти неограниченно при зелёном гейте.
+    Проверяем ровно это: линия «г» молчит, линия «е» краснеет."""
+    baseline, current = _green_pair()
+    current[0]["entities"][0][ML.BND_FIELD] = {"under": 0, "over": 42, "direction": "longer"}
+
+    v = _verdict(baseline, current)
+
+    assert v["red"], "Перебор границы не покраснел: %s" % v
+    assert any(r.startswith("(е) границы[ORG / перебор") for r in v["regressions"]), \
+        "Красный не по перебору линии «е»: %s" % _reasons(v)
+    assert not any(r.startswith("(г)") for r in v["regressions"]), (
+        "Тест построен неверно: перебор обязан быть НЕВИДИМ линии «г», иначе он "
+        "не доказывает нужду в линии «е»: %s" % _reasons(v))
+
+
+def test_vi_boundary_trade_under_for_over_is_caught():
+    """Размен: недобор упал, перебор вырос. Одно общее число границ такой
+    размен принимает молча (этап ADDR-B, §«общая цифра в отчёт не выносится»),
+    два раздельных — нет."""
+    baseline, current = _green_pair()
+    baseline[0]["entities"][0][ML.BND_FIELD] = {"under": 9, "over": 0, "direction": "shorter"}
+    current[0]["entities"][0][ML.BND_FIELD] = {"under": 0, "over": 30, "direction": "longer"}
+
+    v = _verdict(baseline, current)
+
+    assert v["red"], "Размен «недобор -> перебор» прошёл молча: %s" % _reasons(v)
+    assert any("перебор" in r for r in v["regressions"]), _reasons(v)
+
+
+def test_vi_boundary_line_says_when_it_has_nothing_to_measure():
+    """Дамп без поля границ обязан дать РЕГРЕСС с человеческой причиной, а не
+    молчаливый зелёный: линия, которой нечем мерить, — это не «нет промахов»
+    (тот же приём, что у masking в compare())."""
+    baseline, current = _green_pair()
+    for d in baseline:
+        for e in d["entities"]:
+            e.pop(ML.BND_FIELD)
+
+    v = _verdict(baseline, current)
+
+    assert v["red"], "Baseline без поля границ прошёл зелёным: %s" % v
+    assert any("в BASELINE нет поля" in r for r in v["regressions"]), _reasons(v)
+    assert any("Пересоберите results_baseline.json" in r for r in v["regressions"]), _reasons(v)
+
+
+def test_vi_boundary_not_found_entity_does_not_count_as_under():
+    """Сущность, у которой маски своего типа НЕТ вовсе, — домен recall/утечки,
+    а не границ. Иначе линия «е» двигалась бы от любого изменения recall и
+    мерила бы не то, что обещает."""
+    baseline, current = _green_pair()
+    current[0]["entities"][0][ML.BND_FIELD] = {"under": 11, "over": 0, "direction": "not_found"}
+
+    v = _verdict(baseline, current)
+
+    assert not any(r.startswith("(е)") for r in v["regressions"]), (
+        "Ненайденная сущность попала в недобор границ: %s" % _reasons(v))
+
+
+# --------------------------------------------------------------------------- #
+#     (vii) ЛИНИЯ «а» РАСШИРЕНА НА РЕКВИЗИТЫ (этап GATE-2)                     #
+# --------------------------------------------------------------------------- #
+def test_vii_precision_drop_of_requisite_type_reddens_line_a():
+    """До этапа GATE-2 линия «а» держала только ORG/PER/ADDRESS, и точность
+    любого реквизита (оба ИНН, ОГРН, КПП, счета, БИК, телефон, e-mail,
+    паспорт, СНИЛС, дата рождения, суммы) могла упасть до нуля незамеченной."""
+    baseline, current = _green_pair()
+    for i in range(5):
+        current[1]["false_positives"].append(
+            _fp("INN", "не-ИНН %d" % i, on_negative="номер документа, не ИНН"))
+
+    v = _verdict(baseline, current)
+
+    assert v["red"], "Падение precision[INN] не покраснело: %s" % v
+    assert any(r.startswith("(а) precision[INN]") for r in v["regressions"]), \
+        "Красный не по линии «а» для реквизита: %s" % _reasons(v)
