@@ -559,7 +559,13 @@ def print_precision(base_prec, cur_prec, tol_pp):
         if not dc:
             continue
         f = lambda d: ("%.2f%%" % d["precision"]) if d.get("precision") is not None else "n/a"
-        star = " <NER-хребет (линия «а», допуск %.2fпп)" % tol_pp if t in ML.NER_SPINE_TYPES else ""
+        # ЭТАП GATE-2: под линией «а» теперь ВСЕ типы, поэтому помечается не
+        # «хребет», а факт охраны; NER-хребет назван отдельно как исторический
+        # состав линии (по нему сравнимы цифры прошлых этапов).
+        guarded = (db.get("precision") is not None and dc.get("precision") is not None)
+        star = ("  <линия «а», допуск %.2fпп%s" % (
+            tol_pp, "; NER-хребет" if t in ML.NER_SPINE_TYPES else "")) if guarded else \
+            "  <precision не определён (нет масок-решений) — вне линии «а»"
         print("  %-10s | %6s->%-6s | %4d->%-4d %4d->%-4d | %8d %8d%s" % (
             t, f(db), f(dc), db.get("tp", 0), dc.get("tp", 0),
             db.get("fp_neg", 0), dc.get("fp_neg", 0),
