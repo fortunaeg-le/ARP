@@ -72,29 +72,12 @@ def _union_len(ivs, lo, hi):
     return total
 
 
-def _uncovered(gs, ge, ivs):
-    """Куски [gs,ge), НЕ покрытые ни одним интервалом ivs -> список (s,e)."""
-    out = []
-    cur = gs
-    for s, e in sorted((s, e) for s, e in ivs if _ov(s, e, gs, ge)):
-        if s > cur:
-            out.append((cur, min(s, ge)))
-        cur = max(cur, e)
-        if cur >= ge:
-            break
-    if cur < ge:
-        out.append((cur, ge))
-    return [(s, e) for s, e in out if e > s]
-
-
-def _outside(ms, me, gs, ge):
-    """Куски маски [ms,me), лежащие ВНЕ эталона [gs,ge)."""
-    out = []
-    if ms < gs:
-        out.append((ms, min(me, gs)))
-    if me > ge:
-        out.append((max(ms, ge), me))
-    return [(s, e) for s, e in out if e > s]
+# ЭТАП GATE-2: обе функции переехали в measure_lib (uncovered_pieces /
+# outside_pieces) и стали основой ПОСТОЯННОЙ линии «е» гейта — для всех типов,
+# а не только для ADDRESS. Прибор зовёт их же: две реализации одной метрики
+# разъехались бы, и прибор этапа перестал бы совпадать с гейтом.
+_uncovered = ML.uncovered_pieces
+_outside = ML.outside_pieces
 
 
 def probe_doc(d):

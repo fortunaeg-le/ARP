@@ -246,6 +246,21 @@ def process_doc(d, allow_lossy=ALLOW_LOSSY):
     # поле для ДАТ: точка/слэш/перенос между цифрами склеены (см. v2_date_field)
     anon_date_field = ML.v2_date_field(anon_text)
 
+    # ---- границы по НАПРАВЛЕНИЮ ошибки (линия «е» гейта, этап GATE-2) ----
+    # Считается ОДИН раз на документ, по типам: недобор (символы эталона, не
+    # закрытые ни одной маской = утечка) и перебор (символы маски своего типа
+    # вне своего эталона = порча читаемости). Штатные поля exact/left_trim/
+    # right_trim направление промаха не различают — см. measure_lib, блок
+    # «границы по направлению ошибки».
+    _all_mask_spans = [(x["start"], x["end"]) for x in det_located]
+    _bnd_by_pos = {}
+    for _t in sorted({e["type"] for e in d["entities"]}):
+        _pos_t = [i for i, e in enumerate(d["entities"]) if e["type"] == _t]
+        _golds_t = [d["entities"][i] for i in _pos_t]
+        _masks_t = [(x["start"], x["end"]) for x in det_located if x["gtype"] == _t]
+        for _i, _b in zip(_pos_t, ML.boundary_by_gold(_golds_t, _masks_t, _all_mask_spans)):
+            _bnd_by_pos[_i] = _b
+
     # ---- сопоставление эталонных сущностей ----
     ent_records = []
     used_det = set()  # индексы det, попавшие в TP хоть одной gold
@@ -290,6 +305,8 @@ def process_doc(d, allow_lossy=ALLOW_LOSSY):
             "leak_v1": len(pieces) > 0,
             # v2 (этап 0b): частичная утечка {none|partial|full} + фрагменты
             "leak_v2": v2,
+            # границы по направлению ошибки (этап GATE-2, линия «е»)
+            ML.BND_FIELD: _bnd_by_pos[gi],
         })
 
     # ---- ложные срабатывания (по найденным, не легшим ни в одну gold нужного типа) ----

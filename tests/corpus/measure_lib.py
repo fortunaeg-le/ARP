@@ -1142,3 +1142,178 @@ def precision_by_type(results):
         "cross_total": sum(d["cross"] for d in per.values()),
         "nothing_total": sum(d["nothing"] for d in per.values()),
     }
+
+
+# =========================================================================== #
+#     ЭТАП GATE-2 — ГРАНИЦЫ ПО НАПРАВЛЕНИЮ ОШИБКИ (линия «е» гейта)           #
+# =========================================================================== #
+# ЗАЧЕМ ОТДЕЛЬНАЯ МЕТРИКА, ЕСЛИ ЕСТЬ masking B И `exact`.  Ни одна штатная
+# метрика не отвечает на вопрос «маска КОРОЧЕ эталона или ДЛИННЕЕ»:
+#   * masking B («эталон закрыт масками целиком», mc_check_bc) видит ТОЛЬКО
+#     недобор — маска ШИРЕ эталона по B нарушением не считается ВООБЩЕ,
+#     поэтому перебор может расти неограниченно при зелёном гейте;
+#   * `exact` — булево «ровно», направление промаха из него не извлекается;
+#   * left_trim/right_trim считаются по ХАЛЛУ масок СВОЕГО типа и молчат о
+#     случае «слева уехал внутрь, справа вылез наружу» (обе стороны сразу).
+#
+# Две цены названы раздельно и НАЗЫВАЮТСЯ ПО-РАЗНОМУ, потому что стоят разного:
+#   НЕДОБОР (under) — символы эталона, не закрытые НИ ОДНОЙ маской (любого типа:
+#                     соседний PER/ORG-токен тоже прячет значение). Это УТЕЧКА.
+#   ПЕРЕБОР (over)  — символы масок СВОЕГО типа, лежащие ВНЕ своего эталона.
+#                     Данные защищены, документ хуже читается. Это ПОРЧА.
+# Правка границ легко улучшает одну сторону за счёт другой (этап ADDR-B), а
+# гейт с одним числом такой размен принимает молча.
+#
+# ПРОВЕНАНС. Логика дословно перенесена из прибора этапа ADDR-B
+# (experiments/stage_addr_b/addr_probe.py), который теперь зовёт ЭТИ функции —
+# две реализации одной метрики разъехались бы, и «постоянная линия» перестала
+# бы совпадать с прибором, которым этап её мерил.  Отличие ровно одно: прибор
+# считал только ADDRESS, здесь метрика считается для ВСЕХ типов эталона.
+#
+# СОПОСТАВЛЕНИЕ МАСКА->ЭТАЛОН — то же правило, что у mc_check_bc: маска
+# приписывается эталонной сущности с НАИБОЛЬШИМ пересечением. Маска, не
+# пересёкшая ни одного эталона своего типа, в границы не идёт вообще — это
+# ложное срабатывание, её меряют линии «а» (precision) и «д» (over-mask прозы).
+
+def uncovered_pieces(gs, ge, spans):
+    """Куски [gs,ge), НЕ покрытые ни одним интервалом spans -> [(s,e), ...]."""
+    out = []
+    cur = gs
+    for s, e in sorted((s, e) for s, e in spans if _iv_overlap(s, e, gs, ge)):
+        if s > cur:
+            out.append((cur, min(s, ge)))
+        cur = max(cur, e)
+        if cur >= ge:
+            break
+    if cur < ge:
+        out.append((cur, ge))
+    return [(s, e) for s, e in out if e > s]
+
+
+def outside_pieces(ms, me, gs, ge):
+    """Куски маски [ms,me), лежащие ВНЕ эталона [gs,ge) -> [(s,e), ...]."""
+    out = []
+    if ms < gs:
+        out.append((ms, min(me, gs)))
+    if me > ge:
+        out.append((max(ms, ge), me))
+    return [(s, e) for s, e in out if e > s]
+
+
+def boundary_by_gold(golds, masks_same_type, all_mask_spans):
+    """Направление ошибки границ для КАЖДОЙ эталонной сущности одного типа.
+
+    golds            — [{start, end, ...}] эталонные сущности ОДНОГО типа;
+    masks_same_type  — [(s,e)] маски этого же типа (kept, координаты PT-1);
+    all_mask_spans   — [(s,e)] ВСЕ маски документа (любого типа) — недобор
+                       считается по ним: значение, закрытое чужой маской, не
+                       утекло, и записывать это в недобор было бы неправдой.
+
+    Возвращает список, ВЫРОВНЕННЫЙ с golds:
+      {"under": int, "over": int, "direction": str}
+      direction: not_found | exact | shorter | longer | both
+
+    `direction` выводится ИЗ ДВУХ ЧИСЕЛ, а не из равенства спанов: `exact`
+    означает «ничего не открыто и ничего лишнего не закрыто», в том числе
+    когда своя маска короче эталона, но остаток закрыт СОСЕДНЕЙ маской —
+    значение не утекло и документ не испорчен, платить не за что.
+
+    `not_found` здесь — «ни одна маска СВОЕГО типа не приписана этой сущности»
+    и может расходиться с полем `found` записи эталона: `found` смотрит на факт
+    пересечения, а приписана маска может быть соседней сущности того же типа
+    (пересечение с ней больше). Это не дефект: обе величины считают разное, и
+    линия «е» судит только по своей.
+    """
+    assigned = {i: [] for i in range(len(golds))}
+    for ms, me in masks_same_type:
+        cand = [(i, g) for i, g in enumerate(golds)
+                if _iv_overlap(ms, me, g["start"], g["end"])]
+        if not cand:
+            continue
+        i, _g = max(cand, key=lambda p: min(me, p[1]["end"]) - max(ms, p[1]["start"]))
+        assigned[i].append((ms, me))
+
+    out = []
+    for i, g in enumerate(golds):
+        gs, ge = g["start"], g["end"]
+        mine = assigned[i]
+        under = sum(e - s for s, e in uncovered_pieces(gs, ge, all_mask_spans))
+        over = 0
+        for ms, me in mine:
+            over += sum(e - s for s, e in outside_pieces(ms, me, gs, ge))
+        if not mine:
+            direction = "not_found"
+        elif under == 0 and over == 0:
+            direction = "exact"
+        elif under == 0:
+            direction = "longer"
+        elif over == 0:
+            direction = "shorter"
+        else:
+            direction = "both"
+        out.append({"under": under, "over": over, "direction": direction})
+    return out
+
+
+def _empty_bnd():
+    return {"n": 0, "assigned": 0, "exact": 0, "shorter": 0, "longer": 0,
+            "under_chars": 0, "over_chars": 0,
+            "not_found": 0, "not_found_chars": 0}
+
+
+#: Ключ записи эталона, в котором run_measurement хранит результат boundary_by_gold.
+BND_FIELD = "bnd"
+
+
+def boundaries_by_type(results):
+    """Сводка линии «е» из дампа прогона.
+
+    Возвращает {"per_type": {T: {...}}, "total": {...}, "n_with_field": int,
+                "n_entities": int}.  `shorter`/`longer` — ЧИСЛО СУЩНОСТЕЙ, у
+    которых маска соответственно не дотянулась / вылезла (класс `both`
+    считается в ОБА, потому что стоит и то, и другое); `under_chars`/
+    `over_chars` — символы, и ТОЛЬКО по своему классу.
+
+    ПОЧЕМУ СУЩНОСТИ БЕЗ МАСКИ СВОЕГО ТИПА (`not_found`) ВЫНЕСЕНЫ ОТДЕЛЬНО и НЕ
+    входят в `under_chars`. У них открыт весь эталон, и если считать эти
+    символы недобором, линия «е» начнёт двигаться от КАЖДОГО изменения recall —
+    то есть будет мерить не то, что обещает («маска короче эталона»), а заодно
+    и «маски вообще не было». Эти два дефекта стоят разного и чинятся разным;
+    непойманное значение уже охраняют линия «б» (leak_v2) и известный долг.
+    Счёт и открытые символы этого класса печатаются как контекст.
+
+    n_with_field == 0 при дампе, снятом до появления линии: гейту важно
+    отличить «нет промахов» от «нечем мерить» (иначе линия зелена молча)."""
+    per_type = {t: _empty_bnd() for t in ALL_ENTITY_TYPES}
+    n_with_field = n_entities = 0
+    for r in results:
+        if r.get("outcome") != "processed":
+            continue
+        for e in r["entities"]:
+            n_entities += 1
+            b = e.get(BND_FIELD)
+            if not b:
+                continue
+            n_with_field += 1
+            s = per_type.setdefault(e["type"], _empty_bnd())
+            s["n"] += 1
+            d = b["direction"]
+            if d == "not_found":
+                s["not_found"] += 1
+                s["not_found_chars"] += b["under"]
+                continue
+            s["assigned"] += 1
+            if d == "exact":
+                s["exact"] += 1
+            if d in ("shorter", "both"):
+                s["shorter"] += 1
+                s["under_chars"] += b["under"]
+            if d in ("longer", "both"):
+                s["longer"] += 1
+                s["over_chars"] += b["over"]
+    total = _empty_bnd()
+    for s in per_type.values():
+        for k in total:
+            total[k] += s[k]
+    return {"per_type": per_type, "total": total,
+            "n_with_field": n_with_field, "n_entities": n_entities}
