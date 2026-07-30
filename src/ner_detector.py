@@ -621,6 +621,56 @@ def _address_barriers(
     return barriers
 
 
+def _per_span_is_weak(text: str, s: int, e: int) -> bool:
+    """ЭТАП T-ARB (B-ADDR-HOMONYM). True, если структурный PER-спан [s,e) —
+    ОДНОСЛОВНЫЙ (без внутреннего пробела/точки): голая фамилия, взятая ЛИБО по
+    внешнему маркеру (гражданин/должность/ИП/«в лице»/сосед-реквизит физлица),
+    ЛИБО падежным вхождением реестра (`PerAnchorDetector.guard`) — НЕ само-якорь
+    формы ФИО (тот всегда многословный: «фамилия+имя/отчество» или «фамилия+
+    инициалы», см. anchor_registry.PerAnchorDetector). Только такой спан может
+    уступить территорию адресу (_recover_address_over_weak_per) — многословный
+    остаётся безусловным барьером всегда, эта проверка его не касается."""
+    frag = text[s:e]
+    return " " not in frag and "." not in frag
+
+
+def _recover_address_over_weak_per(
+    text: str,
+    seed_spans: list[tuple[int, int]],
+    ner_spans: list[tuple[int, int]],
+    regex_spans: list[tuple[int, int]],
+    org_spans: list[tuple[int, int]],
+    per_spans: list[tuple[int, int]],
+    strict_spans: list[tuple[int, int]],
+) -> list[tuple[int, int]]:
+    """ЭТАП T-ARB — B-ADDR-HOMONYM: улица-однофамилец («Гагарина», «Полев\\nая»)
+    под мутацией, ломающей guard `_addr_type_left`, метится ОДНОСЛОВНЫМ PER и
+    БЕЗУСЛОВНО блокирует адрес (PER считается РАНЬШЕ в pipeline.run_detection —
+    арбитраж по ПОРЯДКУ КОНВЕЙЕРА, не по силе якоря). Правка НЕ трогает ни
+    PerAnchorDetector (правила ФИО), ни _addr_span_strong (правила адреса):
+    только пробует собрать адрес БЕЗ слабых (однословных) PER-барьеров — тем же,
+    ничем не ослабленным `_addr_span_strong` — и, если он САМ подтверждается,
+    отдаёт эту НОВУЮ территорию как ВТОРОГО кандидата. Кто на самом деле
+    победит, решает штатный tokenizer._winner (ADDRESS против ОДНОСЛОВНОГО
+    PERSON — новое правило там же, docs/T_ARB_REPORT.md). Многословный
+    само-якорь ФИО в per_spans сюда не подмешивается — остаётся барьером ВСЕГДА.
+    Пустой per_spans/без слабых спанов -> [] за один взгляд, нулевая цена в
+    общем случае (второй проход адреса не строится)."""
+    weak = [p for p in per_spans if _per_span_is_weak(text, *p)]
+    if not weak:
+        return []
+    weak_set = set(weak)
+    kept_per = [p for p in per_spans if p not in weak_set]
+    occ = _address_barriers(text, ner_spans, regex_spans, list(org_spans) + kept_per)
+    raw = _build_address_spans(text, seed_spans, occ)
+    finalized = _finalize_address_spans(text, raw, occ)
+    strict_set = set(strict_spans)
+    return [
+        (s, e) for (s, e) in finalized
+        if (s, e) not in strict_set and _overlaps_any(s, e, weak)
+    ]
+
+
 def _clip_edges(s: int, e: int, occupied) -> tuple[int, int]:
     """Обрезает КРАЯ адресного спана до границы чужой сущности. Нужно потому, что сам
     yargy иногда включает соседнее ФИО/ORG в адресный парс («д. 8 Иванов»): расширение
@@ -1350,7 +1400,13 @@ def detect_ner(
                     text, loc_spans + yargy_spans, occupied
                 )
                 # ЭТАП C: строгий якорь + обрезка краёв поверх сырых спанов yargy/LOC.
-                for start, end in _finalize_address_spans(text, raw_addr, occupied):
+                addr_spans = _finalize_address_spans(text, raw_addr, occupied)
+                # ЭТАП T-ARB (B-ADDR-HOMONYM) — см. docstring _recover_address_over_weak_per.
+                addr_spans = addr_spans + _recover_address_over_weak_per(
+                    text, loc_spans + yargy_spans, ner_spans, regex_norm, org_norm,
+                    per_norm, addr_spans,
+                )
+                for start, end in addr_spans:
                     src_start, src_end = norm_to_src(offset_map, start, end)
                     for addr_type in addr_types:
                         entities.append(Entity(
@@ -1388,6 +1444,13 @@ def detect_ner(
                     occ_v = _address_barriers(view, [], regex_v, name_v)
                     raw_v = _build_address_spans(view, v_loc + v_yargy, occ_v)
                     final_v = _finalize_address_spans(view, raw_v, occ_v)
+                    # ЭТАП T-ARB (B-ADDR-HOMONYM) — та же отдача территории слабому
+                    # (однословному) PER, что в основном проходе; см. docstring
+                    # _recover_address_over_weak_per. Именно этот проход собирает
+                    # «Полев\nая»-класс (рваное переносом слово внутри сегмента).
+                    final_v = final_v + _recover_address_over_weak_per(
+                        view, v_loc + v_yargy, [], regex_v, org_v, per_v, final_v,
+                    )
                     # позиции бывших \n в координатах вида (для анти-склейки):
                     # символ вида, чей исходный символ — \n/\r (заменён пробелом)
                     base_txt = segment.metadata.get("detection_text", orig_text)

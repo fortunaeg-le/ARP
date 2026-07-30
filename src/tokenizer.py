@@ -46,7 +46,75 @@ _REGEX_PRIORITY = [
     "PASSPORT", "PHONE", "SUM", "EMAIL", "BIRTHDATE", "DATE",
 ]
 # Приоритет типов среди двух ner при равной длине/confidence и неидентичных интервалах.
+# ЭТАП T-ARB: список для типов из anchor_registry/ner (method: anchor_registry ИЛИ
+# method: ner в entity_types.yaml — Entity таких типов несёт detector="ner", см.
+# _winner) — В ОТЛИЧИЕ от _REGEX_PRIORITY выше, этот список НЕ расширялся ни разу с
+# момента появления ORG/PERSON (этапы A/B): третий якорный тип молча стал бы слабее
+# всех трёх перечисленных при равной длине/confidence — то же самое молчаливое
+# поражение, от которого страхует assert_priority_contract ниже. T3 введёт шесть
+# новых якорных типов — КАЖДЫЙ обязан появиться здесь явно, иначе сборка упадёт.
 _NER_PRIORITY = ["ADDRESS", "ORG", "PERSON"]
+
+
+class ArbitrationContractError(Exception):
+    """ЭТАП T-ARB: тип entity_types.yaml с token_prefix (значит — маскируется,
+    значит — участвует в разрешении пересечений) без места в списке приоритетов
+    своего механизма. ДО этого этапа забытый тип молча становился слабее ВСЕХ
+    перечисленных (_regex_rank/_ner_rank, ветка «прочие: (1, entity_type)») —
+    поражение обнаруживалось только на живом пересечении, никогда при сборке.
+    Теперь это ошибка конфигурации, а не тихий проигрыш."""
+
+
+def _arbitration_mechanism(spec: dict) -> str | None:
+    """Каким списком приоритетов _winner арбитрирует пересечения этого типа:
+    'regex' -> _REGEX_PRIORITY (method: regex); 'ner' -> _NER_PRIORITY
+    (method: ner ИЛИ method: anchor_registry — оба дают Entity.detector=="ner",
+    см. anchor_registry.py:1369 и ner_detector.py). None — тип не эмитит Entity
+    ни одним из этих двух механизмов (сегодня таких в конфиге нет) и в контракте
+    ниже не проверяется."""
+    method = spec.get("method")
+    if method == "regex":
+        return "regex"
+    if method in ("ner", "anchor_registry"):
+        return "ner"
+    return None
+
+
+def assert_priority_contract(config_path: str) -> None:
+    """ЭТАП T-ARB, ШАГ 2 — страж контракта арбитража. Каждый тип entity_types.yaml
+    с `token_prefix` (значит замаскируется, значит участвует в _resolve_overlaps)
+    ОБЯЗАН стоять в списке приоритетов своего механизма (_REGEX_PRIORITY у
+    method: regex; _NER_PRIORITY у method: ner/anchor_registry). Забытый тип —
+    ошибка КОНФИГУРАЦИИ (новый тип вписан в entity_types.yaml, но не вписан в
+    арбитраж), а не свойство рантайма: роняем явно, с именем типа, а не отдаём
+    его как молчаливо слабейшего в _regex_rank/_ner_rank.
+
+    Зовётся из resolve_for_masking — ДО того, как _resolve_overlaps вообще
+    посчитает хоть одно пересечение (иначе забытый тип успел бы молча
+    проиграть раньше, чем сборка о нём узнает)."""
+    with open(config_path, encoding="utf-8") as f:
+        config = yaml.safe_load(f)
+
+    missing: list[str] = []
+    for entity_type, spec in config["entity_types"].items():
+        if not isinstance(spec, dict) or "token_prefix" not in spec:
+            continue
+        mechanism = _arbitration_mechanism(spec)
+        if mechanism is None:
+            continue
+        priority_list = _REGEX_PRIORITY if mechanism == "regex" else _NER_PRIORITY
+        if entity_type not in priority_list:
+            missing.append(f"{entity_type} (механизм: {mechanism})")
+
+    if missing:
+        raise ArbitrationContractError(
+            "Тип(ы) конфига без места в списке приоритетов арбитража пересечений "
+            "(entity_types.yaml объявляет token_prefix, но src/tokenizer.py не "
+            "знает приоритет): " + "; ".join(missing) + ". Впишите тип в "
+            "_REGEX_PRIORITY или _NER_PRIORITY (src/tokenizer.py) явно, с "
+            "обоснованием места в комментарии — иначе тип молча проигрывает "
+            "любое пересечение с уже перечисленными."
+        )
 
 
 def _regex_rank(entity_type: str) -> tuple[int, str]:
@@ -86,6 +154,29 @@ def _winner(a: Entity, b: Entity) -> Entity:
             return a if ra < rb else b
         # иначе -> rule 5
     else:  # оба ner
+        # ЭТАП T-ARB — B-ADDR-HOMONYM: единственное известное место, где сила
+        # ЯКОРЯ обязана решать раньше длины (см. docs/T_ARB_REPORT.md). ADDRESS
+        # эмитится ТОЛЬКО когда _addr_span_strong уже подтвердил якорь
+        # (существование ADDRESS-сущности САМО есть доказательство силы) — а
+        # PERSON без единого внутреннего пробела/точки в original_text не несёт
+        # своей формы ФИО («фамилия+имя/отчество»/«фамилия+инициалы» — те ВСЕГДА
+        # многословны): это либо голая фамилия по внешнему маркеру, либо
+        # падежное вхождение реестра, якорь заведомо слабее. До этапа T-ARB
+        # такое пересечение вообще не могло возникнуть (адрес не строился на
+        # территории ЛЮБОГО PER — см. ner_detector._address_barriers); теперь
+        # строится, но ТОЛЬКО когда сам ADDRESS-кандидат уже прошёл проверку
+        # силы, поэтому правило ниже не меняет ни одного прежнего исхода — им
+        # раньше просто нечего было сравнивать. Многословный PER (само-якорь
+        # ФИО) сюда не попадает и решается ниже как обычно.
+        def _bare_person(e: Entity) -> bool:
+            t = e.original_text
+            return e.entity_type == "PERSON" and " " not in t and "." not in t
+
+        if a.entity_type == "ADDRESS" and _bare_person(b):
+            return a
+        if b.entity_type == "ADDRESS" and _bare_person(a):
+            return b
+
         # rule 4: более длинный span
         la, lb = a.end - a.start, b.end - b.start
         if la != lb:
@@ -638,6 +729,11 @@ def resolve_for_masking(
     поверх готового результата дешёвая: приёмка этапа T1 (14 наборов «все типы
     кроме одного») считает эту функцию ОДИН раз и рендерит 15 вариантов.
     """
+    # ЭТАП T-ARB: страж контракта арбитража — ДО первого пересечения (см.
+    # assert_priority_contract). Дешёвое чтение yaml на фоне остальной работы
+    # этой функции (второй проход детекции по граничным окнам).
+    assert_priority_contract(config_path)
+
     boundary_entities = _detect_boundary_entities(doc, config_path, entities)
     entities = list(entities) + boundary_entities
 
