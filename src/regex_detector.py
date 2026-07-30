@@ -159,6 +159,12 @@ def _load_regex_types(config_path: str) -> list[tuple[str, re.Pattern, object, i
             continue
         if spec.get("enabled", True) is False:
             continue
+        # ЭТАП T4: у отрицательных классов (CLAUSE_REF) `suppress_masking: false`
+        # — тот же выключатель, что `enabled: false` (симметрично
+        # anchor_registry._neg_class_on). У обычных regex-типов поля нет вовсе,
+        # get(..., True) всегда True — поведение прежних 13 типов не меняется.
+        if spec.get("suppress_masking", True) is False:
+            continue
 
         if spec.get("patterns"):
             raw_entries = spec["patterns"]

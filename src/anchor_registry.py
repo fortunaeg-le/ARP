@@ -37,6 +37,8 @@ import uuid
 from dataclasses import dataclass, field
 from functools import lru_cache
 
+import yaml
+
 from models import Entity, SourceDocument
 from normalizer import norm_to_src, normalize_for_detection, src_to_norm
 
@@ -1024,6 +1026,122 @@ class OrgAnchorDetector(AnchorDetector):
         if i < 0:
             return True
         return norm[i] in ".!?\n"
+
+
+# --------------------------------------------------------------------------- #
+#         ЭТАП T4 — отрицательные классы ROLE_TERM / COLLECTIVE                #
+# --------------------------------------------------------------------------- #
+def _neg_class_on(spec) -> bool:
+    """Включён ли отрицательный класс: запись есть, `enabled` (умолчание True) и
+    `suppress_masking` (умолчание True) — оба должны быть НЕ False. Симметрично
+    остальным типам конфига: `enabled: false` — общий выключатель детектора
+    (как у DATE), `suppress_masking: false` — специфичный для барьерной роли
+    этого этапа; любой из двух гасит эмиссию класса целиком (см. entity_types.yaml)."""
+    if not isinstance(spec, dict):
+        return False
+    if spec.get("enabled", True) is False:
+        return False
+    if spec.get("suppress_masking", True) is False:
+        return False
+    return True
+
+
+def detect_negative_classes(doc: SourceDocument, config_path: str) -> list[Entity]:
+    """ЭТАП T4 — формализует то, что `OrgAnchorDetector.detect()` уже решает МОЛЧА
+    (`continue` без эмиссии) в двух местах механизмов C′:
+
+      * M2 (кавычная ветвь, `form_start is None`): кавычки БЕЗ примыкающей
+        org-формы, введённые конструкцией «именуем…»/«далее»/«в дальнейшем» —
+        это РОЛЬ («…, именуемое в дальнейшем «Заказчик»»), не название (у
+        «Name» форма примыкает и уходит в ORG кавычной веткой). Эмитится
+        `ROLE_TERM`.
+      * M1b (`_is_collective_head`): org-форма + голое имя, чья ВЕРШИНА —
+        множественное нарицательное («Стороны», «Акционеры») — коллектив, не
+        название. Эмитится `COLLECTIVE`.
+
+    ЧИСТО АДДИТИВНО: не меняет ни строки в `OrgAnchorDetector.detect()` — тот
+    же порядок условий, та же уверенность в ORG (см.
+    `tests/test_negative_classes.py::test_org_and_person_detection_byte_identical`).
+    Второй, независимый проход по ТЕМ ЖЕ regex/методам (`_find_quoted`,
+    `_orgform_start_left`, `_INTRO_RE`, `_ORGFORM_ANY_RE`, `_ABBR_FORM_RE`,
+    `_is_collective_head`) — не копия логики, а её повторное чтение ради другого
+    решения: эмитировать барьер вместо того, чтобы промолчать.
+
+    Каждый класс включается/выключается НЕЗАВИСИМО через `entity_types.yaml`
+    (см. `_neg_class_on`) — выключенный класс не эмитится вовсе, барьер исчезает
+    целиком, маски соседних типов возвращаются в прежнем виде (приёмка T4, п.4).
+    """
+    with open(config_path, encoding="utf-8") as f:
+        config = yaml.safe_load(f)
+    types = config.get("entity_types", {})
+    role_on = _neg_class_on(types.get("ROLE_TERM"))
+    coll_on = _neg_class_on(types.get("COLLECTIVE"))
+    if not role_on and not coll_on:
+        return []
+
+    det = OrgAnchorDetector()
+    entities: list[Entity] = []
+
+    for seg in doc.segments:
+        if not seg.text:
+            continue
+        norm, omap = det.search_view(seg)
+        low = norm.lower()
+
+        if role_on:
+            for (oq, cs, ce, cq) in _find_quoted(norm):
+                core = norm[cs:ce].strip()
+                if _core_key(core) is None:
+                    continue
+                # форма примыкает -> это "Name" (кавычная ветвь ORG берёт его сама,
+                # см. OrgAnchorDetector.detect) -> не роль, пропускаем.
+                if _orgform_start_left(low, oq) is not None:
+                    continue
+                # конструкция введения СЛЕВА от кавычки алиаса: «…, именуемое в
+                # дальнейшем «Заказчик»» — вводящая фраза предшествует РОЛИ, а не
+                # следует за ней (`_INTRO_RE` в кавычной ветви ORG проверяет ту же
+                # фразу СПРАВА от кавычки НАЗВАНИЯ — это другая пара «оборот↔кавычка»
+                # той же конструкции, симметрично, не дублирование).
+                left_ctx = low[max(0, oq - 40):oq]
+                if not det._INTRO_RE.search(left_ctx):
+                    continue          # не конструкция введения -> обычное слово в кавычках
+                s, e = norm_to_src(omap, oq, cq)
+                if e <= s:
+                    continue
+                entities.append(Entity(
+                    id=str(uuid.uuid4()), segment_id=seg.id,
+                    start=s, end=e, original_text=seg.text[s:e],
+                    entity_type="ROLE_TERM", detector="ner", confidence=1.0,
+                ))
+
+        if coll_on:
+            for m in _ORGFORM_ANY_RE.finditer(low):
+                j = m.end()
+                while j < len(norm) and norm[j] in " \t":
+                    j += 1
+                if j >= len(norm) or norm[j] in _OPEN_QUOTES + _ASCII_QUOTE:
+                    continue           # кавычная ветвь — не наша территория
+                if det._ROLE_BEFORE_FORM_RE.search(low[:m.start()]):
+                    continue           # A-3: «Глава КФХ …» — форма сама не якорь
+                abbr = _ABBR_FORM_RE.fullmatch(m.group(0).lower()) is not None
+                if not abbr:
+                    continue           # M1: развёрнутая форма без кавычек вообще не якорит
+                run = det._name_run_forward(norm, low, j, allow_caps=abbr)
+                if run is None:
+                    continue
+                rs, re_ = run
+                if not det._is_collective_head(norm[rs:re_]):
+                    continue           # обычное (не собирательное) имя -> ORG-территория
+                s, e = norm_to_src(omap, m.start(), re_)
+                if e <= s:
+                    continue
+                entities.append(Entity(
+                    id=str(uuid.uuid4()), segment_id=seg.id,
+                    start=s, end=e, original_text=seg.text[s:e],
+                    entity_type="COLLECTIVE", detector="ner", confidence=1.0,
+                ))
+
+    return entities
 
 
 class PerAnchorDetector(AnchorDetector):

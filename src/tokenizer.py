@@ -266,7 +266,11 @@ def _trim_to_free(loser: Entity, winner: Entity) -> list[Entity]:
     return out
 
 
-def _resolve_overlaps(entities: list[Entity]) -> list[Entity]:
+def _resolve_overlaps(
+    entities: list[Entity],
+    barrier_types: frozenset[str] = frozenset(),
+    suppression_log: list | None = None,
+) -> list[Entity]:
     """Разрешение пересечений внутри одного сегмента (полный алгоритм из ТЗ).
 
     Пока среди ещё не зафиксированных есть пересекающаяся пара: выбрать глобально
@@ -274,7 +278,16 @@ def _resolve_overlaps(entities: list[Entity]) -> list[Entity]:
     до непересекающейся части (не выбрасывать целиком — иначе адрес, поглотивший
     хвост regex-реквизита, утёк бы открытым текстом). Обрезки возвращаются в очередь
     и участвуют в разрешении дальше. Не пересекающиеся с победителем — не трогаем.
-    """
+
+    ЭТАП T4 — ЗЕРКАЛО ПОДАВЛЕНИЯ. `barrier_types` — типы БЕЗ token_prefix
+    (CLAUSE_REF/ROLE_TERM/COLLECTIVE): когда такой тип побеждает пересечение с
+    типом, у которого token_prefix ЕСТЬ (реальный, маскируемый кандидат), это не
+    обычный арбитраж T-ARB — это ПОДАВЛЕНИЕ (см. docs/T4_REPORT.md), и оно
+    обязано быть НАБЛЮДАЕМЫМ: `suppression_log` (если передан) получает запись
+    {suppressed_type, suppressor_type, segment_id, start, end} — start/end это
+    ПЕРЕСЕЧЕНИЕ (та территория, что реально ушла из-под токена проигравшего).
+    Без `suppression_log` (умолчание None) — поведение и цена побайтно те же,
+    что до этапа T4 (используется только замером/гейтом)."""
     pending = list(entities)
     kept: list[Entity] = []
 
@@ -290,6 +303,16 @@ def _resolve_overlaps(entities: list[Entity]) -> list[Entity]:
             if e is winner:
                 continue
             if _overlaps(e, winner):
+                if (suppression_log is not None
+                        and winner.entity_type in barrier_types
+                        and e.entity_type not in barrier_types):
+                    suppression_log.append({
+                        "suppressed_type": e.entity_type,
+                        "suppressor_type": winner.entity_type,
+                        "segment_id": e.segment_id,
+                        "start": max(e.start, winner.start),
+                        "end": min(e.end, winner.end),
+                    })
                 new_pending.extend(_trim_to_free(e, winner))
             else:
                 new_pending.append(e)
@@ -714,25 +737,47 @@ def _detect_boundary_entities(
     return extra
 
 
+def _barrier_types(config_path: str) -> frozenset[str]:
+    """ЭТАП T4: типы БЕЗ `token_prefix` в entity_types.yaml (CLAUSE_REF/ROLE_TERM/
+    COLLECTIVE — отрицательные классы) — те, что никогда не маскируются, но
+    участвуют в разрешении пересечений барьером. Тип без записи в конфиге вовсе
+    сюда попасть не может (перечисление только объявленных типов)."""
+    with open(config_path, encoding="utf-8") as f:
+        config = yaml.safe_load(f)
+    return frozenset(
+        t for t, spec in config.get("entity_types", {}).items()
+        if isinstance(spec, dict) and "token_prefix" not in spec
+    )
+
+
 def resolve_for_masking(
     doc: SourceDocument,
     entities: list[Entity],
     config_path: str,
+    suppression_log: list | None = None,
 ) -> list[Entity]:
     """Всё, что предшествует простановке масок: B3-сущности границ + разрешение
     пересечений + порядок появления. Результат — сущности ВСЕХ типов, включая
     выключенные пользователем (этап T1: выключенный тип обязан доучаствовать в
-    разрешении пересечений барьером, иначе поедут границы соседей).
+    разрешении пересечений барьером, иначе поедут границы соседей) И
+    отрицательные классы этапа T4 (CLAUSE_REF/ROLE_TERM/COLLECTIVE — без
+    token_prefix, отфильтровываются позже, в apply_masking).
 
     Вынесено из `tokenize` отдельной функцией, потому что это дорогая часть
     (внутри — второй проход детекции по граничным окнам), а простановка масок
     поверх готового результата дешёвая: приёмка этапа T1 (14 наборов «все типы
     кроме одного») считает эту функцию ОДИН раз и рендерит 15 вариантов.
+
+    `suppression_log` (ЭТАП T4, зеркало подавления) — необязательный список;
+    если передан, получает по записи на каждый случай, когда отрицательный
+    класс победил пересечение с маскируемым типом (см. `_resolve_overlaps`).
+    Умолчание `None` — поведение и цена побайтно те же, что до этапа T4.
     """
     # ЭТАП T-ARB: страж контракта арбитража — ДО первого пересечения (см.
     # assert_priority_contract). Дешёвое чтение yaml на фоне остальной работы
     # этой функции (второй проход детекции по граничным окнам).
     assert_priority_contract(config_path)
+    barrier_types = _barrier_types(config_path)
 
     boundary_entities = _detect_boundary_entities(doc, config_path, entities)
     entities = list(entities) + boundary_entities
@@ -745,7 +790,7 @@ def resolve_for_masking(
     for seg in doc.segments:
         group = by_segment.get(seg.id)
         if group:
-            kept.extend(_resolve_overlaps(group))
+            kept.extend(_resolve_overlaps(group, barrier_types, suppression_log))
 
     seg_index = {seg.id: idx for idx, seg in enumerate(doc.segments)}
     kept.sort(key=lambda e: (seg_index[e.segment_id], e.start))
@@ -767,8 +812,26 @@ def apply_masking(
     остальных типов от этого не меняются НИ НА СИМВОЛ, потому что решались до
     фильтра. Нумерация токенов ведётся отдельным счётчиком на префикс
     (`counters`), поэтому выпадение целого типа не сдвигает номера чужих масок.
+
+    ЭТАП T4 — отрицательные классы (CLAUSE_REF/ROLE_TERM/COLLECTIVE, БЕЗ
+    token_prefix в конфиге) отфильтровываются здесь ЖЕ, тем же способом, что и
+    выключенный тип: они уже отработали барьером в `resolve_for_masking`
+    (см. `_barrier_types`/`_resolve_overlaps`) и токена не получают физически.
+    Не через `enabled_types`, потому что они не участвуют в пользовательских
+    наборах T1 (`type_policy.known_types` их тоже не видит) — это отдельный,
+    не пользовательский выключатель.
+
+    ФИЛЬТР ТОЧЕЧНЫЙ — ровно объявленные `_barrier_types(config_path)`, НЕ
+    «любой тип без token_prefix»: `Entity` с ПОДЛИННО неизвестным `entity_type`
+    (опечатка/дефект где-то в конвейере) обязана падать `KeyError` в
+    `_new_token` ниже, как и до этапа T4 (см. `tests/test_tokenizer.py::
+    TestTokenizeErrors`) — тихий пропуск НЕОБЪЯВЛЕННОГО типа был бы ровно тем
+    молчаливым исчезновением маски, от которого этот этап должен защищать, а
+    не которое создавать.
     """
     token_prefixes = _load_token_prefixes(config_path)
+    barrier_types = _barrier_types(config_path)
+    kept = [e for e in kept if e.entity_type not in barrier_types]
 
     if enabled_types is not None:
         kept = [e for e in kept if e.entity_type in enabled_types]
@@ -820,6 +883,7 @@ def tokenize(
     entities: list[Entity],
     config_path: str,
     enabled_types=None,
+    suppression_log: list | None = None,
 ) -> tuple[str, list[Entity]]:
     """Разрешение пересечений + простановка масок (публичный контракт блока 4).
 
@@ -827,6 +891,8 @@ def tokenize(
     же, что до этапа T1. Замер и гейт зовут ИМЕННО так, всегда: иначе они мерили
     бы настройку пользователя, а не работу программы, и падение полноты стало бы
     неотличимо от выключенного типа.
+
+    `suppression_log` (ЭТАП T4) прокидывается в `resolve_for_masking` — см. там.
     """
-    kept = resolve_for_masking(doc, entities, config_path)
+    kept = resolve_for_masking(doc, entities, config_path, suppression_log=suppression_log)
     return apply_masking(doc, kept, config_path, enabled_types)
