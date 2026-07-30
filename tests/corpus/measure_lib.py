@@ -147,6 +147,48 @@ def map_entities_to_pt1(entities, offsets, full_text):
 
 
 # --------------------------------------------------------------------------- #
+#           ЭТАП T4 — зеркало подавления: гейт «эталон под барьером»           #
+# --------------------------------------------------------------------------- #
+def globalize_suppressions(suppression_log, offsets):
+    """`suppression_log` (см. `tokenizer._resolve_overlaps`, ЭТАП T4) -> тот же
+    список записей с ГЛОБАЛЬНЫМИ координатами (`gstart`/`gend` в PT-1), плюс
+    `seg_ok`. Сегмент без локализации (`offsets[...] is None`) -> `seg_ok=False`
+    (та же семантика, что `map_entities_to_pt1`)."""
+    out = []
+    for s in suppression_log:
+        base = offsets.get(s["segment_id"])
+        if base is None:
+            out.append({**s, "gstart": None, "gend": None, "seg_ok": False})
+            continue
+        out.append({**s, "gstart": base + s["start"], "gend": base + s["end"], "seg_ok": True})
+    return out
+
+
+def suppressed_gold_entities(suppressions_global, gold_entities):
+    """Пересечение подавлений (глобальные координаты, `globalize_suppressions`) с
+    ЭТАЛОННЫМИ сущностями документа. Возвращает список записей — по одной на
+    каждую пару (подавление, эталон), чьи интервалы пересекаются: `gold_type`,
+    `gold_text`, `gold_start/end`, `suppressed_type`, `suppressor_type`,
+    `sup_start/end`. НЕПУСТОЙ список означает: эталонная сущность потеряла часть
+    маски из-за отрицательного класса — линия гейта T4 обязана быть 0
+    (ГЛАВНЫЙ РИСК этапа T4, см. docs/T4_REPORT.md)."""
+    out = []
+    for s in suppressions_global:
+        if not s["seg_ok"]:
+            continue
+        for g in gold_entities:
+            if max(s["gstart"], g["start"]) < min(s["gend"], g["end"]):
+                out.append({
+                    "gold_type": g["type"], "gold_text": g["text"],
+                    "gold_start": g["start"], "gold_end": g["end"],
+                    "suppressed_type": s["suppressed_type"],
+                    "suppressor_type": s["suppressor_type"],
+                    "sup_start": s["gstart"], "sup_end": s["gend"],
+                })
+    return out
+
+
+# --------------------------------------------------------------------------- #
 #                          Нормализация (RESIDUAL LEAK)                        #
 # --------------------------------------------------------------------------- #
 INVISIBLES = "".join(corpus_lib.INVISIBLES)

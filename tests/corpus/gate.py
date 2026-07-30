@@ -462,6 +462,40 @@ def compare_debt(baseline_results, current_results, known_leaks_ids, tol):
     return regressions, warnings, composition
 
 
+def compare_suppression(current_results):
+    """ЭТАП T4, линия «ж» — БЛОКИРУЮЩАЯ и АБСОЛЮТНАЯ (не дельта к baseline, в
+    отличие от остальных линий): число эталонных сущностей, погашенных
+    отрицательным классом (CLAUSE_REF/ROLE_TERM/COLLECTIVE — `_barrier_types`,
+    `tokenizer._resolve_overlaps`), обязано быть РОВНО 0. Эталонная сущность
+    под подавлением — дефект правила класса, а не цена этапа (ЗАДАНИЕ T4,
+    «ГЛАВНЫЙ РИСК»): барьер, задевший реальную сущность, гасит её маску, и
+    данные остаются в тексте открытыми — молча, агрегатный гейт иначе бы этого
+    не заметил.
+
+    Возвращает (regressions, suppressed_gold_all — поимённый список по всем
+    документам, для печати и диагностики)."""
+    suppressed_gold_all = []
+    for r in current_results:
+        if r.get("outcome") != "processed":
+            continue
+        for s in r.get("suppressed_gold", []):
+            suppressed_gold_all.append({"doc_id": r["doc_id"], **s})
+
+    regressions = []
+    if suppressed_gold_all:
+        names = ", ".join(
+            "%s:%s[%s]<-%s" % (x["doc_id"], x["gold_type"], x["gold_text"][:30], x["suppressor_type"])
+            for x in suppressed_gold_all[:10]
+        )
+        regressions.append(
+            "(ж) ЗЕРКАЛО ПОДАВЛЕНИЯ: %d эталонных сущностей погашено отрицательным "
+            "классом (допуск 0, БЕЗУСЛОВНО): %s%s"
+            % (len(suppressed_gold_all), names,
+               " …" if len(suppressed_gold_all) > 10 else "")
+        )
+    return regressions, suppressed_gold_all
+
+
 def evaluate(baseline_results, current_results, known_leaks_ids, cfg=GC,
              check_ledger=False, ledger_latest=None):
     """ПОЛНАЯ оценка четырёх линий — чистая функция над двумя списками results.
@@ -513,6 +547,9 @@ def evaluate(baseline_results, current_results, known_leaks_ids, cfg=GC,
     regressions += d_reg
     warnings += d_warn
 
+    j_reg, suppressed_gold_all = compare_suppression(current_results)
+    regressions += j_reg
+
     # masking C — мягкий уровень (решение владельца, STATE §6): предупреждение
     mb = base_agg.get("masking_correctness", {}).get("total")
     mc = cur_agg.get("masking_correctness", {}).get("total")
@@ -532,6 +569,7 @@ def evaluate(baseline_results, current_results, known_leaks_ids, cfg=GC,
         "base_agg": base_agg, "cur_agg": cur_agg,
         "base_prec": base_prec, "cur_prec": cur_prec,
         "base_bnd": base_bnd, "cur_bnd": cur_bnd,
+        "suppressed_gold_all": suppressed_gold_all,
     }
 
 
@@ -708,6 +746,35 @@ def print_debt(composition, kl_count):
             print("     +НОВАЯ (не в known_leaks): %s" % (j,))
 
 
+def print_suppression(current_results, suppressed_gold_all):
+    """ЭТАП T4, линия «ж». Печатает и БЛОКИРУЮЩЕЕ число (эталон под подавлением,
+    обязано быть 0), и ДИАГНОСТИЧЕСКОЕ (все случаи подавления, включая
+    безопасные — подавлен не-эталонный текст, барьер отработал по назначению)."""
+    total = 0
+    by_pair: dict[tuple, int] = {}
+    for r in current_results:
+        if r.get("outcome") != "processed":
+            continue
+        for s in r.get("suppressions", []):
+            if not s.get("seg_ok"):
+                continue
+            total += 1
+            key = (s["suppressor_type"], s["suppressed_type"])
+            by_pair[key] = by_pair.get(key, 0) + 1
+
+    print("\n(ж) ЗЕРКАЛО ПОДАВЛЕНИЯ — отрицательный класс победил пересечение с "
+          "маскируемым типом")
+    print("  эталонных сущностей погашено (допуск 0, БЕЗУСЛОВНО): %d"
+          % len(suppressed_gold_all))
+    for x in suppressed_gold_all[:20]:
+        print("     !! %s: %s %r <- %s [%d:%d]"
+              % (x["doc_id"], x["gold_type"], x["gold_text"][:40],
+                 x["suppressor_type"], x["sup_start"], x["sup_end"]))
+    print("  всего случаев подавления (диагностика, безопасные включены): %d" % total)
+    for (suppressor, suppressed), n in sorted(by_pair.items(), key=lambda kv: -kv[1]):
+        print("     %s <- %s: %d" % (suppressed, suppressor, n))
+
+
 def _known_leaks():
     kl = json.load(open(KNOWN_LEAKS, encoding="utf-8"))
     return set((r["doc_id"], r["value"]) for r in kl["leaks"]), len(kl["leaks"])
@@ -719,8 +786,8 @@ def main(argv=None):
     if argv and argv[0] == "--results":
         results_path = argv[1]
 
-    print("=== gate.py — ЕДИНЫЙ регресс-гейт (6 линий: precision / leak_v2 / masking A / "
-          "masking B / over-mask прозы / границы по направлению) ===\n")
+    print("=== gate.py — ЕДИНЫЙ регресс-гейт (7 линий: precision / leak_v2 / masking A / "
+          "masking B / over-mask прозы / границы по направлению / зеркало подавления) ===\n")
 
     ok_before, bad_before, n_checked = check_manifest()
     print(f"MANIFEST.sha256 (до прогона): {n_checked} файлов — {'OK' if ok_before else 'FAIL'}")
@@ -764,6 +831,7 @@ def main(argv=None):
     print_overmask(v["base_prec"], v["cur_prec"], GC.OVERMASK_NOTHING_TOLERANCE)
     print_boundaries(v["base_bnd"], v["cur_bnd"])
     print_debt(v["composition"], kl_count)
+    print_suppression(current_results, v["suppressed_gold_all"])
 
     regressions = list(v["regressions"])
     if not (ok_before and ok_after):
@@ -784,9 +852,10 @@ def main(argv=None):
             print("  - " + m)
         return 1
 
-    print("\nГейт ЗЕЛЁНЫЙ: регрессов не найдено по всем шести линиям "
+    print("\nГейт ЗЕЛЁНЫЙ: регрессов не найдено по всем семи линиям "
           "(а precision по всем типам / б leak_v2 / в masking A / г masking B / "
-          "д over-mask прозы / е границы по направлению) + креши/FP/MANIFEST/долг.")
+          "д over-mask прозы / е границы по направлению / ж зеркало подавления) "
+          "+ креши/FP/MANIFEST/долг.")
     return 0
 
 

@@ -562,3 +562,78 @@ def test_vii_precision_drop_of_requisite_type_reddens_line_a():
     assert v["red"], "Падение precision[INN] не покраснело: %s" % v
     assert any(r.startswith("(а) precision[INN]") for r in v["regressions"]), \
         "Красный не по линии «а» для реквизита: %s" % _reasons(v)
+
+
+# --------------------------------------------------------------------------- #
+#      (viii) ЛИНИЯ «ж» — ЗЕРКАЛО ПОДАВЛЕНИЯ (этап T4, ГЛАВНЫЙ РИСК)           #
+# --------------------------------------------------------------------------- #
+# АБСОЛЮТНАЯ линия (не дельта к baseline, в отличие от остальных шести):
+# эталонная сущность, погашенная отрицательным классом (CLAUSE_REF/ROLE_TERM/
+# COLLECTIVE), обязана покрасить гейт при ЛЮБОМ ненулевом счёте — даже если
+# baseline тоже был ненулевым (иначе один и тот же дефект мог бы протаскиваться
+# из прогона в прогон, не краснея ни разу).
+def test_viii_suppressed_gold_reddens_line_zh():
+    baseline, current = _green_pair()
+    d = _doc("doc_c")
+    d["suppressed_gold"] = [{
+        "gold_type": "PERSON", "gold_text": "Иванов Пётр", "gold_start": 100, "gold_end": 111,
+        "suppressed_type": "PERSON", "suppressor_type": "ROLE_TERM",
+        "sup_start": 100, "sup_end": 107,
+    }]
+    current.append(d)
+
+    v = _verdict(baseline, current)
+
+    assert v["red"], "Погашенная эталонная сущность не покрасила гейт"
+    assert any(r.startswith("(ж)") for r in v["regressions"]), \
+        "Красный не по линии «ж»: %s" % _reasons(v)
+
+
+def test_viii_suppressed_gold_reddens_even_when_baseline_also_had_it():
+    """Линия АБСОЛЮТНАЯ: не «стало хуже», а «есть хоть один» — иначе один и тот
+    же дефект протащился бы из прогона в прогон, не покраснев ни разу."""
+    baseline, current = _green_pair()
+    sup = [{
+        "gold_type": "PERSON", "gold_text": "Иванов Пётр", "gold_start": 100, "gold_end": 111,
+        "suppressed_type": "PERSON", "suppressor_type": "ROLE_TERM",
+        "sup_start": 100, "sup_end": 107,
+    }]
+    d_base = _doc("doc_c")
+    d_base["suppressed_gold"] = sup
+    d_cur = _doc("doc_c")
+    d_cur["suppressed_gold"] = sup
+    baseline.append(d_base)
+    current.append(d_cur)
+
+    v = _verdict(baseline, current)
+
+    assert v["red"], "Погашение прежним по счёту к baseline не покрасило гейт"
+
+
+def test_viii_safe_suppression_of_non_gold_does_not_redden():
+    """Безопасный случай: барьер погасил НЕ-эталонного кандидата (диагностика
+    `suppressions` непуста, но `suppressed_gold` — измеренное пересечение с
+    эталоном, считает measure_lib.suppressed_gold_entities — пусто). Гейт не
+    обязан краснеть на том, что барьер сработал по назначению."""
+    baseline, current = _green_pair()
+    d = _doc("doc_c")
+    d["suppressions"] = [{
+        "suppressed_type": "PERSON", "suppressor_type": "ROLE_TERM",
+        "segment_id": "p0", "start": 0, "end": 5,
+        "gstart": 500, "gend": 505, "seg_ok": True,
+    }]
+    d["suppressed_gold"] = []
+    current.append(d)
+
+    v = _verdict(baseline, current)
+
+    assert not v["red"], "Безопасное подавление (не эталон) покрасило гейт: %s" % _reasons(v)
+
+
+def test_viii_missing_field_defaults_to_empty_not_crash():
+    """Дамп старше этапа T4 (нет поля suppressed_gold вовсе) — не крешит гейт и
+    не красит его: линия просто не видит того, чего нет в дампе (симметрично
+    остальным диагностическим полям)."""
+    baseline, current = _green_pair()  # ни один _doc() здесь не несёт suppressed_gold
+    v = _verdict(baseline, current)
+    assert not v["red"], _reasons(v)

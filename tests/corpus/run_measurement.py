@@ -190,7 +190,14 @@ def process_doc(d, allow_lossy=ALLOW_LOSSY):
     # программы, и падение полноты стало бы неотличимо от выключенного типа.
     # Явная константа вместо умолчания — чтобы смена умолчания не проехала сюда
     # молча.
-    anon_text, kept = tokenize(doc, entities, CONFIG, enabled_types=type_policy.MAXIMUM)
+    # ЭТАП T4 — зеркало подавления: каждый случай, когда отрицательный класс
+    # (CLAUSE_REF/ROLE_TERM/COLLECTIVE) победил пересечение с маскируемым типом,
+    # записывается tokenizer.resolve_for_masking (см. suppression_log).
+    suppression_log: list = []
+    anon_text, kept = tokenize(
+        doc, entities, CONFIG, enabled_types=type_policy.MAXIMUM,
+        suppression_log=suppression_log,
+    )
 
     # round-trip — СТРУКТУРНЫЙ (этап E, приёмка 1a): mode="exact" восстанавливает
     # n-е вхождение токена его собственной поверхностной формой из occurrences.
@@ -237,6 +244,11 @@ def process_doc(d, allow_lossy=ALLOW_LOSSY):
     offs, loc_misses = ML.build_segment_offsets(doc, G, body_start)
     det = ML.map_entities_to_pt1(kept, offs, G)
     det_located = [x for x in det if x["start"] is not None]
+
+    # ЭТАП T4 — зеркало подавления в координатах PT-1 + пересечение с эталоном
+    # (линия гейта «эталонных сущностей, погашенных отрицательным классом» == 0).
+    suppressions_global = ML.globalize_suppressions(suppression_log, offs)
+    suppressed_gold = ML.suppressed_gold_entities(suppressions_global, d["entities"])
 
     anon_norm = ML.norm_text(anon_text)
     anon_glue = _GLUE_RE.sub("", anon_norm)
@@ -396,6 +408,10 @@ def process_doc(d, allow_lossy=ALLOW_LOSSY):
         # список, а не "entities" (gold).
         "masks": mask_records,
         "false_positives": fp_records,
+        # ЭТАП T4 — зеркало подавления (ВСЕ случаи, включая безопасные — подавлен
+        # НЕ-эталонный кандидат) + пересечение с эталоном (ДОЛЖНО быть пустым).
+        "suppressions": suppressions_global,
+        "suppressed_gold": suppressed_gold,
     }
 
 
