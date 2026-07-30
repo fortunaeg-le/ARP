@@ -115,10 +115,17 @@ def test_retired_gate_refuses_to_run_and_explains_why():
     import subprocess
 
     root = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
+    # PYTHONIOENCODING="utf-8": без него дочерний процесс наследует кодировку
+    # консоли (на кириллической Windows — не UTF-8, напр. cp866/cp1251), его
+    # print() кодируется НЕ в UTF-8, и capture_output с encoding="utf-8" падает
+    # UnicodeDecodeError — тест ломается средой, а не отставным гейтом. Тот же
+    # приём уже используется во всех остальных subprocess-тестах проекта (см.
+    # tests/test_cli.py::_run и др.) — здесь его не было, находка догонки U5b.
+    env = dict(os.environ, PYTHONIOENCODING="utf-8")
     proc = subprocess.run(
         [os.path.join(root, "venv", "Scripts", "python.exe"),
          os.path.join(root, "experiments", "stage_d", "gate_d.py")],
-        capture_output=True, text=True, encoding="utf-8", cwd=root,
+        capture_output=True, text=True, encoding="utf-8", cwd=root, env=env,
     )
     out = (proc.stdout or "") + (proc.stderr or "")
 
