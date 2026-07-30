@@ -92,6 +92,7 @@ sys.path.insert(0, HERE)
 import measure_lib as ML  # noqa: E402
 import run_measurement as RM  # noqa: E402
 import gate_config as GC  # noqa: E402
+import overmask_ledger as OL  # noqa: E402
 
 MANIFEST = os.path.join(HERE, "MANIFEST.sha256")
 BASELINE = os.path.join(HERE, "results_baseline.json")
@@ -317,7 +318,8 @@ def compare_precision(baseline_prec, current_prec, tol_pp):
 # --------------------------------------------------------------------------- #
 #   Линия «д» (порча документа: маски, не легшие ни на что) — этап GATE-2      #
 # --------------------------------------------------------------------------- #
-def compare_overmask(baseline_prec, current_prec, tol):
+def compare_overmask(baseline_prec, current_prec, tol,
+                     check_ledger=False, ledger_latest=None):
     """Линия «д». Маска, не пересёкшая НИ эталонную сущность (любого типа), НИ
     объявленный негатив, — это закрытый маской кусок обычного текста: номер
     пункта договора, слово прозы, обрывок таблицы. Гейт такие маски считал
@@ -329,6 +331,25 @@ def compare_overmask(baseline_prec, current_prec, tol):
 
     Возвращает (regressions, improvements)."""
     regressions, improvements = [], []
+
+    # ЛОВУШКА НА ОБХОД (догонка этапа GATE-2, решение владельца). Линия «д»
+    # блокирующая, а у блокирующей линии есть известный способ выродиться:
+    # «опять красная — поднимем планку и поедем». Поэтому уровень линии живёт
+    # НЕ ТОЛЬКО в дампе: рядом лежит журнал обоснований, куда пишет
+    # promote_baseline.py. Если числа точки отсчёта разошлись с последней
+    # записью журнала — планку двигали руками, мимо промотера, то есть БЕЗ
+    # обоснования. Это красный гейт, а не примечание.
+    # Сверка включается ТОЛЬКО для настоящего прогона (main передаёт
+    # check_ledger=True). evaluate() — чистая функция, её зовут само-тесты на
+    # синтетических дампах, у которых своих чисел порчи нет и сверять их с
+    # журналом реального корпуса бессмысленно.
+    if check_ledger:
+        regressions += [
+            "(д) %s" % p
+            for p in OL.check_against_baseline(
+                OL.overmask_numbers(baseline_prec), _latest=ledger_latest)
+        ]
+
     for t in ML.ALL_ENTITY_TYPES:
         b = (baseline_prec["per_type"].get(t) or {}).get("nothing", 0)
         c = (current_prec["per_type"].get(t) or {}).get("nothing", 0)
@@ -441,7 +462,8 @@ def compare_debt(baseline_results, current_results, known_leaks_ids, tol):
     return regressions, warnings, composition
 
 
-def evaluate(baseline_results, current_results, known_leaks_ids, cfg=GC):
+def evaluate(baseline_results, current_results, known_leaks_ids, cfg=GC,
+             check_ledger=False, ledger_latest=None):
     """ПОЛНАЯ оценка четырёх линий — чистая функция над двумя списками results.
     Ничего не печатает и не гоняет корпус: ровно эту функцию дёргает само-тест
     гейта (tests/corpus/test_gate_regression_detection.py), подкладывая
@@ -476,7 +498,8 @@ def evaluate(baseline_results, current_results, known_leaks_ids, cfg=GC):
     regressions += p_reg
     improvements += p_imp
 
-    o_reg, o_imp = compare_overmask(base_prec, cur_prec, cfg.OVERMASK_NOTHING_TOLERANCE)
+    o_reg, o_imp = compare_overmask(base_prec, cur_prec, cfg.OVERMASK_NOTHING_TOLERANCE,
+                                    check_ledger=check_ledger, ledger_latest=ledger_latest)
     regressions += o_reg
     improvements += o_imp
 
@@ -618,6 +641,19 @@ def print_overmask(base_prec, cur_prec, tol):
     print("  %s %-10s %6d -> %-6d"
           % (_delta_mark(base_prec["nothing_total"], cur_prec["nothing_total"]),
              "ВСЕГО", base_prec["nothing_total"], cur_prec["nothing_total"]))
+    # Число уровня НИКОГДА не печатается без своего обоснования: иначе через
+    # полгода «330» — это просто число неизвестного происхождения.
+    last = OL.latest()
+    if last is None:
+        print("  ⚠ ЖУРНАЛ ОБОСНОВАНИЙ ПУСТ — уровень ничем не объяснён (%s)"
+              % os.path.basename(OL.LEDGER))
+    else:
+        print("  уровень принят: %s, %s (%s)" % (last["date"], last["author"], last["kind"]))
+        print("  обоснование: %s" % last["reason"])
+        if last.get("evidence"):
+            print("  подтверждение: %s" % last["evidence"])
+        print("  история движений: %d запис(ь/и) в %s — двигать уровень можно только "
+              "через promote_baseline.py" % (len(OL.entries()), os.path.basename(OL.LEDGER)))
 
 
 def print_boundaries(base_bnd, cur_bnd):
@@ -717,7 +753,9 @@ def main(argv=None):
             print("  !!", p)
 
     kl_ids, kl_count = _known_leaks()
-    v = evaluate(baseline_results, current_results, kl_ids)
+    # check_ledger=True — только здесь: это настоящий прогон против настоящей
+    # точки отсчёта, и уровень линии «д» обязан совпадать с журналом обоснований.
+    v = evaluate(baseline_results, current_results, kl_ids, check_ledger=True)
 
     print()
     print_report(v["rows"], v["base_agg"], v["cur_agg"])
