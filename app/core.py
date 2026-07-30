@@ -44,6 +44,25 @@
      маска» без отдельного кода. Session ПЕРЕЗАПИСЫВАЕТСЯ (session_store.save_session
      под тем же session_id) с сохранением ИСХОДНОГО expires_at — правка не
      продлевает TTL хранения ПДн.
+
+--- ЭТАП U5b (починка правки границ, по итогам docs/U5A_REPORT.md) -----------
+
+  Хранение НЕ менялось — U5a установил, что правка границы уже хранится
+  ОДНОЙ записью kind="boundary" со старым и новым диапазоном; дефект был в
+  экране и в сообщении сервера. Три точечных изменения:
+    * `_validate_missed` теперь называет, КАКИЕ маски задело выделение (тип и
+      токен), а не общую фразу «пересекает маску» — контракт «1 маска = правка
+      границы, 2+ = законная, но именованная ошибка» (задача 1 постановки U5b)
+      реализован на КЛИЕНТЕ (index.html считает пересечения по DOM и сам решает,
+      какой запрос отправить); здесь — только более честное сообщение как
+      защита от гонки (клиент устарел/ошибся).
+    * `_add_missed` принимает `detector`/`group_key` — при пересборке правки
+      границы/типа провенанс СТАРОЙ маски передаётся дальше, а не стирается в
+      "manual" (находка U5A-1: без этого повторная правка той же маски теряла
+      бы, что её вообще нашёл движок).
+    * `mark_reviewed` — новый вид записи (не правка, положительный сигнал
+      «просмотрено, нечего чинить») для документа, где проверяющий ничего не
+      нашёл: без него такой документ не попадал в отчёт вообще (находка U5A-6).
 """
 
 import html
@@ -570,11 +589,41 @@ def _find_segment(doc, segment_id: str):
     return None
 
 
+def _overlapping_occurrences(session: dict, segment_id: str, start: int, end: int) -> list[tuple[dict, dict]]:
+    """Все вхождения масок сессии, пересекающие [start, end) в данном сегменте —
+    (rec, occ) пары. ЭТАП U5b: раньше поиск останавливался на первом пересечении
+    (see docs/U5A_REPORT.md, вопрос 4) — недостаточно, чтобы контракт «1 маска —
+    правка границы / 2+ масок — законная, но именованная ошибка» мог решить,
+    какой случай перед ним."""
+    out = []
+    for rec in session["entities"]:
+        for occ in rec["occurrences"]:
+            if occ["segment_id"] == segment_id and max(occ["start"], start) < min(occ["end"], end):
+                out.append((rec, occ))
+    return out
+
+
+def _describe_occurrences(pairs: list[tuple[dict, dict]]) -> str:
+    """[(rec,occ),...] -> 'ФИО [PERSON_2], Организация [ORG_1]' — тип и номер
+    (номер уже закодирован в самом токене, см. _next_token) вместо координат:
+    пользователь их не вводит и не должен видеть (задача 1 постановки U3)."""
+    return ", ".join(f"{type_label(rec['entity_type'])} {rec['token']}" for rec, _occ in pairs)
+
+
 def _validate_missed(doc, session: dict, segment_id: str, start: int, end: int,
                       entity_type: str, config_path: str):
     """Проверка ДО добавления новой маски (используется и предпросмотром
-    /api/markup/mark-missed, и пересборкой). Кидает ValueError с человеческим
-    текстом; ничего не мутирует. Возвращает (segment, значение_фрагмента)."""
+    /api/markup/mark-missed, и пересборкой, и — на копии сессии без старого
+    вхождения — правкой границы/типа в mark_replace). Кидает ValueError с
+    человеческим текстом; ничего не мутирует. Возвращает (segment, значение_фрагмента).
+
+    ЭТАП U5b: сообщение о пересечении теперь называет, КАКИЕ маски задеты (тип
+    и токен), а не общую фразу «пересекает маску» — контракт четырёх случаев
+    (docs/U5A_REPORT.md, вопрос 4) требует различать «ровно одна» (клиент решает
+    её как правку границы через /api/markup/replace, сюда обычно не доходит) от
+    «две и больше» (законная ошибка, но с именованием). Этот путь (mark-missed)
+    остаётся отказом при ЛЮБОМ пересечении — он предназначен для чистого текста;
+    выбор «это правка границы» делает клиент ДО отправки запроса."""
     from tokenizer import _load_token_prefixes
 
     seg = _find_segment(doc, segment_id)
@@ -590,13 +639,19 @@ def _validate_missed(doc, session: dict, segment_id: str, start: int, end: int,
     if entity_type not in prefixes:
         raise ValueError(f"Неизвестный тип персональных данных: {entity_type}")
 
-    for rec in session["entities"]:
-        for occ in rec["occurrences"]:
-            if occ["segment_id"] == segment_id and max(occ["start"], start) < min(occ["end"], end):
-                raise ValueError(
-                    "Выделение пересекает уже существующую маску — сначала снимите её "
-                    "или воспользуйтесь «Поправить границу»."
-                )
+    overlaps = _overlapping_occurrences(session, segment_id, start, end)
+    if len(overlaps) == 1:
+        rec, _occ = overlaps[0]
+        raise ValueError(
+            f"Выделение пересекает существующую маску «{type_label(rec['entity_type'])} {rec['token']}» "
+            "— если хотите поправить именно её границу, выделите текст так, чтобы он "
+            "задевал только эту маску (тип наследуется автоматически)."
+        )
+    if len(overlaps) >= 2:
+        raise ValueError(
+            f"Выделение задевает несколько масок: {_describe_occurrences(overlaps)} — "
+            "уточните: снимите лишние маски или выделите фрагмент, задевающий ровно одну."
+        )
     return seg, value
 
 
@@ -613,9 +668,20 @@ def _next_token(prefix: str, session: dict) -> str:
 
 
 def _add_missed(doc, session: dict, segment_id: str, start: int, end: int,
-                 entity_type: str, config_path: str) -> tuple[str, str]:
+                 entity_type: str, config_path: str, *,
+                 detector: str = "manual", group_key: str | None = None) -> tuple[str, str]:
     """Мутирует session["entities"] на месте: добавляет НОВОЕ вхождение маски.
-    Возвращает (token, value)."""
+    Возвращает (token, value).
+
+    detector/group_key (ЭТАП U5b, находка U5A-1): по умолчанию "manual" —
+    верно для ДЕЙСТВИТЕЛЬНО новой маски, которую нашёл человек (kind="missed",
+    движок вообще ничего не предлагал). apply_pending_markup передаёт СЮДА
+    провенанс СТАРОЙ маски (entry["old_detector"]) при пересборке правки
+    границы/типа — иначе маска, границу которой поправил человек, но которую
+    НАШЁЛ движок, стала бы неотличима в отчёте от маски, добавленной с нуля
+    вручную (docs/U5A_REPORT.md, вопрос 3 и находка U5A-1: без этого повторная
+    правка той же маски увела бы ошибку движка в строку «ручная маска», и вклад
+    программы стало бы не отделить от вклада человека)."""
     from tokenizer import _load_token_prefixes
 
     _, value = _validate_missed(doc, session, segment_id, start, end, entity_type, config_path)
@@ -624,11 +690,10 @@ def _add_missed(doc, session: dict, segment_id: str, start: int, end: int,
     session["entities"].append({
         "token": token, "entity_type": entity_type, "original_text": value,
         "segment_id": segment_id, "canonical": None,
-        # Провенанс (этап S1): вручную добавленная маска отличима от автоматической.
-        "detector": "manual", "group_key": None,
+        "detector": detector, "group_key": group_key,
         "occurrences": [{"segment_id": segment_id, "start": start, "end": end,
                           "spans": None, "surface": value,
-                          "detector": "manual", "group_key": None}],
+                          "detector": detector, "group_key": group_key}],
     })
     return token, value
 
@@ -738,6 +803,37 @@ def mark_replace(session_id: str, old_token: str, old_segment_id: str, old_start
     return {"markup_id": markup_id, "value": value, "kind": kind}
 
 
+def mark_reviewed(session_id: str) -> dict:
+    """ЭТАП U5b (решение владельца): пользователь посмотрел документ целиком и
+    не нашёл ничего, что нужно поправить. Кнопка «Просмотрено, правок нет».
+
+    Без этой записи документ без единой правки в отчёт вообще не попадает
+    (docs/U5A_REPORT.md, вопрос 6, находка U5A-6): файл разметки создаётся
+    только первой правкой, и «программа не ошиблась» невыразимо — отчёт видит
+    только худшие документы. Эта запись — не правка (нечего применять к
+    документу, координат/значения у неё нет), а положительный сигнал:
+    kind="reviewed" сохраняется УЖЕ applied=True, поэтому apply_pending_markup
+    её не трогает и не пытается пересобрать несуществующий фрагмент.
+
+    census берётся тем же механизмом, что и у остальных видов правки — если
+    это единственная запись документа, отчёт возьмёт её слепок знаменателем
+    (см. app/report.py::_collect_documents), и документ войдёт в отчёт с
+    полным числом масок движка и НУЛЁМ правок — то есть с идеальными
+    precision/recall, а не будет просто отсутствовать."""
+    from storage import load_session, save_markup
+
+    session = load_session(session_id)   # SessionNotFoundError/Expired наружу
+    markup_id = save_markup(session_id, {
+        "kind": "reviewed", "entity_type": None,
+        "segment_id": None, "start": None, "end": None, "value": None,
+        "old_token": None, "old_segment_id": None, "old_start": None, "old_end": None,
+        "old_entity_type": None, "old_detector": None,
+        "created_at": _now_iso(), "build_mark": BUILD_MARK, "applied": True, "apply_error": None,
+        "census": _markup_census(session_id, session),
+    })
+    return {"markup_id": markup_id}
+
+
 def _markup_census(session_id: str, session: dict) -> dict | None:
     """ЭТАП U4: компактный слепок «сколько масок и какие» на момент правки.
 
@@ -834,8 +930,18 @@ def apply_pending_markup(session_id: str, config_path: str = DEFAULT_CONFIG) -> 
                 _remove_occurrence(session, entry["old_token"], entry["old_segment_id"],
                                     entry["old_start"], entry["old_end"])
             if entry["kind"] != "false_mask":
+                # U5A-1: правка границы/типа переносит провенанс СТАРОЙ маски
+                # (какой механизм её нашёл) на пересобранную — она остаётся
+                # автоматической, отредактированной человеком, а не превращается
+                # в "manual" (иначе повторная правка той же маски потеряла бы,
+                # что её вообще нашёл движок). "missed" — действительно новая
+                # маска человека, старого детектора у неё нет по определению.
+                if entry["kind"] in ("boundary", "type"):
+                    origin_detector = entry.get("old_detector") or "manual"
+                else:
+                    origin_detector = "manual"
                 _add_missed(doc, session, entry["segment_id"], entry["start"], entry["end"],
-                            entry["entity_type"], config_path)
+                            entry["entity_type"], config_path, detector=origin_detector)
             entry["applied"] = True
             entry["apply_error"] = None
             changed = True

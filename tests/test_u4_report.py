@@ -92,11 +92,15 @@ _T0 = datetime(2026, 7, 25, 12, 0, 0).astimezone()
 
 def _entry(kind, *, entity_type="PERSON", old_entity_type=None, old_detector=None,
            value="фрагмент", segment_id="p0", census=None, minutes=0,
-           build_mark="u4-test-build"):
+           build_mark="u4-test-build", start=None, end=None,
+           old_start=None, old_end=None):
     return {
         "kind": kind, "entity_type": entity_type, "segment_id": segment_id,
-        "start": 0, "end": len(value), "value": value,
-        "old_token": None, "old_segment_id": None, "old_start": None, "old_end": None,
+        "start": 0 if start is None else start,
+        "end": (len(value) if end is None else end),
+        "value": value,
+        "old_token": None, "old_segment_id": None,
+        "old_start": old_start, "old_end": old_end,
         "old_entity_type": old_entity_type, "old_detector": old_detector,
         "created_at": (_T0 + timedelta(minutes=minutes)).isoformat(),
         "build_mark": build_mark, "applied": False, "apply_error": None,
@@ -138,7 +142,8 @@ def test_known_answer_totals_and_metrics(iso_store):
     assert t["unknown"] == 0 and t["edits_total"] == 7
     assert t["masks_total"] == 10
     assert r["sample"] == {"documents": 1, "documents_with_denominator": 1,
-                           "documents_without_denominator": 0, "edits": 7}
+                           "documents_without_denominator": 0, "edits": 7,
+                           "reviewed_no_edits": 0}
 
     m = r["metrics"]
     assert m["precision_reviewed_pct"] == 80.0          # найдено 10-2=8 из 10
@@ -250,6 +255,108 @@ def test_unknown_kind_is_not_silently_dropped(iso_store):
     assert r["totals"]["unknown"] == 1
     assert r["totals"]["edits_total"] == 1
     assert r["findings"][0]["kind"] == "unknown"
+
+
+# --------------------------------------------------------------------------- #
+# ЭТАП U5b, задача 3 — направление правки границы (docs/U5A_REPORT.md, вопрос 2:
+# отчёт знал ФАКТ правки границы, но не мог сказать, недобор это или перебор).
+# --------------------------------------------------------------------------- #
+
+def test_boundary_direction_counts(iso_store):
+    """"маска была короче" (недобор — уже свершившаяся утечка риска) и "маска
+    была длиннее" (перебор — читаемость) считаются раздельно, из уже хранимых
+    старого/нового диапазона — задача 3 не потребовала нового хранения."""
+    entries = [
+        # старая [0,5) короче новой [0,8) -> "shorter" (недобор/утечка)
+        _entry("boundary", entity_type="PERSON", old_entity_type="PERSON",
+               old_detector="ner", census=_CENSUS_A, minutes=0,
+               old_start=0, old_end=5, start=0, end=8, value="12345678"),
+        # старая [0,10) длиннее новой [0,6) -> "longer" (перебор/читаемость)
+        _entry("boundary", entity_type="PERSON", old_entity_type="PERSON",
+               old_detector="ner", census=_CENSUS_A, minutes=1,
+               old_start=0, old_end=10, start=0, end=6, value="123456"),
+        # старая и новая — одной длины (no-op правка) -> ни то ни другое
+        _entry("boundary", entity_type="PERSON", old_entity_type="PERSON",
+               old_detector="ner", census=_CENSUS_A, minutes=2,
+               old_start=0, old_end=5, start=3, end=8, value="45678"),
+    ]
+    for e in entries:
+        storage.save_markup("sess-dir", e)
+    r = report_mod.build_report("all")
+    assert r["totals"]["boundary"] == 3
+    assert r["totals"]["boundary_was_shorter"] == 1
+    assert r["totals"]["boundary_was_longer"] == 1
+
+
+def test_boundary_direction_fields_whitelisted_and_guard_still_catches_bogus_field(iso_store):
+    """Демонстрация обоих направлений: новые поля из задачи 3 УЖЕ в белом
+    списке (обычная сборка проходит часового), а постороннее поле, которое
+    никто туда не вносил, по-прежнему роняет отчёт — сторож не ослаблен
+    попутно с расширением схемы."""
+    storage.save_markup("sess-dir2", _entry(
+        "boundary", entity_type="PERSON", old_entity_type="PERSON", old_detector="ner",
+        census=_CENSUS_A, old_start=0, old_end=5, start=0, end=8, value="12345678"))
+    r = report_mod.build_report("all")
+    assert "boundary_was_shorter" in r["totals"]
+    assert "boundary_was_longer" in r["totals"]
+    report_mod.assert_structural(r)   # белый список — зелено
+
+    r2 = report_mod.build_report("all")
+    r2["totals"]["boundary_was_diagonal"] = 0   # никто не вносил это поле
+    with pytest.raises(report_mod.ReportLeakError):
+        report_mod.assert_structural(r2)
+
+
+# --------------------------------------------------------------------------- #
+# ЭТАП U5b — «Просмотрено, правок нет» (находка U5A-6, решение владельца):
+# без этой записи документ без единой правки в отчёт не попадал вовсе.
+# --------------------------------------------------------------------------- #
+
+def _reviewed_entry(census=None, minutes=0, build_mark="u4-test-build"):
+    return {
+        "kind": "reviewed", "entity_type": None, "segment_id": None,
+        "start": None, "end": None, "value": None,
+        "old_token": None, "old_segment_id": None, "old_start": None, "old_end": None,
+        "old_entity_type": None, "old_detector": None,
+        "created_at": (_T0 + timedelta(minutes=minutes)).isoformat(),
+        "build_mark": build_mark, "applied": True, "apply_error": None,
+        "census": census,
+    }
+
+
+def test_reviewed_entry_counts_document_without_inflating_edits(iso_store):
+    """Документ, отмеченный ТОЛЬКО "просмотрено, правок нет" — входит в
+    выборку (documents=1) с ПОЛНЫМ знаменателем census (по-прежнему разбитым
+    по типу/детектору — census не зависит от того, было ли что править), но
+    НУЛЁМ правок и без находок — раньше такой документ в отчёте отсутствовал."""
+    census = {"masks_total": 5, "by_type": {"PERSON": 5}, "by_detector": {"ner": 5}}
+    storage.save_markup("sess-clean", _reviewed_entry(census=census))
+    r = report_mod.build_report("all")
+    assert r["sample"]["documents"] == 1
+    assert r["sample"]["reviewed_no_edits"] == 1
+    assert r["sample"]["edits"] == 0
+    assert r["totals"]["masks_total"] == 5
+    assert r["totals"]["edits_total"] == 0
+    assert r["metrics"]["precision_reviewed_pct"] == 100.0
+    assert r["metrics"]["recall_reviewed_pct"] == 100.0
+    assert r["findings"] == []
+    # census продолжает питать by_type/by_detector даже без единой правки.
+    assert r["by_type"]["PERSON"]["masks"] == 5 and r["by_type"]["PERSON"]["missed"] == 0
+    assert r["by_detector"]["ner"]["masks"] == 5
+
+
+def test_reviewed_mixed_with_real_edits_in_same_document(iso_store):
+    """Реалистичный смешанный случай: в ОДНОМ документе — и правка, и отметка
+    "просмотрено" (её можно поставить и после разбора найденного). reviewed_no_edits
+    считает документы С ОТМЕТКОЙ, а не документы БЕЗ правок — edits_total
+    по-прежнему больше нуля."""
+    storage.save_markup("sess-mixed", _entry("missed", entity_type="PERSON", census=_CENSUS_A))
+    storage.save_markup("sess-mixed", _reviewed_entry(census=_CENSUS_A, minutes=1))
+    r = report_mod.build_report("all")
+    assert r["sample"]["documents"] == 1
+    assert r["sample"]["reviewed_no_edits"] == 1
+    assert r["totals"]["missed"] == 1
+    assert r["totals"]["edits_total"] == 1
 
 
 # --------------------------------------------------------------------------- #

@@ -260,6 +260,8 @@ class Handler(BaseHTTPRequestHandler):
             self._handle_markup_op(self._op_markup_delete)
         elif self.path == "/api/markup/apply":
             self._handle_markup_op(self._op_markup_apply)
+        elif self.path == "/api/markup/reviewed":
+            self._handle_markup_op(self._op_mark_reviewed)
         elif self.path == "/api/markup/delete-all":
             self._handle_markup_delete_all()
         else:
@@ -569,6 +571,10 @@ class Handler(BaseHTTPRequestHandler):
     @staticmethod
     def _op_markup_apply(p):
         return core.apply_pending_markup(p["session_id"])
+
+    @staticmethod
+    def _op_mark_reviewed(p):
+        return core.mark_reviewed(p["session_id"])
 
 
 class Server(ThreadingHTTPServer):

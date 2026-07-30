@@ -267,7 +267,9 @@
         <div class="verify-actions" style="margin-top:10px">
           <button class="primary" id="markup-apply-btn" onclick="applyMarkup()">Применить правки и пересобрать</button>
           <button class="ghost" onclick="loadMarkupPanel()">Обновить список</button>
+          <button class="ghost" onclick="markReviewedUI()">✅ Просмотрено, правок нет</button>
         </div>
+        <div class="note" style="margin-top:8px">Нажмите, если посмотрели документ целиком и ничего поправлять не нужно — иначе документ без единой правки не попадёт в отчёт вообще, и «программа не ошиблась» будет невозможно показать.</div>
       </div>
 
       <div class="verify-actions">
@@ -754,16 +756,20 @@ async function doDecrypt(){
 }
 function downloadRestored(){ const sid=document.getElementById('r-sid').value.trim()||'restored'; saveText(sid+'_restored.txt',RESTORED); }
 
-/* ================= U3: разметка экрана проверки ================= */
+/* ================= U3/U5b: разметка экрана проверки ================= */
 // Модель: КАЖДАЯ правка (пометить пропущенное / снять ложную маску / поправить
 // границу / поправить тип) сохраняется на сервере СРАЗУ (см. app/core.py —
 // "разметка = побочный продукт проверки"), но документ НЕ меняется, пока
 // пользователь не нажмёт «Применить правки и пересобрать» (задача 3
-// постановки). Выделение мышью работает ТОЛЬКО внутри `.lit` — фрагментов
-// обезличенного текста, не покрытых маской (см. app/core.py::_lit); выделение,
-// задевающее существующую маску или уходящее за пределы одного такого
-// фрагмента, отклоняется с понятным сообщением (задача 1: "без терминов вроде
-// спан/оффсет" — пользователь никогда не вводит координаты руками).
+// постановки). Пользователь никогда не вводит координаты руками — только
+// выделяет мышью, координаты в ИСХОДНОМ сегменте вычисляются из DOM.
+//
+// ЭТАП U5b: выделение мышью работает по ВСЕМ фрагментам обезличенной панели —
+// и `.lit` (незамаскированный текст), и `mark.ent` (существующие маски), —
+// см. computeSelectionInfo. По числу задетых масок решается, какой из четырёх
+// случаев перед нами (0 — чистый текст, 1 — правка границы с наследованием
+// типа, 2+ — легитимная, но именующая маски ошибка); см. onAnonSelectionUp и
+// docs/U5A_REPORT.md, вопрос 4.
 
 const MARKUP_TYPES_FALLBACK=[["PERSON","ФИО"],["ORG","Организация"],["ADDRESS","Адрес"],["INN","ИНН организации (10 цифр)"],["INN_PERSON","ИНН человека (12 цифр)"],
   ["PASSPORT","Паспорт"],["PHONE","Телефон"],["BANK_ACCOUNT","Банковский счёт"],["EMAIL","E-mail"],
@@ -778,7 +784,7 @@ async function ensureMarkupTypes(){
   }catch(e){ MARKUP_TYPES=MARKUP_TYPES_FALLBACK; }
 }
 
-let BOUNDARY_EDIT=null;   // {token,seg,oldStart,oldEnd,oldType} — активен между "Исправить границу" и новым выделением
+let BOUNDARY_EDIT=null;   // {token,seg,oldStart,oldEnd,oldType,mergedEl} — активен между "Исправить границу" и новым выделением
 
 /* ---- выделение мышью -> координаты в ИСХОДНОМ сегменте (без ввода вручную) ---- */
 function closestLit(node){
@@ -791,31 +797,142 @@ function litOffset(litEl, node, offset){
   return offset; // не должно происходить (.lit — один текстовый узел без вложенных тегов)
 }
 
+/* ---- ЭТАП U5b: контракт четырёх случаев по числу пересечённых масок (см.
+   docs/U5A_REPORT.md, вопрос 4). Раньше выделение, задевающее ЛЮБУЮ маску,
+   отклонялось до подсчёта — теперь считаем, СКОЛЬКО масок задето, по DOM
+   (mark.ent несёт свои координаты в data-start/data-end, см. app/core.py::_mark),
+   не только по .lit, как раньше:
+     0 масок  -> чистый текст (см. вызывающий код);
+     1 маска  -> правка границы, тип наследуется от маски (в т.ч. если
+                 выделение целиком внутри ОДНОЙ маски — граница может не
+                 измениться, это не ошибка, а не действие);
+     2+ масок -> легитимная ошибка, но именующая маски, а не «пересекает маску».
+   Токен маски атомарен (символы плейсхолдера "[PERSON_1]" не соответствуют
+   исходному тексту посимвольно) — выделение, коснувшееся маски хоть немного,
+   снэпается к ЕЁ ПОЛНОЙ границе; сузить маску можно только через явную
+   «Исправить границу» (enterBoundaryEdit), которая раскрывает настоящий
+   текст. */
+function computeSelectionInfo(range){
+  const pane=document.getElementById('pane-anon');
+  const touched=[];
+  for(const el of pane.children){
+    if(!(el.classList.contains('lit')||el.classList.contains('ent'))) continue;
+    if(range.intersectsNode(el)) touched.push(el);
+  }
+  if(!touched.length) return null;
+  const seg=touched[0].dataset.seg;
+  if(touched.some(el=>el.dataset.seg!==seg)) return {crossSegment:true};
+
+  const first=touched[0], last=touched[touched.length-1];
+  let srcStart, srcEnd;
+  if(first.classList.contains('ent')){
+    srcStart=+first.dataset.start;
+  } else if(first===range.startContainer || first.contains(range.startContainer)){
+    srcStart=+first.dataset.s + litOffset(first, range.startContainer, range.startOffset);
+  } else {
+    srcStart=+first.dataset.s;
+  }
+  if(last.classList.contains('ent')){
+    srcEnd=+last.dataset.end;
+  } else if(last===range.endContainer || last.contains(range.endContainer)){
+    srcEnd=+last.dataset.s + litOffset(last, range.endContainer, range.endOffset);
+  } else {
+    srcEnd=+last.dataset.e;
+  }
+  if(srcEnd<=srcStart) return null;   // пустое выделение — молча игнорируем (не ошибка пользователя)
+
+  const masks=touched.filter(el=>el.classList.contains('ent')).map(el=>({
+    token:el.dataset.token, type:el.dataset.etype,
+    start:+el.dataset.start, end:+el.dataset.end,
+    orig:el.dataset.orig, seg:el.dataset.seg,
+  }));
+  return {seg, srcStart, srcEnd, masks, first, last};
+}
+
+/* U5A-4: любой отказ выделения ВНУТРИ активной правки границы обязан
+   сбросить И состояние, И панель (вернуть DOM к CUR.anon_html — раскрытая
+   маска несёт настоящее значение ПДн, оно не должно оставаться на экране) —
+   иначе следующее, никак не связанное выделение молча "приклеилось" бы к
+   забытой правке (тихая порча разметки поверх утечки на экране). */
+function cancelBoundaryEdit(){
+  if(!BOUNDARY_EDIT) return;
+  BOUNDARY_EDIT=null;
+  resetAnonView();
+}
+
 function onAnonSelectionUp(e){
   const sel=window.getSelection();
   if(!sel || sel.rangeCount===0 || sel.isCollapsed) return;
   const range=sel.getRangeAt(0);
-  const startLit=closestLit(range.startContainer), endLit=closestLit(range.endContainer);
-  if(!startLit || !endLit || startLit!==endLit){
-    markupToast('Нельзя выделить фрагмент, задевающий существующую маску или уходящий за пределы одного куска текста.','err');
+
+  if(BOUNDARY_EDIT){
+    // Явная правка через "Исправить границу" — засчитывается ТОЛЬКО выделение
+    // внутри РОВНО ТОГО раскрытого фрагмента (mergedEl), иначе это не
+    // продолжение операции, а отказ (см. cancelBoundaryEdit выше).
+    const startLit=closestLit(range.startContainer), endLit=closestLit(range.endContainer);
+    const isSameMerged = startLit && endLit && startLit===endLit && startLit===BOUNDARY_EDIT.mergedEl;
+    if(!isSameMerged){
+      cancelBoundaryEdit();
+      sel.removeAllRanges();
+      markupToast('Правка границы отменена — выделение вне исправляемого фрагмента. Начните заново, если нужно.','err');
+      return;
+    }
+    const so=litOffset(startLit,range.startContainer,range.startOffset);
+    const eo=litOffset(startLit,range.endContainer,range.endOffset);
+    const s=Math.min(so,eo), en=Math.max(so,eo);
+    if(s>=en) return;
+    const base=+startLit.dataset.s;
+    const srcStart=base+s, srcEnd=base+en;
+    const be=BOUNDARY_EDIT; BOUNDARY_EDIT=null;
+    const oldLen=be.oldEnd-be.oldStart, newLen=srcEnd-srcStart;
+    submitReplace(
+      {seg:be.seg, start:srcStart, end:srcEnd, oldToken:be.token, oldSeg:be.seg, oldStart:be.oldStart, oldEnd:be.oldEnd},
+      be.oldType,
+      {successMessage:()=>'Граница исправлена: было '+oldLen+' симв., стало '+newLen+' симв. Не забудьте «Применить правки».'}
+    );
+    return;
+  }
+
+  const info=computeSelectionInfo(range);
+  if(!info){ sel.removeAllRanges(); return; }
+  if(info.crossSegment){
+    markupToast('Нельзя выделить фрагмент, уходящий за пределы одного куска текста.','err');
     sel.removeAllRanges();
     return;
   }
-  const so=litOffset(startLit,range.startContainer,range.startOffset);
-  const eo=litOffset(startLit,range.endContainer,range.endOffset);
-  const s=Math.min(so,eo), en=Math.max(so,eo);
-  if(s>=en) return;   // выделение нулевой длины — молча игнорируем (не ошибка пользователя)
-  const segId=startLit.dataset.seg, base=+startLit.dataset.s;
-  const srcStart=base+s, srcEnd=base+en;
-  const text=startLit.textContent.slice(s,en);
 
-  if(BOUNDARY_EDIT){
-    const be=BOUNDARY_EDIT; BOUNDARY_EDIT=null;
-    openTypeMenu(e, {mode:'replace', seg:segId, start:srcStart, end:srcEnd, text,
-      oldToken:be.token, oldSeg:be.seg, oldStart:be.oldStart, oldEnd:be.oldEnd});
-  } else {
-    openTypeMenu(e, {mode:'missed', seg:segId, start:srcStart, end:srcEnd, text, range});
+  if(info.masks.length===0){
+    // случай "чистый текст" — меню типов, по отпусканию мыши, рядом с выделением.
+    const base=+info.first.dataset.s;
+    const text=info.first.textContent.slice(info.srcStart-base, info.srcEnd-base);
+    openTypeMenu(e, {mode:'missed', seg:info.seg, start:info.srcStart, end:info.srcEnd, text, range});
+    return;
   }
+
+  if(info.masks.length===1){
+    // случай "ровно одна маска" (включая подрезку — выделение целиком внутри
+    // ОДНОЙ маски снэпается к её же границе, см. computeSelectionInfo) —
+    // правка границы: тип наследуется, меню НЕ показывается, ошибки нет.
+    const m=info.masks[0];
+    sel.removeAllRanges();
+    if(info.srcStart===m.start && info.srcEnd===m.end){
+      markupToast('Выделение совпадает с текущей границей маски — изменений нет.','ok');
+      return;
+    }
+    const oldLen=m.end-m.start, newLen=info.srcEnd-info.srcStart;
+    submitReplace(
+      {seg:info.seg, start:info.srcStart, end:info.srcEnd,
+       oldToken:m.token, oldSeg:m.seg, oldStart:m.start, oldEnd:m.end},
+      m.type,
+      {successMessage:()=>'Граница исправлена: было '+oldLen+' симв., стало '+newLen+' симв. Не забудьте «Применить правки».'}
+    );
+    return;
+  }
+
+  // случай "две и более масок" — легитимная ошибка, но называет, какие маски задеты.
+  const names=info.masks.map(m=>(TYPE_LABELS[m.type]||m.type)+' '+m.token).join(', ');
+  markupToast('Выделение задевает несколько масок: '+names+' — снимите лишние или выделите фрагмент, задевающий ровно одну.','err');
+  sel.removeAllRanges();
 }
 document.getElementById('pane-anon').addEventListener('mouseup', onAnonSelectionUp);
 
@@ -902,7 +1019,7 @@ function enterBoundaryEdit(markEl){
   markEl.replaceWith(merged);
   if(prevLit) prevLit.remove();
   if(nextLit) nextLit.remove();
-  BOUNDARY_EDIT={token, seg, oldStart, oldEnd, oldType};
+  BOUNDARY_EDIT={token, seg, oldStart, oldEnd, oldType, mergedEl:merged};
   markupToast('Выделите исправленный фрагмент мышью в тексте справа.','ok');
 }
 
@@ -920,7 +1037,8 @@ async function submitMissed(ctx, type){
   }catch(err){ markupToast('Ошибка связи с сервером: '+err,'err'); }
 }
 
-async function submitReplace(ctx, type){
+async function submitReplace(ctx, type, opts){
+  opts=opts||{};
   try{
     const resp=await fetch('/api/markup/replace',{method:'POST',headers:{'Content-Type':'application/json'},
       body:JSON.stringify({session_id:CUR.session_id, old_token:ctx.oldToken, old_segment_id:ctx.oldSeg,
@@ -928,7 +1046,9 @@ async function submitReplace(ctx, type){
     const d=await resp.json();
     if(d.status==='error'){ markupToast(d.message,'err'); resetAnonView(); return; }
     clearSelection(); resetAnonView();
-    markupToast('Правка сохранена ('+(d.kind==='type'?'изменён тип':'исправлена граница')+'). Не забудьте «Применить правки».','ok');
+    const msg = opts.successMessage ? opts.successMessage(d) :
+      'Правка сохранена ('+(d.kind==='type'?'изменён тип':'исправлена граница')+'). Не забудьте «Применить правки».';
+    markupToast(msg,'ok');
     loadMarkupPanel();
   }catch(err){ markupToast('Ошибка связи с сервером: '+err,'err'); resetAnonView(); }
 }
@@ -987,7 +1107,7 @@ async function deleteAllMarkupUI(){
 }
 
 /* ---- панель "Ваши правки" + применение пачкой ---- */
-const MARKUP_KIND_LABEL={missed:'Пропущено',false_mask:'Ложная маска',boundary:'Граница',type:'Тип'};
+const MARKUP_KIND_LABEL={missed:'Пропущено',false_mask:'Ложная маска',boundary:'Граница',type:'Тип',reviewed:'Просмотрено'};
 async function loadMarkupPanel(){
   if(!CUR) return;
   loadMarkupSummary();
@@ -1004,13 +1124,32 @@ async function loadMarkupPanel(){
     box.innerHTML=entries.slice().reverse().map(en=>{
       const cls='markup-row'+(en.applied?' applied':'')+(en.apply_error?' error':'');
       const status = en.applied ? ' · применено' : (en.apply_error ? ' · не применилось: '+en.apply_error : ' · ожидает применения');
+      // "reviewed" — не правка (нет entity_type/value): своя строка, без «: «»».
+      const snip = en.kind==='reviewed'
+        ? 'Документ просмотрен, правок не найдено'+esc(status)
+        : esc(TYPE_LABELS[en.entity_type]||en.entity_type)+': «'+esc(en.value||'')+'»'+esc(status);
+      // "reviewed" сохраняется applied=true (нечего применять к документу) —
+      // но пользователь должен уметь отменить случайный клик, как любую правку.
+      const showDelete = en.kind==='reviewed' || !en.applied;
       return '<div class="'+cls+'">'+
         '<span class="mk-kind">'+(MARKUP_KIND_LABEL[en.kind]||en.kind)+'</span>'+
-        '<span class="mk-snip">'+esc(TYPE_LABELS[en.entity_type]||en.entity_type)+': «'+esc(en.value||'')+'»'+esc(status)+'</span>'+
-        (en.applied?'':'<button class="ghost" style="padding:3px 8px;font-size:12px;flex:0 0 auto" onclick="deleteMarkupRow(\''+en.id+'\')">Удалить</button>')+
+        '<span class="mk-snip">'+snip+'</span>'+
+        (showDelete?'<button class="ghost" style="padding:3px 8px;font-size:12px;flex:0 0 auto" onclick="deleteMarkupRow(\''+en.id+'\')">Удалить</button>':'')+
         '</div>';
     }).join('');
   }catch(err){ box.innerHTML='<div class="note">Не удалось загрузить разметку: '+esc(String(err))+'</div>'; }
+}
+
+async function markReviewedUI(){
+  if(!CUR) return;
+  try{
+    const resp=await fetch('/api/markup/reviewed',{method:'POST',headers:{'Content-Type':'application/json'},
+      body:JSON.stringify({session_id:CUR.session_id})});
+    const d=await resp.json();
+    if(d.status==='error'){ markupToast(d.message,'err'); return; }
+    markupToast('Отмечено: документ просмотрен, правок нет. Учтётся в отчёте.','ok');
+    loadMarkupPanel();
+  }catch(err){ markupToast('Ошибка связи с сервером: '+err,'err'); }
 }
 
 async function deleteMarkupRow(id){

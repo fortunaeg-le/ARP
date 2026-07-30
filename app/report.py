@@ -105,6 +105,12 @@ KIND_LABELS = {
     "type": "поправлен тип",
 }
 
+#: ЭТАП U5b — вид записи «просмотрено, правок нет» (кнопка на экране проверки,
+#: docs/U5A_REPORT.md находка U5A-6). НЕ входит в KINDS: это не правка (нечего
+#: атрибутировать типу/детектору/находке), а положительный сигнал о документе.
+#: Обрабатывается ОТДЕЛЬНО от кодов KINDS — см. build_report.
+REVIEWED_KIND = "reviewed"
+
 #: Типы ПДн — ровно те, что знает интерфейс; плюс "unknown" для чужих значений.
 ENTITY_TYPES = tuple(core.TYPE_LABELS) + (UNKNOWN,)
 
@@ -188,6 +194,7 @@ LIMITATIONS = (
     "Документы, чья сессия истекла до этапа U4, входят в отчёт без знаменателя — только абсолютными числами правок.",
     "Эти числа не заменяют полный замер на корпусе и не являются приёмочными.",
     "Считайте числа только по ВКЛЮЧЁННЫМ типам (раздел «Состав»): у выключенного типа маска не ставится вовсе, и ноль в его строке — это настройка, а не работа детектора.",
+    "«Просмотрено, правок нет» — это отметка проверяющего, не автоматическая проверка: документ без такой отметки и без единой правки в отчёте отсутствует вовсе, а не считается чистым.",
 )
 
 _SCHEMA_NOTE = "Отчёт собран по белому списку полей; текст документа в него не попадает по построению."
@@ -203,9 +210,9 @@ _SCHEMA_KEYS = frozenset({
     "period", "from", "to",
     "contents", "included", "excluded", "limitations",
     "sample", "documents", "documents_with_denominator",
-    "documents_without_denominator", "edits",
+    "documents_without_denominator", "edits", "reviewed_no_edits",
     "totals", "masks_total", "missed", "false_mask", "boundary", "type",
-    "unknown", "edits_total",
+    "unknown", "edits_total", "boundary_was_shorter", "boundary_was_longer",
     "metrics", "precision_reviewed_pct", "recall_reviewed_pct",
     "boundary_edit_rate_pct", "type_error_rate_pct",
     "by_type", "by_detector", "by_build", "findings",
@@ -502,6 +509,30 @@ def _attributed_detector(entry: dict, kind: str) -> str:
     return _norm_detector(entry.get("old_detector"))
 
 
+def _boundary_direction(entry: dict) -> str | None:
+    """ЭТАП U5b (задача 3) — направление правки границы, из уже хранимых
+    старого и нового диапазона (docs/U5A_REPORT.md, вопрос 2: отчёт знал
+    ФАКТ правки границы, но не её направление).
+
+    'shorter' — старая маска была КОРОЧЕ новой: движок НЕДОБРАЛ, часть ПДн
+    оставалась не замаскированной до правки — это утечка (уже свершившийся
+    риск, не гипотетический: до правки текст с этим фрагментом мог уйти
+    дальше). 'longer' — старая маска была ДЛИННЕЕ: движок ПЕРЕБРАЛ, лишнее
+    маскировалось — это не утечка, а читаемость. None — размер не изменился
+    (напр. no-op правка, см. index.html::computeSelectionInfo) или в записи
+    нет валидных координат (не kind="boundary" вовсе)."""
+    os_, oe, ns, ne = (entry.get("old_start"), entry.get("old_end"),
+                       entry.get("start"), entry.get("end"))
+    if not all(isinstance(x, int) for x in (os_, oe, ns, ne)):
+        return None
+    old_len, new_len = oe - os_, ne - ns
+    if old_len < new_len:
+        return "shorter"
+    if old_len > new_len:
+        return "longer"
+    return None
+
+
 # --------------------------------------------------------------------------- #
 # Сборка отчёта.
 # --------------------------------------------------------------------------- #
@@ -521,6 +552,9 @@ def build_report(scope: str = "all", session_id: str | None = None,
     totals = _empty_counts()
     masks_total = 0
     with_denominator = 0
+    reviewed_count = 0
+    boundary_was_shorter = 0
+    boundary_was_longer = 0
     by_type: dict[str, dict] = {}
     by_detector: dict[str, dict] = {}
     by_build: dict[str, dict] = {}
@@ -540,11 +574,21 @@ def build_report(scope: str = "all", session_id: str | None = None,
                 bucket["masks"] += int(n or 0)
 
         for entry in doc["entries"]:
-            kind = _norm_kind(entry.get("kind"))
-            build = _norm_build(entry.get("build_mark"))
             stamp = _norm_iso(entry.get("created_at"))
             if stamp:
                 stamps.append(stamp)
+
+            # ЭТАП U5b: "reviewed" — не правка (нечего атрибутировать типу,
+            # детектору, месту в документе), а факт «документ проверен, нечего
+            # чинить». Считается отдельно, не входит в totals/by_type/
+            # by_detector/findings — иначе исказил бы «сколько правок сделал
+            # проверяющий» нулевым, но полноценным на вид видом правки.
+            if entry.get("kind") == REVIEWED_KIND:
+                reviewed_count += 1
+                continue
+
+            kind = _norm_kind(entry.get("kind"))
+            build = _norm_build(entry.get("build_mark"))
 
             totals[kind] += 1
             etype = _attributed_type(entry, kind)
@@ -553,6 +597,13 @@ def build_report(scope: str = "all", session_id: str | None = None,
             by_detector.setdefault(det, {"masks": 0, **_empty_counts()})[kind] += 1
             bbucket = by_build.setdefault(build, {**_empty_counts(), "documents_touched": 0})
             bbucket[kind] += 1
+
+            if kind == "boundary":
+                direction = _boundary_direction(entry)
+                if direction == "shorter":
+                    boundary_was_shorter += 1
+                elif direction == "longer":
+                    boundary_was_longer += 1
 
             findings.append({
                 "document": doc_index,
@@ -586,9 +637,19 @@ def build_report(scope: str = "all", session_id: str | None = None,
             "documents_with_denominator": with_denominator,
             "documents_without_denominator": len(docs) - with_denominator,
             "edits": edits_total,
+            # ЭТАП U5b (находка U5A-6): документов, отмеченных «просмотрено,
+            # правок нет» — сигнал, что выборка не состоит ИСКЛЮЧИТЕЛЬНО из
+            # худших документов (без него это было structурно невыразимо).
+            "reviewed_no_edits": reviewed_count,
         },
         "totals": {"masks_total": masks_total if with_denominator else None,
-                   **totals, "edits_total": edits_total},
+                   **totals, "edits_total": edits_total,
+                   # ЭТАП U5b (задача 3): направление ошибки границы — числа,
+                   # не проценты (постановка просила «два числа»). shorter =
+                   # старая маска была короче новой = недобор = утечка;
+                   # longer = старая была длиннее = перебор = читаемость.
+                   "boundary_was_shorter": boundary_was_shorter,
+                   "boundary_was_longer": boundary_was_longer},
         "metrics": _metrics(masks_total if with_denominator else None, totals),
         "by_type": {t: {**v, "edits_total": sum(v[k] for k in KINDS + (UNKNOWN,)),
                         **_metrics(v["masks"], v)}
@@ -752,6 +813,7 @@ def render_markdown(report: dict) -> str:
         f"- Из них со знаменателем (известно общее число масок): {s['documents_with_denominator']}",
         f"- Без знаменателя (сессия истекла до этапа U4): {s['documents_without_denominator']}",
         f"- Всего правок проверяющего: {s['edits']}",
+        f"- Отмечено «просмотрено, правок нет»: {s['reviewed_no_edits']}",
         "", "## Итог", "",
         "| показатель | значение |", "|---|---:|",
         f"| Масок поставил движок | {_fmt(t['masks_total'])} |",
@@ -759,6 +821,8 @@ def render_markdown(report: dict) -> str:
     lines += [f"| {KIND_LABELS[k]} | {t[k]} |" for k in KINDS]
     lines += [
         f"| правок с неизвестным видом | {t[UNKNOWN]} |",
+        f"| из них граница: старая маска была короче (недобор — утечка) | {t['boundary_was_shorter']} |",
+        f"| из них граница: старая маска была длиннее (перебор — читаемость) | {t['boundary_was_longer']} |",
         "",
         "| метрика | значение |", "|---|---:|",
         f"| precision по просмотренному (верхняя оценка) | {_fmt(m['precision_reviewed_pct'])}% |",

@@ -278,31 +278,164 @@ def test_manual_mask_does_not_disturb_other_automatic_masks(live_server):
 
 
 # --------------------------------------------------------------------------- #
-# Пересечение: ручная маска пытается частично накрыть автоматическую —
-# поведение должно быть ОПРЕДЕЛЁННЫМ (явная ошибка), не случайным/тихим.
+# ЭТАП U5b — контракт четырёх случаев по числу пересечённых масок
+# (docs/U5A_REPORT.md, вопрос 4; постановка U5b, задача 1/4). Старый тест
+# проверял «любое пересечение — отказ»; по новому контракту:
+#   * /api/markup/mark-missed остаётся отказом при ЛЮБОМ пересечении — этот
+#     путь предназначен для ЧИСТОГО текста, маршрутизацию «это правка границы»
+#     делает клиент ДО отправки (выбирая /api/markup/replace вместо этого);
+#     сообщение теперь называет, КАКИЕ маски задеты (тип и токен);
+#   * пересечение РОВНО ОДНОЙ маски — законная правка границы через
+#     /api/markup/replace: тип наследуется, kind="boundary", ошибки нет;
+#   * пересечение ДВУХ И БОЛЕЕ остаётся отказом (в любом обходе) — с тем же
+#     именующим сообщением.
 # --------------------------------------------------------------------------- #
 
 def test_missed_overlapping_existing_mask_is_rejected(live_server):
+    """mark-missed (путь "чистый текст") остаётся отказом при пересечении —
+    и с ОДНОЙ маской, и с ДВУМЯ; сообщение называет тип и токен задетых масок,
+    а не общую фразу «пересекает маску»."""
     base, home = live_server
-    text = "Email: a@example.com здесь.\n"
+    text = "Email: a@example.com и b@example.com здесь.\n"
+    result = _encrypt_sync(base, text)
+    session_id = result["session_id"]
+    reps = result["replacements"]
+    assert len(reps) == 2 and all(r["entity_type"] == "EMAIL" for r in reps)
+
+    import re
+    matches = list(re.finditer(
+        r'data-seg="([^"]+)" data-start="(\d+)" data-end="(\d+)" data-token="([^"]+)"',
+        result["anon_html"]))
+    assert len(matches) == 2, result["anon_html"]
+    (seg1, s1, e1, tok1), (seg2, s2, e2, tok2) = [
+        (m.group(1), int(m.group(2)), int(m.group(3)), m.group(4)) for m in matches
+    ]
+
+    # РОВНО ОДНА маска (сдвиг на 1 символ внутрь первой) — по-прежнему отказ
+    # через ЭТОТ endpoint, сообщение называет её тип и токен.
+    r1 = _req(base, "POST", "/api/markup/mark-missed", body={
+        "session_id": session_id, "segment_id": seg1, "start": s1 + 1, "end": e1 + 1,
+        "entity_type": "EMAIL",
+    })
+    assert r1["status"] == "error"
+    assert tok1 in r1["message"]
+    assert "пересекает" in r1["message"]
+
+    # ДВЕ И БОЛЕЕ (диапазон, задевающий обе маски) — отказ, называет ОБЕ.
+    r2 = _req(base, "POST", "/api/markup/mark-missed", body={
+        "session_id": session_id, "segment_id": seg1, "start": s1, "end": e2,
+        "entity_type": "EMAIL",
+    })
+    assert r2["status"] == "error"
+    assert tok1 in r2["message"] and tok2 in r2["message"]
+
+    # ни одна ошибочная попытка не сохранилась как запись разметки.
+    listed = _req(base, "GET", f"/api/markup/list?session_id={session_id}")
+    assert listed["entries"] == []
+
+
+def test_single_mask_overlap_is_legal_boundary_edit_via_replace(live_server):
+    """Новый контракт: то же пересечение РОВНО ОДНОЙ маски, отправленное через
+    /api/markup/replace (как это теперь делает клиент), — законная правка
+    границы: тип наследуется, kind="boundary", ошибки нет."""
+    base, home = live_server
+    text = "Email: a@example.com и b@example.com здесь.\n"
     result = _encrypt_sync(base, text)
     session_id = result["session_id"]
 
     import re
-    m = re.search(r'data-seg="([^"]+)" data-start="(\d+)" data-end="(\d+)"', result["anon_html"])
-    seg, start, end = m.group(1), int(m.group(2)), int(m.group(3))
+    matches = list(re.finditer(
+        r'data-seg="([^"]+)" data-start="(\d+)" data-end="(\d+)" data-token="([^"]+)"',
+        result["anon_html"]))
+    (seg1, s1, e1, tok1), (_seg2, s2, e2, tok2) = [
+        (m.group(1), int(m.group(2)), int(m.group(3)), m.group(4)) for m in matches
+    ]
 
-    # выделение, частично накрывающее существующую маску (сдвиг на 1 символ внутрь)
-    r = _req(base, "POST", "/api/markup/mark-missed", body={
-        "session_id": session_id, "segment_id": seg, "start": start + 1, "end": end + 3,
-        "entity_type": "EMAIL",
+    # расширяем границу первой маски на 1 символ вправо (в соседний литерал).
+    rep = _req(base, "POST", "/api/markup/replace", body={
+        "session_id": session_id, "old_token": tok1, "old_segment_id": seg1,
+        "old_start": s1, "old_end": e1,
+        "segment_id": seg1, "start": s1, "end": e1 + 1, "entity_type": "EMAIL",
     })
-    assert r["status"] == "error"
-    assert "пересекает" in r["message"]
+    assert rep["status"] == "ok", rep
+    assert rep["kind"] == "boundary"
 
-    # список правок пуст — ошибочная попытка не должна была сохраниться как запись
     listed = _req(base, "GET", f"/api/markup/list?session_id={session_id}")
-    assert listed["entries"] == []
+    assert len(listed["entries"]) == 1
+    assert listed["entries"][0]["kind"] == "boundary"
+
+
+def test_boundary_edit_end_to_end_provenance_and_report(live_server):
+    """U5A-5: сквозной путь — от правки границы (эмулирует клиентский расчёт
+    диапазона, ровно те же координаты, что вычислил бы computeSelectionInfo)
+    до записи kind="boundary" на диске и до строки отчёта. Заодно закрывает
+    U5A-1: ВТОРАЯ правка границы ТОЙ ЖЕ (уже раз исправленной) маски обязана
+    видеть провенанс РЕАЛЬНОГО детектора, а не "manual" — иначе повторная
+    правка увела бы ошибку движка в строку «ручная маска» (вклад программы
+    стало бы не отделить от вклада человека). И задача 3: направление правки
+    (недобор/перебор) видно в totals отчёта."""
+    base, home = live_server
+    text = "Позвоните: +7 999 123 45 67 срочно.\n"
+    result = _encrypt_sync(base, text)
+    session_id = result["session_id"]
+    reps = result["replacements"]
+    assert len(reps) == 1 and reps[0]["entity_type"] == "PHONE"
+
+    import re
+    m = re.search(r'data-seg="([^"]+)" data-start="(\d+)" data-end="(\d+)" data-token="([^"]+)"',
+                  result["anon_html"])
+    seg, old_start, old_end, token = m.group(1), int(m.group(2)), int(m.group(3)), m.group(4)
+
+    # 1-я правка: сужаем на 1 символ справа — старая маска была ДЛИННЕЕ новой
+    # (перебор, читаемость).
+    rep1 = _req(base, "POST", "/api/markup/replace", body={
+        "session_id": session_id, "old_token": token, "old_segment_id": seg,
+        "old_start": old_start, "old_end": old_end,
+        "segment_id": seg, "start": old_start, "end": old_end - 1, "entity_type": "PHONE",
+    })
+    assert rep1["status"] == "ok" and rep1["kind"] == "boundary", rep1
+
+    listed1 = _req(base, "GET", f"/api/markup/list?session_id={session_id}")
+    original_detector = listed1["entries"][0]["old_detector"]
+    assert original_detector == "regex", listed1   # PHONE — regex-детектор (entity_types.yaml)
+
+    applied = _req(base, "POST", "/api/markup/apply", body={"session_id": session_id})
+    assert applied["status"] == "ok", applied
+
+    # 2-я правка ТОЙ ЖЕ, уже раз исправленной маски — расширяем обратно
+    # (старая маска на этот раз была КОРОЧЕ новой — недобор, риск утечки).
+    m2 = re.search(r'data-seg="([^"]+)" data-start="(\d+)" data-end="(\d+)" data-token="([^"]+)"',
+                   applied["anon_html"])
+    seg2, s2, e2, tok2 = m2.group(1), int(m2.group(2)), int(m2.group(3)), m2.group(4)
+    rep2 = _req(base, "POST", "/api/markup/replace", body={
+        "session_id": session_id, "old_token": tok2, "old_segment_id": seg2,
+        "old_start": s2, "old_end": e2,
+        "segment_id": seg2, "start": s2, "end": e2 + 1, "entity_type": "PHONE",
+    })
+    assert rep2["status"] == "ok" and rep2["kind"] == "boundary", rep2
+
+    listed2 = _req(base, "GET", f"/api/markup/list?session_id={session_id}")
+    second_entry = next(e for e in listed2["entries"] if e["id"] == rep2["markup_id"])
+    # U5A-1, ГЛАВНАЯ ПРОВЕРКА: провенанс НЕ стёрт в "manual" повторной правкой.
+    assert second_entry["old_detector"] == "regex", listed2
+
+    applied2 = _req(base, "POST", "/api/markup/apply", body={"session_id": session_id})
+    assert applied2["status"] == "ok", applied2
+    restored = _req(base, "POST", "/api/decrypt",
+                     body={"session_id": session_id, "text": applied2["anon_text"]})
+    assert restored["status"] == "ok" and restored["unresolved"] == []
+    assert "+7 999 123 45 67" in restored["restored"]
+
+    # Строка отчёта: две правки границы, направление верно посчитано, обе
+    # атрибутированы РЕАЛЬНОМУ детектору (regex), не "manual".
+    d = _req(base, "GET", f"/api/report?scope=session&session_id={session_id}")
+    assert d["status"] == "ok", d
+    t = d["report"]["totals"]
+    assert t["boundary"] == 2
+    assert t["boundary_was_shorter"] == 1
+    assert t["boundary_was_longer"] == 1
+    assert d["report"]["by_detector"].get("regex", {}).get("boundary") == 2
+    assert d["report"]["by_detector"].get("manual", {}).get("boundary", 0) == 0
 
 
 # --------------------------------------------------------------------------- #
@@ -370,3 +503,67 @@ def test_markup_and_doc_sidecars_live_under_home_not_repo(live_server):
     # gitignore repo-wide: ~/.shifrator/ паттерн покрывает любую such-директорию
     gitignore = (Path(_ROOT) / ".gitignore").read_text(encoding="utf-8")
     assert ".shifrator/" in gitignore
+
+
+# --------------------------------------------------------------------------- #
+# ЭТАП U5b — «Просмотрено, правок нет» (решение владельца, находка U5A-6).
+# --------------------------------------------------------------------------- #
+
+def test_mark_reviewed_creates_applied_entry_that_can_be_undone(live_server):
+    base, home = live_server
+    text = "Совсем обычный текст без ПДн.\n"
+    result = _encrypt_sync(base, text)
+    session_id = result["session_id"]
+
+    r = _req(base, "POST", "/api/markup/reviewed", body={"session_id": session_id})
+    assert r["status"] == "ok", r
+    markup_id = r["markup_id"]
+
+    listed = _req(base, "GET", f"/api/markup/list?session_id={session_id}")
+    assert len(listed["entries"]) == 1
+    entry = listed["entries"][0]
+    assert entry["kind"] == "reviewed"
+    # applied=True сразу — apply_pending_markup нечего применять к документу.
+    assert entry["applied"] is True
+
+    # "Применить правки" не ломается на записи без координат/значения.
+    applied = _req(base, "POST", "/api/markup/apply", body={"session_id": session_id})
+    assert applied["status"] == "ok", applied
+    assert applied["results"] == []   # applied=True с самого начала — не "pending"
+
+    # отменить случайный клик можно, как любую правку.
+    deleted = _req(base, "POST", "/api/markup/delete",
+                   body={"session_id": session_id, "markup_id": markup_id})
+    assert deleted["status"] == "ok" and deleted["deleted"] is True
+
+
+def test_reviewed_document_enters_report_with_zero_edits_and_full_denominator(live_server):
+    """Находка U5A-6: без «Просмотрено» документ без единой правки в отчёт не
+    попадает вовсе — с ним попадает, с ПОЛНЫМ знаменателем движка и НУЛЁМ
+    правок (то есть идеальными precision/recall для этого документа)."""
+    base, home = live_server
+    text = "Контакт: ivan.petrov@example.com для связи.\n"
+    result = _encrypt_sync(base, text)
+    session_id = result["session_id"]
+    masks_in_document = result["entities_total"]
+    assert masks_in_document > 0
+
+    # без отметки документ отсутствует в отчёте (докстринг report.py §Откуда
+    # берётся знаменатель / docs/U5A_REPORT.md вопрос 6).
+    before = _req(base, "GET", f"/api/report?scope=session&session_id={session_id}")
+    assert before["report"]["sample"]["documents"] == 0
+
+    r = _req(base, "POST", "/api/markup/reviewed", body={"session_id": session_id})
+    assert r["status"] == "ok", r
+
+    d = _req(base, "GET", f"/api/report?scope=session&session_id={session_id}")
+    assert d["status"] == "ok", d
+    rep = d["report"]
+    assert rep["sample"]["documents"] == 1
+    assert rep["sample"]["reviewed_no_edits"] == 1
+    assert rep["sample"]["edits"] == 0
+    assert rep["totals"]["masks_total"] == masks_in_document
+    assert rep["metrics"]["precision_reviewed_pct"] == 100.0
+    assert rep["metrics"]["recall_reviewed_pct"] == 100.0
+    assert rep["findings"] == []   # не правка — не находка
+    assert "Отмечено «просмотрено, правок нет»: 1" in d["md_text"]
