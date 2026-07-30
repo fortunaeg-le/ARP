@@ -174,6 +174,23 @@ class TestIntersectionClasses:
         ghost2 = _entity("GHOST", "987654321", start=0, detector="regex")
         assert TOK._winner(ghost2, kpp) is kpp
 
+    def test_priority_index_is_compared_as_a_number_not_as_a_string(self):
+        """ЭТАП T2, найденный здесь дефект. `_regex_rank` возвращал `str(index)`,
+        и второй элемент кортежа сравнивался ЛЕКСИКОГРАФИЧЕСКИ: '10' < '2'.
+        Пока в списке было девять с небольшим имён, порядок случайно совпадал с
+        задуманным; с ростом списка хвост переворачивался — тип с индексом 10+
+        становился СИЛЬНЕЕ типа с индексом 2..9, то есть ровно наоборот
+        комментарию у _REGEX_PRIORITY. Тест держит СВОЙСТВО (индекс — число), а
+        не конкретную пару типов: список ещё будет расти."""
+        assert len(TOK._REGEX_PRIORITY) > 10, "тест имеет смысл только на длинном списке"
+        early = TOK._REGEX_PRIORITY[2]     # индекс 2 -> '2'
+        late = TOK._REGEX_PRIORITY[10]     # индекс 10 -> '10' < '2' при строковом сравнении
+        assert TOK._regex_rank(early) < TOK._regex_rank(late)
+        a = _entity(early, "XXXXXXXX", start=0, detector="regex")
+        b = _entity(late, "YYYYYYYY", start=3, detector="regex")   # та же длина
+        assert TOK._winner(a, b) is a
+        assert TOK._winner(b, a) is a
+
     def test_ner_vs_ner_longer_span_wins(self):
         a = _entity("ORG", "ООО Ромашка Космос", start=0, detector="ner")     # 18
         b = _entity("PERSON", "Иванов Иван", start=5, detector="ner")         # 11

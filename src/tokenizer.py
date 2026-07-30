@@ -130,17 +130,30 @@ def assert_priority_contract(config_path: str) -> None:
         )
 
 
-def _regex_rank(entity_type: str) -> tuple[int, str]:
+# ЭТАП T2 — ИНДЕКС СРАВНИВАЕТСЯ ЧИСЛОМ, А НЕ СТРОКОЙ.
+# Было `str(index)`, и второй элемент кортежа сравнивался ЛЕКСИКОГРАФИЧЕСКИ:
+# '10' < '2', то есть десятый тип списка оказывался СИЛЬНЕЕ второго. Пока в
+# списке было девять с небольшим имён, дефект был латентным (порядок совпадал с
+# задуманным на индексах 0..9); с ростом списка он начал переворачивать хвост:
+# EMAIL/BIRTHDATE/DATE (индексы 10..12) вставали ВЫШЕ INN/BIK/SNILS/KPP/
+# PASSPORT/PHONE/SUM, а новые PERCENT/TERM (13..14) — выше них всех, то есть
+# ровно наоборот замыслу (см. комментарий у _REGEX_PRIORITY).
+# Дефект НАЙДЕН на этом этапе и чинится здесь же, потому что без починки
+# обоснование места новых типов в списке было бы ЛОЖНЫМ.
+# Второй элемент оставлен разнотипным (int для перечисленных, str для прочих)
+# ТОЛЬКО внутри своей ветки — кортежи (0, int) и (1, str) сравниваются между
+# собой по ПЕРВОМУ элементу и до второго не доходят.
+def _regex_rank(entity_type: str) -> tuple[int, object]:
     """Меньший кортеж = сильнее. Перечисленные типы: (0, индекс); прочие: (1, entity_type)."""
     if entity_type in _REGEX_PRIORITY:
-        return (0, str(_REGEX_PRIORITY.index(entity_type)))
+        return (0, _REGEX_PRIORITY.index(entity_type))
     return (1, entity_type)
 
 
-def _ner_rank(entity_type: str) -> tuple[int, str]:
+def _ner_rank(entity_type: str) -> tuple[int, object]:
     """Меньший кортеж = сильнее (для ner-tie-break по типу)."""
     if entity_type in _NER_PRIORITY:
-        return (0, str(_NER_PRIORITY.index(entity_type)))
+        return (0, _NER_PRIORITY.index(entity_type))
     return (1, entity_type)
 
 
