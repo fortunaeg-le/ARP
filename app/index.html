@@ -74,6 +74,7 @@
   .t-BANK_ACCOUNT{background:#dbe7c8}.t-BIK{background:#cfeede}.t-PASSPORT{background:#ffd6c2}
   .t-PHONE{background:#c6ecf5}.t-EMAIL{background:#e4e0c0}.t-SNILS{background:#f0d4f0}
   .t-BIRTHDATE{background:#ffe0cc}.t-SUM{background:#e8eab0}.t-DATE{background:#e2e6ea}
+  .t-PERCENT{background:#f5e3a8}.t-TERM{background:#cfe3d0}
 
   footer.build-mark{color:var(--muted);font-size:11px;text-align:center;padding:10px 20px 22px;user-select:text}
 
@@ -404,7 +405,7 @@
 <script>
 let CUR = null;             // текущий результат шифрации
 let PENDING_FILE = null;    // файл, ждущий решения по зонам
-const TYPE_LABELS = {PERSON:"ФИО",ORG:"Организация",ADDRESS:"Адрес",INN:"ИНН организации (10 цифр)",INN_PERSON:"ИНН человека (12 цифр)",OGRN:"ОГРН/ОГРНИП",KPP:"КПП",BANK_ACCOUNT:"Банковский счёт",BIK:"БИК",PASSPORT:"Паспорт",PHONE:"Телефон",EMAIL:"E-mail",SNILS:"СНИЛС",BIRTHDATE:"Дата рождения",SUM:"Сумма",DATE:"Дата"};
+const TYPE_LABELS = {PERSON:"ФИО",ORG:"Организация",ADDRESS:"Адрес",INN:"ИНН организации (10 цифр)",INN_PERSON:"ИНН человека (12 цифр)",OGRN:"ОГРН/ОГРНИП",KPP:"КПП",BANK_ACCOUNT:"Банковский счёт",BIK:"БИК",PASSPORT:"Паспорт",PHONE:"Телефон",EMAIL:"E-mail",SNILS:"СНИЛС",BIRTHDATE:"Дата рождения",SUM:"Сумма",PERCENT:"Процент (ставка, неустойка)",TERM:"Срок исполнения",DATE:"Дата"};
 
 function show(which){
   for(const s of ['enc','ver','res','ana','set']){

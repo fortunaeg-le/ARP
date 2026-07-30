@@ -62,7 +62,11 @@ def test_default_profile_is_personal_only():
 def test_profiles_are_nested_and_maximum_is_everything():
     assert set(type_policy.PERSONAL) < set(type_policy.PERSONAL_REQUISITES)
     assert set(type_policy.PERSONAL_REQUISITES) < set(type_policy.WITH_MONEY)
-    assert set(type_policy.WITH_MONEY) - set(type_policy.PERSONAL_REQUISITES) == {"SUM"}
+    # ЭТАП T2: набор «всё, включая деньги» расширен процентом и сроком —
+    # решение владельца назвало три вида данных одним пунктом (см. обоснование
+    # у type_policy.WITH_MONEY).
+    assert (set(type_policy.WITH_MONEY) - set(type_policy.PERSONAL_REQUISITES)
+            == {"SUM", "PERCENT", "TERM"})
     assert type_policy.MAXIMUM is None
     # «Максимум» ⊇ «всё, включая деньги» — и с запасом на будущие типы.
     known = set(type_policy.known_types(CONFIG))
