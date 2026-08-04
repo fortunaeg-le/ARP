@@ -213,6 +213,9 @@ def main():
                      help="включить все документы с этим features[] (см. gold.json)")
     ap.add_argument("--no-compare", action="store_true",
                      help="не сверять с results_iter_baseline.json (только срез)")
+    ap.add_argument("--workers", type=int, default=None,
+                     help="ЭТАП SPEED: число процессов (умолчание — авто по ядрам/памяти, "
+                          "1 — прежнее однопоточное поведение)")
     args = ap.parse_args()
 
     print(_WARNING)
@@ -228,7 +231,7 @@ def main():
     if filtered:
         print(f"  фильтры: trick={args.trick} type={args.type} feature={args.feature}")
 
-    results = RM.run_all(subset, verbose=True)
+    results = RM.run_all(subset, verbose=True, workers=args.workers)
     agg = ML.aggregate_results(results)
     print()
     print_report(agg, len(subset))

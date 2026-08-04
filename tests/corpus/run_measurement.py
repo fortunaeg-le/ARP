@@ -89,6 +89,64 @@ V2_NUMERIC_TYPES = {"INN", "INN_PER", "OGRN", "KPP", "ACCOUNT", "BIK", "PHONE",
 # храним сессии во временной директории — ~/.shifrator НЕ трогаем
 STORAGE = tempfile.mkdtemp(prefix="shifrator_measure_")
 
+# ЭТАП SPEED — параллельный прогон по документам. Каждый воркер-процесс —
+# отдельный интерпретатор (multiprocessing, spawn на Windows): свой импорт
+# run_measurement, своя STORAGE (mkdtemp зовётся заново), свои модели natasha
+# (poднимаются один раз при импорте ner_detector — см. JOURNAL.md, C+ часть 3).
+# Документы независимы, общего состояния между воркерами нет и не заводится.
+_PER_PROCESS_MEM_BUDGET_MB = 700  # с запасом: замер SPEED — воркер держит ~410 МБ после 33 доков
+
+
+def _available_ram_mb():
+    """Свободная физическая память в МБ (Windows API, без новых зависимостей).
+    None, если запрос не удался (не Windows/недоступно) — вызывающий код тогда
+    берёт консервативный потолок вместо деления на неизвестное число."""
+    try:
+        import ctypes
+
+        class _MEMORYSTATUSEX(ctypes.Structure):
+            _fields_ = [
+                ("dwLength", ctypes.c_ulong), ("dwMemoryLoad", ctypes.c_ulong),
+                ("ullTotalPhys", ctypes.c_ulonglong), ("ullAvailPhys", ctypes.c_ulonglong),
+                ("ullTotalPageFile", ctypes.c_ulonglong), ("ullAvailPageFile", ctypes.c_ulonglong),
+                ("ullTotalVirtual", ctypes.c_ulonglong), ("ullAvailVirtual", ctypes.c_ulonglong),
+                ("sullAvailExtendedVirtual", ctypes.c_ulonglong),
+            ]
+
+        stat = _MEMORYSTATUSEX()
+        stat.dwLength = ctypes.sizeof(_MEMORYSTATUSEX)
+        if not ctypes.windll.kernel32.GlobalMemoryStatusEx(ctypes.byref(stat)):
+            return None
+        return stat.ullAvailPhys / (1024 * 1024)
+    except Exception:
+        return None
+
+
+def _default_workers():
+    """Разумное значение по числу ядер, урезанное памятью: одно ядро всегда
+    остаётся системе, а число процессов не должно съесть машину владельца —
+    каждый процесс держит СВОИ модели natasha (~400+ МБ, см. выше). Явный
+    workers=1 в run_all всегда даёт старое однопоточное поведение независимо
+    от этой функции."""
+    cpu = os.cpu_count() or 1
+    if cpu <= 1:
+        return 1
+    avail_mb = _available_ram_mb()
+    mem_cap = 4 if avail_mb is None else max(1, int(avail_mb // _PER_PROCESS_MEM_BUDGET_MB))
+    return max(1, min(cpu - 1, mem_cap))
+
+
+def _safe_process_doc(d):
+    """process_doc с тем же перехватом креша, что был инлайн в run_all — вынесен
+    в модульную функцию, потому что multiprocessing.Pool.imap требует
+    picklable-таргет верхнего уровня (замыкание/локальная функция не годится)."""
+    try:
+        return process_doc(d)
+    except Exception as exc:
+        import traceback
+        traceback.print_exc()
+        return {"outcome": "crashed", "doc_id": d["doc_id"], "error": repr(exc)}
+
 _GLUE_RE = re.compile(r"(?<=\d)[\s\-]+(?=\d)")
 
 
@@ -433,29 +491,52 @@ def load_gold():
     return gold
 
 
-def run_all(gold, verbose=True, on_checkpoint=None, checkpoint_every=50):
+def run_all(gold, verbose=True, on_checkpoint=None, checkpoint_every=50, workers=None):
     """Гоняет process_doc по всему gold, ловя исключения per-документ (креш
     одного документа не должен обрывать замер остальных 323 — см. outcome
     processed|crashed).  on_checkpoint(results), если задан, вызывается каждые
     checkpoint_every документов — используется main() для инкрементальной
     записи results_<commit>.json на длинных прогонах.  Переиспользуется
-    gate.py (этап 0d), поэтому вынесена из main() отдельно."""
+    gate.py (этап 0d), поэтому вынесена из main() отдельно.
+
+    ЭТАП SPEED — workers параллелит СТРОГО по документам, обработка внутри
+    process_doc не меняется:
+      * workers=1 — прежнее однопоточное поведение БЕЗ multiprocessing вообще
+        (даже без импорта модуля) — для отладки и для доказательства
+        эквивалентности с параллельным прогоном;
+      * workers=None (умолчание) — _default_workers(): разумно от числа ядер,
+        урезано доступной памятью;
+      * workers=N>1 — пул из N процессов.
+    Результат ВСЕГДА в порядке gold, а не в порядке готовности воркера —
+    pool.imap (не imap_unordered) гарантирует это; иначе results_*.json
+    перестал бы быть воспроизводимым между прогонами."""
+    if workers is None:
+        workers = _default_workers()
     results = []
     t0 = time.time()
-    for i, d in enumerate(gold):
-        try:
-            rec = process_doc(d)
-        except Exception as exc:
-            import traceback
-            traceback.print_exc()
-            rec = {"outcome": "crashed", "doc_id": d["doc_id"], "error": repr(exc)}
-        results.append(rec)
+
+    def _progress(i, doc_id):
         if verbose and ((i + 1) % 10 == 0 or i == 0):
             dt = time.time() - t0
-            print(f"[{i+1}/{len(gold)}] {d['doc_id']}  {dt:.0f}s  "
+            print(f"[{i+1}/{len(gold)}] {doc_id}  {dt:.0f}s  "
                   f"({(i+1)/dt:.1f} doc/s)", flush=True)
-        if on_checkpoint and (i + 1) % checkpoint_every == 0:
-            on_checkpoint(results)
+
+    if workers <= 1:
+        for i, d in enumerate(gold):
+            rec = _safe_process_doc(d)
+            results.append(rec)
+            _progress(i, d["doc_id"])
+            if on_checkpoint and (i + 1) % checkpoint_every == 0:
+                on_checkpoint(results)
+        return results
+
+    import multiprocessing
+    with multiprocessing.Pool(workers) as pool:
+        for i, rec in enumerate(pool.imap(_safe_process_doc, gold)):
+            results.append(rec)
+            _progress(i, gold[i]["doc_id"])
+            if on_checkpoint and (i + 1) % checkpoint_every == 0:
+                on_checkpoint(results)
     return results
 
 

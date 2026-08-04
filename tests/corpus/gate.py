@@ -791,6 +791,12 @@ def main(argv=None):
     results_path = None
     if argv and argv[0] == "--results":
         results_path = argv[1]
+    # ЭТАП SPEED: --workers N — параллельный прогон по документам (по умолчанию
+    # RM._default_workers(), т.е. авто; --workers 1 — прежнее однопоточное
+    # поведение). См. run_measurement.run_all.
+    workers = None
+    if "--workers" in argv:
+        workers = int(argv[argv.index("--workers") + 1])
 
     print("=== gate.py — ЕДИНЫЙ регресс-гейт (7 линий: precision / leak_v2 / masking A / "
           "masking B / over-mask прозы / границы по направлению / зеркало подавления) ===\n")
@@ -814,7 +820,7 @@ def main(argv=None):
     else:
         gold = RM.load_gold()
         print(f"\nПрогон измерения: {len(gold)} документов (encrypt+decrypt, изолированное хранилище)…")
-        current_results = RM.run_all(gold, verbose=True)
+        current_results = RM.run_all(gold, verbose=True, workers=workers)
         # Отладочный снимок текущего прогона — НЕ results_baseline.json, точку
         # отсчёта гейт никогда не перезаписывает.
         json.dump(current_results, open(CURRENT_DUMP, "w", encoding="utf-8"), ensure_ascii=False)
