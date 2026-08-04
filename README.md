@@ -48,11 +48,17 @@ venv/Scripts/python.exe shifrator.py decrypt-file <session_id> <файл.docx|.x
 
 ## Куда идти дальше (порядок чтения)
 
-**Новая сессия читает: [docs/STATE.md](docs/STATE.md).** При правке логики — плюс
-[docs/ARCHITECTURE.md](docs/ARCHITECTURE.md). При навигации по коду —
-[docs/archive/reports/CODEMAP.md](docs/archive/reports/CODEMAP.md). Остальное читать не нужно.
+**Рабочий контур — четыре файла, больше читать не нужно:**
 
-- [docs/archive/reports/DECISIONS.md](docs/archive/reports/DECISIONS.md) — отвергнутые решения (перед «а давайте…»).
+- [CLAUDE.md](CLAUDE.md) — правила работы, команды, запреты навсегда.
+- [docs/ARCHITECTURE.md](docs/ARCHITECTURE.md) — устройство: конвейер, слои детекции,
+  арбитраж, гейт, корпуса, инварианты и отвергнутые решения.
+- [docs/STATE.md](docs/STATE.md) — что сейчас зелёное, что красное, что висит.
+- [docs/FINDINGS.md](docs/FINDINGS.md) — открытые долги.
+
+Всё остальное — в [docs/archive/](docs/archive/); что и почему туда уехало,
+записано в [docs/DOC_REGISTRY.md](docs/DOC_REGISTRY.md). Например:
+
 - [docs/archive/specs/SHIFRATOR_SPEC_FILE_DECRYPT.md](docs/archive/specs/SHIFRATOR_SPEC_FILE_DECRYPT.md) — глубокая спека
   компонента 2 (детокенизация файлов).
 - [docs/archive/](docs/archive/) — летопись: устаревшие доки и исторические отчёты-
