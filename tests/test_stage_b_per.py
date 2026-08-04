@@ -26,6 +26,8 @@ for _p in (_SRC, _APP):
 from models import SourceDocument, TextSegment  # noqa: E402
 from pipeline import run_detection  # noqa: E402
 from tokenizer import tokenize  # noqa: E402
+import session_store  # noqa: E402
+import storage  # noqa: E402
 
 _CFG = os.path.join(_ROOT, "entity_types.yaml")
 
@@ -158,7 +160,7 @@ _PARITY_TEXT = (
 )
 
 
-def test_cli_ui_parity_byte_identical(tmp_path):
+def test_cli_ui_parity_byte_identical(tmp_path, monkeypatch):
     """Один файл → анонимный текст из CLI (shifrator.py, subprocess) и из UI-пути
     (app/core.run_encrypt, в процессе) ПОБАЙТНО совпадает. Обе точки входа зовут
     pipeline.run_detection — расхождения быть не может по построению; тест это
@@ -186,6 +188,14 @@ def test_cli_ui_parity_byte_identical(tmp_path):
     cli_txt = (home / ".shifrator" / "sessions" / f"{sid}.txt").read_text(encoding="utf-8")
 
     # --- UI-путь: app/core.run_encrypt в том же изолированном HOME ---
+    # session_store._DEFAULT_STORAGE_DIR читается ОДИН раз при первом импорте
+    # модуля в процессе (см. session_store.py:35) — переменные окружения ниже
+    # её не переоткрывают, поэтому без явного monkeypatch save_session писал бы
+    # в РЕАЛЬНЫЙ ~/.shifrator того, кто гоняет тесты (см. tests/test_storage_s1.py
+    # iso_store — тот же прецедент, тот же приём).
+    ui_sessions = home / ".shifrator" / "sessions"
+    monkeypatch.setattr(session_store, "_DEFAULT_STORAGE_DIR", ui_sessions)
+    monkeypatch.setattr(storage, "default_storage_dir", lambda: ui_sessions)
     # Сохраняем ИСХОДНЫЕ значения переменных (sentinel для отсутствующих) и точно
     # восстанавливаем — иначе tmp-HOME протёк бы в последующие тесты (default_storage_dir).
     _MISSING = object()

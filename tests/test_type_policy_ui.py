@@ -27,6 +27,8 @@ for _p in (_ROOT, os.path.join(_ROOT, "src"), os.path.join(_ROOT, "app")):
         sys.path.insert(0, _p)
 
 import type_policy  # noqa: E402
+import session_store  # noqa: E402
+import storage  # noqa: E402
 
 CONFIG = os.path.join(_ROOT, "entity_types.yaml")
 
@@ -40,6 +42,14 @@ def home(tmp_path, monkeypatch):
     monkeypatch.delenv("HOMEDRIVE", raising=False)
     monkeypatch.delenv("HOMEPATH", raising=False)
     assert Path.home() == tmp_path
+    # session_store._DEFAULT_STORAGE_DIR читается ОДИН раз при первом импорте
+    # модуля в процессе — переменные окружения выше её не переоткрывают, тесты
+    # этого файла зовут core.run_encrypt (сохраняет сессию) — без явного
+    # monkeypatch запись ушла бы в РЕАЛЬНЫЙ ~/.shifrator (см. tests/test_storage_s1.py
+    # iso_store, тот же приём).
+    sessions_dir = tmp_path / ".shifrator" / "sessions"
+    monkeypatch.setattr(session_store, "_DEFAULT_STORAGE_DIR", sessions_dir)
+    monkeypatch.setattr(storage, "default_storage_dir", lambda: sessions_dir)
     return tmp_path
 
 
