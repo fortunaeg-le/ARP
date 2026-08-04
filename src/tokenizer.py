@@ -22,8 +22,7 @@ dataclass'ы импортируются из models.py, не переопред�
 import sys
 import uuid
 
-import yaml
-
+from config_cache import load_yaml_cached
 from models import Entity, SourceDocument, TextSegment
 
 # B3-fix: сколько символов хвоста A / головы B берём в граничное окно детекции.
@@ -105,8 +104,7 @@ def assert_priority_contract(config_path: str) -> None:
     Зовётся из resolve_for_masking — ДО того, как _resolve_overlaps вообще
     посчитает хоть одно пересечение (иначе забытый тип успел бы молча
     проиграть раньше, чем сборка о нём узнает)."""
-    with open(config_path, encoding="utf-8") as f:
-        config = yaml.safe_load(f)
+    config = load_yaml_cached(config_path)
 
     missing: list[str] = []
     for entity_type, spec in config["entity_types"].items():
@@ -350,8 +348,7 @@ def _resolve_overlaps(
 
 def _load_token_prefixes(config_path: str) -> dict[str, str]:
     """entity_type -> token_prefix из entity_types.yaml. Файл обязан существовать."""
-    with open(config_path, encoding="utf-8") as f:
-        config = yaml.safe_load(f)
+    config = load_yaml_cached(config_path)
 
     prefixes: dict[str, str] = {}
     for entity_type, spec in config["entity_types"].items():
@@ -768,8 +765,7 @@ def _barrier_types(config_path: str) -> frozenset[str]:
     COLLECTIVE — отрицательные классы) — те, что никогда не маскируются, но
     участвуют в разрешении пересечений барьером. Тип без записи в конфиге вовсе
     сюда попасть не может (перечисление только объявленных типов)."""
-    with open(config_path, encoding="utf-8") as f:
-        config = yaml.safe_load(f)
+    config = load_yaml_cached(config_path)
     return frozenset(
         t for t, spec in config.get("entity_types", {}).items()
         if isinstance(spec, dict) and "token_prefix" not in spec

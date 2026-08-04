@@ -2,8 +2,7 @@ import re
 import sys
 import uuid
 
-import yaml
-
+from config_cache import load_yaml_cached
 from models import Entity, SourceDocument
 from normalizer import detection_view, norm_to_src, _ALPHA_FOLD
 
@@ -150,8 +149,7 @@ def _load_regex_types(config_path: str) -> list[tuple[str, re.Pattern, object, i
     значения: под якорем КС игнорируется (сигнал, не шлагбаум), без якоря КС
     по-прежнему решает — см. `detect_regex`.
     """
-    with open(config_path, encoding="utf-8") as f:
-        config = yaml.safe_load(f)
+    config = load_yaml_cached(config_path)
 
     result = []
     for entity_type, spec in config["entity_types"].items():

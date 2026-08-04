@@ -57,8 +57,7 @@ if _gc_gen0 > 0:
     if _gc_gen0 > _g0:
         _gc.set_threshold(_gc_gen0, _g1, _g2)
 
-import yaml
-
+from config_cache import load_yaml_cached
 from models import Entity, SourceDocument
 from normalizer import detection_view, norm_to_src, src_to_norm
 from natasha import (
@@ -944,8 +943,7 @@ def _load_ner_config(config_path: str) -> tuple[dict, list[str]]:
         (обычно ["ADDRESS"]).
     Записи с enabled: false пропускаются. Файл обязан существовать — иначе FileNotFoundError.
     """
-    with open(config_path, encoding="utf-8") as f:
-        config = yaml.safe_load(f)
+    config = load_yaml_cached(config_path)
 
     ner_label_map: dict[str, str] = {}
     addr_types: list[str] = []

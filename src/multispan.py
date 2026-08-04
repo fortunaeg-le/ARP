@@ -33,8 +33,7 @@ original_text = срез сегмента по hull (разделители ме
 import re
 import uuid
 
-import yaml
-
+from config_cache import load_yaml_cached
 from models import Entity, SourceDocument
 from normalizer import detection_view, norm_to_src
 from regex_detector import _has_anchor
@@ -111,8 +110,7 @@ def _emit(segment, norm, omap, chain, entity_type, plus_prefix=False):
 
 
 def _load_account_anchor(config_path: str):
-    with open(config_path, encoding="utf-8") as f:
-        config = yaml.safe_load(f)
+    config = load_yaml_cached(config_path)
     spec = config["entity_types"].get("BANK_ACCOUNT") or {}
     a = spec.get("anchor")
     return re.compile(a) if a else None

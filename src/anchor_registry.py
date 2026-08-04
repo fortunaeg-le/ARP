@@ -37,8 +37,7 @@ import uuid
 from dataclasses import dataclass, field
 from functools import lru_cache
 
-import yaml
-
+from config_cache import load_yaml_cached
 from models import Entity, SourceDocument
 from normalizer import norm_to_src, normalize_for_detection, src_to_norm
 
@@ -1071,8 +1070,7 @@ def detect_negative_classes(doc: SourceDocument, config_path: str) -> list[Entit
     (см. `_neg_class_on`) — выключенный класс не эмитится вовсе, барьер исчезает
     целиком, маски соседних типов возвращаются в прежнем виде (приёмка T4, п.4).
     """
-    with open(config_path, encoding="utf-8") as f:
-        config = yaml.safe_load(f)
+    config = load_yaml_cached(config_path)
     types = config.get("entity_types", {})
     role_on = _neg_class_on(types.get("ROLE_TERM"))
     coll_on = _neg_class_on(types.get("COLLECTIVE"))

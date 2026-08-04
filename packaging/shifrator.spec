@@ -116,7 +116,7 @@ hiddenimports = [
     # их статическим анализом байткода, но перечисляем явно на случай
     # ленивых импортов внутри функций, до которых анализатор не дошёл.
     "extractor", "pipeline", "tokenizer", "storage", "session_store",
-    "models", "normalizer", "regex_detector", "ner_detector",
+    "models", "normalizer", "regex_detector", "ner_detector", "config_cache",
     "anchor_registry", "syntax_compound", "multispan", "detokenizer",
     "file_detokenizer", "unread_zones", "ooxml_core", "docx_rewriter",
     "pptx_rewriter", "xlsx_rewriter", "type_policy",
