@@ -57,7 +57,7 @@ venv/Scripts/python.exe shifrator.py decrypt-file <session_id> <файл.docx|.x
 - [docs/FINDINGS.md](docs/FINDINGS.md) — открытые долги.
 
 Всё остальное — в [docs/archive/](docs/archive/); что и почему туда уехало,
-записано в [docs/DOC_REGISTRY.md](docs/DOC_REGISTRY.md). Например:
+записано в [docs/archive/DOC_REGISTRY.md](docs/archive/DOC_REGISTRY.md). Например:
 
 - [docs/archive/specs/SHIFRATOR_SPEC_FILE_DECRYPT.md](docs/archive/specs/SHIFRATOR_SPEC_FILE_DECRYPT.md) — глубокая спека
   компонента 2 (детокенизация файлов).

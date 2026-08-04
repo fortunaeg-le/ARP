@@ -47,7 +47,7 @@ docs/archive/                 всё остальное
 | `docs/archive/legal/` | 3 | `LEGAL_CHECK`, `LICENSES_AUDIT`, `THIRD_PARTY_LICENSES` |
 | `docs/archive/` | 2 | `TECH_AUDIT.md`, `ANCHOR_REGISTRY.md` (были в корне) |
 
-Построчные решения по каждому файлу — [`DOC_REGISTRY.md`](DOC_REGISTRY.md) §2–3.
+Построчные решения по каждому файлу — [`DOC_REGISTRY.md`](../DOC_REGISTRY.md) §2–3.
 
 ## 3. Что слито куда
 
@@ -288,7 +288,7 @@ python .claude/hooks/selftest.py
    и в находке `Eprime-B`.
 2. **`experiments/` не разобран.** 160 трекнутых файлов, 18 каталогов, живой код
    вперемешку с логами прогонов. Опись сделана
-   ([`DOC_REGISTRY.md`](DOC_REGISTRY.md) §4, рабочие скрипты отделены от
+   ([`DOC_REGISTRY.md`](../DOC_REGISTRY.md) §4, рабочие скрипты отделены от
    артефактов), решение — отдельная сессия. Ничего не тронуто.
 3. **Точка отсчёта подвыборки не переснята с этапа T2.** `subsample.py` из-за
    этого показывает три «регресса», которых на полном гейте нет. Пересборка —

@@ -5,8 +5,9 @@
 текстом, прав код, а этот файл чинится.
 
 Текущее состояние и открытые дефекты — НЕ здесь, а в [STATE.md](STATE.md) и
-[FINDINGS.md](FINDINGS.md). Историческая доказательная база (цифры, репро,
-методики) — `docs/archive/`, оглавление переездов — [DOC_REGISTRY.md](DOC_REGISTRY.md).
+[FINDINGS.md](FINDINGS.md); история по этапам — [JOURNAL.md](JOURNAL.md).
+Историческая доказательная база (цифры, репро, методики) — `docs/archive/`,
+оглавление переездов — [DOC_REGISTRY.md](archive/DOC_REGISTRY.md).
 
 ---
 

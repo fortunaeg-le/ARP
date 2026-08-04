@@ -18,13 +18,18 @@
 | `entity_types.yaml` | Реестр типов: паттерны, префиксы токенов, флаги. Порядок арбитража здесь НЕ задан — он в `src/tokenizer.py` |
 | `app/` | Десктопный интерфейс: stdlib `http.server` + один `index.html`, только `127.0.0.1` |
 | `tests/` | pytest; `tests/corpus/` — корпус v1 + гейт; `tests/corpus_v2/` — корпус v2 + генератор; `tests/component2/` — OOXML |
-| `docs/` | Рабочий контур: `ARCHITECTURE.md`, `STATE.md`, `FINDINGS.md`. Остальное — `docs/archive/`, реестр переездов — `docs/DOC_REGISTRY.md` |
-| `experiments/` | По-этапные разведочные скрипты и логи прогонов. Опись — `docs/DOC_REGISTRY.md` §4 |
+| `docs/` | Рабочий контур: `JOURNAL.md`, `STATE.md`, `ARCHITECTURE.md`, `FINDINGS.md`. Остальное — `docs/archive/`, реестр переездов — `docs/archive/DOC_REGISTRY.md` |
+| `experiments/` | По-этапные разведочные скрипты и логи прогонов. Опись — `docs/archive/DOC_REGISTRY.md` §4 |
 | `bench/` | Легаси-харнесс регресса адреса. **Это не гейт** |
 | `packaging/` | PyInstaller-спека и лок сборки |
 
-Подробности — [`docs/ARCHITECTURE.md`](docs/ARCHITECTURE.md). Состояние —
-[`docs/STATE.md`](docs/STATE.md). Открытые долги — [`docs/FINDINGS.md`](docs/FINDINGS.md).
+Состояние сейчас — [`docs/STATE.md`](docs/STATE.md). История по этапам —
+[`docs/JOURNAL.md`](docs/JOURNAL.md). Устройство — [`docs/ARCHITECTURE.md`](docs/ARCHITECTURE.md).
+Открытые долги — [`docs/FINDINGS.md`](docs/FINDINGS.md).
+
+Правила зон лежат по месту: [`src/CLAUDE.md`](src/CLAUDE.md),
+[`tests/corpus/CLAUDE.md`](tests/corpus/CLAUDE.md),
+[`tests/corpus_v2/CLAUDE.md`](tests/corpus_v2/CLAUDE.md).
 
 ## Команды
 
@@ -71,7 +76,19 @@ venv\Scripts\pyinstaller.exe packaging\shifrator.spec --distpath dist --workpath
 - **Любое утверждение о коде — гипотеза, пока нет `файл:строка` или прогона.**
   Цифры из отчётов прошлых этапов — тоже гипотеза: они верны на свою дату.
 - Коммитить группами, чтобы можно было откатить точечно. Не пушить.
-- Отчёт этапа — в `docs/archive/reports/`, а не в верхний уровень `docs/`.
+
+## Правило рождения документов
+
+**Отчёт этапа отдельным файлом не создаётся.** Итог этапа = запись в
+[`docs/JOURNAL.md`](docs/JOURNAL.md) (только дописывается снизу, удалять и
+переписывать записи нельзя никогда) + перезапись [`docs/STATE.md`](docs/STATE.md)
+целиком. Новые файлы в `docs/` — только с разрешения владельца.
+
+Потолки размера, обязательные к соблюдению: `CLAUDE.md` ≤ 150 строк,
+`docs/ARCHITECTURE.md` ≤ 400 строк. Упёрлись — сокращать или выносить в архив,
+а не растить. `JOURNAL.md` потолка не имеет: он накопительный.
+
+Ничего не удаляется физически — только `git mv` в `docs/archive/`.
 
 ## Правило прогона корпуса
 
