@@ -31,7 +31,7 @@
 Дата: **2026-07-25**. Ветка `u1-desktop-packaging`, `HEAD` = `f61880d`.
 Тема: **измерение и охрана, не поведение.** Детекция НЕ тронута — 0 правок в
 `src/`, агрегат `corpus_anon_sha.py` совпал с эталоном байт-в-байт (§7).
-Закрывает находку №1 архитектурного аудита (`docs/ARCHITECTURE_AUDIT.md` §5.1,
+Закрывает находку №1 архитектурного аудита (`docs/archive/reports/ARCHITECTURE_AUDIT.md` §5.1,
 предложение P2). **Не коммичено.**
 
 ---
@@ -449,7 +449,7 @@ SNILS 100% · BIRTHDATE 95.00%
 > топонима, не потеря защиты; **S2-4** 164 утечки реквизитов — чистый MASK-SHIFT
 > при байт-в-байт неизменном recall; **S2-5** 83 ФИО потеряны детекцией и текут,
 > 14 из них canonical. См.
-> [`archive/reports/HANDOFF_S2.md`](archive/reports/HANDOFF_S2.md).
+> [`archive/reports/HANDOFF_S2.md`](HANDOFF_S2.md).
 
 **Замена блока «Актуальные цифры» в STATE §2** — таблица из §8 выше (старая
 таблица помечена этапом 2b и устарела на девять этапов).
@@ -473,7 +473,7 @@ SNILS 100% · BIRTHDATE 95.00%
 
 Незакоммиченные правки U1–U3/S1 (`app/`, `src/storage.py`,
 `src/session_store.py`, `tests/test_storage_s1.py`, `docs/STATE.md`,
-`docs/ARCHITECTURE_AUDIT.md`) этой сессией НЕ ТРОНУТЫ.
+`docs/archive/reports/ARCHITECTURE_AUDIT.md`) этой сессией НЕ ТРОНУТЫ.
 
 ---
 

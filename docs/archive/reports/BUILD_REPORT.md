@@ -6,7 +6,7 @@
 ## Шаг 0. Факты
 
 **а) Чем собирается.** PyInstaller по спеке
-[`packaging/shifrator.spec`](../packaging/shifrator.spec) (команда — в её шапке,
+[`packaging/shifrator.spec`](../../../packaging/shifrator.spec) (команда — в её шапке,
 строка 10):
 
 ```
@@ -16,14 +16,14 @@ venv/Scripts/pyinstaller.exe packaging/shifrator.spec --distpath dist --workpath
 Режим `--onedir`. Результат — `dist/SHIFRATOR/` (`SHIFRATOR.exe` + `_internal/`),
 рабочие файлы сборщика — `build/shifrator/`.
 
-**б) Метка версии.** [`app/core.py:68`](../app/core.py) — константа `BUILD_MARK`.
+**б) Метка версии.** [`app/core.py:68`](../../../app/core.py) — константа `BUILD_MARK`.
 Оттуда она расходится в: футер интерфейса (`server.py:231`, подстановка
 `{{BUILD_MARK}}` в `index.html`), `/api/ping` (`server.py:201`), окно лаунчера
 (`launcher.py:129`), файл `launcher.lock` (`launcher.py:90`), поле `build_mark`
 КАЖДОЙ записи разметки (`core.py:680/701/735`) и в отчёт — как `tool_build` и
 как ключи разбивки `by_build` (`report.py:574`). Формат ограничен сторожом
 отчёта `report._BUILD_RE` = `^[A-Za-z0-9][A-Za-z0-9._-]{0,63}$`
-([`report.py:220`](../app/report.py)); слаг сборки разрешён только в
+([`report.py:220`](../../../app/report.py)); слаг сборки разрешён только в
 `report.tool_build`, `report.findings[].build` и ключах `report.by_build`
 (`report.py:628–632`, починка U4-FIX). Неверный формат не роняет отчёт, а
 схлопывает значение в `unknown` — сборки перестали бы различаться.
@@ -60,7 +60,7 @@ dist/SHIFRATOR/_internal/natasha/data/model/slovnet_syntax_news_v1.tar
 ## Шаг 1. Перед сборкой
 
 * Рабочее дерево приведено в чистое: два незакоммиченных файла документации
-  (`ANCHOR_REGISTRY.md`, `TECH_AUDIT.md`) закоммичены отдельно (`f190dfd`),
+  (`ANCHOR_REGISTRY.md`, `docs/archive/TECH_AUDIT.md`) закоммичены отдельно (`f190dfd`),
   кода не касаются.
 * `venv/Scripts/python.exe -m pytest -q` — **1217 passed, 3 skipped, 3
   deselected, 10 xfailed** за 734 с. Тесты не ослаблялись.
@@ -93,7 +93,7 @@ passed.
 ## Шаг 4. Проверка запуском собранного приложения
 
 Запускался именно `dist/SHIFRATOR/SHIFRATOR.exe`, общение — живым HTTP.
-Скрипт: [`experiments/stage_build/exe_live_check.py`](../experiments/stage_build/exe_live_check.py),
+Скрипт: [`experiments/stage_build/exe_live_check.py`](../../../experiments/stage_build/exe_live_check.py),
 вывод: `experiments/stage_build/exe_live_check.log`. Домашняя директория
 подменена на временную — реальный `~/.shifrator` не тронут; принадлежность
 процесса проверена по `settings_path` внутри временной директории.

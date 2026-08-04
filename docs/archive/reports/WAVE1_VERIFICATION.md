@@ -5,7 +5,7 @@
 `PROJECT_AUDIT.md`, раздел 3) — верификация велась по коду, тестам и собственным прогонам,
 а не по текстовым заявлениям исполнителей, как и требует ТЗ.
 
-Новые тесты этой верификации: [`tests/test_wave1_verification.py`](../../tests/test_wave1_verification.py)
+Новые тесты этой верификации: [`tests/test_wave1_verification.py`](../../../tests/test_wave1_verification.py)
 (12 тестов). Существующие тесты не редактировались.
 
 ---

@@ -1,6 +1,6 @@
 # HANDOFF — зафиксированный итерационный срез корпуса
 
-> **УСТАРЕЛО ЧАСТИЧНО — читать вместе с `docs/CORPUS_V2_REPORT.md` §5.**
+> **УСТАРЕЛО ЧАСТИЧНО — читать вместе с `docs/archive/reports/CORPUS_V2_REPORT.md` §5.**
 > Сессия CORPUS-V2 (2026-07-27) исправила признак «слово разорвано
 > форматированием»: он считался по соседним `w:t`, а не по границе ранов.
 > Числа этого отчёта, ставшие неверными:
@@ -13,7 +13,7 @@
 
 **Дата:** 2026-07-27. **Ветка:** `main`, ничего не коммичено.
 **Правок в `src/`:** ноль. **Правок в корпусе:** ноль.
-**Контекст:** `docs/PERF_REPORT.md` §3.3, §3.4, §4.1–4.4, П.1–П.3, «Что при этом теряется».
+**Контекст:** `docs/archive/reports/PERF_REPORT.md` §3.3, §3.4, §4.1–4.4, П.1–П.3, «Что при этом теряется».
 
 ---
 
@@ -313,10 +313,10 @@ passed / 10 xfailed, прибавились ровно мои 8.
  M experiments/stage_o2/acceptance.py
  M experiments/stage_o2/etalon.py
  M tests/corpus/subsample.py
-?? docs/ENTITY_SPEC.md          ← было до сессии
-?? docs/MARKUP_RULES.md         ← было до сессии
-?? docs/PERF_REPORT.md          ← было до сессии
-?? docs/T0V_REPORT.md           ← было до сессии
+?? docs/archive/specs/ENTITY_SPEC.md          ← было до сессии
+?? docs/archive/specs/MARKUP_RULES.md         ← было до сессии
+?? docs/archive/reports/PERF_REPORT.md          ← было до сессии
+?? docs/archive/reports/T0V_REPORT.md           ← было до сессии
 ?? tests/corpus/build_structure.py
 ?? tests/corpus/build_subset_iter.py
 ?? tests/corpus/results_iter_baseline.json

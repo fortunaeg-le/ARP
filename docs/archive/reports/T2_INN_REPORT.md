@@ -15,7 +15,7 @@
 ### 1а. Как был устроен шаблон и где различалась длина
 
 Один тип, один паттерн на обе длины —
-[`entity_types.yaml:50-55`](../entity_types.yaml) на коммите `7e4e2fa`:
+[`entity_types.yaml:50-55`](../../../entity_types.yaml) на коммите `7e4e2fa`:
 
 ```yaml
 INN:
@@ -141,8 +141,8 @@ regex-реквизиты в неё не входили и до этого эта
 
 ## 3. ШАГ 2 — переразметка эталона
 
-Скрипт — [`experiments/stage_t2_inn/retype_gold.py`](../experiments/stage_t2_inn/retype_gold.py),
-дамп — [`dump_before_after.txt`](../experiments/stage_t2_inn/dump_before_after.txt),
+Скрипт — [`experiments/stage_t2_inn/retype_gold.py`](../../../experiments/stage_t2_inn/retype_gold.py),
+дамп — [`dump_before_after.txt`](../../../experiments/stage_t2_inn/dump_before_after.txt),
 **зерно выборки 20260729**.
 
 **Классификатор.** Наивный `len(re.sub(r"\D",""))` НЕ ГОДИТСЯ: корпус

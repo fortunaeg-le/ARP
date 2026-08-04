@@ -1,7 +1,7 @@
 # WERT_CLEANUP — удаление wert.docx из истории git
 
 Дата операции: 2026-07-28.
-Контекст: docs/REAL_DOCS_CHECK.md зафиксировал, что в истории репозитория
+Контекст: docs/archive/reports/REAL_DOCS_CHECK.md зафиксировал, что в истории репозитория
 остался реальный документ `wert.docx` (коммит `daaef29e`), не затронутый
 прошлой чисткой `git filter-repo` (проводилась 2026-07-20, цель —
 `real_docs/` и `dogovor.docx`).
@@ -18,9 +18,9 @@
 
 `git status --porcelain` до операции показывал изменённые
 `experiments/stage_o2/acceptance.py`, `experiments/stage_o2/etalon.py`,
-`tests/corpus/subsample.py` и новые файлы `docs/ENTITY_SPEC.md`,
-`docs/GENV_REPORT.md`, `docs/HANDOFF_SUBSET_ITER.md`,
-`docs/MARKUP_RULES.md`, `docs/PERF_REPORT.md`, `docs/T0V_REPORT.md`.
+`tests/corpus/subsample.py` и новые файлы `docs/archive/specs/ENTITY_SPEC.md`,
+`docs/archive/reports/GENV_REPORT.md`, `docs/archive/reports/HANDOFF_SUBSET_ITER.md`,
+`docs/archive/specs/MARKUP_RULES.md`, `docs/archive/reports/PERF_REPORT.md`, `docs/archive/reports/T0V_REPORT.md`.
 
 Закоммичено двумя коммитами (хеши изменились после filter-repo, см. ниже
 текущие хеши после операции):
@@ -179,7 +179,7 @@ dangling-объекта (в том числе исчезли и 15 dangling-об
 c1b8ef3 Обновление acceptance/etalon (stage_o2) и subsample.py тестового корпуса
 3b492fc DOC-REAL-CHECK: проверка репозитория на следы реальных договоров
 78cfc34 DOC-LEGAL-2: правка PRODUCT_LEGAL.md по фактам LEGAL_CHECK.md
-c7b13b0 DOC-LEGAL-CHECK: фактическая проверка PRODUCT_LEGAL.md (docs/LEGAL_CHECK.md)
+c7b13b0 DOC-LEGAL-CHECK: фактическая проверка PRODUCT_LEGAL.md (docs/archive/legal/LEGAL_CHECK.md)
 75e285c Догонка CORPUS-V2-B: настоящая сверка байтов, возврат «цифры против прописи», слияние номеров, замок на послаблении, TRANCHE помечен неизмеримым
 9313e8d Техническое описание продукта для юриста по ИС (РАЗДЕЛ DOC-LEGAL).
 a29035e Возврат чужой правки tests/corpus/subsample.py, захваченной по недосмотру
@@ -212,7 +212,7 @@ origin	https://github.com/fortunaeg-le/ARP.git (push)
 push повторно проверены шаги 5–6: `wert.docx` отсутствует в истории и
 объектах, `git fsck --full` пуст, MANIFEST корпуса 656/656 OK.
 (Единственное совпадение по `grep -i wert` — файл этого же отчёта
-`docs/WERT_CLEANUP.md`, ложное срабатывание по имени файла, не сам
+`docs/archive/reports/WERT_CLEANUP.md`, ложное срабатывание по имени файла, не сам
 документ.)
 
 ### 1. Пуш

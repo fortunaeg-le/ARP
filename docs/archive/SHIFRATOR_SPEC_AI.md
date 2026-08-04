@@ -5,7 +5,7 @@
 > **Актуальность (2026-07-12, аудит):** спецификация синхронизирована с фактическим кодом
 > после трёх раундов тестирования (правки B1/B2/B5/B6, B3-fix, новый контракт CLI encrypt,
 > `delete`/`delete_session`/`exclude_session_id`). Компонент 2 (детокенизация файлов,
-> блоки 8–12) **реализован** — его спецификация в `docs/SHIFRATOR_SPEC_FILE_DECRYPT.md`.
+> блоки 8–12) **реализован** — его спецификация в `docs/archive/specs/SHIFRATOR_SPEC_FILE_DECRYPT.md`.
 > Точка входа для нового чата — `HANDOFF_CURRENT.md` в корне проекта.
 
 ## Структура проекта (после аудита 2026-07-12)
@@ -22,7 +22,7 @@ ARP/
 │   ├── session_store.py detokenizer.py            # блоки 1–6
 │   └── ooxml_core.py docx_rewriter.py pptx_rewriter.py xlsx_rewriter.py
 │       file_detokenizer.py                        # блоки 8–12 (компонент 2)
-├── docs/                 # эта спека, спека компонента 2, HANDOFF-архив (docs/handoffs/), отчёты (docs/reports/)
+├── docs/                 # эта спека, спека компонента 2, HANDOFF-архив (docs/archive/handoffs/), отчёты (docs/archive/reports/)
 ├── tests/                # блоки 1–7; tests/component2/ — блоки 8–12
 └── venv/
 ```
@@ -105,8 +105,8 @@ class Entity:
 
 **Источник истины по паттернам — сам файл `entity_types.yaml` в корне проекта.** Блок ниже —
 его актуальная копия после правок B1 (ReDoS в `SUM`) и B2 (пробелы-разделители внутри
-реквизитов) из `docs/reports/BREAKING_REPORT.md`; при любом расхождении верить файлу.
-Историческая версия конфига до этих правок сохранена в `docs/handoffs/HANDOFF_1.md`.
+реквизитов) из `docs/archive/reports/BREAKING_REPORT.md`; при любом расхождении верить файлу.
+Историческая версия конфига до этих правок сохранена в `docs/archive/handoffs/HANDOFF_1.md`.
 
 ```yaml
 entity_types:
@@ -395,7 +395,7 @@ python shifrator.py delete <session_id>
     → код возврата 0 в обоих случаях
 python shifrator.py decrypt-file <session_id> <файл.docx|.xlsx|.pptx> [--out <путь>]
     → компонент 2 (блок 12): раскрывает токены в файле с сохранением оформления;
-      контракт — в docs/SHIFRATOR_SPEC_FILE_DECRYPT.md (реализован)
+      контракт — в docs/archive/specs/SHIFRATOR_SPEC_FILE_DECRYPT.md (реализован)
 ```
 **Требования:**
 - Только склейка блоков 1-6 через их публичные функции, без новой бизнес-логики.

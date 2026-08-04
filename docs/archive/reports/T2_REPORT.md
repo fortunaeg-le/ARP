@@ -47,7 +47,7 @@ DOCNUM 387, DATE 138, TRANCHE 37. У MONEY 147 из 725 — негативы д�
 
 ### 1б. Соответствие имён MONEY ↔ SUM
 
-`TYPE_MAP` живёт в [tests/corpus/measure_lib.py:103](../tests/corpus/measure_lib.py:103)
+`TYPE_MAP` живёт в [tests/corpus/measure_lib.py:103](../../../tests/corpus/measure_lib.py:103)
 — это карта «ключ `entity_types.yaml` → короткий код замера» (`PERSON→PER`,
 `INN_PERSON→INN_PER`, `BANK_ACCOUNT→ACCOUNT`). Денежный тип в конфиге зовётся
 `SUM`, в разметке v2 — `MONEY`.
@@ -56,7 +56,7 @@ DOCNUM 387, DATE 138, TRANCHE 37. У MONEY 147 из 725 — негативы д�
 историю чисел старого корпуса (этап T-GOLD-A, 648 сумм), имя `MONEY` — историю
 разметки v2; переименовав любое, мы порвали бы сравнимость с прошлым.
 Соответствие живёт ОДНОЙ записью в замере — `_GOLD_ALIAS = {"MONEY": "SUM"}`
-([tests/corpus_v2/measure_v2.py](../tests/corpus_v2/measure_v2.py)) — и
+([tests/corpus_v2/measure_v2.py](../../../tests/corpus_v2/measure_v2.py)) — и
 применяется к ЭТАЛОНУ на входе; дальше весь замер говорит на языке типов кода.
 
 У новых типов имена в конфиге и в разметке СОВПАДАЮТ (`PERCENT`, `TERM`) —
@@ -152,15 +152,15 @@ v2 (470 штук):
 банковских дней» — формула договора, защищается число.
 
 Соответственно `V2_NUMERIC_TYPES` в
-[tests/corpus/run_measurement.py:86](../tests/corpus/run_measurement.py:86)
+[tests/corpus/run_measurement.py:86](../../../tests/corpus/run_measurement.py:86)
 новыми типами **не пополнялся** — с обоснованием прямо в комментарии.
 
 ---
 
 ## 3. ШАГ 2 — ДВА ДЕТЕКТОРА
 
-Оба — regex-слой, [entity_types.yaml:210](../entity_types.yaml:210) (PERCENT) и
-[entity_types.yaml:245](../entity_types.yaml:245) (TERM), каждый со своим
+Оба — regex-слой, [entity_types.yaml:210](../../../entity_types.yaml:210) (PERCENT) и
+[entity_types.yaml:245](../../../entity_types.yaml:245) (TERM), каждый со своим
 `token_prefix` (`[PERCENT_N]`, `[TERM_N]`).
 
 ### 3а. Формы, взятые ИЗ ДОКУМЕНТОВ
@@ -216,7 +216,7 @@ TERM:
 ### 3в. Арбитраж: куда вписаны и почему
 
 Оба типа вписаны в `_REGEX_PRIORITY`
-([src/tokenizer.py:56](../src/tokenizer.py:56)) — **в конец списка**, слабее
+([src/tokenizer.py:56](../../../src/tokenizer.py:56)) — **в конец списка**, слабее
 всех реквизитов при равной длине спана. Обоснование: у реквизита есть либо
 контрольная сумма, либо жёсткая форма значения, либо якорь-слово; у процента и
 срока — только конструкция прозы вокруг числа. При совпадении длины прав скорее
@@ -239,7 +239,7 @@ TERM:
 
 Дефект найден здесь и починен здесь же: без починки обоснование места новых
 типов было бы ложным. Индекс сравнивается числом
-([src/tokenizer.py:146](../src/tokenizer.py:146)).
+([src/tokenizer.py:146](../../../src/tokenizer.py:146)).
 
 **Правка проверена на нейтральность:** прогон корпуса v2 до и после починки даёт
 поимённо ОДИН И ТОТ ЖЕ набор масок — 6269, добавлено 0, удалено 0. Равные по
@@ -251,7 +251,7 @@ TERM:
 ### 3д. Наборы
 
 `WITH_MONEY = PERSONAL_REQUISITES + ("SUM", "PERCENT", "TERM")`
-([src/type_policy.py:67](../src/type_policy.py:67)); в «Максимум» оба входят
+([src/type_policy.py:67](../../../src/type_policy.py:67)); в «Максимум» оба входят
 через сентинел `None`, отдельной синхронизации не требуют.
 
 Почему в один набор с деньгами, а не в отдельный: решение владельца назвало три

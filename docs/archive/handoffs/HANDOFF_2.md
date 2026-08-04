@@ -1,10 +1,10 @@
 # HANDOFF — Блок 2: Regex-детектор структурных сущностей
 
 > **Примечание аудита (2026-07-12).** Это исторический документ сдачи блока: он описывает
-> состояние на момент сдачи и НЕ обновляется. Источник истины — `docs/SHIFRATOR_SPEC_AI.md`
-> (+ `docs/SHIFRATOR_SPEC_FILE_DECRYPT.md` для блоков 8–12) и `HANDOFF_CURRENT.md` в корне.
+> состояние на момент сдачи и НЕ обновляется. Источник истины — `docs/archive/SHIFRATOR_SPEC_AI.md`
+> (+ `docs/archive/specs/SHIFRATOR_SPEC_FILE_DECRYPT.md` для блоков 8–12) и `HANDOFF_CURRENT.md` в корне.
 > После структурирования проекта все модули лежат в `src/` (импорты остались плоскими).
-> **Что здесь устарело (B1/B2, `docs/reports/BREAKING_REPORT.md`):** паттерны
+> **Что здесь устарело (B1/B2, `docs/archive/reports/BREAKING_REPORT.md`):** паттерны
 > INN/OGRN/KPP/BANK_ACCOUNT/BIK в `entity_types.yaml` теперь допускают одиночный
 > пробел/неразрывный пробел между цифрами; `inn_checksum`/`ogrn_checksum` перед проверкой
 > снимают эти разделители (`_strip_requisite_separators` в `regex_detector.py`);

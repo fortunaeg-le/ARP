@@ -3,7 +3,7 @@
 
 Эти тесты написаны ДО починки и НЕ тем, кто будет чинить: они фиксируют РЕЗУЛЬТАТ,
 которого этап обязан достичь, чтобы починку нельзя было «подогнать» под тест.
-Карта «дыра -> тест -> этап» — `docs/reports/FUTURE_CONTRACTS.md`.
+Карта «дыра -> тест -> этап» — `docs/archive/reports/FUTURE_CONTRACTS.md`.
 
 КАК ЭТО РАБОТАЕТ
     Нерешённая дыра    -> @pytest.mark.xfail(strict=True).  Когда этап её закроет,
@@ -232,7 +232,7 @@ def _address_names_surviving(gold_text, anon):
 # (единственный класс документов корпуса без единого состязательного приёма).
 # Значит утечка не может объясняться омоглифом, невидимым символом, разрывом или
 # регистром — только отсутствием детектора.
-# Первоисточник дыры: docs/reports/COVERAGE_MEASUREMENT.md §3 «no_detector_for_type»
+# Первоисточник дыры: docs/archive/reports/COVERAGE_MEASUREMENT.md §3 «no_detector_for_type»
 # (SNILS 228, BIRTHDATE 228) и «no_detector_passport_subdiv» (305).
 _S3_DOC = "services_0001"
 _S3_BIRTHDATE = "21.01.1960"

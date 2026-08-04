@@ -9,7 +9,7 @@ recall(found) BIK-excl **56.3%**, leak_v2 ≥6 **48.0%**, ≥8 **43.0%**, FP н�
 
 ## 1. Что нормализуется и как устроена карта
 
-Новый модуль [src/normalizer.py](../../src/normalizer.py). Строит НОРМАЛИЗОВАННУЮ
+Новый модуль [src/normalizer.py](../../../src/normalizer.py). Строит НОРМАЛИЗОВАННУЮ
 КОПИЮ текста + КАРТУ ИНДЕКСОВ `offset_map` (norm_idx → src_idx). Детекция идёт по
 копии; каждый найденный спан отображается обратно в ИСХОДНЫЕ координаты
 (`norm_to_src`), `original_text` вырезается из настоящего `segment.text`.
@@ -48,8 +48,8 @@ original_text` держится для ВСЕХ сущностей (0 наруш
 регистро-нормализованной копии (строчные/заглавные ФИО без нумерации) — 2b.
 
 ### Точка вставки
-Детекторы ([regex_detector.py](../../src/regex_detector.py),
-[ner_detector.py](../../src/ner_detector.py)) зовут `normalizer.detection_view(seg)`
+Детекторы ([regex_detector.py](../../../src/regex_detector.py),
+[ner_detector.py](../../../src/ner_detector.py)) зовут `normalizer.detection_view(seg)`
 вместо прямого чтения `detection_text`. `detection_view` кэширует
 `(norm_text, offset_map)` в `segment.metadata` (переиспользуется тремя вызовами
 детекции). База = `detection_text` (если есть) иначе `segment.text`; обе равной
@@ -176,7 +176,7 @@ yargy к голым 6-значным прогонам.
 `strict=False` на документе `services_0001` XPASS-ил ТОЛЬКО потому, что этот
 конкретный документ попал в маскируемую нормализацией часть корпуса — при
 изменении границ чужого детектора (KPP/ADDRESS) погашение отвалится без единой
-правки src/. Полный разбор — `docs/reports/FINDINGS.md`, раздел Stage2-N.
+правки src/. Полный разбор — `docs/archive/reports/FINDINGS.md`, раздел Stage2-N.
 
 Правка:
 - Оба контракта возвращены в `xfail(strict=True)`.

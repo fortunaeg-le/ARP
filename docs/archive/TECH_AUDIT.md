@@ -24,7 +24,7 @@
 ## A. ЗАВИСИМОСТИ
 
 Версии — фактически установленные в прод-окружении (`venv/Scripts/python.exe -m pip list`),
-лицензии — по `docs/LICENSES_AUDIT.md:52`.
+лицензии — по `docs/archive/legal/LICENSES_AUDIT.md:52`.
 
 | Пакет | Версия | Лицензия | Прямая? | Роль |
 |---|---|---|---|---|
@@ -44,9 +44,9 @@
 | numpy | 2.5.1 | BSD-3 и др. составная | транзит. | арифметика моделей |
 | DAWG-Python, docopt, intervaltree, sortedcontainers, cffi, pycparser, typing_extensions, packaging | — | MIT/BSD/Apache-2.0/PSF | транзит. | обвязка |
 
-GPL/AGPL/non-commercial зависимостей в проде нет (`docs/LICENSES_AUDIT.md:29`).
+GPL/AGPL/non-commercial зависимостей в проде нет (`docs/archive/legal/LICENSES_AUDIT.md:29`).
 Единственный юридически неоднозначный пункт — словарь OpenCorpora под CC BY-SA 3.0,
-тянущийся транзитивно через pymorphy2 (`docs/THIRD_PARTY_LICENSES.md`, раздел CC BY-SA).
+тянущийся транзитивно через pymorphy2 (`docs/archive/legal/THIRD_PARTY_LICENSES.md`, раздел CC BY-SA).
 
 ### Модели и словари на диске
 
@@ -65,7 +65,7 @@ GPL/AGPL/non-commercial зависимостей в проде нет (`docs/LIC
 пакета natasha, ставятся из PyPI.
 
 GLiNER (`urchade/gliner_*`, Apache-2.0) — только эксперимент `experiments/a0_gliner/`,
-в поставку не входит (`docs/THIRD_PARTY_LICENSES.md`, раздел «Модели»).
+в поставку не входит (`docs/archive/legal/THIRD_PARTY_LICENSES.md`, раздел «Модели»).
 
 ---
 
@@ -212,7 +212,7 @@ GLiNER (`urchade/gliner_*`, Apache-2.0) — только эксперимент 
 проверено: детекция ORG/PER строится на структуре и морфологии, не на списках.
 Единственный словарь — морфологический OpenCorpora внутри `pymorphy2-dicts-ru`
 (14.4 МБ, CC BY-SA 3.0, revision 417127, источник opencorpora.org —
-`docs/THIRD_PARTY_LICENSES.md`).
+`docs/archive/legal/THIRD_PARTY_LICENSES.md`).
 
 ### ML-слой
 
@@ -513,7 +513,7 @@ MONEY/PERCENT/TERM/TRANCHE), используется отдельными те�
 
 ### Текущие цифры
 
-Последний зелёный полный гейт — `docs/T1_REPORT.md:333`, корпус 324 документа:
+Последний зелёный полный гейт — `docs/archive/reports/T1_REPORT.md:333`, корпус 324 документа:
 
 | Метрика | Значение |
 |---|---:|
@@ -565,7 +565,7 @@ MONEY/PERCENT/TERM/TRANCHE), используется отдельными те�
 | Утечки | `tests/test_breaking_leaks.py`, `tests/test_leak_v2.py` | да |
 
 Полный прогон на момент последнего отчёта: **1098 passed, 3 skipped, 3 deselected,
-11 xfailed**, 802 с (`docs/T1_REPORT.md:339`). 11 `xfail` со `strict=True` — намеренно
+11 xfailed**, 802 с (`docs/archive/reports/T1_REPORT.md:339`). 11 `xfail` со `strict=True` — намеренно
 отложенные дефекты и дыры покрытия; если такой тест начнёт проходить, он покраснеет
 (XPASS→FAIL), что и служит сигналом закрыть дыру. Карта «дыра → этап» —
 `tests/test_future_contracts.py`.
@@ -581,8 +581,8 @@ MONEY/PERCENT/TERM/TRANCHE), используется отдельными те�
 | 3 | Находка **Eprime-A открыта**: на реальном крупном документе детекция давала разные результаты между прогонами; на синтетике не воспроизводится | `tests/test_determinism.py:41-50`; §F |
 | 4 | `w:ins`/`w:del`/`w:sdt` — **не проверено**, читаются ли и объявляются ли непрочитанной зоной; остальное непрочитанное закрыто fail-closed | §C |
 | 5 | Механизма очистки `~/.shifrator/` при деинсталляции нет | §G |
-| 6 | `docs/STATE.md` устарел на ~10 дней относительно `docs/T1_REPORT.md` | §H |
-| 7 | Единственный юридический вопрос по лицензиям — словарь OpenCorpora (CC BY-SA 3.0) через pymorphy2 | `docs/LICENSES_AUDIT.md:29` |
+| 6 | `docs/STATE.md` устарел на ~10 дней относительно `docs/archive/reports/T1_REPORT.md` | §H |
+| 7 | Единственный юридический вопрос по лицензиям — словарь OpenCorpora (CC BY-SA 3.0) через pymorphy2 | `docs/archive/legal/LICENSES_AUDIT.md:29` |
 
 Сеть, телеметрия, запись в реестр, права администратора — **отсутствуют полностью**,
 проверено по коду.

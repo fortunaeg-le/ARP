@@ -1,7 +1,7 @@
 # T0V — верификация предпосылок сессии T-GOLD
 
 Дата: **2026-07-26**. Сессия **read-only**: единственный записанный файл — этот.
-`src/`, `app/`, `tests/`, конфиги, `docs/ENTITY_SPEC.md`, `docs/MARKUP_RULES.md`,
+`src/`, `app/`, `tests/`, конфиги, `docs/archive/specs/ENTITY_SPEC.md`, `docs/archive/specs/MARKUP_RULES.md`,
 корпус — не изменены. Правки спек не вносились; предлагаемые формулировки даны
 дословно в §7 и §9.
 
@@ -922,22 +922,22 @@ $ ... | grep -v ': OK$' | wc -l
 
 ### 10.3. `git status --porcelain`
 
-Ожидание постановки — ровно одна новая строка, `docs/T0V_REPORT.md`.
+Ожидание постановки — ровно одна новая строка, `docs/archive/reports/T0V_REPORT.md`.
 Фактически строк **три**:
 
 ```
-?? docs/ENTITY_SPEC.md
-?? docs/MARKUP_RULES.md
-?? docs/T0V_REPORT.md
+?? docs/archive/specs/ENTITY_SPEC.md
+?? docs/archive/specs/MARKUP_RULES.md
+?? docs/archive/reports/T0V_REPORT.md
 ```
 
-**Объяснение:** `docs/ENTITY_SPEC.md` и `docs/MARKUP_RULES.md` были
+**Объяснение:** `docs/archive/specs/ENTITY_SPEC.md` и `docs/archive/specs/MARKUP_RULES.md` были
 неотслеживаемыми (`??`) **уже на входе в сессию** — это видно в снимке
 `git status` на момент старта, где обе строки присутствуют, а
-`docs/T0V_REPORT.md` ещё нет. Это результаты сессии T0, которые владелец не
+`docs/archive/reports/T0V_REPORT.md` ещё нет. Это результаты сессии T0, которые владелец не
 коммитил. Данной сессией они **не изменялись**: работа с ними велась только на
 чтение, никаких `Write`/`Edit` по этим путям не выполнялось. Единственная
-запись сессии — `docs/T0V_REPORT.md`. Ничего не коммичено, git не трогался.
+запись сессии — `docs/archive/reports/T0V_REPORT.md`. Ничего не коммичено, git не трогался.
 
 ---
 

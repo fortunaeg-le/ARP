@@ -91,6 +91,6 @@ delete_session(session_id) -> удаляет {sid}.enc (и сопутствую�
 ## Глубокие спеки
 
 - Компонент 2 (OOXML-детокенизация, blocks 8–12), подробный алгоритм и краевые случаи —
-  `docs/SHIFRATOR_SPEC_FILE_DECRYPT.md`.
+  `docs/archive/specs/SHIFRATOR_SPEC_FILE_DECRYPT.md`.
 - Инварианты детекции/токенизации (B3-разделитель, разрешение пересечений, раздельные токены
-  B3-пар) — [ARCHITECTURE.md](ARCHITECTURE.md).
+  B3-пар) — [ARCHITECTURE.md](../../ARCHITECTURE.md).

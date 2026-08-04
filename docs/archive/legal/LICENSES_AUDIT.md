@@ -11,12 +11,12 @@
 ## Область анализа
 
 - **Прод-окружение**: `venv/` — то, что реально ставится по
-  [requirements.txt](../requirements.txt) / [pyproject.toml](../pyproject.toml)
+  [requirements.txt](../../../requirements.txt) / [pyproject.toml](../../../pyproject.toml)
   и импортируется в `src/`. Это то, что уедет клиенту.
 - **Эксперимент**: `experiments/a0_gliner/venv_gliner/` — отдельное окружение
   для GLiNER bake-off (решение по этапу A0, зафиксировано в памяти сессии).
   Не участвует в проде (движок распознавания структурный, GLiNER не принят —
-  см. [ARCHITECTURE.md](ARCHITECTURE.md)), но фиксируется на случай, если
+  см. [ARCHITECTURE.md](../../ARCHITECTURE.md)), но фиксируется на случай, если
   когда-нибудь пойдёт в продукт.
 - **Модели/данные** (не-Python артефакты): navec/slovnet веса Natasha,
   словарь OpenCorpora у pymorphy2, веса GLiNER — у каждого лицензия
@@ -154,8 +154,8 @@
   `dist-info` каждого пакета (не только по классификатору PyPI — прочитан
   текст файла).
 - **Предобученные веса** (`NewsEmbedding`, `NewsNERTagger` в
-  [ner_detector.py](../src/ner_detector.py), `NewsMorphTagger`,
-  `NewsSyntaxParser` в [syntax_compound.py](../src/syntax_compound.py)):
+  [ner_detector.py](../../../src/ner_detector.py), `NewsMorphTagger`,
+  `NewsSyntaxParser` в [syntax_compound.py](../../../src/syntax_compound.py)):
   скачиваются отдельно (обычно с GitHub Releases проектов natasha/navec,
   natasha/slovnet) при первом обращении — в текущем окружении файлы весов
   на диске не найдены (значит либо ещё не скачивались, либо кэш вне

@@ -9,7 +9,7 @@
 рекомендацию — она помечена словом «рекомендация» и всегда сопровождается ценой.
 
 Источники: код (`src/`, `entity_types.yaml`, `tests/corpus/`), `docs/STATE.md`,
-`docs/FINDINGS.md`, `docs/ARCHITECTURE_AUDIT.md`, HANDOFF этапов
+`docs/FINDINGS.md`, `docs/archive/reports/ARCHITECTURE_AUDIT.md`, HANDOFF этапов
 C · C′ · D · E · E′ · S1 · S2 · S3 · U4 · O2, а также **прямые замеры по корпусу**,
 выполненные в этой сессии на чтение (§6.1 — что именно измерено).
 

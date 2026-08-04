@@ -23,7 +23,8 @@ subsample.py — быстрая подвыборка корпуса для ОТ�
     venv/Scripts/python.exe tests/corpus/subsample.py --feature nested_table
 
 Состав подвыборки — ЗАФИКСИРОВАННЫЙ СПИСОК tests/corpus/subset_iter.json
-(25 документов), читаемый через subset_lib. Состав БОЛЬШЕ НЕ ВЫЧИСЛЯЕТСЯ при
+(33 документа; потолок рос 25 -> 28 -> 31 -> 33 вместе с новыми типами, история
+в subset_lib.MAX_SUBSET_DOCS), читаемый через subset_lib. Состав БОЛЬШЕ НЕ ВЫЧИСЛЯЕТСЯ при
 запуске: он покрывает 100% страт корпуса (все 191 класс «тип x категория x
 trick / features / contract_type / parties / формат», все 14 структурных
 конфигураций .docx и все 14 adversarial-мутаций по обоим маркерам), и
@@ -33,7 +34,7 @@ tests/corpus/build_subset_iter.py.
 
 Прежний состав («2 base-документа на contract_type» + 4 граничных, 22 док.)
 покрывал 70.2% классов и 64% структурных конфигураций и не видел почти всю
-мутационную матрицу реквизитов — docs/PERF_REPORT.md §4.2. Граничные
+мутационную матрицу реквизитов — docs/archive/reports/PERF_REPORT.md §4.2. Граничные
 документы (Stage4-B, PER-B) в новом составе тоже есть: они включаются
 принудительно, см. subset_lib.BOUNDARY_DOC_IDS.
 
@@ -70,7 +71,7 @@ _WARNING = (
 
 # Граничные документы (Stage4-B, PER-B) переехали в subset_lib.BOUNDARY_DOC_IDS
 # и включены в зафиксированный состав subset_iter.json принудительно. Имя ниже
-# оставлено как алиас: на него ссылаются docs/PERF_REPORT.md §4.1 и отчёты.
+# оставлено как алиас: на него ссылаются docs/archive/reports/PERF_REPORT.md §4.1 и отчёты.
 _BOUNDARY_DOC_IDS = SL.BOUNDARY_DOC_IDS
 
 
@@ -195,7 +196,7 @@ def compare_with_iter_baseline(results, doc_ids, filtered):
     else:
         print("\nНа срезе регрессов нет. Это НЕ значит, что их нет в корпусе: "
               "срез видит все классы, но ~8-10% конкретных значений "
-              "(docs/PERF_REPORT.md, «Что при этом теряется», п.1).")
+              "(docs/archive/reports/PERF_REPORT.md, «Что при этом теряется», п.1).")
     if filtered:
         print("  (прогон был с фильтрами: документы сверх зафиксированного "
               "состава в сверку не вошли)")

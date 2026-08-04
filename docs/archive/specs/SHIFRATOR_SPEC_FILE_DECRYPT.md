@@ -3,7 +3,7 @@
 > **Статус (2026-07-12, аудит): компонент РЕАЛИЗОВАН полностью** — блоки 8–12 сданы
 > (`src/ooxml_core.py`, `src/docx_rewriter.py`, `src/pptx_rewriter.py`,
 > `src/xlsx_rewriter.py`, `src/file_detokenizer.py` + подкоманда `decrypt-file` в
-> `shifrator.py`), см. `docs/handoffs/HANDOFF_8..12.md` и тесты `tests/component2/`.
+> `shifrator.py`), см. `docs/archive/handoffs/HANDOFF_8..12.md` и тесты `tests/component2/`.
 > Известный незакрытый дефект компонента: валидный ZIP без единой целевой части
 > «успешно» копируется вместо ошибки — см. `docs/archive/reports/COMPONENT2_TEST_REPORT.md`
 > (намеренно красный тест `tests/component2/test_e_malformed_input.py`).

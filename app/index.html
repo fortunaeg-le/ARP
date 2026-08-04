@@ -770,7 +770,7 @@ function downloadRestored(){ const sid=document.getElementById('r-sid').value.tr
 // см. computeSelectionInfo. По числу задетых масок решается, какой из четырёх
 // случаев перед нами (0 — чистый текст, 1 — правка границы с наследованием
 // типа, 2+ — легитимная, но именующая маски ошибка); см. onAnonSelectionUp и
-// docs/U5A_REPORT.md, вопрос 4.
+// docs/archive/reports/U5A_REPORT.md, вопрос 4.
 
 const MARKUP_TYPES_FALLBACK=[["PERSON","ФИО"],["ORG","Организация"],["ADDRESS","Адрес"],["INN","ИНН организации (10 цифр)"],["INN_PERSON","ИНН человека (12 цифр)"],
   ["PASSPORT","Паспорт"],["PHONE","Телефон"],["BANK_ACCOUNT","Банковский счёт"],["EMAIL","E-mail"],
@@ -799,7 +799,7 @@ function litOffset(litEl, node, offset){
 }
 
 /* ---- ЭТАП U5b: контракт четырёх случаев по числу пересечённых масок (см.
-   docs/U5A_REPORT.md, вопрос 4). Раньше выделение, задевающее ЛЮБУЮ маску,
+   docs/archive/reports/U5A_REPORT.md, вопрос 4). Раньше выделение, задевающее ЛЮБУЮ маску,
    отклонялось до подсчёта — теперь считаем, СКОЛЬКО масок задето, по DOM
    (mark.ent несёт свои координаты в data-start/data-end, см. app/core.py::_mark),
    не только по .lit, как раньше:

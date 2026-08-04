@@ -15,7 +15,7 @@ from docx.oxml.ns import qn
 from models import SourceDocument, TextSegment
 
 
-# --- Нормализация регистра для detection_text (см. docs/SHIFRATOR_SPEC_AI.md, блок 1) ---
+# --- Нормализация регистра для detection_text (см. docs/archive/SHIFRATOR_SPEC_AI.md, блок 1) ---
 #
 # Natasha опирается на регистр как признак имени собственного. Если текст .docx
 # визуально заглавный через ФОРМАТИРОВАНИЕ (run.font.all_caps/small_caps), в XML

@@ -628,15 +628,15 @@ linebreak}` и пять фич `mut:*` целиком. Также не покр�
 ### `git status --porcelain` (финальный)
 
 ```
-?? docs/ENTITY_SPEC.md
-?? docs/MARKUP_RULES.md
-?? docs/PERF_REPORT.md
-?? docs/T0V_REPORT.md
+?? docs/archive/specs/ENTITY_SPEC.md
+?? docs/archive/specs/MARKUP_RULES.md
+?? docs/archive/reports/PERF_REPORT.md
+?? docs/archive/reports/T0V_REPORT.md
 ```
 
-Ожидалось ровно `?? docs/PERF_REPORT.md` сверх трёх файлов, которые уже были
-неотслеженными на входе в сессию (`docs/ENTITY_SPEC.md`, `docs/MARKUP_RULES.md`,
-`docs/T0V_REPORT.md` — созданы предыдущей сессией, мной не тронуты).
+Ожидалось ровно `?? docs/archive/reports/PERF_REPORT.md` сверх трёх файлов, которые уже были
+неотслеженными на входе в сессию (`docs/archive/specs/ENTITY_SPEC.md`, `docs/archive/specs/MARKUP_RULES.md`,
+`docs/archive/reports/T0V_REPORT.md` — созданы предыдущей сессией, мной не тронуты).
 
 ### `sha256sum -c MANIFEST.sha256` — прогон ДО работы
 

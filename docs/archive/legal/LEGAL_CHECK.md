@@ -70,8 +70,8 @@ FP 1975, MC B 79.59 %). Отчёт `docs/archive/reports/HANDOFF_S2.md:394-397, 
   `invisible`, `case`, `digit_spaces`, `linebreak`, `cell_split`).
   Эталонных сущностей 10 932 по 13 типам; категории: adversarial 6451,
   canonical 3013, ugly 1921.
-* Числа `81.1 / 20.2 / 650 / 86.31 / 95.07` из `docs/HANDOFF_SUBSET_ITER.md:422-449`
-  и `docs/CORPUS_V2_REPORT.md:234-236` воспроизводятся из этого дампа точно.
+* Числа `81.1 / 20.2 / 650 / 86.31 / 95.07` из `docs/archive/reports/HANDOFF_SUBSET_ITER.md:422-449`
+  и `docs/archive/reports/CORPUS_V2_REPORT.md:234-236` воспроизводятся из этого дампа точно.
 
 **Вывод по факту:** документ приводит метрики этапа 2b от 2026-07-19, тогда как
 последний сохранённый прогон — от 2026-07-25/28 с другими значениями.

@@ -181,7 +181,7 @@ def _winner(a: Entity, b: Entity) -> Entity:
         # иначе -> rule 5
     else:  # оба ner
         # ЭТАП T-ARB — B-ADDR-HOMONYM: единственное известное место, где сила
-        # ЯКОРЯ обязана решать раньше длины (см. docs/T_ARB_REPORT.md). ADDRESS
+        # ЯКОРЯ обязана решать раньше длины (см. docs/archive/reports/T_ARB_REPORT.md). ADDRESS
         # эмитится ТОЛЬКО когда _addr_span_strong уже подтвердил якорь
         # (существование ADDRESS-сущности САМО есть доказательство силы) — а
         # PERSON без единого внутреннего пробела/точки в original_text не несёт
@@ -308,7 +308,7 @@ def _resolve_overlaps(
     ЭТАП T4 — ЗЕРКАЛО ПОДАВЛЕНИЯ. `barrier_types` — типы БЕЗ token_prefix
     (CLAUSE_REF/ROLE_TERM/COLLECTIVE): когда такой тип побеждает пересечение с
     типом, у которого token_prefix ЕСТЬ (реальный, маскируемый кандидат), это не
-    обычный арбитраж T-ARB — это ПОДАВЛЕНИЕ (см. docs/T4_REPORT.md), и оно
+    обычный арбитраж T-ARB — это ПОДАВЛЕНИЕ (см. docs/archive/reports/T4_REPORT.md), и оно
     обязано быть НАБЛЮДАЕМЫМ: `suppression_log` (если передан) получает запись
     {suppressed_type, suppressor_type, segment_id, start, end} — start/end это
     ПЕРЕСЕЧЕНИЕ (та территория, что реально ушла из-под токена проигравшего).
@@ -423,8 +423,8 @@ def _boundary_sep(seg_a: TextSegment, seg_b: TextSegment) -> str:
     через ' | ' не матчатся), а сущность, порванная границей соседних ячеек, обязана
     реконструироваться. Поэтому две соседние ячейки одной строки одной таблицы
     склеиваются в окне БЕЗ разделителя (''); во всех остальных случаях граница
-    соответствует '\\n' финальной сборки. См. docs/SHIFRATOR_SPEC_AI.md (блок 4,
-    «Разделитель граничного окна») / docs/handoffs/HANDOFF_4.md.
+    соответствует '\\n' финальной сборки. См. docs/archive/SHIFRATOR_SPEC_AI.md (блок 4,
+    «Разделитель граничного окна») / docs/archive/handoffs/HANDOFF_4.md.
     """
     if (
         seg_a.source_type == "docx_table_cell"

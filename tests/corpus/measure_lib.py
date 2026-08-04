@@ -178,7 +178,7 @@ def suppressed_gold_entities(suppressions_global, gold_entities):
     `gold_text`, `gold_start/end`, `suppressed_type`, `suppressor_type`,
     `sup_start/end`. НЕПУСТОЙ список означает: эталонная сущность потеряла часть
     маски из-за отрицательного класса — линия гейта T4 обязана быть 0
-    (ГЛАВНЫЙ РИСК этапа T4, см. docs/T4_REPORT.md)."""
+    (ГЛАВНЫЙ РИСК этапа T4, см. docs/archive/reports/T4_REPORT.md)."""
     out = []
     for s in suppressions_global:
         if not s["seg_ok"]:

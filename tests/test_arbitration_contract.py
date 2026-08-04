@@ -1,7 +1,7 @@
 # -*- coding: utf-8 -*-
 """ЭТАП T-ARB — контракт арбитража пересечений типов.
 
-Карта дефекта и контракт — docs/T_ARB_REPORT.md. Три группы тестов:
+Карта дефекта и контракт — docs/archive/reports/T_ARB_REPORT.md. Три группы тестов:
 
   1. TestContractCompleteness — assert_priority_contract: каждый тип конфига с
      token_prefix обязан быть в списке приоритетов своего механизма; забытый

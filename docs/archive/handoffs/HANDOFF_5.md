@@ -1,10 +1,10 @@
 # HANDOFF — Блок 5: Хранилище сессии
 
 > **Примечание аудита (2026-07-12).** Это исторический документ сдачи блока: он описывает
-> состояние на момент сдачи и НЕ обновляется. Источник истины — `docs/SHIFRATOR_SPEC_AI.md`
-> (+ `docs/SHIFRATOR_SPEC_FILE_DECRYPT.md` для блоков 8–12) и `HANDOFF_CURRENT.md` в корне.
+> состояние на момент сдачи и НЕ обновляется. Источник истины — `docs/archive/SHIFRATOR_SPEC_AI.md`
+> (+ `docs/archive/specs/SHIFRATOR_SPEC_FILE_DECRYPT.md` для блоков 8–12) и `HANDOFF_CURRENT.md` в корне.
 > После структурирования проекта все модули лежат в `src/` (импорты остались плоскими).
-> **Что здесь устарело (B6, `docs/reports/BREAKING_REPORT.md`):** `delete_session` теперь
+> **Что здесь устарело (B6, `docs/archive/reports/BREAKING_REPORT.md`):** `delete_session` теперь
 > удаляет ОБА файла сессии — `.enc` и сайдкар `.txt`; `purge_expired` при удалении
 > просроченного `.enc` удаляет и его `.txt`. Описание «удаляет только .enc» ниже — старое.
 

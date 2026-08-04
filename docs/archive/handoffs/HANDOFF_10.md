@@ -1,8 +1,8 @@
 # HANDOFF — Блок 10: Адаптер PowerPoint (`pptx_rewriter.py`)
 
 > **Примечание аудита (2026-07-12).** Это исторический документ сдачи блока: он описывает
-> состояние на момент сдачи и НЕ обновляется. Источник истины — `docs/SHIFRATOR_SPEC_AI.md`
-> (+ `docs/SHIFRATOR_SPEC_FILE_DECRYPT.md` для блоков 8–12) и `HANDOFF_CURRENT.md` в корне.
+> состояние на момент сдачи и НЕ обновляется. Источник истины — `docs/archive/SHIFRATOR_SPEC_AI.md`
+> (+ `docs/archive/specs/SHIFRATOR_SPEC_FILE_DECRYPT.md` для блоков 8–12) и `HANDOFF_CURRENT.md` в корне.
 > После структурирования проекта все модули лежат в `src/` (импорты остались плоскими).
 
 ## Что сделано

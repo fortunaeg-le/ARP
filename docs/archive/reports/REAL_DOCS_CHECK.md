@@ -86,12 +86,12 @@ real_docs/
  M experiments/stage_o2/acceptance.py
  M experiments/stage_o2/etalon.py
  M tests/corpus/subsample.py
-?? docs/ENTITY_SPEC.md
-?? docs/GENV_REPORT.md
-?? docs/HANDOFF_SUBSET_ITER.md
-?? docs/MARKUP_RULES.md
-?? docs/PERF_REPORT.md
-?? docs/T0V_REPORT.md
+?? docs/archive/specs/ENTITY_SPEC.md
+?? docs/archive/reports/GENV_REPORT.md
+?? docs/archive/reports/HANDOFF_SUBSET_ITER.md
+?? docs/archive/specs/MARKUP_RULES.md
+?? docs/archive/reports/PERF_REPORT.md
+?? docs/archive/reports/T0V_REPORT.md
 ```
 Все новые файлы — markdown-отчёты в `docs/`, изменения — код в
 `experiments/`/`tests/`. Ничего похожего на документ или дамп текста

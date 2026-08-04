@@ -218,7 +218,7 @@ int-атрибуте `Entity.end`).
 ## 3. Провенанс корпуса зафиксирован в git (доп. сессия, тот же день)
 
 До этого момента `tests/corpus/{docs/,gold.json,_model/,corpus_lib.py,generate.py,mutate.py,
-validate.py,MANIFEST.sha256}` и часть `docs/reports/*.md` были **untracked** — весь блок 0
+validate.py,MANIFEST.sha256}` и часть `docs/archive/reports/*.md` были **untracked** — весь блок 0
 (0a-0d) опирался на «заморозку» корпуса, которую было нечем доказать: не было истории, с
 которой сверять, и сам `MANIFEST.sha256` тоже был вне git. Правка эталона между сессиями
 была бы невидима. Закрыто следующими коммитами:
@@ -228,7 +228,7 @@ validate.py,MANIFEST.sha256}` и часть `docs/reports/*.md` были **untra
 | `7bbb0b5` | `freeze: import corpus at manifest c50798cb…` — `docs/`, `gold.json`, `_model/`, `corpus_lib.py`, `generate.py`, `mutate.py`, `validate.py`, `MANIFEST.sha256` (654 файла) |
 | `a42604e` | `.gitattributes` для `tests/corpus/` (см. ниже) |
 | `c48abd1` | докоммичены `data.py`, `README.md`, `GENERATION_NOTES.md` — упущены в первом коммите; `MANIFEST.sha256` (656 файлов) их перечисляет, а `generate.py` делает `import data as DT` — без `data.py` заморозка нерабочая, не только неполная |
-| `bbad0d3` | `docs/reports/COVERAGE_AUDIT.md`, `COVERAGE_MEASUREMENT.md`, `COVERAGE_MISSES.tsv` — провенанс замера этапа 2/3, оставался untracked (`BASELINE.md`/`FINDINGS.md`/`HANDOFF_STAGE_*` уже были в истории до этой сессии) |
+| `bbad0d3` | `docs/archive/reports/COVERAGE_AUDIT.md`, `COVERAGE_MEASUREMENT.md`, `COVERAGE_MISSES.tsv` — провенанс замера этапа 2/3, оставался untracked (`BASELINE.md`/`FINDINGS.md`/`HANDOFF_STAGE_*` уже были в истории до этой сессии) |
 
 `.gitignore` корпус не выкидывал (`git check-ignore` пустой на всех путях corpus) — правка
 не понадобилась.

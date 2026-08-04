@@ -2,8 +2,8 @@
 
 Адресат этого документа — **нейросеть, открывшая проект без контекста прошлых чатов**.
 Прочти его целиком до любых правок. Точка входа в проект — `HANDOFF_CURRENT.md`;
-источники истины — код в `src/` и `docs/SHIFRATOR_SPEC_AI.md` +
-`docs/SHIFRATOR_SPEC_FILE_DECRYPT.md` (обе спеки синхронизированы с кодом этим аудитом).
+источники истины — код в `src/` и `docs/archive/SHIFRATOR_SPEC_AI.md` +
+`docs/archive/specs/SHIFRATOR_SPEC_FILE_DECRYPT.md` (обе спеки синхронизированы с кодом этим аудитом).
 
 ---
 
@@ -26,8 +26,8 @@ ARP/
 │   ├── session_store.py detokenizer.py                 # блоки 1–6
 │   └── ooxml_core.py docx_rewriter.py pptx_rewriter.py
 │       xlsx_rewriter.py file_detokenizer.py            # блоки 8–12 (компонент 2)
-├── docs/                 # спеки; docs/handoffs/ — исторические HANDOFF_1..12;
-│                         # docs/reports/ — FINDINGS, BREAKING_REPORT, COMPONENT2_TEST_REPORT
+├── docs/                 # спеки; docs/archive/handoffs/ — исторические HANDOFF_1..12;
+│                         # docs/archive/reports/ — FINDINGS, BREAKING_REPORT, COMPONENT2_TEST_REPORT
 ├── tests/                # блоки 1–7; tests/component2/ — компонент 2 (+ приёмочные
 │                         # test_docx/pptx/xlsx_rewriter.py, перенесены из корня)
 ├── scratch/              # разовые скрипты блоков (gitignored)
@@ -54,7 +54,7 @@ editable-установка на setuptools 65 падает с `invalid command 
 **268 passed, 1 xfailed, 1 failed**, где failed —
 `tests/component2/test_e_malformed_input.py::test_valid_zip_without_any_target_part_raises_ooxml_error`
 (намеренно красный пин незакрытого дефекта компонента 2, см.
-`docs/reports/COMPONENT2_TEST_REPORT.md` — НЕ чинить тест, чинить код по решению
+`docs/archive/reports/COMPONENT2_TEST_REPORT.md` — НЕ чинить тест, чинить код по решению
 пользователя), а xfailed — осознанно отложенный B4 (омоглифы). Этот результат
 побайтово совпадает с прогоном до переезда.
 
@@ -75,8 +75,8 @@ editable-установка на setuptools 65 падает с `invalid command 
 | B5 — UTF-16 без BOM → явная ошибка | `extractor._looks_like_mojibake` (порог 0.30) → `ValueError` — да | **В спеке отсутствовало (третий случай ValueError из extract) — добавлено** |
 | B6 — `.txt`-сайдкар удаляется в `delete`/`purge` | `session_store.delete_session`/`purge_expired` — да | **Спека описывала «удаляет только .enc» — исправлено** |
 | Компонент 2 «не реализован» (утверждение исходного ТЗ аудита) | **Реализован полностью**: блоки 8–12 + `decrypt-file` + тесты `tests/component2/` | ТЗ аудита устарело относительно кода; спека компонента 2 актуальна, добавлен статус-блок |
-| `SHIFRATOR_HANDOFF_NEW_CHAT.md`, `FINDINGS.md`, `BREAKING_REPORT.md` в корне | `SHIFRATOR_HANDOFF_NEW_CHAT.md` в репозитории **отсутствует**; отчёты лежали в `test_results/` (теперь `docs/reports/`) | зафиксировано; роль точки входа выполняет `HANDOFF_CURRENT.md` |
-| tokenizer ссылается на `SHIFRATOR_SPEC_AI_1.md` | файла не существует | **комментарий исправлен на docs/SHIFRATOR_SPEC_AI.md** |
+| `SHIFRATOR_HANDOFF_NEW_CHAT.md`, `FINDINGS.md`, `BREAKING_REPORT.md` в корне | `SHIFRATOR_HANDOFF_NEW_CHAT.md` в репозитории **отсутствует**; отчёты лежали в `test_results/` (теперь `docs/archive/reports/`) | зафиксировано; роль точки входа выполняет `HANDOFF_CURRENT.md` |
+| tokenizer ссылается на `SHIFRATOR_SPEC_AI_1.md` | файла не существует | **комментарий исправлен на docs/archive/SHIFRATOR_SPEC_AI.md** |
 | `requirements.txt` покрывает зависимости | не было `lxml` (компонент 2!) — приходил только транзитивно через python-docx | **добавлены `lxml` и `wheel`** |
 | HANDOFF_1/2/5/7 актуальны | HANDOFF_1 — устаревшая копия конфига, нет B5; HANDOFF_2 — до B2; HANDOFF_5 — до B6; HANDOFF_7 — нет decrypt-file | **все 12 HANDOFF помечены историческими, с перечнем устаревшего в шапке** |
 
@@ -106,7 +106,7 @@ B3 (сущность, разорванная границей сегмента) 
 ## 2.1 Перенос файлов и починка путей (коммит «Структурирование проекта…»)
 
 - 12 модулей из корня → `src/` (git mv, история сохранена);
-- спеки/HANDOFF/отчёты → `docs/`, `docs/handoffs/`, `docs/reports/`;
+- спеки/HANDOFF/отчёты → `docs/`, `docs/archive/handoffs/`, `docs/archive/reports/`;
 - приёмочные `test_*_rewriter.py` из корня → `tests/component2/`;
 - `scratch_test_block*.py` → `scratch/` (gitignored);
 - созданы `conftest.py` (корень), `pyproject.toml`; в `shifrator.py` добавлен **только**
@@ -125,13 +125,13 @@ B3 (сущность, разорванная границей сегмента) 
 
 ## 2.2 Правки документации (без изменения кода)
 
-- `docs/SHIFRATOR_SPEC_AI.md`: статус-шапка; раздел «Структура проекта»; YAML-блок конфига
+- `docs/archive/SHIFRATOR_SPEC_AI.md`: статус-шапка; раздел «Структура проекта»; YAML-блок конфига
   заменён на фактический (B1/B2); описание снятия разделителей в валидаторах (B2);
   B5-эвристика моджибейка в блоке 1; B6-семантика `delete_session`/`purge_expired`;
   в CLI-разделе — `delete` удаляет оба файла, добавлена ссылка на `decrypt-file`;
-- `docs/SHIFRATOR_SPEC_FILE_DECRYPT.md`: статус-шапка «компонент реализован», актуальное
+- `docs/archive/specs/SHIFRATOR_SPEC_FILE_DECRYPT.md`: статус-шапка «компонент реализован», актуальное
   число тестов, указание на `src/`;
-- все `docs/handoffs/HANDOFF_1..12.md`: баннер «исторический документ» + конкретный
+- все `docs/archive/handoffs/HANDOFF_1..12.md`: баннер «исторический документ» + конкретный
   перечень устаревшего (у 1, 2, 5, 7);
 - создан `HANDOFF_CURRENT.md`;
 - `requirements.txt`: + `lxml` (реальная зависимость компонента 2, была только
@@ -235,7 +235,7 @@ sys.path-bootstrap в `shifrator.py` и docstring-ссылка в `tokenizer.py`
 
 Прочее известное и НЕ дублируемое здесь: незакрытый дефект компонента 2 («валидный ZIP
 без целевых частей копируется как успех», намеренно красный тест) — уже задокументирован
-в `docs/reports/COMPONENT2_TEST_REPORT.md` с готовым предписанием; B4 (омоглифы) —
+в `docs/archive/reports/COMPONENT2_TEST_REPORT.md` с готовым предписанием; B4 (омоглифы) —
 отложен осознанно.
 
 ---
@@ -381,7 +381,7 @@ python-память ~6 МБ; `decrypt`/`delete` не тянут natasha (хол�
 3. **Третьим — решение по E2** (AddrExtractor): нужен выбор пользователя
    (пре-фильтр с задокументированным риском vs принять стоимость).
 4. **Дефект компонента 2** (ZIP без целевых частей → тихая копия): предписание уже
-   готово в `docs/reports/COMPONENT2_TEST_REPORT.md`; после починки красный тест
+   готово в `docs/archive/reports/COMPONENT2_TEST_REPORT.md`; после починки красный тест
    `test_e_malformed_input.py::test_valid_zip_without_any_target_part_raises_ooxml_error`
    позеленеет сам — НЕ редактировать его.
 5. P2–P4 — мелкие, в любой момент, по одному коммиту.

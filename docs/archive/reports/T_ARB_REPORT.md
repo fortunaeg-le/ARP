@@ -1,6 +1,6 @@
 # Этап T-ARB — арбитраж типов (2026-07-30)
 
-Место в плане: перед T4/T3 (`docs/ENTITY_SPEC.md` §8.3). Все будущие структурные
+Место в плане: перед T4/T3 (`docs/archive/specs/ENTITY_SPEC.md` §8.3). Все будущие структурные
 типы (T3: `PASSPORT_ISSUER`, `CONTRACT_KIND`, `TRANCHE`, `REGISTRY_NAME`,
 `STATEMENT_REF`, `CITY`) зависят от решений этого этапа.
 
@@ -15,9 +15,9 @@
 
 | # | место | файл:строка | что решает |
 |---|---|---|---|
-| 1 | `tokenizer._winner` | [`src/tokenizer.py:71-131`](../src/tokenizer.py) | победитель между ДВУМЯ УЖЕ НАЙДЕННЫМИ пересекающимися `Entity` — вызывается из `_resolve_overlaps` для каждой пересекающейся пары |
-| 2 | `ner_detector._address_barriers` | [`src/ner_detector.py:607-621`](../src/ner_detector.py) | какая территория ВООБЩЕ НЕДОСТУПНА адресу — регекс-реквизиты и структурные ORG/PER считаются РАНЬШЕ (`pipeline.run_detection`, шаги 1-2) и передаются барьером в шаг 3 (`detect_ner`, только ADDRESS). Проигравший здесь НЕ попадает в `_winner` вообще — конкурировать ему не с кем, спан адреса на этом месте просто не строится |
-| 3 | `AnchorEngine._type_rank` | [`src/anchor_registry.py:1242-1243`](../src/anchor_registry.py) | арбитраж ТИПА ключа реестра при коллизии ORG/PER на одной лемме (внутри `AnchorEngine.run`, PASS 1b, до эмиссии `Entity`) — `{"ORG": 0, "PERSON": 1}`, при равной уверенности побеждает ORG |
+| 1 | `tokenizer._winner` | [`src/tokenizer.py:71-131`](../../../src/tokenizer.py) | победитель между ДВУМЯ УЖЕ НАЙДЕННЫМИ пересекающимися `Entity` — вызывается из `_resolve_overlaps` для каждой пересекающейся пары |
+| 2 | `ner_detector._address_barriers` | [`src/ner_detector.py:607-621`](../../../src/ner_detector.py) | какая территория ВООБЩЕ НЕДОСТУПНА адресу — регекс-реквизиты и структурные ORG/PER считаются РАНЬШЕ (`pipeline.run_detection`, шаги 1-2) и передаются барьером в шаг 3 (`detect_ner`, только ADDRESS). Проигравший здесь НЕ попадает в `_winner` вообще — конкурировать ему не с кем, спан адреса на этом месте просто не строится |
+| 3 | `AnchorEngine._type_rank` | [`src/anchor_registry.py:1242-1243`](../../../src/anchor_registry.py) | арбитраж ТИПА ключа реестра при коллизии ORG/PER на одной лемме (внутри `AnchorEngine.run`, PASS 1b, до эмиссии `Entity`) — `{"ORG": 0, "PERSON": 1}`, при равной уверенности побеждает ORG |
 
 Правило внутри места 1 (`_winner`) — полный порядок:
 
@@ -38,7 +38,7 @@ rule 5: тотальный tie-break — (entity_type, original_text) лекси
 
 Порядок применения (место 4-е по счёту, отдельное от трёх выше — это НЕ
 арбитраж пересечения, а порядок, который РЕШАЕТ, дойдёт ли вообще дело до
-арбитража): [`src/pipeline.py:26-62`](../src/pipeline.py) —
+арбитража): [`src/pipeline.py:26-62`](../../../src/pipeline.py) —
 `regex → detect_structural (ORG+PER, один реестр) → detect_ner (ТОЛЬКО адрес,
 барьером — уже готовые regex/ORG/PER) → suppress_conflicts → merge_compound`.
 Именно этот порядок и есть корень дефекта B-ADDR-HOMONYM (§0г).

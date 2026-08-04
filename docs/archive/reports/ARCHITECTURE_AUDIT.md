@@ -3,7 +3,7 @@
 Составлен: **2026-07-25**, на `HEAD` ветки `u1-desktop-packaging` (`f61880d`, «Этапы U3 и E
 завершены»). Источники: код (`src/`, `app/`, `shifrator.py`, `tests/corpus/`,
 `experiments/stage_d/`), `docs/STATE.md`, `docs/FINDINGS.md`, `docs/ARCHITECTURE.md`,
-`docs/DECISIONS.md` и все HANDOFF в `docs/archive/reports/`.
+`docs/archive/reports/DECISIONS.md` и все HANDOFF в `docs/archive/reports/`.
 
 **Статус документа: ОТЧЁТ. Ни одной правки кода в этой сессии не сделано** — ни в `src/`,
 ни в `app/`, ни в `tests/`. Ни один файл, кроме этого, не создан и не изменён. Решение по

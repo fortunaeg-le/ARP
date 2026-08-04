@@ -516,7 +516,7 @@ baseline = `experiments/stage_s3/results_eprime_head.json`).
 > через разрыв не имела признака «это одно число». Предложение по дыре в гейте
 > (линия «маски-калеки», замерена на четырёх дампах: 2b 2660 → до E′ 3 → E′ 94 →
 > S3 7) — **не внедрено**, решение за владельцем. См.
-> [`archive/reports/HANDOFF_S3.md`](archive/reports/HANDOFF_S3.md).
+> [`archive/reports/HANDOFF_S3.md`](HANDOFF_S3.md).
 
 **Строки для FINDINGS** — S3-2 и S3-3 выше (S3-3 связана с уже записанным
 «классом 3» этапа E′ и с находкой PER-B: обе про то, что метрика B не терпит

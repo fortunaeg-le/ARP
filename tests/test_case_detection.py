@@ -1,5 +1,5 @@
 """Тесты фикса утечки ПДн через нестандартный регистр (all_caps / small_caps /
-строчный ввод). См. docs/SHIFRATOR_SPEC_AI.md, блок 1 (detection_text) и ТЗ
+строчный ввод). См. docs/archive/SHIFRATOR_SPEC_AI.md, блок 1 (detection_text) и ТЗ
 "Фикс утечки ПДн через нестандартный регистр".
 
 Механизм: рядом с настоящим segment.text живёт detection_text — копия ТОЙ ЖЕ

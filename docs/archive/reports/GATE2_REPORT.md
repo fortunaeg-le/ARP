@@ -33,13 +33,13 @@ leak_v2, **в** masking A, **г** masking B, **д** порча документ�
 
 **Что было.** Маска, не пересёкшая ни эталонную сущность, ни объявленный
 негатив, попадала в диагностический счётчик `nothing` (этап D). Гейт его
-**печатал, но ни с чем не сравнивал** ([gate.py:434-437](../tests/corpus/gate.py)
+**печатал, но ни с чем не сравнивал** ([gate.py:434-437](../../../tests/corpus/gate.py)
 до этапа). Замаскировать номера пунктов договора, куски прозы, обрывки таблиц
 можно было в любом объёме — прогон оставался зелёным.
 
-**Что сделано.** [`gate.compare_overmask`](../tests/corpus/gate.py) — сравнение
+**Что сделано.** [`gate.compare_overmask`](../../../tests/corpus/gate.py) — сравнение
 по каждому типу и по агрегату, допуск
-[`OVERMASK_NOTHING_TOLERANCE = 0`](../tests/corpus/gate_config.py). Своя
+[`OVERMASK_NOTHING_TOLERANCE = 0`](../../../tests/corpus/gate_config.py). Своя
 печатная секция «(д) OVER-MASK ПРОЗЫ» вместо строки-приписки к precision.
 
 **Число: 330** (ORG 322, ADDRESS 7, PER 1). Линия зелёная (330 → 330).
@@ -76,20 +76,20 @@ leak_v2, **в** masking A, **г** masking B, **д** порча документ�
 
 **Что было.** Ни одна штатная метрика не отвечает, маска **короче** эталона или
 **длиннее**: masking B видит только недобор (маска шире эталона по B —
-**не нарушение вообще**, [measure_lib.mc_check_bc](../tests/corpus/measure_lib.py)),
+**не нарушение вообще**, [measure_lib.mc_check_bc](../../../tests/corpus/measure_lib.py)),
 `exact` — булево без направления, `left_trim`/`right_trim` молчат о случае «слева
 внутрь, справа наружу». Перебор мог расти неограниченно при зелёном гейте.
 
 **Что сделано.** Логика прибора ADDR-B перенесена из
 `experiments/stage_addr_b/addr_probe.py` в
-[`measure_lib.boundary_by_gold` / `boundaries_by_type`](../tests/corpus/measure_lib.py)
+[`measure_lib.boundary_by_gold` / `boundaries_by_type`](../../../tests/corpus/measure_lib.py)
 и считается **для всех 15 типов**; прогон кладёт результат в поле `bnd` каждой
 эталонной записи. **Прибор теперь зовёт эти же функции** — две реализации одной
 метрики разъехались бы, и постоянная линия перестала бы совпадать с прибором,
 которым этап ADDR-B мерил.
 
 Два числа раздельно, по каждому типу, каждое — и в сущностях, и в символах;
-допуски [`BOUNDARY_UNDER_TOLERANCE`](../tests/corpus/gate_config.py) и
+допуски [`BOUNDARY_UNDER_TOLERANCE`](../../../tests/corpus/gate_config.py) и
 `BOUNDARY_OVER_TOLERANCE`, оба 0.
 
 **Числа (точка отсчёта — тот самый единственный прогон):**
@@ -171,7 +171,7 @@ INN_PER обязан краснеть и по precision. Это не ослаб�
 
 ## 4. Порог ложных срабатываний — ФАКТ
 
-**В живом гейте порог НЕ зашит.** [gate.py:195-201](../tests/corpus/gate.py):
+**В живом гейте порог НЕ зашит.** [gate.py:195-201](../../../tests/corpus/gate.py):
 
 ```python
 fp_b = baseline_agg["fp_on_neg_total"]   # ← из results_baseline.json
@@ -208,7 +208,7 @@ if fp_c - fp_b > fp_tolerance:           # fp_tolerance = gate_config.FP_TOLERAN
 T-GOLD-A содержит **648 сущностей типа SUM и ноль негативов «сумма»**. Запуск
 генератора молча вернул бы эталон назад.
 
-**Что сделано.** [tests/test_gold_type_contract.py](../tests/test_gold_type_contract.py)
+**Что сделано.** [tests/test_gold_type_contract.py](../../../tests/test_gold_type_contract.py)
 — три теста:
 
 1. **ни одной суммы среди негативов**; в тексте падения сказано, что произошло

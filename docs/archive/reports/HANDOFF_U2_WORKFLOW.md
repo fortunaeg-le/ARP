@@ -235,5 +235,5 @@ const ri=+m.dataset.ri, r=CUR.byRi[ri];
   (точный прогресс недоступен — один синхронный запрос). pytest 910
   passed/10 xfailed (+7 к U1, не детекционные), sha256 корпуса OK,
   CLI↔UI паритет зелёный. См.
-  [`archive/reports/HANDOFF_U2_WORKFLOW.md`](archive/reports/HANDOFF_U2_WORKFLOW.md).
+  [`archive/reports/HANDOFF_U2_WORKFLOW.md`](HANDOFF_U2_WORKFLOW.md).
 ```

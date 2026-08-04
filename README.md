@@ -50,10 +50,10 @@ venv/Scripts/python.exe shifrator.py decrypt-file <session_id> <файл.docx|.x
 
 **Новая сессия читает: [docs/STATE.md](docs/STATE.md).** При правке логики — плюс
 [docs/ARCHITECTURE.md](docs/ARCHITECTURE.md). При навигации по коду —
-[docs/CODEMAP.md](docs/CODEMAP.md). Остальное читать не нужно.
+[docs/archive/reports/CODEMAP.md](docs/archive/reports/CODEMAP.md). Остальное читать не нужно.
 
-- [docs/DECISIONS.md](docs/DECISIONS.md) — отвергнутые решения (перед «а давайте…»).
-- [docs/SHIFRATOR_SPEC_FILE_DECRYPT.md](docs/SHIFRATOR_SPEC_FILE_DECRYPT.md) — глубокая спека
+- [docs/archive/reports/DECISIONS.md](docs/archive/reports/DECISIONS.md) — отвергнутые решения (перед «а давайте…»).
+- [docs/archive/specs/SHIFRATOR_SPEC_FILE_DECRYPT.md](docs/archive/specs/SHIFRATOR_SPEC_FILE_DECRYPT.md) — глубокая спека
   компонента 2 (детокенизация файлов).
 - [docs/archive/](docs/archive/) — летопись: устаревшие доки и исторические отчёты-
   первоисточники (доказательная база; не руководство, могут врать — см. `INDEX.md` там).

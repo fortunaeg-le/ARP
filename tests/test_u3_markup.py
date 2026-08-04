@@ -279,7 +279,7 @@ def test_manual_mask_does_not_disturb_other_automatic_masks(live_server):
 
 # --------------------------------------------------------------------------- #
 # ЭТАП U5b — контракт четырёх случаев по числу пересечённых масок
-# (docs/U5A_REPORT.md, вопрос 4; постановка U5b, задача 1/4). Старый тест
+# (docs/archive/reports/U5A_REPORT.md, вопрос 4; постановка U5b, задача 1/4). Старый тест
 # проверял «любое пересечение — отказ»; по новому контракту:
 #   * /api/markup/mark-missed остаётся отказом при ЛЮБОМ пересечении — этот
 #     путь предназначен для ЧИСТОГО текста, маршрутизацию «это правка границы»
@@ -549,7 +549,7 @@ def test_reviewed_document_enters_report_with_zero_edits_and_full_denominator(li
     assert masks_in_document > 0
 
     # без отметки документ отсутствует в отчёте (докстринг report.py §Откуда
-    # берётся знаменатель / docs/U5A_REPORT.md вопрос 6).
+    # берётся знаменатель / docs/archive/reports/U5A_REPORT.md вопрос 6).
     before = _req(base, "GET", f"/api/report?scope=session&session_id={session_id}")
     assert before["report"]["sample"]["documents"] == 0
 

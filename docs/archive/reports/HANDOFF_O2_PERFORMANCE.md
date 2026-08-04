@@ -873,7 +873,7 @@ REAL-GENRE, но теряет ≥19% recall — то есть «просто з�
   (вне границ O2, заведена отдельно) регрессия гигиены S1: `_addr_view_cache`
   не вырезается из `{sid}.doc.json`** — лишняя копия ПДн открытым текстом на 17%
   сегментов. См.
-  [`archive/reports/HANDOFF_O2_PERFORMANCE.md`](archive/reports/HANDOFF_O2_PERFORMANCE.md).
+  [`archive/reports/HANDOFF_O2_PERFORMANCE.md`](HANDOFF_O2_PERFORMANCE.md).
 ```
 
 Ещё две строки, которые стоит поправить в STATE вне рамок O2:

@@ -1,7 +1,7 @@
 # HANDOFF_CURRENT — точка входа в проект SHIFRATOR
 
 Обновлён: 2026-07-12 (аудит и структурирование проекта). Этот файл — единственный
-HANDOFF, который поддерживается актуальным. Файлы `docs/handoffs/HANDOFF_1..12.md` —
+HANDOFF, который поддерживается актуальным. Файлы `docs/archive/handoffs/HANDOFF_1..12.md` —
 исторические документы сдачи блоков, они не обновляются (у каждого в шапке — что
 именно в нём устарело).
 
@@ -20,10 +20,10 @@ SHIFRATOR — локальный офлайн-инструмент на Python 3
 ## Источники истины (в порядке приоритета)
 
 1. **Код** в `src/` + `shifrator.py` + `entity_types.yaml`.
-2. `docs/SHIFRATOR_SPEC_AI.md` — спецификация блоков 1–7 (синхронизирована с кодом 2026-07-12).
-3. `docs/SHIFRATOR_SPEC_FILE_DECRYPT.md` — спецификация компонента 2, блоки 8–12 (реализован).
+2. `docs/archive/SHIFRATOR_SPEC_AI.md` — спецификация блоков 1–7 (синхронизирована с кодом 2026-07-12).
+3. `docs/archive/specs/SHIFRATOR_SPEC_FILE_DECRYPT.md` — спецификация компонента 2, блоки 8–12 (реализован).
 4. `PROJECT_AUDIT.md` — итоги аудита: расхождения, найденные проблемы, замеры, порядок работ.
-5. `docs/reports/` — отчёты трёх раундов тестирования (FINDINGS, BREAKING_REPORT,
+5. `docs/archive/reports/` — отчёты трёх раундов тестирования (FINDINGS, BREAKING_REPORT,
    COMPONENT2_TEST_REPORT): закрытые находки, известные ограничения.
 
 ## Структура и запуск
@@ -40,7 +40,7 @@ docs/                 # спеки, HANDOFF-архив, отчёты
 - Тесты: `venv/Scripts/python.exe -m pytest tests/ -q`. Ожидаемо: **268 passed, 1 xfailed,
   1 failed** — упавший тест `tests/component2/test_e_malformed_input.py::test_valid_zip_
   without_any_target_part_raises_ooxml_error` намеренно красный (пин незакрытого дефекта,
-  см. `docs/reports/COMPONENT2_TEST_REPORT.md`); xfail — осознанно отложенный B4 (омоглифы).
+  см. `docs/archive/reports/COMPONENT2_TEST_REPORT.md`); xfail — осознанно отложенный B4 (омоглифы).
 - `src/` попадает на `sys.path` тремя путями: editable-установка в venv (уже сделана;
   при пересоздании venv — `pip install -r requirements.txt`, затем
   `pip install -e . --no-build-isolation`), корневой `conftest.py` (pytest), bootstrap в

@@ -435,7 +435,7 @@ cession_0002__m2718_cell_split.docx  'Мак' || 'аро'
 
 ### 5.3. Кто считает неверно — прямо
 
-* **`docs/PERF_REPORT.md §3.3` («162 из 162») считает неверно.** Признак,
+* **`docs/archive/reports/PERF_REPORT.md §3.3` («162 из 162») считает неверно.** Признак,
   объявленный как «разрыв ранов внутри слова», в корпусе не может быть
   константой: 88 документов из 162 такого разрыва не имеют ни в одном прочтении.
   162 воспроизводится только предикатом, который считает что-то другое —
@@ -560,18 +560,18 @@ $ ... | grep -v ': OK$'
 
 ### 8.3. `git status --porcelain`
 
-Ожидание постановки — ровно одна новая строка, `docs/GENV_REPORT.md`.
+Ожидание постановки — ровно одна новая строка, `docs/archive/reports/GENV_REPORT.md`.
 Фактически строк больше, и все лишние — **входные**: на снимке `git status` на
 момент старта сессии уже присутствовали `M experiments/stage_o2/acceptance.py`,
 `M experiments/stage_o2/etalon.py`, `M tests/corpus/subsample.py` и 12
-неотслеживаемых файлов (`docs/ENTITY_SPEC.md`, `docs/HANDOFF_SUBSET_ITER.md`,
-`docs/MARKUP_RULES.md`, `docs/PERF_REPORT.md`, `docs/T0V_REPORT.md`,
+неотслеживаемых файлов (`docs/archive/specs/ENTITY_SPEC.md`, `docs/archive/reports/HANDOFF_SUBSET_ITER.md`,
+`docs/archive/specs/MARKUP_RULES.md`, `docs/archive/reports/PERF_REPORT.md`, `docs/archive/reports/T0V_REPORT.md`,
 `tests/corpus/build_structure.py`, `build_subset_iter.py`,
 `results_iter_baseline.json`, `run_iter_baseline.py`, `structure.json`,
 `subset_iter.json`, `subset_lib.py`, `tests/test_subset_iter_coverage.py`) —
 результаты сессий I1/T0/PERF, которые владелец не коммитил. Данной сессией они
 **не изменялись**: работа с ними велась только на чтение. Единственная запись
-сессии — `docs/GENV_REPORT.md`. Точный вывод — в §8.4 протокола.
+сессии — `docs/archive/reports/GENV_REPORT.md`. Точный вывод — в §8.4 протокола.
 
 ### 8.4. Прогоны
 

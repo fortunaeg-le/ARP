@@ -318,5 +318,5 @@ sidecar-ах этапов U2/U3 — они бы копились в хранил
   сегментов точный, процент — оценка по времени (граница задачи запрещала
   инструментировать детекцию). pytest 912→920 passed (+8, детекция байт-в-
   байт), sha256 корпуса OK, CLI↔UI паритет не задет. См.
-  [`archive/reports/HANDOFF_U3_MARKUP.md`](archive/reports/HANDOFF_U3_MARKUP.md).
+  [`archive/reports/HANDOFF_U3_MARKUP.md`](HANDOFF_U3_MARKUP.md).
 ```
