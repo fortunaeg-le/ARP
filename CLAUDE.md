@@ -37,12 +37,31 @@
 `natasha`). Другой интерпретатор = ошибки сбора тестов.
 
 ```
-venv/Scripts/python.exe -m pytest -q                  # набор тестов (~15 мин)
+venv/Scripts/python.exe -m pytest -q                  # набор тестов (~7-8 мин, xdist -n auto)
 venv/Scripts/python.exe tests/corpus/subsample.py     # быстрый набор: 33 док., ~55 с
 venv/Scripts/python.exe tests/corpus/gate.py          # ПОЛНЫЙ гейт: 324 док., ~9-10 мин
 venv/Scripts/python.exe app/server.py                 # интерфейс на 127.0.0.1:8765
 venv\Scripts\pyinstaller.exe packaging\shifrator.spec --distpath dist --workpath build
 ```
+
+## Запуск по зоне
+
+Только для итераций внутри сессии — **приёмка этапа всегда полный набор**
+(`pytest -q` без файлового списка), ни одна зона от него не освобождена.
+
+```
+детекция:      venv/Scripts/python.exe -m pytest tests/test_regex_detector.py tests/test_ner_detector.py tests/test_normalizer.py tests/test_case_detection.py tests/test_stage3_detectors.py tests/test_stage_b_per.py tests/test_stage_c_prime_quotes.py tests/test_golden_addresses.py tests/test_addr_b_boundaries.py tests/test_negative_classes.py tests/test_t2_inn_split.py tests/test_t2_percent_term.py tests/test_determinism.py tests/test_breaking_leaks.py tests/test_breaking_redos.py tests/test_boundary_entities.py tests/test_extractor.py tests/test_adversarial_extractor.py tests/test_unread_zones.py tests/test_future_contracts.py
+арбитраж:       venv/Scripts/python.exe -m pytest tests/test_arbitration_contract.py tests/test_adversarial_tokenizer.py tests/test_syntax_compound.py tests/test_stage_e_prime.py tests/test_stage_e_spans.py tests/test_stage_s3.py tests/test_wave2_fix.py tests/test_wave2_overcapture.py
+маскирование:   venv/Scripts/python.exe -m pytest tests/test_tokenizer.py tests/test_detokenizer.py tests/test_adversarial_detokenizer.py tests/test_type_policy.py tests/test_integration.py tests/component2
+гейт/метрики:   venv/Scripts/python.exe -m pytest tests/corpus/test_gate_regression_detection.py tests/corpus/test_overmask_ledger_guard.py tests/test_gate_d.py tests/test_leak_v2.py tests/test_masking_correctness.py tests/test_precision_metric.py tests/test_corpus_no_crash.py tests/test_subset_iter_coverage.py
+корпуса:        venv/Scripts/python.exe -m pytest tests/test_corpus_v2_axis_coverage.py tests/test_corpus_v2_reproducible.py tests/test_corpus_v2_structure_groups.py tests/test_corpus_v2_value_tricks.py tests/test_gold_type_contract.py
+интерфейс/хранение: venv/Scripts/python.exe -m pytest tests/test_cli.py tests/test_adversarial_cli.py tests/test_cli_unread_zones.py tests/test_breaking_session.py tests/test_session_store.py tests/test_adversarial_session_store.py tests/test_storage_s1.py tests/test_type_policy_ui.py tests/test_u3_markup.py tests/test_u4_report.py tests/test_wave1_verification.py
+сборка:         venv/Scripts/python.exe -m pytest tests/test_u1_packaging.py
+```
+
+`test_wave1_verification.py` — сквозной (CLI+хранение+файловое маскирование из
+ранней волны верификации), приписан к интерфейсу/хранению по большинству
+проверок; при правках маскирования/OOXML прогонять и его тоже.
 
 ## Запреты навсегда
 
