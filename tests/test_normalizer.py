@@ -133,15 +133,24 @@ class TestInvisibles:
         assert norm == "7707083893"
         _assert_map_invariant("7707" + inv + "083893", norm, omap)
 
-    def test_nbsp_between_digits_single_becomes_space(self):
-        # Одиночный NBSP приводится к пробелу (паттерн реквизита его допускает).
-        base = "7707" + NBSP + "083893"
-        norm, _ = normalize_for_detection(base)
-        assert norm == "7707 083893"
+    @pytest.mark.parametrize("sp", [NBSP, NNBSP])
+    def test_typographic_space_between_digits_collapsed(self, sp):
+        """ЭТАП A5 — контракт УЖЕСТОЧЁН. Было: одиночный NBSP/узкий NBSP между
+        цифрами приводится к обычному пробелу и остаётся («паттерн реквизита его
+        допускает»). Это верно лишь для паттернов со свободным разделителем
+        (ИНН/ОГРН), но НЕ для паттернов с фиксированными группами: у паспорта
+        «\\d{6}», у СНИЛС «\\d{3}» — вставленный внутрь такой группы пробел ломал
+        матч целиком, и значение уходило в LLM открытым (A5, класс mut:invisible).
+        Неразрывный пробел внутри числа значений не РАЗДЕЛЯЕТ — он их склеивает
+        при вёрстке, поэтому схлопывается, как дефис. Обычный U+0020 при этом
+        по-прежнему сохраняется (тест ниже) — вот там он разделяет группы."""
+        base = "7707" + sp + "083893"
+        norm, omap = normalize_for_detection(base)
+        assert norm == "7707083893"
+        _assert_map_invariant(base, norm, omap)
 
-    def test_narrow_nbsp_becomes_space(self):
-        base = "7707" + NNBSP + "083893"
-        norm, _ = normalize_for_detection(base)
+    def test_plain_space_between_digits_kept(self):
+        norm, _ = normalize_for_detection("7707 083893")
         assert norm == "7707 083893"
 
     def test_nbsp_between_words_not_glued(self):
