@@ -91,6 +91,15 @@ VALIDATORS = {
 # более длинные метки счёта («Расчётный счёт (дублирование): »).
 _ANCHOR_WINDOW = 40
 
+# ЭТАП A2 — анти-якорь (симметричный «anchor:»): вместо ТРЕБОВАНИЯ, что рядом
+# есть сигнал, ТРЕБУЕТ ОТСУТСТВИЯ дисквалифицирующего слова рядом. Нужен для
+# PASSPORT: «паспорт КАЧЕСТВА»/«паспорт ИЗДЕЛИЯ» (уточнение ПОСЛЕ якоря, уже
+# внутри m.group(0) — гэп [^\n\d]{0,40} его туда затягивает) и «ТЕХНИЧЕСКИЙ
+# паспорт» (уточнение ПЕРЕД якорем, вне матча — его не увидеть без окна слева).
+# Окно короче _ANCHOR_WINDOW: дисквалифицирующее слово всегда СЛИТНО с якорем
+# («технический паспорт», не «технический документ, а также паспорт»).
+_ANTI_ANCHOR_WINDOW = 20
+
 
 def _fold_anchor_context(s: str) -> str:
     """Свод латиница->кириллица для ОКНА якоря (не для всего документа — это
@@ -120,6 +129,21 @@ def _has_anchor(search_text: str, pos: int, anchor_re: re.Pattern) -> bool:
     if cut != -1:
         context = context[cut + 1:]
     return anchor_re.search(_fold_anchor_context(context)) is not None
+
+
+def _has_anti_anchor(search_text: str, match_start: int, match_end: int,
+                      anti_anchor_re: re.Pattern) -> bool:
+    """Есть ли дисквалифицирующее слово в окне [start - _ANTI_ANCHOR_WINDOW,
+    end) — т.е. НЕПОСРЕДСТВЕННО перед матчем (для «ТЕХНИЧЕСКИЙ паспорт») ИЛИ
+    внутри самого матча (для «паспорт КАЧЕСТВА» — уточнение уже в m.group(0),
+    см. `_ANTI_ANCHOR_WINDOW`). Не пересекает перевод строки — тот же приём,
+    что и `_has_anchor`, дисквалификатор из чужого абзаца не в счёт."""
+    window_start = max(0, match_start - _ANTI_ANCHOR_WINDOW)
+    context = search_text[window_start:match_end]
+    nl = context.rfind("\n", 0, match_start - window_start)
+    if nl != -1:
+        context = context[nl + 1:]
+    return anti_anchor_re.search(_fold_anchor_context(context)) is not None
 
 
 def _load_regex_types(config_path: str) -> list[tuple[str, re.Pattern, object, int, object]]:
@@ -170,7 +194,8 @@ def _load_regex_types(config_path: str) -> list[tuple[str, re.Pattern, object, i
             raw_entries = [{"pattern": spec.get("pattern"),
                             "validate": spec.get("validate"),
                             "span_group": spec.get("span_group", 0),
-                            "anchor": spec.get("anchor")}]
+                            "anchor": spec.get("anchor"),
+                            "anti_anchor": spec.get("anti_anchor")}]
 
         for entry in raw_entries:
             pattern_str = entry.get("pattern")
@@ -210,7 +235,16 @@ def _load_regex_types(config_path: str) -> list[tuple[str, re.Pattern, object, i
                     print(f"ПРЕДУПРЕЖДЕНИЕ: anchor типа {entity_type} не компилируется "
                           f"({exc}) — якорь проигнорирован", file=sys.stderr)
 
-            result.append((entity_type, pattern, validator, span_group, anchor))
+            anti_anchor = None
+            anti_anchor_str = entry.get("anti_anchor")
+            if anti_anchor_str is not None:
+                try:
+                    anti_anchor = re.compile(anti_anchor_str)
+                except re.error as exc:
+                    print(f"ПРЕДУПРЕЖДЕНИЕ: anti_anchor типа {entity_type} не компилируется "
+                          f"({exc}) — анти-якорь проигнорирован", file=sys.stderr)
+
+            result.append((entity_type, pattern, validator, span_group, anchor, anti_anchor))
     return result
 
 
@@ -226,10 +260,18 @@ def detect_regex(doc: SourceDocument, config_path: str) -> list[Entity]:
         # строка (чистые цифры), поэтому валидатор чек-суммы работает по ней прямо.
         # На неискажённом тексте нормализация — тождество, поведение прежнее.
         search_text, offset_map = detection_view(segment)
-        for entity_type, pattern, validator, span_group, anchor in regex_types:
+        for entity_type, pattern, validator, span_group, anchor, anti_anchor in regex_types:
             for m in pattern.finditer(search_text):
                 if m.start(span_group) < 0:
                     continue  # группа не участвовала в матче — спана нет
+
+                # ЭТАП A2 — анти-якорь: дисквалифицирующее слово рядом с якорем
+                # («паспорт КАЧЕСТВА», «ТЕХНИЧЕСКИЙ паспорт») отменяет матч
+                # целиком, до проверки КС/anchor ниже — это не «слабое
+                # подтверждение», это «точно не тот смысл».
+                if anti_anchor is not None and _has_anti_anchor(
+                        search_text, m.start(0), m.end(0), anti_anchor):
+                    continue
 
                 # ЭТАП 4 — КС как сигнал уверенности, а не шлагбаум (STATE §6).
                 # Под якорем (anchor найден слева, см. _has_anchor) значение
