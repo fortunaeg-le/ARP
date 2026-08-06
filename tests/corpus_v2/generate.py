@@ -92,6 +92,34 @@ PASSPORT_STYLES = [
     ("linebreak", ""),
 ]
 
+# ЭТАП A2 — та же болезнь у трёх других типов (A1-RIGID-GAP-SURVEY): короткий/
+# средний/длинный зазор якорь->значение, разный регистр якоря. Разделитель
+# ВНУТРИ значения (между триплетами СНИЛС, между частями кода подразделения,
+# между днём/месяцем/годом) НЕ варьируем шире дефиса/пробела — попытка снять
+# ограничение (`\s?`) дала регресс BIRTHDATE на корпусе v1 (`\s` матчит и
+# СТРУКТУРНЫЙ перенос сегмента/ячейки, не только перенос внутри прозы), см.
+# entity_types.yaml, находка A2-NEWLINE-CROSS. Флаги "snils"/"birthdate" (были
+# в UGLY_POOL с этапа CORPUS-V2, не читались никем) включают выбор стиля.
+SNILS_STYLES = [
+    ("-", "СНИЛС "),
+    (" ", "СНИЛС № "),
+    ("-", "снилс: "),
+    ("-", "Страховое свидетельство государственного пенсионного страхования № "),
+]
+BIRTHDATE_STYLES = [
+    (".", "Дата рождения: "),
+    ("/", "Дата рождения: "),
+    (".", "ДАТА РОЖДЕНИЯ: "),
+    (".", "Дата рождения (согласно паспортным данным): "),
+]
+DEPTCODE_STYLES = [
+    ("-", "код подразделения "),
+    (" ", "код подразделения "),
+    ("-", "Код подразделения "),
+    ("-", "код подразделения, выдавшего паспорт: "),
+    ("-", "код подр. "),
+]
+
 
 # --------------------------------------------------------------------- Doc
 class D:
@@ -366,12 +394,17 @@ def mk_np(d):
     bank, bik, corr = rnd.choice(DT.BANKS)
     pass_series, pass_number = DT.passport_parts(rnd)
     pass_style = rnd.choice(PASSPORT_STYLES) if has(d, "passport") else ("space", "")
+    snils_style = rnd.choice(SNILS_STYLES) if has(d, "snils") else ("-", "СНИЛС ")
+    birth_style = rnd.choice(BIRTHDATE_STYLES) if has(d, "birthdate") else (".", "Дата рождения: ")
+    dept_style = rnd.choice(DEPTCODE_STYLES) if has(d, "passport") else ("-", "код подразделения ")
     return dict(kind="NP", person=person, inn=DT.inn12(rnd, not bad),
-                snils=DT.snils(rnd, not bad),
+                snils=DT.snils_value(DT.snils_parts(rnd, not bad), snils_style[0]),
+                snils_intro=snils_style[1],
                 passport=DT.passport_value(pass_series, pass_number, pass_style[0]),
                 passport_intro=pass_style[1],
                 passport_cat="canonical" if pass_style == ("space", "") else "ugly",
-                pass_dept="%03d-%03d" % (rnd.randint(1, 999), rnd.randint(1, 999)),
+                pass_dept=DT.deptcode_value(DT.deptcode_parts(rnd), dept_style[0]),
+                pass_dept_intro=dept_style[1],
                 pass_org=rnd.choice(['ОВД «Тропарёво» г. Москвы', 'ГУ МВД России по г. Москве',
                                      'ОУФМС России по Тверской области в Заволжском р-не',
                                      'ТП № 2 ОУФМС России по Московской обл.']),
@@ -379,8 +412,8 @@ def mk_np(d):
                                             rnd.randint(2002, 2020)),
                 bank=bank, bik=bik, corr=corr,
                 acc=DT.account(rnd, bik, prefix="40817810", valid=not bad),
-                birth="%02d.%02d.%d" % (rnd.randint(1, 28), rnd.randint(1, 12),
-                                        rnd.randint(1955, 2000)),
+                birth=DT.birthdate_value(DT.birthdate_parts(rnd), birth_style[0]),
+                birth_intro=birth_style[1],
                 bad=bad)
 
 
@@ -426,8 +459,9 @@ def preamble(d, p1, p2, r1, r2):
                        note="серия+номер, стиль записи из PASSPORT_STYLES"),
                    d.t(", выдан "), d.t(p["pass_org"]), d.t(" "),
                    d.I(p["pass_date"], "дата выдачи паспорта — серая зона (не ПДн-сущность в нашей схеме)"),
-                   d.t(", код подразделения "),
-                   d.E(p["pass_dept"], "PASSPORT", "ugly", note="код подразделения"),
+                   d.t(", " + p["pass_dept_intro"]),
+                   d.E(p["pass_dept"], "PASSPORT", "ugly",
+                       note="код подразделения, стиль записи из DEPTCODE_STYLES"),
                    d.t(", именуем%s в дальнейшем «%s»"
                        % ("ая" if p["person"]["gender"] == "f" else "ый", role))]
         if p is p1:
@@ -500,17 +534,23 @@ def req_lines(d, p, role, mode="normal"):
                        d.E(p["person"]["short"], "PER", "ugly", note="фамилия + инициалы")]))
     else:
         L.append(para([d.E(p["person"]["nom"], "PER", "canonical")]))
-        L.append(para([d.t("Дата рождения: "),
-                       d.E(p["birth"], "BIRTHDATE", "canonical")]))
+        birth_cat = "canonical" if p["birth_intro"] == "Дата рождения: " else "ugly"
+        L.append(para([d.t(p["birth_intro"]),
+                       d.E(p["birth"], "BIRTHDATE", birth_cat,
+                           note="стиль записи из BIRTHDATE_STYLES")]))
         L.append(para([d.t("Адрес регистрации: "), ADDR(d)]))
         L.append(para([d.t("Паспорт " + p["passport_intro"]),
                        d.E(p["passport"], "PASSPORT", p["passport_cat"],
                            note="серия+номер, стиль записи из PASSPORT_STYLES"),
                        d.t(", выдан " + p["pass_org"] + " " + p["pass_date"]),
-                       d.t(", код подразделения "),
-                       d.E(p["pass_dept"], "PASSPORT", "ugly", note="код подразделения")]))
-        L.append(para([d.t("СНИЛС "), d.E(p["snils"], "SNILS", "canonical",
-                                          checksum="invalid" if p["bad"] else "valid"),
+                       d.t(", " + p["pass_dept_intro"]),
+                       d.E(p["pass_dept"], "PASSPORT", "ugly",
+                           note="код подразделения, стиль записи из DEPTCODE_STYLES")]))
+        snils_cat = "canonical" if p["snils_intro"] == "СНИЛС " else "ugly"
+        L.append(para([d.t(p["snils_intro"]),
+                       d.E(p["snils"], "SNILS", snils_cat,
+                           note="стиль записи из SNILS_STYLES",
+                           checksum="invalid" if p["bad"] else "valid"),
                        d.t(" ИНН "), d.E(p["inn"], "INN", "ugly",
                                          checksum="invalid" if p["bad"] else "valid",
                                          note="ИНН физлица (12 знаков)")]))
@@ -883,14 +923,43 @@ def negatives_clause(d):
           d.N("МКАС при ТПП РФ", "арбитражный институт — не ПДн"),
           # ЭТАП A1 — типизированный негатив PASSPORT: 10 цифр в форме
           # «SS SS NNNNNN» рядом со словом «паспорт», но это паспорт КАЧЕСТВА
-          # товара, а не документ личности. Проверяет переусердствование
-          # расширенного паттерна (DOG-PASSPORT-GAP): якорь только по слову,
-          # без семантики, поэтому эта форма СОЗНАТЕЛЬНО ловится тем же
-          # регэкспом — направление ошибки безопасное (лишняя маска, не утечка),
-          # но должно быть измерено, а не невидимо.
+          # товара, а не документ личности. До A2 ловился 138 из 138 (A1-
+          # PASSPORT-QUALITY-FP); ЭТАП A2 добавил anti_anchor в entity_types.yaml
+          # — теперь ДОЛЖЕН отсекаться. Плюс родня из части 2 (изделие, ТС,
+          # технический — качество СЛЕВА от якоря, единственный случай, когда
+          # дисквалификатор идёт ПЕРЕД словом «паспорт», а не после).
           d.t(". Товар отгружается с сопроводительным документом паспорт качества № "),
           d.N("%02d %02d %06d" % (rnd.randint(1, 99), rnd.randint(1, 25), rnd.randint(1, 999999)),
               "паспорт КАЧЕСТВА товара, не документа личности — 10 цифр в форме серии+номера рядом со словом «паспорт»",
+              type_="PASSPORT"),
+          d.t(". К партии приложен паспорт изделия № "),
+          d.N("%02d %02d %06d" % (rnd.randint(1, 99), rnd.randint(1, 25), rnd.randint(1, 999999)),
+              "паспорт ИЗДЕЛИЯ, не документа личности",
+              type_="PASSPORT"),
+          d.t(". Оборудование поставляется с паспортом транспортного средства № "),
+          d.N("%02d %02d %06d" % (rnd.randint(1, 99), rnd.randint(1, 25), rnd.randint(1, 999999)),
+              "паспорт ТРАНСПОРТНОГО СРЕДСТВА (ПТС), не документа личности",
+              type_="PASSPORT"),
+          d.t(". Приёмка производится согласно техническому паспорту "),
+          d.N("%02d %02d %06d" % (rnd.randint(1, 99), rnd.randint(1, 25), rnd.randint(1, 999999)),
+              "ТЕХНИЧЕСКИЙ паспорт — дисквалификатор ПЕРЕД якорем, не документ личности",
+              type_="PASSPORT"),
+          # ЭТАП A2 — типизированные негативы SNILS/BIRTHDATE/код подразделения:
+          # якорь рядом, но число — не то значение. Зазоры подобраны НАРОЧНО
+          # ВНУТРИ расширенного в этом же этапе допуска (см. A1-RIGID-GAP-
+          # SURVEY) — это стресс-тест самого расширения, а не формальность.
+          d.t(". СНИЛС не указан, номер заказа "),
+          d.N("%03d-%03d-%03d %02d" % (rnd.randint(1, 999), rnd.randint(1, 999),
+                                        rnd.randint(1, 999), rnd.randint(0, 99)),
+              "номер заказа в форме СНИЛС рядом со словом «снилс», но это не СНИЛС",
+              type_="SNILS"),
+          d.t(". Дата рождения не проставлена, документ выдан "),
+          d.N("%02d.%02d.%d" % (rnd.randint(1, 28), rnd.randint(1, 12), rnd.randint(2015, 2024)),
+              "дата ВЫДАЧИ документа рядом со словом «рождения», но это не дата рождения человека",
+              type_="BIRTHDATE"),
+          d.t(". Код подразделения, см. артикул "),
+          d.N("%03d-%03d" % (rnd.randint(1, 999), rnd.randint(1, 999)),
+              "артикул в форме кода подразделения рядом с якорем, но это не код подразделения",
               type_="PASSPORT"),
           # В старом корпусе сумма стояла здесь НЕГАТИВОМ («сумма — не ПДн»).
           # В V2 сумма — полноценный вид данных, поэтому она размечена.

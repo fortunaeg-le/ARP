@@ -52,7 +52,8 @@ def ogrnip15(rnd, valid=True):
     return body + str(c)
 
 
-def snils(rnd, valid=True):
+def snils_parts(rnd, valid=True):
+    """(n1, n2, n3, cc) — три триплета и КС, БЕЗ разделителя между ними."""
     d = [rnd.randint(0, 9) for _ in range(9)]
     s = sum(x * (9 - i) for i, x in enumerate(d))
     if s < 100:
@@ -65,7 +66,16 @@ def snils(rnd, valid=True):
     if not valid:
         cc = (cc + 7) % 100
     n = "".join(map(str, d))
-    return "%s-%s-%s %02d" % (n[0:3], n[3:6], n[6:9], cc)
+    return n[0:3], n[3:6], n[6:9], "%02d" % cc
+
+
+def snils_value(parts, sep="-"):
+    n1, n2, n3, cc = parts
+    return "%s%s%s%s%s %s" % (n1, sep, n2, sep, n3, cc)
+
+
+def snils(rnd, valid=True):
+    return snils_value(snils_parts(rnd, valid), "-")
 
 
 def account(rnd, bik, prefix="40702810", valid=True):
@@ -111,6 +121,27 @@ def passport_value(series, number, sep="space"):
 def passport(rnd, valid=True):
     series, number = passport_parts(rnd)
     return passport_value(series, number, "space")
+
+
+def birthdate_parts(rnd):
+    """(день, месяц, год) — строки БЕЗ разделителя между ними."""
+    return ("%02d" % rnd.randint(1, 28), "%02d" % rnd.randint(1, 12),
+            str(rnd.randint(1955, 2000)))
+
+
+def birthdate_value(parts, sep="."):
+    day, month, year = parts
+    return "%s%s%s%s%s" % (day, sep, month, sep, year)
+
+
+def deptcode_parts(rnd):
+    """(первая тройка, вторая тройка) кода подразделения, без разделителя."""
+    return "%03d" % rnd.randint(1, 999), "%03d" % rnd.randint(1, 999)
+
+
+def deptcode_value(parts, sep="-"):
+    a, b = parts
+    return "%s%s%s" % (a, sep, b)
 
 
 # --------------------------------------------------------------------------
