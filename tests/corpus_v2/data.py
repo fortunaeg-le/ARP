@@ -84,8 +84,33 @@ def kpp(rnd):
     return "%04d%02d%03d" % (rnd.randint(1000, 9999), rnd.randint(1, 99), rnd.randint(1, 999))
 
 
+def passport_parts(rnd):
+    """(серия, номер) — сырые части БЕЗ разделителя между ними."""
+    series = "%02d %02d" % (rnd.randint(1, 99), rnd.randint(1, 25))
+    number = "%06d" % rnd.randint(1, 999999)
+    return series, number
+
+
+# ЭТАП A1 — формы записи серия/номер паспорта, найденные на реальном договоре
+# (DOG-PASSPORT-GAP): разделитель серия->номер там был ', №' / ' №' / NBSP,
+# а не только одиночный пробел. `sep` подставляется МЕЖДУ серией и номером;
+# сама серия ("SS SS") не меняется — расхождение было именно в разделителе.
+PASSPORT_SEPARATORS = {
+    "space": " ",
+    "comma_no": ", №",
+    "space_no": " №",
+    "nbsp": "\xa0",
+    "linebreak": "\n",
+}
+
+
+def passport_value(series, number, sep="space"):
+    return series + PASSPORT_SEPARATORS[sep] + number
+
+
 def passport(rnd, valid=True):
-    return "%02d %02d %06d" % (rnd.randint(1, 99), rnd.randint(1, 25), rnd.randint(1, 999999))
+    series, number = passport_parts(rnd)
+    return passport_value(series, number, "space")
 
 
 # --------------------------------------------------------------------------

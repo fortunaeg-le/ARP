@@ -77,6 +77,21 @@ ADV_POOL = ["homoglyph", "invisible", "case_lower", "case_upper", "case_mixed",
             "digit_spaces", "linebreak_entity", "dense_line", "addr_glued",
             "same_name_5_cases", "email_homoglyph", "zw_in_name"]
 
+# ЭТАП A1 — формы записи «паспорт»/«серия» на реальном договоре (DOG-PASSPORT-GAP):
+# (разделитель серия->номер, доп. текст между якорем и серией). Доп. текст удлиняет
+# зазор якорь->серия ближе к фактическому максимуму (см. entity_types.yaml,
+# зазор поднят [^\n\d]{0,20} -> {0,40}), не превышая его. Флаг "passport" (уже был
+# в UGLY_POOL, но не читался никем) включает выбор одного из этих стилей на документ.
+PASSPORT_STYLES = [
+    ("space", ""),
+    ("comma_no", ""),
+    ("space_no", ""),
+    ("nbsp", ""),
+    ("space", "гражданина Российской Федерации "),
+    ("comma_no", "гражданина РФ, выданного "),
+    ("linebreak", ""),
+]
+
 
 # --------------------------------------------------------------------- Doc
 class D:
@@ -349,8 +364,13 @@ def mk_np(d):
     person = DT.make_person(rnd, exotic=has(d, "exotic_name") and rnd.random() < 0.5,
                             word_surname=has(d, "word_surname") and rnd.random() < 0.4)
     bank, bik, corr = rnd.choice(DT.BANKS)
+    pass_series, pass_number = DT.passport_parts(rnd)
+    pass_style = rnd.choice(PASSPORT_STYLES) if has(d, "passport") else ("space", "")
     return dict(kind="NP", person=person, inn=DT.inn12(rnd, not bad),
-                snils=DT.snils(rnd, not bad), passport=DT.passport(rnd),
+                snils=DT.snils(rnd, not bad),
+                passport=DT.passport_value(pass_series, pass_number, pass_style[0]),
+                passport_intro=pass_style[1],
+                passport_cat="canonical" if pass_style == ("space", "") else "ugly",
                 pass_dept="%03d-%03d" % (rnd.randint(1, 999), rnd.randint(1, 999)),
                 pass_org=rnd.choice(['ОВД «Тропарёво» г. Москвы', 'ГУ МВД России по г. Москве',
                                      'ОУФМС России по Тверской области в Заволжском р-не',
@@ -401,9 +421,9 @@ def preamble(d, p1, p2, r1, r2):
             nm = p["person"]["nom"]
             ch += [d.E(nm, "PER", "canonical"),
                    d.t(", "),
-                   d.t("паспорт "),
+                   d.t("паспорт " + p["passport_intro"]),
                    d.E(p["passport"], "PASSPORT", "ugly",
-                       note="серия+номер через пробел"),
+                       note="серия+номер, стиль записи из PASSPORT_STYLES"),
                    d.t(", выдан "), d.t(p["pass_org"]), d.t(" "),
                    d.I(p["pass_date"], "дата выдачи паспорта — серая зона (не ПДн-сущность в нашей схеме)"),
                    d.t(", код подразделения "),
@@ -483,7 +503,9 @@ def req_lines(d, p, role, mode="normal"):
         L.append(para([d.t("Дата рождения: "),
                        d.E(p["birth"], "BIRTHDATE", "canonical")]))
         L.append(para([d.t("Адрес регистрации: "), ADDR(d)]))
-        L.append(para([d.t("Паспорт "), d.E(p["passport"], "PASSPORT", "canonical"),
+        L.append(para([d.t("Паспорт " + p["passport_intro"]),
+                       d.E(p["passport"], "PASSPORT", p["passport_cat"],
+                           note="серия+номер, стиль записи из PASSPORT_STYLES"),
                        d.t(", выдан " + p["pass_org"] + " " + p["pass_date"]),
                        d.t(", код подразделения "),
                        d.E(p["pass_dept"], "PASSPORT", "ugly", note="код подразделения")]))
@@ -859,6 +881,17 @@ def negatives_clause(d):
           d.N("московскому времени", "часовой пояс — не ПДн"),
           d.t(". Споры — в "),
           d.N("МКАС при ТПП РФ", "арбитражный институт — не ПДн"),
+          # ЭТАП A1 — типизированный негатив PASSPORT: 10 цифр в форме
+          # «SS SS NNNNNN» рядом со словом «паспорт», но это паспорт КАЧЕСТВА
+          # товара, а не документ личности. Проверяет переусердствование
+          # расширенного паттерна (DOG-PASSPORT-GAP): якорь только по слову,
+          # без семантики, поэтому эта форма СОЗНАТЕЛЬНО ловится тем же
+          # регэкспом — направление ошибки безопасное (лишняя маска, не утечка),
+          # но должно быть измерено, а не невидимо.
+          d.t(". Товар отгружается с сопроводительным документом паспорт качества № "),
+          d.N("%02d %02d %06d" % (rnd.randint(1, 99), rnd.randint(1, 25), rnd.randint(1, 999999)),
+              "паспорт КАЧЕСТВА товара, не документа личности — 10 цифр в форме серии+номера рядом со словом «паспорт»",
+              type_="PASSPORT"),
           # В старом корпусе сумма стояла здесь НЕГАТИВОМ («сумма — не ПДн»).
           # В V2 сумма — полноценный вид данных, поэтому она размечена.
           d.t(". Цена — ")] + d.P(d.val("MONEY")) + [d.t(".")]
