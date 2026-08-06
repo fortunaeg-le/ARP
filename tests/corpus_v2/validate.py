@@ -55,6 +55,14 @@ def main():
         t = e.get("type")
         if t not in NEW_TYPES:
             return None
+        # ЭТАП A3: двойник (`lookalike`) — не вхождение вида данных, а похожая
+        # на него конструкция другого назначения (влажность «14 %», условие
+        # хранения «в течение 24 часов»). Формы в реестре values.py у него нет
+        # по построению, и в покрытие осей он не входит: иначе проценты по осям
+        # считались бы от вхождений, которых в реестре не существует.
+        # Точность на нём меряется отдельно (measure_v2, линия двойников).
+        if e.get("lookalike"):
+            return None
         if not e.get("form"):
             return "без идентификатора формы записи"
         if not e.get("axes"):
@@ -102,7 +110,7 @@ def main():
             if bad:
                 errs.append("%s: негатив %s %d-%d %s"
                             % (g["doc_id"], e["type"], e["start"], e["end"], bad))
-            if e.get("type") in NEW_TYPES:
+            if e.get("type") in NEW_TYPES and not e.get("lookalike"):
                 by_type[e["type"]] += 1
             spans.append((e["start"], e["end"], "NEG"))
         for e in g.get("ignore", []):

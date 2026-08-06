@@ -83,13 +83,20 @@ def gold():
 
 
 def occurrences(gold, type_, group=None):
-    """Вхождения вида данных: величины И типизированные негативы."""
+    """Вхождения вида данных: величины И типизированные негативы.
+
+    ДВОЙНИКИ (`lookalike`, этап A3) сюда НЕ входят. Двойник несёт тип не потому,
+    что принадлежит виду данных, а потому, что на него ПОХОЖ: влажность «14 %»
+    процентной ставкой не является, штрихкод EAN-13 — не ОГРН. Формы записи в
+    реестре `values.py` у него нет по построению, поэтому в покрытии осей он
+    был бы вхождением без формы — то есть шумом в знаменателе.
+    """
     out = []
     for d in gold:
         if group is not None and d["structure_group"] != group:
             continue
         for e in list(d["entities"]) + list(d.get("negatives", [])):
-            if e.get("type") == type_:
+            if e.get("type") == type_ and not e.get("lookalike"):
                 out.append(e)
     return out
 
@@ -280,6 +287,11 @@ def test_every_occurrence_has_a_form_and_axes(gold):
     bad = []
     for d in gold:
         for e in list(d["entities"]) + list(d.get("negatives", [])):
+            # Двойник (`lookalike`, этап A3) формы не имеет по построению — он
+            # не вхождение вида данных, а похожая на него чужая конструкция.
+            # См. occurrences() выше и corpus_lib.neg.
+            if e.get("lookalike"):
+                continue
             if e.get("type") in V.AXES and not (e.get("form") and e.get("axes")):
                 bad.append((d["doc_id"], e.get("type"), e["start"]))
     assert not bad, (
