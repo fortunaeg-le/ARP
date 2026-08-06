@@ -61,6 +61,17 @@ _DIGIT_LOOKALIKE = {
 # (квартира) остаётся адресом, а «7б0» (искажённая середина реквизита) чинится.
 _LOOKALIKE_EDGE_UNSAFE = frozenset("бБ")
 
+# ЭТАП A5. «Сильные» двойники — те, которыми в документе печатают ИСКАЖЁННУЮ
+# ЦИФРУ: прописные кириллические и латинская O плюс 'б'. Только из них может
+# состоять группа реквизита, в которой не осталось ни одной настоящей цифры
+# («Ч 068 268 315», «+7 8Ч3 887 77 Чб»). Строчные о/з/ч/і сюда НЕ входят: из них
+# складываются частотные короткие слова («об», «за»), и свод испортил бы прозу.
+_STRONG_LOOKALIKE = frozenset("ОЗЧІOб")
+
+# Порог цепи: сколько НАСТОЯЩИХ цифр должно быть в разбитом пробелами числе,
+# чтобы считать его реквизитом/телефоном, а не номером дома или квартиры.
+_CHAIN_DIGIT_MIN = 6
+
 # --- Свод АЛФАВИТНЫХ омоглифов латиница → кириллица (для NER/regex/синтаксиса) ---
 # Только визуально однозначные пары. Направление латиница→кириллица: корпус —
 # русские договоры, Natasha опирается на кириллицу. Свод применяется ТОЛЬКО внутри
@@ -182,13 +193,21 @@ def normalize_for_detection(base: str) -> tuple[str, list[int]]:
     # символа chars[k] в base). ---
     chars: list[str] = []
     src: list[int] = []
+    # soft[k] — символ chars[k] пришёл из ТИПОГРАФСКОГО пробела (NBSP, narrow
+    # NBSP, thin space…), а не из обычного U+0020. Различие нужно проходу 3:
+    # обычный пробел между числами — законный разделитель ЗНАЧЕНИЙ, а
+    # неразрывный/узкий внутри числа — артефакт вёрстки того же значения.
+    soft: list[bool] = []
     for i, ch in enumerate(base):
         if ch in _SPACE_LIKE:
             chars.append(" ")
             src.append(i)
-        elif ch in _HYPHEN_LIKE:
+            soft.append(True)
+            continue
+        if ch in _HYPHEN_LIKE:
             chars.append(ch)
             src.append(i)
+            soft.append(False)
         elif unicodedata.category(ch) == "Cf":
             # Zero-width/невидимые управляющие форматирования: ZWSP/ZWNJ/ZWJ/WJ/
             # SHY/BOM/LRM/RLM. Удаляем целиком — длина падает, карта это учитывает.
@@ -196,10 +215,74 @@ def normalize_for_detection(base: str) -> tuple[str, list[int]]:
         else:
             chars.append(ch)
             src.append(i)
+            soft.append(False)
 
     m = len(chars)
     is_sep = [c == " " or c in _HYPHEN_LIKE for c in chars]
     is_dl = [_is_ascii_digit(c) or c in _DIGIT_LOOKALIKE for c in chars]
+
+    # --- ЦИФРОВАЯ ЦЕПЬ (этап A5). Максимальный отрезок из цифровых токенов и
+    # разделителей между ними, обрезанный по краям до цифрового символа:
+    # «Ч 068 268 315» — одна цепь, «кв. 2б» — цепь из одного токена. Проход 2
+    # ниже смотрит на цепь, а не только на токен: реквизит РАЗБИТ пробелами по
+    # группам, и группа «Ч» или «2О» сама по себе порога «>=2 настоящих цифры»
+    # не набирает — двойник на краю группы оставался буквой, и весь реквизит
+    # уходил в LLM открытым (A5, класс mut:homoglyph). Порог цепи 6 настоящих
+    # цифр — это уже не номер дома и не квартира, а реквизит/телефон.
+    chain_digits = [0] * m         # для каждого символа — цифр в его цепи
+    chain_bounds: list[tuple[int, int]] = [(-1, -1)] * m
+
+    # Токены цифрового вида: (начало, конец, число настоящих цифр).
+    toks: list[tuple[int, int, int]] = []
+    k = 0
+    while k < m:
+        if not is_dl[k]:
+            k += 1
+            continue
+        j = k
+        while j < m and is_dl[j]:
+            j += 1
+        toks.append((k, j, sum(1 for t in range(k, j) if _is_ascii_digit(chars[t]))))
+        k = j
+
+    def _joins_chain(a: int, b: int, dc: int) -> bool:
+        """Может ли токен [a:b) быть ГРУППОЙ разбитого пробелами реквизита.
+        С настоящей цифрой — да. Совсем без цифр — только если это КОРОТКАЯ (1-2
+        знака) группа из «сильных» двойников: «Ч», «І», «Чб». Ограничение не
+        косметическое: без него цепь «7707083893 ООО «Ромашка»» затянула бы
+        слово ООО и вернула бы «000» — свод обязан остаться сводом цифр, а не
+        порчей прозы. Строчные о/з/ч/і исключены намеренно: «об», «за» —
+        частотные слова, а искажение цифры печатают прописной."""
+        if dc >= 1:
+            return True
+        if b - a > 2 or not all(chars[t] in _STRONG_LOOKALIKE for t in range(a, b)):
+            return False
+        # …и она не приклеена к букве: в «счёт 407… ЗАО» токен — одна «З», за
+        # ней сразу «А», и без этой проверки аббревиатура стала бы «3АО».
+        return not ((a > 0 and chars[a - 1].isalpha())
+                    or (b < m and chars[b].isalpha()))
+
+    i0 = 0
+    while i0 < len(toks):
+        a, b, dc = toks[i0]
+        if not _joins_chain(a, b, dc):
+            i0 += 1
+            continue
+        i1 = i0
+        while i1 + 1 < len(toks):
+            na, nb, ndc = toks[i1 + 1]
+            pb = toks[i1][1]
+            if not _joins_chain(na, nb, ndc):
+                break
+            if not all(is_sep[t] for t in range(pb, na)) or na == pb:
+                break
+            i1 += 1
+        cs, ce = toks[i0][0], toks[i1][1]
+        n_dig = sum(dcx for _, _, dcx in toks[i0:i1 + 1])
+        for t in range(cs, ce):
+            chain_digits[t] = n_dig
+            chain_bounds[t] = (cs, ce)
+        i0 = i1 + 1
 
     # --- Проход 2: цифровые токены (максимальные прогоны из цифр/омоглифов-цифр
     # БЕЗ разделителей). Внутри токена с >=2 реальными цифрами сводим омоглифы в
@@ -216,20 +299,34 @@ def normalize_for_detection(base: str) -> tuple[str, list[int]]:
         while j < m and is_dl[j]:
             j += 1
         digit_count = sum(1 for t in range(k, j) if _is_ascii_digit(chars[t]))
-        if digit_count >= 1:
+        # A5: группа БЕЗ единой настоящей цифры («Ч», «І», «Чб») — тоже часть
+        # реквизита, если цепь вокруг неё тянет на реквизит; иначе одиночный
+        # двойник на краю реквизита оставался буквой и рвал весь номер.
+        long_chain_k = chain_digits[k] >= _CHAIN_DIGIT_MIN
+        if digit_count >= 1 or long_chain_k:
             for t in range(k, j):
                 is_num[t] = True
             # Порог >=2 реальных цифр: защищает «2б»/«5о» (номер квартиры,
             # одиночная цифра рядом с буквой) от порчи. Реквизиты/телефоны — это
             # длинные прогоны, у них цифр заведомо больше.
-            if digit_count >= 2:
+            # A5: ИЛИ цепь целиком тянет на реквизит — тогда одиночная группа
+            # («Ч», «2О», «О9») внутри неё тоже сводится. Условие только
+            # РАСШИРЯЕТ прежний класс форм: всё, что сводилось раньше, сводится.
+            long_chain = long_chain_k
+            if digit_count >= 2 or long_chain:
+                cs, ce = chain_bounds[k]
                 for t in range(k, j):
                     c = chars[t]
                     repl = _DIGIT_LOOKALIKE.get(c)
                     if repl is None:
                         continue
                     if c in _LOOKALIKE_EDGE_UNSAFE and (t == k or t == j - 1):
-                        continue   # 'б' на краю токена не трогаем (см. константу)
+                        # 'б' на краю токена: раньше — всегда мимо. Теперь мимо,
+                        # если она на краю ЦЕПИ («630099 12б» — литера дома) либо
+                        # цепь коротка; внутри длинной цепи («1 б99 905 88І 872»)
+                        # это искажённая шестёрка.
+                        if not (long_chain and cs < t < ce - 1):
+                            continue
                     out_chars[t] = repl
         k = j
 
@@ -246,13 +343,21 @@ def normalize_for_detection(base: str) -> tuple[str, list[int]]:
             continue
         j = k
         has_hyphen = False
+        has_soft = False
         while j < m and is_sep[j]:
             if chars[j] in _HYPHEN_LIKE:
                 has_hyphen = True
+            if soft[j]:
+                has_soft = True
             j += 1
         left_num = k - 1 >= 0 and is_num[k - 1]
         right_num = j < m and is_num[j]
-        if left_num and right_num and (has_hyphen or (j - k) >= 2):
+        # A5: has_soft — типографский пробел (NBSP/узкий/тонкий) МЕЖДУ цифрами.
+        # Обычный одиночный U+0020 по-прежнему не трогаем (он разделяет группы
+        # и его допускают паттерны), а неразрывный внутри числа значений не
+        # разделяет — он их склеивает при вёрстке, и оставленный на месте рвал
+        # фиксированные группы паттернов («\d{6}» паспорта, «\d{3}» СНИЛС).
+        if left_num and right_num and (has_hyphen or has_soft or (j - k) >= 2):
             for t in range(k, j):
                 keep[t] = False
         k = j
