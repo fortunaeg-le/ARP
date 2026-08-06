@@ -71,3 +71,7 @@ tests/corpus/results_gate_current.json
 experiments/stage_o2/_*.json
 experiments/stage_o2/_*.log
 experiments/stage_o2/*.pstats
+
+# Отладочный дамп замера корпуса v2: перезаписывается каждым прогоном (5 МБ),
+# производная конкретного прогона, как results_gate_current.json выше (этап A3).
+tests/corpus_v2/results_v2_current.json
