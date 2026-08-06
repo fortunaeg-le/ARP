@@ -115,7 +115,7 @@
       "note": "код подразделения, стиль записи из DEPTCODE_STYLES",
       "type": "PASSPORT"
      },
-     "s": "018-927"
+     "s": "927-720"
     },
     {
      "s": ", именуемая в дальнейшем «Исполнитель»"
@@ -171,7 +171,7 @@
       "note": "код подразделения, стиль записи из DEPTCODE_STYLES",
       "type": "PASSPORT"
      },
-     "s": "956-450"
+     "s": "942-798"
     },
     {
      "s": ", именуемый в дальнейшем «Заказчик»"
@@ -895,10 +895,10 @@
      "e": {
       "cat": "ugly",
       "id": "services_0014-e14",
-      "note": "стиль адреса: city_middle",
+      "note": "стиль адреса: no_marker2",
       "type": "ADDRESS"
      },
-     "s": "ш. Баумана, д. 2, с. Ивановское, Свердловская обл."
+     "s": "Санкт-Петербург Баумана 2/2 кв 62"
     },
     {
      "s": "."
@@ -1347,11 +1347,11 @@
        {
         "chunks": [
          {
-          "s": "Дата рождения: "
+          "s": "Дата рождения (согласно паспортным данным): "
          },
          {
           "e": {
-           "cat": "canonical",
+           "cat": "ugly",
            "id": "services_0014-e26",
            "note": "стиль записи из BIRTHDATE_STYLES",
            "type": "BIRTHDATE"
@@ -1371,10 +1371,10 @@
           "e": {
            "cat": "ugly",
            "id": "services_0014-e27",
-           "note": "стиль адреса: city_middle",
+           "note": "стиль адреса: no_marker",
            "type": "ADDRESS"
           },
-          "s": "бул. Лесная, д. 55, пос. Заречный, Республика Татарстан"
+          "s": "Казань, Лесная 55"
          }
         ],
         "style": "normal",
@@ -1407,7 +1407,7 @@
            "note": "код подразделения, стиль записи из DEPTCODE_STYLES",
            "type": "PASSPORT"
           },
-          "s": "018-927"
+          "s": "927-720"
          }
         ],
         "style": "normal",
@@ -1426,7 +1426,7 @@
            "note": "стиль записи из SNILS_STYLES",
            "type": "SNILS"
           },
-          "s": "758-717-304 45"
+          "s": "587-173-040 17"
          },
          {
           "s": " ИНН "
@@ -1439,7 +1439,7 @@
            "note": "ИНН физлица (12 знаков)",
            "type": "INN"
           },
-          "s": "646514546802"
+          "s": "465145468778"
          }
         ],
         "style": "normal",
@@ -1457,7 +1457,7 @@
            "note": "формат: canonical",
            "type": "PHONE"
           },
-          "s": "+7 (812) 757-67-67"
+          "s": "+7 (495) 787-47-92"
          }
         ],
         "style": "normal",
@@ -1474,7 +1474,7 @@
            "id": "services_0014-e33",
            "type": "EMAIL"
           },
-          "s": "guseva@gmail.com"
+          "s": "guseva@sibtrans.ru"
          }
         ],
         "style": "normal",
@@ -1577,10 +1577,10 @@
           "e": {
            "cat": "ugly",
            "id": "services_0014-e37",
-           "note": "стиль адреса: city_middle",
+           "note": "стиль адреса: no_marker2",
            "type": "ADDRESS"
           },
-          "s": "бул. Полевая, д. 19, с. Ивановское, Краснодарский край"
+          "s": "Казань Строителей 66/4 кв 19"
          }
         ],
         "style": "normal",
@@ -1613,7 +1613,7 @@
            "note": "код подразделения, стиль записи из DEPTCODE_STYLES",
            "type": "PASSPORT"
           },
-          "s": "956-450"
+          "s": "942-798"
          }
         ],
         "style": "normal",
@@ -1632,7 +1632,7 @@
            "note": "стиль записи из SNILS_STYLES",
            "type": "SNILS"
           },
-          "s": "243-895-208 97"
+          "s": "438-952-087 24"
          },
          {
           "s": " ИНН "
@@ -1645,7 +1645,7 @@
            "note": "ИНН физлица (12 знаков)",
            "type": "INN"
           },
-          "s": "135100088024"
+          "s": "351000880212"
          }
         ],
         "style": "normal",
@@ -1663,7 +1663,7 @@
            "note": "формат: canonical",
            "type": "PHONE"
           },
-          "s": "+7 (843) 706-67-34"
+          "s": "+7 (499) 984-70-85"
          }
         ],
         "style": "normal",
@@ -1680,7 +1680,7 @@
            "id": "services_0014-e43",
            "type": "EMAIL"
           },
-          "s": "vorobev@gmail.com"
+          "s": "vorobev@sibtrans.ru"
          }
         ],
         "style": "normal",
@@ -1775,11 +1775,11 @@
  "contract_type": "оказание услуг",
  "doc_id": "services_0014",
  "features": [
-  "addr_city_middle",
+  "addr_no_marker",
+  "birthdate",
   "bold_split",
-  "composite_ip",
   "hdr_pii",
-  "req_spaced"
+  "org_fio_inside"
  ],
  "format": "docx",
  "header": [
@@ -1796,7 +1796,7 @@
       "trick": "in_header",
       "type": "PHONE"
      },
-     "s": "+7 (843) 932-94-19"
+     "s": "+7 (499) 816-89-41"
     },
     {
      "s": " · "
@@ -1809,7 +1809,7 @@
       "trick": "in_header",
       "type": "EMAIL"
      },
-     "s": "guseva@list.ru"
+     "s": "guseva@inbox.ru"
     }
    ],
    "style": "normal",

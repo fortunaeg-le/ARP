@@ -85,12 +85,12 @@
     {
      "e": {
       "cat": "canonical",
-      "checksum": "valid",
+      "checksum": "invalid",
       "id": "services_0012-e2",
       "note": "ИНН физлица/ИП, 12 знаков",
       "type": "INN"
      },
-     "s": "730968088080"
+     "s": "730968088081"
     },
     {
      "s": ", именуемый в дальнейшем «Исполнитель», действующий на основании свидетельства о государственной регистрации"
@@ -116,12 +116,12 @@
     {
      "e": {
       "cat": "canonical",
-      "checksum": "valid",
+      "checksum": "invalid",
       "id": "services_0012-e4",
       "note": "ИНН физлица/ИП, 12 знаков",
       "type": "INN"
      },
-     "s": "182244802662"
+     "s": "182244802663"
     },
     {
      "s": ", именуемый в дальнейшем «Заказчик», действующий на основании свидетельства о государственной регистрации"
@@ -802,12 +802,12 @@
     },
     {
      "e": {
-      "cat": "ugly",
+      "cat": "canonical",
       "id": "services_0012-e10",
-      "note": "стиль адреса: no_marker",
+      "note": "стиль адреса: canonical",
       "type": "ADDRESS"
      },
-     "s": "Сергиев Посад, Лесная 6"
+     "s": "603000, г. Нижний Новгород, бул. Пушкина, д. 48, кв. 11"
     },
     {
      "s": "."
@@ -1254,12 +1254,12 @@
          },
          {
           "e": {
-           "cat": "ugly",
+           "cat": "canonical",
            "id": "services_0012-e23",
-           "note": "стиль адреса: no_marker2",
+           "note": "стиль адреса: canonical",
            "type": "ADDRESS"
           },
-          "s": "Екатеринбург Лесная 72/3 кв 50"
+          "s": "344002, г. Ростов-на-Дону, проезд Строителей, д. 61, кв. 160"
          }
         ],
         "style": "normal",
@@ -1273,12 +1273,12 @@
          {
           "e": {
            "cat": "canonical",
-           "checksum": "valid",
+           "checksum": "invalid",
            "id": "services_0012-e24",
            "note": "12-значный ИНН",
            "type": "INN"
           },
-          "s": "730968088080"
+          "s": "730968088081"
          },
          {
           "s": " ОГРНИП "
@@ -1286,12 +1286,12 @@
          {
           "e": {
            "cat": "ugly",
-           "checksum": "valid",
+           "checksum": "invalid",
            "id": "services_0012-e25",
            "note": "ОГРНИП, 15 знаков",
            "type": "OGRN"
           },
-          "s": "399454706191917"
+          "s": "399454706191918"
          }
         ],
         "style": "normal",
@@ -1305,11 +1305,11 @@
          {
           "e": {
            "cat": "canonical",
-           "checksum": "valid",
+           "checksum": "invalid",
            "id": "services_0012-e26",
            "type": "ACCOUNT"
           },
-          "s": "40802810684994078567"
+          "s": "40802810784994078567"
          },
          {
           "s": " в АО «Тинькофф Банк»"
@@ -1341,7 +1341,7 @@
            "note": "формат: canonical",
            "type": "PHONE"
           },
-          "s": "+7 (846) 195-39-63"
+          "s": "+7 (383) 483-59-21"
          }
         ],
         "style": "normal",
@@ -1358,7 +1358,7 @@
            "id": "services_0012-e29",
            "type": "EMAIL"
           },
-          "s": "smirnov@romashka.ru"
+          "s": "smirnov@gmail.com"
          }
         ],
         "style": "normal",
@@ -1410,7 +1410,7 @@
            "trick": "bare_cell_no_sentence",
            "type": "ADDRESS"
           },
-          "s": "Нижний Новгород, Полевая 41"
+          "s": "Красногорск, Победы 90"
          }
         ],
         "style": "normal",
@@ -1440,12 +1440,12 @@
          },
          {
           "e": {
-           "cat": "ugly",
+           "cat": "canonical",
            "id": "services_0012-e32",
-           "note": "стиль адреса: no_marker2",
+           "note": "стиль адреса: canonical",
            "type": "ADDRESS"
           },
-          "s": "Химки Пушкина 21/3 кв 35"
+          "s": "620014, г. Екатеринбург, наб. Советская, д. 43, кв. 66"
          }
         ],
         "style": "normal",
@@ -1459,12 +1459,12 @@
          {
           "e": {
            "cat": "canonical",
-           "checksum": "valid",
+           "checksum": "invalid",
            "id": "services_0012-e33",
            "note": "12-значный ИНН",
            "type": "INN"
           },
-          "s": "182244802662"
+          "s": "182244802663"
          },
          {
           "s": " ОГРНИП "
@@ -1472,12 +1472,12 @@
          {
           "e": {
            "cat": "ugly",
-           "checksum": "valid",
+           "checksum": "invalid",
            "id": "services_0012-e34",
            "note": "ОГРНИП, 15 знаков",
            "type": "OGRN"
           },
-          "s": "377561292070214"
+          "s": "377561292070215"
          }
         ],
         "style": "normal",
@@ -1491,11 +1491,11 @@
          {
           "e": {
            "cat": "canonical",
-           "checksum": "valid",
+           "checksum": "invalid",
            "id": "services_0012-e35",
            "type": "ACCOUNT"
           },
-          "s": "40802810517983701081"
+          "s": "40802810617983701081"
          },
          {
           "s": " в ПАО Сбербанк"
@@ -1527,7 +1527,7 @@
            "note": "формат: canonical",
            "type": "PHONE"
           },
-          "s": "+7 (812) 149-99-96"
+          "s": "+7 (499) 477-30-56"
          }
         ],
         "style": "normal",
@@ -1544,7 +1544,7 @@
            "id": "services_0012-e38",
            "type": "EMAIL"
           },
-          "s": "semenov@mail.ru"
+          "s": "semenov@corp-tehno.ru"
          }
         ],
         "style": "normal",
@@ -1629,7 +1629,7 @@
                 "trick": "nested_table",
                 "type": "ACCOUNT"
                },
-               "s": "40802810517983701081"
+               "s": "40802810617983701081"
               }
              ],
              "style": "normal",
@@ -1747,11 +1747,11 @@
  "contract_type": "оказание услуг",
  "doc_id": "services_0012",
  "features": [
-  "addr_no_marker",
   "bare_cell",
+  "initials_tight",
+  "invalid_checksum",
   "nested_table",
-  "org_noquote",
-  "snils"
+  "passport"
  ],
  "format": "docx",
  "parties": "IP-IP",

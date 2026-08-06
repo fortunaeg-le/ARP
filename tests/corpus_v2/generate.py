@@ -72,7 +72,7 @@ UGLY_POOL = ["addr_no_marker", "addr_index_first", "addr_city_middle", "addr_non
              "addr_pobox", "oblique_names", "initials_tight", "org_noquote",
              "org_fio_inside", "composite_ip", "exotic_name", "word_surname",
              "phone_zoo", "passport", "snils", "birthdate", "req_spaced",
-             "org_name_is_person", "appendix_pii", "invalid_checksum"]
+             "org_name_is_person", "appendix_pii", "invalid_checksum", "kpp_combo"]
 ADV_POOL = ["homoglyph", "invisible", "case_lower", "case_upper", "case_mixed",
             "digit_spaces", "linebreak_entity", "dense_line", "addr_glued",
             "same_name_5_cases", "email_homoglyph", "zw_in_name"]
@@ -497,9 +497,21 @@ def req_lines(d, p, role, mode="normal"):
         acc = spaced(p["acc"], 4) if has(d, "req_spaced") else p["acc"]
         cat = "ugly" if has(d, "req_spaced") else "canonical"
         cs = "invalid" if p["bad"] else "valid"
-        L.append(para([d.t("ИНН "), d.E(inn, "INN", cat, checksum=cs,
-                                        note="пробелы внутри номера" if cat == "ugly" else None),
-                       d.t(" КПП "), d.E(p["kpp"], "KPP", "canonical")]))
+        # ЭТАП A4 — форма «ИНН/КПП <10 цифр>/<9 цифр>»: между словом-якорем «КПП»
+        # и КПП-числом стоит ИНН-число, и обычное окно якоря (см.
+        # entity_types.yaml, _has_anchor) до него не достаёт — риск, названный
+        # владельцем прямо (см. DOG-KPP-NOANCHOR). Отдельная запись pattern в
+        # entity_types.yaml матчит эту связку целиком; здесь — единственное
+        # вхождение формы в корпус, чтобы риск был измерим, а не гипотетичен.
+        if has(d, "kpp_combo"):
+            L.append(para([d.t("ИНН/КПП "), d.E(inn, "INN", cat, checksum=cs,
+                                                 note="пробелы внутри номера" if cat == "ugly" else None),
+                           d.t("/"), d.E(p["kpp"], "KPP", "canonical",
+                                         note="связка ИНН/КПП, якорь отрезан числом ИНН")]))
+        else:
+            L.append(para([d.t("ИНН "), d.E(inn, "INN", cat, checksum=cs,
+                                            note="пробелы внутри номера" if cat == "ugly" else None),
+                           d.t(" КПП "), d.E(p["kpp"], "KPP", "canonical")]))
         L.append(para([d.t("ОГРН "), d.E(ogrn, "OGRN", cat, checksum=cs,
                                          note="пробелы внутри номера" if cat == "ugly" else None)]))
         L.append(para([d.t("р/с "), d.E(acc, "ACCOUNT", cat, checksum=cs,

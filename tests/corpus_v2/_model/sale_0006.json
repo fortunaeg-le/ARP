@@ -85,12 +85,12 @@
     {
      "e": {
       "cat": "canonical",
-      "checksum": "invalid",
+      "checksum": "valid",
       "id": "sale_0006-e2",
       "note": "ИНН физлица/ИП, 12 знаков",
       "type": "INN"
      },
-     "s": "771089145681"
+     "s": "771089145680"
     },
     {
      "s": ", именуемая в дальнейшем «Продавец», действующая на основании свидетельства о государственной регистрации"
@@ -116,12 +116,12 @@
     {
      "e": {
       "cat": "canonical",
-      "checksum": "invalid",
+      "checksum": "valid",
       "id": "sale_0006-e4",
       "note": "ИНН физлица/ИП, 12 знаков",
       "type": "INN"
      },
-     "s": "625254571021"
+     "s": "625254571020"
     },
     {
      "s": ", именуемый в дальнейшем «Покупатель», действующий на основании свидетельства о государственной регистрации"
@@ -814,12 +814,12 @@
     },
     {
      "e": {
-      "cat": "canonical",
+      "cat": "ugly",
       "id": "sale_0006-e10",
-      "note": "стиль адреса: canonical",
+      "note": "стиль адреса: index_first",
       "type": "ADDRESS"
      },
-     "s": "443010, г. Самара, проезд Садовая, д. 16, кв. 31"
+     "s": "143400, Тверская обл., г. Красногорск, ул. Мира, вл. 84, стр. 3, пом. VII"
     },
     {
      "s": "."
@@ -847,12 +847,12 @@
     },
     {
      "e": {
-      "cat": "ugly",
+      "cat": "canonical",
       "id": "sale_0006-e12",
-      "note": "формат: ext",
+      "note": "формат: canonical",
       "type": "PHONE"
      },
-     "s": "+7 (499) 433-36-22 доб. 673"
+     "s": "+7 (499) 198-81-88"
     },
     {
      "s": "."
@@ -1348,12 +1348,12 @@
          },
          {
           "e": {
-           "cat": "canonical",
+           "cat": "ugly",
            "id": "sale_0006-e25",
-           "note": "стиль адреса: canonical",
+           "note": "стиль адреса: index_first",
            "type": "ADDRESS"
           },
-          "s": "603000, г. Нижний Новгород, бул. Гагарина, д. 52, кв. 126"
+          "s": "141300, Краснодарский край, г. Сергиев Посад, бул. Лесная, вл. 63, стр. 4, пом. VII"
          }
         ],
         "style": "normal",
@@ -1367,12 +1367,12 @@
          {
           "e": {
            "cat": "canonical",
-           "checksum": "invalid",
+           "checksum": "valid",
            "id": "sale_0006-e26",
            "note": "12-значный ИНН",
            "type": "INN"
           },
-          "s": "771089145681"
+          "s": "771089145680"
          },
          {
           "s": " ОГРНИП "
@@ -1380,12 +1380,12 @@
          {
           "e": {
            "cat": "ugly",
-           "checksum": "invalid",
+           "checksum": "valid",
            "id": "sale_0006-e27",
            "note": "ОГРНИП, 15 знаков",
            "type": "OGRN"
           },
-          "s": "363472859934255"
+          "s": "363472859934254"
          }
         ],
         "style": "normal",
@@ -1399,11 +1399,11 @@
          {
           "e": {
            "cat": "canonical",
-           "checksum": "invalid",
+           "checksum": "valid",
            "id": "sale_0006-e28",
            "type": "ACCOUNT"
           },
-          "s": "40802810737725918402"
+          "s": "40802810637725918402"
          },
          {
           "s": " в АО «Альфа-Банк»"
@@ -1430,12 +1430,12 @@
          },
          {
           "e": {
-           "cat": "ugly",
+           "cat": "canonical",
            "id": "sale_0006-e30",
-           "note": "формат: ext",
+           "note": "формат: canonical",
            "type": "PHONE"
           },
-          "s": "+7 (843) 495-84-32 доб. 248"
+          "s": "+7 (843) 860-84-32"
          }
         ],
         "style": "normal",
@@ -1452,7 +1452,7 @@
            "id": "sale_0006-e31",
            "type": "EMAIL"
           },
-          "s": "lebedeva@gmail.com"
+          "s": "lebedeva@yandex.ru"
          }
         ],
         "style": "normal",
@@ -1534,12 +1534,12 @@
          },
          {
           "e": {
-           "cat": "canonical",
+           "cat": "ugly",
            "id": "sale_0006-e34",
-           "note": "стиль адреса: canonical",
+           "note": "стиль адреса: index_first",
            "type": "ADDRESS"
           },
-          "s": "141400, г. Химки, наб. Мира, д. 21, кв. 35"
+          "s": "141400, Тверская обл., г. Химки, наб. Мира, вл. 21, стр. 5, пом. VII"
          }
         ],
         "style": "normal",
@@ -1553,12 +1553,12 @@
          {
           "e": {
            "cat": "canonical",
-           "checksum": "invalid",
+           "checksum": "valid",
            "id": "sale_0006-e35",
            "note": "12-значный ИНН",
            "type": "INN"
           },
-          "s": "625254571021"
+          "s": "625254571020"
          },
          {
           "s": " ОГРНИП "
@@ -1566,12 +1566,12 @@
          {
           "e": {
            "cat": "ugly",
-           "checksum": "invalid",
+           "checksum": "valid",
            "id": "sale_0006-e36",
            "note": "ОГРНИП, 15 знаков",
            "type": "OGRN"
           },
-          "s": "339979240007012"
+          "s": "339979240007011"
          }
         ],
         "style": "normal",
@@ -1585,11 +1585,11 @@
          {
           "e": {
            "cat": "canonical",
-           "checksum": "invalid",
+           "checksum": "valid",
            "id": "sale_0006-e37",
            "type": "ACCOUNT"
           },
-          "s": "40802810166008185855"
+          "s": "40802810066008185855"
          },
          {
           "s": " в ПАО Сбербанк"
@@ -1616,12 +1616,12 @@
          },
          {
           "e": {
-           "cat": "ugly",
+           "cat": "canonical",
            "id": "sale_0006-e39",
-           "note": "формат: faxlike",
+           "note": "формат: canonical",
            "type": "PHONE"
           },
-          "s": "495 6393431"
+          "s": "+7 (495) 639-34-31"
          }
         ],
         "style": "normal",
@@ -1723,7 +1723,7 @@
                 "trick": "nested_table",
                 "type": "ACCOUNT"
                },
-               "s": "40802810166008185855"
+               "s": "40802810066008185855"
               }
              ],
              "style": "normal",
@@ -1842,12 +1842,12 @@
  "doc_id": "sale_0006",
  "features": [
   "addr_glued",
+  "addr_index_first",
   "bare_cell",
+  "birthdate",
   "case_upper",
-  "initials_tight",
-  "invalid_checksum",
   "nested_table",
-  "phone_zoo"
+  "org_noquote"
  ],
  "format": "docx",
  "parties": "IP-IP",

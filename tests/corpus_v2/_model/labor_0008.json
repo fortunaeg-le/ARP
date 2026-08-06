@@ -80,7 +80,7 @@
     },
     {
      "e": {
-      "cat": "canonical",
+      "cat": "ugly",
       "id": "labor_0008-e2",
       "note": "ФИО в родительном падеже",
       "type": "PER"
@@ -891,12 +891,12 @@
     },
     {
      "e": {
-      "cat": "ugly",
+      "cat": "canonical",
       "id": "labor_0008-e14",
-      "note": "стиль адреса: city_middle",
+      "note": "стиль адреса: canonical",
       "type": "ADDRESS"
      },
-     "s": "пер. Садовая, д. 56, тер. СНТ «Родник», Тверская обл."
+     "s": "620014, г. Екатеринбург, пер. Ленинградская, д. 33, кв. 111"
     },
     {
      "s": "."
@@ -912,7 +912,7 @@
     },
     {
      "e": {
-      "cat": "canonical",
+      "cat": "ugly",
       "id": "labor_0008-e15",
       "note": "ФИО в дательном падеже",
       "type": "PER"
@@ -924,12 +924,12 @@
     },
     {
      "e": {
-      "cat": "canonical",
+      "cat": "ugly",
       "id": "labor_0008-e16",
-      "note": "формат: canonical",
+      "note": "формат: ext",
       "type": "PHONE"
      },
-     "s": "+7 (843) 848-13-69"
+     "s": "+7 (499) 507-13-69 доб. 143"
     },
     {
      "s": "."
@@ -957,7 +957,7 @@
       "note": "срок длительностью",
       "type": "TERM"
      },
-     "s": "в течение 3 рабочих дней со дня предъявления требования"
+     "s": "в течение 5 рабочих дней со дня предъявления требования"
     },
     {
      "s": "."
@@ -1015,7 +1015,7 @@
       "note": "процент",
       "type": "PERCENT"
      },
-     "s": "5% от стоимости неоплаченных работ"
+     "s": "21% от стоимости неоплаченных работ"
     },
     {
      "s": ". Предельный размер ответственности: "
@@ -1403,7 +1403,7 @@
          {
           "e": {
            "cat": "adversarial",
-           "id": "labor_0008-e50",
+           "id": "labor_0008-e49",
            "note": "голая строка ПДн в ячейке, без предложения вокруг",
            "trick": "bare_cell_no_sentence",
            "type": "PER"
@@ -1435,30 +1435,12 @@
          },
          {
           "e": {
-           "cat": "ugly",
+           "cat": "canonical",
            "id": "labor_0008-e29",
-           "note": "стиль адреса: city_middle",
+           "note": "стиль адреса: canonical",
            "type": "ADDRESS"
           },
-          "s": "просп. Гагарина, д. 16, пгт. Софрино, Республика Татарстан"
-         }
-        ],
-        "style": "normal",
-        "t": "p"
-       },
-       {
-        "chunks": [
-         {
-          "s": "Почтовый адрес: "
-         },
-         {
-          "e": {
-           "cat": "ugly",
-           "id": "labor_0008-e30",
-           "note": "стиль адреса: city_middle",
-           "type": "ADDRESS"
-          },
-          "s": "просп. Пушкина, д. 38, рп. Обухово, Московская обл."
+          "s": "190000, г. Санкт-Петербург, просп. Баумана, д. 19, кв. 32"
          }
         ],
         "style": "normal",
@@ -1471,13 +1453,12 @@
          },
          {
           "e": {
-           "cat": "ugly",
+           "cat": "canonical",
            "checksum": "valid",
-           "id": "labor_0008-e31",
-           "note": "пробелы внутри номера",
+           "id": "labor_0008-e30",
            "type": "INN"
           },
-          "s": "0 110 108 085"
+          "s": "0110108085"
          },
          {
           "s": " КПП "
@@ -1485,7 +1466,7 @@
          {
           "e": {
            "cat": "canonical",
-           "id": "labor_0008-e32",
+           "id": "labor_0008-e31",
            "type": "KPP"
           },
           "s": "401990669"
@@ -1501,13 +1482,12 @@
          },
          {
           "e": {
-           "cat": "ugly",
+           "cat": "canonical",
            "checksum": "valid",
-           "id": "labor_0008-e33",
-           "note": "пробелы внутри номера",
+           "id": "labor_0008-e32",
            "type": "OGRN"
           },
-          "s": "1 801 003 610 373"
+          "s": "1801003610373"
          }
         ],
         "style": "normal",
@@ -1520,13 +1500,12 @@
          },
          {
           "e": {
-           "cat": "ugly",
+           "cat": "canonical",
            "checksum": "valid",
-           "id": "labor_0008-e34",
-           "note": "пробелы внутри номера",
+           "id": "labor_0008-e33",
            "type": "ACCOUNT"
           },
-          "s": "4070 2810 8100 2368 8019"
+          "s": "40702810810023688019"
          },
          {
           "s": " в АО «Тинькофф Банк»"
@@ -1543,7 +1522,7 @@
          {
           "e": {
            "cat": "canonical",
-           "id": "labor_0008-e35",
+           "id": "labor_0008-e34",
            "note": "корреспондентский счёт банка",
            "type": "ACCOUNT"
           },
@@ -1555,7 +1534,7 @@
          {
           "e": {
            "cat": "canonical",
-           "id": "labor_0008-e36",
+           "id": "labor_0008-e35",
            "type": "BIK"
           },
           "s": "044525974"
@@ -1571,12 +1550,12 @@
          },
          {
           "e": {
-           "cat": "canonical",
-           "id": "labor_0008-e37",
-           "note": "формат: canonical",
+           "cat": "ugly",
+           "id": "labor_0008-e36",
+           "note": "формат: tight8",
            "type": "PHONE"
           },
-          "s": "+7 (843) 741-63-47"
+          "s": "8(495)2853035"
          }
         ],
         "style": "normal",
@@ -1590,10 +1569,10 @@
          {
           "e": {
            "cat": "canonical",
-           "id": "labor_0008-e38",
+           "id": "labor_0008-e37",
            "type": "EMAIL"
           },
-          "s": "krylova@romashka.ru"
+          "s": "krylova@gmail.com"
          }
         ],
         "style": "normal",
@@ -1612,7 +1591,7 @@
          {
           "e": {
            "cat": "ugly",
-           "id": "labor_0008-e39",
+           "id": "labor_0008-e38",
            "note": "инициалы перед фамилией",
            "type": "PER"
           },
@@ -1640,12 +1619,12 @@
          {
           "e": {
            "cat": "adversarial",
-           "id": "labor_0008-e51",
+           "id": "labor_0008-e50",
            "note": "голый адрес в ячейке",
            "trick": "bare_cell_no_sentence",
            "type": "ADDRESS"
           },
-          "s": "Казань, Заречная 8"
+          "s": "Новосибирск, Тверская 27"
          }
         ],
         "style": "normal",
@@ -1656,7 +1635,7 @@
          {
           "e": {
            "cat": "canonical",
-           "id": "labor_0008-e40",
+           "id": "labor_0008-e39",
            "type": "PER"
           },
           "s": "Соколова Ирина Ивановна"
@@ -1673,7 +1652,7 @@
          {
           "e": {
            "cat": "canonical",
-           "id": "labor_0008-e41",
+           "id": "labor_0008-e40",
            "note": "стиль записи из BIRTHDATE_STYLES",
            "type": "BIRTHDATE"
           },
@@ -1690,12 +1669,12 @@
          },
          {
           "e": {
-           "cat": "ugly",
-           "id": "labor_0008-e42",
-           "note": "стиль адреса: city_middle",
+           "cat": "canonical",
+           "id": "labor_0008-e41",
+           "note": "стиль адреса: canonical",
            "type": "ADDRESS"
           },
-          "s": "проезд Тверская, д. 27, д. Малые Вязёмы, Московская обл."
+          "s": "141400, г. Химки, ул. Промышленная, д. 54, кв. 161"
          }
         ],
         "style": "normal",
@@ -1709,7 +1688,7 @@
          {
           "e": {
            "cat": "canonical",
-           "id": "labor_0008-e43",
+           "id": "labor_0008-e42",
            "note": "серия+номер, стиль записи из PASSPORT_STYLES",
            "type": "PASSPORT"
           },
@@ -1724,7 +1703,7 @@
          {
           "e": {
            "cat": "ugly",
-           "id": "labor_0008-e44",
+           "id": "labor_0008-e43",
            "note": "код подразделения, стиль записи из DEPTCODE_STYLES",
            "type": "PASSPORT"
           },
@@ -1743,7 +1722,7 @@
           "e": {
            "cat": "canonical",
            "checksum": "valid",
-           "id": "labor_0008-e45",
+           "id": "labor_0008-e44",
            "note": "стиль записи из SNILS_STYLES",
            "type": "SNILS"
           },
@@ -1756,7 +1735,7 @@
           "e": {
            "cat": "ugly",
            "checksum": "valid",
-           "id": "labor_0008-e46",
+           "id": "labor_0008-e45",
            "note": "ИНН физлица (12 знаков)",
            "type": "INN"
           },
@@ -1773,12 +1752,12 @@
          },
          {
           "e": {
-           "cat": "canonical",
-           "id": "labor_0008-e47",
-           "note": "формат: canonical",
+           "cat": "ugly",
+           "id": "labor_0008-e46",
+           "note": "формат: ext",
            "type": "PHONE"
           },
-          "s": "+7 (495) 274-54-35"
+          "s": "+7 (846) 530-47-12 доб. 706"
          }
         ],
         "style": "normal",
@@ -1792,10 +1771,10 @@
          {
           "e": {
            "cat": "canonical",
-           "id": "labor_0008-e48",
+           "id": "labor_0008-e47",
            "type": "EMAIL"
           },
-          "s": "sokolova@sibtrans.ru"
+          "s": "sokolova@list.ru"
          }
         ],
         "style": "normal",
@@ -1814,7 +1793,7 @@
          {
           "e": {
            "cat": "ugly",
-           "id": "labor_0008-e49",
+           "id": "labor_0008-e48",
            "note": "фамилия + инициалы",
            "type": "PER"
           },
@@ -1831,6 +1810,83 @@
    "t": "tbl"
   },
   {
+   "chunks": [],
+   "style": "normal",
+   "t": "p"
+  },
+  {
+   "chunks": [
+    {
+     "n": {
+      "why": "номер приложения — не ПДн"
+     },
+     "s": "ПРИЛОЖЕНИЕ № 1"
+    },
+    {
+     "s": " к Договору"
+    }
+   ],
+   "style": "bold",
+   "t": "p"
+  },
+  {
+   "chunks": [
+    {
+     "s": "Адрес склада грузополучателя: "
+    },
+    {
+     "e": {
+      "cat": "canonical",
+      "id": "labor_0008-e51",
+      "note": "стиль адреса: canonical",
+      "type": "ADDRESS"
+     },
+     "s": "630099, г. Новосибирск, ул. Баумана, д. 22, кв. 90"
+    },
+    {
+     "s": "."
+    }
+   ],
+   "style": "normal",
+   "t": "p"
+  },
+  {
+   "chunks": [
+    {
+     "s": "Кладовщик: "
+    },
+    {
+     "e": {
+      "cat": "ugly",
+      "id": "labor_0008-e52",
+      "note": "ПДн в приложении к договору",
+      "type": "PER"
+     },
+     "s": "Голубев Алексей Николаевич"
+    }
+   ],
+   "style": "normal",
+   "t": "p"
+  },
+  {
+   "chunks": [
+    {
+     "s": "Тел. склада: "
+    },
+    {
+     "e": {
+      "cat": "ugly",
+      "id": "labor_0008-e53",
+      "note": "формат: plain",
+      "type": "PHONE"
+     },
+     "s": "+74958143047"
+    }
+   ],
+   "style": "normal",
+   "t": "p"
+  },
+  {
    "chunks": [
     {
      "s": "ВНИМАНИЕ! Бухгалтерия: "
@@ -1838,12 +1894,12 @@
     {
      "e": {
       "cat": "adversarial",
-      "id": "labor_0008-e52",
+      "id": "labor_0008-e54",
       "note": "ФИО в текстбоксе/надписи",
       "trick": "in_textbox",
       "type": "PER"
      },
-     "s": "Морозов Михаил Владимирович"
+     "s": "Титова Наталья Сергеевна"
     },
     {
      "s": ", "
@@ -1851,12 +1907,12 @@
     {
      "e": {
       "cat": "adversarial",
-      "id": "labor_0008-e53",
+      "id": "labor_0008-e55",
       "note": "телефон в текстбоксе",
       "trick": "in_textbox",
       "type": "PHONE"
      },
-     "s": "+7 (843) 251-42-73 доб. 841"
+     "s": "+7 (812) 606-37-77 доб. 411"
     }
    ],
    "t": "tb"
@@ -1883,7 +1939,7 @@
     {
      "e": {
       "cat": "ugly",
-      "id": "labor_0008-e54",
+      "id": "labor_0008-e56",
       "note": "подпись: фамилия+инициалы",
       "type": "PER"
      },
@@ -1904,7 +1960,7 @@
     {
      "e": {
       "cat": "ugly",
-      "id": "labor_0008-e55",
+      "id": "labor_0008-e57",
       "note": "подпись: фамилия+инициалы",
       "type": "PER"
      },
@@ -1921,12 +1977,12 @@
  "contract_type": "трудовой",
  "doc_id": "labor_0008",
  "features": [
-  "addr_city_middle",
+  "appendix_pii",
   "bare_cell",
-  "composite_ip",
   "digit_spaces",
   "email_homoglyph",
-  "req_spaced",
+  "oblique_names",
+  "phone_zoo",
   "textbox_pii"
  ],
  "format": "docx",
