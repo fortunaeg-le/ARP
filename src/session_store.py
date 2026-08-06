@@ -24,6 +24,7 @@ import tempfile
 from datetime import datetime, timedelta, timezone
 from pathlib import Path
 
+import vault
 from cryptography.fernet import Fernet, InvalidToken
 
 from models import Entity
@@ -89,6 +90,48 @@ def _chmod_600(path: Path) -> None:
             pass
 
 
+def _upgrade_key_wrapping(key_path: Path, key: bytes) -> None:
+    """Перезаворачивает открытый key.bin старого формата в защищённый.
+
+    Делается ровно один раз, при первом обращении новой версии к старому
+    хранилищу. Пишем через временный файл + os.replace: обрыв на середине не
+    должен оставить полуфайл вместо ключа — это стоило бы пользователю ВСЕХ его
+    сессий, а не одной операции.
+
+    Сбой перезаписи (нет прав, диск полон, DPAPI отказала) НЕ роняет работу:
+    ключ уже прочитан и годен, продукт продолжает работать со старой оболочкой,
+    попытка повторится при следующем запуске. Молчать об этом нельзя — пишем в
+    stderr, иначе «защищено DPAPI» станет необоснованным утверждением.
+    """
+    try:
+        wrapped = vault.wrap_key(key)
+        if not wrapped.startswith(vault._KEY_MAGIC):
+            return  # не-Windows: заворачивать нечем, оболочка и так старая
+        tmp = key_path.with_name(key_path.name + ".upgrade.tmp")
+        with open(tmp, "wb") as f:
+            f.write(wrapped)
+            f.flush()
+            os.fsync(f.fileno())
+        os.replace(tmp, key_path)
+        _chmod_600(key_path)
+    except (OSError, vault.KeyUnavailableError) as exc:
+        print(
+            f"[session_store] ключ хранилища не удалось защитить средствами ОС: "
+            f"{type(exc).__name__}: {exc}; он остался в прежнем виде",
+            file=sys.stderr,
+        )
+
+
+def storage_key(storage_dir: str | None = None) -> bytes:
+    """Сырой ключ хранилища — для шифрования сайдкаров сессии (storage.py).
+
+    Сайдкары шифруются ТЕМ ЖЕ ключом, что и {sid}.enc: второй ключ означал бы
+    второй способ его потерять и вторую сущность, которую надо защищать, ничего
+    не давая взамен — угроза у всех шести файлов одна и та же.
+    """
+    return _load_or_create_key(_resolve_storage_dir(storage_dir))
+
+
 def _load_or_create_key(storage_dir: Path) -> bytes:
     """Читает ключ Fernet из {storage_dir}/key.bin, создавая его при первом запуске.
 
@@ -105,13 +148,24 @@ def _load_or_create_key(storage_dir: Path) -> bytes:
     семантикой отказа при существующей цели. На ФС без жёстких ссылок или при
     временном файле на другом томе гарантия слабее — тогда возможен возврат к
     неатомарному пути (см. except OSError ниже).
+
+    ЭТАП STORE: на диск ключ кладётся ЗАВЁРНУТЫМ (`vault.wrap_key` — DPAPI
+    Windows), в памяти ходит сырым. Ключ, записанный старой версией открытыми
+    44 байтами, читается как есть и ТУТ ЖЕ перезаворачивается на месте
+    (`_upgrade_key_wrapping`) — сам Fernet-ключ при этом не меняется, поэтому
+    все ранее созданные сессии продолжают открываться.
     """
     key_path = storage_dir / _KEY_FILENAME
     if key_path.exists():
-        return key_path.read_bytes()
+        raw = key_path.read_bytes()
+        key = vault.unwrap_key(raw)          # KeyUnavailableError наружу, см. vault
+        if not raw.startswith(vault._KEY_MAGIC):
+            _upgrade_key_wrapping(key_path, key)
+        return key
 
     storage_dir.mkdir(parents=True, exist_ok=True)
     key = Fernet.generate_key()
+    wrapped = vault.wrap_key(key)
 
     fd, tmp_name = tempfile.mkstemp(
         dir=str(storage_dir), prefix=_KEY_FILENAME + ".", suffix=".tmp"
@@ -119,23 +173,23 @@ def _load_or_create_key(storage_dir: Path) -> bytes:
     tmp_path = Path(tmp_name)
     try:
         with os.fdopen(fd, "wb") as tmp_file:
-            tmp_file.write(key)
+            tmp_file.write(wrapped)
             tmp_file.flush()
             os.fsync(tmp_file.fileno())
         try:
             os.link(tmp_path, key_path)
         except FileExistsError:
             # Гонку выиграл другой поток/процесс — берём его целиком записанный ключ.
-            return key_path.read_bytes()
+            return vault.unwrap_key(key_path.read_bytes())
         except OSError:
             # ФС не поддерживает жёсткие ссылки: неатомарный запасной путь. Всё ещё
             # эксклюзивен через O_CREAT|O_EXCL, но с окном чтения недописанного файла.
             try:
                 excl_fd = os.open(key_path, os.O_CREAT | os.O_EXCL | os.O_WRONLY, 0o600)
             except FileExistsError:
-                return key_path.read_bytes()
+                return vault.unwrap_key(key_path.read_bytes())
             with os.fdopen(excl_fd, "wb") as excl_file:
-                excl_file.write(key)
+                excl_file.write(wrapped)
                 excl_file.flush()
                 os.fsync(excl_file.fileno())
     finally:
@@ -292,7 +346,7 @@ def load_session(session_id: str, storage_dir: str | None = None) -> dict:
         raise SessionNotFoundError(
             f"Сессия не расшифровывается (отсутствует ключ хранилища): {session_id}"
         )
-    key = key_path.read_bytes()
+    key = vault.unwrap_key(key_path.read_bytes())  # KeyUnavailableError наружу
     try:
         fernet = Fernet(key)
     except ValueError as exc:
@@ -346,8 +400,8 @@ def purge_expired(storage_dir: str | None = None, exclude_session_id: str | None
         # Без ключа расшифровать ничего нельзя — удалять по TTL невозможно.
         return 0
     try:
-        fernet = Fernet(key_path.read_bytes())
-    except ValueError as exc:
+        fernet = Fernet(vault.unwrap_key(key_path.read_bytes()))
+    except (ValueError, vault.KeyUnavailableError) as exc:
         # Повреждённый key.bin: Fernet() кидает ValueError. Без валидного ключа
         # ни одну сессию не расшифровать, поэтому чистить нечего — предупреждаем и
         # выходим без падения (CLI decrypt зовёт purge_expired первым).
@@ -423,8 +477,10 @@ def list_sessions(storage_dir: str | None = None) -> list[dict]:
     if not key_path.exists():
         return []
     try:
-        fernet = Fernet(key_path.read_bytes())
-    except ValueError:
+        fernet = Fernet(vault.unwrap_key(key_path.read_bytes()))
+    except (ValueError, vault.KeyUnavailableError):
+        # Список сессий не обязан падать: ключ этой системе недоступен —
+        # показывать нечего, но экран должен открыться (см. app/core.py).
         return []
 
     out = []

@@ -209,8 +209,13 @@ def test_doc_segments_strips_detection_caches(iso_store):
     storage.save_doc_segments(sid, _FakeDoc([seg]))
 
     doc_path = storage._doc_path(storage.default_storage_dir(), sid)
-    raw = doc_path.read_text(encoding="utf-8")
-    data = json.loads(raw)
+    # ЭТАП STORE: файл на диске зашифрован — сначала убеждаемся В ЭТОМ (текст
+    # сегмента не обязан находиться в байтах файла), потом разбираем содержимое.
+    raw_bytes = doc_path.read_bytes()
+    assert raw_bytes.startswith(b"SHFR-ENC-1\n"), "{sid}.doc.json обязан быть зашифрован"
+    assert text.encode("utf-8") not in raw_bytes, "исходный текст найден в файле открытым"
+    data = storage._read_encrypted_json(doc_path)
+    raw = json.dumps(data, ensure_ascii=False)
     md = data["segments"][0]["metadata"]
     assert "paragraph_index" in md  # структурное поле — осталось
     for k in ("detection_text", "_norm_cache", "_anchor_search_cache", "_per_search_cache"):

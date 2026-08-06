@@ -284,6 +284,90 @@ def storage_dir():
     return default_storage_dir()
 
 
+# --- ЭТАП STORE, часть 5: честность перед пользователем -----------------------
+
+#: Что именно лежит на диске за один обработанный документ. Список ведётся
+#: ЗДЕСЬ, а не в вёрстке, чтобы экран нельзя было забыть обновить при появлении
+#: нового файла: он строится из этого перечня.
+#: Формулировки короткие и без юридического языка — их читает пользователь, а не
+#: проверяющий. Ни одна строка не обещает больше, чем делает код.
+STORED_ITEMS = [
+    {"file": "{sid}.enc", "what": "Соответствие «маска → исходное значение». Без него восстановить текст нельзя.",
+     "encrypted": True},
+    {"file": "{sid}.doc.json", "what": "Текст документа по абзацам — нужен, чтобы пересобрать результат после ваших правок.",
+     "encrypted": True},
+    {"file": "{sid}.txt", "what": "Обезличенный текст, который вы копируете в чат. Обезличен не полностью: часть значений программа могла пропустить.",
+     "encrypted": True},
+    {"file": "{sid}.unread.json", "what": "Куски документа, которые программа не смогла прочитать, — как есть, чтобы вы их видели.",
+     "encrypted": True},
+    {"file": "{sid}.meta.json", "what": "Имя вашего файла и набор типов, которыми он маскировался.",
+     "encrypted": True},
+    {"file": "{sid}.markup.json", "what": "Ваши правки разметки: что программа предложила и что вы решили. Хранится дольше сессии.",
+     "encrypted": True},
+    {"file": "key.bin", "what": "Ключ, которым зашифровано всё перечисленное.",
+     "encrypted": False},
+]
+
+#: Текст про защиту ключа. Ровно то, что делает код, — без «военного шифрования»
+#: и прочих обещаний, которые пришлось бы потом опровергать.
+KEY_NOTE_DPAPI = (
+    "Ключ хранится средствами Windows и привязан к вашей учётной записи. "
+    "Скопированный на другой компьютер или открытый из другой учётной записи, "
+    "он не подойдёт. От вредоносной программы, запущенной под вашей же учётной "
+    "записью, это не защищает. После переустановки Windows старые сессии открыть "
+    "не получится."
+)
+KEY_NOTE_PLAIN = (
+    "Ключ лежит обычным файлом рядом с данными: эта система не умеет защищать его "
+    "средствами ОС. Любой, у кого есть доступ к папке, сможет прочитать сессии."
+)
+
+
+def storage_view(last_purge: dict | None = None) -> dict:
+    """Данные экрана «Что хранится»: что лежит, где, сколько времени, как удалить.
+
+    Отдаёт ФАКТЫ, а не обещания: путь берётся из хранилища, сроки — из настройки
+    пользователя, число сессий — пересчётом, защита ключа — из vault (что вышло
+    на этой системе на самом деле).
+    """
+    import vault
+    from storage import (default_storage_dir, default_markup_dir, list_sessions,
+                         markup_summary, retention_settings)
+
+    retention = retention_settings()
+    protection = vault.key_protection()
+    return {
+        "storage_path": str(default_storage_dir().parent),
+        "sessions_path": str(default_storage_dir()),
+        "markup_path": str(default_markup_dir()),
+        "items": STORED_ITEMS,
+        "sessions_count": len(list_sessions()),
+        "markup": markup_summary(),
+        "retention": retention,
+        "key_protection": protection,
+        "key_note": KEY_NOTE_DPAPI if protection == "dpapi" else KEY_NOTE_PLAIN,
+        "last_purge": last_purge or {"sessions": 0, "markup_entries": 0},
+    }
+
+
+def delete_everything() -> dict:
+    """«Удалить всё сейчас»: все сессии со всеми сайдкарами и вся разметка.
+
+    Ключ (key.bin) остаётся: без него следующая сессия не зашифруется, а стирать
+    его ради ощущения чистоты, когда шифровать больше нечего, — жест без смысла.
+    Возвращает, сколько чего удалено: пользователь должен УВИДЕТЬ результат, а не
+    поверить, что кнопка сработала.
+    """
+    from storage import list_sessions, delete_session, delete_all_markup
+
+    sessions = 0
+    for rec in list_sessions():
+        if delete_session(rec["session_id"], delete_markup=True):
+            sessions += 1
+    markup_files = delete_all_markup()
+    return {"sessions_deleted": sessions, "markup_files_deleted": markup_files}
+
+
 # --- Непрочитанные зоны -------------------------------------------------------
 def scan_zones(path: str) -> list[dict]:
     """Список непрочитанных зон .docx в JSON-виде (пустой — читается целиком).
@@ -480,7 +564,8 @@ def run_encrypt(path: str, allow_lossy: bool = False, config_path: str = DEFAULT
     from extractor import extract
     from pipeline import run_detection
     from tokenizer import tokenize
-    from storage import save_session, save_session_meta, save_doc_segments, load_session, default_storage_dir
+    from storage import (save_session, save_session_meta, save_doc_segments, load_session,
+                         default_storage_dir, save_anon_text, save_unread_zones)
     import json
 
     display_name = source_name or os.path.basename(path)
@@ -524,20 +609,18 @@ def run_encrypt(path: str, allow_lossy: bool = False, config_path: str = DEFAULT
     # тот же путь, что будет использован после каждой ручной правки (U3, п.1).
     session = load_session(session_id)
     state = _render_state(doc, session)
-    (store / f"{session_id}.txt").write_text(state["anon_text"], encoding="utf-8")
+    # ЭТАП STORE: оба сайдкара пишутся через storage (шифрование тем же ключом,
+    # что и {sid}.enc), а не прямой записью в файл. Прямая запись и была причиной,
+    # по которой обезличенный текст и сырые зоны лежали на диске открытыми.
+    save_anon_text(session_id, state["anon_text"])
 
     # lossy: sidecar с СЫРЫМ текстом зон — ровно как в CLI (локально, в LLM не идёт).
     if zones and allow_lossy:
         from unread_zones import scan_unread_zones, zones_to_json
-        sidecar = store / f"{session_id}.unread.json"
-        sidecar.write_text(
-            json.dumps(
-                {"session_id": session_id, "source_path": os.path.abspath(path),
-                 "lossy": True, "zones": zones_to_json(scan_unread_zones(path))},
-                ensure_ascii=False, indent=2,
-            ),
-            encoding="utf-8",
-        )
+        save_unread_zones(session_id, {
+            "session_id": session_id, "source_path": os.path.abspath(path),
+            "lossy": True, "zones": zones_to_json(scan_unread_zones(path)),
+        })
 
     return {
         "session_id": session_id,
@@ -917,7 +1000,7 @@ def apply_pending_markup(session_id: str, config_path: str = DEFAULT_CONFIG) -> 
 
     from storage import (
         load_session, load_doc_segments, list_markup, default_storage_dir,
-        replace_session_entities,
+        replace_session_entities, save_anon_text,
     )
     from models import Entity
 
@@ -984,9 +1067,8 @@ def apply_pending_markup(session_id: str, config_path: str = DEFAULT_CONFIG) -> 
         replace_session_entities(session_id, entities, expires_at)
         session = load_session(session_id)  # перечитываем — единый источник истины (п.1)
 
-        store = default_storage_dir()
         state = _render_state(doc, session)
-        (store / f"{session_id}.txt").write_text(state["anon_text"], encoding="utf-8")
+        save_anon_text(session_id, state["anon_text"])  # ЭТАП STORE: через storage
     else:
         state = _render_state(doc, session)
 

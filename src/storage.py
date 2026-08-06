@@ -83,11 +83,14 @@ import uuid
 from datetime import datetime, timedelta
 from pathlib import Path
 
+import vault
+from cryptography.fernet import InvalidToken
 from session_store import (
     SessionExpiredError,
     SessionNotFoundError,
     default_storage_dir,
 )
+from session_store import storage_key as _session_storage_key
 from session_store import delete_session as _delete_session
 from session_store import list_sessions as _list_sessions
 from session_store import load_session as _load_session
@@ -104,6 +107,10 @@ __all__ = [
     "default_markup_dir",
     "save_session_meta",
     "load_session_policy",
+    "save_anon_text",
+    "load_anon_text",
+    "save_unread_zones",
+    "load_unread_zones",
     "replace_session_entities",
     "save_doc_segments",
     "load_doc_segments",
@@ -112,6 +119,9 @@ __all__ = [
     "update_markup",
     "delete_markup",
     "purge_expired_markup",
+    "purge_all",
+    "retention_settings",
+    "set_retention",
     "delete_session_markup",
     "delete_all_markup",
     "markup_summary",
@@ -130,6 +140,158 @@ __all__ = [
 _MARKUP_TTL_DAYS = 30
 _MARKUP_DIRNAME = "markup"
 
+# --------------------------------------------------------------------------- #
+# ЭТАП STORE, часть 3 — сроки хранения и автоочистка
+# --------------------------------------------------------------------------- #
+# Почему очистка до сих пор не вызывалась — установлено по документу этапа S1,
+# а не по догадке: `docs/archive/reports/HANDOFF_S1.md` §7 «STOP / не
+# запланировано (доложено, не сделано)» прямо говорит, что автоматический
+# периодический вызов `purge_expired_markup()` НЕ добавлен, потому что таймер в
+# ThreadingHTTPServer — отдельное архитектурное решение (граница доверия
+# HTTP-слоя), вне границ S1. То есть НЕ ЗАБЫЛИ — сознательно отложили и
+# записали это. Правку истории git подтвердить нельзя: весь этап S1 лежит в
+# одном чужом коммите 8422395 «Этапы смерджены и немного оптимизированы».
+#
+# Отсюда и здешнее решение: фонового потока по-прежнему НЕТ. Очистка зовётся на
+# естественных событиях — старт интерфейса и завершение операции с хранилищем
+# (`purge_all`). Это не откладывает удаление надолго: продукт запускают, чтобы
+# им пользоваться, а не работающая программа файлов не создаёт.
+#
+# Сроки — решение владельца: 7 дней сессии / 30 дней разметка, И ОБА
+# НАСТРАИВАЕМЫЕ. Политику хранения за юриста не угадываем: умолчание — не
+# приговор, оно меняется в интерфейсе.
+_DEFAULT_SESSION_TTL_DAYS = 7
+_DEFAULT_MARKUP_TTL_DAYS = _MARKUP_TTL_DAYS
+_RETENTION_FILENAME = "retention.json"
+
+# Границы вменяемости для введённого пользователем срока. Ноль/отрицательное
+# означало бы «удалять всё немедленно, в том числе то, с чем сейчас работают»;
+# верхняя граница — чтобы «хранить вечно» нельзя было получить опечаткой.
+_TTL_MIN_DAYS = 1
+_TTL_MAX_DAYS = 365
+
+
+def _retention_path() -> Path:
+    return default_storage_dir().parent / _RETENTION_FILENAME
+
+
+def retention_settings() -> dict:
+    """{"session_days": int, "markup_days": int} — сроки хранения.
+
+    Читается ПРИ КАЖДОМ вызове (не кешируется): пользователь меняет срок в
+    интерфейсе, и следующая же очистка обязана считать по новому значению, без
+    перезапуска. Файл ПДн не содержит и потому не шифруется — это настройка,
+    а не данные; шифровать её значило бы сделать сессии нечитаемыми ради числа,
+    которое ничего не выдаёт.
+    """
+    out = {"session_days": _DEFAULT_SESSION_TTL_DAYS,
+           "markup_days": _DEFAULT_MARKUP_TTL_DAYS}
+    path = _retention_path()
+    if not path.exists():
+        return out
+    try:
+        data = json.loads(path.read_text(encoding="utf-8"))
+    except (OSError, ValueError):
+        return out          # битый файл — умолчание, а не падение экрана
+    for k in out:
+        v = data.get(k)
+        if isinstance(v, int) and not isinstance(v, bool) and _TTL_MIN_DAYS <= v <= _TTL_MAX_DAYS:
+            out[k] = v
+    return out
+
+
+def set_retention(session_days: int | None = None, markup_days: int | None = None) -> dict:
+    """Меняет срок хранения. Возвращает действующие значения ПОСЛЕ правки.
+
+    Значение вне [1, 365] — ValueError с человеческим текстом: молча подставить
+    границу нельзя, пользователь должен увидеть, что его число не принято.
+    """
+    current = retention_settings()
+    for name, value in (("session_days", session_days), ("markup_days", markup_days)):
+        if value is None:
+            continue
+        if not isinstance(value, int) or isinstance(value, bool):
+            raise ValueError(f"Срок хранения задаётся целым числом дней, получено: {value!r}")
+        if not (_TTL_MIN_DAYS <= value <= _TTL_MAX_DAYS):
+            raise ValueError(
+                f"Срок хранения должен быть от {_TTL_MIN_DAYS} до {_TTL_MAX_DAYS} дней, "
+                f"получено: {value}"
+            )
+        current[name] = value
+    path = _retention_path()
+    path.parent.mkdir(parents=True, exist_ok=True)
+    path.write_text(json.dumps(current, ensure_ascii=False), encoding="utf-8")
+    return current
+
+
+# --------------------------------------------------------------------------- #
+# ЭТАП STORE: сайдкары шифруются тем же ключом, что и {sid}.enc
+# --------------------------------------------------------------------------- #
+# До этого этапа шифровался ровно ОДИН файл сессии, а рядом с ним открытым
+# текстом лежали пять: полный исходный текст документа (.doc.json), сырой текст
+# непрочитанных зон (.unread.json), не до конца обезличенный результат (.txt),
+# имя исходного файла (.meta.json) и фрагменты реального текста в разметке
+# (.markup.json). Решение владельца — шифровать все шесть; обоснование по
+# каждому см. в докстринге `src/vault.py`.
+#
+# Ключ берётся из ТОЙ ЖЕ директории сессий, куда пишет этот модуль (а не из
+# session_store-умолчания): иначе подмена хранилища в одном месте и не в другом
+# давала бы шифрование не тем ключом, что молча хоронит сайдкары.
+
+def _key() -> bytes:
+    return _session_storage_key(str(default_storage_dir()))
+
+
+def _write_encrypted_json(path: Path, payload) -> None:
+    vault.write_encrypted(path, _key(), json.dumps(payload, ensure_ascii=False))
+
+
+def _read_encrypted_json(path: Path):
+    """Читает JSON-сайдкар, расшифровывая при необходимости.
+
+    Файл БЕЗ оболочки — записанный до этого этапа открытым текстом: читается как
+    есть (инвариант «сессия старой версии открывается»). Перешифровкой на месте
+    здесь НЕ занимаемся: чтение бывает на путях, где запись недопустима
+    (список сессий, свод по разметке), а тихая правка файла на чтении — источник
+    сюрпризов. Открытые остатки уносит очистка по сроку (часть 3).
+    """
+    return json.loads(vault.read_maybe_encrypted(path, _key()).decode("utf-8"))
+
+
+def save_anon_text(session_id: str, anon_text: str) -> None:
+    """Сайдкар {sid}.txt — обезличенный текст, который пользователь копирует в
+    LLM. Шифруется: обезличен он НЕ полностью (детекция часть значений
+    пропускает — измеренный гейтом факт), значит это файл с остаточными ПДн.
+    Наружу текст отдаёт интерфейс из памяти, а не этот файл."""
+    store = default_storage_dir()
+    store.mkdir(parents=True, exist_ok=True)
+    vault.write_encrypted(store / f"{session_id}.txt", _key(), anon_text)
+
+
+def load_anon_text(session_id: str) -> str:
+    return vault.read_maybe_encrypted(
+        default_storage_dir() / f"{session_id}.txt", _key()
+    ).decode("utf-8")
+
+
+def save_unread_zones(session_id: str, payload: dict) -> None:
+    """Сайдкар {sid}.unread.json — непрочитанные зоны документа С СЫРЫМ текстом.
+    Сырой он намеренно (пользователь должен видеть, что выброшено), значит это
+    чистые ПДн — шифруется."""
+    store = default_storage_dir()
+    store.mkdir(parents=True, exist_ok=True)
+    _write_encrypted_json(store / f"{session_id}.unread.json", payload)
+
+
+def load_unread_zones(session_id: str) -> dict | None:
+    path = default_storage_dir() / f"{session_id}.unread.json"
+    if not path.exists():
+        return None
+    try:
+        return _read_encrypted_json(path)
+    except (OSError, ValueError):
+        return None
+
 
 def default_markup_dir() -> Path:
     """Отдельная директория разметки — СОСЕД default_storage_dir(), не внутри
@@ -137,7 +299,13 @@ def default_markup_dir() -> Path:
     return default_storage_dir().parent / _MARKUP_DIRNAME
 
 
-def save_session(entities, session_id=None, ttl_hours=24):
+def save_session(entities, session_id=None, ttl_hours=None):
+    """ЭТАП STORE: срок жизни сессии берётся из настройки пользователя
+    (`retention_settings()["session_days"]`, умолчание 7 дней), а не из
+    зашитых 24 часов. Явный ttl_hours (тесты, служебные вызовы) по-прежнему
+    сильнее настройки."""
+    if ttl_hours is None:
+        ttl_hours = retention_settings()["session_days"] * 24
     return _save_session(entities, session_id=session_id, ttl_hours=ttl_hours)
 
 
@@ -170,10 +338,7 @@ def save_session_meta(session_id: str, source_name: str, policy: dict | None = N
         payload["policy"] = policy
     try:
         store.mkdir(parents=True, exist_ok=True)
-        _meta_path(store, session_id).write_text(
-            json.dumps(payload, ensure_ascii=False),
-            encoding="utf-8",
-        )
+        _write_encrypted_json(_meta_path(store, session_id), payload)
     except OSError:
         pass
 
@@ -191,8 +356,8 @@ def _load_session_meta(store: Path, session_id: str) -> dict:
     if not path.exists():
         return {}
     try:
-        return json.loads(path.read_text(encoding="utf-8"))
-    except (OSError, ValueError):
+        return _read_encrypted_json(path)
+    except (OSError, ValueError, InvalidToken, vault.KeyUnavailableError):
         return {}
 
 
@@ -229,7 +394,10 @@ def delete_session(session_id, delete_markup: bool = False):
     """
     deleted = _delete_session(session_id)
     store = default_storage_dir()
-    for suffix in (".meta.json", ".doc.json"):
+    # ЭТАП STORE: в список добавлен .unread.json — до этого этапа он не
+    # удалялся НИ ОДНИМ путём (ни удалением сессии, ни очисткой по сроку) и
+    # копился в профиле бессрочно, храня сырой текст непрочитанных зон.
+    for suffix in (".meta.json", ".doc.json", ".unread.json"):
         try:
             store.joinpath(f"{session_id}{suffix}").unlink(missing_ok=True)
         except OSError:
@@ -253,7 +421,7 @@ def purge_expired(exclude_session_id=None):
     store = default_storage_dir()
     if store.exists():
         live_ids = {p.stem for p in store.glob("*.enc")}
-        for suffix in (".meta.json", ".doc.json"):
+        for suffix in (".meta.json", ".doc.json", ".unread.json"):  # STORE: +unread
             for p in store.glob(f"*{suffix}"):
                 sid = p.name[: -len(suffix)]
                 if sid not in live_ids:
@@ -300,8 +468,16 @@ def _doc_path(store: Path, session_id: str) -> Path:
 # повторного прогона детекторов), а если это когда-нибудь изменится — тест
 # `tests/test_storage_s1.py::test_doc_segments_roundtrip_survives_cache_strip`
 # упадёт первым (round-trip реального экрана проверки, не unit на strip-функции).
+#
+# ЭТАП STORE: в список добавлен `_addr_view_cache` (кладёт `ner_detector._addr_view`,
+# этап E′). Он появился ПОЗЖЕ этого списка и в него не попал — ровно та же
+# служебная копия текста, что четыре соседних, но единственная, доживавшая до
+# диска: замер на agency_0002.docx нашёл её в 32 сегментах из 43 (см.
+# docs/archive/legal/LEGAL_CHECK.md §3). Инвариант S1 «в файле одна копия текста,
+# та, без которой не восстановить» был нарушен молча.
 _DOC_METADATA_DROP_KEYS = frozenset({
     "_norm_cache", "_anchor_search_cache", "_per_search_cache", "detection_text",
+    "_addr_view_cache",
 })
 
 
@@ -330,9 +506,7 @@ def save_doc_segments(session_id: str, doc) -> None:
             for s in doc.segments
         ],
     }
-    _doc_path(store, session_id).write_text(
-        json.dumps(payload, ensure_ascii=False), encoding="utf-8"
-    )
+    _write_encrypted_json(_doc_path(store, session_id), payload)
 
 
 def load_doc_segments(session_id: str):
@@ -349,7 +523,7 @@ def load_doc_segments(session_id: str):
             f"Для сессии {session_id} не сохранена структура документа "
             "(создана до этапа разметки или напрямую через CLI) — правка недоступна."
         )
-    data = json.loads(path.read_text(encoding="utf-8"))
+    data = _read_encrypted_json(path)
     segments = [
         TextSegment(id=s["id"], text=s["text"], source_type=s["source_type"], metadata=s["metadata"])
         for s in data["segments"]
@@ -366,16 +540,14 @@ def _load_markup_list(store: Path, session_id: str) -> list[dict]:
     if not path.exists():
         return []
     try:
-        return json.loads(path.read_text(encoding="utf-8"))
-    except (OSError, ValueError):
+        return _read_encrypted_json(path)
+    except (OSError, ValueError, InvalidToken, vault.KeyUnavailableError):
         return []
 
 
 def _write_markup_list(store: Path, session_id: str, entries: list[dict]) -> None:
     store.mkdir(parents=True, exist_ok=True)
-    _markup_path(store, session_id).write_text(
-        json.dumps(entries, ensure_ascii=False, indent=2), encoding="utf-8"
-    )
+    _write_encrypted_json(_markup_path(store, session_id), entries)
 
 
 def save_markup(session_id: str, entry: dict) -> str:
@@ -450,7 +622,27 @@ def delete_all_markup() -> int:
     return removed
 
 
-def purge_expired_markup(ttl_days: int = _MARKUP_TTL_DAYS) -> int:
+def purge_all() -> dict:
+    """Одна точка автоочистки: просроченные сессии + просроченная разметка.
+
+    Возвращает {"sessions": n, "markup_entries": m} — вызывающий ОБЯЗАН показать
+    это пользователю, если что-то удалено. Тихая автоочистка неотличима от
+    потери данных: человек, не увидевший сообщения, решит, что программа
+    сломалась, а не что сработал объявленный ему срок.
+
+    Фонового потока нет намеренно (см. §ЭТАП STORE выше): зовётся на старте
+    интерфейса и после операций с хранилищем.
+
+    Ни один файл ЖИВОЙ сессии здесь не трогается: `purge_expired` удаляет
+    только те `.enc`, у которых `expires_at` уже в прошлом, а сайдкары — только
+    осиротевшие. То, с чем работают прямо сейчас, по определению не просрочено.
+    """
+    sessions = purge_expired()
+    entries = purge_expired_markup()
+    return {"sessions": sessions, "markup_entries": entries}
+
+
+def purge_expired_markup(ttl_days: int | None = None) -> int:
     """Удаляет ЗАПИСИ разметки старше ttl_days (по created_at КАЖДОЙ записи),
     независимо от жизни сессии, к которой они относятся, — сессия могла быть
     удалена/просрочена уже давно, разметка живёт своим сроком (§ЭТАП S1).
@@ -461,12 +653,14 @@ def purge_expired_markup(ttl_days: int = _MARKUP_TTL_DAYS) -> int:
     store = default_markup_dir()
     if not store.exists():
         return 0
+    if ttl_days is None:
+        ttl_days = retention_settings()["markup_days"]
     cutoff = datetime.now().astimezone() - timedelta(days=ttl_days)
     removed = 0
     for path in store.glob("*.markup.json"):
         try:
-            entries = json.loads(path.read_text(encoding="utf-8"))
-        except (OSError, ValueError):
+            entries = _read_encrypted_json(path)
+        except (OSError, ValueError, InvalidToken, vault.KeyUnavailableError):
             continue
         kept = []
         for e in entries:
@@ -485,7 +679,7 @@ def purge_expired_markup(ttl_days: int = _MARKUP_TTL_DAYS) -> int:
             except OSError:
                 pass
         elif len(kept) != len(entries):
-            path.write_text(json.dumps(kept, ensure_ascii=False, indent=2), encoding="utf-8")
+            _write_encrypted_json(path, kept)
     return removed
 
 
@@ -500,8 +694,8 @@ def markup_summary() -> dict:
     if store.exists():
         for path in store.glob("*.markup.json"):
             try:
-                data = json.loads(path.read_text(encoding="utf-8"))
-            except (OSError, ValueError):
+                data = _read_encrypted_json(path)
+            except (OSError, ValueError, InvalidToken, vault.KeyUnavailableError):
                 continue
             if not data:
                 continue
@@ -512,7 +706,7 @@ def markup_summary() -> dict:
                 if ca and (oldest is None or ca < oldest):
                     oldest = ca
     return {"sessions": sessions, "entries": entries_total, "oldest_created_at": oldest,
-            "ttl_days": _MARKUP_TTL_DAYS}
+            "ttl_days": retention_settings()["markup_days"]}
 
 
 def migrate_legacy_markup() -> int:
@@ -532,8 +726,8 @@ def migrate_legacy_markup() -> int:
     for old_path in old_dir.glob("*.markup.json"):
         sid = old_path.name[: -len(".markup.json")]
         try:
-            old_entries = json.loads(old_path.read_text(encoding="utf-8"))
-        except (OSError, ValueError):
+            old_entries = _read_encrypted_json(old_path)
+        except (OSError, ValueError, InvalidToken, vault.KeyUnavailableError):
             continue
         existing = _load_markup_list(new_dir, sid)
         existing_ids = {e.get("id") for e in existing}
