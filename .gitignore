@@ -16,6 +16,9 @@ dist/
 htmlcov/
 shifrator_startup.log
 launcher.lock
+# ЭТАП A3: журнал хронометра (.claude/hooks/chrono.py) — длительности команд
+# конкретного прогона на конкретной машине. Прибор, а не продукт; в историю не идёт.
+.chrono/
 .vscode/
 .idea/
 *_restored.*
