@@ -69,6 +69,17 @@ def main(argv=None):
     ap.add_argument("--reason", default="", help="почему рост порчи документа законен")
     ap.add_argument("--evidence", default="",
                     help="чем подтверждена законность (лог, разбор, поимённый список)")
+    # ЭТАП BASE-A6: явная санкционированная дорога для красноты НЕ по линии «д».
+    # По умолчанию поведение прежнее — отказ (принятие регресса не проходит
+    # побочным эффектом). С флагом решение владельца записывается в журнал
+    # ЦЕЛИКОМ: каждая принятая красная строка гейта дословно, с автором и
+    # обоснованием — те же требования validate_reason, что у линии «д».
+    ap.add_argument("--accept-red", action="store_true",
+                    help="принять красные линии гейта кроме «д» решением владельца "
+                         "(требует --author/--reason; список строк уходит в журнал)")
+    ap.add_argument("--carried-debts", default="",
+                    help="долги, попадающие в новую точку отсчёта автоматически — "
+                         "фиксируются в журнале отдельной строкой как долг, не норма")
     ap.add_argument("--dry-run", action="store_true")
     a = ap.parse_args(argv)
 
@@ -104,14 +115,24 @@ def main(argv=None):
     if not grown:
         print("   роста нет")
 
-    # --- шаг 3: чужая краснота не проходит вообще ------------------------- #
-    if other_reds:
+    # --- шаг 3: чужая краснота не проходит МОЛЧА -------------------------- #
+    if other_reds and not a.accept_red:
         return _fail("гейт красный не только по линии «д»", other_reds + [
             "",
             "Принятие регресса по утечке / маскировке / точности НЕ",
             "автоматизируется: это отдельное решение владельца, и оно не должно",
             "проходить побочным эффектом пересборки точки отсчёта.",
+            "Если решение владельца ЕСТЬ — повторите с --accept-red,",
+            "--author и --reason: принятые строки уйдут в журнал дословно.",
         ])
+    if other_reds:
+        problems = OL.validate_reason(a.reason, a.author)
+        if problems:
+            return _fail("принятие красных линий не обосновано", problems)
+        print("\nПринимаются решением владельца (уйдут в журнал, %d строк):"
+              % len(other_reds))
+        for r in other_reds:
+            print("   " + r)
 
     # --- шаг 2: рост порчи требует обоснования ---------------------------- #
     if grown or overmask_reds:
@@ -132,6 +153,8 @@ def main(argv=None):
         kind = "поднятие уровня"
     else:
         kind = "пересборка без роста"
+    if other_reds:
+        kind += " + принятие красных линий (санкция владельца)"
 
     date = datetime.date.today().isoformat()
     print("\nБудет записано в журнал (%s):" % os.path.basename(OL.LEDGER))
@@ -146,8 +169,13 @@ def main(argv=None):
         print("\n--dry-run: ничего не записано.")
         return 0
 
+    extra = {}
+    if other_reds:
+        extra["accepted_regressions"] = other_reds
+    if a.carried_debts:
+        extra["carried_debts"] = a.carried_debts
     OL.append(cur_num, date=date, author=a.author or "—", reason=a.reason,
-              evidence=a.evidence, kind=kind)
+              evidence=a.evidence, kind=kind, extra=extra or None)
     shutil.copyfile(a.dump, BASELINE)
     print("\nТочка отсчёта обновлена: %s" % BASELINE)
 

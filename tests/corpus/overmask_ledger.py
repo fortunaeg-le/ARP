@@ -87,11 +87,18 @@ def validate_reason(reason, author):
     return problems
 
 
-def append(numbers, *, date, author, reason, evidence, kind, path=LEDGER):
+def append(numbers, *, date, author, reason, evidence, kind, path=LEDGER,
+           extra=None):
     """ДОПИСЫВАЕТ запись. Существующие записи не трогает и не переписывает —
-    единственная операция записи, которая есть у этого модуля вообще."""
+    единственная операция записи, которая есть у этого модуля вообще.
+
+    `extra` (этап BASE-A6) — необязательный словарь дополнительных полей записи
+    (напр. `accepted_regressions` — принятые владельцем красные строки гейта,
+    `carried_debts` — долги, попавшие в точку отсчёта автоматически, не как
+    норма). Читатели журнала (`check_against_baseline`, гейт) смотрят только
+    `total`/`per_type`, поэтому дополнительные поля — история для человека."""
     data = load(path)
-    data.setdefault("entries", []).append({
+    record = {
         "date": date,
         "author": author,
         "kind": kind,
@@ -99,7 +106,10 @@ def append(numbers, *, date, author, reason, evidence, kind, path=LEDGER):
         "per_type": dict(sorted(numbers["per_type"].items())),
         "reason": reason,
         "evidence": evidence,
-    })
+    }
+    if extra:
+        record.update(extra)
+    data.setdefault("entries", []).append(record)
     with open(path, "w", encoding="utf-8") as f:
         json.dump(data, f, ensure_ascii=False, indent=2)
         f.write("\n")
