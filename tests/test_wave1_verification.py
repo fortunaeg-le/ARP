@@ -23,7 +23,7 @@ from extractor import extract
 from regex_detector import detect_regex
 from ner_detector import detect_ner
 from tokenizer import tokenize, build_plain_text, _render_segment
-from session_store import save_session, default_storage_dir, _DEFAULT_STORAGE_DIR
+from session_store import save_session, default_storage_dir
 from detokenizer import detokenize
 from file_detokenizer import detokenize_file
 
@@ -337,7 +337,22 @@ def test_p3_default_storage_dir_matches_original_hardcoded_path():
     from pathlib import Path as _Path
     expected = _Path.home() / ".shifrator" / "sessions"
     assert default_storage_dir() == expected
-    assert _DEFAULT_STORAGE_DIR == expected
+
+
+def test_p3_storage_dir_follows_the_home_dir_at_call_time(tmp_path, monkeypatch):
+    """ЭТАП STORE (STORE-HOME-CACHE): путь к хранилищу обязан ПЕРЕСПРАШИВАТЬ
+    домашний каталог на каждом вызове, а не застывать на импорте модуля.
+
+    Сторож именно на дефект, а не на его симптом: тест меняет домашний каталог
+    ПОСЛЕ того, как session_store давно импортирован (импорт наверху файла), и
+    требует, чтобы default_storage_dir() это увидела. Со старой константой
+    `_DEFAULT_STORAGE_DIR = Path.home() / ...` тест падает — она к этому моменту
+    уже вычислена."""
+    monkeypatch.setenv("USERPROFILE", str(tmp_path))
+    monkeypatch.setenv("HOME", str(tmp_path))
+    monkeypatch.delenv("HOMEDRIVE", raising=False)
+    monkeypatch.delenv("HOMEPATH", raising=False)
+    assert default_storage_dir() == tmp_path / ".shifrator" / "sessions"
 
 
 # --------------------------------------------------------------------------- #

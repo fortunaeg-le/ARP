@@ -82,7 +82,7 @@ def iso_store(tmp_path, monkeypatch):
     """Тот же приём, что в tests/test_storage_s1.py: реальный ~/.shifrator не
     трогаем ни на чтение, ни на запись."""
     sessions_dir = tmp_path / "sessions"
-    monkeypatch.setattr(session_store, "_DEFAULT_STORAGE_DIR", sessions_dir)
+    monkeypatch.setattr(session_store, "default_storage_dir", lambda: sessions_dir)
     monkeypatch.setattr(storage, "default_storage_dir", lambda: sessions_dir)
     return sessions_dir, tmp_path / "markup"
 

@@ -42,14 +42,12 @@ def home(tmp_path, monkeypatch):
     monkeypatch.delenv("HOMEDRIVE", raising=False)
     monkeypatch.delenv("HOMEPATH", raising=False)
     assert Path.home() == tmp_path
-    # session_store._DEFAULT_STORAGE_DIR читается ОДИН раз при первом импорте
-    # модуля в процессе — переменные окружения выше её не переоткрывают, тесты
-    # этого файла зовут core.run_encrypt (сохраняет сессию) — без явного
-    # monkeypatch запись ушла бы в РЕАЛЬНЫЙ ~/.shifrator (см. tests/test_storage_s1.py
-    # iso_store, тот же приём).
-    sessions_dir = tmp_path / ".shifrator" / "sessions"
-    monkeypatch.setattr(session_store, "_DEFAULT_STORAGE_DIR", sessions_dir)
-    monkeypatch.setattr(storage, "default_storage_dir", lambda: sessions_dir)
+    # ЭТАП STORE: заплатка снята. Раньше здесь стояли два monkeypatch.setattr —
+    # session_store хранил путь константой, вычисленной на импорте, и подмены
+    # переменных выше на него не действовали: core.run_encrypt писал сессию в
+    # РЕАЛЬНЫЙ ~/.shifrator. Теперь default_storage_dir() спрашивает Path.home()
+    # при каждом вызове, и подмены окружения достаточно — этот тест заодно её и
+    # проверяет (сессия обязана лечь под tmp_path).
     return tmp_path
 
 

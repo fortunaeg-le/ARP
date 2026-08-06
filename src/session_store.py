@@ -31,8 +31,10 @@ from models import Entity
 # Регулярка формата uuid4 (как строка session_id): 32 hex-цифры + 4 дефиса = 36 символов.
 _SESSION_ID_RE = re.compile(r"^[0-9a-f-]{36}$")
 
-# Дефолтная директория хранилища (общая для всех трёх функций и блока 7).
-_DEFAULT_STORAGE_DIR = Path.home() / ".shifrator" / "sessions"
+# Имя каталога данных продукта в домашней директории. Сам ПУТЬ константой быть
+# не может — см. default_storage_dir().
+_APP_DIRNAME = ".shifrator"
+_SESSIONS_DIRNAME = "sessions"
 
 _KEY_FILENAME = "key.bin"
 
@@ -46,14 +48,35 @@ class SessionExpiredError(Exception):
 
 
 def default_storage_dir() -> Path:
-    """Возвращает дефолтную директорию хранилища сессий (~/.shifrator/sessions)."""
-    return _DEFAULT_STORAGE_DIR
+    """Дефолтная директория хранилища сессий (~/.shifrator/sessions).
+
+    ЭТАП STORE (задача STORE-HOME-CACHE). Раньше это была КОНСТАНТА МОДУЛЯ,
+    вычисленная `Path.home()` в момент ПЕРВОГО импорта процесса. Домашний каталог
+    после этого не переспрашивался никогда, и всё, что меняло его позже, молча не
+    действовало: тесты, подменившие HOME/USERPROFILE, писали сессии в РЕАЛЬНЫЙ
+    ~/.shifrator того, кто гоняет тесты (дважды за последние сессии — отсюда и
+    заплатки `monkeypatch.setattr(session_store, "_DEFAULT_STORAGE_DIR", ...)`,
+    которые приходилось ставить в каждом новом тесте, помнящем про эту ловушку).
+
+    Почему это дефект ПРОДУКТА, а не только тестов: момент импорта модуля и
+    момент, когда становится известно место записи, — разные события, и порядок
+    между ними код не контролирует. В собранном exe импорт `session_store`
+    случается на старте процесса, до того как приложение вообще решило, с каким
+    хранилищем работать; любая будущая настройка «где хранить» (переносимый
+    профиль на флешке, вторая учётка, служебный запуск с подменённым профилем)
+    упиралась бы в уже застывшую константу и требовала бы перезапуска процесса.
+    Замер frozen-сборки — см. отчёт этапа STORE в docs/JOURNAL.md.
+
+    Тот же приём уже применён рядом — `type_policy._settings_path()` читает
+    `Path.home()` при каждом вызове с той же мотивировкой.
+    """
+    return Path.home() / _APP_DIRNAME / _SESSIONS_DIRNAME
 
 
 def _resolve_storage_dir(storage_dir: str | None) -> Path:
     """Возвращает Path к директории хранилища (дефолт — ~/.shifrator/sessions)."""
     if storage_dir is None:
-        return _DEFAULT_STORAGE_DIR
+        return default_storage_dir()
     return Path(storage_dir)
 
 

@@ -6,6 +6,7 @@
 """
 import os
 import sys
+from pathlib import Path
 
 import pytest
 from docx import Document
@@ -14,6 +15,39 @@ _PROJECT_ROOT = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 sys.path.insert(0, _PROJECT_ROOT)
 
 CONFIG_PATH = os.path.join(_PROJECT_ROOT, "entity_types.yaml")
+
+
+@pytest.fixture(scope="session", autouse=True)
+def isolated_home(tmp_path_factory):
+    """ЭТАП STORE. Домашний каталог на ВЕСЬ прогон тестов уводится во временный.
+
+    Продукт хранит сессии, разметку и настройки в `~/.shifrator`. Дважды за
+    последние сессии тест писал туда РЕАЛЬНОМУ пользователю — оба раза чинилось
+    точечной заплаткой в конкретном тесте, и оба раза следующий новый тест про
+    заплатку не знал. Точечный приём и не мог сработать как правило: он требует,
+    чтобы автор теста ВСПОМНИЛ про ловушку.
+
+    Здесь общий сторож: HOME/USERPROFILE подменены до первого теста, и
+    `Path.home()` (а значит и `default_storage_dir()`, и `type_policy`) во всех
+    тестах смотрит во временный каталог. HOMEDRIVE/HOMEPATH снимаются: на Windows
+    `expanduser` берёт их РАНЬШЕ USERPROFILE, и без снятия подмена не подействует.
+    Подмена наследуется и запускаемыми из тестов subprocess'ами (они получают
+    os.environ), поэтому CLI-тесты закрыты тем же ходом.
+
+    Это ВТОРОЙ рубеж, а не замена починки: сам дефект (путь застывал на импорте)
+    исправлен в `session_store.default_storage_dir()`. Без той починки эта
+    фикстура не работала бы вовсе — модуль импортируется раньше неё.
+    """
+    home = tmp_path_factory.mktemp("home")
+    with pytest.MonkeyPatch.context() as mp:
+        mp.setenv("USERPROFILE", str(home))
+        mp.setenv("HOME", str(home))
+        mp.delenv("HOMEDRIVE", raising=False)
+        mp.delenv("HOMEPATH", raising=False)
+        assert Path.home() == home, (
+            f"подмена домашнего каталога не подействовала: Path.home()={Path.home()}"
+        )
+        yield home
 
 
 @pytest.fixture(scope="session")

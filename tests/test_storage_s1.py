@@ -44,7 +44,7 @@ def iso_store(tmp_path, monkeypatch):
     ИЗ СВОЕГО модуля. Патчим оба места на ОДИН и тот же путь."""
     sessions_dir = tmp_path / "sessions"
     markup_dir = tmp_path / "markup"
-    monkeypatch.setattr(session_store, "_DEFAULT_STORAGE_DIR", sessions_dir)
+    monkeypatch.setattr(session_store, "default_storage_dir", lambda: sessions_dir)
     monkeypatch.setattr(storage, "default_storage_dir", lambda: sessions_dir)
     return sessions_dir, markup_dir
 
