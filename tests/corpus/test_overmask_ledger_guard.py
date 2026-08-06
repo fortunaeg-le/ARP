@@ -65,13 +65,22 @@ def test_real_reason_is_accepted():
 
 def test_promoter_refuses_growth_without_justification_and_writes_nothing(tmp_path):
     """Главный тест пункта: попытка поднять планку молча ОТКАЗЫВАЕТ, называет
-    выросшие типы и НЕ трогает ни точку отсчёта, ни журнал."""
+    выросшие типы и НЕ трогает ни точку отсчёта, ни журнал.
+
+    ЭТАП A6 — база фикстуры: results_baseline.json, НЕ рабочий
+    results_gate_current.json. Дамп против самого себя зелен ПО ПОСТРОЕНИЮ,
+    поэтому +5 подложенных FP красят ровно линию «д» и отказ гарантированно
+    несёт строку «не обоснован» — при любом состоянии рабочего дампа. На живом
+    дампе тест краснел каждый раз, когда этап честно оставлял гейт красным
+    (A5): в отказ промоутера попадали настоящие регрессы, и нужная строка
+    тонула. Это и есть легальный путь «прогнать тест на заведомом состоянии»:
+    замок подмены дампа не нужен и не тронут — точка отсчёта только читается."""
     baseline_path = os.path.join(HERE, "results_baseline.json")
     before_baseline = os.path.getmtime(baseline_path)
     before_ledger = open(OL.LEDGER, encoding="utf-8").read()
 
     # дамп с подложенной порчей: 5 масок на неаннотированной прозе
-    dump = json.load(open(os.path.join(HERE, "results_gate_current.json"), encoding="utf-8"))
+    dump = json.load(open(baseline_path, encoding="utf-8"))
     added = 0
     for d in dump:
         if d.get("outcome") == "processed" and added < 5:
