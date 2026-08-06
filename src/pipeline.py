@@ -49,11 +49,22 @@ def run_detection(doc, config_path):
     """
     regex_e = detect_regex(doc, config_path)
     # ЭТАП E (1b): мультиспан-сборщик — PHONE в произвольной группировке,
-    # \n-рваные ACCOUNT/BIRTHDATE. Часть regex-слоя: его сущности точно так же
+    # \n-рваные реквизиты/BIRTHDATE. Часть regex-слоя: его сущности точно так же
     # служат барьерами адресу и участвуют в разрешении пересечений блока 4
     # (дубль со штатным матчем схлопывается там же — длиннейший hull побеждает).
-    regex_e = regex_e + collect_multispan(doc, config_path)
+    #
+    # ЭТАП A6: структурный движок получает ТОЛЬКО штатные regex-реквизиты, БЕЗ
+    # мультиспанов. Рваный вёрсткой реквизит — валидная маска, но НЕ
+    # доказательство имени рядом: поисковый вид ORG вырезает '\n', и name-run
+    # слева от рваного «ИНН» дотягивается через бывшую границу строки до чужих
+    # слов (измерено: ORG «Профсоюзная» на адресе labor_0006__m2718_linebreak;
+    # тот же якорь на чистом документе существует, но его случайно давит
+    # ADDRESS-маска). До A6 мультиспаны в движок и не попадали: ACCOUNT/PHONE/
+    # BIRTHDATE не входят в фильтр _requisites_src_by_seg — строка ниже делает
+    # этот инвариант явным, а не побочным.
+    ms_e = collect_multispan(doc, config_path)
     struct_e = detect_structural(doc, regex_entities=regex_e)
+    regex_e = regex_e + ms_e
     org_e = [e for e in struct_e if e.entity_type == "ORG"]
     per_e = [e for e in struct_e if e.entity_type == "PERSON"]
 

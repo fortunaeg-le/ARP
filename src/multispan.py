@@ -7,8 +7,17 @@
   а) PHONE в произвольной группировке: «+7(916)123-45-67», «84б 82б85 1Ч»
      (омоглифы на краях групп), «8(383)22 1338б» — жёсткая структура 3-3-2-2
      паттерна PHONE не матчит произвольные разбиения; известная утечка ~32%.
-  б) BANK_ACCOUNT и BIRTHDATE, разорванные ПЕРЕНОСОМ СТРОКИ внутри одного
-     логического поля (мутация m1337_linebreak): «4070 2810\\n7519 …».
+  б) реквизиты фиксированной длины и BIRTHDATE, разорванные ПЕРЕНОСОМ СТРОКИ
+     внутри одного логического поля (мутация m1337_linebreak): «4070 2810\\n7519 …».
+     До этапа A6 здесь был только BANK_ACCOUNT; теперь — общая декларация
+     _SEAM_TYPES (счёт/ОГРН/ИНН обоих типов/СНИЛС), потому что причина одна:
+     вёрстка рвёт значение, а паттерн через '\\n' не матчится осознанно
+     (A2-NEWLINE-CROSS).
+  в) ЭТАП A6: те же реквизиты, разорванные ГРАНИЦЕЙ СЕГМЕНТОВ (в .txt строка =
+     сегмент, в .docx — абзац). Сборка идёт по граничному окну B3
+     (tokenizer._detect_boundary_entities -> collect_seam_entities ниже):
+     структурная граница видна из РАЗМЕТКИ (пара сегментов, вид разделителя),
+     а не угадывается по символу в тексте.
 
 ПРИНЦИП ЦЕЛОСТНОСТИ (приёмка 1a важнее recall): маскируется HULL — непрерывный
 диапазон от начала первого куска до конца последнего, одним токеном;
@@ -35,8 +44,8 @@ import uuid
 
 from config_cache import load_yaml_cached
 from models import Entity, SourceDocument
-from normalizer import detection_view, norm_to_src
-from regex_detector import _has_anchor
+from normalizer import detection_view, norm_to_src, normalize_for_detection
+from regex_detector import VALIDATORS, _has_anchor
 
 # Цифро-подобная группа: цифры + омоглифы цифр, НЕ сведённые нормализацией
 # (край токена 'б', группа с <2 настоящими цифрами — см. normalizer._LOOKALIKE_*).
@@ -59,9 +68,117 @@ _MAX_GAP = 3
 _PHONE_TOTALS = (10, 11)
 _ACC_TOTAL = 20
 
+# --------------------------------------------------------------------------- #
+#   ЭТАП A6 — ДЕКЛАРАЦИЯ ТИПОВ, СОБИРАЕМЫХ ЧЕРЕЗ РАЗРЫВ ('\n' и стык окна)     #
+# --------------------------------------------------------------------------- #
+# Участвует тип, у которого (1) суммарная длина значения в цифрах ФИКСИРОВАНА
+# и (2) есть якорь-слово. Для сборки якорь ОБЯЗАТЕЛЕН у всех — даже там, где
+# посегментная детекция обходится контрольной суммой (ИНН): сборка рискованнее
+# обычного матча, требования строже. КС берётся из entity_types.yaml
+# (validate:) и проверяется ВДОБАВОК к длине, где определена.
+#
+# Кого здесь НЕТ и почему (осознанные исключения, не забывчивость):
+#   * PHONE — телефоны в столбик: два номера через '\n' склеились бы в один
+#     (документированный запрет секции (а) выше). Длины 10/11 без КС.
+#   * PASSPORT — значение неоднородно («серия 12 34 № 567890»), сборка голой
+#     цифровой цепи проигнорировала бы форму, а anti_anchor («паспорт
+#     КАЧЕСТВА») в цепь не встроен. Отдельная задача, если замер покажет класс.
+#   * BIK/KPP — 9 цифр без КС: слишком короткие и частые, чтобы собирать их
+#     через структурную границу по одной длине (направление ошибки).
+# Длины всех участников попарно различны, поэтому цепь однозначно решается в
+# ноль или один тип.
+_SEAM_TYPES = (
+    ("BANK_ACCOUNT", (20,)),
+    ("OGRN", (13, 15)),
+    ("INN", (10,)),
+    ("INN_PERSON", (12,)),
+    ("SNILS", (11,)),
+)
+
+# У СНИЛС якорь живёт не в поле anchor:, а внутри самого паттерна (span_group,
+# этап 3) — для сборки нужен отдельный компилят. Зеркало головы паттерна из
+# entity_types.yaml (SNILS), длинный хвост «…пенсионного страхования» для окна
+# в 40 символов не нужен.
+_LOCAL_SEAM_ANCHORS = {
+    "SNILS": re.compile(r"(?i)(?:снилс|страхов\w*\s+свидетельств\w*)"),
+}
+
+#: кэш _load_seam_spec по пути конфига (окон в документе тысячи, компилировать
+#: якоря на каждое нельзя).
+_SEAM_SPEC_CACHE: dict[str, list[tuple]] = {}
+
+
+def _load_seam_spec(config_path: str) -> list[tuple]:
+    """[(entity_type, totals, validator|None, anchor_re)] для типов сборки.
+    Тип без якоря (и без локального зеркала) в сборку не попадает вовсе."""
+    cached = _SEAM_SPEC_CACHE.get(config_path)
+    if cached is not None:
+        return cached
+    config = load_yaml_cached(config_path)
+    spec: list[tuple] = []
+    for etype, totals in _SEAM_TYPES:
+        s = config["entity_types"].get(etype) or {}
+        if s.get("enabled") is False or "token_prefix" not in s:
+            continue
+        anchor = s.get("anchor")
+        anchor_re = re.compile(anchor) if anchor else _LOCAL_SEAM_ANCHORS.get(etype)
+        if anchor_re is None:
+            continue
+        validator = VALIDATORS.get(s.get("validate") or "")
+        spec.append((etype, totals, validator, anchor_re))
+    _SEAM_SPEC_CACHE[config_path] = spec
+    return spec
+
 
 def _eff_digits(s: str) -> str:
     return "".join(_LOOKALIKE.get(ch, ch) for ch in s)
+
+
+def _chain_parts_at_newlines(norm: str, chain) -> list[list]:
+    """Части цепи, разделённые разрывами с '\\n' внутри (границы строк/стыки)."""
+    parts = [[chain[0]]]
+    for prev, g in zip(chain, chain[1:]):
+        if "\n" in norm[prev.end():g.start()]:
+            parts.append([g])
+        else:
+            parts[-1].append(g)
+    return parts
+
+
+def _part_is_complete(part, totals, validator) -> bool:
+    dg = _eff_digits("".join(g.group(0) for g in part))
+    return len(dg) in totals and (validator is None or validator(dg))
+
+
+def _match_seam_type(norm: str, chain, spec) -> str | None:
+    """Тип, чьим ровно ОДНИМ значением является вся цепь, либо None.
+
+    Стражи направления ошибки (лучше не найти, чем захватить лишнее):
+      1. сумма цифр цепи ТОЧНО равна длине одного значения типа (зеркало «−»
+         секции (а): два значения дают двойную длину -> отказ целиком, под-окна
+         запрещены);
+      2. контрольная сумма, где определена;
+      3. якорь типа непосредственно слева от начала цепи (_has_anchor: та же
+         строка, без цифр в разрыве);
+      4. НИ ОДНА часть цепи по свою сторону '\\n'-разрыва не является целым
+         валидным значением сама по себе — иначе стык паразитный: целый ОГРН-13
+         плюс случайные «15» на следующей строке дали бы «валидный» ОГРНИП-15.
+         Это формализация урока A2-NEWLINE-CROSS: через настоящую границу не
+         сшивается то, что цело уже по одну её сторону."""
+    digits = _eff_digits("".join(g.group(0) for g in chain))
+    for etype, totals, validator, anchor_re in spec:
+        if len(digits) not in totals:
+            continue
+        if validator is not None and not validator(digits):
+            continue
+        if not _has_anchor(norm, chain[0].start(), anchor_re):
+            continue
+        parts = _chain_parts_at_newlines(norm, chain)
+        if len(parts) > 1 and any(
+                _part_is_complete(p, totals, validator) for p in parts):
+            continue
+        return etype
+    return None
 
 
 def _chains(norm: str, sep_chars: frozenset):
@@ -109,13 +226,6 @@ def _emit(segment, norm, omap, chain, entity_type, plus_prefix=False):
     )
 
 
-def _load_account_anchor(config_path: str):
-    config = load_yaml_cached(config_path)
-    spec = config["entity_types"].get("BANK_ACCOUNT") or {}
-    a = spec.get("anchor")
-    return re.compile(a) if a else None
-
-
 # Дата, разорванная переносом, ПОД ЯКОРЕМ РОЖДЕНИЯ (правило этапа 3: дата без
 # якоря — не BIRTHDATE). Те же якоря, что в entity_types.yaml, но зазор и
 # внутренность значения допускают \n. Обязателен \n ВНУТРИ значения — иначе
@@ -147,10 +257,11 @@ def _split_on_newlines(segment, src_s, src_e):
 
 
 def collect_multispan(doc: SourceDocument, config_path: str) -> list[Entity]:
-    """Мультиспан-сущности документа (PHONE-группировки, \\n-рваные ACCOUNT и
-    BIRTHDATE). Дубли со штатными regex-матчами разрешает общий алгоритм
-    пересечений блока 4 (более длинный hull побеждает; равный — один токен)."""
-    acc_anchor = _load_account_anchor(config_path)
+    """Мультиспан-сущности документа (PHONE-группировки, \\n-рваные реквизиты
+    _SEAM_TYPES и BIRTHDATE). Дубли со штатными regex-матчами разрешает общий
+    алгоритм пересечений блока 4 (более длинный hull побеждает; равный — один
+    токен)."""
+    seam_spec = _load_seam_spec(config_path)
     out: list[Entity] = []
 
     for segment in doc.segments:
@@ -169,19 +280,19 @@ def collect_multispan(doc: SourceDocument, config_path: str) -> list[Entity]:
                 continue   # не длина ОДНОГО телефона -> ничего не склеиваем (зеркало −)
             out.append(_emit(segment, norm, omap, chain, "PHONE", plus_prefix=True))
 
-        # --- (б) BANK_ACCOUNT: рваный переносом строки, под якорем счёта ---
-        if acc_anchor is not None:
-            for chain in _chains(norm, _ACC_SEP):
-                if len(chain) < 2:
-                    continue
-                if "\n" not in norm[chain[0].start():chain[-1].end()]:
-                    continue   # без \n внутри — случай штатного паттерна
-                digits = _eff_digits("".join(g.group(0) for g in chain))
-                if len(digits) != _ACC_TOTAL:
-                    continue   # два счёта в столбик дадут 40 -> отвергаем целиком
-                if not _has_anchor(norm, chain[0].start(), acc_anchor):
-                    continue   # правило этапа 4: без якоря счёт не берётся
-                out.append(_emit(segment, norm, omap, chain, "BANK_ACCOUNT"))
+        # --- (б) реквизит фикс. длины, рваный переносом строки ВНУТРИ сегмента
+        # (ячейка docx: '\n' между абзацами ячейки / w:br). До A6 — только
+        # BANK_ACCOUNT; условия на тип теперь в _match_seam_type, для счёта они
+        # ровно прежние (якорь + 20 цифр; страж частей для длины 20 недостижим:
+        # 20 = a + b при a,b > 0 не оставляет целой части). ---
+        for chain in _chains(norm, _ACC_SEP):
+            if len(chain) < 2:
+                continue
+            if "\n" not in norm[chain[0].start():chain[-1].end()]:
+                continue   # без \n внутри — случай штатного паттерна
+            etype = _match_seam_type(norm, chain, seam_spec)
+            if etype is not None:
+                out.append(_emit(segment, norm, omap, chain, etype))
 
         # --- (б) BIRTHDATE: дата, рваная переносом, под якорем рождения ---
         for rex in (_BDATE_LEFT_RE, _BDATE_RIGHT_RE):
@@ -202,4 +313,43 @@ def collect_multispan(doc: SourceDocument, config_path: str) -> list[Entity]:
                     spans=spans if len(spans) > 1 else None,
                 ))
 
+    return out
+
+
+def collect_seam_entities(window_text: str, tail_end: int, head_start: int,
+                          config_path: str) -> list[tuple[int, int, str]]:
+    """ЭТАП A6 — значение, разорванное СТЫКОМ граничного окна B3.
+
+    Окно (tokenizer._detect_boundary_entities) — «хвост сегмента A + '\\n' +
+    голова сегмента B»; regex-проход по блобу через '\\n' не матчится осознанно
+    (A2-NEWLINE-CROSS), поэтому реквизит, рваный границей сегментов-строк,
+    не находил никто (остаток A5: ACCOUNT/OGRN). Здесь та же сборка цепи, что в
+    секции (б) collect_multispan, но по тексту ОКНА; берутся ТОЛЬКО цепи,
+    пересекающие точку стыка [tail_end, head_start) — всё остальное покрыто
+    посегментной детекцией и мультиспаном и было бы дублем.
+
+    Возвращает [(start, end, entity_type)] в координатах СЫРОГО текста окна;
+    деление на пару Entity_A/Entity_B с реальными оффсетами сегментов делает
+    шаг 4 _detect_boundary_entities (контракт B3, обратимость доказана
+    round-trip-тестами). BIRTHDATE собирается теми же _BDATE-паттернами, что и
+    внутри сегмента (якорь рождения в самом регэкспе)."""
+    norm, omap = normalize_for_detection(window_text)
+    if not norm:
+        return []
+    seam_spec = _load_seam_spec(config_path)
+    out: list[tuple[int, int, str]] = []
+    for chain in _chains(norm, _ACC_SEP):
+        if len(chain) < 2:
+            continue
+        ws, we = norm_to_src(omap, chain[0].start(), chain[-1].end())
+        if not (ws < tail_end and we > head_start):
+            continue   # стык не пересечён — зона посегментной детекции
+        etype = _match_seam_type(norm, chain, seam_spec)
+        if etype is not None:
+            out.append((ws, we, etype))
+    for rex in (_BDATE_LEFT_RE, _BDATE_RIGHT_RE):
+        for m in rex.finditer(norm):
+            ws, we = norm_to_src(omap, m.start(1), m.end(1))
+            if ws < tail_end and we > head_start:
+                out.append((ws, we, "BIRTHDATE"))
     return out

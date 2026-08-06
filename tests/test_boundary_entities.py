@@ -201,6 +201,111 @@ class TestRequisiteSplitAcrossTableCells:
 
 
 # --------------------------------------------------------------------------- #
+# ЭТАП A6 — реквизит, разорванный границей сегментов-СТРОК ('\n' в стыке окна).
+# Regex-проход по окну через '\n' не матчится осознанно (A2-NEWLINE-CROSS),
+# сборку делает multispan.collect_seam_entities: цепь цифровых групп под якорем,
+# сумма цифр точно равна длине ОДНОГО значения, КС где определена, и ни одна
+# сторона разрыва не является целым значением сама по себе.
+# Значения синтетические, КС посчитаны при написании теста:
+#   ОГРН-13 1122334455660 валиден; 1122334455661 — КС сломана;
+#   ОГРНИП-15 112233445566071 валиден И его префикс-13 валиден (страж частей);
+#   ИНН-12 771234567859 валиден.
+# --------------------------------------------------------------------------- #
+class TestRequisiteSplitAcrossTxtLines:
+    @pytest.mark.parametrize("lines, etype, halves", [
+        (["р/с 407028106", "00849653120 в банке"], "BANK_ACCOUNT",
+         ("407028106", "00849653120")),
+        (["ОГРН 34", "5305901325030, далее"], "OGRN", ("34", "5305901325030")),
+        (["ИНН 7712345", "67859 работника"], "INN_PERSON", ("7712345", "67859")),
+        # половина B по контракту B3 начинается с оффсета 0 сегмента — ведущий
+        # дефис входит в неё («-789 12»), маска закрывает его вместе с цифрами
+        (["СНИЛС 123-456", "-789 12"], "SNILS", ("123-456", "-789 12")),
+    ], ids=["account", "ogrn", "inn12", "snils"])
+    def test_torn_requisite_is_assembled_and_masked(self, tmp_path, config_path,
+                                                    lines, etype, halves):
+        """Значение, рваное переносом строки (в .txt строка = сегмент), собирается
+        через стык окна и обе половины уходят под маску — это остаток A5
+        (A5-NL-CROSS-RESIDUE), класс ACCOUNT/OGRN на живом гейте."""
+        doc = _txt_doc(tmp_path, "\n".join(lines))
+        anon, result = _pipeline(doc, config_path)
+        for half in halves:
+            assert half not in anon, f"половина {half!r} утекла: {anon!r}"
+        got = sorted(e.original_text for e in result if e.entity_type == etype)
+        assert got == sorted(halves), f"ожидались обе половины {halves}: {got}"
+
+    def test_halves_land_in_their_segments_with_true_offsets(self, tmp_path, config_path):
+        """Контракт B3: половины — два Entity в РАЗНЫХ сегментах, original_text ==
+        срез segment.text (фундамент обратимости)."""
+        doc = _txt_doc(tmp_path, "р/с 407028106\n00849653120 в банке")
+        _, result = _pipeline(doc, config_path)
+        accs = sorted((e for e in result if e.entity_type == "BANK_ACCOUNT"),
+                      key=lambda e: e.segment_id)
+        assert [e.segment_id for e in accs] == ["l0", "l1"]
+        seg_by_id = {s.id: s for s in doc.segments}
+        for e in accs:
+            assert seg_by_id[e.segment_id].text[e.start:e.end] == e.original_text
+
+    def test_torn_pair_round_trips_byte_exact(self, tmp_path, config_path):
+        """Обратимость: tokenize -> save_session -> detokenize возвращает плоский
+        текст посимвольно (требование 2 этапа A6)."""
+        doc = _txt_doc(tmp_path, "р/с 407028106\n00849653120, ОГРН 34\n5305901325030 конец")
+        anon, result = _pipeline(doc, config_path)
+        session_id = save_session(result, storage_dir=str(tmp_path / "s"))
+        restored, unresolved = detokenize(anon, session_id, storage_dir=str(tmp_path / "s"))
+        assert unresolved == []
+        assert restored == build_plain_text(doc)
+
+
+class TestSeamAssemblyGuards:
+    """Направление ошибки: лучше не найти, чем захватить лишнее. Каждый страж —
+    отдельный отрицательный тест."""
+
+    def test_broken_checksum_is_not_stitched(self, tmp_path, config_path):
+        """КС ОГРН сломана -> цепь не собирается, обе строки нетронуты (честный
+        промах вместо кривого попадания)."""
+        doc = _txt_doc(tmp_path, "ОГРН 11\n22334455661")
+        anon, result = _pipeline(doc, config_path)
+        assert anon == "ОГРН 11\n22334455661"
+
+    def test_no_anchor_no_assembly(self, tmp_path, config_path):
+        """Без якоря сборка запрещена ВСЕМ типам — даже тем, кого посегментная
+        детекция берёт по одной КС (ИНН): сборка рискованнее, требования строже."""
+        doc = _txt_doc(tmp_path, "407028106\n00849653120")
+        anon, result = _pipeline(doc, config_path)
+        assert result == []
+        assert anon == "407028106\n00849653120"
+
+    def test_complete_value_on_one_side_blocks_stitching(self, tmp_path, config_path):
+        """Страж частей (урок A2-NEWLINE-CROSS): целый валидный ОГРН-13 плюс «71»
+        на следующей строке дали бы валидный ОГРНИП-15 — но через настоящую
+        границу не сшивается то, что цело уже по одну её сторону. Целое значение
+        маскируется само по себе, хвост «71» не трогается."""
+        doc = _txt_doc(tmp_path, "ОГРН 1122334455660\n71 экз.")
+        anon, result = _pipeline(doc, config_path)
+        assert anon == "ОГРН [OGRN_1]\n71 экз."
+
+    def test_two_values_in_column_are_not_stitched(self, tmp_path, config_path):
+        """Зеркало длины: два счёта в столбик дают 40 цифр -> цепь отвергается
+        ЦЕЛИКОМ, никаких под-окон. Первый счёт (под якорем) маскирует штатный
+        паттерн; второй без якоря на своей строке не берётся — правило этапа 4,
+        не дефект сборки."""
+        doc = _txt_doc(tmp_path, "р/с 40702810349511286477\n40702810600849653120")
+        anon, result = _pipeline(doc, config_path)
+        accs = [e for e in result if e.entity_type == "BANK_ACCOUNT"]
+        assert len(accs) == 1 and accs[0].segment_id == "l0"
+        assert "40702810349511286477" not in anon
+
+    def test_birthdate_torn_across_lines_is_assembled(self, tmp_path, config_path):
+        """BIRTHDATE через стык — теми же _BDATE-паттернами, что внутри сегмента
+        (якорь рождения в самом регэкспе). Ровно класс четырёх документов A2."""
+        doc = _txt_doc(tmp_path, "Дата рождения: 01.02.\n1980, г. Москва")
+        anon, result = _pipeline(doc, config_path)
+        assert "1980" not in anon
+        assert "01.02." not in anon
+        assert any(e.entity_type == "BIRTHDATE" for e in result)
+
+
+# --------------------------------------------------------------------------- #
 # Обычный стык без сущностей — окно НЕ должно фабриковать ложные Entity
 # --------------------------------------------------------------------------- #
 class TestBoundaryWindowNoFalsePositives:

@@ -596,6 +596,22 @@ def _detect_boundary_entities(
             k, ls, le = loc
             per_win[k].append((ls, le, e.entity_type, e.detector, e.confidence))
 
+    # 3a'. ЭТАП A6 — сборка реквизита, разорванного стыком '\n'. Regex-проход
+    # выше через '\n' не матчится осознанно (A2-NEWLINE-CROSS), поэтому
+    # значение, рваное границей сегментов-строк/абзацев, не находил никто
+    # (остаток A5: ACCOUNT/OGRN). Сборка — не ослабление паттернов, а цепь со
+    # строгими стражами (multispan._match_seam_type: якорь + точная длина
+    # ОДНОГО значения + КС + «ни одна сторона разрыва не целое значение сама
+    # по себе»). Стыки ячеек одной строки (sep '' -> tail_end == head_start)
+    # пропускаются: их уже склеил сам текст окна для штатного regex-прохода.
+    from multispan import collect_seam_entities
+    for k, w in enumerate(wins):
+        if w["tail_end"] == w["head_start"]:
+            continue
+        for (ls, le, etype) in collect_seam_entities(
+                w["window"], w["tail_end"], w["head_start"], config_path):
+            per_win[k].append((ls, le, etype, "regex", 1.0))
+
     # 3b. NER-тэггер — один проход по блобу; PER/ORG раскладываются по окнам, LOC копятся
     # как адресные анкоры. yargy — ПОСЕГМЕНТНО, только на окнах с анкором (короткий текст).
     ner_label_map, addr_types = _load_ner_config(config_path)
