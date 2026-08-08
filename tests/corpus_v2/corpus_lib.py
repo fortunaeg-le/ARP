@@ -127,7 +127,7 @@ def ent(type_, cat, eid, trick=None, note=None, checksum=None, form=None,
     return e
 
 
-def neg(why, type_=None, form=None, axes=None, lookalike=False):
+def neg(why, type_=None, form=None, axes=None, lookalike=False, kind=None):
     """Негатив. С этапа CORPUS-V2-B он может быть ТИПИЗИРОВАННЫМ.
 
     Обычный негатив («ГОСТ 7.32-2017 — не ПДн») несёт только причину.
@@ -151,12 +151,21 @@ def neg(why, type_=None, form=None, axes=None, lookalike=False):
     — поэтому приборы осей двойников ИСКЛЮЧАЮТ (`validate.account`,
     `tests/test_corpus_v2_axis_coverage.py`), а приборы точности — считают
     наравне: ложное срабатывание на двойнике такое же ложное.
+
+    ЭТАП NEG добавил `kind` — КОРОТКИЙ СЛОГ ВИДА СЛУЧАЯ («inn/norm-ref»,
+    «bik/serial»). Он нужен приборам, а не читателю: до NEG разрез двойников
+    делался по первым 52 знакам поля `why` (`experiments/stage_a3/
+    count_lookalikes.py`), и два вида случая с похожим началом причины слились
+    бы в одну строку молча. Слог — устойчивый ключ: причину можно
+    переформулировать, не потеряв сравнимость чисел «было/стало».
     """
     n = {"why": why}
     if type_:
         n["type"] = type_
     if lookalike:
         n["lookalike"] = True
+    if kind:
+        n["kind"] = kind
     if form:
         n["form"] = form
     if axes:
@@ -314,7 +323,9 @@ def serialize(model):
         # `lookalike` (этап A3) обязан доехать до эталона: без него двойник
         # неотличим от вхождения вида данных, и приборы осей считали бы его
         # вхождением без формы — то есть краснели бы на пустом месте.
-        for key in ("type", "form", "axes", "trick", "lookalike"):
+        # `kind` (этап NEG) — слог вида случая; без него разрез «было/стало»
+        # по видам случая пришлось бы снова делать по префиксу причины.
+        for key in ("type", "form", "axes", "trick", "lookalike", "kind"):
             if m.get(key):
                 n[key] = m[key]
         negs.append(n)

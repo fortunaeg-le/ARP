@@ -1,0 +1,198 @@
+{
+ "ACCOUNT/(a3)": [
+  138,
+  138
+ ],
+ "ADDRESS/(a3)": [
+  0,
+  138
+ ],
+ "BIK/(a3)": [
+  138,
+  138
+ ],
+ "BIRTHDATE/(a3)": [
+  138,
+  138
+ ],
+ "INN/(a3)": [
+  138,
+  276
+ ],
+ "INN_PER/(a3)": [
+  138,
+  138
+ ],
+ "KPP/(a3)": [
+  1,
+  138
+ ],
+ "MONEY/(a3)": [
+  138,
+  138
+ ],
+ "OGRN/(a3)": [
+  0,
+  276
+ ],
+ "ORG/(a3)": [
+  0,
+  414
+ ],
+ "PER/(a3)": [
+  0,
+  414
+ ],
+ "PERCENT/(a3)": [
+  138,
+  138
+ ],
+ "PHONE/(a3)": [
+  138,
+  138
+ ],
+ "TERM/(a3)": [
+  276,
+  276
+ ],
+ "account/norm-ref": [
+  47,
+  138
+ ],
+ "account/prep-za-schet": [
+  86,
+  138
+ ],
+ "account/proforma": [
+  40,
+  138
+ ],
+ "account/schetchik": [
+  90,
+  138
+ ],
+ "account/uin": [
+  91,
+  138
+ ],
+ "bik/anchor-other": [
+  138,
+  138
+ ],
+ "bik/catalogue": [
+  138,
+  138
+ ],
+ "bik/doc-number": [
+  138,
+  138
+ ],
+ "bik/norm-ref": [
+  138,
+  138
+ ],
+ "bik/serial": [
+  138,
+  138
+ ],
+ "inn/anchor-doc-number": [
+  64,
+  138
+ ],
+ "inn/anchor-registry": [
+  11,
+  138
+ ],
+ "inn/noanchor-batch": [
+  8,
+  138
+ ],
+ "inn/norm-ref": [
+  13,
+  138
+ ],
+ "inn/serial": [
+  18,
+  138
+ ],
+ "inn_per/anchor-account": [
+  5,
+  138
+ ],
+ "inn_per/anchor-nomenclature": [
+  44,
+  138
+ ],
+ "inn_per/noanchor-doc": [
+  1,
+  138
+ ],
+ "inn_per/norm-ref": [
+  1,
+  138
+ ],
+ "inn_per/serial": [
+  0,
+  138
+ ],
+ "percent/defect-rate": [
+  138,
+  138
+ ],
+ "percent/impurity": [
+  138,
+  138
+ ],
+ "percent/norm-ref": [
+  138,
+  138
+ ],
+ "percent/slope": [
+  138,
+  138
+ ],
+ "percent/tolerance": [
+  138,
+  138
+ ],
+ "phone/doc-number": [
+  138,
+  138
+ ],
+ "phone/norm-ref": [
+  138,
+  138
+ ],
+ "phone/personal-account": [
+  138,
+  138
+ ],
+ "phone/registry": [
+  138,
+  138
+ ],
+ "phone/serial": [
+  138,
+  138
+ ],
+ "term/history": [
+  138,
+  138
+ ],
+ "term/norm-ref": [
+  138,
+  138
+ ],
+ "term/report-period": [
+  138,
+  138
+ ],
+ "term/shelf-life": [
+  138,
+  138
+ ],
+ "term/tech-hold": [
+  138,
+  138
+ ]
+}
