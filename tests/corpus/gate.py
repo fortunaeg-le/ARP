@@ -108,29 +108,79 @@ KNOWN_LEAKS = os.path.join(ROOT, "docs", "known_leaks_stage_c.json")
 EMPTY_STATS = {"n": 0, "found": 0, "leak_v1": 0, "leak_v2_6": 0, "leak_v2_8": 0}
 
 
-def check_manifest():
-    """Независимая от shell coreutils реализация `sha256sum -c MANIFEST.sha256`
-    (нужна на Windows, где sha256sum не всегда есть в PATH). Возвращает
-    (ok: bool, problems: list[str], n_checked: int)."""
-    problems = []
-    n = 0
+#: Каталоги, состав которых охраняется ЦЕЛИКОМ. Не список руками: берётся из
+#: самого манифеста — верхний каталог каждого его пути с '/'. Сегодня это
+#: `docs/` (замороженный корпус v1) и `_model/`; заведут третий — он попадёт
+#: под охрану сам, без правки этого файла.
+#: Не в счёт: служебное (`__pycache__`) и всё, что корпусом не является.
+_IGNORED_DIRS = {"__pycache__", ".git", ".pytest_cache"}
+
+
+def _manifest_rows():
+    rows = []
     with open(MANIFEST, encoding="utf-8") as f:
         for line in f:
             line = line.strip()
             if not line:
                 continue
             digest, rel = line.split(None, 1)
-            n += 1
-            path = os.path.join(HERE, rel)
-            if not os.path.isfile(path):
-                problems.append(f"{rel}: файл отсутствует")
-                continue
-            h = hashlib.sha256()
-            with open(path, "rb") as fh:
-                for chunk in iter(lambda: fh.read(1 << 20), b""):
-                    h.update(chunk)
-            if h.hexdigest() != digest:
-                problems.append(f"{rel}: sha256 не совпадает с MANIFEST.sha256")
+            rows.append((digest, rel.replace("\\", "/")))
+    return rows
+
+
+def _scan_guarded_dirs(rows):
+    """Фактический состав охраняемых каталогов -> множество путей от HERE."""
+    dirs = sorted({rel.split("/", 1)[0] for _, rel in rows if "/" in rel})
+    found = set()
+    for d in dirs:
+        root = os.path.join(HERE, d)
+        if not os.path.isdir(root):
+            continue
+        for cur, subdirs, files in os.walk(root):
+            subdirs[:] = [s for s in subdirs if s not in _IGNORED_DIRS]
+            for name in files:
+                full = os.path.join(cur, name)
+                found.add(os.path.relpath(full, HERE).replace("\\", "/"))
+    return dirs, found
+
+
+def check_manifest():
+    """Независимая от shell coreutils реализация `sha256sum -c MANIFEST.sha256`
+    (нужна на Windows, где sha256sum не всегда есть в PATH) ПЛЮС сверка состава
+    каталога в обе стороны. Возвращает (ok, problems, n_checked).
+
+    ЭТАП FIX-2 — ПОЧЕМУ ОДНОЙ КОНТРОЛЬНОЙ СУММЫ БЫЛО МАЛО. Манифест — БЕЛЫЙ
+    СПИСОК: он читает имена файлов ИЗ САМОГО СЕБЯ, поэтому видел ровно два из
+    трёх событий — «файл изменился» и «файл исчез». Третье, «файл ПОЯВИЛСЯ»,
+    не видел вовсе: положи в `tests/corpus/docs/` лишний документ — и проверка
+    осталась бы зелёной, а замороженный корпус тихо перестал бы быть тем, на
+    чём снята точка отсчёта. Запрет 2 корневого `CLAUDE.md` говорит «не
+    редактировать, НЕ ДОПОЛНЯТЬ, не удалять» — держались из трёх слов два.
+    Теперь состав каталога сверяется в ОБЕ стороны, и лишний файл краснит гейт
+    так же, как изменённый."""
+    problems = []
+    rows = _manifest_rows()
+    n = 0
+    for digest, rel in rows:
+        n += 1
+        path = os.path.join(HERE, rel)
+        if not os.path.isfile(path):
+            problems.append(f"{rel}: файл отсутствует")
+            continue
+        h = hashlib.sha256()
+        with open(path, "rb") as fh:
+            for chunk in iter(lambda: fh.read(1 << 20), b""):
+                h.update(chunk)
+        if h.hexdigest() != digest:
+            problems.append(f"{rel}: sha256 не совпадает с MANIFEST.sha256")
+
+    # --- сверка состава в обе стороны (этап FIX-2) ---
+    dirs, found = _scan_guarded_dirs(rows)
+    listed = {rel for _, rel in rows if rel.split("/", 1)[0] in dirs}
+    for rel in sorted(found - listed):
+        problems.append(
+            f"{rel}: ФАЙЛ ПОЯВИЛСЯ в охраняемом каталоге, манифест его не знает "
+            "— замороженный корпус дополнен")
     return (not problems), problems, n
 
 

@@ -25,11 +25,18 @@ CLAUDE.md — это контекст, а не конфигурация: мод�
      `python -c "open('tests/corpus/gold.json','w')"` проходил все замки —
      в команде нет ни глагола оболочки, ни перенаправления, а имя файла хук
      видел и молчал. Теперь такая команда считается изменяющей.
+  7. (этап FIX-2) Попадание РЕАЛЬНОГО ДОКУМЕНТА в историю — по СОДЕРЖИМОМУ,
+     а не по имени: `git add`/`git commit`/`git stash` осматривают то, что
+     уедет в коммит. До этого запрет 7 держался списком игнорирования по
+     именам и уже не сработал (`DOG-REPO-BLOB`: договор попал в публичную
+     историю под чужим именем). Признаки — см. блок `OFFICE_EXT` ниже.
 
 Чтение не блокируется НИКОГДА — ни одного из этих файлов.
 """
 import json
+import os
 import re
+import subprocess
 import sys
 
 # Текст блокировки уходит в stderr и оттуда — модели. Консоль Windows по
@@ -63,6 +70,46 @@ ITER_TOOLS = (
     "run_iter_baseline.py",
     "tests/corpus/update_manifest.py",
     "update_manifest.py",
+)
+
+# --- замок на РЕАЛЬНЫЕ ДОКУМЕНТЫ ПО СОДЕРЖИМОМУ (этап FIX-2) ---------------
+#
+# ПОЧЕМУ ИМЁН НЕ ХВАТИЛО. Запрет 7 корневого CLAUDE.md («реальные документы не
+# коммитить») держался списком игнорирования по ИМЕНАМ — и уже не сработал:
+# реальный договор попал в историю публичного репозитория под чужим именем
+# (`DOG-REPO-BLOB`, вычищен локально 2026-08-05, на сервере остаётся). Дорога
+# обхода была известна заранее — собственный комментарий запрета просит не
+# носить дампы в служебные каталоги, — но проверки на неё не существовало.
+#
+# ЧТО ЗДЕСЬ ЕСТЬ И ЧЕГО НАРОЧНО НЕТ. Это ДЕШЁВЫЙ РУБЕЖ, а не поиск ПДн:
+# совершенство здесь хуже отсутствия — тяжёлая проверка на каждом коммите
+# будет отключена первой же сессией, а отключённый замок не ловит ничего.
+# Ловится очевидное, тремя признаками:
+#   1. ОФИСНЫЙ ФОРМАТ ВНЕ ИЗВЕСТНЫХ ПУТЕЙ КОРПУСА — по расширению;
+#   2. РАЗМЕР ВНЕ ДИАПАЗОНА КОРПУСНЫХ — порождённые документы 4,4-20 КБ,
+#      порог взят с запасом; настоящий договор в этот диапазон не помещается;
+#   3. ПРИЗНАКИ ВНУТРИ АРХИВА — файл с ЛЮБЫМ именем, начинающийся сигнатурой
+#      ZIP и содержащий `word/document.xml` (или лист Excel, или слайды).
+#      Это ровно дорога `DOG-REPO-BLOB`: договор под чужим именем.
+#
+# Чтение и локальная работа с реальным документом НЕ ограничиваются — замок
+# стоит только на `git add`/`git commit`, то есть на попадании В ИСТОРИЮ.
+OFFICE_EXT = (".docx", ".docm", ".dotx", ".xlsx", ".xlsm", ".pptx", ".potx",
+              ".doc", ".xls", ".ppt", ".rtf", ".odt", ".ods", ".odp", ".pdf")
+#: Пути, где офисные файлы законны: порождённые корпуса и фикстуры OOXML.
+CORPUS_PATHS = ("tests/corpus/docs/", "tests/corpus_v2/docs/", "tests/fixtures/")
+#: Верхняя граница размера корпусного документа. Факт на 2026-08-08: корпус v1
+#: 4423-10231 байт, корпус v2 7486-20087. Порог с запасом — рубеж должен ловить
+#: договор, а не краснеть на выросшем на килобайт генераторе.
+CORPUS_MAX_BYTES = 64 * 1024
+#: Внутренние имена OOXML: по ним архив опознаётся документом, как бы он ни
+#: назывался снаружи.
+OOXML_MARKERS = ("word/document.xml", "xl/workbook.xml", "ppt/presentation.xml")
+#: Команда, вводящая файл В ИСТОРИЮ. `git commit` без путей тоже считается:
+#: коммитится индекс, а в нём уже может лежать добавленное раньше.
+GIT_ADDING = re.compile(
+    r"(^|[\s|;&(])git(\.exe)?\s+(-\S+\s+|--\S+\s+)*(add|commit|stash)(\s|$)",
+    re.IGNORECASE,
 )
 
 WRITE_TOOLS = ("Write", "Edit", "NotebookEdit", "MultiEdit")
@@ -179,8 +226,102 @@ def check_write(path: str):
         )
 
 
-def check_shell(raw_command: str):
+def _candidate_paths(cwd: str) -> list[str]:
+    """Что сейчас уедет в историю: индекс + неотслеживаемые файлы.
+
+    `git status --porcelain` дешёв (на этом репозитории — доли секунды) и не
+    требует знать, какие пути перечислены в самой команде: `git add -A`,
+    `git add .` и `git commit -a` тоже видны. Любой сбой -> пустой список:
+    сторож не имеет права остановить работу из-за собственной поломки.
+    """
+    try:
+        out = subprocess.run(
+            ["git", "status", "--porcelain", "--untracked-files=all"],
+            cwd=cwd or None, capture_output=True, timeout=10,
+        )
+    except Exception:
+        return []
+    if out.returncode != 0:
+        return []
+    paths = []
+    for line in out.stdout.decode("utf-8", "replace").splitlines():
+        if len(line) < 4:
+            continue
+        status, rest = line[:2], line[3:]
+        if "D" in status:
+            continue                     # удаление файла в историю его не вносит
+        if " -> " in rest:               # переименование: интересует назначение
+            rest = rest.split(" -> ", 1)[1]
+        paths.append(rest.strip().strip('"'))
+        if len(paths) >= 500:            # рубеж дешёвый: без обхода всего дерева
+            break
+    return paths
+
+
+def _looks_like_office_archive(full: str) -> bool:
+    """Сигнатура ZIP + внутреннее имя OOXML. Читается ЗАГОЛОВОК архива, не
+    содержимое документа: текст договора сторожу видеть незачем."""
+    try:
+        with open(full, "rb") as fh:
+            if fh.read(4) != b"PK\x03\x04":
+                return False
+        import zipfile
+        with zipfile.ZipFile(full) as z:
+            names = set(z.namelist()[:400])
+        return any(m in names for m in OOXML_MARKERS)
+    except Exception:
+        return False
+
+
+def check_documents(command: str, cwd: str):
+    """Замок запрета 7 — по СОДЕРЖИМОМУ, а не по имени. См. шапку блока выше."""
+    if not GIT_ADDING.search(command):
+        return
+    for rel in _candidate_paths(cwd):
+        low = norm(rel)
+        in_corpus = low.startswith(CORPUS_PATHS)
+        full = os.path.join(cwd, rel) if cwd else rel
+        try:
+            size = os.path.getsize(full)
+        except Exception:
+            continue
+        ext_office = low.endswith(OFFICE_EXT)
+
+        if ext_office and not in_corpus:
+            deny(
+                "ЗАБЛОКИРОВАНО (замок реальных документов, признак 1 — офисный\n"
+                "формат вне корпуса). В коммит уходит %s (%d байт).\n\n"
+                "Репозиторий ПУБЛИЧНЫЙ, и в его истории УЖЕ была утечка договора\n"
+                "(DOG-REPO-BLOB): прошлый запрет держался списком имён и не\n"
+                "сработал — документ попал под чужим именем. Офисные файлы\n"
+                "законны только в порождённых корпусах: %s\n\n"
+                "Если это действительно корпусный документ — положить по месту.\n"
+                "Если реальный — он не коммитится вообще, отчёт обезличенно.\n"
+                "См. CLAUDE.md, запрет 7.\n"
+                % (rel, size, ", ".join(CORPUS_PATHS))
+            )
+        if in_corpus and size > CORPUS_MAX_BYTES:
+            deny(
+                "ЗАБЛОКИРОВАНО (замок реальных документов, признак 2 — размер вне\n"
+                "диапазона корпусных). %s весит %d байт при потолке %d.\n"
+                "Порождённые документы корпуса — 4,4-20 КБ; файл такого размера\n"
+                "в каталоге корпуса означает, что туда положили не корпусный\n"
+                "документ. См. CLAUDE.md, запрет 7.\n"
+                % (rel, size, CORPUS_MAX_BYTES)
+            )
+        if not in_corpus and not ext_office and _looks_like_office_archive(full):
+            deny(
+                "ЗАБЛОКИРОВАНО (замок реальных документов, признак 3 — признаки\n"
+                "документа ВНУТРИ архива). %s назван не офисным файлом, но это\n"
+                "ZIP, содержащий word/document.xml (или лист Excel, или слайды).\n"
+                "Это ровно дорога DOG-REPO-BLOB: договор в истории под чужим\n"
+                "именем. См. CLAUDE.md, запрет 7.\n" % rel
+            )
+
+
+def check_shell(raw_command: str, cwd: str = ""):
     command = strip_payload(raw_command)
+    check_documents(command, cwd)
     if PUSH.search(command):
         deny(
             "ЗАБЛОКИРОВАНО (замок push). Отправка в удалённый репозиторий — решение\n"
@@ -254,7 +395,7 @@ def main():
         elif tool in SHELL_TOOLS:
             command = args.get("command") or ""
             if command:
-                check_shell(command)
+                check_shell(command, payload.get("cwd") or os.getcwd())
     except SystemExit:
         raise
     except Exception:
