@@ -44,7 +44,12 @@ from pathlib import Path
 #: не являются. Ценой была настоящая утечка — ИНН предпринимателя по умолчанию
 #: оставался в тексте открытым. Теперь длина вынесена в ТИП (`INN` = 10 цифр,
 #: организация; `INN_PERSON` = 12 цифр, человек), и набор делится по смыслу.
-PERSONAL = (
+#: ЭТАП TYPE-FACTORY (шаг 2): составы наборов читаются из собранного
+#: entity_types.yaml (ключ `sets:` у типа — его пишет файл-описание фабрики
+#: либо base). Кортежи ниже — УМОЛЧАНИЕ на случай недоступного конфига; для
+#: дофабричных типов конфиг и умолчание обязаны совпадать по составу —
+#: страж tests/test_type_factory.py::test_type_policy_sets_match_config.
+PERSONAL_DEFAULT = (
     "PERSON", "ADDRESS", "PHONE", "EMAIL", "PASSPORT", "SNILS", "BIRTHDATE",
     "INN_PERSON",
 )
@@ -52,7 +57,7 @@ PERSONAL = (
 #: 2. Персональные данные и реквизиты: + ИНН организации, ОГРН, КПП, БИК, счета,
 #: организации. `INN` здесь — ровно 10-значный ИНН юрлица (12-значный уже в
 #: наборе 1 и приходит сюда вместе со всем набором 1).
-PERSONAL_REQUISITES = PERSONAL + (
+PERSONAL_REQUISITES_DEFAULT = PERSONAL_DEFAULT + (
     "INN", "OGRN", "KPP", "BIK", "BANK_ACCOUNT", "ORG",
 )
 
@@ -64,7 +69,46 @@ PERSONAL_REQUISITES = PERSONAL + (
 #: за каждый день просрочки» — это цена вместе с условием. Разведение их по
 #: разным наборам означало бы набор, в котором сумма закрыта, а ставка от неё
 #: открыта, — то есть настройку, которая выглядит осмысленной и не защищает.
-WITH_MONEY = PERSONAL_REQUISITES + ("SUM", "PERCENT", "TERM")
+WITH_MONEY_DEFAULT = PERSONAL_REQUISITES_DEFAULT + ("SUM", "PERCENT", "TERM")
+
+
+def _sets_from_config():
+    """(personal, personal_requisites, with_money) из ключей `sets:` типов
+    собранного конфига; None — конфиг недоступен или sets нет ни у кого."""
+    import os
+
+    path = os.path.join(os.path.dirname(os.path.abspath(__file__)),
+                        "..", "entity_types.yaml")
+    try:
+        from config_cache import load_yaml_cached
+        config = load_yaml_cached(path)
+    except Exception:
+        return None
+    per, req, mon = [], [], []
+    seen_any = False
+    for t, spec in config.get("entity_types", {}).items():
+        if not isinstance(spec, dict) or "sets" not in spec:
+            continue
+        seen_any = True
+        s = spec["sets"] or []
+        if "personal" in s:
+            per.append(t)
+        if "personal_requisites" in s:
+            req.append(t)
+        if "with_money" in s:
+            mon.append(t)
+    if not seen_any:
+        return None
+    return tuple(per), tuple(req), tuple(mon)
+
+
+_from_config = _sets_from_config()
+if _from_config is not None:
+    PERSONAL, PERSONAL_REQUISITES, WITH_MONEY = _from_config
+else:
+    PERSONAL = PERSONAL_DEFAULT
+    PERSONAL_REQUISITES = PERSONAL_REQUISITES_DEFAULT
+    WITH_MONEY = WITH_MONEY_DEFAULT
 
 #: 4. Максимум — ВСЕ типы, которые знает конфиг. Задан не списком, а сентинелом
 #: `None`: «максимум» обязан оставаться максимумом и после появления 15-го типа,

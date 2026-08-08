@@ -187,6 +187,18 @@ class TestAssembly:
         assert [t for t in TOK._NER_PRIORITY
                 if t in TOK._NER_PRIORITY_DEFAULT] == TOK._NER_PRIORITY_DEFAULT
 
+    def test_type_policy_sets_match_config(self):
+        """Шаг 2 плана: составы наборов, собранные из конфига, по СОСТАВУ равны
+        историческим кортежам (порядок другой — конфигный, наборы потребляются
+        как множества)."""
+        sys.path.insert(0, SRC)
+        import type_policy as TP
+        assert set(TP.PERSONAL) == set(TP.PERSONAL_DEFAULT)
+        assert set(TP.PERSONAL_REQUISITES) == set(TP.PERSONAL_REQUISITES_DEFAULT)
+        assert set(TP.WITH_MONEY) >= set(TP.WITH_MONEY_DEFAULT)
+        assert TP._sets_from_config() is not None, (
+            "конфиг без sets — наборы молча живут на умолчаниях")
+
     def test_digit_run_class_reproduces_historical_patterns(self):
         """Класс digit_run обязан выдавать ПОСИМВОЛЬНО те же паттерны, что
         стояли в конфиге до фабрики (иначе тип переводится raw, а не паттерн
