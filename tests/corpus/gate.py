@@ -163,6 +163,14 @@ def compare(baseline_agg, current_agg, fp_tolerance,
     regressions = []
     improvements = []
 
+    # ЭТАП INSTR, ЧАСТЬ 2. Линия крешей смотрит СТРОГО на outcome == "crashed"
+    # (aggregate_results отделяет это от "refused" — честного отказа политикой
+    # непрочитанных зон, см. docstring aggregate_results). До этой правки любой
+    # outcome != "processed" считался и печатался как один и тот же "КРЕШИ" —
+    # рост отказов маскировался под рост крешей, а реальный креш мог затеряться
+    # в ожидаемом счёте отказов. Отдельный, не блокирующий счётчик отказов —
+    # в evaluate() (warnings), не здесь: у compare() историческая сигнатура
+    # (rows, regressions, improvements), её зовёт test_gate_regression_detection.
     if len(current_agg["crashed"]) > len(baseline_agg["crashed"]):
         new_crashes = sorted(set(current_agg["crashed"]) - set(baseline_agg["crashed"]))
         regressions.append(
@@ -534,6 +542,23 @@ def evaluate(baseline_results, current_results, known_leaks_ids, cfg=GC,
     )
     warnings = []
 
+    # ЭТАП INSTR, ЧАСТЬ 2. Отказ (outcome == "refused") — не поломка (см.
+    # docstring aggregate_results и комментарий в compare()), поэтому сам по
+    # себе гейт не роняет, но обязан быть ВИДЕН отдельной строкой — иначе рост
+    # отказов растворяется молча в "0 крешей" ровно так же, как раньше
+    # растворялся в общем "outcome != processed".
+    if len(cur_agg["refused"]) > len(base_agg["refused"]):
+        new_refused = sorted(set(cur_agg["refused"]) - set(base_agg["refused"]))
+        warnings.append(
+            "ОТКАЗАНО (не креш): %d документ(ов) отклонены политикой непрочитанных "
+            "зон (было %d): %s"
+            % (len(cur_agg["refused"]), len(base_agg["refused"]),
+               ", ".join(new_refused[:20]) + (" …" if len(new_refused) > 20 else ""))
+        )
+    elif len(cur_agg["refused"]) < len(base_agg["refused"]):
+        improvements.append(
+            "ОТКАЗАНО (не креш): %d -> %d" % (len(base_agg["refused"]), len(cur_agg["refused"])))
+
     p_reg, p_imp = compare_precision(base_prec, cur_prec, cfg.PRECISION_TOLERANCE_PP)
     regressions += p_reg
     improvements += p_imp
@@ -835,6 +860,13 @@ def main(argv=None):
     # check_ledger=True — только здесь: это настоящий прогон против настоящей
     # точки отсчёта, и уровень линии «д» обязан совпадать с журналом обоснований.
     v = evaluate(baseline_results, current_results, kl_ids, check_ledger=True)
+
+    # ЭТАП INSTR, ЧАСТЬ 2 — счётчики ВСЕГДА на виду, а не только при росте
+    # относительно baseline (регресс/warning выше срабатывают лишь на дельте).
+    print("\nисходы прогона: processed %d | КРЕШИ (условие 1, порог 0) %d | "
+          "ОТКАЗАНО (не креш, не блокирует) %d"
+          % (v["cur_agg"]["n_docs_processed"], len(v["cur_agg"]["crashed"]),
+             len(v["cur_agg"]["refused"])))
 
     print()
     print_report(v["rows"], v["base_agg"], v["cur_agg"])

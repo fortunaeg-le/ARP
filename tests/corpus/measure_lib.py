@@ -1064,10 +1064,21 @@ def _empty_type_stats():
 
 def aggregate_results(results):
     """Сводка по типам сущностей для регресс-гейта из списка записей
-    run_measurement.process_doc() (outcome processed|crashed).
+    run_measurement.process_doc() (outcome processed|crashed|refused).
 
     Возвращает dict:
-      crashed          — [doc_id, ...] упавших документов
+      crashed          — [doc_id, ...] документов с НЕОБРАБОТАННЫМ исключением
+                          (outcome == "crashed") — настоящая поломка харнесса.
+      refused          — [doc_id, ...] документов, честно отклонённых политикой
+                          непрочитанных зон (outcome == "refused",
+                          run_measurement.process_doc, allow_lossy=False) — не
+                          поломка, а штатный отказ обработки. ЭТАП INSTR,
+                          ЧАСТЬ 2: до этой правки оба исхода схлопывались в
+                          один список "crashed" (условие `outcome != "processed"`),
+                          то есть отказ по правилу и падение с исключением
+                          считались ОДИНАКОВО — рост отказов маскировался под
+                          рост крешей (и наоборот, реальный креш мог
+                          затеряться в ожидаемо ненулевом счёте отказов).
       n_docs           — всего документов в results
       per_type         — {type: {n, found, leak_v1, leak_v2_6, leak_v2_8}},
                           ключи — ВСЕ ALL_ENTITY_TYPES, даже с n=0
@@ -1084,10 +1095,11 @@ def aggregate_results(results):
                           не падает (только по fp_on_neg_total)
       fp_on_neg_total, fp_total_total — суммы по всем типам
 
-    Документы outcome!='processed' (креш) в per_type/total/fp НЕ участвуют —
-    их сущности не измерены (см. gate.py условие 1: сам факт креша роняет
-    гейт отдельно, порог 0, независимо от leak-чисел)."""
-    crashed = [r["doc_id"] for r in results if r.get("outcome") != "processed"]
+    Документы outcome!='processed' (креш ИЛИ отказ) в per_type/total/fp НЕ
+    участвуют — их сущности не измерены (см. gate.py условие 1: сам факт
+    креша роняет гейт отдельно, порог 0, независимо от leak-чисел)."""
+    crashed = [r["doc_id"] for r in results if r.get("outcome") == "crashed"]
+    refused = [r["doc_id"] for r in results if r.get("outcome") == "refused"]
     mask_records = []
     per_type = {t: _empty_type_stats() for t in ALL_ENTITY_TYPES}
     fp_on_neg = {t: 0 for t in ALL_ENTITY_TYPES}
@@ -1123,8 +1135,9 @@ def aggregate_results(results):
 
     return {
         "crashed": crashed,
+        "refused": refused,
         "n_docs": len(results),
-        "n_docs_processed": len(results) - len(crashed),
+        "n_docs_processed": len(results) - len(crashed) - len(refused),
         "per_type": per_type,
         "total_all": _sum(),
         "total_bik_excl": _sum(exclude={"BIK"}),

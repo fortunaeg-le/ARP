@@ -6,6 +6,27 @@ E'' — per-doc sha256 анонимизированного текста по В
 _CapsResolver. Файлы корпуса НЕ трогаются (они заморожены MANIFEST.sha256) —
 меряется только результат обработки.
 
+ЭТАП INSTR, ЧАСТЬ 1 — ФИКС «ХЕШ КОРПУСА СЧИТАЕТ ПОЛОВИНУ». До этой правки
+DOCS-выборка брала только `*.docx` (162 файла) — `tests/corpus/docs/` наравне
+с .docx содержит 162 `.txt`-документа (весь корпус — 324), и они молча
+выпадали из проверки: подмену в текстовой половине корпуса этот инструмент бы
+не заметил. `extract()` (src/extractor.py) поддерживает оба формата, поэтому
+фикс — расширить перечисление имён с `.docx` на `.docx`+`.txt`; сам вызов
+`extract/run_detection/tokenize` уже был формато-агностичным. Эталонное
+значение AGGREGATE sha256 пересчитано этой правкой (было по 162 документам,
+стало по 324) — старое число из отчётов прошлых этапов (см.
+docs/archive/reports/HANDOFF_STAGE_EPRIME_DETERMINISM.md) относится к
+ПОЛОВИННОЙ выборке и не сопоставимо напрямую с новым.
+
+ЭТАЛОН ПОСЛЕ ФИКСА (текущий код ветки instr, без --simulate-old, HEAD
+3ef2f2b + фикс части 1): docs: 324, AGGREGATE sha256 =
+a5beefa12bcad37d093a5d175fecfd1c95878a013229b4a3fb281793887ab326
+(_corpus_sha_new.json: 162 .docx + 162 .txt). Записано здесь, а не в
+MANIFEST.sha256 tests/corpus/ — этот инструмент не корпус-гейт, а разовый
+диагностический прибор этапа E'' (сравнение вывода до/после фикса
+_CapsResolver на ОДНОМ и том же коде, см. ниже); держать для него отдельный
+охраняемый манифест избыточно.
+
 ВАЖНО ПРО СРАВНЕНИЕ. Режим `--simulate-old` монкипатчит _style_chain обратно на
 СТАРУЮ (id-ключ) реализацию, поэтому A/B делается НА ОДНОМ И ТОМ ЖЕ коде ветки и
 изолирует ровно фикс (сравнивать с агрегатом, снятым на ДРУГОЙ ветке, некорректно —
@@ -67,7 +88,8 @@ OUT = os.path.join(os.path.dirname(__file__),
                    "_corpus_sha_old.json" if SIM_OLD else "_corpus_sha_new.json")
 
 rows = {}
-names = sorted(f for f in os.listdir(DOCS) if f.lower().endswith(".docx"))
+names = sorted(f for f in os.listdir(DOCS)
+               if f.lower().endswith((".docx", ".txt")))
 for i, fn in enumerate(names):
     doc = extract(os.path.join(DOCS, fn))
     ents = run_detection(doc, CFG)
