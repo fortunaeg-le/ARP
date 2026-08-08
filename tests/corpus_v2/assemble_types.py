@@ -105,18 +105,22 @@ def compile_form(t, form):
                 f"всего цифр в значении.")
         prefix = str(p.get("prefix", "") or "")
         extra = int(p.get("optional_extra", 0) or 0)
+        # Разделитель — ЯВНО пробел + неразрывный пробел ( ), класс B2-fix.
+        # Не буквами в исходнике: невидимый символ в литерале — это дефект,
+        # который уже был пойман живым расхождением (KPP, шаг 4 сессии 2).
+        sep = "[  ]?"
         if prefix:
             if not prefix.isdigit() or len(prefix) >= digits:
                 raise TypedefError(
                     f"{t}: digit_run prefix обязан быть цифрами короче digits.")
-            head = prefix[0] + "".join("[  ]?" + c for c in prefix[1:])
+            head = prefix[0] + "".join(sep + c for c in prefix[1:])
             rest = digits - len(prefix)
         else:
             head = r"\d"
             rest = digits - 1
-        pat = r"\b" + head + r"(?:[  ]?\d){%d}" % rest
+        pat = r"\b" + head + r"(?:%s\d){%d}" % (sep, rest)
         if extra:
-            pat += r"(?:(?:[  ]?\d){%d})?" % extra
+            pat += r"(?:(?:%s\d){%d})?" % (sep, extra)
         return pat + r"\b"
     raise TypedefError(
         f"{t}: неизвестный класс формы «{cls}». Разрешены: "

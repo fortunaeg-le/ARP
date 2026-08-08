@@ -202,15 +202,18 @@ class TestAssembly:
     def test_digit_run_class_reproduces_historical_patterns(self):
         """Класс digit_run обязан выдавать ПОСИМВОЛЬНО те же паттерны, что
         стояли в конфиге до фабрики (иначе тип переводится raw, а не паттерн
-        подгоняется)."""
+        подгоняется). Эталон — САМ дофабричный снимок, не литерал в тесте:
+        первая версия теста несла невидимую опечатку (два пробела вместо
+        «пробел + NBSP») и была зелёной на двух одинаково неверных строках."""
+        with open(SNAPSHOT, encoding="utf-8") as f:
+            before = yaml.safe_load(f)["entity_types"]
         cases = [
-            ({"digits": 10}, r"\b\d(?:[  ]?\d){9}\b"),                      # INN
-            ({"digits": 12}, r"\b\d(?:[  ]?\d){11}\b"),                     # INN_PERSON
-            ({"digits": 13, "optional_extra": 2},
-             r"\b\d(?:[  ]?\d){12}(?:(?:[  ]?\d){2})?\b"),                   # OGRN
-            ({"digits": 9}, r"\b\d(?:[  ]?\d){8}\b"),                       # KPP
-            ({"digits": 20}, r"\b\d(?:[  ]?\d){19}\b"),                     # ACCOUNT
-            ({"digits": 9, "prefix": "04"}, r"\b0[  ]?4(?:[  ]?\d){7}\b"),   # BIK
+            ({"digits": 10}, before["INN"]["pattern"]),
+            ({"digits": 12}, before["INN_PERSON"]["pattern"]),
+            ({"digits": 13, "optional_extra": 2}, before["OGRN"]["pattern"]),
+            ({"digits": 9}, before["KPP"]["patterns"][0]["pattern"]),
+            ({"digits": 20}, before["BANK_ACCOUNT"]["pattern"]),
+            ({"digits": 9, "prefix": "04"}, before["BIK"]["pattern"]),
         ]
         for params, expected in cases:
             got = AT.compile_form("PROBE", {"class": "digit_run", "params": params})

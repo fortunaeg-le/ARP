@@ -1,0 +1,15 @@
+# Файл-описание типа (фабрика типов, сессия 2). Правится ТОЛЬКО здесь;
+# entity_types.yaml собирает tests/corpus_v2/assemble_types.py.
+type: BANK_ACCOUNT
+title: Банковский счёт
+status: active
+detect:
+  form:
+    class: digit_run
+    params: {digits: 20}
+  anchor: '(?i)(?:р\s*/\s*с|к\s*/\s*с|расч[её]тн\w*\s+сч[её]т\w*|лицев\w*\s+сч[её]т\w*|корреспондентск\w*\s+сч[её]т\w*|банковск\w*\s+сч[её]т\w*|сч[её]т\w*)'
+  token_prefix: 'ACCOUNT'
+  rank: 100
+  sets: [personal_requisites, with_money]
+  measure: {leak_class: numeric}
+generator: legacy
