@@ -7,12 +7,18 @@ from pathlib import Path
 from docx import Document
 from docx.enum.style import WD_STYLE_TYPE
 from docx.opc.exceptions import PackageNotFoundError
+from docx.opc.constants import RELATIONSHIP_TYPE as RT
 from docx.table import Table
 from docx.text.paragraph import Paragraph
-from docx.text.hyperlink import Hyperlink
+from docx.text.run import Run
 from docx.oxml.ns import qn
 
 from models import SourceDocument, TextSegment
+from unread_zones import (
+    BLOCK_DESCEND,
+    INLINE_DESCEND,
+    body_of,
+)
 
 
 # --- Нормализация регистра для detection_text (см. docs/archive/SHIFRATOR_SPEC_AI.md, блок 1) ---
@@ -275,27 +281,65 @@ class _CapsResolver:
         return False
 
 
-def _paragraph_detection_text(paragraph: Paragraph, resolver: "_CapsResolver",
-                              table_style=None) -> tuple[str, bool]:
-    """Строит detection_text одного параграфа, нормализуя регистр в диапазонах
-    ран с флагом all_caps/small_caps и копируя прочие раны как есть.
+_W_R = qn("w:r")
+_W_P = qn("w:p")
+_W_TBL = qn("w:tbl")
 
-    Идём по iter_inner_content() (раны и гиперссылки в порядке документа) — именно
-    из них python-docx 1.2.0 собирает paragraph.text, поэтому при отсутствии редких
-    длина-меняющих символов результат посимвольно совпадает по позициям с
-    paragraph.text. Возвращает (detection_text, есть_ли_маркированный_ран)."""
+
+def _paragraph_runs(paragraph: Paragraph) -> "list[Run]":
+    """Раны абзаца в порядке документа, СКВОЗЬ обёртки закрытого списка.
+
+    ЭТАП NODES. Раньше здесь стоял `paragraph.iter_inner_content()`, а текст
+    сегмента брался как `paragraph.text`; в python-docx 1.2.0 это
+    `"".join(e.text for e in xpath("w:r | w:hyperlink"))` — только ПРЯМЫЕ дети
+    w:p. Любой промежуточный узел-обёртка (`w:ins` — вставка рецензирования,
+    `w:fldSimple` — результат поля, `w:smartTag`, `w:sdt` — элемент управления
+    содержимым) прятал свои раны от чтения ЦЕЛИКОМ, и это не замечалось ничем:
+    сканер зон такие узлы тоже не знал (`DOG-NODE-SILENT`). Хуже потери был
+    раскол: якорь («ИНН», «СНИЛС») внутри обёртки, значение — обычным раном
+    рядом; якорный детектор маркера не видел, и ПДн уходили в LLM открытым
+    текстом (`DOG-ANCHOR-SPLIT`).
+
+    Набор обёрток берётся из `unread_zones.INLINE_DESCEND` — того же, по
+    которому сторож считает узел прочитанным. Одна копия списка на систему:
+    разойтись читателю и сторожу негде.
+    """
+    out: "list[Run]" = []
+
+    def walk(el) -> None:
+        for child in el.iterchildren():
+            tag = child.tag
+            if tag == _W_R:
+                out.append(Run(child, paragraph))
+            elif tag in INLINE_DESCEND:
+                walk(child)
+            # прочее — маркеры/удалённый текст/неизвестное: за них отвечает
+            # unread_zones (закрытый список + сверка по w:t)
+
+    walk(paragraph._p)
+    return out
+
+
+def _paragraph_texts(paragraph: Paragraph, resolver: "_CapsResolver",
+                     table_style=None) -> tuple[str, str, bool]:
+    """(text, detection_text, есть_ли_маркированный_ран) одного абзаца.
+
+    Оба текста собираются из ОДНОГО списка ран, поэтому инвариант равной длины
+    (фундамент схемы detection_text) держится по построению, а не совпадением
+    двух независимых обходов, как было до этапа NODES."""
     # Уровни наследования ниже рана (стиль абзаца → база → стиль таблицы → docDefaults)
     # одинаковы для всех ран абзаца — разрешаем их один раз.
     baseline = resolver.paragraph_baseline(paragraph, table_style)
-    parts: list[str] = []
+    raw: list[str] = []
+    det: list[str] = []
     any_flag = False
-    for item in paragraph.iter_inner_content():
-        runs = item.runs if isinstance(item, Hyperlink) else (item,)
-        for run in runs:
-            flagged = resolver.is_caps(run, baseline)
-            any_flag = any_flag or flagged
-            parts.append(_normalize_case(run.text) if flagged else run.text)
-    return "".join(parts), any_flag
+    for run in _paragraph_runs(paragraph):
+        text = run.text
+        raw.append(text)
+        flagged = resolver.is_caps(run, baseline)
+        any_flag = any_flag or flagged
+        det.append(_normalize_case(text) if flagged else text)
+    return "".join(raw), "".join(det), any_flag
 
 
 def _maybe_set_detection_text(metadata: dict, text: str, detection_text: str, segment_id: str) -> None:
@@ -313,17 +357,20 @@ def _maybe_set_detection_text(metadata: dict, text: str, detection_text: str, se
         )
 
 
-def _cell_detection_text(cell, resolver: "_CapsResolver", table_style) -> tuple[str, bool]:
-    """detection_text ячейки: по параграфам, склеенным '\\n' — ровно как
-    _Cell.text = '\\n'.join(p.text for p in cell.paragraphs). table_style
-    прокидывается вниз как самый низкий уровень наследования капса для ран ячейки."""
-    parts: list[str] = []
+def _cell_texts(cell, resolver: "_CapsResolver", table_style) -> tuple[str, str, bool]:
+    """(text, detection_text, флаг) ячейки: по параграфам, склеенным '\\n' —
+    ровно как _Cell.text = '\\n'.join(p.text for p in cell.paragraphs).
+    table_style прокидывается вниз как самый низкий уровень наследования капса
+    для ран ячейки."""
+    raw: list[str] = []
+    det: list[str] = []
     any_flag = False
     for p in cell.paragraphs:
-        det, flag = _paragraph_detection_text(p, resolver, table_style)
-        parts.append(det)
+        r, d, flag = _paragraph_texts(p, resolver, table_style)
+        raw.append(r)
+        det.append(d)
         any_flag = any_flag or flag
-    return "\n".join(parts), any_flag
+    return "\n".join(raw), "\n".join(det), any_flag
 
 
 # --- Этап 2b: регистровая нормализация на уровне СЛОВА -----------------------
@@ -660,80 +707,138 @@ def _extract_docx(path: str) -> SourceDocument:
     # прочитанные умолчания docDefaults (см. _CapsResolver).
     caps_resolver = _CapsResolver(document)
 
-    paragraph_counter = 0
-    table_counter = 0
-    seen_tcs = set()
+    # Счётчик таблиц СКВОЗНОЙ по всем частям: table_index — ключ группировки
+    # ячеек в tokenizer._assemble и признак «одна таблица» в _boundary_sep.
+    # Совпади номер у таблицы тела и таблицы колонтитула — они склеились бы в
+    # одну таблицу при сборке и в одно граничное окно при детекции.
+    counters = {"table": 0}
+    seen_tcs: set = set()
 
-    for child in document.element.body.iterchildren():
-        if child.tag == qn("w:p"):
-            paragraph = Paragraph(child, document)
-            # ЭТАП O2: через кэш резолвера — раньше это были ДВА полных разрешения
-            # стиля на абзац (проверка на None и .name), плюс третье в
-            # paragraph_baseline. См. _CapsResolver.style_of.
-            _p_style = caps_resolver.style_of(paragraph, WD_STYLE_TYPE.PARAGRAPH)
-            style_name = _p_style.name if _p_style is not None else None
-            seg_id = f"p{paragraph_counter}"
-            metadata = {"paragraph_index": paragraph_counter, "style": style_name}
-            # Изменение 1: detection_text из форматирования all_caps/small_caps
-            # (прямого или унаследованного от стиля абзаца/символа).
-            det_text, any_flag = _paragraph_detection_text(paragraph, caps_resolver)
-            if any_flag:
-                _maybe_set_detection_text(metadata, paragraph.text, det_text, seg_id)
-            segments.append(
-                TextSegment(
-                    id=seg_id,
-                    text=paragraph.text,
-                    source_type="docx_paragraph",
-                    metadata=metadata,
-                )
-            )
-            paragraph_counter += 1
-        elif child.tag == qn("w:tbl"):
-            table = Table(child, document)
-            table_idx = table_counter
-            # Стиль таблицы — самый низкий уровень наследования капса для ран ячеек
-            # (python-docx не отражает его в run/paragraph style). Берём один раз.
-            table_style = table.style
-            for row_idx, row in enumerate(table.rows):
-                for col_idx, cell in enumerate(row.cells):
-                    # Этап 1b: вложенная таблица здесь БОЛЬШЕ НЕ логируется. Раньше
-                    # на неё печаталось предупреждение в stderr — и этим всё
-                    # заканчивалось: текст молча выпадал из результата, а warning
-                    # терялся среди прочего вывода. Теперь непрочитанные зоны
-                    # (включая вложенные таблицы) обнаруживает unread_zones.
-                    # scan_unread_zones, а решение принимает политика блока 7:
-                    # по умолчанию encrypt ОТКАЗЫВАЕТСЯ, с --allow-lossy — пишет
-                    # текст зон в {sid}.unread.json. Дублировать здесь warning
-                    # незачем: extract() — библиотечная функция, её задача извлечь
-                    # то, что она умеет, а не решать за вызывающего.
-                    tc = cell._tc
-                    cell_seg_id = f"t{table_idx}_r{row_idx}_c{col_idx}"
-                    metadata = {
-                        "table_index": table_idx,
-                        "row_index": row_idx,
-                        "col_index": col_idx,
-                    }
-                    if tc in seen_tcs:
-                        cell_text = ""
-                    else:
-                        seen_tcs.add(tc)
-                        cell_text = cell.text
-                        # Изменение 1: detection_text ячейки из форматирования ран
-                        # (прямого или унаследованного от стиля ячейки/таблицы).
-                        det_text, any_flag = _cell_detection_text(cell, caps_resolver, table_style)
-                        if any_flag:
-                            _maybe_set_detection_text(metadata, cell_text, det_text, cell_seg_id)
+    def read_part(container, part_owner, prefix: str, part_name: str | None) -> None:
+        """Читает один контейнер блоков (тело документа или колонтитул).
+
+        prefix — приставка к id сегментов ('' для тела, 'header1:' и т.п. для
+        колонтитулов): id тела намеренно НЕ меняются, чтобы точка отсчёта гейта
+        и уже сохранённые сессии остались валидными.
+        """
+        paragraph_counter = 0
+
+        def blocks(el) -> None:
+            nonlocal paragraph_counter
+            for child in el.iterchildren():
+                tag = child.tag
+                if tag == _W_P:
+                    paragraph = Paragraph(child, part_owner)
+                    # ЭТАП O2: через кэш резолвера — раньше это были ДВА полных
+                    # разрешения стиля на абзац (проверка на None и .name), плюс
+                    # третье в paragraph_baseline. См. _CapsResolver.style_of.
+                    _p_style = caps_resolver.style_of(paragraph, WD_STYLE_TYPE.PARAGRAPH)
+                    style_name = _p_style.name if _p_style is not None else None
+                    seg_id = f"{prefix}p{paragraph_counter}"
+                    metadata = {"paragraph_index": paragraph_counter, "style": style_name}
+                    if part_name is not None:
+                        metadata["part"] = part_name
+                    text, det_text, any_flag = _paragraph_texts(paragraph, caps_resolver)
+                    # Изменение 1: detection_text из форматирования all_caps/small_caps
+                    # (прямого или унаследованного от стиля абзаца/символа).
+                    if any_flag:
+                        _maybe_set_detection_text(metadata, text, det_text, seg_id)
                     segments.append(
                         TextSegment(
-                            id=cell_seg_id,
-                            text=cell_text,
-                            source_type="docx_table_cell",
+                            id=seg_id,
+                            text=text,
+                            source_type="docx_paragraph",
                             metadata=metadata,
                         )
                     )
-            table_counter += 1
+                    paragraph_counter += 1
+                elif tag == _W_TBL:
+                    read_table(Table(child, part_owner), prefix, part_name)
+                elif tag in BLOCK_DESCEND:
+                    # ЭТАП NODES: блочный w:sdt (элемент управления содержимым на
+                    # верхнем уровне) не является ни w:p, ни w:tbl — до этого этапа
+                    # он и его содержимое выпадали из чтения целиком.
+                    blocks(child)
+                # прочее — за него отвечает unread_zones (закрытый список)
+
+        blocks(container)
+
+    def read_table(table: Table, prefix: str, part_name: str | None) -> None:
+        table_idx = counters["table"]
+        counters["table"] += 1
+        # Стиль таблицы — самый низкий уровень наследования капса для ран ячеек
+        # (python-docx не отражает его в run/paragraph style). Берём один раз.
+        table_style = table.style
+        for row_idx, row in enumerate(table.rows):
+            for col_idx, cell in enumerate(row.cells):
+                # Этап 1b: вложенная таблица здесь БОЛЬШЕ НЕ логируется. Раньше
+                # на неё печаталось предупреждение в stderr — и этим всё
+                # заканчивалось: текст молча выпадал из результата, а warning
+                # терялся среди прочего вывода. Теперь непрочитанные зоны
+                # (включая вложенные таблицы) обнаруживает unread_zones.
+                # scan_unread_zones, а решение принимает политика блока 7:
+                # по умолчанию encrypt ОТКАЗЫВАЕТСЯ, с --allow-lossy — пишет
+                # текст зон в {sid}.unread.json. Дублировать здесь warning
+                # незачем: extract() — библиотечная функция, её задача извлечь
+                # то, что она умеет, а не решать за вызывающего.
+                tc = cell._tc
+                cell_seg_id = f"{prefix}t{table_idx}_r{row_idx}_c{col_idx}"
+                metadata = {
+                    "table_index": table_idx,
+                    "row_index": row_idx,
+                    "col_index": col_idx,
+                }
+                if part_name is not None:
+                    metadata["part"] = part_name
+                if tc in seen_tcs:
+                    cell_text = ""
+                else:
+                    seen_tcs.add(tc)
+                    cell_text, det_text, any_flag = _cell_texts(
+                        cell, caps_resolver, table_style)
+                    # Изменение 1: detection_text ячейки из форматирования ран
+                    # (прямого или унаследованного от стиля ячейки/таблицы).
+                    if any_flag:
+                        _maybe_set_detection_text(metadata, cell_text, det_text, cell_seg_id)
+                segments.append(
+                    TextSegment(
+                        id=cell_seg_id,
+                        text=cell_text,
+                        source_type="docx_table_cell",
+                        metadata=metadata,
+                    )
+                )
+
+    read_part(document.element.body, document, "", None)
+
+    # ЭТАП NODES, часть 2: колонтитулы. До этого этапа они честно ОБЪЯВЛЯЛИСЬ
+    # непрочитанной зоной и приводили к отказу — теперь читаются тем же
+    # конвейером, что тело (те же сегменты, те же детекторы, та же маска).
+    #
+    # Части берём из связей пакета, а не из document.sections: раздел,
+    # унаследовавший колонтитул у предыдущего (is_linked_to_previous), вернул бы
+    # ту же часть повторно, а раздел без явной ссылки — не вернул бы её вовсе.
+    # Ключ порядка — имя части: обход должен быть детерминированным.
+    for part_name, part in _hdrftr_parts(document):
+        stem = part_name[len("word/"):-len(".xml")]
+        read_part(body_of(part.element), part, f"{stem}:", part_name)
 
     return SourceDocument(segments=segments, source_format="docx", source_path=path)
+
+
+def _hdrftr_parts(document) -> "list[tuple[str, object]]":
+    """Части колонтитулов пакета: [(имя части 'word/header1.xml', part), …],
+    отсортированные по имени. Внешние связи пропускаем — у них нет части."""
+    out = []
+    for rel in document.part.rels.values():
+        if rel.is_external or rel.reltype not in (RT.HEADER, RT.FOOTER):
+            continue
+        name = str(rel.target_part.partname).lstrip("/")
+        out.append((name, rel.target_part))
+    # верхние колонтитулы перед нижними, внутри группы — по имени: порядок
+    # сегментов обязан быть детерминированным и читаться как документ
+    out.sort(key=lambda item: (not item[0].startswith("word/header"), item[0]))
+    return out
 
 
 def _looks_like_mojibake(text: str) -> bool:

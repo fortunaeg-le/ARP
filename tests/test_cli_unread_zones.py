@@ -6,9 +6,15 @@
 CLI не трогал ~/.shifrator реального пользователя.
 
 Три обязательных случая ЗАДАНИЯ:
-  (а) документ с колонтитулом, strict -> exit != 0, {sid}.txt НЕ создан;
+  (а) документ с непрочитанной зоной, strict -> exit != 0, {sid}.txt НЕ создан;
   (б) он же с --allow-lossy -> обработан, sidecar создан и содержит текст зоны;
   (в) документ без зон, strict -> обработан как раньше (регресс не сломан).
+
+ЭТАП NODES: носителем зоны здесь была ПДн в КОЛОНТИТУЛЕ. Колонтитулы теперь
+читаются (часть 2 этапа), поэтому зоной они больше не являются и на роль
+носителя не годятся. Носитель заменён на ВЛОЖЕННУЮ ТАБЛИЦУ — она осталась
+непрочитанной зоной, и политика отказа проверяется на ней. Что колонтитул
+теперь читается и маскируется — отдельный класс TestHeaderIsReadNow.
 """
 import json
 import os
@@ -47,11 +53,17 @@ def _sessions_dir(tmp_path):
 
 @pytest.fixture
 def docx_with_header(tmp_path):
-    """Документ с ПДн в колонтитуле — зона kind=header."""
-    path = tmp_path / "with_header.docx"
+    """Документ с ПДн во ВЛОЖЕННОЙ таблице — зона kind=nested_table.
+
+    Имя фикстуры оставлено историческим: набор проверок политики отказа не
+    зависит от вида зоны, менялся только её носитель (см. docstring модуля).
+    """
+    path = tmp_path / "with_zone.docx"
     document = Document()
     document.add_paragraph("Договор оказания услуг. Предмет договора — консультации.")
-    document.sections[0].header.paragraphs[0].text = ZONE_PII
+    outer = document.add_table(rows=1, cols=1)
+    inner = outer.rows[0].cells[0].add_table(rows=1, cols=1)
+    inner.rows[0].cells[0].text = ZONE_PII
     document.save(path)
     return path
 
@@ -76,8 +88,8 @@ class TestStrictRefusal:
 
     def test_refusal_prints_zone_table_and_lossy_hint_to_stdout(self, docx_with_header, tmp_path):
         r = _run(["encrypt", str(docx_with_header)], tmp_path)
-        assert "header" in r.stdout
-        assert "word/header1.xml" in r.stdout
+        assert "nested_table" in r.stdout
+        assert "word/document.xml" in r.stdout
         assert "--allow-lossy" in r.stdout
 
     def test_refusal_creates_no_session_txt(self, docx_with_header, tmp_path):
@@ -110,7 +122,7 @@ class TestTypedError:
         with pytest.raises(UnreadZoneError) as exc:
             shifrator._check_unread_zones(str(docx_with_header), allow_lossy=False)
 
-        assert [z.kind for z in exc.value.zones] == ["header"]
+        assert [z.kind for z in exc.value.zones] == ["nested_table"]
         assert exc.value.path == str(docx_with_header)
 
     def test_check_unread_zones_returns_zones_in_lossy_mode(self, docx_with_header, capsys):
@@ -119,7 +131,7 @@ class TestTypedError:
         import shifrator
 
         zones = shifrator._check_unread_zones(str(docx_with_header), allow_lossy=True)
-        assert [z.kind for z in zones] == ["header"]
+        assert [z.kind for z in zones] == ["nested_table"]
 
 
 class TestAllowLossy:
@@ -142,14 +154,14 @@ class TestAllowLossy:
         assert data["lossy"] is True
         assert data["session_id"] == sid
         kinds = [z["kind"] for z in data["zones"]]
-        assert "header" in kinds
+        assert "nested_table" in kinds
         # СЫРОЙ текст зоны — пользователь должен видеть, что именно выброшено.
         assert any(ZONE_PII in z["text"] for z in data["zones"])
 
     def test_allow_lossy_warns_loudly_on_stderr(self, docx_with_header, tmp_path):
         r = _run(["encrypt", str(docx_with_header), "--allow-lossy"], tmp_path)
         assert "ПРЕДУПРЕЖДЕНИЕ" in r.stderr
-        assert "header" in r.stderr
+        assert "nested_table" in r.stderr
 
     def test_zone_text_is_absent_from_anonymized_output(self, docx_with_header, tmp_path):
         """Ключевой факт этапа: зона НЕ читается. Текст зоны не попадает в {sid}.txt
@@ -202,3 +214,46 @@ class TestCleanDocumentNoRegression:
         r = _run(["encrypt", str(txt)], tmp_path)
         assert r.returncode == 0
         assert len(r.stdout.strip().splitlines()) == 1
+
+
+class TestHeaderIsReadNow:
+    """ЭТАП NODES, часть 2: колонтитул — не зона, а обычный текст.
+
+    До этого этапа тот же документ приводил к ОТКАЗУ (kind=header), а его ПДн
+    не попадали в результат вовсе. Проверяем оба следствия смены контракта:
+    отказа нет и ПДн замаскированы, то есть содержимое прошло тем же конвейером,
+    что тело.
+    """
+
+    @pytest.fixture
+    def docx_header_pii(self, tmp_path):
+        path = tmp_path / "hdr.docx"
+        document = Document()
+        document.add_paragraph("Договор оказания услуг. Предмет — консультации.")
+        document.sections[0].header.paragraphs[0].text = ZONE_PII
+        document.sections[0].footer.paragraphs[0].text = "Телефон: +7 900 111-00-33"
+        document.save(path)
+        return path
+
+    def test_header_document_is_no_longer_refused(self, docx_header_pii, tmp_path):
+        r = _run(["encrypt", str(docx_header_pii)], tmp_path)
+        assert r.returncode == 0, f"stdout={r.stdout!r} stderr={r.stderr!r}"
+
+    def test_header_document_gets_no_sidecar(self, docx_header_pii, tmp_path):
+        r = _run(["encrypt", str(docx_header_pii)], tmp_path)
+        sid = r.stdout.strip()
+        assert not (_sessions_dir(tmp_path) / f"{sid}.unread.json").exists()
+
+    def test_header_and_footer_pii_are_masked(self, docx_header_pii, tmp_path):
+        r = _run(["encrypt", str(docx_header_pii)], tmp_path)
+        sid = r.stdout.strip()
+        anon = read_anon_text(_sessions_dir(tmp_path), sid)
+        assert "Смирнов" not in anon, f"ФИО из колонтитула утекло: {anon!r}"
+        assert "7707083893" not in anon, f"ИНН из колонтитула утёк: {anon!r}"
+        assert "111-00-33" not in anon, f"телефон из нижнего колонтитула утёк: {anon!r}"
+        # содержимое дошло до результата, а не просто исчезло. Тип маски здесь
+        # не проверяем: «Смирнов Пётр Иванович, ИНН 7707083893» — это ИНН-10,
+        # то есть якорь ОРГАНИЗАЦИИ, и связка уезжает в ORG. Предмет проверки —
+        # что колонтитул прошёл конвейер, а не какой слой его разметил.
+        assert "[PHONE_" in anon
+        assert anon.count("[") >= 3, f"колонтитул не размечен масками: {anon!r}"

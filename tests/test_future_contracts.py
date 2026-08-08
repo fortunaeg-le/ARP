@@ -540,10 +540,28 @@ _ZONE_CASES = [
 ]
 
 
+# ЭТАП NODES (2026-08-08): контракт ИСПОЛНИЛСЯ ЧАСТЬЮ. Колонтитулы читаются —
+# строгий xfail дал по ним XPASS ровно как задумано, маркер снят, тест остался
+# стражем регресса чтения. Сноска, надпись и вложенная таблица не читаются
+# по-прежнему и остаются xfail: снять маркер со ВСЕХ видов сразу значило бы
+# объявить сделанным то, что не сделано.
+_ZONES_READ_NOW = {"header", "footer"}
+
+_ZONE_PARAMS = [
+    pytest.param(
+        c, id=c.kind,
+        marks=() if c.kind in _ZONES_READ_NOW else pytest.mark.xfail(
+            strict=True,
+            reason="зона .docx не читается — encrypt отказывает (strict), "
+                   "текст зоны не обрабатывается"),
+    )
+    for c in _ZONE_CASES
+]
+
+
 class TestStage6UnreadZones:
 
-    @pytest.mark.parametrize("case", _ZONE_CASES, ids=[c.kind for c in _ZONE_CASES])
-    @pytest.mark.xfail(strict=True, reason="этап 6: зона .docx не читается — encrypt отказывает (strict), текст зоны не обрабатывается")
+    @pytest.mark.parametrize("case", _ZONE_PARAMS)
     def test_zone_is_read_and_its_pii_is_masked(self, encrypt_doc, case):
         gold = _gold_entity(case.doc_id, case.entity_type, case.value)
         run = encrypt_doc(case.doc_id, allow_lossy=False)

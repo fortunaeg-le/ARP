@@ -28,13 +28,19 @@ DOCS = os.path.join(CORPUS, "docs")
 GOLD = os.path.join(CORPUS, "gold.json")
 
 # Признак gold.json -> kind, который сканер обязан вернуть.
+#
+# ЭТАП NODES: hdr_pii / ftr_pii отсюда УБРАНЫ — колонтитулы теперь читаются
+# наравне с телом, и объявлять их зоной было бы ложью. Обратная сторона того
+# же контракта проверяется классом TestHeadersAreReadNotDeclared ниже: на тех
+# же документах их текст обязан ПОЯВИТЬСЯ в сегментах extract().
 FEATURE_TO_KIND = {
-    "hdr_pii": "header",
-    "ftr_pii": "footer",
     "footnote_pii": "footnote",
     "textbox_pii": "textbox",
     "nested_table": "nested_table",
 }
+
+# Признаки, которые больше НЕ дают зоны, потому что зона стала читаемой.
+FEATURE_READ_NOW = ("hdr_pii", "ftr_pii")
 
 
 def _load_gold():
@@ -63,6 +69,15 @@ def _clean_docs():
     ]
 
 
+def _hdrftr_docs():
+    """docx с ПДн в колонтитуле — теперь ЧИТАЕМЫЕ, а не зонные."""
+    return [
+        d["doc_id"] for d in _load_gold()
+        if d["format"] == "docx"
+        and any(f in FEATURE_READ_NOW for f in d["features"])
+    ]
+
+
 class TestScannerCompleteness:
     """Направление 1: ни одного ложноотрицательного."""
 
@@ -79,7 +94,9 @@ class TestScannerCompleteness:
     def test_corpus_actually_has_zone_documents(self):
         """Сам параметризованный список не должен молча оказаться пустым —
         иначе тест выше «зелёный» ни на чём."""
-        assert len(_zone_docs()) >= 100
+        # было >= 100; после этапа NODES колонтитульные документы ушли из этого
+        # списка в TestHeadersAreReadNotDeclared — осталось 90
+        assert len(_zone_docs()) >= 80
 
 
 class TestScannerNoFalsePositives:
@@ -110,3 +127,35 @@ class TestZoneShape:
             assert z.char_count == len(z.text)
             assert z.text.strip(), "зона без непробельного текста не должна возвращаться"
             assert z.part.startswith("word/")
+
+
+class TestHeadersAreReadNotDeclared:
+    """ЭТАП NODES, часть 2: колонтитул перестал быть зоной, потому что читается.
+
+    Проверяются ОБА следствия сразу — иначе тест зелен и на регрессе «зону
+    убрали, читать не научили», то есть ровно на тихой утечке:
+      * сканер НЕ возвращает kind header/footer;
+      * текст части word/header*.xml / word/footer*.xml присутствует в сегментах.
+    """
+
+    @pytest.mark.parametrize("doc_id", _hdrftr_docs())
+    def test_header_zone_is_not_declared_and_content_is_extracted(self, doc_id):
+        import sys as _sys
+        from unread_zones import scan_unread_zones as _scan
+        from extractor import extract
+
+        path = os.path.join(DOCS, doc_id + ".docx")
+        kinds = {z.kind for z in _scan(path)}
+        assert not (kinds & {"header", "footer"}), (
+            f"{doc_id}: колонтитул объявлен зоной, хотя обязан читаться: {sorted(kinds)}"
+        )
+
+        parts = {s.metadata.get("part") for s in extract(path).segments}
+        parts.discard(None)
+        assert any(p.startswith(("word/header", "word/footer")) for p in parts), (
+            f"{doc_id}: gold.json обещает ПДн в колонтитуле, а сегментов "
+            f"колонтитула нет вовсе: {sorted(parts)}"
+        )
+
+    def test_corpus_actually_has_header_documents(self):
+        assert len(_hdrftr_docs()) >= 10
