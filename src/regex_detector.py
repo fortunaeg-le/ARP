@@ -131,6 +131,45 @@ def _has_anchor(search_text: str, pos: int, anchor_re: re.Pattern) -> bool:
     return anchor_re.search(_fold_anchor_context(context)) is not None
 
 
+#: ЭТАП A7 — разделители, через которые ЦИФРА СПРАВА/СЛЕВА считается соседом
+#: значения. Ровно тот же класс, что разрешён ВНУТРИ реквизита паттернами
+#: (B2-fix): обычный и неразрывный пробел. Не `\s`: перевод строки — граница
+#: сегмента/ячейки, соседство через него не соседство (A2-NEWLINE-CROSS).
+_RUN_SEPARATORS = "  "
+
+
+def _digit_run_neighbour(search_text: str, start: int, end: int) -> bool:
+    """Стоит ли справа или слева от найденного значения ЕЩЁ ОДНА ЦИФРА —
+    вплотную или через один разделитель того же класса, что допущен внутри
+    самого значения.
+
+    ЭТАП A7 — ограничитель для контрольной суммы (долги `Stage4-C`,
+    `A3-NEG-OGRN`, `A5-INN-KBK-FP`). КС на произвольном числе сходится с
+    вероятностью 1/10 (ИНН-10), 1/11 (ОГРН-13), 1/13 (ОГРНИП-15) — как
+    САМОСТОЯТЕЛЬНЫЙ фильтр она поэтому ненадёжна. Но её ложные срабатывания
+    в замерах — не случайные числа вообще, а ОКНО, ВЫРЕЗАННОЕ ИЗ БОЛЕЕ
+    ДЛИННОГО ПРОГОНА цифр: 10-значное окно внутри 20-значного КБК
+    (`A5-INN-KBK-FP`), 15-значное окно внутри КБК, разбитого пробелами
+    (`Stage4-C`). Настоящий реквизит так не пишут: у ИНН/ОГРН своя длина, и
+    приписанная сбоку лишняя цифра означает, что мы взяли кусок чужого числа.
+    Поэтому: КС БЕЗ ЯКОРЯ перестаёт быть основанием, если значение — часть
+    более длинного числа.
+
+    Проверка НЕ применяется под якорем: «ИНН 7707083893 770701001» (ИНН и КПП
+    подряд через пробел) — законная запись, и там подтверждение даёт якорь, а
+    не КС (инвариант этапа 4: под якорем КС — сигнал, а не шлагбаум).
+    """
+    left = start - 1
+    if left >= 0 and search_text[left] in _RUN_SEPARATORS:
+        left -= 1
+    if left >= 0 and search_text[left].isdigit():
+        return True
+    right = end
+    if right < len(search_text) and search_text[right] in _RUN_SEPARATORS:
+        right += 1
+    return right < len(search_text) and search_text[right].isdigit()
+
+
 def _has_anti_anchor(search_text: str, match_start: int, match_end: int,
                       anti_anchor_re: re.Pattern) -> bool:
     """Есть ли дисквалифицирующее слово в окне [start - _ANTI_ANCHOR_WINDOW,
@@ -265,12 +304,21 @@ def detect_regex(doc: SourceDocument, config_path: str) -> list[Entity]:
                 if m.start(span_group) < 0:
                     continue  # группа не участвовала в матче — спана нет
 
+                anchored = anchor is not None and _has_anchor(
+                    search_text, m.start(span_group), anchor)
+
                 # ЭТАП A2 — анти-якорь: дисквалифицирующее слово рядом с якорем
                 # («паспорт КАЧЕСТВА», «ТЕХНИЧЕСКИЙ паспорт») отменяет матч
                 # целиком, до проверки КС/anchor ниже — это не «слабое
                 # подтверждение», это «точно не тот смысл».
-                if anti_anchor is not None and _has_anti_anchor(
-                        search_text, m.start(0), m.end(0), anti_anchor):
+                # ЭТАП A7 — анти-якорь НЕ перебивает подтверждённый якорь:
+                # у типов с `anchor:` (INN/OGRN) он дисквалифицирует только
+                # неподтверждённое значение, где основанием осталась одна КС.
+                # У PASSPORT `anchor:` нет (якорь встроен в pattern), anchored
+                # там всегда False — поведение A2 сохраняется байт-в-байт.
+                if (anti_anchor is not None and not anchored
+                        and _has_anti_anchor(
+                            search_text, m.start(0), m.end(0), anti_anchor)):
                     continue
 
                 # ЭТАП 4 — КС как сигнал уверенности, а не шлагбаум (STATE §6).
@@ -286,9 +334,14 @@ def detect_regex(doc: SourceDocument, config_path: str) -> list[Entity]:
                 # как и раньше, подтверждать нечего, значение маскируется
                 # безусловно по одному факту совпадения паттерна.
                 if validator is not None or anchor is not None:
-                    anchored = anchor is not None and _has_anchor(search_text, m.start(span_group), anchor)
                     if not anchored:
                         if validator is None or not validator(m.group(span_group)):
+                            continue
+                        # ЭТАП A7 — ограничитель для КС: значение, вырезанное
+                        # из более длинного прогона цифр, контрольной суммой
+                        # НЕ подтверждается (см. _digit_run_neighbour).
+                        if _digit_run_neighbour(search_text, m.start(span_group),
+                                                m.end(span_group)):
                             continue
                 # span_group>0: якорь остаётся вне спана (см. _load_regex_types)
                 start, end = norm_to_src(offset_map, m.start(span_group), m.end(span_group))
