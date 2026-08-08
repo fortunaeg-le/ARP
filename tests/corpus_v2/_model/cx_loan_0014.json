@@ -2258,6 +2258,55 @@
    "t": "p"
   },
   {
+   "chunks": [
+    {
+     "s": "6.9. Финансирование предоставляется частями; первым выбирается "
+    },
+    {
+     "e": {
+      "axes": {
+       "оборот": "именной: транш «Имя»"
+      },
+      "cat": "canonical",
+      "form": "TRANCHE|оборот=именной: транш «Имя»",
+      "id": "cx_loan_0014-e31",
+      "note": "фабричный тип: пример из файла-описания владельца",
+      "type": "TRANCHE"
+     },
+     "s": "транш «Северная очередь»"
+    },
+    {
+     "s": " согласно графику выборки."
+    }
+   ],
+   "style": "normal",
+   "t": "p"
+  },
+  {
+   "chunks": [
+    {
+     "s": "6.10. Порядок дальнейшей выборки: "
+    },
+    {
+     "n": {
+      "axes": {
+       "оборот-негатива": "имя без транша"
+      },
+      "form": "TRANCHE|оборот=имя без слова транш (негатив)",
+      "kind": "named-no-tranche",
+      "type": "TRANCHE",
+      "why": "имя в кавычках без слова «транш» — чужая сущность (название), не транш"
+     },
+     "s": "программа «Со-единение» благотворительного фонда"
+    },
+    {
+     "s": "."
+    }
+   ],
+   "style": "normal",
+   "t": "p"
+  },
+  {
    "chunks": [],
    "style": "normal",
    "t": "p"
@@ -2298,7 +2347,7 @@
          {
           "e": {
            "cat": "canonical",
-           "id": "cx_loan_0014-e31",
+           "id": "cx_loan_0014-e32",
            "type": "PER"
           },
           "s": "Новикова Людмила Юрьевна"
@@ -2315,7 +2364,7 @@
          {
           "e": {
            "cat": "canonical",
-           "id": "cx_loan_0014-e32",
+           "id": "cx_loan_0014-e33",
            "note": "стиль адреса: canonical",
            "type": "ADDRESS"
           },
@@ -2334,7 +2383,7 @@
           "e": {
            "cat": "canonical",
            "checksum": "valid",
-           "id": "cx_loan_0014-e33",
+           "id": "cx_loan_0014-e34",
            "note": "12-значный ИНН",
            "type": "INN"
           },
@@ -2347,7 +2396,7 @@
           "e": {
            "cat": "ugly",
            "checksum": "valid",
-           "id": "cx_loan_0014-e34",
+           "id": "cx_loan_0014-e35",
            "note": "ОГРНИП, 15 знаков",
            "type": "OGRN"
           },
@@ -2366,7 +2415,7 @@
           "e": {
            "cat": "canonical",
            "checksum": "valid",
-           "id": "cx_loan_0014-e35",
+           "id": "cx_loan_0014-e36",
            "type": "ACCOUNT"
           },
           "s": "40802810712616167821"
@@ -2380,7 +2429,7 @@
          {
           "e": {
            "cat": "canonical",
-           "id": "cx_loan_0014-e36",
+           "id": "cx_loan_0014-e37",
            "type": "BIK"
           },
           "s": "044525593"
@@ -2397,7 +2446,7 @@
          {
           "e": {
            "cat": "canonical",
-           "id": "cx_loan_0014-e37",
+           "id": "cx_loan_0014-e38",
            "note": "формат: canonical",
            "type": "PHONE"
           },
@@ -2415,7 +2464,7 @@
          {
           "e": {
            "cat": "canonical",
-           "id": "cx_loan_0014-e38",
+           "id": "cx_loan_0014-e39",
            "type": "EMAIL"
           },
           "s": "novikova@bk.ru"
@@ -2437,7 +2486,7 @@
          {
           "e": {
            "cat": "ugly",
-           "id": "cx_loan_0014-e39",
+           "id": "cx_loan_0014-e40",
            "note": "фамилия + инициалы",
            "type": "PER"
           },
@@ -2465,7 +2514,7 @@
          {
           "e": {
            "cat": "canonical",
-           "id": "cx_loan_0014-e40",
+           "id": "cx_loan_0014-e41",
            "type": "PER"
           },
           "s": "Волкова Татьяна Олеговна"
@@ -2482,7 +2531,7 @@
          {
           "e": {
            "cat": "canonical",
-           "id": "cx_loan_0014-e41",
+           "id": "cx_loan_0014-e42",
            "note": "стиль записи из BIRTHDATE_STYLES",
            "type": "BIRTHDATE"
           },
@@ -2500,7 +2549,7 @@
          {
           "e": {
            "cat": "canonical",
-           "id": "cx_loan_0014-e42",
+           "id": "cx_loan_0014-e43",
            "note": "стиль адреса: canonical",
            "type": "ADDRESS"
           },
@@ -2518,7 +2567,7 @@
          {
           "e": {
            "cat": "canonical",
-           "id": "cx_loan_0014-e43",
+           "id": "cx_loan_0014-e44",
            "note": "серия+номер, стиль записи из PASSPORT_STYLES",
            "type": "PASSPORT"
           },
@@ -2533,7 +2582,7 @@
          {
           "e": {
            "cat": "ugly",
-           "id": "cx_loan_0014-e44",
+           "id": "cx_loan_0014-e45",
            "note": "код подразделения, стиль записи из DEPTCODE_STYLES",
            "type": "PASSPORT"
           },
@@ -2552,7 +2601,7 @@
           "e": {
            "cat": "canonical",
            "checksum": "valid",
-           "id": "cx_loan_0014-e45",
+           "id": "cx_loan_0014-e46",
            "note": "стиль записи из SNILS_STYLES",
            "type": "SNILS"
           },
@@ -2565,7 +2614,7 @@
           "e": {
            "cat": "ugly",
            "checksum": "valid",
-           "id": "cx_loan_0014-e46",
+           "id": "cx_loan_0014-e47",
            "note": "ИНН физлица (12 знаков)",
            "type": "INN"
           },
@@ -2583,7 +2632,7 @@
          {
           "e": {
            "cat": "canonical",
-           "id": "cx_loan_0014-e47",
+           "id": "cx_loan_0014-e48",
            "note": "формат: canonical",
            "type": "PHONE"
           },
@@ -2601,7 +2650,7 @@
          {
           "e": {
            "cat": "canonical",
-           "id": "cx_loan_0014-e48",
+           "id": "cx_loan_0014-e49",
            "type": "EMAIL"
           },
           "s": "volkova@yandex.ru"
@@ -2623,7 +2672,7 @@
          {
           "e": {
            "cat": "ugly",
-           "id": "cx_loan_0014-e49",
+           "id": "cx_loan_0014-e50",
            "note": "фамилия + инициалы",
            "type": "PER"
           },
@@ -2661,7 +2710,7 @@
     {
      "e": {
       "cat": "ugly",
-      "id": "cx_loan_0014-e50",
+      "id": "cx_loan_0014-e51",
       "note": "подпись: фамилия+инициалы",
       "type": "PER"
      },
@@ -2682,7 +2731,7 @@
     {
      "e": {
       "cat": "ugly",
-      "id": "cx_loan_0014-e51",
+      "id": "cx_loan_0014-e52",
       "note": "подпись: фамилия+инициалы",
       "type": "PER"
      },

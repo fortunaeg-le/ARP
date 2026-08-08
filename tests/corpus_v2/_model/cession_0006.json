@@ -160,7 +160,7 @@
     {
      "e": {
       "cat": "adversarial",
-      "id": "cession_0006-e50",
+      "id": "cession_0006-e51",
       "note": "адрес в сноске",
       "trick": "in_footnote",
       "type": "ADDRESS"
@@ -173,7 +173,7 @@
     {
      "e": {
       "cat": "adversarial",
-      "id": "cession_0006-e51",
+      "id": "cession_0006-e52",
       "note": "ИНН в сноске",
       "trick": "in_footnote",
       "type": "INN"
@@ -186,7 +186,7 @@
     {
      "e": {
       "cat": "adversarial",
-      "id": "cession_0006-e52",
+      "id": "cession_0006-e53",
       "note": "ФИО в сноске",
       "trick": "in_footnote",
       "type": "PER"
@@ -2292,6 +2292,55 @@
    "t": "p"
   },
   {
+   "chunks": [
+    {
+     "s": "6.9. Финансирование предоставляется частями; первым выбирается "
+    },
+    {
+     "e": {
+      "axes": {
+       "оборот": "именной: транш «Имя»"
+      },
+      "cat": "canonical",
+      "form": "TRANCHE|оборот=именной: транш «Имя»",
+      "id": "cession_0006-e32",
+      "note": "фабричный тип: пример из файла-описания владельца",
+      "type": "TRANCHE"
+     },
+     "s": "транш «Оборотный»"
+    },
+    {
+     "s": " согласно графику выборки."
+    }
+   ],
+   "style": "normal",
+   "t": "p"
+  },
+  {
+   "chunks": [
+    {
+     "s": "6.10. Порядок дальнейшей выборки: "
+    },
+    {
+     "n": {
+      "axes": {
+       "оборот-негатива": "родовое"
+      },
+      "form": "TRANCHE|оборот=родовое упоминание (негатив)",
+      "kind": "generic-plural",
+      "type": "TRANCHE",
+      "why": "родовое упоминание без имени — маскировать нечего"
+     },
+     "s": "график выдачи траншей согласовывается дополнительно"
+    },
+    {
+     "s": "."
+    }
+   ],
+   "style": "normal",
+   "t": "p"
+  },
+  {
    "chunks": [],
    "style": "normal",
    "t": "p"
@@ -2332,7 +2381,7 @@
          {
           "e": {
            "cat": "canonical",
-           "id": "cession_0006-e32",
+           "id": "cession_0006-e33",
            "type": "PER"
           },
           "s": "Кузнецова Юлия Владимировна"
@@ -2349,7 +2398,7 @@
          {
           "e": {
            "cat": "canonical",
-           "id": "cession_0006-e33",
+           "id": "cession_0006-e34",
            "note": "стиль адреса: canonical",
            "type": "ADDRESS"
           },
@@ -2368,7 +2417,7 @@
           "e": {
            "cat": "canonical",
            "checksum": "invalid",
-           "id": "cession_0006-e34",
+           "id": "cession_0006-e35",
            "note": "12-значный ИНН",
            "type": "INN"
           },
@@ -2381,7 +2430,7 @@
           "e": {
            "cat": "ugly",
            "checksum": "invalid",
-           "id": "cession_0006-e35",
+           "id": "cession_0006-e36",
            "note": "ОГРНИП, 15 знаков",
            "type": "OGRN"
           },
@@ -2400,7 +2449,7 @@
           "e": {
            "cat": "canonical",
            "checksum": "invalid",
-           "id": "cession_0006-e36",
+           "id": "cession_0006-e37",
            "type": "ACCOUNT"
           },
           "s": "40802810475011153652"
@@ -2414,7 +2463,7 @@
          {
           "e": {
            "cat": "canonical",
-           "id": "cession_0006-e37",
+           "id": "cession_0006-e38",
            "type": "BIK"
           },
           "s": "044030790"
@@ -2431,7 +2480,7 @@
          {
           "e": {
            "cat": "canonical",
-           "id": "cession_0006-e38",
+           "id": "cession_0006-e39",
            "note": "формат: canonical",
            "type": "PHONE"
           },
@@ -2449,7 +2498,7 @@
          {
           "e": {
            "cat": "canonical",
-           "id": "cession_0006-e39",
+           "id": "cession_0006-e40",
            "type": "EMAIL"
           },
           "s": "kuznecova@bk.ru"
@@ -2471,7 +2520,7 @@
          {
           "e": {
            "cat": "ugly",
-           "id": "cession_0006-e40",
+           "id": "cession_0006-e41",
            "note": "фамилия + инициалы",
            "type": "PER"
           },
@@ -2502,7 +2551,7 @@
          {
           "e": {
            "cat": "canonical",
-           "id": "cession_0006-e41",
+           "id": "cession_0006-e42",
            "type": "PER"
           },
           "s": "Павлов Владимир Егорович"
@@ -2519,7 +2568,7 @@
          {
           "e": {
            "cat": "canonical",
-           "id": "cession_0006-e42",
+           "id": "cession_0006-e43",
            "note": "стиль адреса: canonical",
            "type": "ADDRESS"
           },
@@ -2538,7 +2587,7 @@
           "e": {
            "cat": "canonical",
            "checksum": "invalid",
-           "id": "cession_0006-e43",
+           "id": "cession_0006-e44",
            "note": "12-значный ИНН",
            "type": "INN"
           },
@@ -2551,7 +2600,7 @@
           "e": {
            "cat": "ugly",
            "checksum": "invalid",
-           "id": "cession_0006-e44",
+           "id": "cession_0006-e45",
            "note": "ОГРНИП, 15 знаков",
            "type": "OGRN"
           },
@@ -2570,7 +2619,7 @@
           "e": {
            "cat": "canonical",
            "checksum": "invalid",
-           "id": "cession_0006-e45",
+           "id": "cession_0006-e46",
            "type": "ACCOUNT"
           },
           "s": "40802810201093852584"
@@ -2584,7 +2633,7 @@
          {
           "e": {
            "cat": "canonical",
-           "id": "cession_0006-e46",
+           "id": "cession_0006-e47",
            "type": "BIK"
           },
           "s": "044525700"
@@ -2601,7 +2650,7 @@
          {
           "e": {
            "cat": "canonical",
-           "id": "cession_0006-e47",
+           "id": "cession_0006-e48",
            "note": "формат: canonical",
            "type": "PHONE"
           },
@@ -2619,7 +2668,7 @@
          {
           "e": {
            "cat": "canonical",
-           "id": "cession_0006-e48",
+           "id": "cession_0006-e49",
            "type": "EMAIL"
           },
           "s": "pavlov@list.ru"
@@ -2641,7 +2690,7 @@
          {
           "e": {
            "cat": "ugly",
-           "id": "cession_0006-e49",
+           "id": "cession_0006-e50",
            "note": "фамилия + инициалы",
            "type": "PER"
           },
@@ -2679,7 +2728,7 @@
     {
      "e": {
       "cat": "ugly",
-      "id": "cession_0006-e53",
+      "id": "cession_0006-e54",
       "note": "подпись: фамилия+инициалы",
       "type": "PER"
      },
@@ -2700,7 +2749,7 @@
     {
      "e": {
       "cat": "ugly",
-      "id": "cession_0006-e54",
+      "id": "cession_0006-e55",
       "note": "подпись: фамилия+инициалы",
       "type": "PER"
      },

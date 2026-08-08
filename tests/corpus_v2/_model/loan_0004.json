@@ -2234,6 +2234,55 @@
    "t": "p"
   },
   {
+   "chunks": [
+    {
+     "s": "6.9. Финансирование предоставляется частями; первым выбирается "
+    },
+    {
+     "e": {
+      "axes": {
+       "оборот": "именной: транш «Имя»"
+      },
+      "cat": "canonical",
+      "form": "TRANCHE|оборот=именной: транш «Имя»",
+      "id": "loan_0004-e32",
+      "note": "фабричный тип: пример из файла-описания владельца",
+      "type": "TRANCHE"
+     },
+     "s": "транш «Развитие»"
+    },
+    {
+     "s": " согласно графику выборки."
+    }
+   ],
+   "style": "normal",
+   "t": "p"
+  },
+  {
+   "chunks": [
+    {
+     "s": "6.10. Порядок дальнейшей выборки: "
+    },
+    {
+     "n": {
+      "axes": {
+       "оборот-негатива": "родовое"
+      },
+      "form": "TRANCHE|оборот=родовое упоминание (негатив)",
+      "kind": "generic-plural",
+      "type": "TRANCHE",
+      "why": "родовое упоминание без имени — маскировать нечего"
+     },
+     "s": "график выдачи траншей согласовывается дополнительно"
+    },
+    {
+     "s": "."
+    }
+   ],
+   "style": "normal",
+   "t": "p"
+  },
+  {
    "chunks": [],
    "style": "normal",
    "t": "p"
@@ -2274,7 +2323,7 @@
          {
           "e": {
            "cat": "canonical",
-           "id": "loan_0004-e32",
+           "id": "loan_0004-e33",
            "type": "PER"
           },
           "s": "Семёнов Николай Егорович"
@@ -2291,7 +2340,7 @@
          {
           "e": {
            "cat": "ugly",
-           "id": "loan_0004-e33",
+           "id": "loan_0004-e34",
            "note": "стиль адреса: index_first",
            "type": "ADDRESS"
           },
@@ -2310,7 +2359,7 @@
           "e": {
            "cat": "canonical",
            "checksum": "valid",
-           "id": "loan_0004-e34",
+           "id": "loan_0004-e35",
            "note": "12-значный ИНН",
            "type": "INN"
           },
@@ -2323,7 +2372,7 @@
           "e": {
            "cat": "ugly",
            "checksum": "valid",
-           "id": "loan_0004-e35",
+           "id": "loan_0004-e36",
            "note": "ОГРНИП, 15 знаков",
            "type": "OGRN"
           },
@@ -2342,7 +2391,7 @@
           "e": {
            "cat": "canonical",
            "checksum": "valid",
-           "id": "loan_0004-e36",
+           "id": "loan_0004-e37",
            "type": "ACCOUNT"
           },
           "s": "40802810535896290777"
@@ -2356,7 +2405,7 @@
          {
           "e": {
            "cat": "canonical",
-           "id": "loan_0004-e37",
+           "id": "loan_0004-e38",
            "type": "BIK"
           },
           "s": "044525555"
@@ -2373,7 +2422,7 @@
          {
           "e": {
            "cat": "canonical",
-           "id": "loan_0004-e38",
+           "id": "loan_0004-e39",
            "note": "формат: canonical",
            "type": "PHONE"
           },
@@ -2391,7 +2440,7 @@
          {
           "e": {
            "cat": "canonical",
-           "id": "loan_0004-e39",
+           "id": "loan_0004-e40",
            "type": "EMAIL"
           },
           "s": "semenov@list.ru"
@@ -2413,7 +2462,7 @@
          {
           "e": {
            "cat": "ugly",
-           "id": "loan_0004-e40",
+           "id": "loan_0004-e41",
            "note": "фамилия + инициалы",
            "type": "PER"
           },
@@ -2432,7 +2481,7 @@
           "bs": true,
           "e": {
            "cat": "adversarial",
-           "id": "loan_0004-e50",
+           "id": "loan_0004-e51",
            "note": "слово разорвано форматированием (половина букв жирная)",
            "trick": "bold_split_runs",
            "type": "PER"
@@ -2464,7 +2513,7 @@
          {
           "e": {
            "cat": "canonical",
-           "id": "loan_0004-e41",
+           "id": "loan_0004-e42",
            "type": "PER"
           },
           "s": "Гусева Вера Николаевна"
@@ -2481,7 +2530,7 @@
          {
           "e": {
            "cat": "ugly",
-           "id": "loan_0004-e42",
+           "id": "loan_0004-e43",
            "note": "стиль адреса: index_first",
            "type": "ADDRESS"
           },
@@ -2500,7 +2549,7 @@
           "e": {
            "cat": "canonical",
            "checksum": "valid",
-           "id": "loan_0004-e43",
+           "id": "loan_0004-e44",
            "note": "12-значный ИНН",
            "type": "INN"
           },
@@ -2513,7 +2562,7 @@
           "e": {
            "cat": "ugly",
            "checksum": "valid",
-           "id": "loan_0004-e44",
+           "id": "loan_0004-e45",
            "note": "ОГРНИП, 15 знаков",
            "type": "OGRN"
           },
@@ -2532,7 +2581,7 @@
           "e": {
            "cat": "canonical",
            "checksum": "valid",
-           "id": "loan_0004-e45",
+           "id": "loan_0004-e46",
            "type": "ACCOUNT"
           },
           "s": "40802810424589027503"
@@ -2546,7 +2595,7 @@
          {
           "e": {
            "cat": "canonical",
-           "id": "loan_0004-e46",
+           "id": "loan_0004-e47",
            "type": "BIK"
           },
           "s": "044525187"
@@ -2563,7 +2612,7 @@
          {
           "e": {
            "cat": "canonical",
-           "id": "loan_0004-e47",
+           "id": "loan_0004-e48",
            "note": "формат: canonical",
            "type": "PHONE"
           },
@@ -2581,7 +2630,7 @@
          {
           "e": {
            "cat": "canonical",
-           "id": "loan_0004-e48",
+           "id": "loan_0004-e49",
            "type": "EMAIL"
           },
           "s": "guseva@gmail.com"
@@ -2603,7 +2652,7 @@
          {
           "e": {
            "cat": "ugly",
-           "id": "loan_0004-e49",
+           "id": "loan_0004-e50",
            "note": "фамилия + инициалы",
            "type": "PER"
           },
@@ -2641,7 +2690,7 @@
     {
      "e": {
       "cat": "ugly",
-      "id": "loan_0004-e53",
+      "id": "loan_0004-e54",
       "note": "подпись: фамилия+инициалы",
       "type": "PER"
      },
@@ -2662,7 +2711,7 @@
     {
      "e": {
       "cat": "ugly",
-      "id": "loan_0004-e54",
+      "id": "loan_0004-e55",
       "note": "подпись: фамилия+инициалы",
       "type": "PER"
      },
@@ -2696,7 +2745,7 @@
     {
      "e": {
       "cat": "adversarial",
-      "id": "loan_0004-e51",
+      "id": "loan_0004-e52",
       "note": "ФИО в нижнем колонтитуле",
       "trick": "in_footer",
       "type": "PER"
@@ -2709,7 +2758,7 @@
     {
      "e": {
       "cat": "adversarial",
-      "id": "loan_0004-e52",
+      "id": "loan_0004-e53",
       "note": "телефон в нижнем колонтитуле",
       "trick": "in_footer",
       "type": "PHONE"

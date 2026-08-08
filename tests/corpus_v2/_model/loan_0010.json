@@ -2467,6 +2467,55 @@
    "t": "p"
   },
   {
+   "chunks": [
+    {
+     "s": "6.9. Финансирование предоставляется частями; первым выбирается "
+    },
+    {
+     "e": {
+      "axes": {
+       "оборот": "именной: транш «Имя»"
+      },
+      "cat": "canonical",
+      "form": "TRANCHE|оборот=именной: транш «Имя»",
+      "id": "loan_0010-e35",
+      "note": "фабричный тип: пример из файла-описания владельца",
+      "type": "TRANCHE"
+     },
+     "s": "транш «Северная очередь»"
+    },
+    {
+     "s": " согласно графику выборки."
+    }
+   ],
+   "style": "normal",
+   "t": "p"
+  },
+  {
+   "chunks": [
+    {
+     "s": "6.10. Порядок дальнейшей выборки: "
+    },
+    {
+     "n": {
+      "axes": {
+       "оборот-негатива": "родовое"
+      },
+      "form": "TRANCHE|оборот=родовое упоминание (негатив)",
+      "kind": "generic-plural",
+      "type": "TRANCHE",
+      "why": "родовое упоминание без имени — маскировать нечего"
+     },
+     "s": "график выдачи траншей согласовывается дополнительно"
+    },
+    {
+     "s": "."
+    }
+   ],
+   "style": "normal",
+   "t": "p"
+  },
+  {
    "chunks": [],
    "style": "normal",
    "t": "p"
@@ -2504,7 +2553,7 @@
          {
           "e": {
            "cat": "adversarial",
-           "id": "loan_0010-e53",
+           "id": "loan_0010-e54",
            "note": "голая строка ПДн в ячейке, без предложения вокруг",
            "trick": "bare_cell_no_sentence",
            "type": "PER"
@@ -2523,7 +2572,7 @@
          {
           "e": {
            "cat": "canonical",
-           "id": "loan_0010-e35",
+           "id": "loan_0010-e36",
            "type": "PER"
           },
           "s": "Кузнецов Роман Владимирович"
@@ -2540,7 +2589,7 @@
          {
           "e": {
            "cat": "ugly",
-           "id": "loan_0010-e36",
+           "id": "loan_0010-e37",
            "note": "стиль адреса: no_marker2",
            "type": "ADDRESS"
           },
@@ -2559,7 +2608,7 @@
           "e": {
            "cat": "canonical",
            "checksum": "valid",
-           "id": "loan_0010-e37",
+           "id": "loan_0010-e38",
            "note": "12-значный ИНН",
            "type": "INN"
           },
@@ -2572,7 +2621,7 @@
           "e": {
            "cat": "ugly",
            "checksum": "valid",
-           "id": "loan_0010-e38",
+           "id": "loan_0010-e39",
            "note": "ОГРНИП, 15 знаков",
            "type": "OGRN"
           },
@@ -2591,7 +2640,7 @@
           "e": {
            "cat": "canonical",
            "checksum": "valid",
-           "id": "loan_0010-e39",
+           "id": "loan_0010-e40",
            "type": "ACCOUNT"
           },
           "s": "40802810602431635796"
@@ -2605,7 +2654,7 @@
          {
           "e": {
            "cat": "canonical",
-           "id": "loan_0010-e40",
+           "id": "loan_0010-e41",
            "type": "BIK"
           },
           "s": "044525360"
@@ -2622,7 +2671,7 @@
          {
           "e": {
            "cat": "canonical",
-           "id": "loan_0010-e41",
+           "id": "loan_0010-e42",
            "note": "формат: canonical",
            "type": "PHONE"
           },
@@ -2640,7 +2689,7 @@
          {
           "e": {
            "cat": "canonical",
-           "id": "loan_0010-e42",
+           "id": "loan_0010-e43",
            "type": "EMAIL"
           },
           "s": "kuznecov@inbox.ru"
@@ -2662,7 +2711,7 @@
          {
           "e": {
            "cat": "ugly",
-           "id": "loan_0010-e43",
+           "id": "loan_0010-e44",
            "note": "фамилия + инициалы",
            "type": "PER"
           },
@@ -2690,7 +2739,7 @@
          {
           "e": {
            "cat": "adversarial",
-           "id": "loan_0010-e54",
+           "id": "loan_0010-e55",
            "note": "голый адрес в ячейке",
            "trick": "bare_cell_no_sentence",
            "type": "ADDRESS"
@@ -2709,7 +2758,7 @@
          {
           "e": {
            "cat": "canonical",
-           "id": "loan_0010-e44",
+           "id": "loan_0010-e45",
            "type": "PER"
           },
           "s": "Тарасов Юрий Петрович"
@@ -2726,7 +2775,7 @@
          {
           "e": {
            "cat": "ugly",
-           "id": "loan_0010-e45",
+           "id": "loan_0010-e46",
            "note": "стиль адреса: no_marker2",
            "type": "ADDRESS"
           },
@@ -2745,7 +2794,7 @@
           "e": {
            "cat": "canonical",
            "checksum": "valid",
-           "id": "loan_0010-e46",
+           "id": "loan_0010-e47",
            "note": "12-значный ИНН",
            "type": "INN"
           },
@@ -2758,7 +2807,7 @@
           "e": {
            "cat": "ugly",
            "checksum": "valid",
-           "id": "loan_0010-e47",
+           "id": "loan_0010-e48",
            "note": "ОГРНИП, 15 знаков",
            "type": "OGRN"
           },
@@ -2777,7 +2826,7 @@
           "e": {
            "cat": "canonical",
            "checksum": "valid",
-           "id": "loan_0010-e48",
+           "id": "loan_0010-e49",
            "type": "ACCOUNT"
           },
           "s": "40802810880134929377"
@@ -2791,7 +2840,7 @@
          {
           "e": {
            "cat": "canonical",
-           "id": "loan_0010-e49",
+           "id": "loan_0010-e50",
            "type": "BIK"
           },
           "s": "044525974"
@@ -2808,7 +2857,7 @@
          {
           "e": {
            "cat": "canonical",
-           "id": "loan_0010-e50",
+           "id": "loan_0010-e51",
            "note": "формат: canonical",
            "type": "PHONE"
           },
@@ -2826,7 +2875,7 @@
          {
           "e": {
            "cat": "canonical",
-           "id": "loan_0010-e51",
+           "id": "loan_0010-e52",
            "type": "EMAIL"
           },
           "s": "tarasov@gmail.com"
@@ -2848,7 +2897,7 @@
          {
           "e": {
            "cat": "ugly",
-           "id": "loan_0010-e52",
+           "id": "loan_0010-e53",
            "note": "фамилия + инициалы",
            "type": "PER"
           },
@@ -2909,7 +2958,7 @@
               {
                "e": {
                 "cat": "adversarial",
-                "id": "loan_0010-e55",
+                "id": "loan_0010-e56",
                 "note": "счёт во вложенной таблице",
                 "trick": "nested_table",
                 "type": "ACCOUNT"
@@ -2944,7 +2993,7 @@
               {
                "e": {
                 "cat": "adversarial",
-                "id": "loan_0010-e56",
+                "id": "loan_0010-e57",
                 "note": "ФИО во вложенной таблице",
                 "trick": "nested_table",
                 "type": "PER"
@@ -2994,7 +3043,7 @@
     {
      "e": {
       "cat": "ugly",
-      "id": "loan_0010-e57",
+      "id": "loan_0010-e58",
       "note": "подпись: фамилия+инициалы",
       "type": "PER"
      },
@@ -3015,7 +3064,7 @@
     {
      "e": {
       "cat": "ugly",
-      "id": "loan_0010-e58",
+      "id": "loan_0010-e59",
       "note": "подпись: фамилия+инициалы",
       "type": "PER"
      },

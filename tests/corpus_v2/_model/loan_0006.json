@@ -210,7 +210,7 @@
     {
      "e": {
       "cat": "adversarial",
-      "id": "loan_0006-e54",
+      "id": "loan_0006-e55",
       "note": "адрес в сноске",
       "trick": "in_footnote",
       "type": "ADDRESS"
@@ -223,7 +223,7 @@
     {
      "e": {
       "cat": "adversarial",
-      "id": "loan_0006-e55",
+      "id": "loan_0006-e56",
       "note": "ИНН в сноске",
       "trick": "in_footnote",
       "type": "INN"
@@ -236,7 +236,7 @@
     {
      "e": {
       "cat": "adversarial",
-      "id": "loan_0006-e56",
+      "id": "loan_0006-e57",
       "note": "ФИО в сноске",
       "trick": "in_footnote",
       "type": "PER"
@@ -2339,6 +2339,55 @@
    "t": "p"
   },
   {
+   "chunks": [
+    {
+     "s": "6.9. Финансирование предоставляется частями; первым выбирается "
+    },
+    {
+     "e": {
+      "axes": {
+       "оборот": "именной: транш «Имя»"
+      },
+      "cat": "canonical",
+      "form": "TRANCHE|оборот=именной: транш «Имя»",
+      "id": "loan_0006-e32",
+      "note": "фабричный тип: пример из файла-описания владельца",
+      "type": "TRANCHE"
+     },
+     "s": "транш «Оборотный»"
+    },
+    {
+     "s": " согласно графику выборки."
+    }
+   ],
+   "style": "normal",
+   "t": "p"
+  },
+  {
+   "chunks": [
+    {
+     "s": "6.10. Порядок дальнейшей выборки: "
+    },
+    {
+     "n": {
+      "axes": {
+       "оборот-негатива": "порядковый"
+      },
+      "form": "TRANCHE|оборот=порядковый (негатив)",
+      "kind": "ordinal-tranche",
+      "type": "TRANCHE",
+      "why": "порядковый транш не маскируется — решение владельца (TYPE-FACTORY-2)"
+     },
+     "s": "1-й транш перечисляется после подписания"
+    },
+    {
+     "s": "."
+    }
+   ],
+   "style": "normal",
+   "t": "p"
+  },
+  {
    "chunks": [],
    "style": "normal",
    "t": "p"
@@ -2376,7 +2425,7 @@
          {
           "e": {
            "cat": "canonical",
-           "id": "loan_0006-e32",
+           "id": "loan_0006-e33",
            "type": "PER"
           },
           "s": "Смирнов Олег Петрович"
@@ -2393,7 +2442,7 @@
          {
           "e": {
            "cat": "canonical",
-           "id": "loan_0006-e33",
+           "id": "loan_0006-e34",
            "note": "стиль записи из BIRTHDATE_STYLES",
            "type": "BIRTHDATE"
           },
@@ -2411,7 +2460,7 @@
          {
           "e": {
            "cat": "ugly",
-           "id": "loan_0006-e34",
+           "id": "loan_0006-e35",
            "note": "стиль адреса: nonres",
            "type": "ADDRESS"
           },
@@ -2429,7 +2478,7 @@
          {
           "e": {
            "cat": "canonical",
-           "id": "loan_0006-e35",
+           "id": "loan_0006-e36",
            "note": "серия+номер, стиль записи из PASSPORT_STYLES",
            "type": "PASSPORT"
           },
@@ -2444,7 +2493,7 @@
          {
           "e": {
            "cat": "ugly",
-           "id": "loan_0006-e36",
+           "id": "loan_0006-e37",
            "note": "код подразделения, стиль записи из DEPTCODE_STYLES",
            "type": "PASSPORT"
           },
@@ -2463,7 +2512,7 @@
           "e": {
            "cat": "canonical",
            "checksum": "valid",
-           "id": "loan_0006-e37",
+           "id": "loan_0006-e38",
            "note": "стиль записи из SNILS_STYLES",
            "type": "SNILS"
           },
@@ -2476,7 +2525,7 @@
           "e": {
            "cat": "ugly",
            "checksum": "valid",
-           "id": "loan_0006-e38",
+           "id": "loan_0006-e39",
            "note": "ИНН физлица (12 знаков)",
            "type": "INN"
           },
@@ -2494,7 +2543,7 @@
          {
           "e": {
            "cat": "canonical",
-           "id": "loan_0006-e39",
+           "id": "loan_0006-e40",
            "note": "формат: canonical",
            "type": "PHONE"
           },
@@ -2512,7 +2561,7 @@
          {
           "e": {
            "cat": "canonical",
-           "id": "loan_0006-e40",
+           "id": "loan_0006-e41",
            "type": "EMAIL"
           },
           "s": "smirnov@yandex.ru"
@@ -2534,7 +2583,7 @@
          {
           "e": {
            "cat": "ugly",
-           "id": "loan_0006-e41",
+           "id": "loan_0006-e42",
            "note": "фамилия + инициалы",
            "type": "PER"
           },
@@ -2562,7 +2611,7 @@
          {
           "e": {
            "cat": "canonical",
-           "id": "loan_0006-e42",
+           "id": "loan_0006-e43",
            "type": "PER"
           },
           "s": "Иванов Владимир Дмитриевич"
@@ -2579,7 +2628,7 @@
          {
           "e": {
            "cat": "canonical",
-           "id": "loan_0006-e43",
+           "id": "loan_0006-e44",
            "note": "стиль записи из BIRTHDATE_STYLES",
            "type": "BIRTHDATE"
           },
@@ -2597,7 +2646,7 @@
          {
           "e": {
            "cat": "ugly",
-           "id": "loan_0006-e44",
+           "id": "loan_0006-e45",
            "note": "стиль адреса: nonres",
            "type": "ADDRESS"
           },
@@ -2615,7 +2664,7 @@
          {
           "e": {
            "cat": "canonical",
-           "id": "loan_0006-e45",
+           "id": "loan_0006-e46",
            "note": "серия+номер, стиль записи из PASSPORT_STYLES",
            "type": "PASSPORT"
           },
@@ -2630,7 +2679,7 @@
          {
           "e": {
            "cat": "ugly",
-           "id": "loan_0006-e46",
+           "id": "loan_0006-e47",
            "note": "код подразделения, стиль записи из DEPTCODE_STYLES",
            "type": "PASSPORT"
           },
@@ -2649,7 +2698,7 @@
           "e": {
            "cat": "canonical",
            "checksum": "valid",
-           "id": "loan_0006-e47",
+           "id": "loan_0006-e48",
            "note": "стиль записи из SNILS_STYLES",
            "type": "SNILS"
           },
@@ -2662,7 +2711,7 @@
           "e": {
            "cat": "ugly",
            "checksum": "valid",
-           "id": "loan_0006-e48",
+           "id": "loan_0006-e49",
            "note": "ИНН физлица (12 знаков)",
            "type": "INN"
           },
@@ -2680,7 +2729,7 @@
          {
           "e": {
            "cat": "canonical",
-           "id": "loan_0006-e49",
+           "id": "loan_0006-e50",
            "note": "формат: canonical",
            "type": "PHONE"
           },
@@ -2698,7 +2747,7 @@
          {
           "e": {
            "cat": "canonical",
-           "id": "loan_0006-e50",
+           "id": "loan_0006-e51",
            "type": "EMAIL"
           },
           "s": "ivanov@corp-tehno.ru"
@@ -2720,7 +2769,7 @@
          {
           "e": {
            "cat": "ugly",
-           "id": "loan_0006-e51",
+           "id": "loan_0006-e52",
            "note": "фамилия + инициалы",
            "type": "PER"
           },
@@ -2754,7 +2803,7 @@
          {
           "e": {
            "cat": "adversarial",
-           "id": "loan_0006-e52",
+           "id": "loan_0006-e53",
            "note": "первые цифры ИНН в одной ячейке, остальные — в соседней",
            "trick": "cell_boundary_split",
            "type": "INN"
@@ -2774,7 +2823,7 @@
          {
           "e": {
            "cat": "adversarial",
-           "id": "loan_0006-e52",
+           "id": "loan_0006-e53",
            "trick": "cell_boundary_split",
            "type": "INN"
           },
@@ -2795,7 +2844,7 @@
          {
           "e": {
            "cat": "adversarial",
-           "id": "loan_0006-e53",
+           "id": "loan_0006-e54",
            "note": "ФИО разорвано границей ячейки",
            "trick": "cell_boundary_split",
            "type": "PER"
@@ -2815,7 +2864,7 @@
          {
           "e": {
            "cat": "adversarial",
-           "id": "loan_0006-e53",
+           "id": "loan_0006-e54",
            "trick": "cell_boundary_split",
            "type": "PER"
           },
@@ -2853,7 +2902,7 @@
     {
      "e": {
       "cat": "ugly",
-      "id": "loan_0006-e57",
+      "id": "loan_0006-e58",
       "note": "подпись: фамилия+инициалы",
       "type": "PER"
      },
@@ -2874,7 +2923,7 @@
     {
      "e": {
       "cat": "ugly",
-      "id": "loan_0006-e58",
+      "id": "loan_0006-e59",
       "note": "подпись: фамилия+инициалы",
       "type": "PER"
      },

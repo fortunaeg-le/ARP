@@ -64,9 +64,11 @@ def test_profiles_are_nested_and_maximum_is_everything():
     assert set(type_policy.PERSONAL_REQUISITES) < set(type_policy.WITH_MONEY)
     # ЭТАП T2: набор «всё, включая деньги» расширен процентом и сроком —
     # решение владельца назвало три вида данных одним пунктом (см. обоснование
-    # у type_policy.WITH_MONEY).
+    # у type_policy.WITH_MONEY). ЭТАП TYPE-FACTORY-2: + три коммерческих типа
+    # из черновика владельца (номер договора, доля голосов, именной транш) —
+    # sets: [with_money] в их файлах-описаниях.
     assert (set(type_policy.WITH_MONEY) - set(type_policy.PERSONAL_REQUISITES)
-            == {"SUM", "PERCENT", "TERM"})
+            == {"SUM", "PERCENT", "TERM", "CONTRACT_NO", "SHARE_PCT", "TRANCHE"})
     assert type_policy.MAXIMUM is None
     # «Максимум» ⊇ «всё, включая деньги» — и с запасом на будущие типы.
     known = set(type_policy.known_types(CONFIG))

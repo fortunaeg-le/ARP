@@ -34,6 +34,7 @@ generate.py — ГЕНЕРАТОР КОРПУСА V2. Отдельная коп�
 """
 import os
 import random
+import re
 import sys
 
 import data as DT
@@ -1813,8 +1814,11 @@ def factory_block(d, doc_no):
         return []
     out = [para([d.t("6. ОСОБЫЕ УСЛОВИЯ ОТДЕЛЬНЫХ ВИДОВ ДАННЫХ")], style="bold")]
     n = 0
+    # d.ctype хранит ПОЛНОЕ название договора (D получает cname), поэтому
+    # короткий ключ типа договора берём из doc_id: «loan_0001»/«cx_loan_0023».
+    short_ctype = re.match(r"(?:cx_)?([a-z]+)_", d.doc_id).group(1)
     for k, ft in enumerate(FACTORY_TYPES):
-        if ft["only_ctypes"] and d.ctype not in ft["only_ctypes"]:
+        if ft["only_ctypes"] and short_ctype not in ft["only_ctypes"]:
             continue
         ex = ft["examples"][(doc_no + k) % len(ft["examples"])]
         text, form, axes = (ex["text"], ex.get("form"), ex.get("axes")) \
@@ -1829,6 +1833,7 @@ def factory_block(d, doc_no):
         n += 1
         out.append(para([d.t("6.%d. %s" % (n, ft["neg_intro"]))]
                         + [d.N(neg["text"], neg["why"], type_=ft["type"],
+                               form=neg.get("form"), axes=neg.get("axes"),
                                kind=neg.get("kind"))]
                         + [d.t(".")]))
     out.append(para([]))
