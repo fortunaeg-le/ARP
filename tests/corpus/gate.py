@@ -99,6 +99,7 @@ import measure_lib as ML  # noqa: E402
 import run_measurement as RM  # noqa: E402
 import gate_config as GC  # noqa: E402
 import overmask_ledger as OL  # noqa: E402
+import scope_exclusions as SX  # noqa: E402
 
 MANIFEST = os.path.join(HERE, "MANIFEST.sha256")
 BASELINE = os.path.join(HERE, "results_baseline.json")
@@ -200,9 +201,21 @@ def _delta_mark(before, after):
 # --------------------------------------------------------------------------- #
 #   Линия «б» + креши + FP + masking A/B/C — историческое ядро (этап 0d)       #
 # --------------------------------------------------------------------------- #
+def fp_excluded_count(agg, corpus="v1"):
+    """Сколько масок из `fp_on_neg` относится к типам, снятым с линии FP/«а»
+    манифестом исключений (`scope_exclusions.py`).
+
+    ЭТАП V1-SCOPE. Считается ПО ИМЕНИ ТИПА и только по нему: исключение узкое,
+    и никакой другой признак (значение, документ, «похожесть») роли не играет —
+    иначе граница исключения перестала бы быть проверяемой."""
+    types = SX.excluded_types("а", corpus) | SX.excluded_types("FP", corpus)
+    per_type = agg.get("fp_on_neg", {})
+    return sum(n for t, n in per_type.items() if t in types), types
+
+
 def compare(baseline_agg, current_agg, fp_tolerance,
             leak_tolerance=0, masking_a_pp=0.0, masking_b_pp=0.0,
-            masking_c_pp=0.0):
+            masking_c_pp=0.0, fp_exclusions=True):
     """Возвращает (rows, regressions, improvements) — БЕЗ warnings, историческая
     сигнатура сохранена (её зовёт test_gate_regression_detection). Полную оценку
     четырёх линий даёт evaluate(); эта функция закрывает креши, линию «б»
@@ -259,11 +272,26 @@ def compare(baseline_agg, current_agg, fp_tolerance,
 
     fp_b = baseline_agg["fp_on_neg_total"]
     fp_c = current_agg["fp_on_neg_total"]
+    # ЭТАП V1-SCOPE. Из ИТОГА вычитаются типы, снятые с линии манифестом
+    # исключений (scope_exclusions.py) — и только они, по имени типа. Цифра НЕ
+    # исчезает: print_scope_exclusions печатает её отдельной строкой, а
+    # вычитание симметрично (из baseline и из текущего), иначе исключение
+    # прощало бы ещё и старый счёт.
+    excl_note = ""
+    if fp_exclusions:
+        excl_b, _ = fp_excluded_count(baseline_agg)
+        excl_c, excl_types = fp_excluded_count(current_agg)
+        if excl_types:
+            fp_b -= excl_b
+            fp_c -= excl_c
+            excl_note = (" [вне счёта: %s — %d масок, исключены из линии, "
+                         "см. scope_exclusions.py]"
+                         % (", ".join(sorted(excl_types)), excl_c))
     fp_delta = fp_c - fp_b
     if fp_delta > fp_tolerance:
         regressions.append(
-            "(3) FP по негативам: %d -> %d (+%d), допуск gate_config.FP_TOLERANCE=+%d превышен"
-            % (fp_b, fp_c, fp_delta, fp_tolerance)
+            "(3) FP по негативам: %d -> %d (+%d), допуск gate_config.FP_TOLERANCE=+%d превышен%s"
+            % (fp_b, fp_c, fp_delta, fp_tolerance, excl_note)
         )
     elif fp_delta < 0:
         improvements.append("FP по негативам: %d -> %d (%d)" % (fp_b, fp_c, fp_delta))
@@ -365,7 +393,13 @@ def compare_precision(baseline_prec, current_prec, tol_pp):
     precision is None (масок-решений по типу нет вовсе), пропускается — как и
     раньше, «нет данных» не приравнивается ни к 100%, ни к регрессу."""
     regressions, improvements = [], []
+    # ЭТАП V1-SCOPE: типы, снятые с линии «а» на корпусе v1 (манифест
+    # scope_exclusions.py). Пропуск ЯВНЫЙ и именной; печать — отдельной
+    # строкой в print_scope_exclusions, а не молчание.
+    excluded = SX.excluded_types("а", "v1")
     for t in ML.ALL_ENTITY_TYPES:
+        if t in excluded:
+            continue
         base = baseline_prec["per_type"].get(t, {}).get("precision")
         cur = current_prec["per_type"].get(t, {}).get("precision")
         if base is None or cur is None:
@@ -718,6 +752,41 @@ def print_precision(base_prec, cur_prec, tol_pp):
     print("  — cross/nothing ДИАГНОСТИКА, в precision и в гейт НЕ входят (этап D).")
 
 
+def print_scope_exclusions(cur_prec, cur_agg, corpus="v1"):
+    """ЭТАП V1-SCOPE. Исключённые типы — ОТДЕЛЬНОЙ ВИДИМОЙ СТРОКОЙ с цифрой.
+
+    Смысл печати ровно в том, чтобы исключение не превратилось в ноль: цифра
+    расхождения остаётся на глазах у каждого, кто читает отчёт, вместе с
+    именем автора и датой решения. Молчаливое исключение — это спрятанный
+    дефект; названное — принятое решение."""
+    records = [r for r in SX.EXCLUSIONS
+               if r["corpus"] == corpus and not r.get("closed")]
+    if not records:
+        return
+    print("\n(и) ИСКЛЮЧЕНО ИЗ ЛИНИЙ ГЕЙТА НА КОРПУСЕ %s (манифест "
+          "tests/corpus/scope_exclusions.py)" % corpus)
+    for r in records:
+        t = r["type"]
+        fact = (cur_agg.get("fp_on_neg", {}) or {}).get(t, 0)
+        d = cur_prec["per_type"].get(t) or {}
+        print("  исключено из точности %s: %s (%d расхождений разметки)"
+              % (corpus, t, fact))
+        print("      линия «%s» — %s" % (r["line"], SX.LINES[r["line"]]))
+        print("      факт прогона: tp %d, fp на негативе %d; "
+              "на дату решения было %d" % (d.get("tp", 0), fact,
+                                           r.get("known_count", 0)))
+        if r.get("known_count") is not None and fact != r["known_count"]:
+            print("      ⚠ число ИЗМЕНИЛОСЬ против даты решения (%d -> %d): "
+                  "обоснование давалось под прежнее число — перечитать запись"
+                  % (r["known_count"], fact))
+        print("      решение: %s, %s (этап %s)"
+              % (r["author"], r["date"], r.get("stage", "—")))
+        print("      обоснование: %s" % r["reason"])
+    print("  ЧТО ИСКЛЮЧЕНИЕ НЕ ДЕЛАЕТ: тип продолжает мериться на корпусе v2 "
+          "полностью и остаётся под линиями «б» (утечка), «д» (порча "
+          "документа), «е» (границы) и «в»/«г» (обратимость) на v1.")
+
+
 def print_masking_correctness(baseline_agg, current_agg):
     """Отчёт по masking_correctness РЯДОМ с recall/leak. Знаменатели печатаются
     явно: у A это все маски, у B/C — маски, легшие хоть на одну эталонную
@@ -921,6 +990,7 @@ def main(argv=None):
     print()
     print_report(v["rows"], v["base_agg"], v["cur_agg"])
     print_precision(v["base_prec"], v["cur_prec"], GC.PRECISION_TOLERANCE_PP)
+    print_scope_exclusions(v["cur_prec"], v["cur_agg"])
     print_masking_correctness(v["base_agg"], v["cur_agg"])
     print_overmask(v["base_prec"], v["cur_prec"], GC.OVERMASK_NOTHING_TOLERANCE)
     print_boundaries(v["base_bnd"], v["cur_bnd"])

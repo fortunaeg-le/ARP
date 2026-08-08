@@ -73,7 +73,9 @@ venv\Scripts\pyinstaller.exe packaging\shifrator.spec --distpath dist --workpath
    `MANIFEST.sha256` меняются ТОЛЬКО через `tests/corpus/promote_baseline.py`
    с `--author` и `--reason`; инструмент пишет журнал `overmask_ledger.json`.
    Допуски в `tests/corpus/gate_config.py` не ослаблять — все нулевые, и это
-   измеренный факт, а не осторожность.
+   измеренный факт, а не осторожность. Снять тип с линии гейта можно ТОЛЬКО
+   записью в `tests/corpus/scope_exclusions.py` (автор + обоснование, иначе
+   сборка падает); линии «б» (утечка) и «в» (обратимость) не снимаются никогда.
 4. **Стена между детекцией и генератором корпуса v2.** Код в `src/` не читает и
    не импортирует `tests/corpus_v2/` (values, generate, typedefs, эталоны).
    Иначе детектор учится на ответах, и цифры перестают что-либо значить.
