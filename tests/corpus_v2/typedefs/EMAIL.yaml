@@ -1,0 +1,14 @@
+# Файл-описание типа (фабрика типов, сессия 2). Правится ТОЛЬКО здесь;
+# entity_types.yaml собирает tests/corpus_v2/assemble_types.py.
+type: EMAIL
+title: Адрес электронной почты
+status: active
+detect:
+  form:
+    class: raw
+    pattern: '[\w\.-]+@[\w\.-]+\.\w+'
+  token_prefix: 'EMAIL'
+  rank: 1100
+  sets: [personal, personal_requisites, with_money]
+  measure: {leak_class: text}
+generator: legacy

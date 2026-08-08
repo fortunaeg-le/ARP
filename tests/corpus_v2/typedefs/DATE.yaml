@@ -1,0 +1,28 @@
+# Файл-описание типа (фабрика типов, сессия 2). Правится ТОЛЬКО здесь;
+# entity_types.yaml собирает tests/corpus_v2/assemble_types.py.
+type: DATE
+title: Дата (детектор выключен)
+status: active
+detect:
+  form:
+    class: raw
+    pattern: '\d{1,2}[.\/]\d{1,2}[.\/]\d{2,4}'
+  enabled: false
+  token_prefix: 'DATE'
+  rank: 1300
+  sets: []
+  sets_why: 'DATE выключен детектором (enabled: false); в именованные наборы не входит'
+  measure: {leak_class: text}
+generator: legacy
+notes: |
+  ЭТАП T4 — ОТРИЦАТЕЛЬНЫЕ КЛАССЫ. Три типа ниже НИКОГДА не маскируются (нет
+  token_prefix — _load_token_prefixes их не видит, физически нечем заменить их
+  в тексте). Они эмитятся как Entity и доходят до tokenizer._resolve_overlaps,
+  где действуют БАРЬЕРОМ: пересекающийся кандидат другого типа обрезается/
+  проигрывает им ровно так же, как проигрывает regex-реквизиту или структурному
+  ORG/PER (см. ARCHITECTURE.md, инвариант разрешения пересечений). Разворот —
+  одной правкой конфига: `suppress_masking: false` ИЛИ `enabled: false`
+  (любое из двух выключает эмиссию класса целиком, барьер исчезает, маски
+  соседних типов возвращаются в прежнем виде — см. docs/archive/reports/T4_REPORT.md, приёмка).
+  `suppress_masking: true` — состояние по умолчанию для этих трёх типов,
+  решение владельца (ЗАЧЕМ этапа T4).
