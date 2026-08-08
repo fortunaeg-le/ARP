@@ -2094,6 +2094,61 @@
   {
    "chunks": [
     {
+     "s": "6. ОСОБЫЕ УСЛОВИЯ ОТДЕЛЬНЫХ ВИДОВ ДАННЫХ"
+    }
+   ],
+   "style": "bold",
+   "t": "p"
+  },
+  {
+   "chunks": [
+    {
+     "s": "6.1. Полномочия представителя подтверждены доверенностью, реестровый номер "
+    },
+    {
+     "e": {
+      "cat": "canonical",
+      "id": "loan_0007-e31",
+      "note": "фабричный тип: пример из файла-описания владельца",
+      "type": "REG_NUMBER"
+     },
+     "s": "77/714-н/77-2024-1-502"
+    },
+    {
+     "s": "."
+    }
+   ],
+   "style": "normal",
+   "t": "p"
+  },
+  {
+   "chunks": [
+    {
+     "s": "6.2. Для сопоставления в учёте указывается: "
+    },
+    {
+     "n": {
+      "kind": "cadastral",
+      "type": "REG_NUMBER",
+      "why": "чужая номенклатура: двоеточия, нет группы «-н» — не реестровый номер стороны"
+     },
+     "s": "кадастровый номер 77:01:0004012:2211"
+    },
+    {
+     "s": "."
+    }
+   ],
+   "style": "normal",
+   "t": "p"
+  },
+  {
+   "chunks": [],
+   "style": "normal",
+   "t": "p"
+  },
+  {
+   "chunks": [
+    {
      "s": "РЕКВИЗИТЫ И ПОДПИСИ СТОРОН"
     }
    ],
@@ -2119,7 +2174,7 @@
     {
      "e": {
       "cat": "canonical",
-      "id": "loan_0007-e31",
+      "id": "loan_0007-e32",
       "type": "ORG"
      },
      "s": "ООО «Аргус»"
@@ -2136,7 +2191,7 @@
     {
      "e": {
       "cat": "ugly",
-      "id": "loan_0007-e32",
+      "id": "loan_0007-e33",
       "note": "стиль адреса: pobox",
       "type": "ADDRESS"
      },
@@ -2155,7 +2210,7 @@
      "e": {
       "cat": "canonical",
       "checksum": "valid",
-      "id": "loan_0007-e33",
+      "id": "loan_0007-e34",
       "type": "INN"
      },
      "s": "2192415803"
@@ -2166,7 +2221,7 @@
     {
      "e": {
       "cat": "canonical",
-      "id": "loan_0007-e34",
+      "id": "loan_0007-e35",
       "type": "KPP"
      },
      "s": "647091145"
@@ -2184,7 +2239,7 @@
      "e": {
       "cat": "canonical",
       "checksum": "valid",
-      "id": "loan_0007-e35",
+      "id": "loan_0007-e36",
       "type": "OGRN"
      },
      "s": "1863193072642"
@@ -2202,7 +2257,7 @@
      "e": {
       "cat": "canonical",
       "checksum": "valid",
-      "id": "loan_0007-e36",
+      "id": "loan_0007-e37",
       "type": "ACCOUNT"
      },
      "s": "40702810255894121918"
@@ -2222,7 +2277,7 @@
     {
      "e": {
       "cat": "canonical",
-      "id": "loan_0007-e37",
+      "id": "loan_0007-e38",
       "note": "корреспондентский счёт банка",
       "type": "ACCOUNT"
      },
@@ -2234,7 +2289,7 @@
     {
      "e": {
       "cat": "canonical",
-      "id": "loan_0007-e38",
+      "id": "loan_0007-e39",
       "type": "BIK"
      },
      "s": "044525225"
@@ -2251,7 +2306,7 @@
     {
      "e": {
       "cat": "canonical",
-      "id": "loan_0007-e39",
+      "id": "loan_0007-e40",
       "note": "формат: canonical",
       "type": "PHONE"
      },
@@ -2269,7 +2324,7 @@
     {
      "e": {
       "cat": "canonical",
-      "id": "loan_0007-e40",
+      "id": "loan_0007-e41",
       "type": "EMAIL"
      },
      "s": "mamedov@bk.ru"
@@ -2291,7 +2346,7 @@
     {
      "e": {
       "cat": "ugly",
-      "id": "loan_0007-e41",
+      "id": "loan_0007-e42",
       "note": "инициалы перед фамилией",
       "type": "PER"
      },
@@ -2320,7 +2375,7 @@
     {
      "e": {
       "cat": "canonical",
-      "id": "loan_0007-e42",
+      "id": "loan_0007-e43",
       "type": "ORG"
      },
      "s": "ПАО «Феникс»"
@@ -2337,7 +2392,7 @@
     {
      "e": {
       "cat": "ugly",
-      "id": "loan_0007-e43",
+      "id": "loan_0007-e44",
       "note": "стиль адреса: pobox",
       "type": "ADDRESS"
      },
@@ -2356,7 +2411,7 @@
      "e": {
       "cat": "canonical",
       "checksum": "valid",
-      "id": "loan_0007-e44",
+      "id": "loan_0007-e45",
       "type": "INN"
      },
      "s": "2329021706"
@@ -2367,7 +2422,7 @@
     {
      "e": {
       "cat": "canonical",
-      "id": "loan_0007-e45",
+      "id": "loan_0007-e46",
       "type": "KPP"
      },
      "s": "276789131"
@@ -2385,7 +2440,7 @@
      "e": {
       "cat": "canonical",
       "checksum": "valid",
-      "id": "loan_0007-e46",
+      "id": "loan_0007-e47",
       "type": "OGRN"
      },
      "s": "1676565861751"
@@ -2403,7 +2458,7 @@
      "e": {
       "cat": "canonical",
       "checksum": "valid",
-      "id": "loan_0007-e47",
+      "id": "loan_0007-e48",
       "type": "ACCOUNT"
      },
      "s": "40702810013823735395"
@@ -2423,7 +2478,7 @@
     {
      "e": {
       "cat": "canonical",
-      "id": "loan_0007-e48",
+      "id": "loan_0007-e49",
       "note": "корреспондентский счёт банка",
       "type": "ACCOUNT"
      },
@@ -2435,7 +2490,7 @@
     {
      "e": {
       "cat": "canonical",
-      "id": "loan_0007-e49",
+      "id": "loan_0007-e50",
       "type": "BIK"
      },
      "s": "044525593"
@@ -2452,7 +2507,7 @@
     {
      "e": {
       "cat": "canonical",
-      "id": "loan_0007-e50",
+      "id": "loan_0007-e51",
       "note": "формат: canonical",
       "type": "PHONE"
      },
@@ -2470,7 +2525,7 @@
     {
      "e": {
       "cat": "canonical",
-      "id": "loan_0007-e51",
+      "id": "loan_0007-e52",
       "type": "EMAIL"
      },
      "s": "ershova@list.ru"
@@ -2492,7 +2547,7 @@
     {
      "e": {
       "cat": "ugly",
-      "id": "loan_0007-e52",
+      "id": "loan_0007-e53",
       "note": "инициалы перед фамилией",
       "type": "PER"
      },
@@ -2535,7 +2590,7 @@
     {
      "e": {
       "cat": "ugly",
-      "id": "loan_0007-e53",
+      "id": "loan_0007-e54",
       "note": "стиль адреса: pobox",
       "type": "ADDRESS"
      },
@@ -2556,7 +2611,7 @@
     {
      "e": {
       "cat": "ugly",
-      "id": "loan_0007-e54",
+      "id": "loan_0007-e55",
       "note": "ПДн в приложении к договору",
       "type": "PER"
      },
@@ -2574,7 +2629,7 @@
     {
      "e": {
       "cat": "canonical",
-      "id": "loan_0007-e55",
+      "id": "loan_0007-e56",
       "note": "формат: canonical",
       "type": "PHONE"
      },
@@ -2606,7 +2661,7 @@
     {
      "e": {
       "cat": "ugly",
-      "id": "loan_0007-e56",
+      "id": "loan_0007-e57",
       "note": "подпись: фамилия+инициалы",
       "type": "PER"
      },
@@ -2627,7 +2682,7 @@
     {
      "e": {
       "cat": "ugly",
-      "id": "loan_0007-e57",
+      "id": "loan_0007-e58",
       "note": "подпись: фамилия+инициалы",
       "type": "PER"
      },

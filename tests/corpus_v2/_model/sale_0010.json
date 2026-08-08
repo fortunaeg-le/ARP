@@ -2060,6 +2060,61 @@
   {
    "chunks": [
     {
+     "s": "6. ОСОБЫЕ УСЛОВИЯ ОТДЕЛЬНЫХ ВИДОВ ДАННЫХ"
+    }
+   ],
+   "style": "bold",
+   "t": "p"
+  },
+  {
+   "chunks": [
+    {
+     "s": "6.1. Полномочия представителя подтверждены доверенностью, реестровый номер "
+    },
+    {
+     "e": {
+      "cat": "canonical",
+      "id": "sale_0010-e32",
+      "note": "фабричный тип: пример из файла-описания владельца",
+      "type": "REG_NUMBER"
+     },
+     "s": "78/1445-н/78-2022-12-7"
+    },
+    {
+     "s": "."
+    }
+   ],
+   "style": "normal",
+   "t": "p"
+  },
+  {
+   "chunks": [
+    {
+     "s": "6.2. Для сопоставления в учёте указывается: "
+    },
+    {
+     "n": {
+      "kind": "date-slash",
+      "type": "REG_NUMBER",
+      "why": "диапазон месяцев: нет буквенной группы, две группы-даты"
+     },
+     "s": "срок действия 12/2024-06/2025"
+    },
+    {
+     "s": "."
+    }
+   ],
+   "style": "normal",
+   "t": "p"
+  },
+  {
+   "chunks": [],
+   "style": "normal",
+   "t": "p"
+  },
+  {
+   "chunks": [
+    {
      "s": "РЕКВИЗИТЫ И ПОДПИСИ СТОРОН"
     }
    ],
@@ -2090,7 +2145,7 @@
          {
           "e": {
            "cat": "canonical",
-           "id": "sale_0010-e32",
+           "id": "sale_0010-e33",
            "type": "ORG"
           },
           "s": "ПАО «Вектор»"
@@ -2107,7 +2162,7 @@
          {
           "e": {
            "cat": "canonical",
-           "id": "sale_0010-e33",
+           "id": "sale_0010-e34",
            "note": "стиль адреса: canonical",
            "type": "ADDRESS"
           },
@@ -2125,7 +2180,7 @@
          {
           "e": {
            "cat": "canonical",
-           "id": "sale_0010-e34",
+           "id": "sale_0010-e35",
            "note": "стиль адреса: canonical",
            "type": "ADDRESS"
           },
@@ -2144,7 +2199,7 @@
           "e": {
            "cat": "canonical",
            "checksum": "invalid",
-           "id": "sale_0010-e35",
+           "id": "sale_0010-e36",
            "type": "INN"
           },
           "s": "1226865249"
@@ -2155,7 +2210,7 @@
          {
           "e": {
            "cat": "canonical",
-           "id": "sale_0010-e36",
+           "id": "sale_0010-e37",
            "type": "KPP"
           },
           "s": "817818329"
@@ -2173,7 +2228,7 @@
           "e": {
            "cat": "canonical",
            "checksum": "invalid",
-           "id": "sale_0010-e37",
+           "id": "sale_0010-e38",
            "type": "OGRN"
           },
           "s": "1778205671970"
@@ -2191,7 +2246,7 @@
           "e": {
            "cat": "canonical",
            "checksum": "invalid",
-           "id": "sale_0010-e38",
+           "id": "sale_0010-e39",
            "type": "ACCOUNT"
           },
           "s": "40702810803579030921"
@@ -2211,7 +2266,7 @@
          {
           "e": {
            "cat": "canonical",
-           "id": "sale_0010-e39",
+           "id": "sale_0010-e40",
            "note": "корреспондентский счёт банка",
            "type": "ACCOUNT"
           },
@@ -2223,7 +2278,7 @@
          {
           "e": {
            "cat": "canonical",
-           "id": "sale_0010-e40",
+           "id": "sale_0010-e41",
            "type": "BIK"
           },
           "s": "044030790"
@@ -2240,7 +2295,7 @@
          {
           "e": {
            "cat": "canonical",
-           "id": "sale_0010-e41",
+           "id": "sale_0010-e42",
            "note": "формат: canonical",
            "type": "PHONE"
           },
@@ -2258,7 +2313,7 @@
          {
           "e": {
            "cat": "canonical",
-           "id": "sale_0010-e42",
+           "id": "sale_0010-e43",
            "type": "EMAIL"
           },
           "s": "belyaev@gmail.com"
@@ -2280,7 +2335,7 @@
          {
           "e": {
            "cat": "ugly",
-           "id": "sale_0010-e43",
+           "id": "sale_0010-e44",
            "note": "инициалы перед фамилией",
            "type": "PER"
           },
@@ -2311,7 +2366,7 @@
          {
           "e": {
            "cat": "canonical",
-           "id": "sale_0010-e44",
+           "id": "sale_0010-e45",
            "type": "PER"
           },
           "s": "Новиков Дмитрий Юрьевич"
@@ -2328,7 +2383,7 @@
          {
           "e": {
            "cat": "canonical",
-           "id": "sale_0010-e45",
+           "id": "sale_0010-e46",
            "note": "стиль адреса: canonical",
            "type": "ADDRESS"
           },
@@ -2347,7 +2402,7 @@
           "e": {
            "cat": "canonical",
            "checksum": "invalid",
-           "id": "sale_0010-e46",
+           "id": "sale_0010-e47",
            "note": "12-значный ИНН",
            "type": "INN"
           },
@@ -2360,7 +2415,7 @@
           "e": {
            "cat": "ugly",
            "checksum": "invalid",
-           "id": "sale_0010-e47",
+           "id": "sale_0010-e48",
            "note": "ОГРНИП, 15 знаков",
            "type": "OGRN"
           },
@@ -2379,7 +2434,7 @@
           "e": {
            "cat": "canonical",
            "checksum": "invalid",
-           "id": "sale_0010-e48",
+           "id": "sale_0010-e49",
            "type": "ACCOUNT"
           },
           "s": "40802810073411824232"
@@ -2393,7 +2448,7 @@
          {
           "e": {
            "cat": "canonical",
-           "id": "sale_0010-e49",
+           "id": "sale_0010-e50",
            "type": "BIK"
           },
           "s": "044525555"
@@ -2410,7 +2465,7 @@
          {
           "e": {
            "cat": "canonical",
-           "id": "sale_0010-e50",
+           "id": "sale_0010-e51",
            "note": "формат: canonical",
            "type": "PHONE"
           },
@@ -2428,7 +2483,7 @@
          {
           "e": {
            "cat": "canonical",
-           "id": "sale_0010-e51",
+           "id": "sale_0010-e52",
            "type": "EMAIL"
           },
           "s": "novikov@list.ru"
@@ -2450,7 +2505,7 @@
          {
           "e": {
            "cat": "ugly",
-           "id": "sale_0010-e52",
+           "id": "sale_0010-e53",
            "note": "фамилия + инициалы",
            "type": "PER"
           },
@@ -2484,7 +2539,7 @@
          {
           "e": {
            "cat": "adversarial",
-           "id": "sale_0010-e53",
+           "id": "sale_0010-e54",
            "note": "первые цифры ИНН в одной ячейке, остальные — в соседней",
            "trick": "cell_boundary_split",
            "type": "INN"
@@ -2504,7 +2559,7 @@
          {
           "e": {
            "cat": "adversarial",
-           "id": "sale_0010-e53",
+           "id": "sale_0010-e54",
            "trick": "cell_boundary_split",
            "type": "INN"
           },
@@ -2525,7 +2580,7 @@
          {
           "e": {
            "cat": "adversarial",
-           "id": "sale_0010-e54",
+           "id": "sale_0010-e55",
            "note": "ФИО разорвано границей ячейки",
            "trick": "cell_boundary_split",
            "type": "PER"
@@ -2545,7 +2600,7 @@
          {
           "e": {
            "cat": "adversarial",
-           "id": "sale_0010-e54",
+           "id": "sale_0010-e55",
            "trick": "cell_boundary_split",
            "type": "PER"
           },
@@ -2583,7 +2638,7 @@
     {
      "e": {
       "cat": "ugly",
-      "id": "sale_0010-e57",
+      "id": "sale_0010-e58",
       "note": "подпись: фамилия+инициалы",
       "type": "PER"
      },
@@ -2604,7 +2659,7 @@
     {
      "e": {
       "cat": "ugly",
-      "id": "sale_0010-e58",
+      "id": "sale_0010-e59",
       "note": "подпись: фамилия+инициалы",
       "type": "PER"
      },
@@ -2638,7 +2693,7 @@
     {
      "e": {
       "cat": "adversarial",
-      "id": "sale_0010-e55",
+      "id": "sale_0010-e56",
       "note": "ФИО в нижнем колонтитуле",
       "trick": "in_footer",
       "type": "PER"
@@ -2651,7 +2706,7 @@
     {
      "e": {
       "cat": "adversarial",
-      "id": "sale_0010-e56",
+      "id": "sale_0010-e57",
       "note": "телефон в нижнем колонтитуле",
       "trick": "in_footer",
       "type": "PHONE"

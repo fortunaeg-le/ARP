@@ -2014,6 +2014,61 @@
   {
    "chunks": [
     {
+     "s": "6. ОСОБЫЕ УСЛОВИЯ ОТДЕЛЬНЫХ ВИДОВ ДАННЫХ"
+    }
+   ],
+   "style": "bold",
+   "t": "p"
+  },
+  {
+   "chunks": [
+    {
+     "s": "6.1. Полномочия представителя подтверждены доверенностью, реестровый номер "
+    },
+    {
+     "e": {
+      "cat": "canonical",
+      "id": "agency_0010-e29",
+      "note": "фабричный тип: пример из файла-описания владельца",
+      "type": "REG_NUMBER"
+     },
+     "s": "50/121-н/50-2023-4-88"
+    },
+    {
+     "s": "."
+    }
+   ],
+   "style": "normal",
+   "t": "p"
+  },
+  {
+   "chunks": [
+    {
+     "s": "6.2. Для сопоставления в учёте указывается: "
+    },
+    {
+     "n": {
+      "kind": "gost-ref",
+      "type": "REG_NUMBER",
+      "why": "ссылка на стандарт — не реестровый номер"
+     },
+     "s": "ГОСТ Р 52044-2003"
+    },
+    {
+     "s": "."
+    }
+   ],
+   "style": "normal",
+   "t": "p"
+  },
+  {
+   "chunks": [],
+   "style": "normal",
+   "t": "p"
+  },
+  {
+   "chunks": [
+    {
      "s": "РЕКВИЗИТЫ И ПОДПИСИ СТОРОН"
     }
    ],
@@ -2044,7 +2099,7 @@
          {
           "e": {
            "cat": "adversarial",
-           "id": "agency_0010-e47",
+           "id": "agency_0010-e48",
            "note": "голая строка ПДн в ячейке, без предложения вокруг",
            "trick": "bare_cell_no_sentence",
            "type": "PER"
@@ -2063,7 +2118,7 @@
          {
           "e": {
            "cat": "canonical",
-           "id": "agency_0010-e29",
+           "id": "agency_0010-e30",
            "type": "PER"
           },
           "s": "Иванова-Петрова Алла Юрьевна"
@@ -2080,7 +2135,7 @@
          {
           "e": {
            "cat": "ugly",
-           "id": "agency_0010-e30",
+           "id": "agency_0010-e31",
            "note": "стиль адреса: pobox",
            "type": "ADDRESS"
           },
@@ -2099,7 +2154,7 @@
           "e": {
            "cat": "canonical",
            "checksum": "valid",
-           "id": "agency_0010-e31",
+           "id": "agency_0010-e32",
            "note": "12-значный ИНН",
            "type": "INN"
           },
@@ -2112,7 +2167,7 @@
           "e": {
            "cat": "ugly",
            "checksum": "valid",
-           "id": "agency_0010-e32",
+           "id": "agency_0010-e33",
            "note": "ОГРНИП, 15 знаков",
            "type": "OGRN"
           },
@@ -2131,7 +2186,7 @@
           "e": {
            "cat": "canonical",
            "checksum": "valid",
-           "id": "agency_0010-e33",
+           "id": "agency_0010-e34",
            "type": "ACCOUNT"
           },
           "s": "40802810144051014454"
@@ -2145,7 +2200,7 @@
          {
           "e": {
            "cat": "canonical",
-           "id": "agency_0010-e34",
+           "id": "agency_0010-e35",
            "type": "BIK"
           },
           "s": "044525974"
@@ -2162,7 +2217,7 @@
          {
           "e": {
            "cat": "canonical",
-           "id": "agency_0010-e35",
+           "id": "agency_0010-e36",
            "note": "формат: canonical",
            "type": "PHONE"
           },
@@ -2180,7 +2235,7 @@
          {
           "e": {
            "cat": "canonical",
-           "id": "agency_0010-e36",
+           "id": "agency_0010-e37",
            "type": "EMAIL"
           },
           "s": "ivanova.petrova@gmail.com"
@@ -2202,7 +2257,7 @@
          {
           "e": {
            "cat": "ugly",
-           "id": "agency_0010-e37",
+           "id": "agency_0010-e38",
            "note": "фамилия + инициалы",
            "type": "PER"
           },
@@ -2230,7 +2285,7 @@
          {
           "e": {
            "cat": "adversarial",
-           "id": "agency_0010-e48",
+           "id": "agency_0010-e49",
            "note": "голый адрес в ячейке",
            "trick": "bare_cell_no_sentence",
            "type": "ADDRESS"
@@ -2249,7 +2304,7 @@
          {
           "e": {
            "cat": "canonical",
-           "id": "agency_0010-e38",
+           "id": "agency_0010-e39",
            "type": "PER"
           },
           "s": "Попов Олег Олегович"
@@ -2266,7 +2321,7 @@
          {
           "e": {
            "cat": "ugly",
-           "id": "agency_0010-e39",
+           "id": "agency_0010-e40",
            "note": "стиль адреса: pobox",
            "type": "ADDRESS"
           },
@@ -2285,7 +2340,7 @@
           "e": {
            "cat": "canonical",
            "checksum": "valid",
-           "id": "agency_0010-e40",
+           "id": "agency_0010-e41",
            "note": "12-значный ИНН",
            "type": "INN"
           },
@@ -2298,7 +2353,7 @@
           "e": {
            "cat": "ugly",
            "checksum": "valid",
-           "id": "agency_0010-e41",
+           "id": "agency_0010-e42",
            "note": "ОГРНИП, 15 знаков",
            "type": "OGRN"
           },
@@ -2317,7 +2372,7 @@
           "e": {
            "cat": "canonical",
            "checksum": "valid",
-           "id": "agency_0010-e42",
+           "id": "agency_0010-e43",
            "type": "ACCOUNT"
           },
           "s": "40802810717011235378"
@@ -2331,7 +2386,7 @@
          {
           "e": {
            "cat": "canonical",
-           "id": "agency_0010-e43",
+           "id": "agency_0010-e44",
            "type": "BIK"
           },
           "s": "045004763"
@@ -2348,7 +2403,7 @@
          {
           "e": {
            "cat": "canonical",
-           "id": "agency_0010-e44",
+           "id": "agency_0010-e45",
            "note": "формат: canonical",
            "type": "PHONE"
           },
@@ -2366,7 +2421,7 @@
          {
           "e": {
            "cat": "canonical",
-           "id": "agency_0010-e45",
+           "id": "agency_0010-e46",
            "type": "EMAIL"
           },
           "s": "popov@romashka.ru"
@@ -2388,7 +2443,7 @@
          {
           "e": {
            "cat": "ugly",
-           "id": "agency_0010-e46",
+           "id": "agency_0010-e47",
            "note": "фамилия + инициалы",
            "type": "PER"
           },
@@ -2449,7 +2504,7 @@
               {
                "e": {
                 "cat": "adversarial",
-                "id": "agency_0010-e49",
+                "id": "agency_0010-e50",
                 "note": "счёт во вложенной таблице",
                 "trick": "nested_table",
                 "type": "ACCOUNT"
@@ -2484,7 +2539,7 @@
               {
                "e": {
                 "cat": "adversarial",
-                "id": "agency_0010-e50",
+                "id": "agency_0010-e51",
                 "note": "ФИО во вложенной таблице",
                 "trick": "nested_table",
                 "type": "PER"
@@ -2540,7 +2595,7 @@
     {
      "e": {
       "cat": "ugly",
-      "id": "agency_0010-e51",
+      "id": "agency_0010-e52",
       "note": "стиль адреса: pobox",
       "type": "ADDRESS"
      },
@@ -2561,7 +2616,7 @@
     {
      "e": {
       "cat": "ugly",
-      "id": "agency_0010-e52",
+      "id": "agency_0010-e53",
       "note": "ПДн в приложении к договору",
       "type": "PER"
      },
@@ -2579,7 +2634,7 @@
     {
      "e": {
       "cat": "canonical",
-      "id": "agency_0010-e53",
+      "id": "agency_0010-e54",
       "note": "формат: canonical",
       "type": "PHONE"
      },
@@ -2611,7 +2666,7 @@
     {
      "e": {
       "cat": "ugly",
-      "id": "agency_0010-e54",
+      "id": "agency_0010-e55",
       "note": "подпись: фамилия+инициалы",
       "type": "PER"
      },
@@ -2632,7 +2687,7 @@
     {
      "e": {
       "cat": "ugly",
-      "id": "agency_0010-e55",
+      "id": "agency_0010-e56",
       "note": "подпись: фамилия+инициалы",
       "type": "PER"
      },

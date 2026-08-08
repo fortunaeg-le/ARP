@@ -160,7 +160,7 @@
     {
      "e": {
       "cat": "adversarial",
-      "id": "works_0010-e44",
+      "id": "works_0010-e45",
       "note": "адрес в сноске",
       "trick": "in_footnote",
       "type": "ADDRESS"
@@ -173,7 +173,7 @@
     {
      "e": {
       "cat": "adversarial",
-      "id": "works_0010-e45",
+      "id": "works_0010-e46",
       "note": "ИНН в сноске",
       "trick": "in_footnote",
       "type": "INN"
@@ -186,7 +186,7 @@
     {
      "e": {
       "cat": "adversarial",
-      "id": "works_0010-e46",
+      "id": "works_0010-e47",
       "note": "ФИО в сноске",
       "trick": "in_footnote",
       "type": "PER"
@@ -2032,6 +2032,61 @@
   {
    "chunks": [
     {
+     "s": "6. ОСОБЫЕ УСЛОВИЯ ОТДЕЛЬНЫХ ВИДОВ ДАННЫХ"
+    }
+   ],
+   "style": "bold",
+   "t": "p"
+  },
+  {
+   "chunks": [
+    {
+     "s": "6.1. Полномочия представителя подтверждены доверенностью, реестровый номер "
+    },
+    {
+     "e": {
+      "cat": "canonical",
+      "id": "works_0010-e26",
+      "note": "фабричный тип: пример из файла-описания владельца",
+      "type": "REG_NUMBER"
+     },
+     "s": "50/121-н/50-2023-4-88"
+    },
+    {
+     "s": "."
+    }
+   ],
+   "style": "normal",
+   "t": "p"
+  },
+  {
+   "chunks": [
+    {
+     "s": "6.2. Для сопоставления в учёте указывается: "
+    },
+    {
+     "n": {
+      "kind": "date-slash",
+      "type": "REG_NUMBER",
+      "why": "диапазон месяцев: нет буквенной группы, две группы-даты"
+     },
+     "s": "срок действия 12/2024-06/2025"
+    },
+    {
+     "s": "."
+    }
+   ],
+   "style": "normal",
+   "t": "p"
+  },
+  {
+   "chunks": [],
+   "style": "normal",
+   "t": "p"
+  },
+  {
+   "chunks": [
+    {
      "s": "РЕКВИЗИТЫ И ПОДПИСИ СТОРОН"
     }
    ],
@@ -2065,7 +2120,7 @@
          {
           "e": {
            "cat": "canonical",
-           "id": "works_0010-e26",
+           "id": "works_0010-e27",
            "type": "PER"
           },
           "s": "Тарасов Пётр Дмитриевич"
@@ -2082,7 +2137,7 @@
          {
           "e": {
            "cat": "ugly",
-           "id": "works_0010-e27",
+           "id": "works_0010-e28",
            "note": "стиль адреса: index_first",
            "type": "ADDRESS"
           },
@@ -2101,7 +2156,7 @@
           "e": {
            "cat": "canonical",
            "checksum": "valid",
-           "id": "works_0010-e28",
+           "id": "works_0010-e29",
            "note": "12-значный ИНН",
            "type": "INN"
           },
@@ -2114,7 +2169,7 @@
           "e": {
            "cat": "ugly",
            "checksum": "valid",
-           "id": "works_0010-e29",
+           "id": "works_0010-e30",
            "note": "ОГРНИП, 15 знаков",
            "type": "OGRN"
           },
@@ -2133,7 +2188,7 @@
           "e": {
            "cat": "canonical",
            "checksum": "valid",
-           "id": "works_0010-e30",
+           "id": "works_0010-e31",
            "type": "ACCOUNT"
           },
           "s": "40802810587304432878"
@@ -2147,7 +2202,7 @@
          {
           "e": {
            "cat": "canonical",
-           "id": "works_0010-e31",
+           "id": "works_0010-e32",
            "type": "BIK"
           },
           "s": "044030790"
@@ -2164,7 +2219,7 @@
          {
           "e": {
            "cat": "canonical",
-           "id": "works_0010-e32",
+           "id": "works_0010-e33",
            "note": "формат: canonical",
            "type": "PHONE"
           },
@@ -2182,7 +2237,7 @@
          {
           "e": {
            "cat": "canonical",
-           "id": "works_0010-e33",
+           "id": "works_0010-e34",
            "type": "EMAIL"
           },
           "s": "tarasov@corp-tehno.ru"
@@ -2204,7 +2259,7 @@
          {
           "e": {
            "cat": "ugly",
-           "id": "works_0010-e34",
+           "id": "works_0010-e35",
            "note": "фамилия + инициалы",
            "type": "PER"
           },
@@ -2235,7 +2290,7 @@
          {
           "e": {
            "cat": "canonical",
-           "id": "works_0010-e35",
+           "id": "works_0010-e36",
            "type": "PER"
           },
           "s": "Новиков Михаил Дмитриевич"
@@ -2252,7 +2307,7 @@
          {
           "e": {
            "cat": "ugly",
-           "id": "works_0010-e36",
+           "id": "works_0010-e37",
            "note": "стиль адреса: index_first",
            "type": "ADDRESS"
           },
@@ -2271,7 +2326,7 @@
           "e": {
            "cat": "canonical",
            "checksum": "valid",
-           "id": "works_0010-e37",
+           "id": "works_0010-e38",
            "note": "12-значный ИНН",
            "type": "INN"
           },
@@ -2284,7 +2339,7 @@
           "e": {
            "cat": "ugly",
            "checksum": "valid",
-           "id": "works_0010-e38",
+           "id": "works_0010-e39",
            "note": "ОГРНИП, 15 знаков",
            "type": "OGRN"
           },
@@ -2303,7 +2358,7 @@
           "e": {
            "cat": "canonical",
            "checksum": "valid",
-           "id": "works_0010-e39",
+           "id": "works_0010-e40",
            "type": "ACCOUNT"
           },
           "s": "40802810233341078557"
@@ -2317,7 +2372,7 @@
          {
           "e": {
            "cat": "canonical",
-           "id": "works_0010-e40",
+           "id": "works_0010-e41",
            "type": "BIK"
           },
           "s": "044525593"
@@ -2334,7 +2389,7 @@
          {
           "e": {
            "cat": "canonical",
-           "id": "works_0010-e41",
+           "id": "works_0010-e42",
            "note": "формат: canonical",
            "type": "PHONE"
           },
@@ -2352,7 +2407,7 @@
          {
           "e": {
            "cat": "canonical",
-           "id": "works_0010-e42",
+           "id": "works_0010-e43",
            "type": "EMAIL"
           },
           "s": "novikov@romashka.ru"
@@ -2374,7 +2429,7 @@
          {
           "e": {
            "cat": "ugly",
-           "id": "works_0010-e43",
+           "id": "works_0010-e44",
            "note": "фамилия + инициалы",
            "type": "PER"
           },
@@ -2412,7 +2467,7 @@
     {
      "e": {
       "cat": "ugly",
-      "id": "works_0010-e47",
+      "id": "works_0010-e48",
       "note": "подпись: фамилия+инициалы",
       "type": "PER"
      },
@@ -2433,7 +2488,7 @@
     {
      "e": {
       "cat": "ugly",
-      "id": "works_0010-e48",
+      "id": "works_0010-e49",
       "note": "подпись: фамилия+инициалы",
       "type": "PER"
      },

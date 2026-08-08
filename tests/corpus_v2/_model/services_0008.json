@@ -210,7 +210,7 @@
     {
      "e": {
       "cat": "adversarial",
-      "id": "services_0008-e46",
+      "id": "services_0008-e47",
       "note": "адрес в сноске",
       "trick": "in_footnote",
       "type": "ADDRESS"
@@ -223,7 +223,7 @@
     {
      "e": {
       "cat": "adversarial",
-      "id": "services_0008-e47",
+      "id": "services_0008-e48",
       "note": "ИНН в сноске",
       "trick": "in_footnote",
       "type": "INN"
@@ -236,7 +236,7 @@
     {
      "e": {
       "cat": "adversarial",
-      "id": "services_0008-e48",
+      "id": "services_0008-e49",
       "note": "ФИО в сноске",
       "trick": "in_footnote",
       "type": "PER"
@@ -2006,6 +2006,61 @@
   {
    "chunks": [
     {
+     "s": "6. ОСОБЫЕ УСЛОВИЯ ОТДЕЛЬНЫХ ВИДОВ ДАННЫХ"
+    }
+   ],
+   "style": "bold",
+   "t": "p"
+  },
+  {
+   "chunks": [
+    {
+     "s": "6.1. Полномочия представителя подтверждены доверенностью, реестровый номер "
+    },
+    {
+     "e": {
+      "cat": "canonical",
+      "id": "services_0008-e24",
+      "note": "фабричный тип: пример из файла-описания владельца",
+      "type": "REG_NUMBER"
+     },
+     "s": "78/1445-н/78-2022-12-7"
+    },
+    {
+     "s": "."
+    }
+   ],
+   "style": "normal",
+   "t": "p"
+  },
+  {
+   "chunks": [
+    {
+     "s": "6.2. Для сопоставления в учёте указывается: "
+    },
+    {
+     "n": {
+      "kind": "date-slash",
+      "type": "REG_NUMBER",
+      "why": "диапазон месяцев: нет буквенной группы, две группы-даты"
+     },
+     "s": "срок действия 12/2024-06/2025"
+    },
+    {
+     "s": "."
+    }
+   ],
+   "style": "normal",
+   "t": "p"
+  },
+  {
+   "chunks": [],
+   "style": "normal",
+   "t": "p"
+  },
+  {
+   "chunks": [
+    {
      "s": "РЕКВИЗИТЫ И ПОДПИСИ СТОРОН"
     }
    ],
@@ -2036,7 +2091,7 @@
          {
           "e": {
            "cat": "canonical",
-           "id": "services_0008-e24",
+           "id": "services_0008-e25",
            "type": "PER"
           },
           "s": "Крылова Светлана Сергеевна"
@@ -2053,7 +2108,7 @@
          {
           "e": {
            "cat": "ugly",
-           "id": "services_0008-e25",
+           "id": "services_0008-e26",
            "note": "стиль записи из BIRTHDATE_STYLES",
            "type": "BIRTHDATE"
           },
@@ -2071,7 +2126,7 @@
          {
           "e": {
            "cat": "ugly",
-           "id": "services_0008-e26",
+           "id": "services_0008-e27",
            "note": "стиль адреса: city_middle",
            "type": "ADDRESS"
           },
@@ -2089,7 +2144,7 @@
          {
           "e": {
            "cat": "canonical",
-           "id": "services_0008-e27",
+           "id": "services_0008-e28",
            "note": "серия+номер, стиль записи из PASSPORT_STYLES",
            "type": "PASSPORT"
           },
@@ -2104,7 +2159,7 @@
          {
           "e": {
            "cat": "ugly",
-           "id": "services_0008-e28",
+           "id": "services_0008-e29",
            "note": "код подразделения, стиль записи из DEPTCODE_STYLES",
            "type": "PASSPORT"
           },
@@ -2123,7 +2178,7 @@
           "e": {
            "cat": "canonical",
            "checksum": "valid",
-           "id": "services_0008-e29",
+           "id": "services_0008-e30",
            "note": "стиль записи из SNILS_STYLES",
            "type": "SNILS"
           },
@@ -2136,7 +2191,7 @@
           "e": {
            "cat": "ugly",
            "checksum": "valid",
-           "id": "services_0008-e30",
+           "id": "services_0008-e31",
            "note": "ИНН физлица (12 знаков)",
            "type": "INN"
           },
@@ -2154,7 +2209,7 @@
          {
           "e": {
            "cat": "canonical",
-           "id": "services_0008-e31",
+           "id": "services_0008-e32",
            "note": "формат: canonical",
            "type": "PHONE"
           },
@@ -2172,7 +2227,7 @@
          {
           "e": {
            "cat": "canonical",
-           "id": "services_0008-e32",
+           "id": "services_0008-e33",
            "type": "EMAIL"
           },
           "s": "krylova@sibtrans.ru"
@@ -2194,7 +2249,7 @@
          {
           "e": {
            "cat": "ugly",
-           "id": "services_0008-e33",
+           "id": "services_0008-e34",
            "note": "фамилия + инициалы",
            "type": "PER"
           },
@@ -2222,7 +2277,7 @@
          {
           "e": {
            "cat": "canonical",
-           "id": "services_0008-e34",
+           "id": "services_0008-e35",
            "type": "PER"
           },
           "s": "Пирогова Ирина Павловна"
@@ -2239,7 +2294,7 @@
          {
           "e": {
            "cat": "canonical",
-           "id": "services_0008-e35",
+           "id": "services_0008-e36",
            "note": "стиль записи из BIRTHDATE_STYLES",
            "type": "BIRTHDATE"
           },
@@ -2257,7 +2312,7 @@
          {
           "e": {
            "cat": "ugly",
-           "id": "services_0008-e36",
+           "id": "services_0008-e37",
            "note": "стиль адреса: city_middle",
            "type": "ADDRESS"
           },
@@ -2275,7 +2330,7 @@
          {
           "e": {
            "cat": "canonical",
-           "id": "services_0008-e37",
+           "id": "services_0008-e38",
            "note": "серия+номер, стиль записи из PASSPORT_STYLES",
            "type": "PASSPORT"
           },
@@ -2290,7 +2345,7 @@
          {
           "e": {
            "cat": "ugly",
-           "id": "services_0008-e38",
+           "id": "services_0008-e39",
            "note": "код подразделения, стиль записи из DEPTCODE_STYLES",
            "type": "PASSPORT"
           },
@@ -2309,7 +2364,7 @@
           "e": {
            "cat": "canonical",
            "checksum": "valid",
-           "id": "services_0008-e39",
+           "id": "services_0008-e40",
            "note": "стиль записи из SNILS_STYLES",
            "type": "SNILS"
           },
@@ -2322,7 +2377,7 @@
           "e": {
            "cat": "ugly",
            "checksum": "valid",
-           "id": "services_0008-e40",
+           "id": "services_0008-e41",
            "note": "ИНН физлица (12 знаков)",
            "type": "INN"
           },
@@ -2340,7 +2395,7 @@
          {
           "e": {
            "cat": "canonical",
-           "id": "services_0008-e41",
+           "id": "services_0008-e42",
            "note": "формат: canonical",
            "type": "PHONE"
           },
@@ -2358,7 +2413,7 @@
          {
           "e": {
            "cat": "canonical",
-           "id": "services_0008-e42",
+           "id": "services_0008-e43",
            "type": "EMAIL"
           },
           "s": "pirogova@yandex.ru"
@@ -2380,7 +2435,7 @@
          {
           "e": {
            "cat": "ugly",
-           "id": "services_0008-e43",
+           "id": "services_0008-e44",
            "note": "фамилия + инициалы",
            "type": "PER"
           },
@@ -2414,7 +2469,7 @@
          {
           "e": {
            "cat": "adversarial",
-           "id": "services_0008-e44",
+           "id": "services_0008-e45",
            "note": "первые цифры ИНН в одной ячейке, остальные — в соседней",
            "trick": "cell_boundary_split",
            "type": "INN"
@@ -2434,7 +2489,7 @@
          {
           "e": {
            "cat": "adversarial",
-           "id": "services_0008-e44",
+           "id": "services_0008-e45",
            "trick": "cell_boundary_split",
            "type": "INN"
           },
@@ -2455,7 +2510,7 @@
          {
           "e": {
            "cat": "adversarial",
-           "id": "services_0008-e45",
+           "id": "services_0008-e46",
            "note": "ФИО разорвано границей ячейки",
            "trick": "cell_boundary_split",
            "type": "PER"
@@ -2475,7 +2530,7 @@
          {
           "e": {
            "cat": "adversarial",
-           "id": "services_0008-e45",
+           "id": "services_0008-e46",
            "trick": "cell_boundary_split",
            "type": "PER"
           },
@@ -2513,7 +2568,7 @@
     {
      "e": {
       "cat": "ugly",
-      "id": "services_0008-e49",
+      "id": "services_0008-e50",
       "note": "подпись: фамилия+инициалы",
       "type": "PER"
      },
@@ -2534,7 +2589,7 @@
     {
      "e": {
       "cat": "ugly",
-      "id": "services_0008-e50",
+      "id": "services_0008-e51",
       "note": "подпись: фамилия+инициалы",
       "type": "PER"
      },

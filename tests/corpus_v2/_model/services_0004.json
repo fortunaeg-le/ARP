@@ -1912,6 +1912,61 @@
   {
    "chunks": [
     {
+     "s": "6. ОСОБЫЕ УСЛОВИЯ ОТДЕЛЬНЫХ ВИДОВ ДАННЫХ"
+    }
+   ],
+   "style": "bold",
+   "t": "p"
+  },
+  {
+   "chunks": [
+    {
+     "s": "6.1. Полномочия представителя подтверждены доверенностью, реестровый номер "
+    },
+    {
+     "e": {
+      "cat": "canonical",
+      "id": "services_0004-e21",
+      "note": "фабричный тип: пример из файла-описания владельца",
+      "type": "REG_NUMBER"
+     },
+     "s": "16/89-н/16-2024-3-215"
+    },
+    {
+     "s": "."
+    }
+   ],
+   "style": "normal",
+   "t": "p"
+  },
+  {
+   "chunks": [
+    {
+     "s": "6.2. Для сопоставления в учёте указывается: "
+    },
+    {
+     "n": {
+      "kind": "date-slash",
+      "type": "REG_NUMBER",
+      "why": "диапазон месяцев: нет буквенной группы, две группы-даты"
+     },
+     "s": "срок действия 12/2024-06/2025"
+    },
+    {
+     "s": "."
+    }
+   ],
+   "style": "normal",
+   "t": "p"
+  },
+  {
+   "chunks": [],
+   "style": "normal",
+   "t": "p"
+  },
+  {
+   "chunks": [
+    {
      "s": "РЕКВИЗИТЫ И ПОДПИСИ СТОРОН"
     }
    ],
@@ -1942,7 +1997,7 @@
          {
           "e": {
            "cat": "canonical",
-           "id": "services_0004-e21",
+           "id": "services_0004-e22",
            "type": "ORG"
           },
           "s": "ООО «Альтаир»"
@@ -1959,7 +2014,7 @@
          {
           "e": {
            "cat": "canonical",
-           "id": "services_0004-e22",
+           "id": "services_0004-e23",
            "note": "стиль адреса: canonical",
            "type": "ADDRESS"
           },
@@ -1978,7 +2033,7 @@
           "e": {
            "cat": "canonical",
            "checksum": "invalid",
-           "id": "services_0004-e23",
+           "id": "services_0004-e24",
            "type": "INN"
           },
           "s": "3466443415"
@@ -1989,7 +2044,7 @@
          {
           "e": {
            "cat": "canonical",
-           "id": "services_0004-e24",
+           "id": "services_0004-e25",
            "type": "KPP"
           },
           "s": "770007190"
@@ -2007,7 +2062,7 @@
           "e": {
            "cat": "canonical",
            "checksum": "invalid",
-           "id": "services_0004-e25",
+           "id": "services_0004-e26",
            "type": "OGRN"
           },
           "s": "1747701729380"
@@ -2025,7 +2080,7 @@
           "e": {
            "cat": "canonical",
            "checksum": "invalid",
-           "id": "services_0004-e26",
+           "id": "services_0004-e27",
            "type": "ACCOUNT"
           },
           "s": "40702810666726014176"
@@ -2045,7 +2100,7 @@
          {
           "e": {
            "cat": "canonical",
-           "id": "services_0004-e27",
+           "id": "services_0004-e28",
            "note": "корреспондентский счёт банка",
            "type": "ACCOUNT"
           },
@@ -2057,7 +2112,7 @@
          {
           "e": {
            "cat": "canonical",
-           "id": "services_0004-e28",
+           "id": "services_0004-e29",
            "type": "BIK"
           },
           "s": "044525555"
@@ -2074,7 +2129,7 @@
          {
           "e": {
            "cat": "canonical",
-           "id": "services_0004-e29",
+           "id": "services_0004-e30",
            "note": "формат: canonical",
            "type": "PHONE"
           },
@@ -2092,7 +2147,7 @@
          {
           "e": {
            "cat": "canonical",
-           "id": "services_0004-e30",
+           "id": "services_0004-e31",
            "type": "EMAIL"
           },
           "s": "ded@gmail.com"
@@ -2114,7 +2169,7 @@
          {
           "e": {
            "cat": "ugly",
-           "id": "services_0004-e31",
+           "id": "services_0004-e32",
            "note": "инициалы перед фамилией",
            "type": "PER"
           },
@@ -2145,7 +2200,7 @@
          {
           "e": {
            "cat": "canonical",
-           "id": "services_0004-e32",
+           "id": "services_0004-e33",
            "type": "PER"
           },
           "s": "Сорока Татьяна Павловна"
@@ -2162,7 +2217,7 @@
          {
           "e": {
            "cat": "canonical",
-           "id": "services_0004-e33",
+           "id": "services_0004-e34",
            "note": "стиль адреса: canonical",
            "type": "ADDRESS"
           },
@@ -2181,7 +2236,7 @@
           "e": {
            "cat": "canonical",
            "checksum": "invalid",
-           "id": "services_0004-e34",
+           "id": "services_0004-e35",
            "note": "12-значный ИНН",
            "type": "INN"
           },
@@ -2194,7 +2249,7 @@
           "e": {
            "cat": "ugly",
            "checksum": "invalid",
-           "id": "services_0004-e35",
+           "id": "services_0004-e36",
            "note": "ОГРНИП, 15 знаков",
            "type": "OGRN"
           },
@@ -2213,7 +2268,7 @@
           "e": {
            "cat": "canonical",
            "checksum": "invalid",
-           "id": "services_0004-e36",
+           "id": "services_0004-e37",
            "type": "ACCOUNT"
           },
           "s": "40802810045497270767"
@@ -2227,7 +2282,7 @@
          {
           "e": {
            "cat": "canonical",
-           "id": "services_0004-e37",
+           "id": "services_0004-e38",
            "type": "BIK"
           },
           "s": "044030790"
@@ -2244,7 +2299,7 @@
          {
           "e": {
            "cat": "canonical",
-           "id": "services_0004-e38",
+           "id": "services_0004-e39",
            "note": "формат: canonical",
            "type": "PHONE"
           },
@@ -2262,7 +2317,7 @@
          {
           "e": {
            "cat": "canonical",
-           "id": "services_0004-e39",
+           "id": "services_0004-e40",
            "type": "EMAIL"
           },
           "s": "soroka@romashka.ru"
@@ -2284,7 +2339,7 @@
          {
           "e": {
            "cat": "ugly",
-           "id": "services_0004-e40",
+           "id": "services_0004-e41",
            "note": "фамилия + инициалы",
            "type": "PER"
           },
@@ -2345,7 +2400,7 @@
               {
                "e": {
                 "cat": "adversarial",
-                "id": "services_0004-e41",
+                "id": "services_0004-e42",
                 "note": "счёт во вложенной таблице",
                 "trick": "nested_table",
                 "type": "ACCOUNT"
@@ -2380,7 +2435,7 @@
               {
                "e": {
                 "cat": "adversarial",
-                "id": "services_0004-e42",
+                "id": "services_0004-e43",
                 "note": "ФИО во вложенной таблице",
                 "trick": "nested_table",
                 "type": "PER"
@@ -2430,7 +2485,7 @@
     {
      "e": {
       "cat": "ugly",
-      "id": "services_0004-e45",
+      "id": "services_0004-e46",
       "note": "подпись: фамилия+инициалы",
       "type": "PER"
      },
@@ -2451,7 +2506,7 @@
     {
      "e": {
       "cat": "ugly",
-      "id": "services_0004-e46",
+      "id": "services_0004-e47",
       "note": "подпись: фамилия+инициалы",
       "type": "PER"
      },
@@ -2484,7 +2539,7 @@
     {
      "e": {
       "cat": "adversarial",
-      "id": "services_0004-e43",
+      "id": "services_0004-e44",
       "note": "телефон в колонтитуле (верхнем)",
       "trick": "in_header",
       "type": "PHONE"
@@ -2497,7 +2552,7 @@
     {
      "e": {
       "cat": "adversarial",
-      "id": "services_0004-e44",
+      "id": "services_0004-e45",
       "note": "e-mail в колонтитуле",
       "trick": "in_header",
       "type": "EMAIL"

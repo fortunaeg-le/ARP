@@ -1927,6 +1927,61 @@
   {
    "chunks": [
     {
+     "s": "6. ОСОБЫЕ УСЛОВИЯ ОТДЕЛЬНЫХ ВИДОВ ДАННЫХ"
+    }
+   ],
+   "style": "bold",
+   "t": "p"
+  },
+  {
+   "chunks": [
+    {
+     "s": "6.1. Полномочия представителя подтверждены доверенностью, реестровый номер "
+    },
+    {
+     "e": {
+      "cat": "canonical",
+      "id": "sale_0013-e24",
+      "note": "фабричный тип: пример из файла-описания владельца",
+      "type": "REG_NUMBER"
+     },
+     "s": "50/121-н/50-2023-4-88"
+    },
+    {
+     "s": "."
+    }
+   ],
+   "style": "normal",
+   "t": "p"
+  },
+  {
+   "chunks": [
+    {
+     "s": "6.2. Для сопоставления в учёте указывается: "
+    },
+    {
+     "n": {
+      "kind": "clause-chain",
+      "type": "REG_NUMBER",
+      "why": "короткие цепочки пунктов: меньше групп, нет «-н», нет года"
+     },
+     "s": "пп. 4/5-1 и 7/2-3 Правил страхования"
+    },
+    {
+     "s": "."
+    }
+   ],
+   "style": "normal",
+   "t": "p"
+  },
+  {
+   "chunks": [],
+   "style": "normal",
+   "t": "p"
+  },
+  {
+   "chunks": [
+    {
      "s": "РЕКВИЗИТЫ И ПОДПИСИ СТОРОН"
     }
    ],
@@ -1955,7 +2010,7 @@
     {
      "e": {
       "cat": "canonical",
-      "id": "sale_0013-e24",
+      "id": "sale_0013-e25",
       "type": "PER"
      },
      "s": "Ершова Ирина Ивановна"
@@ -1972,7 +2027,7 @@
     {
      "e": {
       "cat": "ugly",
-      "id": "sale_0013-e25",
+      "id": "sale_0013-e26",
       "note": "стиль адреса: index_first",
       "type": "ADDRESS"
      },
@@ -1991,7 +2046,7 @@
      "e": {
       "cat": "canonical",
       "checksum": "valid",
-      "id": "sale_0013-e26",
+      "id": "sale_0013-e27",
       "note": "12-значный ИНН",
       "type": "INN"
      },
@@ -2004,7 +2059,7 @@
      "e": {
       "cat": "ugly",
       "checksum": "valid",
-      "id": "sale_0013-e27",
+      "id": "sale_0013-e28",
       "note": "ОГРНИП, 15 знаков",
       "type": "OGRN"
      },
@@ -2023,7 +2078,7 @@
      "e": {
       "cat": "canonical",
       "checksum": "valid",
-      "id": "sale_0013-e28",
+      "id": "sale_0013-e29",
       "type": "ACCOUNT"
      },
      "s": "40802810428609045223"
@@ -2037,7 +2092,7 @@
     {
      "e": {
       "cat": "canonical",
-      "id": "sale_0013-e29",
+      "id": "sale_0013-e30",
       "type": "BIK"
      },
      "s": "044030790"
@@ -2054,7 +2109,7 @@
     {
      "e": {
       "cat": "canonical",
-      "id": "sale_0013-e30",
+      "id": "sale_0013-e31",
       "note": "формат: canonical",
       "type": "PHONE"
      },
@@ -2072,7 +2127,7 @@
     {
      "e": {
       "cat": "canonical",
-      "id": "sale_0013-e31",
+      "id": "sale_0013-e32",
       "type": "EMAIL"
      },
      "s": "ershova@list.ru"
@@ -2094,7 +2149,7 @@
     {
      "e": {
       "cat": "ugly",
-      "id": "sale_0013-e32",
+      "id": "sale_0013-e33",
       "note": "фамилия + инициалы",
       "type": "PER"
      },
@@ -2123,7 +2178,7 @@
     {
      "e": {
       "cat": "canonical",
-      "id": "sale_0013-e33",
+      "id": "sale_0013-e34",
       "type": "PER"
      },
      "s": "Пирогова Анна Павловна"
@@ -2140,7 +2195,7 @@
     {
      "e": {
       "cat": "canonical",
-      "id": "sale_0013-e34",
+      "id": "sale_0013-e35",
       "note": "стиль записи из BIRTHDATE_STYLES",
       "type": "BIRTHDATE"
      },
@@ -2158,7 +2213,7 @@
     {
      "e": {
       "cat": "ugly",
-      "id": "sale_0013-e35",
+      "id": "sale_0013-e36",
       "note": "стиль адреса: index_first",
       "type": "ADDRESS"
      },
@@ -2176,7 +2231,7 @@
     {
      "e": {
       "cat": "canonical",
-      "id": "sale_0013-e36",
+      "id": "sale_0013-e37",
       "note": "серия+номер, стиль записи из PASSPORT_STYLES",
       "type": "PASSPORT"
      },
@@ -2191,7 +2246,7 @@
     {
      "e": {
       "cat": "ugly",
-      "id": "sale_0013-e37",
+      "id": "sale_0013-e38",
       "note": "код подразделения, стиль записи из DEPTCODE_STYLES",
       "type": "PASSPORT"
      },
@@ -2210,7 +2265,7 @@
      "e": {
       "cat": "canonical",
       "checksum": "valid",
-      "id": "sale_0013-e38",
+      "id": "sale_0013-e39",
       "note": "стиль записи из SNILS_STYLES",
       "type": "SNILS"
      },
@@ -2223,7 +2278,7 @@
      "e": {
       "cat": "ugly",
       "checksum": "valid",
-      "id": "sale_0013-e39",
+      "id": "sale_0013-e40",
       "note": "ИНН физлица (12 знаков)",
       "type": "INN"
      },
@@ -2241,7 +2296,7 @@
     {
      "e": {
       "cat": "canonical",
-      "id": "sale_0013-e40",
+      "id": "sale_0013-e41",
       "note": "формат: canonical",
       "type": "PHONE"
      },
@@ -2259,7 +2314,7 @@
     {
      "e": {
       "cat": "canonical",
-      "id": "sale_0013-e41",
+      "id": "sale_0013-e42",
       "type": "EMAIL"
      },
      "s": "pirogova@gmail.com"
@@ -2281,7 +2336,7 @@
     {
      "e": {
       "cat": "ugly",
-      "id": "sale_0013-e42",
+      "id": "sale_0013-e43",
       "note": "фамилия + инициалы",
       "type": "PER"
      },
@@ -2318,7 +2373,7 @@
     {
      "e": {
       "cat": "ugly",
-      "id": "sale_0013-e43",
+      "id": "sale_0013-e44",
       "note": "подпись: фамилия+инициалы",
       "type": "PER"
      },
@@ -2339,7 +2394,7 @@
     {
      "e": {
       "cat": "ugly",
-      "id": "sale_0013-e44",
+      "id": "sale_0013-e45",
       "note": "подпись: фамилия+инициалы",
       "type": "PER"
      },

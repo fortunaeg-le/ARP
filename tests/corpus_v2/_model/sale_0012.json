@@ -160,7 +160,7 @@
     {
      "e": {
       "cat": "adversarial",
-      "id": "sale_0012-e48",
+      "id": "sale_0012-e49",
       "note": "адрес в сноске",
       "trick": "in_footnote",
       "type": "ADDRESS"
@@ -173,7 +173,7 @@
     {
      "e": {
       "cat": "adversarial",
-      "id": "sale_0012-e49",
+      "id": "sale_0012-e50",
       "note": "ИНН в сноске",
       "trick": "in_footnote",
       "type": "INN"
@@ -186,7 +186,7 @@
     {
      "e": {
       "cat": "adversarial",
-      "id": "sale_0012-e50",
+      "id": "sale_0012-e51",
       "note": "ФИО в сноске",
       "trick": "in_footnote",
       "type": "PER"
@@ -2277,6 +2277,61 @@
   {
    "chunks": [
     {
+     "s": "6. ОСОБЫЕ УСЛОВИЯ ОТДЕЛЬНЫХ ВИДОВ ДАННЫХ"
+    }
+   ],
+   "style": "bold",
+   "t": "p"
+  },
+  {
+   "chunks": [
+    {
+     "s": "6.1. Полномочия представителя подтверждены доверенностью, реестровый номер "
+    },
+    {
+     "e": {
+      "cat": "canonical",
+      "id": "sale_0012-e30",
+      "note": "фабричный тип: пример из файла-описания владельца",
+      "type": "REG_NUMBER"
+     },
+     "s": "77/714-н/77-2024-1-502"
+    },
+    {
+     "s": "."
+    }
+   ],
+   "style": "normal",
+   "t": "p"
+  },
+  {
+   "chunks": [
+    {
+     "s": "6.2. Для сопоставления в учёте указывается: "
+    },
+    {
+     "n": {
+      "kind": "gost-ref",
+      "type": "REG_NUMBER",
+      "why": "ссылка на стандарт — не реестровый номер"
+     },
+     "s": "ГОСТ Р 52044-2003"
+    },
+    {
+     "s": "."
+    }
+   ],
+   "style": "normal",
+   "t": "p"
+  },
+  {
+   "chunks": [],
+   "style": "normal",
+   "t": "p"
+  },
+  {
+   "chunks": [
+    {
      "s": "РЕКВИЗИТЫ И ПОДПИСИ СТОРОН"
     }
    ],
@@ -2310,7 +2365,7 @@
          {
           "e": {
            "cat": "canonical",
-           "id": "sale_0012-e30",
+           "id": "sale_0012-e31",
            "type": "PER"
           },
           "s": "Сидоров Дмитрий Владимирович"
@@ -2327,7 +2382,7 @@
          {
           "e": {
            "cat": "ugly",
-           "id": "sale_0012-e31",
+           "id": "sale_0012-e32",
            "note": "стиль адреса: no_marker",
            "type": "ADDRESS"
           },
@@ -2346,7 +2401,7 @@
           "e": {
            "cat": "canonical",
            "checksum": "valid",
-           "id": "sale_0012-e32",
+           "id": "sale_0012-e33",
            "note": "12-значный ИНН",
            "type": "INN"
           },
@@ -2359,7 +2414,7 @@
           "e": {
            "cat": "ugly",
            "checksum": "valid",
-           "id": "sale_0012-e33",
+           "id": "sale_0012-e34",
            "note": "ОГРНИП, 15 знаков",
            "type": "OGRN"
           },
@@ -2378,7 +2433,7 @@
           "e": {
            "cat": "canonical",
            "checksum": "valid",
-           "id": "sale_0012-e34",
+           "id": "sale_0012-e35",
            "type": "ACCOUNT"
           },
           "s": "40802810210310479550"
@@ -2392,7 +2447,7 @@
          {
           "e": {
            "cat": "canonical",
-           "id": "sale_0012-e35",
+           "id": "sale_0012-e36",
            "type": "BIK"
           },
           "s": "044525187"
@@ -2409,7 +2464,7 @@
          {
           "e": {
            "cat": "canonical",
-           "id": "sale_0012-e36",
+           "id": "sale_0012-e37",
            "note": "формат: canonical",
            "type": "PHONE"
           },
@@ -2427,7 +2482,7 @@
          {
           "e": {
            "cat": "canonical",
-           "id": "sale_0012-e37",
+           "id": "sale_0012-e38",
            "type": "EMAIL"
           },
           "s": "sidorov@mail.ru"
@@ -2449,7 +2504,7 @@
          {
           "e": {
            "cat": "ugly",
-           "id": "sale_0012-e38",
+           "id": "sale_0012-e39",
            "note": "фамилия + инициалы",
            "type": "PER"
           },
@@ -2480,7 +2535,7 @@
          {
           "e": {
            "cat": "canonical",
-           "id": "sale_0012-e39",
+           "id": "sale_0012-e40",
            "type": "PER"
           },
           "s": "Смирнов Иван Павлович"
@@ -2497,7 +2552,7 @@
          {
           "e": {
            "cat": "ugly",
-           "id": "sale_0012-e40",
+           "id": "sale_0012-e41",
            "note": "стиль адреса: no_marker2",
            "type": "ADDRESS"
           },
@@ -2516,7 +2571,7 @@
           "e": {
            "cat": "canonical",
            "checksum": "valid",
-           "id": "sale_0012-e41",
+           "id": "sale_0012-e42",
            "note": "12-значный ИНН",
            "type": "INN"
           },
@@ -2529,7 +2584,7 @@
           "e": {
            "cat": "ugly",
            "checksum": "valid",
-           "id": "sale_0012-e42",
+           "id": "sale_0012-e43",
            "note": "ОГРНИП, 15 знаков",
            "type": "OGRN"
           },
@@ -2548,7 +2603,7 @@
           "e": {
            "cat": "canonical",
            "checksum": "valid",
-           "id": "sale_0012-e43",
+           "id": "sale_0012-e44",
            "type": "ACCOUNT"
           },
           "s": "40802810222357854171"
@@ -2562,7 +2617,7 @@
          {
           "e": {
            "cat": "canonical",
-           "id": "sale_0012-e44",
+           "id": "sale_0012-e45",
            "type": "BIK"
           },
           "s": "044525187"
@@ -2579,7 +2634,7 @@
          {
           "e": {
            "cat": "canonical",
-           "id": "sale_0012-e45",
+           "id": "sale_0012-e46",
            "note": "формат: canonical",
            "type": "PHONE"
           },
@@ -2597,7 +2652,7 @@
          {
           "e": {
            "cat": "canonical",
-           "id": "sale_0012-e46",
+           "id": "sale_0012-e47",
            "type": "EMAIL"
           },
           "s": "smirnov@corp-tehno.ru"
@@ -2619,7 +2674,7 @@
          {
           "e": {
            "cat": "ugly",
-           "id": "sale_0012-e47",
+           "id": "sale_0012-e48",
            "note": "фамилия + инициалы",
            "type": "PER"
           },
@@ -2657,7 +2712,7 @@
     {
      "e": {
       "cat": "ugly",
-      "id": "sale_0012-e51",
+      "id": "sale_0012-e52",
       "note": "подпись: фамилия+инициалы",
       "type": "PER"
      },
@@ -2678,7 +2733,7 @@
     {
      "e": {
       "cat": "ugly",
-      "id": "sale_0012-e52",
+      "id": "sale_0012-e53",
       "note": "подпись: фамилия+инициалы",
       "type": "PER"
      },

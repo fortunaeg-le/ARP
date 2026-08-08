@@ -2014,6 +2014,61 @@
   {
    "chunks": [
     {
+     "s": "6. ОСОБЫЕ УСЛОВИЯ ОТДЕЛЬНЫХ ВИДОВ ДАННЫХ"
+    }
+   ],
+   "style": "bold",
+   "t": "p"
+  },
+  {
+   "chunks": [
+    {
+     "s": "6.1. Полномочия представителя подтверждены доверенностью, реестровый номер "
+    },
+    {
+     "e": {
+      "cat": "canonical",
+      "id": "cx_cession_0024-e25",
+      "note": "фабричный тип: пример из файла-описания владельца",
+      "type": "REG_NUMBER"
+     },
+     "s": "78/1445-н/78-2022-12-7"
+    },
+    {
+     "s": "."
+    }
+   ],
+   "style": "normal",
+   "t": "p"
+  },
+  {
+   "chunks": [
+    {
+     "s": "6.2. Для сопоставления в учёте указывается: "
+    },
+    {
+     "n": {
+      "kind": "date-slash",
+      "type": "REG_NUMBER",
+      "why": "диапазон месяцев: нет буквенной группы, две группы-даты"
+     },
+     "s": "срок действия 12/2024-06/2025"
+    },
+    {
+     "s": "."
+    }
+   ],
+   "style": "normal",
+   "t": "p"
+  },
+  {
+   "chunks": [],
+   "style": "normal",
+   "t": "p"
+  },
+  {
+   "chunks": [
+    {
      "s": "РЕКВИЗИТЫ И ПОДПИСИ СТОРОН"
     }
    ],
@@ -2047,7 +2102,7 @@
          {
           "e": {
            "cat": "canonical",
-           "id": "cx_cession_0024-e25",
+           "id": "cx_cession_0024-e26",
            "type": "PER"
           },
           "s": "Крылова Светлана Сергеевна"
@@ -2064,7 +2119,7 @@
          {
           "e": {
            "cat": "canonical",
-           "id": "cx_cession_0024-e26",
+           "id": "cx_cession_0024-e27",
            "note": "стиль адреса: canonical",
            "type": "ADDRESS"
           },
@@ -2083,7 +2138,7 @@
           "e": {
            "cat": "canonical",
            "checksum": "valid",
-           "id": "cx_cession_0024-e27",
+           "id": "cx_cession_0024-e28",
            "note": "12-значный ИНН",
            "type": "INN"
           },
@@ -2096,7 +2151,7 @@
           "e": {
            "cat": "ugly",
            "checksum": "valid",
-           "id": "cx_cession_0024-e28",
+           "id": "cx_cession_0024-e29",
            "note": "ОГРНИП, 15 знаков",
            "type": "OGRN"
           },
@@ -2115,7 +2170,7 @@
           "e": {
            "cat": "canonical",
            "checksum": "valid",
-           "id": "cx_cession_0024-e29",
+           "id": "cx_cession_0024-e30",
            "type": "ACCOUNT"
           },
           "s": "40802810676579837178"
@@ -2129,7 +2184,7 @@
          {
           "e": {
            "cat": "canonical",
-           "id": "cx_cession_0024-e30",
+           "id": "cx_cession_0024-e31",
            "type": "BIK"
           },
           "s": "044525360"
@@ -2146,7 +2201,7 @@
          {
           "e": {
            "cat": "canonical",
-           "id": "cx_cession_0024-e31",
+           "id": "cx_cession_0024-e32",
            "note": "формат: canonical",
            "type": "PHONE"
           },
@@ -2164,7 +2219,7 @@
          {
           "e": {
            "cat": "canonical",
-           "id": "cx_cession_0024-e32",
+           "id": "cx_cession_0024-e33",
            "type": "EMAIL"
           },
           "s": "krylova@yandex.ru"
@@ -2186,7 +2241,7 @@
          {
           "e": {
            "cat": "ugly",
-           "id": "cx_cession_0024-e33",
+           "id": "cx_cession_0024-e34",
            "note": "фамилия + инициалы",
            "type": "PER"
           },
@@ -2214,7 +2269,7 @@
          {
           "e": {
            "cat": "canonical",
-           "id": "cx_cession_0024-e34",
+           "id": "cx_cession_0024-e35",
            "type": "PER"
           },
           "s": "Гусева Светлана Николаевна"
@@ -2231,7 +2286,7 @@
          {
           "e": {
            "cat": "canonical",
-           "id": "cx_cession_0024-e35",
+           "id": "cx_cession_0024-e36",
            "note": "стиль записи из BIRTHDATE_STYLES",
            "type": "BIRTHDATE"
           },
@@ -2249,7 +2304,7 @@
          {
           "e": {
            "cat": "canonical",
-           "id": "cx_cession_0024-e36",
+           "id": "cx_cession_0024-e37",
            "note": "стиль адреса: canonical",
            "type": "ADDRESS"
           },
@@ -2267,7 +2322,7 @@
          {
           "e": {
            "cat": "canonical",
-           "id": "cx_cession_0024-e37",
+           "id": "cx_cession_0024-e38",
            "note": "серия+номер, стиль записи из PASSPORT_STYLES",
            "type": "PASSPORT"
           },
@@ -2282,7 +2337,7 @@
          {
           "e": {
            "cat": "ugly",
-           "id": "cx_cession_0024-e38",
+           "id": "cx_cession_0024-e39",
            "note": "код подразделения, стиль записи из DEPTCODE_STYLES",
            "type": "PASSPORT"
           },
@@ -2301,7 +2356,7 @@
           "e": {
            "cat": "canonical",
            "checksum": "valid",
-           "id": "cx_cession_0024-e39",
+           "id": "cx_cession_0024-e40",
            "note": "стиль записи из SNILS_STYLES",
            "type": "SNILS"
           },
@@ -2314,7 +2369,7 @@
           "e": {
            "cat": "ugly",
            "checksum": "valid",
-           "id": "cx_cession_0024-e40",
+           "id": "cx_cession_0024-e41",
            "note": "ИНН физлица (12 знаков)",
            "type": "INN"
           },
@@ -2332,7 +2387,7 @@
          {
           "e": {
            "cat": "canonical",
-           "id": "cx_cession_0024-e41",
+           "id": "cx_cession_0024-e42",
            "note": "формат: canonical",
            "type": "PHONE"
           },
@@ -2350,7 +2405,7 @@
          {
           "e": {
            "cat": "canonical",
-           "id": "cx_cession_0024-e42",
+           "id": "cx_cession_0024-e43",
            "type": "EMAIL"
           },
           "s": "guseva@corp-tehno.ru"
@@ -2372,7 +2427,7 @@
          {
           "e": {
            "cat": "ugly",
-           "id": "cx_cession_0024-e43",
+           "id": "cx_cession_0024-e44",
            "note": "фамилия + инициалы",
            "type": "PER"
           },
@@ -2410,7 +2465,7 @@
     {
      "e": {
       "cat": "ugly",
-      "id": "cx_cession_0024-e44",
+      "id": "cx_cession_0024-e45",
       "note": "подпись: фамилия+инициалы",
       "type": "PER"
      },
@@ -2431,7 +2486,7 @@
     {
      "e": {
       "cat": "ugly",
-      "id": "cx_cession_0024-e45",
+      "id": "cx_cession_0024-e46",
       "note": "подпись: фамилия+инициалы",
       "type": "PER"
      },

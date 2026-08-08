@@ -22124,6 +22124,61 @@
   {
    "chunks": [
     {
+     "s": "6. ОСОБЫЕ УСЛОВИЯ ОТДЕЛЬНЫХ ВИДОВ ДАННЫХ"
+    }
+   ],
+   "style": "bold",
+   "t": "p"
+  },
+  {
+   "chunks": [
+    {
+     "s": "6.1. Полномочия представителя подтверждены доверенностью, реестровый номер "
+    },
+    {
+     "e": {
+      "cat": "canonical",
+      "id": "cx_labor_0008-e75",
+      "note": "фабричный тип: пример из файла-описания владельца",
+      "type": "REG_NUMBER"
+     },
+     "s": "23/5-н/23-2025-2-1104"
+    },
+    {
+     "s": "."
+    }
+   ],
+   "style": "normal",
+   "t": "p"
+  },
+  {
+   "chunks": [
+    {
+     "s": "6.2. Для сопоставления в учёте указывается: "
+    },
+    {
+     "n": {
+      "kind": "date-slash",
+      "type": "REG_NUMBER",
+      "why": "диапазон месяцев: нет буквенной группы, две группы-даты"
+     },
+     "s": "срок действия 12/2024-06/2025"
+    },
+    {
+     "s": "."
+    }
+   ],
+   "style": "normal",
+   "t": "p"
+  },
+  {
+   "chunks": [],
+   "style": "normal",
+   "t": "p"
+  },
+  {
+   "chunks": [
+    {
      "s": "РЕКВИЗИТЫ И ПОДПИСИ СТОРОН"
     }
    ],
@@ -22154,7 +22209,7 @@
          {
           "e": {
            "cat": "canonical",
-           "id": "cx_labor_0008-e75",
+           "id": "cx_labor_0008-e76",
            "type": "ORG"
           },
           "s": "ООО «Аквилон»"
@@ -22171,7 +22226,7 @@
          {
           "e": {
            "cat": "canonical",
-           "id": "cx_labor_0008-e76",
+           "id": "cx_labor_0008-e77",
            "note": "стиль адреса: canonical",
            "type": "ADDRESS"
           },
@@ -22190,7 +22245,7 @@
           "e": {
            "cat": "canonical",
            "checksum": "valid",
-           "id": "cx_labor_0008-e77",
+           "id": "cx_labor_0008-e78",
            "type": "INN"
           },
           "s": "0380794903"
@@ -22201,7 +22256,7 @@
          {
           "e": {
            "cat": "canonical",
-           "id": "cx_labor_0008-e78",
+           "id": "cx_labor_0008-e79",
            "type": "KPP"
           },
           "s": "155956852"
@@ -22219,7 +22274,7 @@
           "e": {
            "cat": "canonical",
            "checksum": "valid",
-           "id": "cx_labor_0008-e79",
+           "id": "cx_labor_0008-e80",
            "type": "OGRN"
           },
           "s": "1331104644309"
@@ -22237,7 +22292,7 @@
           "e": {
            "cat": "canonical",
            "checksum": "valid",
-           "id": "cx_labor_0008-e80",
+           "id": "cx_labor_0008-e81",
            "type": "ACCOUNT"
           },
           "s": "40702810459513009717"
@@ -22257,7 +22312,7 @@
          {
           "e": {
            "cat": "canonical",
-           "id": "cx_labor_0008-e81",
+           "id": "cx_labor_0008-e82",
            "note": "корреспондентский счёт банка",
            "type": "ACCOUNT"
           },
@@ -22269,7 +22324,7 @@
          {
           "e": {
            "cat": "canonical",
-           "id": "cx_labor_0008-e82",
+           "id": "cx_labor_0008-e83",
            "type": "BIK"
           },
           "s": "044525593"
@@ -22286,7 +22341,7 @@
          {
           "e": {
            "cat": "canonical",
-           "id": "cx_labor_0008-e83",
+           "id": "cx_labor_0008-e84",
            "note": "формат: canonical",
            "type": "PHONE"
           },
@@ -22304,7 +22359,7 @@
          {
           "e": {
            "cat": "canonical",
-           "id": "cx_labor_0008-e84",
+           "id": "cx_labor_0008-e85",
            "type": "EMAIL"
           },
           "s": "sokolova@yandex.ru"
@@ -22326,7 +22381,7 @@
          {
           "e": {
            "cat": "ugly",
-           "id": "cx_labor_0008-e85",
+           "id": "cx_labor_0008-e86",
            "note": "инициалы перед фамилией",
            "type": "PER"
           },
@@ -22354,7 +22409,7 @@
          {
           "e": {
            "cat": "canonical",
-           "id": "cx_labor_0008-e86",
+           "id": "cx_labor_0008-e87",
            "type": "PER"
           },
           "s": "Петрова Наталья Дмитриевна"
@@ -22371,7 +22426,7 @@
          {
           "e": {
            "cat": "canonical",
-           "id": "cx_labor_0008-e87",
+           "id": "cx_labor_0008-e88",
            "note": "стиль записи из BIRTHDATE_STYLES",
            "type": "BIRTHDATE"
           },
@@ -22389,7 +22444,7 @@
          {
           "e": {
            "cat": "canonical",
-           "id": "cx_labor_0008-e88",
+           "id": "cx_labor_0008-e89",
            "note": "стиль адреса: canonical",
            "type": "ADDRESS"
           },
@@ -22407,7 +22462,7 @@
          {
           "e": {
            "cat": "canonical",
-           "id": "cx_labor_0008-e89",
+           "id": "cx_labor_0008-e90",
            "note": "серия+номер, стиль записи из PASSPORT_STYLES",
            "type": "PASSPORT"
           },
@@ -22422,7 +22477,7 @@
          {
           "e": {
            "cat": "ugly",
-           "id": "cx_labor_0008-e90",
+           "id": "cx_labor_0008-e91",
            "note": "код подразделения, стиль записи из DEPTCODE_STYLES",
            "type": "PASSPORT"
           },
@@ -22441,7 +22496,7 @@
           "e": {
            "cat": "canonical",
            "checksum": "valid",
-           "id": "cx_labor_0008-e91",
+           "id": "cx_labor_0008-e92",
            "note": "стиль записи из SNILS_STYLES",
            "type": "SNILS"
           },
@@ -22454,7 +22509,7 @@
           "e": {
            "cat": "ugly",
            "checksum": "valid",
-           "id": "cx_labor_0008-e92",
+           "id": "cx_labor_0008-e93",
            "note": "ИНН физлица (12 знаков)",
            "type": "INN"
           },
@@ -22472,7 +22527,7 @@
          {
           "e": {
            "cat": "canonical",
-           "id": "cx_labor_0008-e93",
+           "id": "cx_labor_0008-e94",
            "note": "формат: canonical",
            "type": "PHONE"
           },
@@ -22490,7 +22545,7 @@
          {
           "e": {
            "cat": "canonical",
-           "id": "cx_labor_0008-e94",
+           "id": "cx_labor_0008-e95",
            "type": "EMAIL"
           },
           "s": "petrova@yandex.ru"
@@ -22512,7 +22567,7 @@
          {
           "e": {
            "cat": "ugly",
-           "id": "cx_labor_0008-e95",
+           "id": "cx_labor_0008-e96",
            "note": "фамилия + инициалы",
            "type": "PER"
           },
@@ -22550,7 +22605,7 @@
     {
      "e": {
       "cat": "ugly",
-      "id": "cx_labor_0008-e96",
+      "id": "cx_labor_0008-e97",
       "note": "подпись: фамилия+инициалы",
       "type": "PER"
      },
@@ -22571,7 +22626,7 @@
     {
      "e": {
       "cat": "ugly",
-      "id": "cx_labor_0008-e97",
+      "id": "cx_labor_0008-e98",
       "note": "подпись: фамилия+инициалы",
       "type": "PER"
      },

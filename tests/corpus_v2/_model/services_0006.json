@@ -2141,6 +2141,61 @@
   {
    "chunks": [
     {
+     "s": "6. ОСОБЫЕ УСЛОВИЯ ОТДЕЛЬНЫХ ВИДОВ ДАННЫХ"
+    }
+   ],
+   "style": "bold",
+   "t": "p"
+  },
+  {
+   "chunks": [
+    {
+     "s": "6.1. Полномочия представителя подтверждены доверенностью, реестровый номер "
+    },
+    {
+     "e": {
+      "cat": "canonical",
+      "id": "services_0006-e25",
+      "note": "фабричный тип: пример из файла-описания владельца",
+      "type": "REG_NUMBER"
+     },
+     "s": "50/121-н/50-2023-4-88"
+    },
+    {
+     "s": "."
+    }
+   ],
+   "style": "normal",
+   "t": "p"
+  },
+  {
+   "chunks": [
+    {
+     "s": "6.2. Для сопоставления в учёте указывается: "
+    },
+    {
+     "n": {
+      "kind": "gost-ref",
+      "type": "REG_NUMBER",
+      "why": "ссылка на стандарт — не реестровый номер"
+     },
+     "s": "ГОСТ Р 52044-2003"
+    },
+    {
+     "s": "."
+    }
+   ],
+   "style": "normal",
+   "t": "p"
+  },
+  {
+   "chunks": [],
+   "style": "normal",
+   "t": "p"
+  },
+  {
+   "chunks": [
+    {
      "s": "РЕКВИЗИТЫ И ПОДПИСИ СТОРОН"
     }
    ],
@@ -2174,7 +2229,7 @@
          {
           "e": {
            "cat": "canonical",
-           "id": "services_0006-e25",
+           "id": "services_0006-e26",
            "type": "PER"
           },
           "s": "Фёдоров Алексей Дмитриевич"
@@ -2191,7 +2246,7 @@
          {
           "e": {
            "cat": "ugly",
-           "id": "services_0006-e26",
+           "id": "services_0006-e27",
            "note": "стиль адреса: no_marker2",
            "type": "ADDRESS"
           },
@@ -2210,7 +2265,7 @@
           "e": {
            "cat": "canonical",
            "checksum": "valid",
-           "id": "services_0006-e27",
+           "id": "services_0006-e28",
            "note": "12-значный ИНН",
            "type": "INN"
           },
@@ -2223,7 +2278,7 @@
           "e": {
            "cat": "ugly",
            "checksum": "valid",
-           "id": "services_0006-e28",
+           "id": "services_0006-e29",
            "note": "ОГРНИП, 15 знаков",
            "type": "OGRN"
           },
@@ -2242,7 +2297,7 @@
           "e": {
            "cat": "canonical",
            "checksum": "valid",
-           "id": "services_0006-e29",
+           "id": "services_0006-e30",
            "type": "ACCOUNT"
           },
           "s": "40802810656776002789"
@@ -2256,7 +2311,7 @@
          {
           "e": {
            "cat": "canonical",
-           "id": "services_0006-e30",
+           "id": "services_0006-e31",
            "type": "BIK"
           },
           "s": "044525974"
@@ -2273,7 +2328,7 @@
          {
           "e": {
            "cat": "canonical",
-           "id": "services_0006-e31",
+           "id": "services_0006-e32",
            "note": "формат: canonical",
            "type": "PHONE"
           },
@@ -2291,7 +2346,7 @@
          {
           "e": {
            "cat": "canonical",
-           "id": "services_0006-e32",
+           "id": "services_0006-e33",
            "type": "EMAIL"
           },
           "s": "fedorov@yandex.ru"
@@ -2313,7 +2368,7 @@
          {
           "e": {
            "cat": "ugly",
-           "id": "services_0006-e33",
+           "id": "services_0006-e34",
            "note": "фамилия + инициалы",
            "type": "PER"
           },
@@ -2332,7 +2387,7 @@
           "bs": true,
           "e": {
            "cat": "adversarial",
-           "id": "services_0006-e43",
+           "id": "services_0006-e44",
            "note": "слово разорвано форматированием (половина букв жирная)",
            "trick": "bold_split_runs",
            "type": "PER"
@@ -2364,7 +2419,7 @@
          {
           "e": {
            "cat": "canonical",
-           "id": "services_0006-e34",
+           "id": "services_0006-e35",
            "type": "PER"
           },
           "s": "Петров Владимир Дмитриевич"
@@ -2381,7 +2436,7 @@
          {
           "e": {
            "cat": "ugly",
-           "id": "services_0006-e35",
+           "id": "services_0006-e36",
            "note": "стиль адреса: no_marker",
            "type": "ADDRESS"
           },
@@ -2400,7 +2455,7 @@
           "e": {
            "cat": "canonical",
            "checksum": "valid",
-           "id": "services_0006-e36",
+           "id": "services_0006-e37",
            "note": "12-значный ИНН",
            "type": "INN"
           },
@@ -2413,7 +2468,7 @@
           "e": {
            "cat": "ugly",
            "checksum": "valid",
-           "id": "services_0006-e37",
+           "id": "services_0006-e38",
            "note": "ОГРНИП, 15 знаков",
            "type": "OGRN"
           },
@@ -2432,7 +2487,7 @@
           "e": {
            "cat": "canonical",
            "checksum": "valid",
-           "id": "services_0006-e38",
+           "id": "services_0006-e39",
            "type": "ACCOUNT"
           },
           "s": "40802810440315969816"
@@ -2446,7 +2501,7 @@
          {
           "e": {
            "cat": "canonical",
-           "id": "services_0006-e39",
+           "id": "services_0006-e40",
            "type": "BIK"
           },
           "s": "044525700"
@@ -2463,7 +2518,7 @@
          {
           "e": {
            "cat": "canonical",
-           "id": "services_0006-e40",
+           "id": "services_0006-e41",
            "note": "формат: canonical",
            "type": "PHONE"
           },
@@ -2481,7 +2536,7 @@
          {
           "e": {
            "cat": "canonical",
-           "id": "services_0006-e41",
+           "id": "services_0006-e42",
            "type": "EMAIL"
           },
           "s": "petrov@sibtrans.ru"
@@ -2503,7 +2558,7 @@
          {
           "e": {
            "cat": "ugly",
-           "id": "services_0006-e42",
+           "id": "services_0006-e43",
            "note": "фамилия + инициалы",
            "type": "PER"
           },
@@ -2541,7 +2596,7 @@
     {
      "e": {
       "cat": "ugly",
-      "id": "services_0006-e46",
+      "id": "services_0006-e47",
       "note": "подпись: фамилия+инициалы",
       "type": "PER"
      },
@@ -2562,7 +2617,7 @@
     {
      "e": {
       "cat": "ugly",
-      "id": "services_0006-e47",
+      "id": "services_0006-e48",
       "note": "подпись: фамилия+инициалы",
       "type": "PER"
      },
@@ -2594,7 +2649,7 @@
     {
      "e": {
       "cat": "adversarial",
-      "id": "services_0006-e44",
+      "id": "services_0006-e45",
       "note": "ФИО в нижнем колонтитуле",
       "trick": "in_footer",
       "type": "PER"
@@ -2607,7 +2662,7 @@
     {
      "e": {
       "cat": "adversarial",
-      "id": "services_0006-e45",
+      "id": "services_0006-e46",
       "note": "телефон в нижнем колонтитуле",
       "trick": "in_footer",
       "type": "PHONE"

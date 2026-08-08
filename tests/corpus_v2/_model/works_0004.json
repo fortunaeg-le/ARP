@@ -2024,6 +2024,61 @@
   {
    "chunks": [
     {
+     "s": "6. ОСОБЫЕ УСЛОВИЯ ОТДЕЛЬНЫХ ВИДОВ ДАННЫХ"
+    }
+   ],
+   "style": "bold",
+   "t": "p"
+  },
+  {
+   "chunks": [
+    {
+     "s": "6.1. Полномочия представителя подтверждены доверенностью, реестровый номер "
+    },
+    {
+     "e": {
+      "cat": "canonical",
+      "id": "works_0004-e30",
+      "note": "фабричный тип: пример из файла-описания владельца",
+      "type": "REG_NUMBER"
+     },
+     "s": "77/714-н/77-2024-1-502"
+    },
+    {
+     "s": "."
+    }
+   ],
+   "style": "normal",
+   "t": "p"
+  },
+  {
+   "chunks": [
+    {
+     "s": "6.2. Для сопоставления в учёте указывается: "
+    },
+    {
+     "n": {
+      "kind": "gost-ref",
+      "type": "REG_NUMBER",
+      "why": "ссылка на стандарт — не реестровый номер"
+     },
+     "s": "ГОСТ Р 52044-2003"
+    },
+    {
+     "s": "."
+    }
+   ],
+   "style": "normal",
+   "t": "p"
+  },
+  {
+   "chunks": [],
+   "style": "normal",
+   "t": "p"
+  },
+  {
+   "chunks": [
+    {
      "s": "РЕКВИЗИТЫ И ПОДПИСИ СТОРОН"
     }
    ],
@@ -2054,7 +2109,7 @@
          {
           "e": {
            "cat": "adversarial",
-           "id": "works_0004-e48",
+           "id": "works_0004-e49",
            "note": "голая строка ПДн в ячейке, без предложения вокруг",
            "trick": "bare_cell_no_sentence",
            "type": "PER"
@@ -2073,7 +2128,7 @@
          {
           "e": {
            "cat": "canonical",
-           "id": "works_0004-e30",
+           "id": "works_0004-e31",
            "type": "PER"
           },
           "s": "Белов Павел Павлович"
@@ -2090,7 +2145,7 @@
          {
           "e": {
            "cat": "ugly",
-           "id": "works_0004-e31",
+           "id": "works_0004-e32",
            "note": "стиль адреса: nonres",
            "type": "ADDRESS"
           },
@@ -2109,7 +2164,7 @@
           "e": {
            "cat": "canonical",
            "checksum": "valid",
-           "id": "works_0004-e32",
+           "id": "works_0004-e33",
            "note": "12-значный ИНН",
            "type": "INN"
           },
@@ -2122,7 +2177,7 @@
           "e": {
            "cat": "ugly",
            "checksum": "valid",
-           "id": "works_0004-e33",
+           "id": "works_0004-e34",
            "note": "ОГРНИП, 15 знаков",
            "type": "OGRN"
           },
@@ -2141,7 +2196,7 @@
           "e": {
            "cat": "canonical",
            "checksum": "valid",
-           "id": "works_0004-e34",
+           "id": "works_0004-e35",
            "type": "ACCOUNT"
           },
           "s": "40802810593174912869"
@@ -2155,7 +2210,7 @@
          {
           "e": {
            "cat": "canonical",
-           "id": "works_0004-e35",
+           "id": "works_0004-e36",
            "type": "BIK"
           },
           "s": "044525360"
@@ -2172,7 +2227,7 @@
          {
           "e": {
            "cat": "canonical",
-           "id": "works_0004-e36",
+           "id": "works_0004-e37",
            "note": "формат: canonical",
            "type": "PHONE"
           },
@@ -2190,7 +2245,7 @@
          {
           "e": {
            "cat": "canonical",
-           "id": "works_0004-e37",
+           "id": "works_0004-e38",
            "type": "EMAIL"
           },
           "s": "belov@mail.ru"
@@ -2212,7 +2267,7 @@
          {
           "e": {
            "cat": "ugly",
-           "id": "works_0004-e38",
+           "id": "works_0004-e39",
            "note": "фамилия + инициалы",
            "type": "PER"
           },
@@ -2240,7 +2295,7 @@
          {
           "e": {
            "cat": "adversarial",
-           "id": "works_0004-e49",
+           "id": "works_0004-e50",
            "note": "голый адрес в ячейке",
            "trick": "bare_cell_no_sentence",
            "type": "ADDRESS"
@@ -2259,7 +2314,7 @@
          {
           "e": {
            "cat": "canonical",
-           "id": "works_0004-e39",
+           "id": "works_0004-e40",
            "type": "PER"
           },
           "s": "Кузнецов Иван Михайлович"
@@ -2276,7 +2331,7 @@
          {
           "e": {
            "cat": "ugly",
-           "id": "works_0004-e40",
+           "id": "works_0004-e41",
            "note": "стиль адреса: snt",
            "type": "ADDRESS"
           },
@@ -2295,7 +2350,7 @@
           "e": {
            "cat": "canonical",
            "checksum": "valid",
-           "id": "works_0004-e41",
+           "id": "works_0004-e42",
            "note": "12-значный ИНН",
            "type": "INN"
           },
@@ -2308,7 +2363,7 @@
           "e": {
            "cat": "ugly",
            "checksum": "valid",
-           "id": "works_0004-e42",
+           "id": "works_0004-e43",
            "note": "ОГРНИП, 15 знаков",
            "type": "OGRN"
           },
@@ -2327,7 +2382,7 @@
           "e": {
            "cat": "canonical",
            "checksum": "valid",
-           "id": "works_0004-e43",
+           "id": "works_0004-e44",
            "type": "ACCOUNT"
           },
           "s": "40802810861113150760"
@@ -2341,7 +2396,7 @@
          {
           "e": {
            "cat": "canonical",
-           "id": "works_0004-e44",
+           "id": "works_0004-e45",
            "type": "BIK"
           },
           "s": "045004763"
@@ -2358,7 +2413,7 @@
          {
           "e": {
            "cat": "canonical",
-           "id": "works_0004-e45",
+           "id": "works_0004-e46",
            "note": "формат: canonical",
            "type": "PHONE"
           },
@@ -2376,7 +2431,7 @@
          {
           "e": {
            "cat": "canonical",
-           "id": "works_0004-e46",
+           "id": "works_0004-e47",
            "type": "EMAIL"
           },
           "s": "kuznecov@inbox.ru"
@@ -2398,7 +2453,7 @@
          {
           "e": {
            "cat": "ugly",
-           "id": "works_0004-e47",
+           "id": "works_0004-e48",
            "note": "фамилия + инициалы",
            "type": "PER"
           },
@@ -2459,7 +2514,7 @@
               {
                "e": {
                 "cat": "adversarial",
-                "id": "works_0004-e50",
+                "id": "works_0004-e51",
                 "note": "счёт во вложенной таблице",
                 "trick": "nested_table",
                 "type": "ACCOUNT"
@@ -2494,7 +2549,7 @@
               {
                "e": {
                 "cat": "adversarial",
-                "id": "works_0004-e51",
+                "id": "works_0004-e52",
                 "note": "ФИО во вложенной таблице",
                 "trick": "nested_table",
                 "type": "PER"
@@ -2544,7 +2599,7 @@
     {
      "e": {
       "cat": "ugly",
-      "id": "works_0004-e52",
+      "id": "works_0004-e53",
       "note": "подпись: фамилия+инициалы",
       "type": "PER"
      },
@@ -2565,7 +2620,7 @@
     {
      "e": {
       "cat": "ugly",
-      "id": "works_0004-e53",
+      "id": "works_0004-e54",
       "note": "подпись: фамилия+инициалы",
       "type": "PER"
      },

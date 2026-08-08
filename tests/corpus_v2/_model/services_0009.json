@@ -1902,6 +1902,61 @@
   {
    "chunks": [
     {
+     "s": "6. ОСОБЫЕ УСЛОВИЯ ОТДЕЛЬНЫХ ВИДОВ ДАННЫХ"
+    }
+   ],
+   "style": "bold",
+   "t": "p"
+  },
+  {
+   "chunks": [
+    {
+     "s": "6.1. Полномочия представителя подтверждены доверенностью, реестровый номер "
+    },
+    {
+     "e": {
+      "cat": "canonical",
+      "id": "services_0009-e23",
+      "note": "фабричный тип: пример из файла-описания владельца",
+      "type": "REG_NUMBER"
+     },
+     "s": "16/89-н/16-2024-3-215"
+    },
+    {
+     "s": "."
+    }
+   ],
+   "style": "normal",
+   "t": "p"
+  },
+  {
+   "chunks": [
+    {
+     "s": "6.2. Для сопоставления в учёте указывается: "
+    },
+    {
+     "n": {
+      "kind": "cadastral",
+      "type": "REG_NUMBER",
+      "why": "чужая номенклатура: двоеточия, нет группы «-н» — не реестровый номер стороны"
+     },
+     "s": "кадастровый номер 77:01:0004012:2211"
+    },
+    {
+     "s": "."
+    }
+   ],
+   "style": "normal",
+   "t": "p"
+  },
+  {
+   "chunks": [],
+   "style": "normal",
+   "t": "p"
+  },
+  {
+   "chunks": [
+    {
      "s": "РЕКВИЗИТЫ И ПОДПИСИ СТОРОН"
     }
    ],
@@ -1927,7 +1982,7 @@
     {
      "e": {
       "cat": "canonical",
-      "id": "services_0009-e23",
+      "id": "services_0009-e24",
       "type": "ORG"
      },
      "s": "ООО «Феникс»"
@@ -1944,7 +1999,7 @@
     {
      "e": {
       "cat": "ugly",
-      "id": "services_0009-e24",
+      "id": "services_0009-e25",
       "note": "стиль адреса: km",
       "type": "ADDRESS"
      },
@@ -1963,7 +2018,7 @@
      "e": {
       "cat": "ugly",
       "checksum": "valid",
-      "id": "services_0009-e25",
+      "id": "services_0009-e26",
       "note": "пробелы внутри номера",
       "type": "INN"
      },
@@ -1975,7 +2030,7 @@
     {
      "e": {
       "cat": "canonical",
-      "id": "services_0009-e26",
+      "id": "services_0009-e27",
       "type": "KPP"
      },
      "s": "771120447"
@@ -1993,7 +2048,7 @@
      "e": {
       "cat": "ugly",
       "checksum": "valid",
-      "id": "services_0009-e27",
+      "id": "services_0009-e28",
       "note": "пробелы внутри номера",
       "type": "OGRN"
      },
@@ -2012,7 +2067,7 @@
      "e": {
       "cat": "ugly",
       "checksum": "valid",
-      "id": "services_0009-e28",
+      "id": "services_0009-e29",
       "note": "пробелы внутри номера",
       "type": "ACCOUNT"
      },
@@ -2033,7 +2088,7 @@
     {
      "e": {
       "cat": "canonical",
-      "id": "services_0009-e29",
+      "id": "services_0009-e30",
       "note": "корреспондентский счёт банка",
       "type": "ACCOUNT"
      },
@@ -2045,7 +2100,7 @@
     {
      "e": {
       "cat": "canonical",
-      "id": "services_0009-e30",
+      "id": "services_0009-e31",
       "type": "BIK"
      },
      "s": "044525360"
@@ -2062,7 +2117,7 @@
     {
      "e": {
       "cat": "canonical",
-      "id": "services_0009-e31",
+      "id": "services_0009-e32",
       "note": "формат: canonical",
       "type": "PHONE"
      },
@@ -2080,7 +2135,7 @@
     {
      "e": {
       "cat": "canonical",
-      "id": "services_0009-e32",
+      "id": "services_0009-e33",
       "type": "EMAIL"
      },
      "s": "ter.petrosyan@gmail.com"
@@ -2102,7 +2157,7 @@
     {
      "e": {
       "cat": "ugly",
-      "id": "services_0009-e33",
+      "id": "services_0009-e34",
       "note": "инициалы перед фамилией",
       "type": "PER"
      },
@@ -2131,7 +2186,7 @@
     {
      "e": {
       "cat": "canonical",
-      "id": "services_0009-e34",
+      "id": "services_0009-e35",
       "type": "ORG"
      },
      "s": "ПАО «Вектор»"
@@ -2148,7 +2203,7 @@
     {
      "e": {
       "cat": "ugly",
-      "id": "services_0009-e35",
+      "id": "services_0009-e36",
       "note": "стиль адреса: snt",
       "type": "ADDRESS"
      },
@@ -2166,7 +2221,7 @@
     {
      "e": {
       "cat": "ugly",
-      "id": "services_0009-e36",
+      "id": "services_0009-e37",
       "note": "стиль адреса: snt",
       "type": "ADDRESS"
      },
@@ -2185,7 +2240,7 @@
      "e": {
       "cat": "ugly",
       "checksum": "valid",
-      "id": "services_0009-e37",
+      "id": "services_0009-e38",
       "note": "пробелы внутри номера",
       "type": "INN"
      },
@@ -2197,7 +2252,7 @@
     {
      "e": {
       "cat": "canonical",
-      "id": "services_0009-e38",
+      "id": "services_0009-e39",
       "type": "KPP"
      },
      "s": "798308983"
@@ -2215,7 +2270,7 @@
      "e": {
       "cat": "ugly",
       "checksum": "valid",
-      "id": "services_0009-e39",
+      "id": "services_0009-e40",
       "note": "пробелы внутри номера",
       "type": "OGRN"
      },
@@ -2234,7 +2289,7 @@
      "e": {
       "cat": "ugly",
       "checksum": "valid",
-      "id": "services_0009-e40",
+      "id": "services_0009-e41",
       "note": "пробелы внутри номера",
       "type": "ACCOUNT"
      },
@@ -2255,7 +2310,7 @@
     {
      "e": {
       "cat": "canonical",
-      "id": "services_0009-e41",
+      "id": "services_0009-e42",
       "note": "корреспондентский счёт банка",
       "type": "ACCOUNT"
      },
@@ -2267,7 +2322,7 @@
     {
      "e": {
       "cat": "canonical",
-      "id": "services_0009-e42",
+      "id": "services_0009-e43",
       "type": "BIK"
      },
      "s": "044525974"
@@ -2284,7 +2339,7 @@
     {
      "e": {
       "cat": "canonical",
-      "id": "services_0009-e43",
+      "id": "services_0009-e44",
       "note": "формат: canonical",
       "type": "PHONE"
      },
@@ -2302,7 +2357,7 @@
     {
      "e": {
       "cat": "canonical",
-      "id": "services_0009-e44",
+      "id": "services_0009-e45",
       "type": "EMAIL"
      },
      "s": "nurmagomedova@romashka.ru"
@@ -2324,7 +2379,7 @@
     {
      "e": {
       "cat": "ugly",
-      "id": "services_0009-e45",
+      "id": "services_0009-e46",
       "note": "инициалы перед фамилией",
       "type": "PER"
      },
@@ -2361,7 +2416,7 @@
     {
      "e": {
       "cat": "ugly",
-      "id": "services_0009-e46",
+      "id": "services_0009-e47",
       "note": "подпись: фамилия+инициалы",
       "type": "PER"
      },
@@ -2382,7 +2437,7 @@
     {
      "e": {
       "cat": "ugly",
-      "id": "services_0009-e47",
+      "id": "services_0009-e48",
       "note": "подпись: фамилия+инициалы",
       "type": "PER"
      },

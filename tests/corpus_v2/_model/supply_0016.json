@@ -1885,6 +1885,61 @@
   {
    "chunks": [
     {
+     "s": "6. ОСОБЫЕ УСЛОВИЯ ОТДЕЛЬНЫХ ВИДОВ ДАННЫХ"
+    }
+   ],
+   "style": "bold",
+   "t": "p"
+  },
+  {
+   "chunks": [
+    {
+     "s": "6.1. Полномочия представителя подтверждены доверенностью, реестровый номер "
+    },
+    {
+     "e": {
+      "cat": "canonical",
+      "id": "supply_0016-e20",
+      "note": "фабричный тип: пример из файла-описания владельца",
+      "type": "REG_NUMBER"
+     },
+     "s": "77/714-н/77-2024-1-502"
+    },
+    {
+     "s": "."
+    }
+   ],
+   "style": "normal",
+   "t": "p"
+  },
+  {
+   "chunks": [
+    {
+     "s": "6.2. Для сопоставления в учёте указывается: "
+    },
+    {
+     "n": {
+      "kind": "date-slash",
+      "type": "REG_NUMBER",
+      "why": "диапазон месяцев: нет буквенной группы, две группы-даты"
+     },
+     "s": "срок действия 12/2024-06/2025"
+    },
+    {
+     "s": "."
+    }
+   ],
+   "style": "normal",
+   "t": "p"
+  },
+  {
+   "chunks": [],
+   "style": "normal",
+   "t": "p"
+  },
+  {
+   "chunks": [
+    {
      "s": "РЕКВИЗИТЫ И ПОДПИСИ СТОРОН"
     }
    ],
@@ -1918,7 +1973,7 @@
          {
           "e": {
            "cat": "canonical",
-           "id": "supply_0016-e20",
+           "id": "supply_0016-e21",
            "type": "PER"
           },
           "s": "Орлов Дмитрий Михайлович"
@@ -1935,7 +1990,7 @@
          {
           "e": {
            "cat": "canonical",
-           "id": "supply_0016-e21",
+           "id": "supply_0016-e22",
            "note": "стиль адреса: canonical",
            "type": "ADDRESS"
           },
@@ -1954,7 +2009,7 @@
           "e": {
            "cat": "canonical",
            "checksum": "valid",
-           "id": "supply_0016-e22",
+           "id": "supply_0016-e23",
            "note": "12-значный ИНН",
            "type": "INN"
           },
@@ -1967,7 +2022,7 @@
           "e": {
            "cat": "ugly",
            "checksum": "valid",
-           "id": "supply_0016-e23",
+           "id": "supply_0016-e24",
            "note": "ОГРНИП, 15 знаков",
            "type": "OGRN"
           },
@@ -1986,7 +2041,7 @@
           "e": {
            "cat": "canonical",
            "checksum": "valid",
-           "id": "supply_0016-e24",
+           "id": "supply_0016-e25",
            "type": "ACCOUNT"
           },
           "s": "40802810111464978945"
@@ -2000,7 +2055,7 @@
          {
           "e": {
            "cat": "canonical",
-           "id": "supply_0016-e25",
+           "id": "supply_0016-e26",
            "type": "BIK"
           },
           "s": "044525974"
@@ -2017,7 +2072,7 @@
          {
           "e": {
            "cat": "canonical",
-           "id": "supply_0016-e26",
+           "id": "supply_0016-e27",
            "note": "формат: canonical",
            "type": "PHONE"
           },
@@ -2035,7 +2090,7 @@
          {
           "e": {
            "cat": "canonical",
-           "id": "supply_0016-e27",
+           "id": "supply_0016-e28",
            "type": "EMAIL"
           },
           "s": "orlov@bk.ru"
@@ -2057,7 +2112,7 @@
          {
           "e": {
            "cat": "ugly",
-           "id": "supply_0016-e28",
+           "id": "supply_0016-e29",
            "note": "фамилия + инициалы",
            "type": "PER"
           },
@@ -2088,7 +2143,7 @@
          {
           "e": {
            "cat": "canonical",
-           "id": "supply_0016-e29",
+           "id": "supply_0016-e30",
            "type": "PER"
           },
           "s": "Семёнов Сергей Петрович"
@@ -2105,7 +2160,7 @@
          {
           "e": {
            "cat": "canonical",
-           "id": "supply_0016-e30",
+           "id": "supply_0016-e31",
            "note": "стиль адреса: canonical",
            "type": "ADDRESS"
           },
@@ -2124,7 +2179,7 @@
           "e": {
            "cat": "canonical",
            "checksum": "valid",
-           "id": "supply_0016-e31",
+           "id": "supply_0016-e32",
            "note": "12-значный ИНН",
            "type": "INN"
           },
@@ -2137,7 +2192,7 @@
           "e": {
            "cat": "ugly",
            "checksum": "valid",
-           "id": "supply_0016-e32",
+           "id": "supply_0016-e33",
            "note": "ОГРНИП, 15 знаков",
            "type": "OGRN"
           },
@@ -2156,7 +2211,7 @@
           "e": {
            "cat": "canonical",
            "checksum": "valid",
-           "id": "supply_0016-e33",
+           "id": "supply_0016-e34",
            "type": "ACCOUNT"
           },
           "s": "40802810628689086300"
@@ -2170,7 +2225,7 @@
          {
           "e": {
            "cat": "canonical",
-           "id": "supply_0016-e34",
+           "id": "supply_0016-e35",
            "type": "BIK"
           },
           "s": "044525225"
@@ -2187,7 +2242,7 @@
          {
           "e": {
            "cat": "canonical",
-           "id": "supply_0016-e35",
+           "id": "supply_0016-e36",
            "note": "формат: canonical",
            "type": "PHONE"
           },
@@ -2205,7 +2260,7 @@
          {
           "e": {
            "cat": "canonical",
-           "id": "supply_0016-e36",
+           "id": "supply_0016-e37",
            "type": "EMAIL"
           },
           "s": "semenov@romashka.ru"
@@ -2227,7 +2282,7 @@
          {
           "e": {
            "cat": "ugly",
-           "id": "supply_0016-e37",
+           "id": "supply_0016-e38",
            "note": "фамилия + инициалы",
            "type": "PER"
           },
@@ -2265,7 +2320,7 @@
     {
      "e": {
       "cat": "ugly",
-      "id": "supply_0016-e38",
+      "id": "supply_0016-e39",
       "note": "подпись: фамилия+инициалы",
       "type": "PER"
      },
@@ -2286,7 +2341,7 @@
     {
      "e": {
       "cat": "ugly",
-      "id": "supply_0016-e39",
+      "id": "supply_0016-e40",
       "note": "подпись: фамилия+инициалы",
       "type": "PER"
      },

@@ -2021,6 +2021,61 @@
   {
    "chunks": [
     {
+     "s": "6. ОСОБЫЕ УСЛОВИЯ ОТДЕЛЬНЫХ ВИДОВ ДАННЫХ"
+    }
+   ],
+   "style": "bold",
+   "t": "p"
+  },
+  {
+   "chunks": [
+    {
+     "s": "6.1. Полномочия представителя подтверждены доверенностью, реестровый номер "
+    },
+    {
+     "e": {
+      "cat": "canonical",
+      "id": "cx_sale_0027-e27",
+      "note": "фабричный тип: пример из файла-описания владельца",
+      "type": "REG_NUMBER"
+     },
+     "s": "50/121-н/50-2023-4-88"
+    },
+    {
+     "s": "."
+    }
+   ],
+   "style": "normal",
+   "t": "p"
+  },
+  {
+   "chunks": [
+    {
+     "s": "6.2. Для сопоставления в учёте указывается: "
+    },
+    {
+     "n": {
+      "kind": "clause-chain",
+      "type": "REG_NUMBER",
+      "why": "короткие цепочки пунктов: меньше групп, нет «-н», нет года"
+     },
+     "s": "пп. 4/5-1 и 7/2-3 Правил страхования"
+    },
+    {
+     "s": "."
+    }
+   ],
+   "style": "normal",
+   "t": "p"
+  },
+  {
+   "chunks": [],
+   "style": "normal",
+   "t": "p"
+  },
+  {
+   "chunks": [
+    {
      "s": "РЕКВИЗИТЫ И ПОДПИСИ СТОРОН"
     }
    ],
@@ -2051,7 +2106,7 @@
          {
           "e": {
            "cat": "canonical",
-           "id": "cx_sale_0027-e27",
+           "id": "cx_sale_0027-e28",
            "type": "ORG"
           },
           "s": "ООО «Феникс»"
@@ -2068,7 +2123,7 @@
          {
           "e": {
            "cat": "canonical",
-           "id": "cx_sale_0027-e28",
+           "id": "cx_sale_0027-e29",
            "note": "стиль адреса: canonical",
            "type": "ADDRESS"
           },
@@ -2087,7 +2142,7 @@
           "e": {
            "cat": "canonical",
            "checksum": "valid",
-           "id": "cx_sale_0027-e29",
+           "id": "cx_sale_0027-e30",
            "type": "INN"
           },
           "s": "6785881175"
@@ -2098,7 +2153,7 @@
          {
           "e": {
            "cat": "canonical",
-           "id": "cx_sale_0027-e30",
+           "id": "cx_sale_0027-e31",
            "type": "KPP"
           },
           "s": "676438629"
@@ -2116,7 +2171,7 @@
           "e": {
            "cat": "canonical",
            "checksum": "valid",
-           "id": "cx_sale_0027-e31",
+           "id": "cx_sale_0027-e32",
            "type": "OGRN"
           },
           "s": "1344009759279"
@@ -2134,7 +2189,7 @@
           "e": {
            "cat": "canonical",
            "checksum": "valid",
-           "id": "cx_sale_0027-e32",
+           "id": "cx_sale_0027-e33",
            "type": "ACCOUNT"
           },
           "s": "40702810822365365654"
@@ -2154,7 +2209,7 @@
          {
           "e": {
            "cat": "canonical",
-           "id": "cx_sale_0027-e33",
+           "id": "cx_sale_0027-e34",
            "note": "корреспондентский счёт банка",
            "type": "ACCOUNT"
           },
@@ -2166,7 +2221,7 @@
          {
           "e": {
            "cat": "canonical",
-           "id": "cx_sale_0027-e34",
+           "id": "cx_sale_0027-e35",
            "type": "BIK"
           },
           "s": "044525700"
@@ -2183,7 +2238,7 @@
          {
           "e": {
            "cat": "canonical",
-           "id": "cx_sale_0027-e35",
+           "id": "cx_sale_0027-e36",
            "note": "формат: canonical",
            "type": "PHONE"
           },
@@ -2201,7 +2256,7 @@
          {
           "e": {
            "cat": "canonical",
-           "id": "cx_sale_0027-e36",
+           "id": "cx_sale_0027-e37",
            "type": "EMAIL"
           },
           "s": "novikova@inbox.ru"
@@ -2223,7 +2278,7 @@
          {
           "e": {
            "cat": "ugly",
-           "id": "cx_sale_0027-e37",
+           "id": "cx_sale_0027-e38",
            "note": "инициалы перед фамилией",
            "type": "PER"
           },
@@ -2254,7 +2309,7 @@
          {
           "e": {
            "cat": "canonical",
-           "id": "cx_sale_0027-e38",
+           "id": "cx_sale_0027-e39",
            "type": "PER"
           },
           "s": "Соколова Мария Павловна"
@@ -2271,7 +2326,7 @@
          {
           "e": {
            "cat": "canonical",
-           "id": "cx_sale_0027-e39",
+           "id": "cx_sale_0027-e40",
            "note": "стиль адреса: canonical",
            "type": "ADDRESS"
           },
@@ -2290,7 +2345,7 @@
           "e": {
            "cat": "canonical",
            "checksum": "valid",
-           "id": "cx_sale_0027-e40",
+           "id": "cx_sale_0027-e41",
            "note": "12-значный ИНН",
            "type": "INN"
           },
@@ -2303,7 +2358,7 @@
           "e": {
            "cat": "ugly",
            "checksum": "valid",
-           "id": "cx_sale_0027-e41",
+           "id": "cx_sale_0027-e42",
            "note": "ОГРНИП, 15 знаков",
            "type": "OGRN"
           },
@@ -2322,7 +2377,7 @@
           "e": {
            "cat": "canonical",
            "checksum": "valid",
-           "id": "cx_sale_0027-e42",
+           "id": "cx_sale_0027-e43",
            "type": "ACCOUNT"
           },
           "s": "40802810449450535110"
@@ -2336,7 +2391,7 @@
          {
           "e": {
            "cat": "canonical",
-           "id": "cx_sale_0027-e43",
+           "id": "cx_sale_0027-e44",
            "type": "BIK"
           },
           "s": "044030790"
@@ -2353,7 +2408,7 @@
          {
           "e": {
            "cat": "canonical",
-           "id": "cx_sale_0027-e44",
+           "id": "cx_sale_0027-e45",
            "note": "формат: canonical",
            "type": "PHONE"
           },
@@ -2371,7 +2426,7 @@
          {
           "e": {
            "cat": "canonical",
-           "id": "cx_sale_0027-e45",
+           "id": "cx_sale_0027-e46",
            "type": "EMAIL"
           },
           "s": "sokolova@yandex.ru"
@@ -2393,7 +2448,7 @@
          {
           "e": {
            "cat": "ugly",
-           "id": "cx_sale_0027-e46",
+           "id": "cx_sale_0027-e47",
            "note": "фамилия + инициалы",
            "type": "PER"
           },
@@ -2431,7 +2486,7 @@
     {
      "e": {
       "cat": "ugly",
-      "id": "cx_sale_0027-e47",
+      "id": "cx_sale_0027-e48",
       "note": "подпись: фамилия+инициалы",
       "type": "PER"
      },
@@ -2452,7 +2507,7 @@
     {
      "e": {
       "cat": "ugly",
-      "id": "cx_sale_0027-e48",
+      "id": "cx_sale_0027-e49",
       "note": "подпись: фамилия+инициалы",
       "type": "PER"
      },

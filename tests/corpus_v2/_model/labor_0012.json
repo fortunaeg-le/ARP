@@ -2075,6 +2075,61 @@
   {
    "chunks": [
     {
+     "s": "6. ОСОБЫЕ УСЛОВИЯ ОТДЕЛЬНЫХ ВИДОВ ДАННЫХ"
+    }
+   ],
+   "style": "bold",
+   "t": "p"
+  },
+  {
+   "chunks": [
+    {
+     "s": "6.1. Полномочия представителя подтверждены доверенностью, реестровый номер "
+    },
+    {
+     "e": {
+      "cat": "canonical",
+      "id": "labor_0012-e31",
+      "note": "фабричный тип: пример из файла-описания владельца",
+      "type": "REG_NUMBER"
+     },
+     "s": "78/1445-н/78-2022-12-7"
+    },
+    {
+     "s": "."
+    }
+   ],
+   "style": "normal",
+   "t": "p"
+  },
+  {
+   "chunks": [
+    {
+     "s": "6.2. Для сопоставления в учёте указывается: "
+    },
+    {
+     "n": {
+      "kind": "gost-ref",
+      "type": "REG_NUMBER",
+      "why": "ссылка на стандарт — не реестровый номер"
+     },
+     "s": "ГОСТ Р 52044-2003"
+    },
+    {
+     "s": "."
+    }
+   ],
+   "style": "normal",
+   "t": "p"
+  },
+  {
+   "chunks": [],
+   "style": "normal",
+   "t": "p"
+  },
+  {
+   "chunks": [
+    {
      "s": "РЕКВИЗИТЫ И ПОДПИСИ СТОРОН"
     }
    ],
@@ -2105,7 +2160,7 @@
          {
           "e": {
            "cat": "canonical",
-           "id": "labor_0012-e31",
+           "id": "labor_0012-e32",
            "type": "ORG"
           },
           "s": "АО «Вектор»"
@@ -2122,7 +2177,7 @@
          {
           "e": {
            "cat": "ugly",
-           "id": "labor_0012-e32",
+           "id": "labor_0012-e33",
            "note": "стиль адреса: index_first",
            "type": "ADDRESS"
           },
@@ -2140,7 +2195,7 @@
          {
           "e": {
            "cat": "ugly",
-           "id": "labor_0012-e33",
+           "id": "labor_0012-e34",
            "note": "стиль адреса: index_first",
            "type": "ADDRESS"
           },
@@ -2159,7 +2214,7 @@
           "e": {
            "cat": "ugly",
            "checksum": "valid",
-           "id": "labor_0012-e34",
+           "id": "labor_0012-e35",
            "note": "пробелы внутри номера",
            "type": "INN"
           },
@@ -2171,7 +2226,7 @@
          {
           "e": {
            "cat": "canonical",
-           "id": "labor_0012-e35",
+           "id": "labor_0012-e36",
            "type": "KPP"
           },
           "s": "496664891"
@@ -2189,7 +2244,7 @@
           "e": {
            "cat": "ugly",
            "checksum": "valid",
-           "id": "labor_0012-e36",
+           "id": "labor_0012-e37",
            "note": "пробелы внутри номера",
            "type": "OGRN"
           },
@@ -2208,7 +2263,7 @@
           "e": {
            "cat": "ugly",
            "checksum": "valid",
-           "id": "labor_0012-e37",
+           "id": "labor_0012-e38",
            "note": "пробелы внутри номера",
            "type": "ACCOUNT"
           },
@@ -2229,7 +2284,7 @@
          {
           "e": {
            "cat": "canonical",
-           "id": "labor_0012-e38",
+           "id": "labor_0012-e39",
            "note": "корреспондентский счёт банка",
            "type": "ACCOUNT"
           },
@@ -2241,7 +2296,7 @@
          {
           "e": {
            "cat": "canonical",
-           "id": "labor_0012-e39",
+           "id": "labor_0012-e40",
            "type": "BIK"
           },
           "s": "049205603"
@@ -2258,7 +2313,7 @@
          {
           "e": {
            "cat": "canonical",
-           "id": "labor_0012-e40",
+           "id": "labor_0012-e41",
            "note": "формат: canonical",
            "type": "PHONE"
           },
@@ -2276,7 +2331,7 @@
          {
           "e": {
            "cat": "canonical",
-           "id": "labor_0012-e41",
+           "id": "labor_0012-e42",
            "type": "EMAIL"
           },
           "s": "zayceva@bk.ru"
@@ -2298,7 +2353,7 @@
          {
           "e": {
            "cat": "ugly",
-           "id": "labor_0012-e42",
+           "id": "labor_0012-e43",
            "note": "инициалы перед фамилией",
            "type": "PER"
           },
@@ -2317,7 +2372,7 @@
           "bs": true,
           "e": {
            "cat": "adversarial",
-           "id": "labor_0012-e53",
+           "id": "labor_0012-e54",
            "note": "слово разорвано форматированием (половина букв жирная)",
            "trick": "bold_split_runs",
            "type": "PER"
@@ -2346,7 +2401,7 @@
          {
           "e": {
            "cat": "canonical",
-           "id": "labor_0012-e43",
+           "id": "labor_0012-e44",
            "type": "PER"
           },
           "s": "Иванова Ирина Юрьевна"
@@ -2363,7 +2418,7 @@
          {
           "e": {
            "cat": "canonical",
-           "id": "labor_0012-e44",
+           "id": "labor_0012-e45",
            "note": "стиль записи из BIRTHDATE_STYLES",
            "type": "BIRTHDATE"
           },
@@ -2381,7 +2436,7 @@
          {
           "e": {
            "cat": "ugly",
-           "id": "labor_0012-e45",
+           "id": "labor_0012-e46",
            "note": "стиль адреса: index_first",
            "type": "ADDRESS"
           },
@@ -2399,7 +2454,7 @@
          {
           "e": {
            "cat": "canonical",
-           "id": "labor_0012-e46",
+           "id": "labor_0012-e47",
            "note": "серия+номер, стиль записи из PASSPORT_STYLES",
            "type": "PASSPORT"
           },
@@ -2414,7 +2469,7 @@
          {
           "e": {
            "cat": "ugly",
-           "id": "labor_0012-e47",
+           "id": "labor_0012-e48",
            "note": "код подразделения, стиль записи из DEPTCODE_STYLES",
            "type": "PASSPORT"
           },
@@ -2433,7 +2488,7 @@
           "e": {
            "cat": "canonical",
            "checksum": "valid",
-           "id": "labor_0012-e48",
+           "id": "labor_0012-e49",
            "note": "стиль записи из SNILS_STYLES",
            "type": "SNILS"
           },
@@ -2446,7 +2501,7 @@
           "e": {
            "cat": "ugly",
            "checksum": "valid",
-           "id": "labor_0012-e49",
+           "id": "labor_0012-e50",
            "note": "ИНН физлица (12 знаков)",
            "type": "INN"
           },
@@ -2464,7 +2519,7 @@
          {
           "e": {
            "cat": "canonical",
-           "id": "labor_0012-e50",
+           "id": "labor_0012-e51",
            "note": "формат: canonical",
            "type": "PHONE"
           },
@@ -2482,7 +2537,7 @@
          {
           "e": {
            "cat": "canonical",
-           "id": "labor_0012-e51",
+           "id": "labor_0012-e52",
            "type": "EMAIL"
           },
           "s": "ivanova@corp-tehno.ru"
@@ -2504,7 +2559,7 @@
          {
           "e": {
            "cat": "ugly",
-           "id": "labor_0012-e52",
+           "id": "labor_0012-e53",
            "note": "фамилия + инициалы",
            "type": "PER"
           },
@@ -2542,7 +2597,7 @@
     {
      "e": {
       "cat": "ugly",
-      "id": "labor_0012-e56",
+      "id": "labor_0012-e57",
       "note": "подпись: фамилия+инициалы",
       "type": "PER"
      },
@@ -2563,7 +2618,7 @@
     {
      "e": {
       "cat": "ugly",
-      "id": "labor_0012-e57",
+      "id": "labor_0012-e58",
       "note": "подпись: фамилия+инициалы",
       "type": "PER"
      },
@@ -2597,7 +2652,7 @@
     {
      "e": {
       "cat": "adversarial",
-      "id": "labor_0012-e54",
+      "id": "labor_0012-e55",
       "note": "ФИО в нижнем колонтитуле",
       "trick": "in_footer",
       "type": "PER"
@@ -2610,7 +2665,7 @@
     {
      "e": {
       "cat": "adversarial",
-      "id": "labor_0012-e55",
+      "id": "labor_0012-e56",
       "note": "телефон в нижнем колонтитуле",
       "trick": "in_footer",
       "type": "PHONE"

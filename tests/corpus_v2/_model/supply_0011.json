@@ -1883,6 +1883,61 @@
   {
    "chunks": [
     {
+     "s": "6. ОСОБЫЕ УСЛОВИЯ ОТДЕЛЬНЫХ ВИДОВ ДАННЫХ"
+    }
+   ],
+   "style": "bold",
+   "t": "p"
+  },
+  {
+   "chunks": [
+    {
+     "s": "6.1. Полномочия представителя подтверждены доверенностью, реестровый номер "
+    },
+    {
+     "e": {
+      "cat": "canonical",
+      "id": "supply_0011-e22",
+      "note": "фабричный тип: пример из файла-описания владельца",
+      "type": "REG_NUMBER"
+     },
+     "s": "77/714-н/77-2024-1-502"
+    },
+    {
+     "s": "."
+    }
+   ],
+   "style": "normal",
+   "t": "p"
+  },
+  {
+   "chunks": [
+    {
+     "s": "6.2. Для сопоставления в учёте указывается: "
+    },
+    {
+     "n": {
+      "kind": "clause-chain",
+      "type": "REG_NUMBER",
+      "why": "короткие цепочки пунктов: меньше групп, нет «-н», нет года"
+     },
+     "s": "пп. 4/5-1 и 7/2-3 Правил страхования"
+    },
+    {
+     "s": "."
+    }
+   ],
+   "style": "normal",
+   "t": "p"
+  },
+  {
+   "chunks": [],
+   "style": "normal",
+   "t": "p"
+  },
+  {
+   "chunks": [
+    {
      "s": "РЕКВИЗИТЫ И ПОДПИСИ СТОРОН"
     }
    ],
@@ -1911,7 +1966,7 @@
     {
      "e": {
       "cat": "canonical",
-      "id": "supply_0011-e22",
+      "id": "supply_0011-e23",
       "type": "PER"
      },
      "s": "Воробьёв Пётр Андреевич"
@@ -1928,7 +1983,7 @@
     {
      "e": {
       "cat": "canonical",
-      "id": "supply_0011-e23",
+      "id": "supply_0011-e24",
       "note": "стиль адреса: canonical",
       "type": "ADDRESS"
      },
@@ -1947,7 +2002,7 @@
      "e": {
       "cat": "canonical",
       "checksum": "valid",
-      "id": "supply_0011-e24",
+      "id": "supply_0011-e25",
       "note": "12-значный ИНН",
       "type": "INN"
      },
@@ -1960,7 +2015,7 @@
      "e": {
       "cat": "ugly",
       "checksum": "valid",
-      "id": "supply_0011-e25",
+      "id": "supply_0011-e26",
       "note": "ОГРНИП, 15 знаков",
       "type": "OGRN"
      },
@@ -1979,7 +2034,7 @@
      "e": {
       "cat": "canonical",
       "checksum": "valid",
-      "id": "supply_0011-e26",
+      "id": "supply_0011-e27",
       "type": "ACCOUNT"
      },
      "s": "40802810722820361001"
@@ -1993,7 +2048,7 @@
     {
      "e": {
       "cat": "canonical",
-      "id": "supply_0011-e27",
+      "id": "supply_0011-e28",
       "type": "BIK"
      },
      "s": "044525360"
@@ -2010,7 +2065,7 @@
     {
      "e": {
       "cat": "canonical",
-      "id": "supply_0011-e28",
+      "id": "supply_0011-e29",
       "note": "формат: canonical",
       "type": "PHONE"
      },
@@ -2028,7 +2083,7 @@
     {
      "e": {
       "cat": "canonical",
-      "id": "supply_0011-e29",
+      "id": "supply_0011-e30",
       "type": "EMAIL"
      },
      "s": "vorobev@bk.ru"
@@ -2050,7 +2105,7 @@
     {
      "e": {
       "cat": "ugly",
-      "id": "supply_0011-e30",
+      "id": "supply_0011-e31",
       "note": "фамилия + инициалы",
       "type": "PER"
      },
@@ -2079,7 +2134,7 @@
     {
      "e": {
       "cat": "canonical",
-      "id": "supply_0011-e31",
+      "id": "supply_0011-e32",
       "type": "PER"
      },
      "s": "Михайлов Артём Олегович"
@@ -2096,7 +2151,7 @@
     {
      "e": {
       "cat": "canonical",
-      "id": "supply_0011-e32",
+      "id": "supply_0011-e33",
       "note": "стиль записи из BIRTHDATE_STYLES",
       "type": "BIRTHDATE"
      },
@@ -2114,7 +2169,7 @@
     {
      "e": {
       "cat": "canonical",
-      "id": "supply_0011-e33",
+      "id": "supply_0011-e34",
       "note": "стиль адреса: canonical",
       "type": "ADDRESS"
      },
@@ -2132,7 +2187,7 @@
     {
      "e": {
       "cat": "canonical",
-      "id": "supply_0011-e34",
+      "id": "supply_0011-e35",
       "note": "серия+номер, стиль записи из PASSPORT_STYLES",
       "type": "PASSPORT"
      },
@@ -2147,7 +2202,7 @@
     {
      "e": {
       "cat": "ugly",
-      "id": "supply_0011-e35",
+      "id": "supply_0011-e36",
       "note": "код подразделения, стиль записи из DEPTCODE_STYLES",
       "type": "PASSPORT"
      },
@@ -2166,7 +2221,7 @@
      "e": {
       "cat": "canonical",
       "checksum": "valid",
-      "id": "supply_0011-e36",
+      "id": "supply_0011-e37",
       "note": "стиль записи из SNILS_STYLES",
       "type": "SNILS"
      },
@@ -2179,7 +2234,7 @@
      "e": {
       "cat": "ugly",
       "checksum": "valid",
-      "id": "supply_0011-e37",
+      "id": "supply_0011-e38",
       "note": "ИНН физлица (12 знаков)",
       "type": "INN"
      },
@@ -2197,7 +2252,7 @@
     {
      "e": {
       "cat": "canonical",
-      "id": "supply_0011-e38",
+      "id": "supply_0011-e39",
       "note": "формат: canonical",
       "type": "PHONE"
      },
@@ -2215,7 +2270,7 @@
     {
      "e": {
       "cat": "canonical",
-      "id": "supply_0011-e39",
+      "id": "supply_0011-e40",
       "type": "EMAIL"
      },
      "s": "mihaylov@yandex.ru"
@@ -2237,7 +2292,7 @@
     {
      "e": {
       "cat": "ugly",
-      "id": "supply_0011-e40",
+      "id": "supply_0011-e41",
       "note": "фамилия + инициалы",
       "type": "PER"
      },
@@ -2274,7 +2329,7 @@
     {
      "e": {
       "cat": "ugly",
-      "id": "supply_0011-e41",
+      "id": "supply_0011-e42",
       "note": "подпись: фамилия+инициалы",
       "type": "PER"
      },
@@ -2295,7 +2350,7 @@
     {
      "e": {
       "cat": "ugly",
-      "id": "supply_0011-e42",
+      "id": "supply_0011-e43",
       "note": "подпись: фамилия+инициалы",
       "type": "PER"
      },

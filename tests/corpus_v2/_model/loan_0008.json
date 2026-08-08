@@ -2055,6 +2055,61 @@
   {
    "chunks": [
     {
+     "s": "6. ОСОБЫЕ УСЛОВИЯ ОТДЕЛЬНЫХ ВИДОВ ДАННЫХ"
+    }
+   ],
+   "style": "bold",
+   "t": "p"
+  },
+  {
+   "chunks": [
+    {
+     "s": "6.1. Полномочия представителя подтверждены доверенностью, реестровый номер "
+    },
+    {
+     "e": {
+      "cat": "canonical",
+      "id": "loan_0008-e28",
+      "note": "фабричный тип: пример из файла-описания владельца",
+      "type": "REG_NUMBER"
+     },
+     "s": "50/121-н/50-2023-4-88"
+    },
+    {
+     "s": "."
+    }
+   ],
+   "style": "normal",
+   "t": "p"
+  },
+  {
+   "chunks": [
+    {
+     "s": "6.2. Для сопоставления в учёте указывается: "
+    },
+    {
+     "n": {
+      "kind": "gost-ref",
+      "type": "REG_NUMBER",
+      "why": "ссылка на стандарт — не реестровый номер"
+     },
+     "s": "ГОСТ Р 52044-2003"
+    },
+    {
+     "s": "."
+    }
+   ],
+   "style": "normal",
+   "t": "p"
+  },
+  {
+   "chunks": [],
+   "style": "normal",
+   "t": "p"
+  },
+  {
+   "chunks": [
+    {
      "s": "РЕКВИЗИТЫ И ПОДПИСИ СТОРОН"
     }
    ],
@@ -2085,7 +2140,7 @@
          {
           "e": {
            "cat": "canonical",
-           "id": "loan_0008-e28",
+           "id": "loan_0008-e29",
            "type": "ORG"
           },
           "s": "АО «Альтаир»"
@@ -2102,7 +2157,7 @@
          {
           "e": {
            "cat": "canonical",
-           "id": "loan_0008-e29",
+           "id": "loan_0008-e30",
            "note": "стиль адреса: canonical",
            "type": "ADDRESS"
           },
@@ -2121,7 +2176,7 @@
           "e": {
            "cat": "canonical",
            "checksum": "invalid",
-           "id": "loan_0008-e30",
+           "id": "loan_0008-e31",
            "type": "INN"
           },
           "s": "6255674843"
@@ -2132,7 +2187,7 @@
          {
           "e": {
            "cat": "canonical",
-           "id": "loan_0008-e31",
+           "id": "loan_0008-e32",
            "type": "KPP"
           },
           "s": "853498640"
@@ -2150,7 +2205,7 @@
           "e": {
            "cat": "canonical",
            "checksum": "invalid",
-           "id": "loan_0008-e32",
+           "id": "loan_0008-e33",
            "type": "OGRN"
           },
           "s": "1511777048321"
@@ -2168,7 +2223,7 @@
           "e": {
            "cat": "canonical",
            "checksum": "invalid",
-           "id": "loan_0008-e33",
+           "id": "loan_0008-e34",
            "type": "ACCOUNT"
           },
           "s": "40702810516507055862"
@@ -2188,7 +2243,7 @@
          {
           "e": {
            "cat": "canonical",
-           "id": "loan_0008-e34",
+           "id": "loan_0008-e35",
            "note": "корреспондентский счёт банка",
            "type": "ACCOUNT"
           },
@@ -2200,7 +2255,7 @@
          {
           "e": {
            "cat": "canonical",
-           "id": "loan_0008-e35",
+           "id": "loan_0008-e36",
            "type": "BIK"
           },
           "s": "044525593"
@@ -2217,7 +2272,7 @@
          {
           "e": {
            "cat": "canonical",
-           "id": "loan_0008-e36",
+           "id": "loan_0008-e37",
            "note": "формат: canonical",
            "type": "PHONE"
           },
@@ -2235,7 +2290,7 @@
          {
           "e": {
            "cat": "canonical",
-           "id": "loan_0008-e37",
+           "id": "loan_0008-e38",
            "type": "EMAIL"
           },
           "s": "titova@mail.ru"
@@ -2257,7 +2312,7 @@
          {
           "e": {
            "cat": "ugly",
-           "id": "loan_0008-e38",
+           "id": "loan_0008-e39",
            "note": "инициалы перед фамилией",
            "type": "PER"
           },
@@ -2288,7 +2343,7 @@
          {
           "e": {
            "cat": "canonical",
-           "id": "loan_0008-e39",
+           "id": "loan_0008-e40",
            "type": "PER"
           },
           "s": "Кузнецова Наталья Олеговна"
@@ -2305,7 +2360,7 @@
          {
           "e": {
            "cat": "canonical",
-           "id": "loan_0008-e40",
+           "id": "loan_0008-e41",
            "note": "стиль адреса: canonical",
            "type": "ADDRESS"
           },
@@ -2324,7 +2379,7 @@
           "e": {
            "cat": "canonical",
            "checksum": "invalid",
-           "id": "loan_0008-e41",
+           "id": "loan_0008-e42",
            "note": "12-значный ИНН",
            "type": "INN"
           },
@@ -2337,7 +2392,7 @@
           "e": {
            "cat": "ugly",
            "checksum": "invalid",
-           "id": "loan_0008-e42",
+           "id": "loan_0008-e43",
            "note": "ОГРНИП, 15 знаков",
            "type": "OGRN"
           },
@@ -2356,7 +2411,7 @@
           "e": {
            "cat": "canonical",
            "checksum": "invalid",
-           "id": "loan_0008-e43",
+           "id": "loan_0008-e44",
            "type": "ACCOUNT"
           },
           "s": "40802810911568017678"
@@ -2370,7 +2425,7 @@
          {
           "e": {
            "cat": "canonical",
-           "id": "loan_0008-e44",
+           "id": "loan_0008-e45",
            "type": "BIK"
           },
           "s": "044525700"
@@ -2387,7 +2442,7 @@
          {
           "e": {
            "cat": "canonical",
-           "id": "loan_0008-e45",
+           "id": "loan_0008-e46",
            "note": "формат: canonical",
            "type": "PHONE"
           },
@@ -2405,7 +2460,7 @@
          {
           "e": {
            "cat": "canonical",
-           "id": "loan_0008-e46",
+           "id": "loan_0008-e47",
            "type": "EMAIL"
           },
           "s": "kuznecova@romashka.ru"
@@ -2427,7 +2482,7 @@
          {
           "e": {
            "cat": "ugly",
-           "id": "loan_0008-e47",
+           "id": "loan_0008-e48",
            "note": "фамилия + инициалы",
            "type": "PER"
           },
@@ -2451,7 +2506,7 @@
     {
      "e": {
       "cat": "adversarial",
-      "id": "loan_0008-e48",
+      "id": "loan_0008-e49",
       "note": "ФИО в текстбоксе/надписи",
       "trick": "in_textbox",
       "type": "PER"
@@ -2464,7 +2519,7 @@
     {
      "e": {
       "cat": "adversarial",
-      "id": "loan_0008-e49",
+      "id": "loan_0008-e50",
       "note": "телефон в текстбоксе",
       "trick": "in_textbox",
       "type": "PHONE"
@@ -2496,7 +2551,7 @@
     {
      "e": {
       "cat": "ugly",
-      "id": "loan_0008-e50",
+      "id": "loan_0008-e51",
       "note": "подпись: фамилия+инициалы",
       "type": "PER"
      },
@@ -2517,7 +2572,7 @@
     {
      "e": {
       "cat": "ugly",
-      "id": "loan_0008-e51",
+      "id": "loan_0008-e52",
       "note": "подпись: фамилия+инициалы",
       "type": "PER"
      },

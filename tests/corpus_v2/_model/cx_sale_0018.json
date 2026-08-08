@@ -1985,6 +1985,61 @@
   {
    "chunks": [
     {
+     "s": "6. ОСОБЫЕ УСЛОВИЯ ОТДЕЛЬНЫХ ВИДОВ ДАННЫХ"
+    }
+   ],
+   "style": "bold",
+   "t": "p"
+  },
+  {
+   "chunks": [
+    {
+     "s": "6.1. Полномочия представителя подтверждены доверенностью, реестровый номер "
+    },
+    {
+     "e": {
+      "cat": "canonical",
+      "id": "cx_sale_0018-e25",
+      "note": "фабричный тип: пример из файла-описания владельца",
+      "type": "REG_NUMBER"
+     },
+     "s": "23/5-н/23-2025-2-1104"
+    },
+    {
+     "s": "."
+    }
+   ],
+   "style": "normal",
+   "t": "p"
+  },
+  {
+   "chunks": [
+    {
+     "s": "6.2. Для сопоставления в учёте указывается: "
+    },
+    {
+     "n": {
+      "kind": "gost-ref",
+      "type": "REG_NUMBER",
+      "why": "ссылка на стандарт — не реестровый номер"
+     },
+     "s": "ГОСТ Р 52044-2003"
+    },
+    {
+     "s": "."
+    }
+   ],
+   "style": "normal",
+   "t": "p"
+  },
+  {
+   "chunks": [],
+   "style": "normal",
+   "t": "p"
+  },
+  {
+   "chunks": [
+    {
      "s": "РЕКВИЗИТЫ И ПОДПИСИ СТОРОН"
     }
    ],
@@ -2015,7 +2070,7 @@
          {
           "e": {
            "cat": "canonical",
-           "id": "cx_sale_0018-e25",
+           "id": "cx_sale_0018-e26",
            "type": "ORG"
           },
           "s": "ПАО «Ромашка-Плюс»"
@@ -2032,7 +2087,7 @@
          {
           "e": {
            "cat": "canonical",
-           "id": "cx_sale_0018-e26",
+           "id": "cx_sale_0018-e27",
            "note": "стиль адреса: canonical",
            "type": "ADDRESS"
           },
@@ -2050,7 +2105,7 @@
          {
           "e": {
            "cat": "canonical",
-           "id": "cx_sale_0018-e27",
+           "id": "cx_sale_0018-e28",
            "note": "стиль адреса: canonical",
            "type": "ADDRESS"
           },
@@ -2069,7 +2124,7 @@
           "e": {
            "cat": "canonical",
            "checksum": "valid",
-           "id": "cx_sale_0018-e28",
+           "id": "cx_sale_0018-e29",
            "type": "INN"
           },
           "s": "4144047864"
@@ -2080,7 +2135,7 @@
          {
           "e": {
            "cat": "canonical",
-           "id": "cx_sale_0018-e29",
+           "id": "cx_sale_0018-e30",
            "type": "KPP"
           },
           "s": "886075350"
@@ -2098,7 +2153,7 @@
           "e": {
            "cat": "canonical",
            "checksum": "valid",
-           "id": "cx_sale_0018-e30",
+           "id": "cx_sale_0018-e31",
            "type": "OGRN"
           },
           "s": "1488717174725"
@@ -2116,7 +2171,7 @@
           "e": {
            "cat": "canonical",
            "checksum": "valid",
-           "id": "cx_sale_0018-e31",
+           "id": "cx_sale_0018-e32",
            "type": "ACCOUNT"
           },
           "s": "40702810581273429226"
@@ -2136,7 +2191,7 @@
          {
           "e": {
            "cat": "canonical",
-           "id": "cx_sale_0018-e32",
+           "id": "cx_sale_0018-e33",
            "note": "корреспондентский счёт банка",
            "type": "ACCOUNT"
           },
@@ -2148,7 +2203,7 @@
          {
           "e": {
            "cat": "canonical",
-           "id": "cx_sale_0018-e33",
+           "id": "cx_sale_0018-e34",
            "type": "BIK"
           },
           "s": "044525360"
@@ -2165,7 +2220,7 @@
          {
           "e": {
            "cat": "canonical",
-           "id": "cx_sale_0018-e34",
+           "id": "cx_sale_0018-e35",
            "note": "формат: canonical",
            "type": "PHONE"
           },
@@ -2183,7 +2238,7 @@
          {
           "e": {
            "cat": "canonical",
-           "id": "cx_sale_0018-e35",
+           "id": "cx_sale_0018-e36",
            "type": "EMAIL"
           },
           "s": "kiselev@sibtrans.ru"
@@ -2205,7 +2260,7 @@
          {
           "e": {
            "cat": "ugly",
-           "id": "cx_sale_0018-e36",
+           "id": "cx_sale_0018-e37",
            "note": "инициалы перед фамилией",
            "type": "PER"
           },
@@ -2233,7 +2288,7 @@
          {
           "e": {
            "cat": "canonical",
-           "id": "cx_sale_0018-e37",
+           "id": "cx_sale_0018-e38",
            "type": "PER"
           },
           "s": "Сидоров Роман Егорович"
@@ -2250,7 +2305,7 @@
          {
           "e": {
            "cat": "canonical",
-           "id": "cx_sale_0018-e38",
+           "id": "cx_sale_0018-e39",
            "note": "стиль записи из BIRTHDATE_STYLES",
            "type": "BIRTHDATE"
           },
@@ -2268,7 +2323,7 @@
          {
           "e": {
            "cat": "canonical",
-           "id": "cx_sale_0018-e39",
+           "id": "cx_sale_0018-e40",
            "note": "стиль адреса: canonical",
            "type": "ADDRESS"
           },
@@ -2286,7 +2341,7 @@
          {
           "e": {
            "cat": "canonical",
-           "id": "cx_sale_0018-e40",
+           "id": "cx_sale_0018-e41",
            "note": "серия+номер, стиль записи из PASSPORT_STYLES",
            "type": "PASSPORT"
           },
@@ -2301,7 +2356,7 @@
          {
           "e": {
            "cat": "ugly",
-           "id": "cx_sale_0018-e41",
+           "id": "cx_sale_0018-e42",
            "note": "код подразделения, стиль записи из DEPTCODE_STYLES",
            "type": "PASSPORT"
           },
@@ -2320,7 +2375,7 @@
           "e": {
            "cat": "canonical",
            "checksum": "valid",
-           "id": "cx_sale_0018-e42",
+           "id": "cx_sale_0018-e43",
            "note": "стиль записи из SNILS_STYLES",
            "type": "SNILS"
           },
@@ -2333,7 +2388,7 @@
           "e": {
            "cat": "ugly",
            "checksum": "valid",
-           "id": "cx_sale_0018-e43",
+           "id": "cx_sale_0018-e44",
            "note": "ИНН физлица (12 знаков)",
            "type": "INN"
           },
@@ -2351,7 +2406,7 @@
          {
           "e": {
            "cat": "canonical",
-           "id": "cx_sale_0018-e44",
+           "id": "cx_sale_0018-e45",
            "note": "формат: canonical",
            "type": "PHONE"
           },
@@ -2369,7 +2424,7 @@
          {
           "e": {
            "cat": "canonical",
-           "id": "cx_sale_0018-e45",
+           "id": "cx_sale_0018-e46",
            "type": "EMAIL"
           },
           "s": "sidorov@corp-tehno.ru"
@@ -2391,7 +2446,7 @@
          {
           "e": {
            "cat": "ugly",
-           "id": "cx_sale_0018-e46",
+           "id": "cx_sale_0018-e47",
            "note": "фамилия + инициалы",
            "type": "PER"
           },
@@ -2429,7 +2484,7 @@
     {
      "e": {
       "cat": "ugly",
-      "id": "cx_sale_0018-e47",
+      "id": "cx_sale_0018-e48",
       "note": "подпись: фамилия+инициалы",
       "type": "PER"
      },
@@ -2450,7 +2505,7 @@
     {
      "e": {
       "cat": "ugly",
-      "id": "cx_sale_0018-e48",
+      "id": "cx_sale_0018-e49",
       "note": "подпись: фамилия+инициалы",
       "type": "PER"
      },

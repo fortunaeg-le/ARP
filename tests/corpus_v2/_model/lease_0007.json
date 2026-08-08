@@ -1909,6 +1909,61 @@
   {
    "chunks": [
     {
+     "s": "6. ОСОБЫЕ УСЛОВИЯ ОТДЕЛЬНЫХ ВИДОВ ДАННЫХ"
+    }
+   ],
+   "style": "bold",
+   "t": "p"
+  },
+  {
+   "chunks": [
+    {
+     "s": "6.1. Полномочия представителя подтверждены доверенностью, реестровый номер "
+    },
+    {
+     "e": {
+      "cat": "canonical",
+      "id": "lease_0007-e24",
+      "note": "фабричный тип: пример из файла-описания владельца",
+      "type": "REG_NUMBER"
+     },
+     "s": "50/121-н/50-2023-4-88"
+    },
+    {
+     "s": "."
+    }
+   ],
+   "style": "normal",
+   "t": "p"
+  },
+  {
+   "chunks": [
+    {
+     "s": "6.2. Для сопоставления в учёте указывается: "
+    },
+    {
+     "n": {
+      "kind": "cadastral",
+      "type": "REG_NUMBER",
+      "why": "чужая номенклатура: двоеточия, нет группы «-н» — не реестровый номер стороны"
+     },
+     "s": "кадастровый номер 77:01:0004012:2211"
+    },
+    {
+     "s": "."
+    }
+   ],
+   "style": "normal",
+   "t": "p"
+  },
+  {
+   "chunks": [],
+   "style": "normal",
+   "t": "p"
+  },
+  {
+   "chunks": [
+    {
      "s": "РЕКВИЗИТЫ И ПОДПИСИ СТОРОН"
     }
    ],
@@ -1934,7 +1989,7 @@
     {
      "e": {
       "cat": "ugly",
-      "id": "lease_0007-e24",
+      "id": "lease_0007-e25",
       "note": "организация без кавычек / нестандартные кавычки",
       "type": "ORG"
      },
@@ -1952,7 +2007,7 @@
     {
      "e": {
       "cat": "ugly",
-      "id": "lease_0007-e25",
+      "id": "lease_0007-e26",
       "note": "стиль адреса: index_first",
       "type": "ADDRESS"
      },
@@ -1971,7 +2026,7 @@
      "e": {
       "cat": "canonical",
       "checksum": "valid",
-      "id": "lease_0007-e26",
+      "id": "lease_0007-e27",
       "type": "INN"
      },
      "s": "5591984740"
@@ -1982,7 +2037,7 @@
     {
      "e": {
       "cat": "canonical",
-      "id": "lease_0007-e27",
+      "id": "lease_0007-e28",
       "type": "KPP"
      },
      "s": "314887595"
@@ -2000,7 +2055,7 @@
      "e": {
       "cat": "canonical",
       "checksum": "valid",
-      "id": "lease_0007-e28",
+      "id": "lease_0007-e29",
       "type": "OGRN"
      },
      "s": "1201245345256"
@@ -2018,7 +2073,7 @@
      "e": {
       "cat": "canonical",
       "checksum": "valid",
-      "id": "lease_0007-e29",
+      "id": "lease_0007-e30",
       "type": "ACCOUNT"
      },
      "s": "40702810500142455882"
@@ -2038,7 +2093,7 @@
     {
      "e": {
       "cat": "canonical",
-      "id": "lease_0007-e30",
+      "id": "lease_0007-e31",
       "note": "корреспондентский счёт банка",
       "type": "ACCOUNT"
      },
@@ -2050,7 +2105,7 @@
     {
      "e": {
       "cat": "canonical",
-      "id": "lease_0007-e31",
+      "id": "lease_0007-e32",
       "type": "BIK"
      },
      "s": "044525187"
@@ -2067,7 +2122,7 @@
     {
      "e": {
       "cat": "canonical",
-      "id": "lease_0007-e32",
+      "id": "lease_0007-e33",
       "note": "формат: canonical",
       "type": "PHONE"
      },
@@ -2085,7 +2140,7 @@
     {
      "e": {
       "cat": "canonical",
-      "id": "lease_0007-e33",
+      "id": "lease_0007-e34",
       "type": "EMAIL"
      },
      "s": "krylova@sibtrans.ru"
@@ -2107,7 +2162,7 @@
     {
      "e": {
       "cat": "ugly",
-      "id": "lease_0007-e34",
+      "id": "lease_0007-e35",
       "note": "инициалы перед фамилией",
       "type": "PER"
      },
@@ -2136,7 +2191,7 @@
     {
      "e": {
       "cat": "ugly",
-      "id": "lease_0007-e35",
+      "id": "lease_0007-e36",
       "note": "организация без кавычек / нестандартные кавычки",
       "type": "ORG"
      },
@@ -2154,7 +2209,7 @@
     {
      "e": {
       "cat": "ugly",
-      "id": "lease_0007-e36",
+      "id": "lease_0007-e37",
       "note": "стиль адреса: index_first",
       "type": "ADDRESS"
      },
@@ -2172,7 +2227,7 @@
     {
      "e": {
       "cat": "ugly",
-      "id": "lease_0007-e37",
+      "id": "lease_0007-e38",
       "note": "стиль адреса: index_first",
       "type": "ADDRESS"
      },
@@ -2191,7 +2246,7 @@
      "e": {
       "cat": "canonical",
       "checksum": "valid",
-      "id": "lease_0007-e38",
+      "id": "lease_0007-e39",
       "type": "INN"
      },
      "s": "0324875637"
@@ -2202,7 +2257,7 @@
     {
      "e": {
       "cat": "canonical",
-      "id": "lease_0007-e39",
+      "id": "lease_0007-e40",
       "type": "KPP"
      },
      "s": "630902733"
@@ -2220,7 +2275,7 @@
      "e": {
       "cat": "canonical",
       "checksum": "valid",
-      "id": "lease_0007-e40",
+      "id": "lease_0007-e41",
       "type": "OGRN"
      },
      "s": "1660521137760"
@@ -2238,7 +2293,7 @@
      "e": {
       "cat": "canonical",
       "checksum": "valid",
-      "id": "lease_0007-e41",
+      "id": "lease_0007-e42",
       "type": "ACCOUNT"
      },
      "s": "40702810737892471540"
@@ -2258,7 +2313,7 @@
     {
      "e": {
       "cat": "canonical",
-      "id": "lease_0007-e42",
+      "id": "lease_0007-e43",
       "note": "корреспондентский счёт банка",
       "type": "ACCOUNT"
      },
@@ -2270,7 +2325,7 @@
     {
      "e": {
       "cat": "canonical",
-      "id": "lease_0007-e43",
+      "id": "lease_0007-e44",
       "type": "BIK"
      },
      "s": "044525555"
@@ -2287,7 +2342,7 @@
     {
      "e": {
       "cat": "canonical",
-      "id": "lease_0007-e44",
+      "id": "lease_0007-e45",
       "note": "формат: canonical",
       "type": "PHONE"
      },
@@ -2305,7 +2360,7 @@
     {
      "e": {
       "cat": "canonical",
-      "id": "lease_0007-e45",
+      "id": "lease_0007-e46",
       "type": "EMAIL"
      },
      "s": "kuznecova@list.ru"
@@ -2327,7 +2382,7 @@
     {
      "e": {
       "cat": "ugly",
-      "id": "lease_0007-e46",
+      "id": "lease_0007-e47",
       "note": "инициалы перед фамилией",
       "type": "PER"
      },
@@ -2364,7 +2419,7 @@
     {
      "e": {
       "cat": "ugly",
-      "id": "lease_0007-e47",
+      "id": "lease_0007-e48",
       "note": "подпись: фамилия+инициалы",
       "type": "PER"
      },
@@ -2385,7 +2440,7 @@
     {
      "e": {
       "cat": "ugly",
-      "id": "lease_0007-e48",
+      "id": "lease_0007-e49",
       "note": "подпись: фамилия+инициалы",
       "type": "PER"
      },

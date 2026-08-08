@@ -2024,6 +2024,61 @@
   {
    "chunks": [
     {
+     "s": "6. ОСОБЫЕ УСЛОВИЯ ОТДЕЛЬНЫХ ВИДОВ ДАННЫХ"
+    }
+   ],
+   "style": "bold",
+   "t": "p"
+  },
+  {
+   "chunks": [
+    {
+     "s": "6.1. Полномочия представителя подтверждены доверенностью, реестровый номер "
+    },
+    {
+     "e": {
+      "cat": "canonical",
+      "id": "labor_0011-e28",
+      "note": "фабричный тип: пример из файла-описания владельца",
+      "type": "REG_NUMBER"
+     },
+     "s": "23/5-н/23-2025-2-1104"
+    },
+    {
+     "s": "."
+    }
+   ],
+   "style": "normal",
+   "t": "p"
+  },
+  {
+   "chunks": [
+    {
+     "s": "6.2. Для сопоставления в учёте указывается: "
+    },
+    {
+     "n": {
+      "kind": "cadastral",
+      "type": "REG_NUMBER",
+      "why": "чужая номенклатура: двоеточия, нет группы «-н» — не реестровый номер стороны"
+     },
+     "s": "кадастровый номер 77:01:0004012:2211"
+    },
+    {
+     "s": "."
+    }
+   ],
+   "style": "normal",
+   "t": "p"
+  },
+  {
+   "chunks": [],
+   "style": "normal",
+   "t": "p"
+  },
+  {
+   "chunks": [
+    {
      "s": "РЕКВИЗИТЫ И ПОДПИСИ СТОРОН"
     }
    ],
@@ -2049,7 +2104,7 @@
     {
      "e": {
       "cat": "ugly",
-      "id": "labor_0011-e28",
+      "id": "labor_0011-e29",
       "note": "ФИО внутри названия организации",
       "type": "ORG"
      },
@@ -2067,7 +2122,7 @@
     {
      "e": {
       "cat": "ugly",
-      "id": "labor_0011-e29",
+      "id": "labor_0011-e30",
       "note": "стиль адреса: no_marker",
       "type": "ADDRESS"
      },
@@ -2086,7 +2141,7 @@
      "e": {
       "cat": "canonical",
       "checksum": "valid",
-      "id": "labor_0011-e30",
+      "id": "labor_0011-e31",
       "type": "INN"
      },
      "s": "4916046280"
@@ -2097,7 +2152,7 @@
     {
      "e": {
       "cat": "canonical",
-      "id": "labor_0011-e31",
+      "id": "labor_0011-e32",
       "type": "KPP"
      },
      "s": "166409161"
@@ -2115,7 +2170,7 @@
      "e": {
       "cat": "canonical",
       "checksum": "valid",
-      "id": "labor_0011-e32",
+      "id": "labor_0011-e33",
       "type": "OGRN"
      },
      "s": "1453061245845"
@@ -2133,7 +2188,7 @@
      "e": {
       "cat": "canonical",
       "checksum": "valid",
-      "id": "labor_0011-e33",
+      "id": "labor_0011-e34",
       "type": "ACCOUNT"
      },
      "s": "40702810064848541355"
@@ -2153,7 +2208,7 @@
     {
      "e": {
       "cat": "canonical",
-      "id": "labor_0011-e34",
+      "id": "labor_0011-e35",
       "note": "корреспондентский счёт банка",
       "type": "ACCOUNT"
      },
@@ -2165,7 +2220,7 @@
     {
      "e": {
       "cat": "canonical",
-      "id": "labor_0011-e35",
+      "id": "labor_0011-e36",
       "type": "BIK"
      },
      "s": "044525700"
@@ -2182,7 +2237,7 @@
     {
      "e": {
       "cat": "canonical",
-      "id": "labor_0011-e36",
+      "id": "labor_0011-e37",
       "note": "формат: canonical",
       "type": "PHONE"
      },
@@ -2200,7 +2255,7 @@
     {
      "e": {
       "cat": "canonical",
-      "id": "labor_0011-e37",
+      "id": "labor_0011-e38",
       "type": "EMAIL"
      },
      "s": "kuznecov@mail.ru"
@@ -2222,7 +2277,7 @@
     {
      "e": {
       "cat": "ugly",
-      "id": "labor_0011-e38",
+      "id": "labor_0011-e39",
       "note": "инициалы перед фамилией",
       "type": "PER"
      },
@@ -2251,7 +2306,7 @@
     {
      "e": {
       "cat": "canonical",
-      "id": "labor_0011-e39",
+      "id": "labor_0011-e40",
       "type": "PER"
      },
      "s": "Пирогова Ольга Юрьевна"
@@ -2268,7 +2323,7 @@
     {
      "e": {
       "cat": "canonical",
-      "id": "labor_0011-e40",
+      "id": "labor_0011-e41",
       "note": "стиль записи из BIRTHDATE_STYLES",
       "type": "BIRTHDATE"
      },
@@ -2286,7 +2341,7 @@
     {
      "e": {
       "cat": "ugly",
-      "id": "labor_0011-e41",
+      "id": "labor_0011-e42",
       "note": "стиль адреса: no_marker2",
       "type": "ADDRESS"
      },
@@ -2304,7 +2359,7 @@
     {
      "e": {
       "cat": "canonical",
-      "id": "labor_0011-e42",
+      "id": "labor_0011-e43",
       "note": "серия+номер, стиль записи из PASSPORT_STYLES",
       "type": "PASSPORT"
      },
@@ -2319,7 +2374,7 @@
     {
      "e": {
       "cat": "ugly",
-      "id": "labor_0011-e43",
+      "id": "labor_0011-e44",
       "note": "код подразделения, стиль записи из DEPTCODE_STYLES",
       "type": "PASSPORT"
      },
@@ -2338,7 +2393,7 @@
      "e": {
       "cat": "canonical",
       "checksum": "valid",
-      "id": "labor_0011-e44",
+      "id": "labor_0011-e45",
       "note": "стиль записи из SNILS_STYLES",
       "type": "SNILS"
      },
@@ -2351,7 +2406,7 @@
      "e": {
       "cat": "ugly",
       "checksum": "valid",
-      "id": "labor_0011-e45",
+      "id": "labor_0011-e46",
       "note": "ИНН физлица (12 знаков)",
       "type": "INN"
      },
@@ -2369,7 +2424,7 @@
     {
      "e": {
       "cat": "canonical",
-      "id": "labor_0011-e46",
+      "id": "labor_0011-e47",
       "note": "формат: canonical",
       "type": "PHONE"
      },
@@ -2387,7 +2442,7 @@
     {
      "e": {
       "cat": "canonical",
-      "id": "labor_0011-e47",
+      "id": "labor_0011-e48",
       "type": "EMAIL"
      },
      "s": "pirogova@list.ru"
@@ -2409,7 +2464,7 @@
     {
      "e": {
       "cat": "ugly",
-      "id": "labor_0011-e48",
+      "id": "labor_0011-e49",
       "note": "фамилия + инициалы",
       "type": "PER"
      },
@@ -2446,7 +2501,7 @@
     {
      "e": {
       "cat": "ugly",
-      "id": "labor_0011-e49",
+      "id": "labor_0011-e50",
       "note": "подпись: фамилия+инициалы",
       "type": "PER"
      },
@@ -2467,7 +2522,7 @@
     {
      "e": {
       "cat": "ugly",
-      "id": "labor_0011-e50",
+      "id": "labor_0011-e51",
       "note": "подпись: фамилия+инициалы",
       "type": "PER"
      },

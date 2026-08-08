@@ -2307,6 +2307,61 @@
   {
    "chunks": [
     {
+     "s": "6. ОСОБЫЕ УСЛОВИЯ ОТДЕЛЬНЫХ ВИДОВ ДАННЫХ"
+    }
+   ],
+   "style": "bold",
+   "t": "p"
+  },
+  {
+   "chunks": [
+    {
+     "s": "6.1. Полномочия представителя подтверждены доверенностью, реестровый номер "
+    },
+    {
+     "e": {
+      "cat": "canonical",
+      "id": "labor_0010-e33",
+      "note": "фабричный тип: пример из файла-описания владельца",
+      "type": "REG_NUMBER"
+     },
+     "s": "50/121-н/50-2023-4-88"
+    },
+    {
+     "s": "."
+    }
+   ],
+   "style": "normal",
+   "t": "p"
+  },
+  {
+   "chunks": [
+    {
+     "s": "6.2. Для сопоставления в учёте указывается: "
+    },
+    {
+     "n": {
+      "kind": "date-slash",
+      "type": "REG_NUMBER",
+      "why": "диапазон месяцев: нет буквенной группы, две группы-даты"
+     },
+     "s": "срок действия 12/2024-06/2025"
+    },
+    {
+     "s": "."
+    }
+   ],
+   "style": "normal",
+   "t": "p"
+  },
+  {
+   "chunks": [],
+   "style": "normal",
+   "t": "p"
+  },
+  {
+   "chunks": [
+    {
      "s": "РЕКВИЗИТЫ И ПОДПИСИ СТОРОН"
     }
    ],
@@ -2340,7 +2395,7 @@
          {
           "e": {
            "cat": "canonical",
-           "id": "labor_0010-e33",
+           "id": "labor_0010-e34",
            "type": "PER"
           },
           "s": "Петрова Дарья Дмитриевна"
@@ -2357,7 +2412,7 @@
          {
           "e": {
            "cat": "canonical",
-           "id": "labor_0010-e34",
+           "id": "labor_0010-e35",
            "note": "стиль адреса: canonical",
            "type": "ADDRESS"
           },
@@ -2376,7 +2431,7 @@
           "e": {
            "cat": "canonical",
            "checksum": "valid",
-           "id": "labor_0010-e35",
+           "id": "labor_0010-e36",
            "note": "12-значный ИНН",
            "type": "INN"
           },
@@ -2389,7 +2444,7 @@
           "e": {
            "cat": "ugly",
            "checksum": "valid",
-           "id": "labor_0010-e36",
+           "id": "labor_0010-e37",
            "note": "ОГРНИП, 15 знаков",
            "type": "OGRN"
           },
@@ -2408,7 +2463,7 @@
           "e": {
            "cat": "canonical",
            "checksum": "valid",
-           "id": "labor_0010-e37",
+           "id": "labor_0010-e38",
            "type": "ACCOUNT"
           },
           "s": "40802810092472051181"
@@ -2422,7 +2477,7 @@
          {
           "e": {
            "cat": "canonical",
-           "id": "labor_0010-e38",
+           "id": "labor_0010-e39",
            "type": "BIK"
           },
           "s": "044525225"
@@ -2439,7 +2494,7 @@
          {
           "e": {
            "cat": "canonical",
-           "id": "labor_0010-e39",
+           "id": "labor_0010-e40",
            "note": "формат: canonical",
            "type": "PHONE"
           },
@@ -2457,7 +2512,7 @@
          {
           "e": {
            "cat": "canonical",
-           "id": "labor_0010-e40",
+           "id": "labor_0010-e41",
            "type": "EMAIL"
           },
           "s": "petrova@corp-tehno.ru"
@@ -2479,7 +2534,7 @@
          {
           "e": {
            "cat": "ugly",
-           "id": "labor_0010-e41",
+           "id": "labor_0010-e42",
            "note": "фамилия + инициалы",
            "type": "PER"
           },
@@ -2507,7 +2562,7 @@
          {
           "e": {
            "cat": "canonical",
-           "id": "labor_0010-e42",
+           "id": "labor_0010-e43",
            "type": "PER"
           },
           "s": "Сидоров Юрий Олегович"
@@ -2524,7 +2579,7 @@
          {
           "e": {
            "cat": "canonical",
-           "id": "labor_0010-e43",
+           "id": "labor_0010-e44",
            "note": "стиль записи из BIRTHDATE_STYLES",
            "type": "BIRTHDATE"
           },
@@ -2542,7 +2597,7 @@
          {
           "e": {
            "cat": "canonical",
-           "id": "labor_0010-e44",
+           "id": "labor_0010-e45",
            "note": "стиль адреса: canonical",
            "type": "ADDRESS"
           },
@@ -2560,7 +2615,7 @@
          {
           "e": {
            "cat": "canonical",
-           "id": "labor_0010-e45",
+           "id": "labor_0010-e46",
            "note": "серия+номер, стиль записи из PASSPORT_STYLES",
            "type": "PASSPORT"
           },
@@ -2575,7 +2630,7 @@
          {
           "e": {
            "cat": "ugly",
-           "id": "labor_0010-e46",
+           "id": "labor_0010-e47",
            "note": "код подразделения, стиль записи из DEPTCODE_STYLES",
            "type": "PASSPORT"
           },
@@ -2594,7 +2649,7 @@
           "e": {
            "cat": "canonical",
            "checksum": "valid",
-           "id": "labor_0010-e47",
+           "id": "labor_0010-e48",
            "note": "стиль записи из SNILS_STYLES",
            "type": "SNILS"
           },
@@ -2607,7 +2662,7 @@
           "e": {
            "cat": "ugly",
            "checksum": "valid",
-           "id": "labor_0010-e48",
+           "id": "labor_0010-e49",
            "note": "ИНН физлица (12 знаков)",
            "type": "INN"
           },
@@ -2625,7 +2680,7 @@
          {
           "e": {
            "cat": "canonical",
-           "id": "labor_0010-e49",
+           "id": "labor_0010-e50",
            "note": "формат: canonical",
            "type": "PHONE"
           },
@@ -2643,7 +2698,7 @@
          {
           "e": {
            "cat": "canonical",
-           "id": "labor_0010-e50",
+           "id": "labor_0010-e51",
            "type": "EMAIL"
           },
           "s": "sidorov@inbox.ru"
@@ -2665,7 +2720,7 @@
          {
           "e": {
            "cat": "ugly",
-           "id": "labor_0010-e51",
+           "id": "labor_0010-e52",
            "note": "фамилия + инициалы",
            "type": "PER"
           },
@@ -2726,7 +2781,7 @@
               {
                "e": {
                 "cat": "adversarial",
-                "id": "labor_0010-e52",
+                "id": "labor_0010-e53",
                 "note": "счёт во вложенной таблице",
                 "trick": "nested_table",
                 "type": "ACCOUNT"
@@ -2761,7 +2816,7 @@
               {
                "e": {
                 "cat": "adversarial",
-                "id": "labor_0010-e53",
+                "id": "labor_0010-e54",
                 "note": "ФИО во вложенной таблице",
                 "trick": "nested_table",
                 "type": "PER"
@@ -2811,7 +2866,7 @@
     {
      "e": {
       "cat": "ugly",
-      "id": "labor_0010-e56",
+      "id": "labor_0010-e57",
       "note": "подпись: фамилия+инициалы",
       "type": "PER"
      },
@@ -2832,7 +2887,7 @@
     {
      "e": {
       "cat": "ugly",
-      "id": "labor_0010-e57",
+      "id": "labor_0010-e58",
       "note": "подпись: фамилия+инициалы",
       "type": "PER"
      },
@@ -2867,7 +2922,7 @@
     {
      "e": {
       "cat": "adversarial",
-      "id": "labor_0010-e54",
+      "id": "labor_0010-e55",
       "note": "телефон в колонтитуле (верхнем)",
       "trick": "in_header",
       "type": "PHONE"
@@ -2880,7 +2935,7 @@
     {
      "e": {
       "cat": "adversarial",
-      "id": "labor_0010-e55",
+      "id": "labor_0010-e56",
       "note": "e-mail в колонтитуле",
       "trick": "in_header",
       "type": "EMAIL"

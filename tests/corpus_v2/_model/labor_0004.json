@@ -2032,6 +2032,61 @@
   {
    "chunks": [
     {
+     "s": "6. ОСОБЫЕ УСЛОВИЯ ОТДЕЛЬНЫХ ВИДОВ ДАННЫХ"
+    }
+   ],
+   "style": "bold",
+   "t": "p"
+  },
+  {
+   "chunks": [
+    {
+     "s": "6.1. Полномочия представителя подтверждены доверенностью, реестровый номер "
+    },
+    {
+     "e": {
+      "cat": "canonical",
+      "id": "labor_0004-e27",
+      "note": "фабричный тип: пример из файла-описания владельца",
+      "type": "REG_NUMBER"
+     },
+     "s": "77/714-н/77-2024-1-502"
+    },
+    {
+     "s": "."
+    }
+   ],
+   "style": "normal",
+   "t": "p"
+  },
+  {
+   "chunks": [
+    {
+     "s": "6.2. Для сопоставления в учёте указывается: "
+    },
+    {
+     "n": {
+      "kind": "gost-ref",
+      "type": "REG_NUMBER",
+      "why": "ссылка на стандарт — не реестровый номер"
+     },
+     "s": "ГОСТ Р 52044-2003"
+    },
+    {
+     "s": "."
+    }
+   ],
+   "style": "normal",
+   "t": "p"
+  },
+  {
+   "chunks": [],
+   "style": "normal",
+   "t": "p"
+  },
+  {
+   "chunks": [
+    {
      "s": "РЕКВИЗИТЫ И ПОДПИСИ СТОРОН"
     }
    ],
@@ -2065,7 +2120,7 @@
          {
           "e": {
            "cat": "canonical",
-           "id": "labor_0004-e27",
+           "id": "labor_0004-e28",
            "type": "PER"
           },
           "s": "Смирнова Мария Николаевна"
@@ -2082,7 +2137,7 @@
          {
           "e": {
            "cat": "ugly",
-           "id": "labor_0004-e28",
+           "id": "labor_0004-e29",
            "note": "стиль адреса: index_first",
            "type": "ADDRESS"
           },
@@ -2101,7 +2156,7 @@
           "e": {
            "cat": "canonical",
            "checksum": "valid",
-           "id": "labor_0004-e29",
+           "id": "labor_0004-e30",
            "note": "12-значный ИНН",
            "type": "INN"
           },
@@ -2114,7 +2169,7 @@
           "e": {
            "cat": "ugly",
            "checksum": "valid",
-           "id": "labor_0004-e30",
+           "id": "labor_0004-e31",
            "note": "ОГРНИП, 15 знаков",
            "type": "OGRN"
           },
@@ -2133,7 +2188,7 @@
           "e": {
            "cat": "canonical",
            "checksum": "valid",
-           "id": "labor_0004-e31",
+           "id": "labor_0004-e32",
            "type": "ACCOUNT"
           },
           "s": "40802810127206326816"
@@ -2147,7 +2202,7 @@
          {
           "e": {
            "cat": "canonical",
-           "id": "labor_0004-e32",
+           "id": "labor_0004-e33",
            "type": "BIK"
           },
           "s": "044525593"
@@ -2164,7 +2219,7 @@
          {
           "e": {
            "cat": "canonical",
-           "id": "labor_0004-e33",
+           "id": "labor_0004-e34",
            "note": "формат: canonical",
            "type": "PHONE"
           },
@@ -2182,7 +2237,7 @@
          {
           "e": {
            "cat": "canonical",
-           "id": "labor_0004-e34",
+           "id": "labor_0004-e35",
            "type": "EMAIL"
           },
           "s": "smirnova@corp-tehno.ru"
@@ -2204,7 +2259,7 @@
          {
           "e": {
            "cat": "ugly",
-           "id": "labor_0004-e35",
+           "id": "labor_0004-e36",
            "note": "фамилия + инициалы",
            "type": "PER"
           },
@@ -2232,7 +2287,7 @@
          {
           "e": {
            "cat": "canonical",
-           "id": "labor_0004-e36",
+           "id": "labor_0004-e37",
            "type": "PER"
           },
           "s": "Беляев Владимир Олегович"
@@ -2249,7 +2304,7 @@
          {
           "e": {
            "cat": "canonical",
-           "id": "labor_0004-e37",
+           "id": "labor_0004-e38",
            "note": "стиль записи из BIRTHDATE_STYLES",
            "type": "BIRTHDATE"
           },
@@ -2267,7 +2322,7 @@
          {
           "e": {
            "cat": "ugly",
-           "id": "labor_0004-e38",
+           "id": "labor_0004-e39",
            "note": "стиль адреса: index_first",
            "type": "ADDRESS"
           },
@@ -2285,7 +2340,7 @@
          {
           "e": {
            "cat": "canonical",
-           "id": "labor_0004-e39",
+           "id": "labor_0004-e40",
            "note": "серия+номер, стиль записи из PASSPORT_STYLES",
            "type": "PASSPORT"
           },
@@ -2300,7 +2355,7 @@
          {
           "e": {
            "cat": "ugly",
-           "id": "labor_0004-e40",
+           "id": "labor_0004-e41",
            "note": "код подразделения, стиль записи из DEPTCODE_STYLES",
            "type": "PASSPORT"
           },
@@ -2319,7 +2374,7 @@
           "e": {
            "cat": "ugly",
            "checksum": "valid",
-           "id": "labor_0004-e41",
+           "id": "labor_0004-e42",
            "note": "стиль записи из SNILS_STYLES",
            "type": "SNILS"
           },
@@ -2332,7 +2387,7 @@
           "e": {
            "cat": "ugly",
            "checksum": "valid",
-           "id": "labor_0004-e42",
+           "id": "labor_0004-e43",
            "note": "ИНН физлица (12 знаков)",
            "type": "INN"
           },
@@ -2350,7 +2405,7 @@
          {
           "e": {
            "cat": "canonical",
-           "id": "labor_0004-e43",
+           "id": "labor_0004-e44",
            "note": "формат: canonical",
            "type": "PHONE"
           },
@@ -2368,7 +2423,7 @@
          {
           "e": {
            "cat": "canonical",
-           "id": "labor_0004-e44",
+           "id": "labor_0004-e45",
            "type": "EMAIL"
           },
           "s": "belyaev@gmail.com"
@@ -2390,7 +2445,7 @@
          {
           "e": {
            "cat": "ugly",
-           "id": "labor_0004-e45",
+           "id": "labor_0004-e46",
            "note": "фамилия + инициалы",
            "type": "PER"
           },
@@ -2424,7 +2479,7 @@
          {
           "e": {
            "cat": "adversarial",
-           "id": "labor_0004-e46",
+           "id": "labor_0004-e47",
            "note": "первые цифры ИНН в одной ячейке, остальные — в соседней",
            "trick": "cell_boundary_split",
            "type": "INN"
@@ -2444,7 +2499,7 @@
          {
           "e": {
            "cat": "adversarial",
-           "id": "labor_0004-e46",
+           "id": "labor_0004-e47",
            "trick": "cell_boundary_split",
            "type": "INN"
           },
@@ -2465,7 +2520,7 @@
          {
           "e": {
            "cat": "adversarial",
-           "id": "labor_0004-e47",
+           "id": "labor_0004-e48",
            "note": "ФИО разорвано границей ячейки",
            "trick": "cell_boundary_split",
            "type": "PER"
@@ -2485,7 +2540,7 @@
          {
           "e": {
            "cat": "adversarial",
-           "id": "labor_0004-e47",
+           "id": "labor_0004-e48",
            "trick": "cell_boundary_split",
            "type": "PER"
           },
@@ -2523,7 +2578,7 @@
     {
      "e": {
       "cat": "ugly",
-      "id": "labor_0004-e50",
+      "id": "labor_0004-e51",
       "note": "подпись: фамилия+инициалы",
       "type": "PER"
      },
@@ -2544,7 +2599,7 @@
     {
      "e": {
       "cat": "ugly",
-      "id": "labor_0004-e51",
+      "id": "labor_0004-e52",
       "note": "подпись: фамилия+инициалы",
       "type": "PER"
      },
@@ -2578,7 +2633,7 @@
     {
      "e": {
       "cat": "adversarial",
-      "id": "labor_0004-e48",
+      "id": "labor_0004-e49",
       "note": "ФИО в нижнем колонтитуле",
       "trick": "in_footer",
       "type": "PER"
@@ -2591,7 +2646,7 @@
     {
      "e": {
       "cat": "adversarial",
-      "id": "labor_0004-e49",
+      "id": "labor_0004-e50",
       "note": "телефон в нижнем колонтитуле",
       "trick": "in_footer",
       "type": "PHONE"

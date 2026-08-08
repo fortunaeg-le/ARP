@@ -1969,6 +1969,61 @@
   {
    "chunks": [
     {
+     "s": "6. ОСОБЫЕ УСЛОВИЯ ОТДЕЛЬНЫХ ВИДОВ ДАННЫХ"
+    }
+   ],
+   "style": "bold",
+   "t": "p"
+  },
+  {
+   "chunks": [
+    {
+     "s": "6.1. Полномочия представителя подтверждены доверенностью, реестровый номер "
+    },
+    {
+     "e": {
+      "cat": "canonical",
+      "id": "sale_0004-e24",
+      "note": "фабричный тип: пример из файла-описания владельца",
+      "type": "REG_NUMBER"
+     },
+     "s": "23/5-н/23-2025-2-1104"
+    },
+    {
+     "s": "."
+    }
+   ],
+   "style": "normal",
+   "t": "p"
+  },
+  {
+   "chunks": [
+    {
+     "s": "6.2. Для сопоставления в учёте указывается: "
+    },
+    {
+     "n": {
+      "kind": "gost-ref",
+      "type": "REG_NUMBER",
+      "why": "ссылка на стандарт — не реестровый номер"
+     },
+     "s": "ГОСТ Р 52044-2003"
+    },
+    {
+     "s": "."
+    }
+   ],
+   "style": "normal",
+   "t": "p"
+  },
+  {
+   "chunks": [],
+   "style": "normal",
+   "t": "p"
+  },
+  {
+   "chunks": [
+    {
      "s": "РЕКВИЗИТЫ И ПОДПИСИ СТОРОН"
     }
    ],
@@ -1999,7 +2054,7 @@
          {
           "e": {
            "cat": "canonical",
-           "id": "sale_0004-e24",
+           "id": "sale_0004-e25",
            "type": "ORG"
           },
           "s": "ООО «Ромашка»"
@@ -2016,7 +2071,7 @@
          {
           "e": {
            "cat": "canonical",
-           "id": "sale_0004-e25",
+           "id": "sale_0004-e26",
            "note": "стиль адреса: canonical",
            "type": "ADDRESS"
           },
@@ -2034,7 +2089,7 @@
          {
           "e": {
            "cat": "canonical",
-           "id": "sale_0004-e26",
+           "id": "sale_0004-e27",
            "note": "стиль адреса: canonical",
            "type": "ADDRESS"
           },
@@ -2053,7 +2108,7 @@
           "e": {
            "cat": "canonical",
            "checksum": "valid",
-           "id": "sale_0004-e27",
+           "id": "sale_0004-e28",
            "type": "INN"
           },
           "s": "8837846731"
@@ -2064,7 +2119,7 @@
          {
           "e": {
            "cat": "canonical",
-           "id": "sale_0004-e28",
+           "id": "sale_0004-e29",
            "note": "связка ИНН/КПП, якорь отрезан числом ИНН",
            "type": "KPP"
           },
@@ -2083,7 +2138,7 @@
           "e": {
            "cat": "canonical",
            "checksum": "valid",
-           "id": "sale_0004-e29",
+           "id": "sale_0004-e30",
            "type": "OGRN"
           },
           "s": "1151980631923"
@@ -2101,7 +2156,7 @@
           "e": {
            "cat": "canonical",
            "checksum": "valid",
-           "id": "sale_0004-e30",
+           "id": "sale_0004-e31",
            "type": "ACCOUNT"
           },
           "s": "40702810351576426318"
@@ -2121,7 +2176,7 @@
          {
           "e": {
            "cat": "canonical",
-           "id": "sale_0004-e31",
+           "id": "sale_0004-e32",
            "note": "корреспондентский счёт банка",
            "type": "ACCOUNT"
           },
@@ -2133,7 +2188,7 @@
          {
           "e": {
            "cat": "canonical",
-           "id": "sale_0004-e32",
+           "id": "sale_0004-e33",
            "type": "BIK"
           },
           "s": "044525360"
@@ -2150,7 +2205,7 @@
          {
           "e": {
            "cat": "canonical",
-           "id": "sale_0004-e33",
+           "id": "sale_0004-e34",
            "note": "формат: canonical",
            "type": "PHONE"
           },
@@ -2168,7 +2223,7 @@
          {
           "e": {
            "cat": "canonical",
-           "id": "sale_0004-e34",
+           "id": "sale_0004-e35",
            "type": "EMAIL"
           },
           "s": "titova@romashka.ru"
@@ -2190,7 +2245,7 @@
          {
           "e": {
            "cat": "ugly",
-           "id": "sale_0004-e35",
+           "id": "sale_0004-e36",
            "note": "инициалы перед фамилией",
            "type": "PER"
           },
@@ -2221,7 +2276,7 @@
          {
           "e": {
            "cat": "canonical",
-           "id": "sale_0004-e36",
+           "id": "sale_0004-e37",
            "type": "PER"
           },
           "s": "Павлов Дмитрий Егорович"
@@ -2238,7 +2293,7 @@
          {
           "e": {
            "cat": "canonical",
-           "id": "sale_0004-e37",
+           "id": "sale_0004-e38",
            "note": "стиль адреса: canonical",
            "type": "ADDRESS"
           },
@@ -2257,7 +2312,7 @@
           "e": {
            "cat": "canonical",
            "checksum": "valid",
-           "id": "sale_0004-e38",
+           "id": "sale_0004-e39",
            "note": "12-значный ИНН",
            "type": "INN"
           },
@@ -2270,7 +2325,7 @@
           "e": {
            "cat": "ugly",
            "checksum": "valid",
-           "id": "sale_0004-e39",
+           "id": "sale_0004-e40",
            "note": "ОГРНИП, 15 знаков",
            "type": "OGRN"
           },
@@ -2289,7 +2344,7 @@
           "e": {
            "cat": "canonical",
            "checksum": "valid",
-           "id": "sale_0004-e40",
+           "id": "sale_0004-e41",
            "type": "ACCOUNT"
           },
           "s": "40802810184403400452"
@@ -2303,7 +2358,7 @@
          {
           "e": {
            "cat": "canonical",
-           "id": "sale_0004-e41",
+           "id": "sale_0004-e42",
            "type": "BIK"
           },
           "s": "044525187"
@@ -2320,7 +2375,7 @@
          {
           "e": {
            "cat": "canonical",
-           "id": "sale_0004-e42",
+           "id": "sale_0004-e43",
            "note": "формат: canonical",
            "type": "PHONE"
           },
@@ -2338,7 +2393,7 @@
          {
           "e": {
            "cat": "canonical",
-           "id": "sale_0004-e43",
+           "id": "sale_0004-e44",
            "type": "EMAIL"
           },
           "s": "pavlov@bk.ru"
@@ -2360,7 +2415,7 @@
          {
           "e": {
            "cat": "ugly",
-           "id": "sale_0004-e44",
+           "id": "sale_0004-e45",
            "note": "фамилия + инициалы",
            "type": "PER"
           },
@@ -2384,7 +2439,7 @@
     {
      "e": {
       "cat": "adversarial",
-      "id": "sale_0004-e45",
+      "id": "sale_0004-e46",
       "note": "ФИО в текстбоксе/надписи",
       "trick": "in_textbox",
       "type": "PER"
@@ -2397,7 +2452,7 @@
     {
      "e": {
       "cat": "adversarial",
-      "id": "sale_0004-e46",
+      "id": "sale_0004-e47",
       "note": "телефон в текстбоксе",
       "trick": "in_textbox",
       "type": "PHONE"
@@ -2429,7 +2484,7 @@
     {
      "e": {
       "cat": "ugly",
-      "id": "sale_0004-e47",
+      "id": "sale_0004-e48",
       "note": "подпись: фамилия+инициалы",
       "type": "PER"
      },
@@ -2450,7 +2505,7 @@
     {
      "e": {
       "cat": "ugly",
-      "id": "sale_0004-e48",
+      "id": "sale_0004-e49",
       "note": "подпись: фамилия+инициалы",
       "type": "PER"
      },

@@ -1951,6 +1951,61 @@
   {
    "chunks": [
     {
+     "s": "6. ОСОБЫЕ УСЛОВИЯ ОТДЕЛЬНЫХ ВИДОВ ДАННЫХ"
+    }
+   ],
+   "style": "bold",
+   "t": "p"
+  },
+  {
+   "chunks": [
+    {
+     "s": "6.1. Полномочия представителя подтверждены доверенностью, реестровый номер "
+    },
+    {
+     "e": {
+      "cat": "canonical",
+      "id": "sale_0009-e26",
+      "note": "фабричный тип: пример из файла-описания владельца",
+      "type": "REG_NUMBER"
+     },
+     "s": "23/5-н/23-2025-2-1104"
+    },
+    {
+     "s": "."
+    }
+   ],
+   "style": "normal",
+   "t": "p"
+  },
+  {
+   "chunks": [
+    {
+     "s": "6.2. Для сопоставления в учёте указывается: "
+    },
+    {
+     "n": {
+      "kind": "clause-chain",
+      "type": "REG_NUMBER",
+      "why": "короткие цепочки пунктов: меньше групп, нет «-н», нет года"
+     },
+     "s": "пп. 4/5-1 и 7/2-3 Правил страхования"
+    },
+    {
+     "s": "."
+    }
+   ],
+   "style": "normal",
+   "t": "p"
+  },
+  {
+   "chunks": [],
+   "style": "normal",
+   "t": "p"
+  },
+  {
+   "chunks": [
+    {
      "s": "РЕКВИЗИТЫ И ПОДПИСИ СТОРОН"
     }
    ],
@@ -1976,7 +2031,7 @@
     {
      "e": {
       "cat": "canonical",
-      "id": "sale_0009-e26",
+      "id": "sale_0009-e27",
       "type": "ORG"
      },
      "s": "АО «Логистик Групп»"
@@ -1993,7 +2048,7 @@
     {
      "e": {
       "cat": "ugly",
-      "id": "sale_0009-e27",
+      "id": "sale_0009-e28",
       "note": "стиль адреса: pobox",
       "type": "ADDRESS"
      },
@@ -2012,7 +2067,7 @@
      "e": {
       "cat": "canonical",
       "checksum": "valid",
-      "id": "sale_0009-e28",
+      "id": "sale_0009-e29",
       "type": "INN"
      },
      "s": "4249874710"
@@ -2023,7 +2078,7 @@
     {
      "e": {
       "cat": "canonical",
-      "id": "sale_0009-e29",
+      "id": "sale_0009-e30",
       "type": "KPP"
      },
      "s": "526488120"
@@ -2041,7 +2096,7 @@
      "e": {
       "cat": "canonical",
       "checksum": "valid",
-      "id": "sale_0009-e30",
+      "id": "sale_0009-e31",
       "type": "OGRN"
      },
      "s": "1493110098436"
@@ -2059,7 +2114,7 @@
      "e": {
       "cat": "canonical",
       "checksum": "valid",
-      "id": "sale_0009-e31",
+      "id": "sale_0009-e32",
       "type": "ACCOUNT"
      },
      "s": "40702810039867095828"
@@ -2079,7 +2134,7 @@
     {
      "e": {
       "cat": "canonical",
-      "id": "sale_0009-e32",
+      "id": "sale_0009-e33",
       "note": "корреспондентский счёт банка",
       "type": "ACCOUNT"
      },
@@ -2091,7 +2146,7 @@
     {
      "e": {
       "cat": "canonical",
-      "id": "sale_0009-e33",
+      "id": "sale_0009-e34",
       "type": "BIK"
      },
      "s": "049205603"
@@ -2108,7 +2163,7 @@
     {
      "e": {
       "cat": "canonical",
-      "id": "sale_0009-e34",
+      "id": "sale_0009-e35",
       "note": "формат: canonical",
       "type": "PHONE"
      },
@@ -2126,7 +2181,7 @@
     {
      "e": {
       "cat": "canonical",
-      "id": "sale_0009-e35",
+      "id": "sale_0009-e36",
       "type": "EMAIL"
      },
      "s": "ershova@gmail.com"
@@ -2148,7 +2203,7 @@
     {
      "e": {
       "cat": "ugly",
-      "id": "sale_0009-e36",
+      "id": "sale_0009-e37",
       "note": "инициалы перед фамилией",
       "type": "PER"
      },
@@ -2177,7 +2232,7 @@
     {
      "e": {
       "cat": "canonical",
-      "id": "sale_0009-e37",
+      "id": "sale_0009-e38",
       "type": "ORG"
      },
      "s": "ООО «ТехноПром»"
@@ -2194,7 +2249,7 @@
     {
      "e": {
       "cat": "ugly",
-      "id": "sale_0009-e38",
+      "id": "sale_0009-e39",
       "note": "стиль адреса: pobox",
       "type": "ADDRESS"
      },
@@ -2212,7 +2267,7 @@
     {
      "e": {
       "cat": "ugly",
-      "id": "sale_0009-e39",
+      "id": "sale_0009-e40",
       "note": "стиль адреса: pobox",
       "type": "ADDRESS"
      },
@@ -2231,7 +2286,7 @@
      "e": {
       "cat": "canonical",
       "checksum": "valid",
-      "id": "sale_0009-e40",
+      "id": "sale_0009-e41",
       "type": "INN"
      },
      "s": "5325064817"
@@ -2242,7 +2297,7 @@
     {
      "e": {
       "cat": "canonical",
-      "id": "sale_0009-e41",
+      "id": "sale_0009-e42",
       "type": "KPP"
      },
      "s": "670909836"
@@ -2260,7 +2315,7 @@
      "e": {
       "cat": "canonical",
       "checksum": "valid",
-      "id": "sale_0009-e42",
+      "id": "sale_0009-e43",
       "type": "OGRN"
      },
      "s": "1882432504348"
@@ -2278,7 +2333,7 @@
      "e": {
       "cat": "canonical",
       "checksum": "valid",
-      "id": "sale_0009-e43",
+      "id": "sale_0009-e44",
       "type": "ACCOUNT"
      },
      "s": "40702810954165476414"
@@ -2298,7 +2353,7 @@
     {
      "e": {
       "cat": "canonical",
-      "id": "sale_0009-e44",
+      "id": "sale_0009-e45",
       "note": "корреспондентский счёт банка",
       "type": "ACCOUNT"
      },
@@ -2310,7 +2365,7 @@
     {
      "e": {
       "cat": "canonical",
-      "id": "sale_0009-e45",
+      "id": "sale_0009-e46",
       "type": "BIK"
      },
      "s": "044525974"
@@ -2327,7 +2382,7 @@
     {
      "e": {
       "cat": "canonical",
-      "id": "sale_0009-e46",
+      "id": "sale_0009-e47",
       "note": "формат: canonical",
       "type": "PHONE"
      },
@@ -2345,7 +2400,7 @@
     {
      "e": {
       "cat": "canonical",
-      "id": "sale_0009-e47",
+      "id": "sale_0009-e48",
       "type": "EMAIL"
      },
      "s": "belov@yandex.ru"
@@ -2367,7 +2422,7 @@
     {
      "e": {
       "cat": "ugly",
-      "id": "sale_0009-e48",
+      "id": "sale_0009-e49",
       "note": "инициалы перед фамилией",
       "type": "PER"
      },
@@ -2410,7 +2465,7 @@
     {
      "e": {
       "cat": "ugly",
-      "id": "sale_0009-e49",
+      "id": "sale_0009-e50",
       "note": "стиль адреса: pobox",
       "type": "ADDRESS"
      },
@@ -2431,7 +2486,7 @@
     {
      "e": {
       "cat": "ugly",
-      "id": "sale_0009-e50",
+      "id": "sale_0009-e51",
       "note": "ПДн в приложении к договору",
       "type": "PER"
      },
@@ -2449,7 +2504,7 @@
     {
      "e": {
       "cat": "canonical",
-      "id": "sale_0009-e51",
+      "id": "sale_0009-e52",
       "note": "формат: canonical",
       "type": "PHONE"
      },
@@ -2481,7 +2536,7 @@
     {
      "e": {
       "cat": "ugly",
-      "id": "sale_0009-e52",
+      "id": "sale_0009-e53",
       "note": "подпись: фамилия+инициалы",
       "type": "PER"
      },
@@ -2502,7 +2557,7 @@
     {
      "e": {
       "cat": "ugly",
-      "id": "sale_0009-e53",
+      "id": "sale_0009-e54",
       "note": "подпись: фамилия+инициалы",
       "type": "PER"
      },

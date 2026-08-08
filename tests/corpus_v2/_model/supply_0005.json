@@ -1927,6 +1927,61 @@
   {
    "chunks": [
     {
+     "s": "6. ОСОБЫЕ УСЛОВИЯ ОТДЕЛЬНЫХ ВИДОВ ДАННЫХ"
+    }
+   ],
+   "style": "bold",
+   "t": "p"
+  },
+  {
+   "chunks": [
+    {
+     "s": "6.1. Полномочия представителя подтверждены доверенностью, реестровый номер "
+    },
+    {
+     "e": {
+      "cat": "canonical",
+      "id": "supply_0005-e23",
+      "note": "фабричный тип: пример из файла-описания владельца",
+      "type": "REG_NUMBER"
+     },
+     "s": "16/89-н/16-2024-3-215"
+    },
+    {
+     "s": "."
+    }
+   ],
+   "style": "normal",
+   "t": "p"
+  },
+  {
+   "chunks": [
+    {
+     "s": "6.2. Для сопоставления в учёте указывается: "
+    },
+    {
+     "n": {
+      "kind": "cadastral",
+      "type": "REG_NUMBER",
+      "why": "чужая номенклатура: двоеточия, нет группы «-н» — не реестровый номер стороны"
+     },
+     "s": "кадастровый номер 77:01:0004012:2211"
+    },
+    {
+     "s": "."
+    }
+   ],
+   "style": "normal",
+   "t": "p"
+  },
+  {
+   "chunks": [],
+   "style": "normal",
+   "t": "p"
+  },
+  {
+   "chunks": [
+    {
      "s": "РЕКВИЗИТЫ И ПОДПИСИ СТОРОН"
     }
    ],
@@ -1955,7 +2010,7 @@
     {
      "e": {
       "cat": "canonical",
-      "id": "supply_0005-e23",
+      "id": "supply_0005-e24",
       "type": "PER"
      },
      "s": "Смирнова Людмила Олеговна"
@@ -1972,7 +2027,7 @@
     {
      "e": {
       "cat": "canonical",
-      "id": "supply_0005-e24",
+      "id": "supply_0005-e25",
       "note": "стиль адреса: canonical",
       "type": "ADDRESS"
      },
@@ -1991,7 +2046,7 @@
      "e": {
       "cat": "canonical",
       "checksum": "valid",
-      "id": "supply_0005-e25",
+      "id": "supply_0005-e26",
       "note": "12-значный ИНН",
       "type": "INN"
      },
@@ -2004,7 +2059,7 @@
      "e": {
       "cat": "ugly",
       "checksum": "valid",
-      "id": "supply_0005-e26",
+      "id": "supply_0005-e27",
       "note": "ОГРНИП, 15 знаков",
       "type": "OGRN"
      },
@@ -2023,7 +2078,7 @@
      "e": {
       "cat": "canonical",
       "checksum": "valid",
-      "id": "supply_0005-e27",
+      "id": "supply_0005-e28",
       "type": "ACCOUNT"
      },
      "s": "40802810461704803064"
@@ -2037,7 +2092,7 @@
     {
      "e": {
       "cat": "canonical",
-      "id": "supply_0005-e28",
+      "id": "supply_0005-e29",
       "type": "BIK"
      },
      "s": "044525974"
@@ -2054,7 +2109,7 @@
     {
      "e": {
       "cat": "canonical",
-      "id": "supply_0005-e29",
+      "id": "supply_0005-e30",
       "note": "формат: canonical",
       "type": "PHONE"
      },
@@ -2072,7 +2127,7 @@
     {
      "e": {
       "cat": "canonical",
-      "id": "supply_0005-e30",
+      "id": "supply_0005-e31",
       "type": "EMAIL"
      },
      "s": "smirnova@bk.ru"
@@ -2094,7 +2149,7 @@
     {
      "e": {
       "cat": "ugly",
-      "id": "supply_0005-e31",
+      "id": "supply_0005-e32",
       "note": "фамилия + инициалы",
       "type": "PER"
      },
@@ -2123,7 +2178,7 @@
     {
      "e": {
       "cat": "canonical",
-      "id": "supply_0005-e32",
+      "id": "supply_0005-e33",
       "type": "PER"
      },
      "s": "Петрова Людмила Егоровна"
@@ -2140,7 +2195,7 @@
     {
      "e": {
       "cat": "canonical",
-      "id": "supply_0005-e33",
+      "id": "supply_0005-e34",
       "note": "стиль записи из BIRTHDATE_STYLES",
       "type": "BIRTHDATE"
      },
@@ -2158,7 +2213,7 @@
     {
      "e": {
       "cat": "canonical",
-      "id": "supply_0005-e34",
+      "id": "supply_0005-e35",
       "note": "стиль адреса: canonical",
       "type": "ADDRESS"
      },
@@ -2176,7 +2231,7 @@
     {
      "e": {
       "cat": "canonical",
-      "id": "supply_0005-e35",
+      "id": "supply_0005-e36",
       "note": "серия+номер, стиль записи из PASSPORT_STYLES",
       "type": "PASSPORT"
      },
@@ -2191,7 +2246,7 @@
     {
      "e": {
       "cat": "ugly",
-      "id": "supply_0005-e36",
+      "id": "supply_0005-e37",
       "note": "код подразделения, стиль записи из DEPTCODE_STYLES",
       "type": "PASSPORT"
      },
@@ -2210,7 +2265,7 @@
      "e": {
       "cat": "canonical",
       "checksum": "valid",
-      "id": "supply_0005-e37",
+      "id": "supply_0005-e38",
       "note": "стиль записи из SNILS_STYLES",
       "type": "SNILS"
      },
@@ -2223,7 +2278,7 @@
      "e": {
       "cat": "ugly",
       "checksum": "valid",
-      "id": "supply_0005-e38",
+      "id": "supply_0005-e39",
       "note": "ИНН физлица (12 знаков)",
       "type": "INN"
      },
@@ -2241,7 +2296,7 @@
     {
      "e": {
       "cat": "canonical",
-      "id": "supply_0005-e39",
+      "id": "supply_0005-e40",
       "note": "формат: canonical",
       "type": "PHONE"
      },
@@ -2259,7 +2314,7 @@
     {
      "e": {
       "cat": "canonical",
-      "id": "supply_0005-e40",
+      "id": "supply_0005-e41",
       "type": "EMAIL"
      },
      "s": "petrova@list.ru"
@@ -2281,7 +2336,7 @@
     {
      "e": {
       "cat": "ugly",
-      "id": "supply_0005-e41",
+      "id": "supply_0005-e42",
       "note": "фамилия + инициалы",
       "type": "PER"
      },
@@ -2318,7 +2373,7 @@
     {
      "e": {
       "cat": "ugly",
-      "id": "supply_0005-e42",
+      "id": "supply_0005-e43",
       "note": "подпись: фамилия+инициалы",
       "type": "PER"
      },
@@ -2339,7 +2394,7 @@
     {
      "e": {
       "cat": "ugly",
-      "id": "supply_0005-e43",
+      "id": "supply_0005-e44",
       "note": "подпись: фамилия+инициалы",
       "type": "PER"
      },

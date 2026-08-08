@@ -2131,6 +2131,61 @@
   {
    "chunks": [
     {
+     "s": "6. ОСОБЫЕ УСЛОВИЯ ОТДЕЛЬНЫХ ВИДОВ ДАННЫХ"
+    }
+   ],
+   "style": "bold",
+   "t": "p"
+  },
+  {
+   "chunks": [
+    {
+     "s": "6.1. Полномочия представителя подтверждены доверенностью, реестровый номер "
+    },
+    {
+     "e": {
+      "cat": "canonical",
+      "id": "works_0001-e26",
+      "note": "фабричный тип: пример из файла-описания владельца",
+      "type": "REG_NUMBER"
+     },
+     "s": "23/5-н/23-2025-2-1104"
+    },
+    {
+     "s": "."
+    }
+   ],
+   "style": "normal",
+   "t": "p"
+  },
+  {
+   "chunks": [
+    {
+     "s": "6.2. Для сопоставления в учёте указывается: "
+    },
+    {
+     "n": {
+      "kind": "clause-chain",
+      "type": "REG_NUMBER",
+      "why": "короткие цепочки пунктов: меньше групп, нет «-н», нет года"
+     },
+     "s": "пп. 4/5-1 и 7/2-3 Правил страхования"
+    },
+    {
+     "s": "."
+    }
+   ],
+   "style": "normal",
+   "t": "p"
+  },
+  {
+   "chunks": [],
+   "style": "normal",
+   "t": "p"
+  },
+  {
+   "chunks": [
+    {
      "s": "РЕКВИЗИТЫ И ПОДПИСИ СТОРОН"
     }
    ],
@@ -2156,7 +2211,7 @@
     {
      "e": {
       "cat": "ugly",
-      "id": "works_0001-e26",
+      "id": "works_0001-e27",
       "note": "организация без кавычек / нестандартные кавычки",
       "type": "ORG"
      },
@@ -2174,7 +2229,7 @@
     {
      "e": {
       "cat": "ugly",
-      "id": "works_0001-e27",
+      "id": "works_0001-e28",
       "note": "стиль адреса: no_marker",
       "type": "ADDRESS"
      },
@@ -2192,7 +2247,7 @@
     {
      "e": {
       "cat": "ugly",
-      "id": "works_0001-e28",
+      "id": "works_0001-e29",
       "note": "стиль адреса: no_marker",
       "type": "ADDRESS"
      },
@@ -2211,7 +2266,7 @@
      "e": {
       "cat": "canonical",
       "checksum": "valid",
-      "id": "works_0001-e29",
+      "id": "works_0001-e30",
       "type": "INN"
      },
      "s": "2772528744"
@@ -2222,7 +2277,7 @@
     {
      "e": {
       "cat": "canonical",
-      "id": "works_0001-e30",
+      "id": "works_0001-e31",
       "type": "KPP"
      },
      "s": "137709367"
@@ -2240,7 +2295,7 @@
      "e": {
       "cat": "canonical",
       "checksum": "valid",
-      "id": "works_0001-e31",
+      "id": "works_0001-e32",
       "type": "OGRN"
      },
      "s": "1469783337121"
@@ -2258,7 +2313,7 @@
      "e": {
       "cat": "canonical",
       "checksum": "valid",
-      "id": "works_0001-e32",
+      "id": "works_0001-e33",
       "type": "ACCOUNT"
      },
      "s": "40702810605986812596"
@@ -2278,7 +2333,7 @@
     {
      "e": {
       "cat": "canonical",
-      "id": "works_0001-e33",
+      "id": "works_0001-e34",
       "note": "корреспондентский счёт банка",
       "type": "ACCOUNT"
      },
@@ -2290,7 +2345,7 @@
     {
      "e": {
       "cat": "canonical",
-      "id": "works_0001-e34",
+      "id": "works_0001-e35",
       "type": "BIK"
      },
      "s": "044525700"
@@ -2307,7 +2362,7 @@
     {
      "e": {
       "cat": "canonical",
-      "id": "works_0001-e35",
+      "id": "works_0001-e36",
       "note": "формат: canonical",
       "type": "PHONE"
      },
@@ -2325,7 +2380,7 @@
     {
      "e": {
       "cat": "canonical",
-      "id": "works_0001-e36",
+      "id": "works_0001-e37",
       "type": "EMAIL"
      },
      "s": "nikitina@romashka.ru"
@@ -2347,7 +2402,7 @@
     {
      "e": {
       "cat": "ugly",
-      "id": "works_0001-e37",
+      "id": "works_0001-e38",
       "note": "инициалы перед фамилией",
       "type": "PER"
      },
@@ -2376,7 +2431,7 @@
     {
      "e": {
       "cat": "ugly",
-      "id": "works_0001-e38",
+      "id": "works_0001-e39",
       "note": "организация без кавычек / нестандартные кавычки",
       "type": "ORG"
      },
@@ -2394,7 +2449,7 @@
     {
      "e": {
       "cat": "ugly",
-      "id": "works_0001-e39",
+      "id": "works_0001-e40",
       "note": "стиль адреса: no_marker",
       "type": "ADDRESS"
      },
@@ -2412,7 +2467,7 @@
     {
      "e": {
       "cat": "ugly",
-      "id": "works_0001-e40",
+      "id": "works_0001-e41",
       "note": "стиль адреса: no_marker",
       "type": "ADDRESS"
      },
@@ -2431,7 +2486,7 @@
      "e": {
       "cat": "canonical",
       "checksum": "valid",
-      "id": "works_0001-e41",
+      "id": "works_0001-e42",
       "type": "INN"
      },
      "s": "3958423379"
@@ -2442,7 +2497,7 @@
     {
      "e": {
       "cat": "canonical",
-      "id": "works_0001-e42",
+      "id": "works_0001-e43",
       "type": "KPP"
      },
      "s": "467192254"
@@ -2460,7 +2515,7 @@
      "e": {
       "cat": "canonical",
       "checksum": "valid",
-      "id": "works_0001-e43",
+      "id": "works_0001-e44",
       "type": "OGRN"
      },
      "s": "1207234187445"
@@ -2478,7 +2533,7 @@
      "e": {
       "cat": "canonical",
       "checksum": "valid",
-      "id": "works_0001-e44",
+      "id": "works_0001-e45",
       "type": "ACCOUNT"
      },
      "s": "40702810659686579332"
@@ -2498,7 +2553,7 @@
     {
      "e": {
       "cat": "canonical",
-      "id": "works_0001-e45",
+      "id": "works_0001-e46",
       "note": "корреспондентский счёт банка",
       "type": "ACCOUNT"
      },
@@ -2510,7 +2565,7 @@
     {
      "e": {
       "cat": "canonical",
-      "id": "works_0001-e46",
+      "id": "works_0001-e47",
       "type": "BIK"
      },
      "s": "044525225"
@@ -2527,7 +2582,7 @@
     {
      "e": {
       "cat": "canonical",
-      "id": "works_0001-e47",
+      "id": "works_0001-e48",
       "note": "формат: canonical",
       "type": "PHONE"
      },
@@ -2545,7 +2600,7 @@
     {
      "e": {
       "cat": "canonical",
-      "id": "works_0001-e48",
+      "id": "works_0001-e49",
       "type": "EMAIL"
      },
      "s": "pirogova@bk.ru"
@@ -2567,7 +2622,7 @@
     {
      "e": {
       "cat": "ugly",
-      "id": "works_0001-e49",
+      "id": "works_0001-e50",
       "note": "инициалы перед фамилией",
       "type": "PER"
      },
@@ -2604,7 +2659,7 @@
     {
      "e": {
       "cat": "ugly",
-      "id": "works_0001-e50",
+      "id": "works_0001-e51",
       "note": "подпись: фамилия+инициалы",
       "type": "PER"
      },
@@ -2625,7 +2680,7 @@
     {
      "e": {
       "cat": "ugly",
-      "id": "works_0001-e51",
+      "id": "works_0001-e52",
       "note": "подпись: фамилия+инициалы",
       "type": "PER"
      },

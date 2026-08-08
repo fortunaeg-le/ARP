@@ -1927,6 +1927,61 @@
   {
    "chunks": [
     {
+     "s": "6. ОСОБЫЕ УСЛОВИЯ ОТДЕЛЬНЫХ ВИДОВ ДАННЫХ"
+    }
+   ],
+   "style": "bold",
+   "t": "p"
+  },
+  {
+   "chunks": [
+    {
+     "s": "6.1. Полномочия представителя подтверждены доверенностью, реестровый номер "
+    },
+    {
+     "e": {
+      "cat": "canonical",
+      "id": "supply_0002-e23",
+      "note": "фабричный тип: пример из файла-описания владельца",
+      "type": "REG_NUMBER"
+     },
+     "s": "50/121-н/50-2023-4-88"
+    },
+    {
+     "s": "."
+    }
+   ],
+   "style": "normal",
+   "t": "p"
+  },
+  {
+   "chunks": [
+    {
+     "s": "6.2. Для сопоставления в учёте указывается: "
+    },
+    {
+     "n": {
+      "kind": "gost-ref",
+      "type": "REG_NUMBER",
+      "why": "ссылка на стандарт — не реестровый номер"
+     },
+     "s": "ГОСТ Р 52044-2003"
+    },
+    {
+     "s": "."
+    }
+   ],
+   "style": "normal",
+   "t": "p"
+  },
+  {
+   "chunks": [],
+   "style": "normal",
+   "t": "p"
+  },
+  {
+   "chunks": [
+    {
      "s": "РЕКВИЗИТЫ И ПОДПИСИ СТОРОН"
     }
    ],
@@ -1957,7 +2012,7 @@
          {
           "e": {
            "cat": "canonical",
-           "id": "supply_0002-e23",
+           "id": "supply_0002-e24",
            "type": "ORG"
           },
           "s": "ООО «Аргус»"
@@ -1974,7 +2029,7 @@
          {
           "e": {
            "cat": "canonical",
-           "id": "supply_0002-e24",
+           "id": "supply_0002-e25",
            "note": "стиль адреса: canonical",
            "type": "ADDRESS"
           },
@@ -1992,7 +2047,7 @@
          {
           "e": {
            "cat": "canonical",
-           "id": "supply_0002-e25",
+           "id": "supply_0002-e26",
            "note": "стиль адреса: canonical",
            "type": "ADDRESS"
           },
@@ -2011,7 +2066,7 @@
           "e": {
            "cat": "canonical",
            "checksum": "valid",
-           "id": "supply_0002-e26",
+           "id": "supply_0002-e27",
            "type": "INN"
           },
           "s": "5969390070"
@@ -2022,7 +2077,7 @@
          {
           "e": {
            "cat": "canonical",
-           "id": "supply_0002-e27",
+           "id": "supply_0002-e28",
            "type": "KPP"
           },
           "s": "407265752"
@@ -2040,7 +2095,7 @@
           "e": {
            "cat": "canonical",
            "checksum": "valid",
-           "id": "supply_0002-e28",
+           "id": "supply_0002-e29",
            "type": "OGRN"
           },
           "s": "1920916214690"
@@ -2058,7 +2113,7 @@
           "e": {
            "cat": "canonical",
            "checksum": "valid",
-           "id": "supply_0002-e29",
+           "id": "supply_0002-e30",
            "type": "ACCOUNT"
           },
           "s": "40702810718861452602"
@@ -2078,7 +2133,7 @@
          {
           "e": {
            "cat": "canonical",
-           "id": "supply_0002-e30",
+           "id": "supply_0002-e31",
            "note": "корреспондентский счёт банка",
            "type": "ACCOUNT"
           },
@@ -2090,7 +2145,7 @@
          {
           "e": {
            "cat": "canonical",
-           "id": "supply_0002-e31",
+           "id": "supply_0002-e32",
            "type": "BIK"
           },
           "s": "044525187"
@@ -2107,7 +2162,7 @@
          {
           "e": {
            "cat": "canonical",
-           "id": "supply_0002-e32",
+           "id": "supply_0002-e33",
            "note": "формат: canonical",
            "type": "PHONE"
           },
@@ -2125,7 +2180,7 @@
          {
           "e": {
            "cat": "canonical",
-           "id": "supply_0002-e33",
+           "id": "supply_0002-e34",
            "type": "EMAIL"
           },
           "s": "sokolova@corp-tehno.ru"
@@ -2147,7 +2202,7 @@
          {
           "e": {
            "cat": "ugly",
-           "id": "supply_0002-e34",
+           "id": "supply_0002-e35",
            "note": "инициалы перед фамилией",
            "type": "PER"
           },
@@ -2178,7 +2233,7 @@
          {
           "e": {
            "cat": "canonical",
-           "id": "supply_0002-e35",
+           "id": "supply_0002-e36",
            "type": "PER"
           },
           "s": "Семёнов Олег Егорович"
@@ -2195,7 +2250,7 @@
          {
           "e": {
            "cat": "canonical",
-           "id": "supply_0002-e36",
+           "id": "supply_0002-e37",
            "note": "стиль адреса: canonical",
            "type": "ADDRESS"
           },
@@ -2214,7 +2269,7 @@
           "e": {
            "cat": "canonical",
            "checksum": "valid",
-           "id": "supply_0002-e37",
+           "id": "supply_0002-e38",
            "note": "12-значный ИНН",
            "type": "INN"
           },
@@ -2227,7 +2282,7 @@
           "e": {
            "cat": "ugly",
            "checksum": "valid",
-           "id": "supply_0002-e38",
+           "id": "supply_0002-e39",
            "note": "ОГРНИП, 15 знаков",
            "type": "OGRN"
           },
@@ -2246,7 +2301,7 @@
           "e": {
            "cat": "canonical",
            "checksum": "valid",
-           "id": "supply_0002-e39",
+           "id": "supply_0002-e40",
            "type": "ACCOUNT"
           },
           "s": "40802810107022174410"
@@ -2260,7 +2315,7 @@
          {
           "e": {
            "cat": "canonical",
-           "id": "supply_0002-e40",
+           "id": "supply_0002-e41",
            "type": "BIK"
           },
           "s": "045004763"
@@ -2277,7 +2332,7 @@
          {
           "e": {
            "cat": "canonical",
-           "id": "supply_0002-e41",
+           "id": "supply_0002-e42",
            "note": "формат: canonical",
            "type": "PHONE"
           },
@@ -2295,7 +2350,7 @@
          {
           "e": {
            "cat": "canonical",
-           "id": "supply_0002-e42",
+           "id": "supply_0002-e43",
            "type": "EMAIL"
           },
           "s": "semenov@corp-tehno.ru"
@@ -2317,7 +2372,7 @@
          {
           "e": {
            "cat": "ugly",
-           "id": "supply_0002-e43",
+           "id": "supply_0002-e44",
            "note": "фамилия + инициалы",
            "type": "PER"
           },
@@ -2355,7 +2410,7 @@
     {
      "e": {
       "cat": "ugly",
-      "id": "supply_0002-e44",
+      "id": "supply_0002-e45",
       "note": "подпись: фамилия+инициалы",
       "type": "PER"
      },
@@ -2376,7 +2431,7 @@
     {
      "e": {
       "cat": "ugly",
-      "id": "supply_0002-e45",
+      "id": "supply_0002-e46",
       "note": "подпись: фамилия+инициалы",
       "type": "PER"
      },

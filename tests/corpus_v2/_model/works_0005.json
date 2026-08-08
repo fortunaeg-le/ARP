@@ -1906,6 +1906,61 @@
   {
    "chunks": [
     {
+     "s": "6. ОСОБЫЕ УСЛОВИЯ ОТДЕЛЬНЫХ ВИДОВ ДАННЫХ"
+    }
+   ],
+   "style": "bold",
+   "t": "p"
+  },
+  {
+   "chunks": [
+    {
+     "s": "6.1. Полномочия представителя подтверждены доверенностью, реестровый номер "
+    },
+    {
+     "e": {
+      "cat": "canonical",
+      "id": "works_0005-e24",
+      "note": "фабричный тип: пример из файла-описания владельца",
+      "type": "REG_NUMBER"
+     },
+     "s": "50/121-н/50-2023-4-88"
+    },
+    {
+     "s": "."
+    }
+   ],
+   "style": "normal",
+   "t": "p"
+  },
+  {
+   "chunks": [
+    {
+     "s": "6.2. Для сопоставления в учёте указывается: "
+    },
+    {
+     "n": {
+      "kind": "clause-chain",
+      "type": "REG_NUMBER",
+      "why": "короткие цепочки пунктов: меньше групп, нет «-н», нет года"
+     },
+     "s": "пп. 4/5-1 и 7/2-3 Правил страхования"
+    },
+    {
+     "s": "."
+    }
+   ],
+   "style": "normal",
+   "t": "p"
+  },
+  {
+   "chunks": [],
+   "style": "normal",
+   "t": "p"
+  },
+  {
+   "chunks": [
+    {
      "s": "РЕКВИЗИТЫ И ПОДПИСИ СТОРОН"
     }
    ],
@@ -1934,7 +1989,7 @@
     {
      "e": {
       "cat": "canonical",
-      "id": "works_0005-e24",
+      "id": "works_0005-e25",
       "type": "PER"
      },
      "s": "Сидорова Ирина Николаевна"
@@ -1951,7 +2006,7 @@
     {
      "e": {
       "cat": "ugly",
-      "id": "works_0005-e25",
+      "id": "works_0005-e26",
       "note": "стиль адреса: pobox",
       "type": "ADDRESS"
      },
@@ -1970,7 +2025,7 @@
      "e": {
       "cat": "canonical",
       "checksum": "valid",
-      "id": "works_0005-e26",
+      "id": "works_0005-e27",
       "note": "12-значный ИНН",
       "type": "INN"
      },
@@ -1983,7 +2038,7 @@
      "e": {
       "cat": "ugly",
       "checksum": "valid",
-      "id": "works_0005-e27",
+      "id": "works_0005-e28",
       "note": "ОГРНИП, 15 знаков",
       "type": "OGRN"
      },
@@ -2002,7 +2057,7 @@
      "e": {
       "cat": "canonical",
       "checksum": "valid",
-      "id": "works_0005-e28",
+      "id": "works_0005-e29",
       "type": "ACCOUNT"
      },
      "s": "40802810375224881264"
@@ -2016,7 +2071,7 @@
     {
      "e": {
       "cat": "canonical",
-      "id": "works_0005-e29",
+      "id": "works_0005-e30",
       "type": "BIK"
      },
      "s": "044525555"
@@ -2033,7 +2088,7 @@
     {
      "e": {
       "cat": "canonical",
-      "id": "works_0005-e30",
+      "id": "works_0005-e31",
       "note": "формат: canonical",
       "type": "PHONE"
      },
@@ -2051,7 +2106,7 @@
     {
      "e": {
       "cat": "canonical",
-      "id": "works_0005-e31",
+      "id": "works_0005-e32",
       "type": "EMAIL"
      },
      "s": "sidorova@bk.ru"
@@ -2073,7 +2128,7 @@
     {
      "e": {
       "cat": "ugly",
-      "id": "works_0005-e32",
+      "id": "works_0005-e33",
       "note": "фамилия + инициалы",
       "type": "PER"
      },
@@ -2102,7 +2157,7 @@
     {
      "e": {
       "cat": "canonical",
-      "id": "works_0005-e33",
+      "id": "works_0005-e34",
       "type": "PER"
      },
      "s": "Мороз Николай Михайлович"
@@ -2119,7 +2174,7 @@
     {
      "e": {
       "cat": "canonical",
-      "id": "works_0005-e34",
+      "id": "works_0005-e35",
       "note": "стиль записи из BIRTHDATE_STYLES",
       "type": "BIRTHDATE"
      },
@@ -2137,7 +2192,7 @@
     {
      "e": {
       "cat": "ugly",
-      "id": "works_0005-e35",
+      "id": "works_0005-e36",
       "note": "стиль адреса: pobox",
       "type": "ADDRESS"
      },
@@ -2155,7 +2210,7 @@
     {
      "e": {
       "cat": "canonical",
-      "id": "works_0005-e36",
+      "id": "works_0005-e37",
       "note": "серия+номер, стиль записи из PASSPORT_STYLES",
       "type": "PASSPORT"
      },
@@ -2170,7 +2225,7 @@
     {
      "e": {
       "cat": "ugly",
-      "id": "works_0005-e37",
+      "id": "works_0005-e38",
       "note": "код подразделения, стиль записи из DEPTCODE_STYLES",
       "type": "PASSPORT"
      },
@@ -2189,7 +2244,7 @@
      "e": {
       "cat": "canonical",
       "checksum": "valid",
-      "id": "works_0005-e38",
+      "id": "works_0005-e39",
       "note": "стиль записи из SNILS_STYLES",
       "type": "SNILS"
      },
@@ -2202,7 +2257,7 @@
      "e": {
       "cat": "ugly",
       "checksum": "valid",
-      "id": "works_0005-e39",
+      "id": "works_0005-e40",
       "note": "ИНН физлица (12 знаков)",
       "type": "INN"
      },
@@ -2220,7 +2275,7 @@
     {
      "e": {
       "cat": "canonical",
-      "id": "works_0005-e40",
+      "id": "works_0005-e41",
       "note": "формат: canonical",
       "type": "PHONE"
      },
@@ -2238,7 +2293,7 @@
     {
      "e": {
       "cat": "canonical",
-      "id": "works_0005-e41",
+      "id": "works_0005-e42",
       "type": "EMAIL"
      },
      "s": "moroz@yandex.ru"
@@ -2260,7 +2315,7 @@
     {
      "e": {
       "cat": "ugly",
-      "id": "works_0005-e42",
+      "id": "works_0005-e43",
       "note": "фамилия + инициалы",
       "type": "PER"
      },
@@ -2297,7 +2352,7 @@
     {
      "e": {
       "cat": "ugly",
-      "id": "works_0005-e43",
+      "id": "works_0005-e44",
       "note": "подпись: фамилия+инициалы",
       "type": "PER"
      },
@@ -2318,7 +2373,7 @@
     {
      "e": {
       "cat": "ugly",
-      "id": "works_0005-e44",
+      "id": "works_0005-e45",
       "note": "подпись: фамилия+инициалы",
       "type": "PER"
      },

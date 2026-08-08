@@ -1849,6 +1849,61 @@
   {
    "chunks": [
     {
+     "s": "6. ОСОБЫЕ УСЛОВИЯ ОТДЕЛЬНЫХ ВИДОВ ДАННЫХ"
+    }
+   ],
+   "style": "bold",
+   "t": "p"
+  },
+  {
+   "chunks": [
+    {
+     "s": "6.1. Полномочия представителя подтверждены доверенностью, реестровый номер "
+    },
+    {
+     "e": {
+      "cat": "canonical",
+      "id": "services_0007-e21",
+      "note": "фабричный тип: пример из файла-описания владельца",
+      "type": "REG_NUMBER"
+     },
+     "s": "23/5-н/23-2025-2-1104"
+    },
+    {
+     "s": "."
+    }
+   ],
+   "style": "normal",
+   "t": "p"
+  },
+  {
+   "chunks": [
+    {
+     "s": "6.2. Для сопоставления в учёте указывается: "
+    },
+    {
+     "n": {
+      "kind": "clause-chain",
+      "type": "REG_NUMBER",
+      "why": "короткие цепочки пунктов: меньше групп, нет «-н», нет года"
+     },
+     "s": "пп. 4/5-1 и 7/2-3 Правил страхования"
+    },
+    {
+     "s": "."
+    }
+   ],
+   "style": "normal",
+   "t": "p"
+  },
+  {
+   "chunks": [],
+   "style": "normal",
+   "t": "p"
+  },
+  {
+   "chunks": [
+    {
      "s": "РЕКВИЗИТЫ И ПОДПИСИ СТОРОН"
     }
    ],
@@ -1877,7 +1932,7 @@
     {
      "e": {
       "cat": "canonical",
-      "id": "services_0007-e21",
+      "id": "services_0007-e22",
       "type": "PER"
      },
      "s": "Семёнов Юрий Олегович"
@@ -1894,7 +1949,7 @@
     {
      "e": {
       "cat": "ugly",
-      "id": "services_0007-e22",
+      "id": "services_0007-e23",
       "note": "стиль адреса: index_first",
       "type": "ADDRESS"
      },
@@ -1913,7 +1968,7 @@
      "e": {
       "cat": "canonical",
       "checksum": "valid",
-      "id": "services_0007-e23",
+      "id": "services_0007-e24",
       "note": "12-значный ИНН",
       "type": "INN"
      },
@@ -1926,7 +1981,7 @@
      "e": {
       "cat": "ugly",
       "checksum": "valid",
-      "id": "services_0007-e24",
+      "id": "services_0007-e25",
       "note": "ОГРНИП, 15 знаков",
       "type": "OGRN"
      },
@@ -1945,7 +2000,7 @@
      "e": {
       "cat": "canonical",
       "checksum": "valid",
-      "id": "services_0007-e25",
+      "id": "services_0007-e26",
       "type": "ACCOUNT"
      },
      "s": "40802810659277578791"
@@ -1959,7 +2014,7 @@
     {
      "e": {
       "cat": "canonical",
-      "id": "services_0007-e26",
+      "id": "services_0007-e27",
       "type": "BIK"
      },
      "s": "045004763"
@@ -1976,7 +2031,7 @@
     {
      "e": {
       "cat": "canonical",
-      "id": "services_0007-e27",
+      "id": "services_0007-e28",
       "note": "формат: canonical",
       "type": "PHONE"
      },
@@ -1994,7 +2049,7 @@
     {
      "e": {
       "cat": "canonical",
-      "id": "services_0007-e28",
+      "id": "services_0007-e29",
       "type": "EMAIL"
      },
      "s": "semenov@mail.ru"
@@ -2016,7 +2071,7 @@
     {
      "e": {
       "cat": "ugly",
-      "id": "services_0007-e29",
+      "id": "services_0007-e30",
       "note": "фамилия + инициалы",
       "type": "PER"
      },
@@ -2045,7 +2100,7 @@
     {
      "e": {
       "cat": "canonical",
-      "id": "services_0007-e30",
+      "id": "services_0007-e31",
       "type": "PER"
      },
      "s": "Тарасов Пётр Алексеевич"
@@ -2062,7 +2117,7 @@
     {
      "e": {
       "cat": "canonical",
-      "id": "services_0007-e31",
+      "id": "services_0007-e32",
       "note": "стиль записи из BIRTHDATE_STYLES",
       "type": "BIRTHDATE"
      },
@@ -2080,7 +2135,7 @@
     {
      "e": {
       "cat": "ugly",
-      "id": "services_0007-e32",
+      "id": "services_0007-e33",
       "note": "стиль адреса: index_first",
       "type": "ADDRESS"
      },
@@ -2098,7 +2153,7 @@
     {
      "e": {
       "cat": "canonical",
-      "id": "services_0007-e33",
+      "id": "services_0007-e34",
       "note": "серия+номер, стиль записи из PASSPORT_STYLES",
       "type": "PASSPORT"
      },
@@ -2113,7 +2168,7 @@
     {
      "e": {
       "cat": "ugly",
-      "id": "services_0007-e34",
+      "id": "services_0007-e35",
       "note": "код подразделения, стиль записи из DEPTCODE_STYLES",
       "type": "PASSPORT"
      },
@@ -2132,7 +2187,7 @@
      "e": {
       "cat": "ugly",
       "checksum": "valid",
-      "id": "services_0007-e35",
+      "id": "services_0007-e36",
       "note": "стиль записи из SNILS_STYLES",
       "type": "SNILS"
      },
@@ -2145,7 +2200,7 @@
      "e": {
       "cat": "ugly",
       "checksum": "valid",
-      "id": "services_0007-e36",
+      "id": "services_0007-e37",
       "note": "ИНН физлица (12 знаков)",
       "type": "INN"
      },
@@ -2163,7 +2218,7 @@
     {
      "e": {
       "cat": "canonical",
-      "id": "services_0007-e37",
+      "id": "services_0007-e38",
       "note": "формат: canonical",
       "type": "PHONE"
      },
@@ -2181,7 +2236,7 @@
     {
      "e": {
       "cat": "canonical",
-      "id": "services_0007-e38",
+      "id": "services_0007-e39",
       "type": "EMAIL"
      },
      "s": "tarasov@corp-tehno.ru"
@@ -2203,7 +2258,7 @@
     {
      "e": {
       "cat": "ugly",
-      "id": "services_0007-e39",
+      "id": "services_0007-e40",
       "note": "фамилия + инициалы",
       "type": "PER"
      },
@@ -2240,7 +2295,7 @@
     {
      "e": {
       "cat": "ugly",
-      "id": "services_0007-e40",
+      "id": "services_0007-e41",
       "note": "подпись: фамилия+инициалы",
       "type": "PER"
      },
@@ -2261,7 +2316,7 @@
     {
      "e": {
       "cat": "ugly",
-      "id": "services_0007-e41",
+      "id": "services_0007-e42",
       "note": "подпись: фамилия+инициалы",
       "type": "PER"
      },

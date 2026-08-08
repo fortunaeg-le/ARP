@@ -1944,6 +1944,61 @@
   {
    "chunks": [
     {
+     "s": "6. ОСОБЫЕ УСЛОВИЯ ОТДЕЛЬНЫХ ВИДОВ ДАННЫХ"
+    }
+   ],
+   "style": "bold",
+   "t": "p"
+  },
+  {
+   "chunks": [
+    {
+     "s": "6.1. Полномочия представителя подтверждены доверенностью, реестровый номер "
+    },
+    {
+     "e": {
+      "cat": "canonical",
+      "id": "cession_0003-e24",
+      "note": "фабричный тип: пример из файла-описания владельца",
+      "type": "REG_NUMBER"
+     },
+     "s": "50/121-н/50-2023-4-88"
+    },
+    {
+     "s": "."
+    }
+   ],
+   "style": "normal",
+   "t": "p"
+  },
+  {
+   "chunks": [
+    {
+     "s": "6.2. Для сопоставления в учёте указывается: "
+    },
+    {
+     "n": {
+      "kind": "clause-chain",
+      "type": "REG_NUMBER",
+      "why": "короткие цепочки пунктов: меньше групп, нет «-н», нет года"
+     },
+     "s": "пп. 4/5-1 и 7/2-3 Правил страхования"
+    },
+    {
+     "s": "."
+    }
+   ],
+   "style": "normal",
+   "t": "p"
+  },
+  {
+   "chunks": [],
+   "style": "normal",
+   "t": "p"
+  },
+  {
+   "chunks": [
+    {
      "s": "РЕКВИЗИТЫ И ПОДПИСИ СТОРОН"
     }
    ],
@@ -1969,7 +2024,7 @@
     {
      "e": {
       "cat": "canonical",
-      "id": "cession_0003-e24",
+      "id": "cession_0003-e25",
       "type": "ORG"
      },
      "s": "ПАО «Заря»"
@@ -1986,7 +2041,7 @@
     {
      "e": {
       "cat": "ugly",
-      "id": "cession_0003-e25",
+      "id": "cession_0003-e26",
       "note": "стиль адреса: km",
       "type": "ADDRESS"
      },
@@ -2005,7 +2060,7 @@
      "e": {
       "cat": "ugly",
       "checksum": "valid",
-      "id": "cession_0003-e26",
+      "id": "cession_0003-e27",
       "note": "пробелы внутри номера",
       "type": "INN"
      },
@@ -2017,7 +2072,7 @@
     {
      "e": {
       "cat": "canonical",
-      "id": "cession_0003-e27",
+      "id": "cession_0003-e28",
       "type": "KPP"
      },
      "s": "402108765"
@@ -2035,7 +2090,7 @@
      "e": {
       "cat": "ugly",
       "checksum": "valid",
-      "id": "cession_0003-e28",
+      "id": "cession_0003-e29",
       "note": "пробелы внутри номера",
       "type": "OGRN"
      },
@@ -2054,7 +2109,7 @@
      "e": {
       "cat": "ugly",
       "checksum": "valid",
-      "id": "cession_0003-e29",
+      "id": "cession_0003-e30",
       "note": "пробелы внутри номера",
       "type": "ACCOUNT"
      },
@@ -2075,7 +2130,7 @@
     {
      "e": {
       "cat": "canonical",
-      "id": "cession_0003-e30",
+      "id": "cession_0003-e31",
       "note": "корреспондентский счёт банка",
       "type": "ACCOUNT"
      },
@@ -2087,7 +2142,7 @@
     {
      "e": {
       "cat": "canonical",
-      "id": "cession_0003-e31",
+      "id": "cession_0003-e32",
       "type": "BIK"
      },
      "s": "044030790"
@@ -2104,7 +2159,7 @@
     {
      "e": {
       "cat": "canonical",
-      "id": "cession_0003-e32",
+      "id": "cession_0003-e33",
       "note": "формат: canonical",
       "type": "PHONE"
      },
@@ -2122,7 +2177,7 @@
     {
      "e": {
       "cat": "canonical",
-      "id": "cession_0003-e33",
+      "id": "cession_0003-e34",
       "type": "EMAIL"
      },
      "s": "titova@bk.ru"
@@ -2144,7 +2199,7 @@
     {
      "e": {
       "cat": "ugly",
-      "id": "cession_0003-e34",
+      "id": "cession_0003-e35",
       "note": "инициалы перед фамилией",
       "type": "PER"
      },
@@ -2173,7 +2228,7 @@
     {
      "e": {
       "cat": "canonical",
-      "id": "cession_0003-e35",
+      "id": "cession_0003-e36",
       "type": "ORG"
      },
      "s": "ООО «Ромашка»"
@@ -2190,7 +2245,7 @@
     {
      "e": {
       "cat": "ugly",
-      "id": "cession_0003-e36",
+      "id": "cession_0003-e37",
       "note": "стиль адреса: km",
       "type": "ADDRESS"
      },
@@ -2209,7 +2264,7 @@
      "e": {
       "cat": "ugly",
       "checksum": "valid",
-      "id": "cession_0003-e37",
+      "id": "cession_0003-e38",
       "note": "пробелы внутри номера",
       "type": "INN"
      },
@@ -2221,7 +2276,7 @@
     {
      "e": {
       "cat": "canonical",
-      "id": "cession_0003-e38",
+      "id": "cession_0003-e39",
       "type": "KPP"
      },
      "s": "674492814"
@@ -2239,7 +2294,7 @@
      "e": {
       "cat": "ugly",
       "checksum": "valid",
-      "id": "cession_0003-e39",
+      "id": "cession_0003-e40",
       "note": "пробелы внутри номера",
       "type": "OGRN"
      },
@@ -2258,7 +2313,7 @@
      "e": {
       "cat": "ugly",
       "checksum": "valid",
-      "id": "cession_0003-e40",
+      "id": "cession_0003-e41",
       "note": "пробелы внутри номера",
       "type": "ACCOUNT"
      },
@@ -2279,7 +2334,7 @@
     {
      "e": {
       "cat": "canonical",
-      "id": "cession_0003-e41",
+      "id": "cession_0003-e42",
       "note": "корреспондентский счёт банка",
       "type": "ACCOUNT"
      },
@@ -2291,7 +2346,7 @@
     {
      "e": {
       "cat": "canonical",
-      "id": "cession_0003-e42",
+      "id": "cession_0003-e43",
       "type": "BIK"
      },
      "s": "044525187"
@@ -2308,7 +2363,7 @@
     {
      "e": {
       "cat": "canonical",
-      "id": "cession_0003-e43",
+      "id": "cession_0003-e44",
       "note": "формат: canonical",
       "type": "PHONE"
      },
@@ -2326,7 +2381,7 @@
     {
      "e": {
       "cat": "canonical",
-      "id": "cession_0003-e44",
+      "id": "cession_0003-e45",
       "type": "EMAIL"
      },
      "s": "mamedov@bk.ru"
@@ -2348,7 +2403,7 @@
     {
      "e": {
       "cat": "ugly",
-      "id": "cession_0003-e45",
+      "id": "cession_0003-e46",
       "note": "инициалы перед фамилией",
       "type": "PER"
      },
@@ -2385,7 +2440,7 @@
     {
      "e": {
       "cat": "ugly",
-      "id": "cession_0003-e46",
+      "id": "cession_0003-e47",
       "note": "подпись: фамилия+инициалы",
       "type": "PER"
      },
@@ -2406,7 +2461,7 @@
     {
      "e": {
       "cat": "ugly",
-      "id": "cession_0003-e47",
+      "id": "cession_0003-e48",
       "note": "подпись: фамилия+инициалы",
       "type": "PER"
      },

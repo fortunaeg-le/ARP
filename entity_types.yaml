@@ -569,8 +569,16 @@ entity_types:
     method: anchor_registry
     suppress_masking: true
 
+  # [собрано фабрикой из tests/corpus_v2/typedefs/REG_NUMBER.yaml — правки только там]
+  REG_NUMBER:
+    method: regex
+    pattern: '(?i)(?<![\d/])\d{1,3}\s?/\s?\d{1,5}-н\s?/\s?\d(?:[ ]?\d){6,14}(?![\d/])'
+    token_prefix: 'REGNUM'
+    sets: [personal_requisites, with_money]
+    measure: {leak_class: numeric}
+
 # Порядок арбитража пересечений (rule 3/rule 4 tokenizer._winner).
 # СОБРАН из базового порядка (до фабрики) и rank фабричных типов.
 arbitration_order:
-  regex: [BANK_ACCOUNT, OGRN, INN, INN_PERSON, BIK, SNILS, KPP, PASSPORT, PHONE, SUM, EMAIL, BIRTHDATE, DATE, PERCENT, TERM]
+  regex: [BANK_ACCOUNT, OGRN, INN, INN_PERSON, BIK, SNILS, KPP, PASSPORT, PHONE, REG_NUMBER, SUM, EMAIL, BIRTHDATE, DATE, PERCENT, TERM]
   ner: [ADDRESS, ORG, PERSON]

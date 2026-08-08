@@ -1952,6 +1952,61 @@
   {
    "chunks": [
     {
+     "s": "6. ОСОБЫЕ УСЛОВИЯ ОТДЕЛЬНЫХ ВИДОВ ДАННЫХ"
+    }
+   ],
+   "style": "bold",
+   "t": "p"
+  },
+  {
+   "chunks": [
+    {
+     "s": "6.1. Полномочия представителя подтверждены доверенностью, реестровый номер "
+    },
+    {
+     "e": {
+      "cat": "canonical",
+      "id": "agency_0004-e25",
+      "note": "фабричный тип: пример из файла-описания владельца",
+      "type": "REG_NUMBER"
+     },
+     "s": "77/714-н/77-2024-1-502"
+    },
+    {
+     "s": "."
+    }
+   ],
+   "style": "normal",
+   "t": "p"
+  },
+  {
+   "chunks": [
+    {
+     "s": "6.2. Для сопоставления в учёте указывается: "
+    },
+    {
+     "n": {
+      "kind": "date-slash",
+      "type": "REG_NUMBER",
+      "why": "диапазон месяцев: нет буквенной группы, две группы-даты"
+     },
+     "s": "срок действия 12/2024-06/2025"
+    },
+    {
+     "s": "."
+    }
+   ],
+   "style": "normal",
+   "t": "p"
+  },
+  {
+   "chunks": [],
+   "style": "normal",
+   "t": "p"
+  },
+  {
+   "chunks": [
+    {
      "s": "РЕКВИЗИТЫ И ПОДПИСИ СТОРОН"
     }
    ],
@@ -1985,7 +2040,7 @@
          {
           "e": {
            "cat": "canonical",
-           "id": "agency_0004-e25",
+           "id": "agency_0004-e26",
            "type": "PER"
           },
           "s": "Петрова Ольга Ивановна"
@@ -2002,7 +2057,7 @@
          {
           "e": {
            "cat": "ugly",
-           "id": "agency_0004-e26",
+           "id": "agency_0004-e27",
            "note": "стиль адреса: pobox",
            "type": "ADDRESS"
           },
@@ -2021,7 +2076,7 @@
           "e": {
            "cat": "canonical",
            "checksum": "invalid",
-           "id": "agency_0004-e27",
+           "id": "agency_0004-e28",
            "note": "12-значный ИНН",
            "type": "INN"
           },
@@ -2034,7 +2089,7 @@
           "e": {
            "cat": "ugly",
            "checksum": "invalid",
-           "id": "agency_0004-e28",
+           "id": "agency_0004-e29",
            "note": "ОГРНИП, 15 знаков",
            "type": "OGRN"
           },
@@ -2053,7 +2108,7 @@
           "e": {
            "cat": "canonical",
            "checksum": "invalid",
-           "id": "agency_0004-e29",
+           "id": "agency_0004-e30",
            "type": "ACCOUNT"
           },
           "s": "40802810192698952351"
@@ -2067,7 +2122,7 @@
          {
           "e": {
            "cat": "canonical",
-           "id": "agency_0004-e30",
+           "id": "agency_0004-e31",
            "type": "BIK"
           },
           "s": "044525974"
@@ -2084,7 +2139,7 @@
          {
           "e": {
            "cat": "ugly",
-           "id": "agency_0004-e31",
+           "id": "agency_0004-e32",
            "note": "формат: plain",
            "type": "PHONE"
           },
@@ -2102,7 +2157,7 @@
          {
           "e": {
            "cat": "canonical",
-           "id": "agency_0004-e32",
+           "id": "agency_0004-e33",
            "type": "EMAIL"
           },
           "s": "petrova@bk.ru"
@@ -2124,7 +2179,7 @@
          {
           "e": {
            "cat": "ugly",
-           "id": "agency_0004-e33",
+           "id": "agency_0004-e34",
            "note": "фамилия + инициалы",
            "type": "PER"
           },
@@ -2143,7 +2198,7 @@
           "bs": true,
           "e": {
            "cat": "adversarial",
-           "id": "agency_0004-e43",
+           "id": "agency_0004-e44",
            "note": "слово разорвано форматированием (половина букв жирная)",
            "trick": "bold_split_runs",
            "type": "PER"
@@ -2175,7 +2230,7 @@
          {
           "e": {
            "cat": "canonical",
-           "id": "agency_0004-e34",
+           "id": "agency_0004-e35",
            "type": "PER"
           },
           "s": "Соколова Ольга Михайловна"
@@ -2192,7 +2247,7 @@
          {
           "e": {
            "cat": "ugly",
-           "id": "agency_0004-e35",
+           "id": "agency_0004-e36",
            "note": "стиль адреса: pobox",
            "type": "ADDRESS"
           },
@@ -2211,7 +2266,7 @@
           "e": {
            "cat": "canonical",
            "checksum": "invalid",
-           "id": "agency_0004-e36",
+           "id": "agency_0004-e37",
            "note": "12-значный ИНН",
            "type": "INN"
           },
@@ -2224,7 +2279,7 @@
           "e": {
            "cat": "ugly",
            "checksum": "invalid",
-           "id": "agency_0004-e37",
+           "id": "agency_0004-e38",
            "note": "ОГРНИП, 15 знаков",
            "type": "OGRN"
           },
@@ -2243,7 +2298,7 @@
           "e": {
            "cat": "canonical",
            "checksum": "invalid",
-           "id": "agency_0004-e38",
+           "id": "agency_0004-e39",
            "type": "ACCOUNT"
           },
           "s": "40802810893016609168"
@@ -2257,7 +2312,7 @@
          {
           "e": {
            "cat": "canonical",
-           "id": "agency_0004-e39",
+           "id": "agency_0004-e40",
            "type": "BIK"
           },
           "s": "044525555"
@@ -2274,7 +2329,7 @@
          {
           "e": {
            "cat": "ugly",
-           "id": "agency_0004-e40",
+           "id": "agency_0004-e41",
            "note": "формат: tight8",
            "type": "PHONE"
           },
@@ -2292,7 +2347,7 @@
          {
           "e": {
            "cat": "canonical",
-           "id": "agency_0004-e41",
+           "id": "agency_0004-e42",
            "type": "EMAIL"
           },
           "s": "sokolova@gmail.com"
@@ -2314,7 +2369,7 @@
          {
           "e": {
            "cat": "ugly",
-           "id": "agency_0004-e42",
+           "id": "agency_0004-e43",
            "note": "фамилия + инициалы",
            "type": "PER"
           },
@@ -2352,7 +2407,7 @@
     {
      "e": {
       "cat": "ugly",
-      "id": "agency_0004-e46",
+      "id": "agency_0004-e47",
       "note": "подпись: фамилия+инициалы",
       "type": "PER"
      },
@@ -2373,7 +2428,7 @@
     {
      "e": {
       "cat": "ugly",
-      "id": "agency_0004-e47",
+      "id": "agency_0004-e48",
       "note": "подпись: фамилия+инициалы",
       "type": "PER"
      },
@@ -2407,7 +2462,7 @@
     {
      "e": {
       "cat": "adversarial",
-      "id": "agency_0004-e44",
+      "id": "agency_0004-e45",
       "note": "ФИО в нижнем колонтитуле",
       "trick": "in_footer",
       "type": "PER"
@@ -2420,7 +2475,7 @@
     {
      "e": {
       "cat": "adversarial",
-      "id": "agency_0004-e45",
+      "id": "agency_0004-e46",
       "note": "телефон в нижнем колонтитуле",
       "trick": "in_footer",
       "type": "PHONE"

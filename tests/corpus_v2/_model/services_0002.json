@@ -1954,6 +1954,61 @@
   {
    "chunks": [
     {
+     "s": "6. ОСОБЫЕ УСЛОВИЯ ОТДЕЛЬНЫХ ВИДОВ ДАННЫХ"
+    }
+   ],
+   "style": "bold",
+   "t": "p"
+  },
+  {
+   "chunks": [
+    {
+     "s": "6.1. Полномочия представителя подтверждены доверенностью, реестровый номер "
+    },
+    {
+     "e": {
+      "cat": "canonical",
+      "id": "services_0002-e25",
+      "note": "фабричный тип: пример из файла-описания владельца",
+      "type": "REG_NUMBER"
+     },
+     "s": "23/5-н/23-2025-2-1104"
+    },
+    {
+     "s": "."
+    }
+   ],
+   "style": "normal",
+   "t": "p"
+  },
+  {
+   "chunks": [
+    {
+     "s": "6.2. Для сопоставления в учёте указывается: "
+    },
+    {
+     "n": {
+      "kind": "gost-ref",
+      "type": "REG_NUMBER",
+      "why": "ссылка на стандарт — не реестровый номер"
+     },
+     "s": "ГОСТ Р 52044-2003"
+    },
+    {
+     "s": "."
+    }
+   ],
+   "style": "normal",
+   "t": "p"
+  },
+  {
+   "chunks": [],
+   "style": "normal",
+   "t": "p"
+  },
+  {
+   "chunks": [
+    {
      "s": "РЕКВИЗИТЫ И ПОДПИСИ СТОРОН"
     }
    ],
@@ -1984,7 +2039,7 @@
          {
           "e": {
            "cat": "canonical",
-           "id": "services_0002-e25",
+           "id": "services_0002-e26",
            "type": "PER"
           },
           "s": "Ершова Ольга Егоровна"
@@ -2001,7 +2056,7 @@
          {
           "e": {
            "cat": "canonical",
-           "id": "services_0002-e26",
+           "id": "services_0002-e27",
            "note": "стиль записи из BIRTHDATE_STYLES",
            "type": "BIRTHDATE"
           },
@@ -2019,7 +2074,7 @@
          {
           "e": {
            "cat": "canonical",
-           "id": "services_0002-e27",
+           "id": "services_0002-e28",
            "note": "стиль адреса: canonical",
            "type": "ADDRESS"
           },
@@ -2037,7 +2092,7 @@
          {
           "e": {
            "cat": "canonical",
-           "id": "services_0002-e28",
+           "id": "services_0002-e29",
            "note": "серия+номер, стиль записи из PASSPORT_STYLES",
            "type": "PASSPORT"
           },
@@ -2052,7 +2107,7 @@
          {
           "e": {
            "cat": "ugly",
-           "id": "services_0002-e29",
+           "id": "services_0002-e30",
            "note": "код подразделения, стиль записи из DEPTCODE_STYLES",
            "type": "PASSPORT"
           },
@@ -2071,7 +2126,7 @@
           "e": {
            "cat": "canonical",
            "checksum": "valid",
-           "id": "services_0002-e30",
+           "id": "services_0002-e31",
            "note": "стиль записи из SNILS_STYLES",
            "type": "SNILS"
           },
@@ -2084,7 +2139,7 @@
           "e": {
            "cat": "ugly",
            "checksum": "valid",
-           "id": "services_0002-e31",
+           "id": "services_0002-e32",
            "note": "ИНН физлица (12 знаков)",
            "type": "INN"
           },
@@ -2102,7 +2157,7 @@
          {
           "e": {
            "cat": "canonical",
-           "id": "services_0002-e32",
+           "id": "services_0002-e33",
            "note": "формат: canonical",
            "type": "PHONE"
           },
@@ -2120,7 +2175,7 @@
          {
           "e": {
            "cat": "canonical",
-           "id": "services_0002-e33",
+           "id": "services_0002-e34",
            "type": "EMAIL"
           },
           "s": "ershova@sibtrans.ru"
@@ -2142,7 +2197,7 @@
          {
           "e": {
            "cat": "ugly",
-           "id": "services_0002-e34",
+           "id": "services_0002-e35",
            "note": "фамилия + инициалы",
            "type": "PER"
           },
@@ -2170,7 +2225,7 @@
          {
           "e": {
            "cat": "canonical",
-           "id": "services_0002-e35",
+           "id": "services_0002-e36",
            "type": "PER"
           },
           "s": "Морозова Вера Ивановна"
@@ -2187,7 +2242,7 @@
          {
           "e": {
            "cat": "canonical",
-           "id": "services_0002-e36",
+           "id": "services_0002-e37",
            "note": "стиль записи из BIRTHDATE_STYLES",
            "type": "BIRTHDATE"
           },
@@ -2205,7 +2260,7 @@
          {
           "e": {
            "cat": "canonical",
-           "id": "services_0002-e37",
+           "id": "services_0002-e38",
            "note": "стиль адреса: canonical",
            "type": "ADDRESS"
           },
@@ -2223,7 +2278,7 @@
          {
           "e": {
            "cat": "canonical",
-           "id": "services_0002-e38",
+           "id": "services_0002-e39",
            "note": "серия+номер, стиль записи из PASSPORT_STYLES",
            "type": "PASSPORT"
           },
@@ -2238,7 +2293,7 @@
          {
           "e": {
            "cat": "ugly",
-           "id": "services_0002-e39",
+           "id": "services_0002-e40",
            "note": "код подразделения, стиль записи из DEPTCODE_STYLES",
            "type": "PASSPORT"
           },
@@ -2257,7 +2312,7 @@
           "e": {
            "cat": "canonical",
            "checksum": "valid",
-           "id": "services_0002-e40",
+           "id": "services_0002-e41",
            "note": "стиль записи из SNILS_STYLES",
            "type": "SNILS"
           },
@@ -2270,7 +2325,7 @@
           "e": {
            "cat": "ugly",
            "checksum": "valid",
-           "id": "services_0002-e41",
+           "id": "services_0002-e42",
            "note": "ИНН физлица (12 знаков)",
            "type": "INN"
           },
@@ -2288,7 +2343,7 @@
          {
           "e": {
            "cat": "canonical",
-           "id": "services_0002-e42",
+           "id": "services_0002-e43",
            "note": "формат: canonical",
            "type": "PHONE"
           },
@@ -2306,7 +2361,7 @@
          {
           "e": {
            "cat": "canonical",
-           "id": "services_0002-e43",
+           "id": "services_0002-e44",
            "type": "EMAIL"
           },
           "s": "morozova@corp-tehno.ru"
@@ -2328,7 +2383,7 @@
          {
           "e": {
            "cat": "ugly",
-           "id": "services_0002-e44",
+           "id": "services_0002-e45",
            "note": "фамилия + инициалы",
            "type": "PER"
           },
@@ -2366,7 +2421,7 @@
     {
      "e": {
       "cat": "ugly",
-      "id": "services_0002-e45",
+      "id": "services_0002-e46",
       "note": "подпись: фамилия+инициалы",
       "type": "PER"
      },
@@ -2387,7 +2442,7 @@
     {
      "e": {
       "cat": "ugly",
-      "id": "services_0002-e46",
+      "id": "services_0002-e47",
       "note": "подпись: фамилия+инициалы",
       "type": "PER"
      },

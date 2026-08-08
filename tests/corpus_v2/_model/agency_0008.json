@@ -2046,6 +2046,61 @@
   {
    "chunks": [
     {
+     "s": "6. ОСОБЫЕ УСЛОВИЯ ОТДЕЛЬНЫХ ВИДОВ ДАННЫХ"
+    }
+   ],
+   "style": "bold",
+   "t": "p"
+  },
+  {
+   "chunks": [
+    {
+     "s": "6.1. Полномочия представителя подтверждены доверенностью, реестровый номер "
+    },
+    {
+     "e": {
+      "cat": "canonical",
+      "id": "agency_0008-e29",
+      "note": "фабричный тип: пример из файла-описания владельца",
+      "type": "REG_NUMBER"
+     },
+     "s": "16/89-н/16-2024-3-215"
+    },
+    {
+     "s": "."
+    }
+   ],
+   "style": "normal",
+   "t": "p"
+  },
+  {
+   "chunks": [
+    {
+     "s": "6.2. Для сопоставления в учёте указывается: "
+    },
+    {
+     "n": {
+      "kind": "date-slash",
+      "type": "REG_NUMBER",
+      "why": "диапазон месяцев: нет буквенной группы, две группы-даты"
+     },
+     "s": "срок действия 12/2024-06/2025"
+    },
+    {
+     "s": "."
+    }
+   ],
+   "style": "normal",
+   "t": "p"
+  },
+  {
+   "chunks": [],
+   "style": "normal",
+   "t": "p"
+  },
+  {
+   "chunks": [
+    {
      "s": "РЕКВИЗИТЫ И ПОДПИСИ СТОРОН"
     }
    ],
@@ -2076,7 +2131,7 @@
          {
           "e": {
            "cat": "ugly",
-           "id": "agency_0008-e29",
+           "id": "agency_0008-e30",
            "note": "ФИО внутри названия организации",
            "type": "ORG"
           },
@@ -2094,7 +2149,7 @@
          {
           "e": {
            "cat": "ugly",
-           "id": "agency_0008-e30",
+           "id": "agency_0008-e31",
            "note": "стиль адреса: city_middle",
            "type": "ADDRESS"
           },
@@ -2113,7 +2168,7 @@
           "e": {
            "cat": "ugly",
            "checksum": "valid",
-           "id": "agency_0008-e31",
+           "id": "agency_0008-e32",
            "note": "пробелы внутри номера",
            "type": "INN"
           },
@@ -2125,7 +2180,7 @@
          {
           "e": {
            "cat": "canonical",
-           "id": "agency_0008-e32",
+           "id": "agency_0008-e33",
            "type": "KPP"
           },
           "s": "327546253"
@@ -2143,7 +2198,7 @@
           "e": {
            "cat": "ugly",
            "checksum": "valid",
-           "id": "agency_0008-e33",
+           "id": "agency_0008-e34",
            "note": "пробелы внутри номера",
            "type": "OGRN"
           },
@@ -2162,7 +2217,7 @@
           "e": {
            "cat": "ugly",
            "checksum": "valid",
-           "id": "agency_0008-e34",
+           "id": "agency_0008-e35",
            "note": "пробелы внутри номера",
            "type": "ACCOUNT"
           },
@@ -2183,7 +2238,7 @@
          {
           "e": {
            "cat": "canonical",
-           "id": "agency_0008-e35",
+           "id": "agency_0008-e36",
            "note": "корреспондентский счёт банка",
            "type": "ACCOUNT"
           },
@@ -2195,7 +2250,7 @@
          {
           "e": {
            "cat": "canonical",
-           "id": "agency_0008-e36",
+           "id": "agency_0008-e37",
            "type": "BIK"
           },
           "s": "044525225"
@@ -2212,7 +2267,7 @@
          {
           "e": {
            "cat": "canonical",
-           "id": "agency_0008-e37",
+           "id": "agency_0008-e38",
            "note": "формат: canonical",
            "type": "PHONE"
           },
@@ -2230,7 +2285,7 @@
          {
           "e": {
            "cat": "canonical",
-           "id": "agency_0008-e38",
+           "id": "agency_0008-e39",
            "type": "EMAIL"
           },
           "s": "mihaylov@corp-tehno.ru"
@@ -2252,7 +2307,7 @@
          {
           "e": {
            "cat": "ugly",
-           "id": "agency_0008-e39",
+           "id": "agency_0008-e40",
            "note": "инициалы перед фамилией",
            "type": "PER"
           },
@@ -2283,7 +2338,7 @@
          {
           "e": {
            "cat": "canonical",
-           "id": "agency_0008-e40",
+           "id": "agency_0008-e41",
            "type": "PER"
           },
           "s": "Новиков Роман Дмитриевич"
@@ -2300,7 +2355,7 @@
          {
           "e": {
            "cat": "ugly",
-           "id": "agency_0008-e41",
+           "id": "agency_0008-e42",
            "note": "стиль адреса: city_middle",
            "type": "ADDRESS"
           },
@@ -2319,7 +2374,7 @@
           "e": {
            "cat": "canonical",
            "checksum": "valid",
-           "id": "agency_0008-e42",
+           "id": "agency_0008-e43",
            "note": "12-значный ИНН",
            "type": "INN"
           },
@@ -2332,7 +2387,7 @@
           "e": {
            "cat": "ugly",
            "checksum": "valid",
-           "id": "agency_0008-e43",
+           "id": "agency_0008-e44",
            "note": "ОГРНИП, 15 знаков",
            "type": "OGRN"
           },
@@ -2351,7 +2406,7 @@
           "e": {
            "cat": "canonical",
            "checksum": "valid",
-           "id": "agency_0008-e44",
+           "id": "agency_0008-e45",
            "type": "ACCOUNT"
           },
           "s": "40802810606531284747"
@@ -2365,7 +2420,7 @@
          {
           "e": {
            "cat": "canonical",
-           "id": "agency_0008-e45",
+           "id": "agency_0008-e46",
            "type": "BIK"
           },
           "s": "044525974"
@@ -2382,7 +2437,7 @@
          {
           "e": {
            "cat": "canonical",
-           "id": "agency_0008-e46",
+           "id": "agency_0008-e47",
            "note": "формат: canonical",
            "type": "PHONE"
           },
@@ -2400,7 +2455,7 @@
          {
           "e": {
            "cat": "canonical",
-           "id": "agency_0008-e47",
+           "id": "agency_0008-e48",
            "type": "EMAIL"
           },
           "s": "novikov@sibtrans.ru"
@@ -2422,7 +2477,7 @@
          {
           "e": {
            "cat": "ugly",
-           "id": "agency_0008-e48",
+           "id": "agency_0008-e49",
            "note": "фамилия + инициалы",
            "type": "PER"
           },
@@ -2446,7 +2501,7 @@
     {
      "e": {
       "cat": "adversarial",
-      "id": "agency_0008-e49",
+      "id": "agency_0008-e50",
       "note": "ФИО в текстбоксе/надписи",
       "trick": "in_textbox",
       "type": "PER"
@@ -2459,7 +2514,7 @@
     {
      "e": {
       "cat": "adversarial",
-      "id": "agency_0008-e50",
+      "id": "agency_0008-e51",
       "note": "телефон в текстбоксе",
       "trick": "in_textbox",
       "type": "PHONE"
@@ -2491,7 +2546,7 @@
     {
      "e": {
       "cat": "ugly",
-      "id": "agency_0008-e51",
+      "id": "agency_0008-e52",
       "note": "подпись: фамилия+инициалы",
       "type": "PER"
      },
@@ -2512,7 +2567,7 @@
     {
      "e": {
       "cat": "ugly",
-      "id": "agency_0008-e52",
+      "id": "agency_0008-e53",
       "note": "подпись: фамилия+инициалы",
       "type": "PER"
      },

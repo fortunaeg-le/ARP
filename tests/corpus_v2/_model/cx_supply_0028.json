@@ -1968,6 +1968,61 @@
   {
    "chunks": [
     {
+     "s": "6. ОСОБЫЕ УСЛОВИЯ ОТДЕЛЬНЫХ ВИДОВ ДАННЫХ"
+    }
+   ],
+   "style": "bold",
+   "t": "p"
+  },
+  {
+   "chunks": [
+    {
+     "s": "6.1. Полномочия представителя подтверждены доверенностью, реестровый номер "
+    },
+    {
+     "e": {
+      "cat": "canonical",
+      "id": "cx_supply_0028-e24",
+      "note": "фабричный тип: пример из файла-описания владельца",
+      "type": "REG_NUMBER"
+     },
+     "s": "23/5-н/23-2025-2-1104"
+    },
+    {
+     "s": "."
+    }
+   ],
+   "style": "normal",
+   "t": "p"
+  },
+  {
+   "chunks": [
+    {
+     "s": "6.2. Для сопоставления в учёте указывается: "
+    },
+    {
+     "n": {
+      "kind": "date-slash",
+      "type": "REG_NUMBER",
+      "why": "диапазон месяцев: нет буквенной группы, две группы-даты"
+     },
+     "s": "срок действия 12/2024-06/2025"
+    },
+    {
+     "s": "."
+    }
+   ],
+   "style": "normal",
+   "t": "p"
+  },
+  {
+   "chunks": [],
+   "style": "normal",
+   "t": "p"
+  },
+  {
+   "chunks": [
+    {
      "s": "РЕКВИЗИТЫ И ПОДПИСИ СТОРОН"
     }
    ],
@@ -1998,7 +2053,7 @@
          {
           "e": {
            "cat": "canonical",
-           "id": "cx_supply_0028-e24",
+           "id": "cx_supply_0028-e25",
            "type": "ORG"
           },
           "s": "ООО «ТехноПром»"
@@ -2015,7 +2070,7 @@
          {
           "e": {
            "cat": "canonical",
-           "id": "cx_supply_0028-e25",
+           "id": "cx_supply_0028-e26",
            "note": "стиль адреса: canonical",
            "type": "ADDRESS"
           },
@@ -2034,7 +2089,7 @@
           "e": {
            "cat": "canonical",
            "checksum": "valid",
-           "id": "cx_supply_0028-e26",
+           "id": "cx_supply_0028-e27",
            "type": "INN"
           },
           "s": "6808809940"
@@ -2045,7 +2100,7 @@
          {
           "e": {
            "cat": "canonical",
-           "id": "cx_supply_0028-e27",
+           "id": "cx_supply_0028-e28",
            "type": "KPP"
           },
           "s": "694895282"
@@ -2063,7 +2118,7 @@
           "e": {
            "cat": "canonical",
            "checksum": "valid",
-           "id": "cx_supply_0028-e28",
+           "id": "cx_supply_0028-e29",
            "type": "OGRN"
           },
           "s": "1706191918497"
@@ -2081,7 +2136,7 @@
           "e": {
            "cat": "canonical",
            "checksum": "valid",
-           "id": "cx_supply_0028-e29",
+           "id": "cx_supply_0028-e30",
            "type": "ACCOUNT"
           },
           "s": "40702810294078567367"
@@ -2101,7 +2156,7 @@
          {
           "e": {
            "cat": "canonical",
-           "id": "cx_supply_0028-e30",
+           "id": "cx_supply_0028-e31",
            "note": "корреспондентский счёт банка",
            "type": "ACCOUNT"
           },
@@ -2113,7 +2168,7 @@
          {
           "e": {
            "cat": "canonical",
-           "id": "cx_supply_0028-e31",
+           "id": "cx_supply_0028-e32",
            "type": "BIK"
           },
           "s": "044525187"
@@ -2130,7 +2185,7 @@
          {
           "e": {
            "cat": "canonical",
-           "id": "cx_supply_0028-e32",
+           "id": "cx_supply_0028-e33",
            "note": "формат: canonical",
            "type": "PHONE"
           },
@@ -2148,7 +2203,7 @@
          {
           "e": {
            "cat": "canonical",
-           "id": "cx_supply_0028-e33",
+           "id": "cx_supply_0028-e34",
            "type": "EMAIL"
           },
           "s": "lebedeva@yandex.ru"
@@ -2170,7 +2225,7 @@
          {
           "e": {
            "cat": "ugly",
-           "id": "cx_supply_0028-e34",
+           "id": "cx_supply_0028-e35",
            "note": "инициалы перед фамилией",
            "type": "PER"
           },
@@ -2198,7 +2253,7 @@
          {
           "e": {
            "cat": "canonical",
-           "id": "cx_supply_0028-e35",
+           "id": "cx_supply_0028-e36",
            "type": "PER"
           },
           "s": "Орлов Сергей Павлович"
@@ -2215,7 +2270,7 @@
          {
           "e": {
            "cat": "canonical",
-           "id": "cx_supply_0028-e36",
+           "id": "cx_supply_0028-e37",
            "note": "стиль записи из BIRTHDATE_STYLES",
            "type": "BIRTHDATE"
           },
@@ -2233,7 +2288,7 @@
          {
           "e": {
            "cat": "canonical",
-           "id": "cx_supply_0028-e37",
+           "id": "cx_supply_0028-e38",
            "note": "стиль адреса: canonical",
            "type": "ADDRESS"
           },
@@ -2251,7 +2306,7 @@
          {
           "e": {
            "cat": "canonical",
-           "id": "cx_supply_0028-e38",
+           "id": "cx_supply_0028-e39",
            "note": "серия+номер, стиль записи из PASSPORT_STYLES",
            "type": "PASSPORT"
           },
@@ -2266,7 +2321,7 @@
          {
           "e": {
            "cat": "ugly",
-           "id": "cx_supply_0028-e39",
+           "id": "cx_supply_0028-e40",
            "note": "код подразделения, стиль записи из DEPTCODE_STYLES",
            "type": "PASSPORT"
           },
@@ -2285,7 +2340,7 @@
           "e": {
            "cat": "canonical",
            "checksum": "valid",
-           "id": "cx_supply_0028-e40",
+           "id": "cx_supply_0028-e41",
            "note": "стиль записи из SNILS_STYLES",
            "type": "SNILS"
           },
@@ -2298,7 +2353,7 @@
           "e": {
            "cat": "ugly",
            "checksum": "valid",
-           "id": "cx_supply_0028-e41",
+           "id": "cx_supply_0028-e42",
            "note": "ИНН физлица (12 знаков)",
            "type": "INN"
           },
@@ -2316,7 +2371,7 @@
          {
           "e": {
            "cat": "canonical",
-           "id": "cx_supply_0028-e42",
+           "id": "cx_supply_0028-e43",
            "note": "формат: canonical",
            "type": "PHONE"
           },
@@ -2334,7 +2389,7 @@
          {
           "e": {
            "cat": "canonical",
-           "id": "cx_supply_0028-e43",
+           "id": "cx_supply_0028-e44",
            "type": "EMAIL"
           },
           "s": "orlov@yandex.ru"
@@ -2356,7 +2411,7 @@
          {
           "e": {
            "cat": "ugly",
-           "id": "cx_supply_0028-e44",
+           "id": "cx_supply_0028-e45",
            "note": "фамилия + инициалы",
            "type": "PER"
           },
@@ -2394,7 +2449,7 @@
     {
      "e": {
       "cat": "ugly",
-      "id": "cx_supply_0028-e49",
+      "id": "cx_supply_0028-e50",
       "note": "подпись: фамилия+инициалы",
       "type": "PER"
      },
@@ -2415,7 +2470,7 @@
     {
      "e": {
       "cat": "ugly",
-      "id": "cx_supply_0028-e50",
+      "id": "cx_supply_0028-e51",
       "note": "подпись: фамилия+инициалы",
       "type": "PER"
      },
@@ -2444,7 +2499,7 @@
     {
      "e": {
       "cat": "adversarial",
-      "id": "cx_supply_0028-e47",
+      "id": "cx_supply_0028-e48",
       "note": "ФИО в нижнем колонтитуле",
       "trick": "in_footer",
       "type": "PER"
@@ -2457,7 +2512,7 @@
     {
      "e": {
       "cat": "adversarial",
-      "id": "cx_supply_0028-e48",
+      "id": "cx_supply_0028-e49",
       "note": "телефон в нижнем колонтитуле",
       "trick": "in_footer",
       "type": "PHONE"
@@ -2479,7 +2534,7 @@
     {
      "e": {
       "cat": "adversarial",
-      "id": "cx_supply_0028-e45",
+      "id": "cx_supply_0028-e46",
       "note": "телефон в колонтитуле (верхнем)",
       "trick": "in_header",
       "type": "PHONE"
@@ -2492,7 +2547,7 @@
     {
      "e": {
       "cat": "adversarial",
-      "id": "cx_supply_0028-e46",
+      "id": "cx_supply_0028-e47",
       "note": "e-mail в колонтитуле",
       "trick": "in_header",
       "type": "EMAIL"

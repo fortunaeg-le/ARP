@@ -1989,6 +1989,61 @@
   {
    "chunks": [
     {
+     "s": "6. ОСОБЫЕ УСЛОВИЯ ОТДЕЛЬНЫХ ВИДОВ ДАННЫХ"
+    }
+   ],
+   "style": "bold",
+   "t": "p"
+  },
+  {
+   "chunks": [
+    {
+     "s": "6.1. Полномочия представителя подтверждены доверенностью, реестровый номер "
+    },
+    {
+     "e": {
+      "cat": "canonical",
+      "id": "cx_cession_0006-e23",
+      "note": "фабричный тип: пример из файла-описания владельца",
+      "type": "REG_NUMBER"
+     },
+     "s": "77/714-н/77-2024-1-502"
+    },
+    {
+     "s": "."
+    }
+   ],
+   "style": "normal",
+   "t": "p"
+  },
+  {
+   "chunks": [
+    {
+     "s": "6.2. Для сопоставления в учёте указывается: "
+    },
+    {
+     "n": {
+      "kind": "gost-ref",
+      "type": "REG_NUMBER",
+      "why": "ссылка на стандарт — не реестровый номер"
+     },
+     "s": "ГОСТ Р 52044-2003"
+    },
+    {
+     "s": "."
+    }
+   ],
+   "style": "normal",
+   "t": "p"
+  },
+  {
+   "chunks": [],
+   "style": "normal",
+   "t": "p"
+  },
+  {
+   "chunks": [
+    {
      "s": "РЕКВИЗИТЫ И ПОДПИСИ СТОРОН"
     }
    ],
@@ -2019,7 +2074,7 @@
          {
           "e": {
            "cat": "canonical",
-           "id": "cx_cession_0006-e23",
+           "id": "cx_cession_0006-e24",
            "type": "ORG"
           },
           "s": "ПАО «ПромСнаб»"
@@ -2036,7 +2091,7 @@
          {
           "e": {
            "cat": "canonical",
-           "id": "cx_cession_0006-e24",
+           "id": "cx_cession_0006-e25",
            "note": "стиль адреса: canonical",
            "type": "ADDRESS"
           },
@@ -2055,7 +2110,7 @@
           "e": {
            "cat": "canonical",
            "checksum": "valid",
-           "id": "cx_cession_0006-e25",
+           "id": "cx_cession_0006-e26",
            "type": "INN"
           },
           "s": "2719553093"
@@ -2066,7 +2121,7 @@
          {
           "e": {
            "cat": "canonical",
-           "id": "cx_cession_0006-e26",
+           "id": "cx_cession_0006-e27",
            "type": "KPP"
           },
           "s": "172239792"
@@ -2084,7 +2139,7 @@
           "e": {
            "cat": "canonical",
            "checksum": "valid",
-           "id": "cx_cession_0006-e27",
+           "id": "cx_cession_0006-e28",
            "type": "OGRN"
           },
           "s": "1057143141736"
@@ -2102,7 +2157,7 @@
           "e": {
            "cat": "canonical",
            "checksum": "valid",
-           "id": "cx_cession_0006-e28",
+           "id": "cx_cession_0006-e29",
            "type": "ACCOUNT"
           },
           "s": "40702810896580444697"
@@ -2122,7 +2177,7 @@
          {
           "e": {
            "cat": "canonical",
-           "id": "cx_cession_0006-e29",
+           "id": "cx_cession_0006-e30",
            "note": "корреспондентский счёт банка",
            "type": "ACCOUNT"
           },
@@ -2134,7 +2189,7 @@
          {
           "e": {
            "cat": "canonical",
-           "id": "cx_cession_0006-e30",
+           "id": "cx_cession_0006-e31",
            "type": "BIK"
           },
           "s": "044525974"
@@ -2151,7 +2206,7 @@
          {
           "e": {
            "cat": "canonical",
-           "id": "cx_cession_0006-e31",
+           "id": "cx_cession_0006-e32",
            "note": "формат: canonical",
            "type": "PHONE"
           },
@@ -2169,7 +2224,7 @@
          {
           "e": {
            "cat": "canonical",
-           "id": "cx_cession_0006-e32",
+           "id": "cx_cession_0006-e33",
            "type": "EMAIL"
           },
           "s": "morozova@list.ru"
@@ -2191,7 +2246,7 @@
          {
           "e": {
            "cat": "ugly",
-           "id": "cx_cession_0006-e33",
+           "id": "cx_cession_0006-e34",
            "note": "инициалы перед фамилией",
            "type": "PER"
           },
@@ -2219,7 +2274,7 @@
          {
           "e": {
            "cat": "canonical",
-           "id": "cx_cession_0006-e34",
+           "id": "cx_cession_0006-e35",
            "type": "ORG"
           },
           "s": "АО «Аквилон»"
@@ -2236,7 +2291,7 @@
          {
           "e": {
            "cat": "canonical",
-           "id": "cx_cession_0006-e35",
+           "id": "cx_cession_0006-e36",
            "note": "стиль адреса: canonical",
            "type": "ADDRESS"
           },
@@ -2255,7 +2310,7 @@
           "e": {
            "cat": "canonical",
            "checksum": "valid",
-           "id": "cx_cession_0006-e36",
+           "id": "cx_cession_0006-e37",
            "type": "INN"
           },
           "s": "4859397828"
@@ -2266,7 +2321,7 @@
          {
           "e": {
            "cat": "canonical",
-           "id": "cx_cession_0006-e37",
+           "id": "cx_cession_0006-e38",
            "type": "KPP"
           },
           "s": "156268009"
@@ -2284,7 +2339,7 @@
           "e": {
            "cat": "canonical",
            "checksum": "valid",
-           "id": "cx_cession_0006-e38",
+           "id": "cx_cession_0006-e39",
            "type": "OGRN"
           },
           "s": "1700327137730"
@@ -2302,7 +2357,7 @@
           "e": {
            "cat": "canonical",
            "checksum": "valid",
-           "id": "cx_cession_0006-e39",
+           "id": "cx_cession_0006-e40",
            "type": "ACCOUNT"
           },
           "s": "40702810352324675780"
@@ -2322,7 +2377,7 @@
          {
           "e": {
            "cat": "canonical",
-           "id": "cx_cession_0006-e40",
+           "id": "cx_cession_0006-e41",
            "note": "корреспондентский счёт банка",
            "type": "ACCOUNT"
           },
@@ -2334,7 +2389,7 @@
          {
           "e": {
            "cat": "canonical",
-           "id": "cx_cession_0006-e41",
+           "id": "cx_cession_0006-e42",
            "type": "BIK"
           },
           "s": "044525187"
@@ -2351,7 +2406,7 @@
          {
           "e": {
            "cat": "canonical",
-           "id": "cx_cession_0006-e42",
+           "id": "cx_cession_0006-e43",
            "note": "формат: canonical",
            "type": "PHONE"
           },
@@ -2369,7 +2424,7 @@
          {
           "e": {
            "cat": "canonical",
-           "id": "cx_cession_0006-e43",
+           "id": "cx_cession_0006-e44",
            "type": "EMAIL"
           },
           "s": "zaycev@list.ru"
@@ -2391,7 +2446,7 @@
          {
           "e": {
            "cat": "ugly",
-           "id": "cx_cession_0006-e44",
+           "id": "cx_cession_0006-e45",
            "note": "инициалы перед фамилией",
            "type": "PER"
           },
@@ -2429,7 +2484,7 @@
     {
      "e": {
       "cat": "ugly",
-      "id": "cx_cession_0006-e45",
+      "id": "cx_cession_0006-e46",
       "note": "подпись: фамилия+инициалы",
       "type": "PER"
      },
@@ -2450,7 +2505,7 @@
     {
      "e": {
       "cat": "ugly",
-      "id": "cx_cession_0006-e46",
+      "id": "cx_cession_0006-e47",
       "note": "подпись: фамилия+инициалы",
       "type": "PER"
      },

@@ -2028,6 +2028,61 @@
   {
    "chunks": [
     {
+     "s": "6. ОСОБЫЕ УСЛОВИЯ ОТДЕЛЬНЫХ ВИДОВ ДАННЫХ"
+    }
+   ],
+   "style": "bold",
+   "t": "p"
+  },
+  {
+   "chunks": [
+    {
+     "s": "6.1. Полномочия представителя подтверждены доверенностью, реестровый номер "
+    },
+    {
+     "e": {
+      "cat": "canonical",
+      "id": "cession_0008-e25",
+      "note": "фабричный тип: пример из файла-описания владельца",
+      "type": "REG_NUMBER"
+     },
+     "s": "50/121-н/50-2023-4-88"
+    },
+    {
+     "s": "."
+    }
+   ],
+   "style": "normal",
+   "t": "p"
+  },
+  {
+   "chunks": [
+    {
+     "s": "6.2. Для сопоставления в учёте указывается: "
+    },
+    {
+     "n": {
+      "kind": "date-slash",
+      "type": "REG_NUMBER",
+      "why": "диапазон месяцев: нет буквенной группы, две группы-даты"
+     },
+     "s": "срок действия 12/2024-06/2025"
+    },
+    {
+     "s": "."
+    }
+   ],
+   "style": "normal",
+   "t": "p"
+  },
+  {
+   "chunks": [],
+   "style": "normal",
+   "t": "p"
+  },
+  {
+   "chunks": [
+    {
      "s": "РЕКВИЗИТЫ И ПОДПИСИ СТОРОН"
     }
    ],
@@ -2058,7 +2113,7 @@
          {
           "e": {
            "cat": "adversarial",
-           "id": "cession_0008-e45",
+           "id": "cession_0008-e46",
            "note": "голая строка ПДн в ячейке, без предложения вокруг",
            "trick": "bare_cell_no_sentence",
            "type": "PER"
@@ -2074,7 +2129,7 @@
          {
           "e": {
            "cat": "canonical",
-           "id": "cession_0008-e25",
+           "id": "cession_0008-e26",
            "type": "PER"
           },
           "s": "Виноградов Артём Михайлович"
@@ -2091,7 +2146,7 @@
          {
           "e": {
            "cat": "canonical",
-           "id": "cession_0008-e26",
+           "id": "cession_0008-e27",
            "note": "стиль записи из BIRTHDATE_STYLES",
            "type": "BIRTHDATE"
           },
@@ -2109,7 +2164,7 @@
          {
           "e": {
            "cat": "ugly",
-           "id": "cession_0008-e27",
+           "id": "cession_0008-e28",
            "note": "стиль адреса: no_marker",
            "type": "ADDRESS"
           },
@@ -2127,7 +2182,7 @@
          {
           "e": {
            "cat": "canonical",
-           "id": "cession_0008-e28",
+           "id": "cession_0008-e29",
            "note": "серия+номер, стиль записи из PASSPORT_STYLES",
            "type": "PASSPORT"
           },
@@ -2142,7 +2197,7 @@
          {
           "e": {
            "cat": "ugly",
-           "id": "cession_0008-e29",
+           "id": "cession_0008-e30",
            "note": "код подразделения, стиль записи из DEPTCODE_STYLES",
            "type": "PASSPORT"
           },
@@ -2161,7 +2216,7 @@
           "e": {
            "cat": "canonical",
            "checksum": "valid",
-           "id": "cession_0008-e30",
+           "id": "cession_0008-e31",
            "note": "стиль записи из SNILS_STYLES",
            "type": "SNILS"
           },
@@ -2174,7 +2229,7 @@
           "e": {
            "cat": "ugly",
            "checksum": "valid",
-           "id": "cession_0008-e31",
+           "id": "cession_0008-e32",
            "note": "ИНН физлица (12 знаков)",
            "type": "INN"
           },
@@ -2192,7 +2247,7 @@
          {
           "e": {
            "cat": "canonical",
-           "id": "cession_0008-e32",
+           "id": "cession_0008-e33",
            "note": "формат: canonical",
            "type": "PHONE"
           },
@@ -2210,7 +2265,7 @@
          {
           "e": {
            "cat": "canonical",
-           "id": "cession_0008-e33",
+           "id": "cession_0008-e34",
            "type": "EMAIL"
           },
           "s": "vinogradov@list.ru"
@@ -2232,7 +2287,7 @@
          {
           "e": {
            "cat": "ugly",
-           "id": "cession_0008-e34",
+           "id": "cession_0008-e35",
            "note": "фамилия + инициалы",
            "type": "PER"
           },
@@ -2260,7 +2315,7 @@
          {
           "e": {
            "cat": "adversarial",
-           "id": "cession_0008-e46",
+           "id": "cession_0008-e47",
            "note": "голый адрес в ячейке",
            "trick": "bare_cell_no_sentence",
            "type": "ADDRESS"
@@ -2276,7 +2331,7 @@
          {
           "e": {
            "cat": "canonical",
-           "id": "cession_0008-e35",
+           "id": "cession_0008-e36",
            "type": "PER"
           },
           "s": "Комаров Артём Егорович"
@@ -2293,7 +2348,7 @@
          {
           "e": {
            "cat": "canonical",
-           "id": "cession_0008-e36",
+           "id": "cession_0008-e37",
            "note": "стиль записи из BIRTHDATE_STYLES",
            "type": "BIRTHDATE"
           },
@@ -2311,7 +2366,7 @@
          {
           "e": {
            "cat": "ugly",
-           "id": "cession_0008-e37",
+           "id": "cession_0008-e38",
            "note": "стиль адреса: no_marker2",
            "type": "ADDRESS"
           },
@@ -2329,7 +2384,7 @@
          {
           "e": {
            "cat": "canonical",
-           "id": "cession_0008-e38",
+           "id": "cession_0008-e39",
            "note": "серия+номер, стиль записи из PASSPORT_STYLES",
            "type": "PASSPORT"
           },
@@ -2344,7 +2399,7 @@
          {
           "e": {
            "cat": "ugly",
-           "id": "cession_0008-e39",
+           "id": "cession_0008-e40",
            "note": "код подразделения, стиль записи из DEPTCODE_STYLES",
            "type": "PASSPORT"
           },
@@ -2363,7 +2418,7 @@
           "e": {
            "cat": "canonical",
            "checksum": "valid",
-           "id": "cession_0008-e40",
+           "id": "cession_0008-e41",
            "note": "стиль записи из SNILS_STYLES",
            "type": "SNILS"
           },
@@ -2376,7 +2431,7 @@
           "e": {
            "cat": "ugly",
            "checksum": "valid",
-           "id": "cession_0008-e41",
+           "id": "cession_0008-e42",
            "note": "ИНН физлица (12 знаков)",
            "type": "INN"
           },
@@ -2394,7 +2449,7 @@
          {
           "e": {
            "cat": "canonical",
-           "id": "cession_0008-e42",
+           "id": "cession_0008-e43",
            "note": "формат: canonical",
            "type": "PHONE"
           },
@@ -2412,7 +2467,7 @@
          {
           "e": {
            "cat": "canonical",
-           "id": "cession_0008-e43",
+           "id": "cession_0008-e44",
            "type": "EMAIL"
           },
           "s": "komarov@inbox.ru"
@@ -2434,7 +2489,7 @@
          {
           "e": {
            "cat": "ugly",
-           "id": "cession_0008-e44",
+           "id": "cession_0008-e45",
            "note": "фамилия + инициалы",
            "type": "PER"
           },
@@ -2458,7 +2513,7 @@
     {
      "e": {
       "cat": "adversarial",
-      "id": "cession_0008-e47",
+      "id": "cession_0008-e48",
       "note": "ФИО в текстбоксе/надписи",
       "trick": "in_textbox",
       "type": "PER"
@@ -2471,7 +2526,7 @@
     {
      "e": {
       "cat": "adversarial",
-      "id": "cession_0008-e48",
+      "id": "cession_0008-e49",
       "note": "телефон в текстбоксе",
       "trick": "in_textbox",
       "type": "PHONE"
@@ -2503,7 +2558,7 @@
     {
      "e": {
       "cat": "ugly",
-      "id": "cession_0008-e49",
+      "id": "cession_0008-e50",
       "note": "подпись: фамилия+инициалы",
       "type": "PER"
      },
@@ -2524,7 +2579,7 @@
     {
      "e": {
       "cat": "ugly",
-      "id": "cession_0008-e50",
+      "id": "cession_0008-e51",
       "note": "подпись: фамилия+инициалы",
       "type": "PER"
      },

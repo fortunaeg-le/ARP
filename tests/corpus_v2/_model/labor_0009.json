@@ -1936,6 +1936,61 @@
   {
    "chunks": [
     {
+     "s": "6. ОСОБЫЕ УСЛОВИЯ ОТДЕЛЬНЫХ ВИДОВ ДАННЫХ"
+    }
+   ],
+   "style": "bold",
+   "t": "p"
+  },
+  {
+   "chunks": [
+    {
+     "s": "6.1. Полномочия представителя подтверждены доверенностью, реестровый номер "
+    },
+    {
+     "e": {
+      "cat": "canonical",
+      "id": "labor_0009-e24",
+      "note": "фабричный тип: пример из файла-описания владельца",
+      "type": "REG_NUMBER"
+     },
+     "s": "77/714-н/77-2024-1-502"
+    },
+    {
+     "s": "."
+    }
+   ],
+   "style": "normal",
+   "t": "p"
+  },
+  {
+   "chunks": [
+    {
+     "s": "6.2. Для сопоставления в учёте указывается: "
+    },
+    {
+     "n": {
+      "kind": "clause-chain",
+      "type": "REG_NUMBER",
+      "why": "короткие цепочки пунктов: меньше групп, нет «-н», нет года"
+     },
+     "s": "пп. 4/5-1 и 7/2-3 Правил страхования"
+    },
+    {
+     "s": "."
+    }
+   ],
+   "style": "normal",
+   "t": "p"
+  },
+  {
+   "chunks": [],
+   "style": "normal",
+   "t": "p"
+  },
+  {
+   "chunks": [
+    {
      "s": "РЕКВИЗИТЫ И ПОДПИСИ СТОРОН"
     }
    ],
@@ -1961,7 +2016,7 @@
     {
      "e": {
       "cat": "canonical",
-      "id": "labor_0009-e24",
+      "id": "labor_0009-e25",
       "type": "ORG"
      },
      "s": "ПАО «Логистик Групп»"
@@ -1978,7 +2033,7 @@
     {
      "e": {
       "cat": "canonical",
-      "id": "labor_0009-e25",
+      "id": "labor_0009-e26",
       "note": "стиль адреса: canonical",
       "type": "ADDRESS"
      },
@@ -1997,7 +2052,7 @@
      "e": {
       "cat": "canonical",
       "checksum": "invalid",
-      "id": "labor_0009-e26",
+      "id": "labor_0009-e27",
       "type": "INN"
      },
      "s": "9170954499"
@@ -2008,7 +2063,7 @@
     {
      "e": {
       "cat": "canonical",
-      "id": "labor_0009-e27",
+      "id": "labor_0009-e28",
       "type": "KPP"
      },
      "s": "855870539"
@@ -2026,7 +2081,7 @@
      "e": {
       "cat": "canonical",
       "checksum": "invalid",
-      "id": "labor_0009-e28",
+      "id": "labor_0009-e29",
       "type": "OGRN"
      },
      "s": "1995395240147"
@@ -2044,7 +2099,7 @@
      "e": {
       "cat": "canonical",
       "checksum": "invalid",
-      "id": "labor_0009-e29",
+      "id": "labor_0009-e30",
       "type": "ACCOUNT"
      },
      "s": "40702810295112864778"
@@ -2064,7 +2119,7 @@
     {
      "e": {
       "cat": "canonical",
-      "id": "labor_0009-e30",
+      "id": "labor_0009-e31",
       "note": "корреспондентский счёт банка",
       "type": "ACCOUNT"
      },
@@ -2076,7 +2131,7 @@
     {
      "e": {
       "cat": "canonical",
-      "id": "labor_0009-e31",
+      "id": "labor_0009-e32",
       "type": "BIK"
      },
      "s": "044525360"
@@ -2093,7 +2148,7 @@
     {
      "e": {
       "cat": "canonical",
-      "id": "labor_0009-e32",
+      "id": "labor_0009-e33",
       "note": "формат: canonical",
       "type": "PHONE"
      },
@@ -2111,7 +2166,7 @@
     {
      "e": {
       "cat": "canonical",
-      "id": "labor_0009-e33",
+      "id": "labor_0009-e34",
       "type": "EMAIL"
      },
      "s": "lebedeva@mail.ru"
@@ -2133,7 +2188,7 @@
     {
      "e": {
       "cat": "ugly",
-      "id": "labor_0009-e34",
+      "id": "labor_0009-e35",
       "note": "инициалы перед фамилией",
       "type": "PER"
      },
@@ -2162,7 +2217,7 @@
     {
      "e": {
       "cat": "canonical",
-      "id": "labor_0009-e35",
+      "id": "labor_0009-e36",
       "type": "PER"
      },
      "s": "Гусева Светлана Андреевна"
@@ -2179,7 +2234,7 @@
     {
      "e": {
       "cat": "canonical",
-      "id": "labor_0009-e36",
+      "id": "labor_0009-e37",
       "note": "стиль записи из BIRTHDATE_STYLES",
       "type": "BIRTHDATE"
      },
@@ -2197,7 +2252,7 @@
     {
      "e": {
       "cat": "canonical",
-      "id": "labor_0009-e37",
+      "id": "labor_0009-e38",
       "note": "стиль адреса: canonical",
       "type": "ADDRESS"
      },
@@ -2215,7 +2270,7 @@
     {
      "e": {
       "cat": "canonical",
-      "id": "labor_0009-e38",
+      "id": "labor_0009-e39",
       "note": "серия+номер, стиль записи из PASSPORT_STYLES",
       "type": "PASSPORT"
      },
@@ -2230,7 +2285,7 @@
     {
      "e": {
       "cat": "ugly",
-      "id": "labor_0009-e39",
+      "id": "labor_0009-e40",
       "note": "код подразделения, стиль записи из DEPTCODE_STYLES",
       "type": "PASSPORT"
      },
@@ -2249,7 +2304,7 @@
      "e": {
       "cat": "canonical",
       "checksum": "invalid",
-      "id": "labor_0009-e40",
+      "id": "labor_0009-e41",
       "note": "стиль записи из SNILS_STYLES",
       "type": "SNILS"
      },
@@ -2262,7 +2317,7 @@
      "e": {
       "cat": "ugly",
       "checksum": "invalid",
-      "id": "labor_0009-e41",
+      "id": "labor_0009-e42",
       "note": "ИНН физлица (12 знаков)",
       "type": "INN"
      },
@@ -2280,7 +2335,7 @@
     {
      "e": {
       "cat": "canonical",
-      "id": "labor_0009-e42",
+      "id": "labor_0009-e43",
       "note": "формат: canonical",
       "type": "PHONE"
      },
@@ -2298,7 +2353,7 @@
     {
      "e": {
       "cat": "canonical",
-      "id": "labor_0009-e43",
+      "id": "labor_0009-e44",
       "type": "EMAIL"
      },
      "s": "guseva@sibtrans.ru"
@@ -2320,7 +2375,7 @@
     {
      "e": {
       "cat": "ugly",
-      "id": "labor_0009-e44",
+      "id": "labor_0009-e45",
       "note": "фамилия + инициалы",
       "type": "PER"
      },
@@ -2357,7 +2412,7 @@
     {
      "e": {
       "cat": "ugly",
-      "id": "labor_0009-e45",
+      "id": "labor_0009-e46",
       "note": "подпись: фамилия+инициалы",
       "type": "PER"
      },
@@ -2378,7 +2433,7 @@
     {
      "e": {
       "cat": "ugly",
-      "id": "labor_0009-e46",
+      "id": "labor_0009-e47",
       "note": "подпись: фамилия+инициалы",
       "type": "PER"
      },

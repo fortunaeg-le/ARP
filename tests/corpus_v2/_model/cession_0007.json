@@ -2225,6 +2225,61 @@
   {
    "chunks": [
     {
+     "s": "6. ОСОБЫЕ УСЛОВИЯ ОТДЕЛЬНЫХ ВИДОВ ДАННЫХ"
+    }
+   ],
+   "style": "bold",
+   "t": "p"
+  },
+  {
+   "chunks": [
+    {
+     "s": "6.1. Полномочия представителя подтверждены доверенностью, реестровый номер "
+    },
+    {
+     "e": {
+      "cat": "canonical",
+      "id": "cession_0007-e29",
+      "note": "фабричный тип: пример из файла-описания владельца",
+      "type": "REG_NUMBER"
+     },
+     "s": "77/714-н/77-2024-1-502"
+    },
+    {
+     "s": "."
+    }
+   ],
+   "style": "normal",
+   "t": "p"
+  },
+  {
+   "chunks": [
+    {
+     "s": "6.2. Для сопоставления в учёте указывается: "
+    },
+    {
+     "n": {
+      "kind": "clause-chain",
+      "type": "REG_NUMBER",
+      "why": "короткие цепочки пунктов: меньше групп, нет «-н», нет года"
+     },
+     "s": "пп. 4/5-1 и 7/2-3 Правил страхования"
+    },
+    {
+     "s": "."
+    }
+   ],
+   "style": "normal",
+   "t": "p"
+  },
+  {
+   "chunks": [],
+   "style": "normal",
+   "t": "p"
+  },
+  {
+   "chunks": [
+    {
      "s": "РЕКВИЗИТЫ И ПОДПИСИ СТОРОН"
     }
    ],
@@ -2253,7 +2308,7 @@
     {
      "e": {
       "cat": "canonical",
-      "id": "cession_0007-e29",
+      "id": "cession_0007-e30",
       "type": "PER"
      },
      "s": "Сидорова Светлана Ивановна"
@@ -2270,7 +2325,7 @@
     {
      "e": {
       "cat": "canonical",
-      "id": "cession_0007-e30",
+      "id": "cession_0007-e31",
       "note": "стиль адреса: canonical",
       "type": "ADDRESS"
      },
@@ -2289,7 +2344,7 @@
      "e": {
       "cat": "canonical",
       "checksum": "valid",
-      "id": "cession_0007-e31",
+      "id": "cession_0007-e32",
       "note": "12-значный ИНН",
       "type": "INN"
      },
@@ -2302,7 +2357,7 @@
      "e": {
       "cat": "ugly",
       "checksum": "valid",
-      "id": "cession_0007-e32",
+      "id": "cession_0007-e33",
       "note": "ОГРНИП, 15 знаков",
       "type": "OGRN"
      },
@@ -2321,7 +2376,7 @@
      "e": {
       "cat": "canonical",
       "checksum": "valid",
-      "id": "cession_0007-e33",
+      "id": "cession_0007-e34",
       "type": "ACCOUNT"
      },
      "s": "40802810271505760112"
@@ -2335,7 +2390,7 @@
     {
      "e": {
       "cat": "canonical",
-      "id": "cession_0007-e34",
+      "id": "cession_0007-e35",
       "type": "BIK"
      },
      "s": "045004763"
@@ -2352,7 +2407,7 @@
     {
      "e": {
       "cat": "canonical",
-      "id": "cession_0007-e35",
+      "id": "cession_0007-e36",
       "note": "формат: canonical",
       "type": "PHONE"
      },
@@ -2370,7 +2425,7 @@
     {
      "e": {
       "cat": "canonical",
-      "id": "cession_0007-e36",
+      "id": "cession_0007-e37",
       "type": "EMAIL"
      },
      "s": "sidorova@bk.ru"
@@ -2392,7 +2447,7 @@
     {
      "e": {
       "cat": "ugly",
-      "id": "cession_0007-e37",
+      "id": "cession_0007-e38",
       "note": "фамилия + инициалы",
       "type": "PER"
      },
@@ -2421,7 +2476,7 @@
     {
      "e": {
       "cat": "canonical",
-      "id": "cession_0007-e38",
+      "id": "cession_0007-e39",
       "type": "PER"
      },
      "s": "Волкова Людмила Петровна"
@@ -2438,7 +2493,7 @@
     {
      "e": {
       "cat": "canonical",
-      "id": "cession_0007-e39",
+      "id": "cession_0007-e40",
       "note": "стиль записи из BIRTHDATE_STYLES",
       "type": "BIRTHDATE"
      },
@@ -2456,7 +2511,7 @@
     {
      "e": {
       "cat": "canonical",
-      "id": "cession_0007-e40",
+      "id": "cession_0007-e41",
       "note": "стиль адреса: canonical",
       "type": "ADDRESS"
      },
@@ -2474,7 +2529,7 @@
     {
      "e": {
       "cat": "canonical",
-      "id": "cession_0007-e41",
+      "id": "cession_0007-e42",
       "note": "серия+номер, стиль записи из PASSPORT_STYLES",
       "type": "PASSPORT"
      },
@@ -2489,7 +2544,7 @@
     {
      "e": {
       "cat": "ugly",
-      "id": "cession_0007-e42",
+      "id": "cession_0007-e43",
       "note": "код подразделения, стиль записи из DEPTCODE_STYLES",
       "type": "PASSPORT"
      },
@@ -2508,7 +2563,7 @@
      "e": {
       "cat": "canonical",
       "checksum": "valid",
-      "id": "cession_0007-e43",
+      "id": "cession_0007-e44",
       "note": "стиль записи из SNILS_STYLES",
       "type": "SNILS"
      },
@@ -2521,7 +2576,7 @@
      "e": {
       "cat": "ugly",
       "checksum": "valid",
-      "id": "cession_0007-e44",
+      "id": "cession_0007-e45",
       "note": "ИНН физлица (12 знаков)",
       "type": "INN"
      },
@@ -2539,7 +2594,7 @@
     {
      "e": {
       "cat": "canonical",
-      "id": "cession_0007-e45",
+      "id": "cession_0007-e46",
       "note": "формат: canonical",
       "type": "PHONE"
      },
@@ -2557,7 +2612,7 @@
     {
      "e": {
       "cat": "canonical",
-      "id": "cession_0007-e46",
+      "id": "cession_0007-e47",
       "type": "EMAIL"
      },
      "s": "volkova@list.ru"
@@ -2579,7 +2634,7 @@
     {
      "e": {
       "cat": "ugly",
-      "id": "cession_0007-e47",
+      "id": "cession_0007-e48",
       "note": "фамилия + инициалы",
       "type": "PER"
      },
@@ -2616,7 +2671,7 @@
     {
      "e": {
       "cat": "ugly",
-      "id": "cession_0007-e48",
+      "id": "cession_0007-e49",
       "note": "подпись: фамилия+инициалы",
       "type": "PER"
      },
@@ -2637,7 +2692,7 @@
     {
      "e": {
       "cat": "ugly",
-      "id": "cession_0007-e49",
+      "id": "cession_0007-e50",
       "note": "подпись: фамилия+инициалы",
       "type": "PER"
      },

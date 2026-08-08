@@ -2015,6 +2015,61 @@
   {
    "chunks": [
     {
+     "s": "6. ОСОБЫЕ УСЛОВИЯ ОТДЕЛЬНЫХ ВИДОВ ДАННЫХ"
+    }
+   ],
+   "style": "bold",
+   "t": "p"
+  },
+  {
+   "chunks": [
+    {
+     "s": "6.1. Полномочия представителя подтверждены доверенностью, реестровый номер "
+    },
+    {
+     "e": {
+      "cat": "canonical",
+      "id": "cx_supply_0001-e25",
+      "note": "фабричный тип: пример из файла-описания владельца",
+      "type": "REG_NUMBER"
+     },
+     "s": "77/714-н/77-2024-1-502"
+    },
+    {
+     "s": "."
+    }
+   ],
+   "style": "normal",
+   "t": "p"
+  },
+  {
+   "chunks": [
+    {
+     "s": "6.2. Для сопоставления в учёте указывается: "
+    },
+    {
+     "n": {
+      "kind": "cadastral",
+      "type": "REG_NUMBER",
+      "why": "чужая номенклатура: двоеточия, нет группы «-н» — не реестровый номер стороны"
+     },
+     "s": "кадастровый номер 77:01:0004012:2211"
+    },
+    {
+     "s": "."
+    }
+   ],
+   "style": "normal",
+   "t": "p"
+  },
+  {
+   "chunks": [],
+   "style": "normal",
+   "t": "p"
+  },
+  {
+   "chunks": [
+    {
      "s": "РЕКВИЗИТЫ И ПОДПИСИ СТОРОН"
     }
    ],
@@ -2045,7 +2100,7 @@
          {
           "e": {
            "cat": "canonical",
-           "id": "cx_supply_0001-e25",
+           "id": "cx_supply_0001-e26",
            "type": "ORG"
           },
           "s": "ПАО «Вектор»"
@@ -2062,7 +2117,7 @@
          {
           "e": {
            "cat": "canonical",
-           "id": "cx_supply_0001-e26",
+           "id": "cx_supply_0001-e27",
            "note": "стиль адреса: canonical",
            "type": "ADDRESS"
           },
@@ -2081,7 +2136,7 @@
           "e": {
            "cat": "canonical",
            "checksum": "valid",
-           "id": "cx_supply_0001-e27",
+           "id": "cx_supply_0001-e28",
            "type": "INN"
           },
           "s": "2862335730"
@@ -2092,7 +2147,7 @@
          {
           "e": {
            "cat": "canonical",
-           "id": "cx_supply_0001-e28",
+           "id": "cx_supply_0001-e29",
            "type": "KPP"
           },
           "s": "700430818"
@@ -2110,7 +2165,7 @@
           "e": {
            "cat": "canonical",
            "checksum": "valid",
-           "id": "cx_supply_0001-e29",
+           "id": "cx_supply_0001-e30",
            "type": "OGRN"
           },
           "s": "1720727630875"
@@ -2128,7 +2183,7 @@
           "e": {
            "cat": "canonical",
            "checksum": "valid",
-           "id": "cx_supply_0001-e30",
+           "id": "cx_supply_0001-e31",
            "type": "ACCOUNT"
           },
           "s": "40702810238214241050"
@@ -2148,7 +2203,7 @@
          {
           "e": {
            "cat": "canonical",
-           "id": "cx_supply_0001-e31",
+           "id": "cx_supply_0001-e32",
            "note": "корреспондентский счёт банка",
            "type": "ACCOUNT"
           },
@@ -2160,7 +2215,7 @@
          {
           "e": {
            "cat": "canonical",
-           "id": "cx_supply_0001-e32",
+           "id": "cx_supply_0001-e33",
            "type": "BIK"
           },
           "s": "044525187"
@@ -2177,7 +2232,7 @@
          {
           "e": {
            "cat": "canonical",
-           "id": "cx_supply_0001-e33",
+           "id": "cx_supply_0001-e34",
            "note": "формат: canonical",
            "type": "PHONE"
           },
@@ -2195,7 +2250,7 @@
          {
           "e": {
            "cat": "canonical",
-           "id": "cx_supply_0001-e34",
+           "id": "cx_supply_0001-e35",
            "type": "EMAIL"
           },
           "s": "zayceva@sibtrans.ru"
@@ -2217,7 +2272,7 @@
          {
           "e": {
            "cat": "ugly",
-           "id": "cx_supply_0001-e35",
+           "id": "cx_supply_0001-e36",
            "note": "инициалы перед фамилией",
            "type": "PER"
           },
@@ -2245,7 +2300,7 @@
          {
           "e": {
            "cat": "canonical",
-           "id": "cx_supply_0001-e36",
+           "id": "cx_supply_0001-e37",
            "type": "ORG"
           },
           "s": "ООО «Восход»"
@@ -2262,7 +2317,7 @@
          {
           "e": {
            "cat": "canonical",
-           "id": "cx_supply_0001-e37",
+           "id": "cx_supply_0001-e38",
            "note": "стиль адреса: canonical",
            "type": "ADDRESS"
           },
@@ -2280,7 +2335,7 @@
          {
           "e": {
            "cat": "canonical",
-           "id": "cx_supply_0001-e38",
+           "id": "cx_supply_0001-e39",
            "note": "стиль адреса: canonical",
            "type": "ADDRESS"
           },
@@ -2299,7 +2354,7 @@
           "e": {
            "cat": "canonical",
            "checksum": "valid",
-           "id": "cx_supply_0001-e39",
+           "id": "cx_supply_0001-e40",
            "type": "INN"
           },
           "s": "9714675799"
@@ -2310,7 +2365,7 @@
          {
           "e": {
            "cat": "canonical",
-           "id": "cx_supply_0001-e40",
+           "id": "cx_supply_0001-e41",
            "type": "KPP"
           },
           "s": "559361337"
@@ -2328,7 +2383,7 @@
           "e": {
            "cat": "canonical",
            "checksum": "valid",
-           "id": "cx_supply_0001-e41",
+           "id": "cx_supply_0001-e42",
            "type": "OGRN"
           },
           "s": "1002713405232"
@@ -2346,7 +2401,7 @@
           "e": {
            "cat": "canonical",
            "checksum": "valid",
-           "id": "cx_supply_0001-e42",
+           "id": "cx_supply_0001-e43",
            "type": "ACCOUNT"
           },
           "s": "40702810428555473613"
@@ -2366,7 +2421,7 @@
          {
           "e": {
            "cat": "canonical",
-           "id": "cx_supply_0001-e43",
+           "id": "cx_supply_0001-e44",
            "note": "корреспондентский счёт банка",
            "type": "ACCOUNT"
           },
@@ -2378,7 +2433,7 @@
          {
           "e": {
            "cat": "canonical",
-           "id": "cx_supply_0001-e44",
+           "id": "cx_supply_0001-e45",
            "type": "BIK"
           },
           "s": "044525360"
@@ -2395,7 +2450,7 @@
          {
           "e": {
            "cat": "canonical",
-           "id": "cx_supply_0001-e45",
+           "id": "cx_supply_0001-e46",
            "note": "формат: canonical",
            "type": "PHONE"
           },
@@ -2413,7 +2468,7 @@
          {
           "e": {
            "cat": "canonical",
-           "id": "cx_supply_0001-e46",
+           "id": "cx_supply_0001-e47",
            "type": "EMAIL"
           },
           "s": "lebedeva@corp-tehno.ru"
@@ -2435,7 +2490,7 @@
          {
           "e": {
            "cat": "ugly",
-           "id": "cx_supply_0001-e47",
+           "id": "cx_supply_0001-e48",
            "note": "инициалы перед фамилией",
            "type": "PER"
           },
@@ -2473,7 +2528,7 @@
     {
      "e": {
       "cat": "ugly",
-      "id": "cx_supply_0001-e48",
+      "id": "cx_supply_0001-e49",
       "note": "подпись: фамилия+инициалы",
       "type": "PER"
      },
@@ -2494,7 +2549,7 @@
     {
      "e": {
       "cat": "ugly",
-      "id": "cx_supply_0001-e49",
+      "id": "cx_supply_0001-e50",
       "note": "подпись: фамилия+инициалы",
       "type": "PER"
      },

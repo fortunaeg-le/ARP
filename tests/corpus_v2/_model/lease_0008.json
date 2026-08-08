@@ -1903,6 +1903,61 @@
   {
    "chunks": [
     {
+     "s": "6. ОСОБЫЕ УСЛОВИЯ ОТДЕЛЬНЫХ ВИДОВ ДАННЫХ"
+    }
+   ],
+   "style": "bold",
+   "t": "p"
+  },
+  {
+   "chunks": [
+    {
+     "s": "6.1. Полномочия представителя подтверждены доверенностью, реестровый номер "
+    },
+    {
+     "e": {
+      "cat": "canonical",
+      "id": "lease_0008-e22",
+      "note": "фабричный тип: пример из файла-описания владельца",
+      "type": "REG_NUMBER"
+     },
+     "s": "23/5-н/23-2025-2-1104"
+    },
+    {
+     "s": "."
+    }
+   ],
+   "style": "normal",
+   "t": "p"
+  },
+  {
+   "chunks": [
+    {
+     "s": "6.2. Для сопоставления в учёте указывается: "
+    },
+    {
+     "n": {
+      "kind": "gost-ref",
+      "type": "REG_NUMBER",
+      "why": "ссылка на стандарт — не реестровый номер"
+     },
+     "s": "ГОСТ Р 52044-2003"
+    },
+    {
+     "s": "."
+    }
+   ],
+   "style": "normal",
+   "t": "p"
+  },
+  {
+   "chunks": [],
+   "style": "normal",
+   "t": "p"
+  },
+  {
+   "chunks": [
+    {
      "s": "РЕКВИЗИТЫ И ПОДПИСИ СТОРОН"
     }
    ],
@@ -1933,7 +1988,7 @@
          {
           "e": {
            "cat": "ugly",
-           "id": "lease_0008-e22",
+           "id": "lease_0008-e23",
            "note": "ФИО внутри названия организации",
            "type": "ORG"
           },
@@ -1951,7 +2006,7 @@
          {
           "e": {
            "cat": "ugly",
-           "id": "lease_0008-e23",
+           "id": "lease_0008-e24",
            "note": "стиль адреса: city_middle",
            "type": "ADDRESS"
           },
@@ -1969,7 +2024,7 @@
          {
           "e": {
            "cat": "ugly",
-           "id": "lease_0008-e24",
+           "id": "lease_0008-e25",
            "note": "стиль адреса: city_middle",
            "type": "ADDRESS"
           },
@@ -1988,7 +2043,7 @@
           "e": {
            "cat": "ugly",
            "checksum": "valid",
-           "id": "lease_0008-e25",
+           "id": "lease_0008-e26",
            "note": "пробелы внутри номера",
            "type": "INN"
           },
@@ -2000,7 +2055,7 @@
          {
           "e": {
            "cat": "canonical",
-           "id": "lease_0008-e26",
+           "id": "lease_0008-e27",
            "type": "KPP"
           },
           "s": "576706547"
@@ -2018,7 +2073,7 @@
           "e": {
            "cat": "ugly",
            "checksum": "valid",
-           "id": "lease_0008-e27",
+           "id": "lease_0008-e28",
            "note": "пробелы внутри номера",
            "type": "OGRN"
           },
@@ -2037,7 +2092,7 @@
           "e": {
            "cat": "ugly",
            "checksum": "valid",
-           "id": "lease_0008-e28",
+           "id": "lease_0008-e29",
            "note": "пробелы внутри номера",
            "type": "ACCOUNT"
           },
@@ -2058,7 +2113,7 @@
          {
           "e": {
            "cat": "canonical",
-           "id": "lease_0008-e29",
+           "id": "lease_0008-e30",
            "note": "корреспондентский счёт банка",
            "type": "ACCOUNT"
           },
@@ -2070,7 +2125,7 @@
          {
           "e": {
            "cat": "canonical",
-           "id": "lease_0008-e30",
+           "id": "lease_0008-e31",
            "type": "BIK"
           },
           "s": "044030790"
@@ -2087,7 +2142,7 @@
          {
           "e": {
            "cat": "canonical",
-           "id": "lease_0008-e31",
+           "id": "lease_0008-e32",
            "note": "формат: canonical",
            "type": "PHONE"
           },
@@ -2105,7 +2160,7 @@
          {
           "e": {
            "cat": "canonical",
-           "id": "lease_0008-e32",
+           "id": "lease_0008-e33",
            "type": "EMAIL"
           },
           "s": "smirnova@gmail.com"
@@ -2127,7 +2182,7 @@
          {
           "e": {
            "cat": "ugly",
-           "id": "lease_0008-e33",
+           "id": "lease_0008-e34",
            "note": "инициалы перед фамилией",
            "type": "PER"
           },
@@ -2158,7 +2213,7 @@
          {
           "e": {
            "cat": "canonical",
-           "id": "lease_0008-e34",
+           "id": "lease_0008-e35",
            "type": "PER"
           },
           "s": "Морозов Артём Николаевич"
@@ -2175,7 +2230,7 @@
          {
           "e": {
            "cat": "ugly",
-           "id": "lease_0008-e35",
+           "id": "lease_0008-e36",
            "note": "стиль адреса: city_middle",
            "type": "ADDRESS"
           },
@@ -2194,7 +2249,7 @@
           "e": {
            "cat": "canonical",
            "checksum": "valid",
-           "id": "lease_0008-e36",
+           "id": "lease_0008-e37",
            "note": "12-значный ИНН",
            "type": "INN"
           },
@@ -2207,7 +2262,7 @@
           "e": {
            "cat": "ugly",
            "checksum": "valid",
-           "id": "lease_0008-e37",
+           "id": "lease_0008-e38",
            "note": "ОГРНИП, 15 знаков",
            "type": "OGRN"
           },
@@ -2226,7 +2281,7 @@
           "e": {
            "cat": "canonical",
            "checksum": "valid",
-           "id": "lease_0008-e38",
+           "id": "lease_0008-e39",
            "type": "ACCOUNT"
           },
           "s": "40802810871707550461"
@@ -2240,7 +2295,7 @@
          {
           "e": {
            "cat": "canonical",
-           "id": "lease_0008-e39",
+           "id": "lease_0008-e40",
            "type": "BIK"
           },
           "s": "044030790"
@@ -2257,7 +2312,7 @@
          {
           "e": {
            "cat": "canonical",
-           "id": "lease_0008-e40",
+           "id": "lease_0008-e41",
            "note": "формат: canonical",
            "type": "PHONE"
           },
@@ -2275,7 +2330,7 @@
          {
           "e": {
            "cat": "canonical",
-           "id": "lease_0008-e41",
+           "id": "lease_0008-e42",
            "type": "EMAIL"
           },
           "s": "morozov@sibtrans.ru"
@@ -2297,7 +2352,7 @@
          {
           "e": {
            "cat": "ugly",
-           "id": "lease_0008-e42",
+           "id": "lease_0008-e43",
            "note": "фамилия + инициалы",
            "type": "PER"
           },
@@ -2358,7 +2413,7 @@
               {
                "e": {
                 "cat": "adversarial",
-                "id": "lease_0008-e43",
+                "id": "lease_0008-e44",
                 "note": "счёт во вложенной таблице",
                 "trick": "nested_table",
                 "type": "ACCOUNT"
@@ -2393,7 +2448,7 @@
               {
                "e": {
                 "cat": "adversarial",
-                "id": "lease_0008-e44",
+                "id": "lease_0008-e45",
                 "note": "ФИО во вложенной таблице",
                 "trick": "nested_table",
                 "type": "PER"
@@ -2443,7 +2498,7 @@
     {
      "e": {
       "cat": "ugly",
-      "id": "lease_0008-e47",
+      "id": "lease_0008-e48",
       "note": "подпись: фамилия+инициалы",
       "type": "PER"
      },
@@ -2464,7 +2519,7 @@
     {
      "e": {
       "cat": "ugly",
-      "id": "lease_0008-e48",
+      "id": "lease_0008-e49",
       "note": "подпись: фамилия+инициалы",
       "type": "PER"
      },
@@ -2497,7 +2552,7 @@
     {
      "e": {
       "cat": "adversarial",
-      "id": "lease_0008-e45",
+      "id": "lease_0008-e46",
       "note": "телефон в колонтитуле (верхнем)",
       "trick": "in_header",
       "type": "PHONE"
@@ -2510,7 +2565,7 @@
     {
      "e": {
       "cat": "adversarial",
-      "id": "lease_0008-e46",
+      "id": "lease_0008-e47",
       "note": "e-mail в колонтитуле",
       "trick": "in_header",
       "type": "EMAIL"

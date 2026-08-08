@@ -2022,6 +2022,61 @@
   {
    "chunks": [
     {
+     "s": "6. ОСОБЫЕ УСЛОВИЯ ОТДЕЛЬНЫХ ВИДОВ ДАННЫХ"
+    }
+   ],
+   "style": "bold",
+   "t": "p"
+  },
+  {
+   "chunks": [
+    {
+     "s": "6.1. Полномочия представителя подтверждены доверенностью, реестровый номер "
+    },
+    {
+     "e": {
+      "cat": "canonical",
+      "id": "cx_services_0029-e27",
+      "note": "фабричный тип: пример из файла-описания владельца",
+      "type": "REG_NUMBER"
+     },
+     "s": "78/1445-н/78-2022-12-7"
+    },
+    {
+     "s": "."
+    }
+   ],
+   "style": "normal",
+   "t": "p"
+  },
+  {
+   "chunks": [
+    {
+     "s": "6.2. Для сопоставления в учёте указывается: "
+    },
+    {
+     "n": {
+      "kind": "cadastral",
+      "type": "REG_NUMBER",
+      "why": "чужая номенклатура: двоеточия, нет группы «-н» — не реестровый номер стороны"
+     },
+     "s": "кадастровый номер 77:01:0004012:2211"
+    },
+    {
+     "s": "."
+    }
+   ],
+   "style": "normal",
+   "t": "p"
+  },
+  {
+   "chunks": [],
+   "style": "normal",
+   "t": "p"
+  },
+  {
+   "chunks": [
+    {
      "s": "РЕКВИЗИТЫ И ПОДПИСИ СТОРОН"
     }
    ],
@@ -2055,7 +2110,7 @@
          {
           "e": {
            "cat": "canonical",
-           "id": "cx_services_0029-e27",
+           "id": "cx_services_0029-e28",
            "type": "PER"
           },
           "s": "Никитина Дарья Дмитриевна"
@@ -2072,7 +2127,7 @@
          {
           "e": {
            "cat": "canonical",
-           "id": "cx_services_0029-e28",
+           "id": "cx_services_0029-e29",
            "note": "стиль адреса: canonical",
            "type": "ADDRESS"
           },
@@ -2091,7 +2146,7 @@
           "e": {
            "cat": "canonical",
            "checksum": "valid",
-           "id": "cx_services_0029-e29",
+           "id": "cx_services_0029-e30",
            "note": "12-значный ИНН",
            "type": "INN"
           },
@@ -2104,7 +2159,7 @@
           "e": {
            "cat": "ugly",
            "checksum": "valid",
-           "id": "cx_services_0029-e30",
+           "id": "cx_services_0029-e31",
            "note": "ОГРНИП, 15 знаков",
            "type": "OGRN"
           },
@@ -2123,7 +2178,7 @@
           "e": {
            "cat": "canonical",
            "checksum": "valid",
-           "id": "cx_services_0029-e31",
+           "id": "cx_services_0029-e32",
            "type": "ACCOUNT"
           },
           "s": "40802810741568819270"
@@ -2137,7 +2192,7 @@
          {
           "e": {
            "cat": "canonical",
-           "id": "cx_services_0029-e32",
+           "id": "cx_services_0029-e33",
            "type": "BIK"
           },
           "s": "044525555"
@@ -2154,7 +2209,7 @@
          {
           "e": {
            "cat": "canonical",
-           "id": "cx_services_0029-e33",
+           "id": "cx_services_0029-e34",
            "note": "формат: canonical",
            "type": "PHONE"
           },
@@ -2172,7 +2227,7 @@
          {
           "e": {
            "cat": "canonical",
-           "id": "cx_services_0029-e34",
+           "id": "cx_services_0029-e35",
            "type": "EMAIL"
           },
           "s": "nikitina@yandex.ru"
@@ -2194,7 +2249,7 @@
          {
           "e": {
            "cat": "ugly",
-           "id": "cx_services_0029-e35",
+           "id": "cx_services_0029-e36",
            "note": "фамилия + инициалы",
            "type": "PER"
           },
@@ -2222,7 +2277,7 @@
          {
           "e": {
            "cat": "canonical",
-           "id": "cx_services_0029-e36",
+           "id": "cx_services_0029-e37",
            "type": "PER"
           },
           "s": "Титова Людмила Петровна"
@@ -2239,7 +2294,7 @@
          {
           "e": {
            "cat": "canonical",
-           "id": "cx_services_0029-e37",
+           "id": "cx_services_0029-e38",
            "note": "стиль записи из BIRTHDATE_STYLES",
            "type": "BIRTHDATE"
           },
@@ -2257,7 +2312,7 @@
          {
           "e": {
            "cat": "canonical",
-           "id": "cx_services_0029-e38",
+           "id": "cx_services_0029-e39",
            "note": "стиль адреса: canonical",
            "type": "ADDRESS"
           },
@@ -2275,7 +2330,7 @@
          {
           "e": {
            "cat": "canonical",
-           "id": "cx_services_0029-e39",
+           "id": "cx_services_0029-e40",
            "note": "серия+номер, стиль записи из PASSPORT_STYLES",
            "type": "PASSPORT"
           },
@@ -2290,7 +2345,7 @@
          {
           "e": {
            "cat": "ugly",
-           "id": "cx_services_0029-e40",
+           "id": "cx_services_0029-e41",
            "note": "код подразделения, стиль записи из DEPTCODE_STYLES",
            "type": "PASSPORT"
           },
@@ -2309,7 +2364,7 @@
           "e": {
            "cat": "canonical",
            "checksum": "valid",
-           "id": "cx_services_0029-e41",
+           "id": "cx_services_0029-e42",
            "note": "стиль записи из SNILS_STYLES",
            "type": "SNILS"
           },
@@ -2322,7 +2377,7 @@
           "e": {
            "cat": "ugly",
            "checksum": "valid",
-           "id": "cx_services_0029-e42",
+           "id": "cx_services_0029-e43",
            "note": "ИНН физлица (12 знаков)",
            "type": "INN"
           },
@@ -2340,7 +2395,7 @@
          {
           "e": {
            "cat": "canonical",
-           "id": "cx_services_0029-e43",
+           "id": "cx_services_0029-e44",
            "note": "формат: canonical",
            "type": "PHONE"
           },
@@ -2358,7 +2413,7 @@
          {
           "e": {
            "cat": "canonical",
-           "id": "cx_services_0029-e44",
+           "id": "cx_services_0029-e45",
            "type": "EMAIL"
           },
           "s": "titova@inbox.ru"
@@ -2380,7 +2435,7 @@
          {
           "e": {
            "cat": "ugly",
-           "id": "cx_services_0029-e45",
+           "id": "cx_services_0029-e46",
            "note": "фамилия + инициалы",
            "type": "PER"
           },
@@ -2418,7 +2473,7 @@
     {
      "e": {
       "cat": "ugly",
-      "id": "cx_services_0029-e46",
+      "id": "cx_services_0029-e47",
       "note": "подпись: фамилия+инициалы",
       "type": "PER"
      },
@@ -2439,7 +2494,7 @@
     {
      "e": {
       "cat": "ugly",
-      "id": "cx_services_0029-e47",
+      "id": "cx_services_0029-e48",
       "note": "подпись: фамилия+инициалы",
       "type": "PER"
      },

@@ -2047,6 +2047,61 @@
   {
    "chunks": [
     {
+     "s": "6. ОСОБЫЕ УСЛОВИЯ ОТДЕЛЬНЫХ ВИДОВ ДАННЫХ"
+    }
+   ],
+   "style": "bold",
+   "t": "p"
+  },
+  {
+   "chunks": [
+    {
+     "s": "6.1. Полномочия представителя подтверждены доверенностью, реестровый номер "
+    },
+    {
+     "e": {
+      "cat": "canonical",
+      "id": "cx_lease_0003-e28",
+      "note": "фабричный тип: пример из файла-описания владельца",
+      "type": "REG_NUMBER"
+     },
+     "s": "23/5-н/23-2025-2-1104"
+    },
+    {
+     "s": "."
+    }
+   ],
+   "style": "normal",
+   "t": "p"
+  },
+  {
+   "chunks": [
+    {
+     "s": "6.2. Для сопоставления в учёте указывается: "
+    },
+    {
+     "n": {
+      "kind": "clause-chain",
+      "type": "REG_NUMBER",
+      "why": "короткие цепочки пунктов: меньше групп, нет «-н», нет года"
+     },
+     "s": "пп. 4/5-1 и 7/2-3 Правил страхования"
+    },
+    {
+     "s": "."
+    }
+   ],
+   "style": "normal",
+   "t": "p"
+  },
+  {
+   "chunks": [],
+   "style": "normal",
+   "t": "p"
+  },
+  {
+   "chunks": [
+    {
      "s": "РЕКВИЗИТЫ И ПОДПИСИ СТОРОН"
     }
    ],
@@ -2077,7 +2132,7 @@
          {
           "e": {
            "cat": "canonical",
-           "id": "cx_lease_0003-e28",
+           "id": "cx_lease_0003-e29",
            "type": "ORG"
           },
           "s": "ПАО «Меридиан»"
@@ -2094,7 +2149,7 @@
          {
           "e": {
            "cat": "canonical",
-           "id": "cx_lease_0003-e29",
+           "id": "cx_lease_0003-e30",
            "note": "стиль адреса: canonical",
            "type": "ADDRESS"
           },
@@ -2112,7 +2167,7 @@
          {
           "e": {
            "cat": "canonical",
-           "id": "cx_lease_0003-e30",
+           "id": "cx_lease_0003-e31",
            "note": "стиль адреса: canonical",
            "type": "ADDRESS"
           },
@@ -2131,7 +2186,7 @@
           "e": {
            "cat": "canonical",
            "checksum": "valid",
-           "id": "cx_lease_0003-e31",
+           "id": "cx_lease_0003-e32",
            "type": "INN"
           },
           "s": "9916803309"
@@ -2142,7 +2197,7 @@
          {
           "e": {
            "cat": "canonical",
-           "id": "cx_lease_0003-e32",
+           "id": "cx_lease_0003-e33",
            "type": "KPP"
           },
           "s": "789904579"
@@ -2160,7 +2215,7 @@
           "e": {
            "cat": "canonical",
            "checksum": "valid",
-           "id": "cx_lease_0003-e33",
+           "id": "cx_lease_0003-e34",
            "type": "OGRN"
           },
           "s": "1829247418977"
@@ -2178,7 +2233,7 @@
           "e": {
            "cat": "canonical",
            "checksum": "valid",
-           "id": "cx_lease_0003-e34",
+           "id": "cx_lease_0003-e35",
            "type": "ACCOUNT"
           },
           "s": "40702810294116116592"
@@ -2198,7 +2253,7 @@
          {
           "e": {
            "cat": "canonical",
-           "id": "cx_lease_0003-e35",
+           "id": "cx_lease_0003-e36",
            "note": "корреспондентский счёт банка",
            "type": "ACCOUNT"
           },
@@ -2210,7 +2265,7 @@
          {
           "e": {
            "cat": "canonical",
-           "id": "cx_lease_0003-e36",
+           "id": "cx_lease_0003-e37",
            "type": "BIK"
           },
           "s": "044525593"
@@ -2227,7 +2282,7 @@
          {
           "e": {
            "cat": "canonical",
-           "id": "cx_lease_0003-e37",
+           "id": "cx_lease_0003-e38",
            "note": "формат: canonical",
            "type": "PHONE"
           },
@@ -2245,7 +2300,7 @@
          {
           "e": {
            "cat": "canonical",
-           "id": "cx_lease_0003-e38",
+           "id": "cx_lease_0003-e39",
            "type": "EMAIL"
           },
           "s": "novikov@mail.ru"
@@ -2267,7 +2322,7 @@
          {
           "e": {
            "cat": "ugly",
-           "id": "cx_lease_0003-e39",
+           "id": "cx_lease_0003-e40",
            "note": "инициалы перед фамилией",
            "type": "PER"
           },
@@ -2295,7 +2350,7 @@
          {
           "e": {
            "cat": "canonical",
-           "id": "cx_lease_0003-e40",
+           "id": "cx_lease_0003-e41",
            "type": "PER"
           },
           "s": "Богданов Артём Егорович"
@@ -2312,7 +2367,7 @@
          {
           "e": {
            "cat": "canonical",
-           "id": "cx_lease_0003-e41",
+           "id": "cx_lease_0003-e42",
            "note": "стиль записи из BIRTHDATE_STYLES",
            "type": "BIRTHDATE"
           },
@@ -2330,7 +2385,7 @@
          {
           "e": {
            "cat": "canonical",
-           "id": "cx_lease_0003-e42",
+           "id": "cx_lease_0003-e43",
            "note": "стиль адреса: canonical",
            "type": "ADDRESS"
           },
@@ -2348,7 +2403,7 @@
          {
           "e": {
            "cat": "canonical",
-           "id": "cx_lease_0003-e43",
+           "id": "cx_lease_0003-e44",
            "note": "серия+номер, стиль записи из PASSPORT_STYLES",
            "type": "PASSPORT"
           },
@@ -2363,7 +2418,7 @@
          {
           "e": {
            "cat": "ugly",
-           "id": "cx_lease_0003-e44",
+           "id": "cx_lease_0003-e45",
            "note": "код подразделения, стиль записи из DEPTCODE_STYLES",
            "type": "PASSPORT"
           },
@@ -2382,7 +2437,7 @@
           "e": {
            "cat": "canonical",
            "checksum": "valid",
-           "id": "cx_lease_0003-e45",
+           "id": "cx_lease_0003-e46",
            "note": "стиль записи из SNILS_STYLES",
            "type": "SNILS"
           },
@@ -2395,7 +2450,7 @@
           "e": {
            "cat": "ugly",
            "checksum": "valid",
-           "id": "cx_lease_0003-e46",
+           "id": "cx_lease_0003-e47",
            "note": "ИНН физлица (12 знаков)",
            "type": "INN"
           },
@@ -2413,7 +2468,7 @@
          {
           "e": {
            "cat": "canonical",
-           "id": "cx_lease_0003-e47",
+           "id": "cx_lease_0003-e48",
            "note": "формат: canonical",
            "type": "PHONE"
           },
@@ -2431,7 +2486,7 @@
          {
           "e": {
            "cat": "canonical",
-           "id": "cx_lease_0003-e48",
+           "id": "cx_lease_0003-e49",
            "type": "EMAIL"
           },
           "s": "bogdanov@yandex.ru"
@@ -2453,7 +2508,7 @@
          {
           "e": {
            "cat": "ugly",
-           "id": "cx_lease_0003-e49",
+           "id": "cx_lease_0003-e50",
            "note": "фамилия + инициалы",
            "type": "PER"
           },
@@ -2491,7 +2546,7 @@
     {
      "e": {
       "cat": "ugly",
-      "id": "cx_lease_0003-e50",
+      "id": "cx_lease_0003-e51",
       "note": "подпись: фамилия+инициалы",
       "type": "PER"
      },
@@ -2512,7 +2567,7 @@
     {
      "e": {
       "cat": "ugly",
-      "id": "cx_lease_0003-e51",
+      "id": "cx_lease_0003-e52",
       "note": "подпись: фамилия+инициалы",
       "type": "PER"
      },

@@ -2311,6 +2311,61 @@
   {
    "chunks": [
     {
+     "s": "6. ОСОБЫЕ УСЛОВИЯ ОТДЕЛЬНЫХ ВИДОВ ДАННЫХ"
+    }
+   ],
+   "style": "bold",
+   "t": "p"
+  },
+  {
+   "chunks": [
+    {
+     "s": "6.1. Полномочия представителя подтверждены доверенностью, реестровый номер "
+    },
+    {
+     "e": {
+      "cat": "canonical",
+      "id": "works_0008-e32",
+      "note": "фабричный тип: пример из файла-описания владельца",
+      "type": "REG_NUMBER"
+     },
+     "s": "16/89-н/16-2024-3-215"
+    },
+    {
+     "s": "."
+    }
+   ],
+   "style": "normal",
+   "t": "p"
+  },
+  {
+   "chunks": [
+    {
+     "s": "6.2. Для сопоставления в учёте указывается: "
+    },
+    {
+     "n": {
+      "kind": "gost-ref",
+      "type": "REG_NUMBER",
+      "why": "ссылка на стандарт — не реестровый номер"
+     },
+     "s": "ГОСТ Р 52044-2003"
+    },
+    {
+     "s": "."
+    }
+   ],
+   "style": "normal",
+   "t": "p"
+  },
+  {
+   "chunks": [],
+   "style": "normal",
+   "t": "p"
+  },
+  {
+   "chunks": [
+    {
      "s": "РЕКВИЗИТЫ И ПОДПИСИ СТОРОН"
     }
    ],
@@ -2341,7 +2396,7 @@
          {
           "e": {
            "cat": "ugly",
-           "id": "works_0008-e32",
+           "id": "works_0008-e33",
            "note": "организация без кавычек / нестандартные кавычки",
            "type": "ORG"
           },
@@ -2359,7 +2414,7 @@
          {
           "e": {
            "cat": "canonical",
-           "id": "works_0008-e33",
+           "id": "works_0008-e34",
            "note": "стиль адреса: canonical",
            "type": "ADDRESS"
           },
@@ -2377,7 +2432,7 @@
          {
           "e": {
            "cat": "canonical",
-           "id": "works_0008-e34",
+           "id": "works_0008-e35",
            "note": "стиль адреса: canonical",
            "type": "ADDRESS"
           },
@@ -2396,7 +2451,7 @@
           "e": {
            "cat": "canonical",
            "checksum": "valid",
-           "id": "works_0008-e35",
+           "id": "works_0008-e36",
            "type": "INN"
           },
           "s": "9200114139"
@@ -2407,7 +2462,7 @@
          {
           "e": {
            "cat": "canonical",
-           "id": "works_0008-e36",
+           "id": "works_0008-e37",
            "note": "связка ИНН/КПП, якорь отрезан числом ИНН",
            "type": "KPP"
           },
@@ -2426,7 +2481,7 @@
           "e": {
            "cat": "canonical",
            "checksum": "valid",
-           "id": "works_0008-e37",
+           "id": "works_0008-e38",
            "type": "OGRN"
           },
           "s": "1699905881872"
@@ -2444,7 +2499,7 @@
           "e": {
            "cat": "canonical",
            "checksum": "valid",
-           "id": "works_0008-e38",
+           "id": "works_0008-e39",
            "type": "ACCOUNT"
           },
           "s": "40702810631595565011"
@@ -2464,7 +2519,7 @@
          {
           "e": {
            "cat": "canonical",
-           "id": "works_0008-e39",
+           "id": "works_0008-e40",
            "note": "корреспондентский счёт банка",
            "type": "ACCOUNT"
           },
@@ -2476,7 +2531,7 @@
          {
           "e": {
            "cat": "canonical",
-           "id": "works_0008-e40",
+           "id": "works_0008-e41",
            "type": "BIK"
           },
           "s": "044525555"
@@ -2493,7 +2548,7 @@
          {
           "e": {
            "cat": "canonical",
-           "id": "works_0008-e41",
+           "id": "works_0008-e42",
            "note": "формат: canonical",
            "type": "PHONE"
           },
@@ -2511,7 +2566,7 @@
          {
           "e": {
            "cat": "canonical",
-           "id": "works_0008-e42",
+           "id": "works_0008-e43",
            "type": "EMAIL"
           },
           "s": "volkova@yandex.ru"
@@ -2533,7 +2588,7 @@
          {
           "e": {
            "cat": "ugly",
-           "id": "works_0008-e43",
+           "id": "works_0008-e44",
            "note": "инициалы перед фамилией",
            "type": "PER"
           },
@@ -2564,7 +2619,7 @@
          {
           "e": {
            "cat": "canonical",
-           "id": "works_0008-e44",
+           "id": "works_0008-e45",
            "type": "PER"
           },
           "s": "Гусева Ирина Олеговна"
@@ -2581,7 +2636,7 @@
          {
           "e": {
            "cat": "canonical",
-           "id": "works_0008-e45",
+           "id": "works_0008-e46",
            "note": "стиль адреса: canonical",
            "type": "ADDRESS"
           },
@@ -2600,7 +2655,7 @@
           "e": {
            "cat": "canonical",
            "checksum": "valid",
-           "id": "works_0008-e46",
+           "id": "works_0008-e47",
            "note": "12-значный ИНН",
            "type": "INN"
           },
@@ -2613,7 +2668,7 @@
           "e": {
            "cat": "ugly",
            "checksum": "valid",
-           "id": "works_0008-e47",
+           "id": "works_0008-e48",
            "note": "ОГРНИП, 15 знаков",
            "type": "OGRN"
           },
@@ -2632,7 +2687,7 @@
           "e": {
            "cat": "canonical",
            "checksum": "valid",
-           "id": "works_0008-e48",
+           "id": "works_0008-e49",
            "type": "ACCOUNT"
           },
           "s": "40802810719913282048"
@@ -2646,7 +2701,7 @@
          {
           "e": {
            "cat": "canonical",
-           "id": "works_0008-e49",
+           "id": "works_0008-e50",
            "type": "BIK"
           },
           "s": "044525225"
@@ -2663,7 +2718,7 @@
          {
           "e": {
            "cat": "canonical",
-           "id": "works_0008-e50",
+           "id": "works_0008-e51",
            "note": "формат: canonical",
            "type": "PHONE"
           },
@@ -2681,7 +2736,7 @@
          {
           "e": {
            "cat": "canonical",
-           "id": "works_0008-e51",
+           "id": "works_0008-e52",
            "type": "EMAIL"
           },
           "s": "guseva@corp-tehno.ru"
@@ -2703,7 +2758,7 @@
          {
           "e": {
            "cat": "ugly",
-           "id": "works_0008-e52",
+           "id": "works_0008-e53",
            "note": "фамилия + инициалы",
            "type": "PER"
           },
@@ -2737,7 +2792,7 @@
          {
           "e": {
            "cat": "adversarial",
-           "id": "works_0008-e53",
+           "id": "works_0008-e54",
            "note": "первые цифры ИНН в одной ячейке, остальные — в соседней",
            "trick": "cell_boundary_split",
            "type": "INN"
@@ -2757,7 +2812,7 @@
          {
           "e": {
            "cat": "adversarial",
-           "id": "works_0008-e53",
+           "id": "works_0008-e54",
            "trick": "cell_boundary_split",
            "type": "INN"
           },
@@ -2778,7 +2833,7 @@
          {
           "e": {
            "cat": "adversarial",
-           "id": "works_0008-e54",
+           "id": "works_0008-e55",
            "note": "ФИО разорвано границей ячейки",
            "trick": "cell_boundary_split",
            "type": "PER"
@@ -2798,7 +2853,7 @@
          {
           "e": {
            "cat": "adversarial",
-           "id": "works_0008-e54",
+           "id": "works_0008-e55",
            "trick": "cell_boundary_split",
            "type": "PER"
           },
@@ -2836,7 +2891,7 @@
     {
      "e": {
       "cat": "ugly",
-      "id": "works_0008-e57",
+      "id": "works_0008-e58",
       "note": "подпись: фамилия+инициалы",
       "type": "PER"
      },
@@ -2857,7 +2912,7 @@
     {
      "e": {
       "cat": "ugly",
-      "id": "works_0008-e58",
+      "id": "works_0008-e59",
       "note": "подпись: фамилия+инициалы",
       "type": "PER"
      },
@@ -2891,7 +2946,7 @@
     {
      "e": {
       "cat": "adversarial",
-      "id": "works_0008-e55",
+      "id": "works_0008-e56",
       "note": "ФИО в нижнем колонтитуле",
       "trick": "in_footer",
       "type": "PER"
@@ -2904,7 +2959,7 @@
     {
      "e": {
       "cat": "adversarial",
-      "id": "works_0008-e56",
+      "id": "works_0008-e57",
       "note": "телефон в нижнем колонтитуле",
       "trick": "in_footer",
       "type": "PHONE"

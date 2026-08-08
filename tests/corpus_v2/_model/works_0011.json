@@ -2024,6 +2024,61 @@
   {
    "chunks": [
     {
+     "s": "6. ОСОБЫЕ УСЛОВИЯ ОТДЕЛЬНЫХ ВИДОВ ДАННЫХ"
+    }
+   ],
+   "style": "bold",
+   "t": "p"
+  },
+  {
+   "chunks": [
+    {
+     "s": "6.1. Полномочия представителя подтверждены доверенностью, реестровый номер "
+    },
+    {
+     "e": {
+      "cat": "canonical",
+      "id": "works_0011-e30",
+      "note": "фабричный тип: пример из файла-описания владельца",
+      "type": "REG_NUMBER"
+     },
+     "s": "23/5-н/23-2025-2-1104"
+    },
+    {
+     "s": "."
+    }
+   ],
+   "style": "normal",
+   "t": "p"
+  },
+  {
+   "chunks": [
+    {
+     "s": "6.2. Для сопоставления в учёте указывается: "
+    },
+    {
+     "n": {
+      "kind": "cadastral",
+      "type": "REG_NUMBER",
+      "why": "чужая номенклатура: двоеточия, нет группы «-н» — не реестровый номер стороны"
+     },
+     "s": "кадастровый номер 77:01:0004012:2211"
+    },
+    {
+     "s": "."
+    }
+   ],
+   "style": "normal",
+   "t": "p"
+  },
+  {
+   "chunks": [],
+   "style": "normal",
+   "t": "p"
+  },
+  {
+   "chunks": [
+    {
      "s": "РЕКВИЗИТЫ И ПОДПИСИ СТОРОН"
     }
    ],
@@ -2052,7 +2107,7 @@
     {
      "e": {
       "cat": "canonical",
-      "id": "works_0011-e30",
+      "id": "works_0011-e31",
       "type": "PER"
      },
      "s": "Волков Сергей Михайлович"
@@ -2069,7 +2124,7 @@
     {
      "e": {
       "cat": "ugly",
-      "id": "works_0011-e31",
+      "id": "works_0011-e32",
       "note": "стиль адреса: city_middle",
       "type": "ADDRESS"
      },
@@ -2088,7 +2143,7 @@
      "e": {
       "cat": "canonical",
       "checksum": "valid",
-      "id": "works_0011-e32",
+      "id": "works_0011-e33",
       "note": "12-значный ИНН",
       "type": "INN"
      },
@@ -2101,7 +2156,7 @@
      "e": {
       "cat": "ugly",
       "checksum": "valid",
-      "id": "works_0011-e33",
+      "id": "works_0011-e34",
       "note": "ОГРНИП, 15 знаков",
       "type": "OGRN"
      },
@@ -2120,7 +2175,7 @@
      "e": {
       "cat": "canonical",
       "checksum": "valid",
-      "id": "works_0011-e34",
+      "id": "works_0011-e35",
       "type": "ACCOUNT"
      },
      "s": "40802810207364318241"
@@ -2134,7 +2189,7 @@
     {
      "e": {
       "cat": "canonical",
-      "id": "works_0011-e35",
+      "id": "works_0011-e36",
       "type": "BIK"
      },
      "s": "044030790"
@@ -2151,7 +2206,7 @@
     {
      "e": {
       "cat": "canonical",
-      "id": "works_0011-e36",
+      "id": "works_0011-e37",
       "note": "формат: canonical",
       "type": "PHONE"
      },
@@ -2169,7 +2224,7 @@
     {
      "e": {
       "cat": "canonical",
-      "id": "works_0011-e37",
+      "id": "works_0011-e38",
       "type": "EMAIL"
      },
      "s": "volkov@mail.ru"
@@ -2191,7 +2246,7 @@
     {
      "e": {
       "cat": "ugly",
-      "id": "works_0011-e38",
+      "id": "works_0011-e39",
       "note": "фамилия + инициалы",
       "type": "PER"
      },
@@ -2220,7 +2275,7 @@
     {
      "e": {
       "cat": "canonical",
-      "id": "works_0011-e39",
+      "id": "works_0011-e40",
       "type": "PER"
      },
      "s": "Оганесян Гурген Ашотович"
@@ -2237,7 +2292,7 @@
     {
      "e": {
       "cat": "canonical",
-      "id": "works_0011-e40",
+      "id": "works_0011-e41",
       "note": "стиль записи из BIRTHDATE_STYLES",
       "type": "BIRTHDATE"
      },
@@ -2255,7 +2310,7 @@
     {
      "e": {
       "cat": "ugly",
-      "id": "works_0011-e41",
+      "id": "works_0011-e42",
       "note": "стиль адреса: city_middle",
       "type": "ADDRESS"
      },
@@ -2273,7 +2328,7 @@
     {
      "e": {
       "cat": "canonical",
-      "id": "works_0011-e42",
+      "id": "works_0011-e43",
       "note": "серия+номер, стиль записи из PASSPORT_STYLES",
       "type": "PASSPORT"
      },
@@ -2288,7 +2343,7 @@
     {
      "e": {
       "cat": "ugly",
-      "id": "works_0011-e43",
+      "id": "works_0011-e44",
       "note": "код подразделения, стиль записи из DEPTCODE_STYLES",
       "type": "PASSPORT"
      },
@@ -2307,7 +2362,7 @@
      "e": {
       "cat": "canonical",
       "checksum": "valid",
-      "id": "works_0011-e44",
+      "id": "works_0011-e45",
       "note": "стиль записи из SNILS_STYLES",
       "type": "SNILS"
      },
@@ -2320,7 +2375,7 @@
      "e": {
       "cat": "ugly",
       "checksum": "valid",
-      "id": "works_0011-e45",
+      "id": "works_0011-e46",
       "note": "ИНН физлица (12 знаков)",
       "type": "INN"
      },
@@ -2338,7 +2393,7 @@
     {
      "e": {
       "cat": "canonical",
-      "id": "works_0011-e46",
+      "id": "works_0011-e47",
       "note": "формат: canonical",
       "type": "PHONE"
      },
@@ -2356,7 +2411,7 @@
     {
      "e": {
       "cat": "canonical",
-      "id": "works_0011-e47",
+      "id": "works_0011-e48",
       "type": "EMAIL"
      },
      "s": "oganesyan@gmail.com"
@@ -2378,7 +2433,7 @@
     {
      "e": {
       "cat": "ugly",
-      "id": "works_0011-e48",
+      "id": "works_0011-e49",
       "note": "фамилия + инициалы",
       "type": "PER"
      },
@@ -2415,7 +2470,7 @@
     {
      "e": {
       "cat": "ugly",
-      "id": "works_0011-e49",
+      "id": "works_0011-e50",
       "note": "подпись: фамилия+инициалы",
       "type": "PER"
      },
@@ -2436,7 +2491,7 @@
     {
      "e": {
       "cat": "ugly",
-      "id": "works_0011-e50",
+      "id": "works_0011-e51",
       "note": "подпись: фамилия+инициалы",
       "type": "PER"
      },

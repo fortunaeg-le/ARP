@@ -160,7 +160,7 @@
     {
      "e": {
       "cat": "adversarial",
-      "id": "lease_0004-e41",
+      "id": "lease_0004-e42",
       "note": "адрес в сноске",
       "trick": "in_footnote",
       "type": "ADDRESS"
@@ -173,7 +173,7 @@
     {
      "e": {
       "cat": "adversarial",
-      "id": "lease_0004-e42",
+      "id": "lease_0004-e43",
       "note": "ИНН в сноске",
       "trick": "in_footnote",
       "type": "INN"
@@ -186,7 +186,7 @@
     {
      "e": {
       "cat": "adversarial",
-      "id": "lease_0004-e43",
+      "id": "lease_0004-e44",
       "note": "ФИО в сноске",
       "trick": "in_footnote",
       "type": "PER"
@@ -1963,6 +1963,61 @@
   {
    "chunks": [
     {
+     "s": "6. ОСОБЫЕ УСЛОВИЯ ОТДЕЛЬНЫХ ВИДОВ ДАННЫХ"
+    }
+   ],
+   "style": "bold",
+   "t": "p"
+  },
+  {
+   "chunks": [
+    {
+     "s": "6.1. Полномочия представителя подтверждены доверенностью, реестровый номер "
+    },
+    {
+     "e": {
+      "cat": "canonical",
+      "id": "lease_0004-e23",
+      "note": "фабричный тип: пример из файла-описания владельца",
+      "type": "REG_NUMBER"
+     },
+     "s": "78/1445-н/78-2022-12-7"
+    },
+    {
+     "s": "."
+    }
+   ],
+   "style": "normal",
+   "t": "p"
+  },
+  {
+   "chunks": [
+    {
+     "s": "6.2. Для сопоставления в учёте указывается: "
+    },
+    {
+     "n": {
+      "kind": "gost-ref",
+      "type": "REG_NUMBER",
+      "why": "ссылка на стандарт — не реестровый номер"
+     },
+     "s": "ГОСТ Р 52044-2003"
+    },
+    {
+     "s": "."
+    }
+   ],
+   "style": "normal",
+   "t": "p"
+  },
+  {
+   "chunks": [],
+   "style": "normal",
+   "t": "p"
+  },
+  {
+   "chunks": [
+    {
      "s": "РЕКВИЗИТЫ И ПОДПИСИ СТОРОН"
     }
    ],
@@ -1996,7 +2051,7 @@
          {
           "e": {
            "cat": "canonical",
-           "id": "lease_0004-e23",
+           "id": "lease_0004-e24",
            "type": "PER"
           },
           "s": "Комаров Дмитрий Михайлович"
@@ -2013,7 +2068,7 @@
          {
           "e": {
            "cat": "ugly",
-           "id": "lease_0004-e24",
+           "id": "lease_0004-e25",
            "note": "стиль адреса: pobox",
            "type": "ADDRESS"
           },
@@ -2032,7 +2087,7 @@
           "e": {
            "cat": "canonical",
            "checksum": "invalid",
-           "id": "lease_0004-e25",
+           "id": "lease_0004-e26",
            "note": "12-значный ИНН",
            "type": "INN"
           },
@@ -2045,7 +2100,7 @@
           "e": {
            "cat": "ugly",
            "checksum": "invalid",
-           "id": "lease_0004-e26",
+           "id": "lease_0004-e27",
            "note": "ОГРНИП, 15 знаков",
            "type": "OGRN"
           },
@@ -2064,7 +2119,7 @@
           "e": {
            "cat": "canonical",
            "checksum": "invalid",
-           "id": "lease_0004-e27",
+           "id": "lease_0004-e28",
            "type": "ACCOUNT"
           },
           "s": "40802810954827401040"
@@ -2078,7 +2133,7 @@
          {
           "e": {
            "cat": "canonical",
-           "id": "lease_0004-e28",
+           "id": "lease_0004-e29",
            "type": "BIK"
           },
           "s": "044525187"
@@ -2095,7 +2150,7 @@
          {
           "e": {
            "cat": "ugly",
-           "id": "lease_0004-e29",
+           "id": "lease_0004-e30",
            "note": "формат: dashes8",
            "type": "PHONE"
           },
@@ -2113,7 +2168,7 @@
          {
           "e": {
            "cat": "canonical",
-           "id": "lease_0004-e30",
+           "id": "lease_0004-e31",
            "type": "EMAIL"
           },
           "s": "komarov@corp-tehno.ru"
@@ -2135,7 +2190,7 @@
          {
           "e": {
            "cat": "ugly",
-           "id": "lease_0004-e31",
+           "id": "lease_0004-e32",
            "note": "фамилия + инициалы",
            "type": "PER"
           },
@@ -2166,7 +2221,7 @@
          {
           "e": {
            "cat": "canonical",
-           "id": "lease_0004-e32",
+           "id": "lease_0004-e33",
            "type": "PER"
           },
           "s": "Воробьёв Николай Юрьевич"
@@ -2183,7 +2238,7 @@
          {
           "e": {
            "cat": "ugly",
-           "id": "lease_0004-e33",
+           "id": "lease_0004-e34",
            "note": "стиль адреса: pobox",
            "type": "ADDRESS"
           },
@@ -2202,7 +2257,7 @@
           "e": {
            "cat": "canonical",
            "checksum": "invalid",
-           "id": "lease_0004-e34",
+           "id": "lease_0004-e35",
            "note": "12-значный ИНН",
            "type": "INN"
           },
@@ -2215,7 +2270,7 @@
           "e": {
            "cat": "ugly",
            "checksum": "invalid",
-           "id": "lease_0004-e35",
+           "id": "lease_0004-e36",
            "note": "ОГРНИП, 15 знаков",
            "type": "OGRN"
           },
@@ -2234,7 +2289,7 @@
           "e": {
            "cat": "canonical",
            "checksum": "invalid",
-           "id": "lease_0004-e36",
+           "id": "lease_0004-e37",
            "type": "ACCOUNT"
           },
           "s": "40802810944285425968"
@@ -2248,7 +2303,7 @@
          {
           "e": {
            "cat": "canonical",
-           "id": "lease_0004-e37",
+           "id": "lease_0004-e38",
            "type": "BIK"
           },
           "s": "045004763"
@@ -2265,7 +2320,7 @@
          {
           "e": {
            "cat": "ugly",
-           "id": "lease_0004-e38",
+           "id": "lease_0004-e39",
            "note": "формат: dashes8",
            "type": "PHONE"
           },
@@ -2283,7 +2338,7 @@
          {
           "e": {
            "cat": "canonical",
-           "id": "lease_0004-e39",
+           "id": "lease_0004-e40",
            "type": "EMAIL"
           },
           "s": "vorobev@yandex.ru"
@@ -2305,7 +2360,7 @@
          {
           "e": {
            "cat": "ugly",
-           "id": "lease_0004-e40",
+           "id": "lease_0004-e41",
            "note": "фамилия + инициалы",
            "type": "PER"
           },
@@ -2343,7 +2398,7 @@
     {
      "e": {
       "cat": "ugly",
-      "id": "lease_0004-e44",
+      "id": "lease_0004-e45",
       "note": "подпись: фамилия+инициалы",
       "type": "PER"
      },
@@ -2364,7 +2419,7 @@
     {
      "e": {
       "cat": "ugly",
-      "id": "lease_0004-e45",
+      "id": "lease_0004-e46",
       "note": "подпись: фамилия+инициалы",
       "type": "PER"
      },

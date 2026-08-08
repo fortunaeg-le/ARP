@@ -2040,6 +2040,61 @@
   {
    "chunks": [
     {
+     "s": "6. ОСОБЫЕ УСЛОВИЯ ОТДЕЛЬНЫХ ВИДОВ ДАННЫХ"
+    }
+   ],
+   "style": "bold",
+   "t": "p"
+  },
+  {
+   "chunks": [
+    {
+     "s": "6.1. Полномочия представителя подтверждены доверенностью, реестровый номер "
+    },
+    {
+     "e": {
+      "cat": "canonical",
+      "id": "agency_0005-e31",
+      "note": "фабричный тип: пример из файла-описания владельца",
+      "type": "REG_NUMBER"
+     },
+     "s": "50/121-н/50-2023-4-88"
+    },
+    {
+     "s": "."
+    }
+   ],
+   "style": "normal",
+   "t": "p"
+  },
+  {
+   "chunks": [
+    {
+     "s": "6.2. Для сопоставления в учёте указывается: "
+    },
+    {
+     "n": {
+      "kind": "cadastral",
+      "type": "REG_NUMBER",
+      "why": "чужая номенклатура: двоеточия, нет группы «-н» — не реестровый номер стороны"
+     },
+     "s": "кадастровый номер 77:01:0004012:2211"
+    },
+    {
+     "s": "."
+    }
+   ],
+   "style": "normal",
+   "t": "p"
+  },
+  {
+   "chunks": [],
+   "style": "normal",
+   "t": "p"
+  },
+  {
+   "chunks": [
+    {
      "s": "РЕКВИЗИТЫ И ПОДПИСИ СТОРОН"
     }
    ],
@@ -2068,7 +2123,7 @@
     {
      "e": {
       "cat": "canonical",
-      "id": "agency_0005-e31",
+      "id": "agency_0005-e32",
       "type": "PER"
      },
      "s": "Кузнецова Анна Михайловна"
@@ -2085,7 +2140,7 @@
     {
      "e": {
       "cat": "canonical",
-      "id": "agency_0005-e32",
+      "id": "agency_0005-e33",
       "note": "стиль адреса: canonical",
       "type": "ADDRESS"
      },
@@ -2104,7 +2159,7 @@
      "e": {
       "cat": "canonical",
       "checksum": "valid",
-      "id": "agency_0005-e33",
+      "id": "agency_0005-e34",
       "note": "12-значный ИНН",
       "type": "INN"
      },
@@ -2117,7 +2172,7 @@
      "e": {
       "cat": "ugly",
       "checksum": "valid",
-      "id": "agency_0005-e34",
+      "id": "agency_0005-e35",
       "note": "ОГРНИП, 15 знаков",
       "type": "OGRN"
      },
@@ -2136,7 +2191,7 @@
      "e": {
       "cat": "canonical",
       "checksum": "valid",
-      "id": "agency_0005-e35",
+      "id": "agency_0005-e36",
       "type": "ACCOUNT"
      },
      "s": "40802810549081646317"
@@ -2150,7 +2205,7 @@
     {
      "e": {
       "cat": "canonical",
-      "id": "agency_0005-e36",
+      "id": "agency_0005-e37",
       "type": "BIK"
      },
      "s": "049205603"
@@ -2167,7 +2222,7 @@
     {
      "e": {
       "cat": "canonical",
-      "id": "agency_0005-e37",
+      "id": "agency_0005-e38",
       "note": "формат: canonical",
       "type": "PHONE"
      },
@@ -2185,7 +2240,7 @@
     {
      "e": {
       "cat": "canonical",
-      "id": "agency_0005-e38",
+      "id": "agency_0005-e39",
       "type": "EMAIL"
      },
      "s": "kuznecova@bk.ru"
@@ -2207,7 +2262,7 @@
     {
      "e": {
       "cat": "ugly",
-      "id": "agency_0005-e39",
+      "id": "agency_0005-e40",
       "note": "фамилия + инициалы",
       "type": "PER"
      },
@@ -2236,7 +2291,7 @@
     {
      "e": {
       "cat": "canonical",
-      "id": "agency_0005-e40",
+      "id": "agency_0005-e41",
       "type": "PER"
      },
      "s": "Петров Иван Олегович"
@@ -2253,7 +2308,7 @@
     {
      "e": {
       "cat": "canonical",
-      "id": "agency_0005-e41",
+      "id": "agency_0005-e42",
       "note": "стиль записи из BIRTHDATE_STYLES",
       "type": "BIRTHDATE"
      },
@@ -2271,7 +2326,7 @@
     {
      "e": {
       "cat": "canonical",
-      "id": "agency_0005-e42",
+      "id": "agency_0005-e43",
       "note": "стиль адреса: canonical",
       "type": "ADDRESS"
      },
@@ -2289,7 +2344,7 @@
     {
      "e": {
       "cat": "ugly",
-      "id": "agency_0005-e43",
+      "id": "agency_0005-e44",
       "note": "серия+номер, стиль записи из PASSPORT_STYLES",
       "type": "PASSPORT"
      },
@@ -2304,7 +2359,7 @@
     {
      "e": {
       "cat": "ugly",
-      "id": "agency_0005-e44",
+      "id": "agency_0005-e45",
       "note": "код подразделения, стиль записи из DEPTCODE_STYLES",
       "type": "PASSPORT"
      },
@@ -2323,7 +2378,7 @@
      "e": {
       "cat": "canonical",
       "checksum": "valid",
-      "id": "agency_0005-e45",
+      "id": "agency_0005-e46",
       "note": "стиль записи из SNILS_STYLES",
       "type": "SNILS"
      },
@@ -2336,7 +2391,7 @@
      "e": {
       "cat": "ugly",
       "checksum": "valid",
-      "id": "agency_0005-e46",
+      "id": "agency_0005-e47",
       "note": "ИНН физлица (12 знаков)",
       "type": "INN"
      },
@@ -2354,7 +2409,7 @@
     {
      "e": {
       "cat": "canonical",
-      "id": "agency_0005-e47",
+      "id": "agency_0005-e48",
       "note": "формат: canonical",
       "type": "PHONE"
      },
@@ -2372,7 +2427,7 @@
     {
      "e": {
       "cat": "canonical",
-      "id": "agency_0005-e48",
+      "id": "agency_0005-e49",
       "type": "EMAIL"
      },
      "s": "petrov@corp-tehno.ru"
@@ -2394,7 +2449,7 @@
     {
      "e": {
       "cat": "ugly",
-      "id": "agency_0005-e49",
+      "id": "agency_0005-e50",
       "note": "фамилия + инициалы",
       "type": "PER"
      },
@@ -2431,7 +2486,7 @@
     {
      "e": {
       "cat": "ugly",
-      "id": "agency_0005-e50",
+      "id": "agency_0005-e51",
       "note": "подпись: фамилия+инициалы",
       "type": "PER"
      },
@@ -2452,7 +2507,7 @@
     {
      "e": {
       "cat": "ugly",
-      "id": "agency_0005-e51",
+      "id": "agency_0005-e52",
       "note": "подпись: фамилия+инициалы",
       "type": "PER"
      },

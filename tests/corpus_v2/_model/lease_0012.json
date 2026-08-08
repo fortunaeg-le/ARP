@@ -210,7 +210,7 @@
     {
      "e": {
       "cat": "adversarial",
-      "id": "lease_0012-e50",
+      "id": "lease_0012-e51",
       "note": "адрес в сноске",
       "trick": "in_footnote",
       "type": "ADDRESS"
@@ -223,7 +223,7 @@
     {
      "e": {
       "cat": "adversarial",
-      "id": "lease_0012-e51",
+      "id": "lease_0012-e52",
       "note": "ИНН в сноске",
       "trick": "in_footnote",
       "type": "INN"
@@ -236,7 +236,7 @@
     {
      "e": {
       "cat": "adversarial",
-      "id": "lease_0012-e52",
+      "id": "lease_0012-e53",
       "note": "ФИО в сноске",
       "trick": "in_footnote",
       "type": "PER"
@@ -2090,6 +2090,61 @@
   {
    "chunks": [
     {
+     "s": "6. ОСОБЫЕ УСЛОВИЯ ОТДЕЛЬНЫХ ВИДОВ ДАННЫХ"
+    }
+   ],
+   "style": "bold",
+   "t": "p"
+  },
+  {
+   "chunks": [
+    {
+     "s": "6.1. Полномочия представителя подтверждены доверенностью, реестровый номер "
+    },
+    {
+     "e": {
+      "cat": "canonical",
+      "id": "lease_0012-e28",
+      "note": "фабричный тип: пример из файла-описания владельца",
+      "type": "REG_NUMBER"
+     },
+     "s": "50/121-н/50-2023-4-88"
+    },
+    {
+     "s": "."
+    }
+   ],
+   "style": "normal",
+   "t": "p"
+  },
+  {
+   "chunks": [
+    {
+     "s": "6.2. Для сопоставления в учёте указывается: "
+    },
+    {
+     "n": {
+      "kind": "gost-ref",
+      "type": "REG_NUMBER",
+      "why": "ссылка на стандарт — не реестровый номер"
+     },
+     "s": "ГОСТ Р 52044-2003"
+    },
+    {
+     "s": "."
+    }
+   ],
+   "style": "normal",
+   "t": "p"
+  },
+  {
+   "chunks": [],
+   "style": "normal",
+   "t": "p"
+  },
+  {
+   "chunks": [
+    {
      "s": "РЕКВИЗИТЫ И ПОДПИСИ СТОРОН"
     }
    ],
@@ -2120,7 +2175,7 @@
          {
           "e": {
            "cat": "canonical",
-           "id": "lease_0012-e28",
+           "id": "lease_0012-e29",
            "type": "PER"
           },
           "s": "Соколова Светлана Андреевна"
@@ -2137,7 +2192,7 @@
          {
           "e": {
            "cat": "canonical",
-           "id": "lease_0012-e29",
+           "id": "lease_0012-e30",
            "note": "стиль записи из BIRTHDATE_STYLES",
            "type": "BIRTHDATE"
           },
@@ -2155,7 +2210,7 @@
          {
           "e": {
            "cat": "canonical",
-           "id": "lease_0012-e30",
+           "id": "lease_0012-e31",
            "note": "стиль адреса: canonical",
            "type": "ADDRESS"
           },
@@ -2173,7 +2228,7 @@
          {
           "e": {
            "cat": "canonical",
-           "id": "lease_0012-e31",
+           "id": "lease_0012-e32",
            "note": "серия+номер, стиль записи из PASSPORT_STYLES",
            "type": "PASSPORT"
           },
@@ -2188,7 +2243,7 @@
          {
           "e": {
            "cat": "ugly",
-           "id": "lease_0012-e32",
+           "id": "lease_0012-e33",
            "note": "код подразделения, стиль записи из DEPTCODE_STYLES",
            "type": "PASSPORT"
           },
@@ -2207,7 +2262,7 @@
           "e": {
            "cat": "canonical",
            "checksum": "valid",
-           "id": "lease_0012-e33",
+           "id": "lease_0012-e34",
            "note": "стиль записи из SNILS_STYLES",
            "type": "SNILS"
           },
@@ -2220,7 +2275,7 @@
           "e": {
            "cat": "ugly",
            "checksum": "valid",
-           "id": "lease_0012-e34",
+           "id": "lease_0012-e35",
            "note": "ИНН физлица (12 знаков)",
            "type": "INN"
           },
@@ -2238,7 +2293,7 @@
          {
           "e": {
            "cat": "ugly",
-           "id": "lease_0012-e35",
+           "id": "lease_0012-e36",
            "note": "формат: tight8",
            "type": "PHONE"
           },
@@ -2256,7 +2311,7 @@
          {
           "e": {
            "cat": "canonical",
-           "id": "lease_0012-e36",
+           "id": "lease_0012-e37",
            "type": "EMAIL"
           },
           "s": "sokolova@list.ru"
@@ -2278,7 +2333,7 @@
          {
           "e": {
            "cat": "ugly",
-           "id": "lease_0012-e37",
+           "id": "lease_0012-e38",
            "note": "фамилия + инициалы",
            "type": "PER"
           },
@@ -2306,7 +2361,7 @@
          {
           "e": {
            "cat": "canonical",
-           "id": "lease_0012-e38",
+           "id": "lease_0012-e39",
            "type": "PER"
           },
           "s": "Смирнова Ирина Петровна"
@@ -2323,7 +2378,7 @@
          {
           "e": {
            "cat": "canonical",
-           "id": "lease_0012-e39",
+           "id": "lease_0012-e40",
            "note": "стиль записи из BIRTHDATE_STYLES",
            "type": "BIRTHDATE"
           },
@@ -2341,7 +2396,7 @@
          {
           "e": {
            "cat": "canonical",
-           "id": "lease_0012-e40",
+           "id": "lease_0012-e41",
            "note": "стиль адреса: canonical",
            "type": "ADDRESS"
           },
@@ -2359,7 +2414,7 @@
          {
           "e": {
            "cat": "canonical",
-           "id": "lease_0012-e41",
+           "id": "lease_0012-e42",
            "note": "серия+номер, стиль записи из PASSPORT_STYLES",
            "type": "PASSPORT"
           },
@@ -2374,7 +2429,7 @@
          {
           "e": {
            "cat": "ugly",
-           "id": "lease_0012-e42",
+           "id": "lease_0012-e43",
            "note": "код подразделения, стиль записи из DEPTCODE_STYLES",
            "type": "PASSPORT"
           },
@@ -2393,7 +2448,7 @@
           "e": {
            "cat": "canonical",
            "checksum": "valid",
-           "id": "lease_0012-e43",
+           "id": "lease_0012-e44",
            "note": "стиль записи из SNILS_STYLES",
            "type": "SNILS"
           },
@@ -2406,7 +2461,7 @@
           "e": {
            "cat": "ugly",
            "checksum": "valid",
-           "id": "lease_0012-e44",
+           "id": "lease_0012-e45",
            "note": "ИНН физлица (12 знаков)",
            "type": "INN"
           },
@@ -2424,7 +2479,7 @@
          {
           "e": {
            "cat": "ugly",
-           "id": "lease_0012-e45",
+           "id": "lease_0012-e46",
            "note": "формат: tight8",
            "type": "PHONE"
           },
@@ -2442,7 +2497,7 @@
          {
           "e": {
            "cat": "canonical",
-           "id": "lease_0012-e46",
+           "id": "lease_0012-e47",
            "type": "EMAIL"
           },
           "s": "smirnova@yandex.ru"
@@ -2464,7 +2519,7 @@
          {
           "e": {
            "cat": "ugly",
-           "id": "lease_0012-e47",
+           "id": "lease_0012-e48",
            "note": "фамилия + инициалы",
            "type": "PER"
           },
@@ -2498,7 +2553,7 @@
          {
           "e": {
            "cat": "adversarial",
-           "id": "lease_0012-e48",
+           "id": "lease_0012-e49",
            "note": "первые цифры ИНН в одной ячейке, остальные — в соседней",
            "trick": "cell_boundary_split",
            "type": "INN"
@@ -2518,7 +2573,7 @@
          {
           "e": {
            "cat": "adversarial",
-           "id": "lease_0012-e48",
+           "id": "lease_0012-e49",
            "trick": "cell_boundary_split",
            "type": "INN"
           },
@@ -2539,7 +2594,7 @@
          {
           "e": {
            "cat": "adversarial",
-           "id": "lease_0012-e49",
+           "id": "lease_0012-e50",
            "note": "ФИО разорвано границей ячейки",
            "trick": "cell_boundary_split",
            "type": "PER"
@@ -2559,7 +2614,7 @@
          {
           "e": {
            "cat": "adversarial",
-           "id": "lease_0012-e49",
+           "id": "lease_0012-e50",
            "trick": "cell_boundary_split",
            "type": "PER"
           },
@@ -2597,7 +2652,7 @@
     {
      "e": {
       "cat": "ugly",
-      "id": "lease_0012-e53",
+      "id": "lease_0012-e54",
       "note": "подпись: фамилия+инициалы",
       "type": "PER"
      },
@@ -2618,7 +2673,7 @@
     {
      "e": {
       "cat": "ugly",
-      "id": "lease_0012-e54",
+      "id": "lease_0012-e55",
       "note": "подпись: фамилия+инициалы",
       "type": "PER"
      },

@@ -2013,6 +2013,61 @@
   {
    "chunks": [
     {
+     "s": "6. ОСОБЫЕ УСЛОВИЯ ОТДЕЛЬНЫХ ВИДОВ ДАННЫХ"
+    }
+   ],
+   "style": "bold",
+   "t": "p"
+  },
+  {
+   "chunks": [
+    {
+     "s": "6.1. Полномочия представителя подтверждены доверенностью, реестровый номер "
+    },
+    {
+     "e": {
+      "cat": "canonical",
+      "id": "cx_labor_0026-e26",
+      "note": "фабричный тип: пример из файла-описания владельца",
+      "type": "REG_NUMBER"
+     },
+     "s": "77/714-н/77-2024-1-502"
+    },
+    {
+     "s": "."
+    }
+   ],
+   "style": "normal",
+   "t": "p"
+  },
+  {
+   "chunks": [
+    {
+     "s": "6.2. Для сопоставления в учёте указывается: "
+    },
+    {
+     "n": {
+      "kind": "gost-ref",
+      "type": "REG_NUMBER",
+      "why": "ссылка на стандарт — не реестровый номер"
+     },
+     "s": "ГОСТ Р 52044-2003"
+    },
+    {
+     "s": "."
+    }
+   ],
+   "style": "normal",
+   "t": "p"
+  },
+  {
+   "chunks": [],
+   "style": "normal",
+   "t": "p"
+  },
+  {
+   "chunks": [
+    {
      "s": "РЕКВИЗИТЫ И ПОДПИСИ СТОРОН"
     }
    ],
@@ -2043,7 +2098,7 @@
          {
           "e": {
            "cat": "canonical",
-           "id": "cx_labor_0026-e26",
+           "id": "cx_labor_0026-e27",
            "type": "ORG"
           },
           "s": "ООО «Василёк»"
@@ -2060,7 +2115,7 @@
          {
           "e": {
            "cat": "canonical",
-           "id": "cx_labor_0026-e27",
+           "id": "cx_labor_0026-e28",
            "note": "стиль адреса: canonical",
            "type": "ADDRESS"
           },
@@ -2078,7 +2133,7 @@
          {
           "e": {
            "cat": "canonical",
-           "id": "cx_labor_0026-e28",
+           "id": "cx_labor_0026-e29",
            "note": "стиль адреса: canonical",
            "type": "ADDRESS"
           },
@@ -2097,7 +2152,7 @@
           "e": {
            "cat": "canonical",
            "checksum": "valid",
-           "id": "cx_labor_0026-e29",
+           "id": "cx_labor_0026-e30",
            "type": "INN"
           },
           "s": "3657524119"
@@ -2108,7 +2163,7 @@
          {
           "e": {
            "cat": "canonical",
-           "id": "cx_labor_0026-e30",
+           "id": "cx_labor_0026-e31",
            "type": "KPP"
           },
           "s": "654672671"
@@ -2126,7 +2181,7 @@
           "e": {
            "cat": "canonical",
            "checksum": "valid",
-           "id": "cx_labor_0026-e31",
+           "id": "cx_labor_0026-e32",
            "type": "OGRN"
           },
           "s": "1394118094006"
@@ -2144,7 +2199,7 @@
           "e": {
            "cat": "canonical",
            "checksum": "valid",
-           "id": "cx_labor_0026-e32",
+           "id": "cx_labor_0026-e33",
            "type": "ACCOUNT"
           },
           "s": "40702810952565350269"
@@ -2164,7 +2219,7 @@
          {
           "e": {
            "cat": "canonical",
-           "id": "cx_labor_0026-e33",
+           "id": "cx_labor_0026-e34",
            "note": "корреспондентский счёт банка",
            "type": "ACCOUNT"
           },
@@ -2176,7 +2231,7 @@
          {
           "e": {
            "cat": "canonical",
-           "id": "cx_labor_0026-e34",
+           "id": "cx_labor_0026-e35",
            "type": "BIK"
           },
           "s": "044525225"
@@ -2193,7 +2248,7 @@
          {
           "e": {
            "cat": "canonical",
-           "id": "cx_labor_0026-e35",
+           "id": "cx_labor_0026-e36",
            "note": "формат: canonical",
            "type": "PHONE"
           },
@@ -2211,7 +2266,7 @@
          {
           "e": {
            "cat": "canonical",
-           "id": "cx_labor_0026-e36",
+           "id": "cx_labor_0026-e37",
            "type": "EMAIL"
           },
           "s": "zaycev@corp-tehno.ru"
@@ -2233,7 +2288,7 @@
          {
           "e": {
            "cat": "ugly",
-           "id": "cx_labor_0026-e37",
+           "id": "cx_labor_0026-e38",
            "note": "инициалы перед фамилией",
            "type": "PER"
           },
@@ -2261,7 +2316,7 @@
          {
           "e": {
            "cat": "canonical",
-           "id": "cx_labor_0026-e38",
+           "id": "cx_labor_0026-e39",
            "type": "ORG"
           },
           "s": "ООО «Ромашка»"
@@ -2278,7 +2333,7 @@
          {
           "e": {
            "cat": "canonical",
-           "id": "cx_labor_0026-e39",
+           "id": "cx_labor_0026-e40",
            "note": "стиль адреса: canonical",
            "type": "ADDRESS"
           },
@@ -2296,7 +2351,7 @@
          {
           "e": {
            "cat": "canonical",
-           "id": "cx_labor_0026-e40",
+           "id": "cx_labor_0026-e41",
            "note": "стиль адреса: canonical",
            "type": "ADDRESS"
           },
@@ -2315,7 +2370,7 @@
           "e": {
            "cat": "canonical",
            "checksum": "valid",
-           "id": "cx_labor_0026-e41",
+           "id": "cx_labor_0026-e42",
            "type": "INN"
           },
           "s": "4335902488"
@@ -2326,7 +2381,7 @@
          {
           "e": {
            "cat": "canonical",
-           "id": "cx_labor_0026-e42",
+           "id": "cx_labor_0026-e43",
            "type": "KPP"
           },
           "s": "452530895"
@@ -2344,7 +2399,7 @@
           "e": {
            "cat": "canonical",
            "checksum": "valid",
-           "id": "cx_labor_0026-e43",
+           "id": "cx_labor_0026-e44",
            "type": "OGRN"
           },
           "s": "1041326790779"
@@ -2362,7 +2417,7 @@
           "e": {
            "cat": "canonical",
            "checksum": "valid",
-           "id": "cx_labor_0026-e44",
+           "id": "cx_labor_0026-e45",
            "type": "ACCOUNT"
           },
           "s": "40702810153526867651"
@@ -2382,7 +2437,7 @@
          {
           "e": {
            "cat": "canonical",
-           "id": "cx_labor_0026-e45",
+           "id": "cx_labor_0026-e46",
            "note": "корреспондентский счёт банка",
            "type": "ACCOUNT"
           },
@@ -2394,7 +2449,7 @@
          {
           "e": {
            "cat": "canonical",
-           "id": "cx_labor_0026-e46",
+           "id": "cx_labor_0026-e47",
            "type": "BIK"
           },
           "s": "044525555"
@@ -2411,7 +2466,7 @@
          {
           "e": {
            "cat": "canonical",
-           "id": "cx_labor_0026-e47",
+           "id": "cx_labor_0026-e48",
            "note": "формат: canonical",
            "type": "PHONE"
           },
@@ -2429,7 +2484,7 @@
          {
           "e": {
            "cat": "canonical",
-           "id": "cx_labor_0026-e48",
+           "id": "cx_labor_0026-e49",
            "type": "EMAIL"
           },
           "s": "volkova@corp-tehno.ru"
@@ -2451,7 +2506,7 @@
          {
           "e": {
            "cat": "ugly",
-           "id": "cx_labor_0026-e49",
+           "id": "cx_labor_0026-e50",
            "note": "инициалы перед фамилией",
            "type": "PER"
           },
@@ -2489,7 +2544,7 @@
     {
      "e": {
       "cat": "ugly",
-      "id": "cx_labor_0026-e50",
+      "id": "cx_labor_0026-e51",
       "note": "подпись: фамилия+инициалы",
       "type": "PER"
      },
@@ -2510,7 +2565,7 @@
     {
      "e": {
       "cat": "ugly",
-      "id": "cx_labor_0026-e51",
+      "id": "cx_labor_0026-e52",
       "note": "подпись: фамилия+инициалы",
       "type": "PER"
      },

@@ -22165,6 +22165,61 @@
   {
    "chunks": [
     {
+     "s": "6. ОСОБЫЕ УСЛОВИЯ ОТДЕЛЬНЫХ ВИДОВ ДАННЫХ"
+    }
+   ],
+   "style": "bold",
+   "t": "p"
+  },
+  {
+   "chunks": [
+    {
+     "s": "6.1. Полномочия представителя подтверждены доверенностью, реестровый номер "
+    },
+    {
+     "e": {
+      "cat": "canonical",
+      "id": "cx_works_0022-e77",
+      "note": "фабричный тип: пример из файла-описания владельца",
+      "type": "REG_NUMBER"
+     },
+     "s": "50/121-н/50-2023-4-88"
+    },
+    {
+     "s": "."
+    }
+   ],
+   "style": "normal",
+   "t": "p"
+  },
+  {
+   "chunks": [
+    {
+     "s": "6.2. Для сопоставления в учёте указывается: "
+    },
+    {
+     "n": {
+      "kind": "gost-ref",
+      "type": "REG_NUMBER",
+      "why": "ссылка на стандарт — не реестровый номер"
+     },
+     "s": "ГОСТ Р 52044-2003"
+    },
+    {
+     "s": "."
+    }
+   ],
+   "style": "normal",
+   "t": "p"
+  },
+  {
+   "chunks": [],
+   "style": "normal",
+   "t": "p"
+  },
+  {
+   "chunks": [
+    {
      "s": "РЕКВИЗИТЫ И ПОДПИСИ СТОРОН"
     }
    ],
@@ -22195,7 +22250,7 @@
          {
           "e": {
            "cat": "canonical",
-           "id": "cx_works_0022-e77",
+           "id": "cx_works_0022-e78",
            "type": "ORG"
           },
           "s": "ООО «Титан»"
@@ -22212,7 +22267,7 @@
          {
           "e": {
            "cat": "canonical",
-           "id": "cx_works_0022-e78",
+           "id": "cx_works_0022-e79",
            "note": "стиль адреса: canonical",
            "type": "ADDRESS"
           },
@@ -22230,7 +22285,7 @@
          {
           "e": {
            "cat": "canonical",
-           "id": "cx_works_0022-e79",
+           "id": "cx_works_0022-e80",
            "note": "стиль адреса: canonical",
            "type": "ADDRESS"
           },
@@ -22249,7 +22304,7 @@
           "e": {
            "cat": "canonical",
            "checksum": "valid",
-           "id": "cx_works_0022-e80",
+           "id": "cx_works_0022-e81",
            "type": "INN"
           },
           "s": "6651174262"
@@ -22260,7 +22315,7 @@
          {
           "e": {
            "cat": "canonical",
-           "id": "cx_works_0022-e81",
+           "id": "cx_works_0022-e82",
            "type": "KPP"
           },
           "s": "133942663"
@@ -22278,7 +22333,7 @@
           "e": {
            "cat": "canonical",
            "checksum": "valid",
-           "id": "cx_works_0022-e82",
+           "id": "cx_works_0022-e83",
            "type": "OGRN"
           },
           "s": "1039757135560"
@@ -22296,7 +22351,7 @@
           "e": {
            "cat": "canonical",
            "checksum": "valid",
-           "id": "cx_works_0022-e83",
+           "id": "cx_works_0022-e84",
            "type": "ACCOUNT"
           },
           "s": "40702810477600278910"
@@ -22316,7 +22371,7 @@
          {
           "e": {
            "cat": "canonical",
-           "id": "cx_works_0022-e84",
+           "id": "cx_works_0022-e85",
            "note": "корреспондентский счёт банка",
            "type": "ACCOUNT"
           },
@@ -22328,7 +22383,7 @@
          {
           "e": {
            "cat": "canonical",
-           "id": "cx_works_0022-e85",
+           "id": "cx_works_0022-e86",
            "type": "BIK"
           },
           "s": "044525555"
@@ -22345,7 +22400,7 @@
          {
           "e": {
            "cat": "canonical",
-           "id": "cx_works_0022-e86",
+           "id": "cx_works_0022-e87",
            "note": "формат: canonical",
            "type": "PHONE"
           },
@@ -22363,7 +22418,7 @@
          {
           "e": {
            "cat": "canonical",
-           "id": "cx_works_0022-e87",
+           "id": "cx_works_0022-e88",
            "type": "EMAIL"
           },
           "s": "titova@corp-tehno.ru"
@@ -22385,7 +22440,7 @@
          {
           "e": {
            "cat": "ugly",
-           "id": "cx_works_0022-e88",
+           "id": "cx_works_0022-e89",
            "note": "инициалы перед фамилией",
            "type": "PER"
           },
@@ -22416,7 +22471,7 @@
          {
           "e": {
            "cat": "canonical",
-           "id": "cx_works_0022-e89",
+           "id": "cx_works_0022-e90",
            "type": "PER"
           },
           "s": "Макаров Сергей Павлович"
@@ -22433,7 +22488,7 @@
          {
           "e": {
            "cat": "canonical",
-           "id": "cx_works_0022-e90",
+           "id": "cx_works_0022-e91",
            "note": "стиль адреса: canonical",
            "type": "ADDRESS"
           },
@@ -22452,7 +22507,7 @@
           "e": {
            "cat": "canonical",
            "checksum": "valid",
-           "id": "cx_works_0022-e91",
+           "id": "cx_works_0022-e92",
            "note": "12-значный ИНН",
            "type": "INN"
           },
@@ -22465,7 +22520,7 @@
           "e": {
            "cat": "ugly",
            "checksum": "valid",
-           "id": "cx_works_0022-e92",
+           "id": "cx_works_0022-e93",
            "note": "ОГРНИП, 15 знаков",
            "type": "OGRN"
           },
@@ -22484,7 +22539,7 @@
           "e": {
            "cat": "canonical",
            "checksum": "valid",
-           "id": "cx_works_0022-e93",
+           "id": "cx_works_0022-e94",
            "type": "ACCOUNT"
           },
           "s": "40802810259698162852"
@@ -22498,7 +22553,7 @@
          {
           "e": {
            "cat": "canonical",
-           "id": "cx_works_0022-e94",
+           "id": "cx_works_0022-e95",
            "type": "BIK"
           },
           "s": "044030790"
@@ -22515,7 +22570,7 @@
          {
           "e": {
            "cat": "canonical",
-           "id": "cx_works_0022-e95",
+           "id": "cx_works_0022-e96",
            "note": "формат: canonical",
            "type": "PHONE"
           },
@@ -22533,7 +22588,7 @@
          {
           "e": {
            "cat": "canonical",
-           "id": "cx_works_0022-e96",
+           "id": "cx_works_0022-e97",
            "type": "EMAIL"
           },
           "s": "makarov@corp-tehno.ru"
@@ -22555,7 +22610,7 @@
          {
           "e": {
            "cat": "ugly",
-           "id": "cx_works_0022-e97",
+           "id": "cx_works_0022-e98",
            "note": "фамилия + инициалы",
            "type": "PER"
           },
@@ -22593,7 +22648,7 @@
     {
      "e": {
       "cat": "ugly",
-      "id": "cx_works_0022-e98",
+      "id": "cx_works_0022-e99",
       "note": "подпись: фамилия+инициалы",
       "type": "PER"
      },
@@ -22614,7 +22669,7 @@
     {
      "e": {
       "cat": "ugly",
-      "id": "cx_works_0022-e99",
+      "id": "cx_works_0022-e100",
       "note": "подпись: фамилия+инициалы",
       "type": "PER"
      },
