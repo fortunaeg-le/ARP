@@ -110,8 +110,8 @@ def encrypt_doc(tmp_path_factory):
         anon = session_id = None
         if proc.returncode == 0:
             session_id = proc.stdout.strip()
-            anon = (home / ".shifrator" / "sessions" /
-                    "{}.txt".format(session_id)).read_text(encoding="utf-8")
+            from testlib_store import read_anon_text   # STORE: сайдкар зашифрован
+            anon = read_anon_text(home / ".shifrator" / "sessions", session_id)
         cache[key] = EncryptRun(proc.returncode, anon, proc.stderr, session_id, home)
         return cache[key]
 

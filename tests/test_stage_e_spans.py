@@ -224,7 +224,10 @@ class TestCanonicalRestore:
         from datetime import datetime, timedelta
         # создаём хранилище с ключом штатным способом
         sid = save_session([], storage_dir=str(tmp_path))
-        key = (tmp_path / "key.bin").read_bytes()
+        # STORE: key.bin завёрнут DPAPI — Fernet-ключ берётся штатной функцией,
+        # а не сырым чтением файла.
+        from session_store import storage_key
+        key = storage_key(str(tmp_path))
         old_sid = "11111111-1111-1111-1111-111111111111"
         created = datetime.now().astimezone()
         payload = {

@@ -262,7 +262,8 @@ def _cli_encrypt(tmp_path, text, settings=None):
         capture_output=True, text=True, encoding="utf-8", env=env, cwd=ROOT)
     assert proc.returncode == 0, proc.stderr
     sid = proc.stdout.strip()
-    return (home / ".shifrator" / "sessions" / f"{sid}.txt").read_text(encoding="utf-8")
+    from testlib_store import read_anon_text   # STORE: файл на диске зашифрован
+    return read_anon_text(home / ".shifrator" / "sessions", sid)
 
 
 _CLI_TEXT = "ИНН 7707083893, e-mail ivanov@example.com, сумма 5 000 руб."
