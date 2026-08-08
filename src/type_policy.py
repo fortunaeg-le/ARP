@@ -77,11 +77,9 @@ def _sets_from_config():
     собранного конфига; None — конфиг недоступен или sets нет ни у кого."""
     import os
 
-    path = os.path.join(os.path.dirname(os.path.abspath(__file__)),
-                        "..", "entity_types.yaml")
     try:
-        from config_cache import load_yaml_cached
-        config = load_yaml_cached(path)
+        from config_cache import default_config_path, load_yaml_cached
+        config = load_yaml_cached(default_config_path())
     except Exception:
         return None
     per, req, mon = [], [], []

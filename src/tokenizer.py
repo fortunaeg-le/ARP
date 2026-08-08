@@ -23,7 +23,7 @@ import os
 import sys
 import uuid
 
-from config_cache import load_yaml_cached
+from config_cache import default_config_path, load_yaml_cached
 from models import Entity, SourceDocument, TextSegment
 
 # B3-fix: сколько символов хвоста A / головы B берём в граничное окно детекции.
@@ -80,14 +80,21 @@ _NER_PRIORITY_DEFAULT = ["ADDRESS", "ORG", "PERSON"]
 _NER_PRIORITY = _NER_PRIORITY_DEFAULT
 
 
-def _load_arbitration_order() -> None:
+def _load_arbitration_order(config_path: str | None = None) -> None:
     """Читает arbitration_order из КОРНЕВОГО собранного entity_types.yaml один
     раз при импорте. Тихий фолбэк на умолчания намеренный: рабочие пути всегда
     идут через корневой конфиг, а тесты с временными конфигами не обязаны
-    объявлять порядок (им хватает исторического)."""
+    объявлять порядок (им хватает исторического).
+
+    ЭТАП FIX-3: путь берётся из `config_cache.default_config_path()`, а не из
+    `__file__`-арифметики. В PyInstaller-сборке конфиг лежит в `sys._MEIPASS`,
+    и прежний путь его НЕ НАХОДИЛ: фолбэк срабатывал молча, фабричные типы
+    выпадали из порядка, и собранная программа отказывалась шифровать любой
+    документ (ArbitrationContractError). Найдено кругом собранной программы —
+    ни один тест и ни один прогон корпуса этого не видел, потому что все они
+    ходят по рабочему дереву."""
     global _REGEX_PRIORITY, _NER_PRIORITY
-    path = os.path.join(os.path.dirname(os.path.abspath(__file__)),
-                        "..", "entity_types.yaml")
+    path = config_path or default_config_path()
     try:
         config = load_yaml_cached(path)
     except Exception:

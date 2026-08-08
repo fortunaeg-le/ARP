@@ -199,3 +199,47 @@ class TestWordSums:
         assert anon.count("[SUM") == 1, anon
         for piece in expect.split():
             assert piece not in anon, "часть значения открыта: %r" % anon
+
+
+# =========================================================================== #
+#  4. Путь к конфигу в СОБРАННОЙ программе (найдено кругом exe)
+# =========================================================================== #
+
+class TestFrozenConfigPath:
+    """ЭТАП FIX-3. Круг собранной программы вскрыл дефект, невидимый для всех
+    тестов и прогонов корпуса: они ходят по рабочему дереву, а PyInstaller
+    кладёт `entity_types.yaml` в `sys._MEIPASS`. `__file__`-арифметика его не
+    находила, фолбэк срабатывал МОЛЧА — фабричные типы выпадали из порядка
+    арбитража, и exe отказывался шифровать ЛЮБОЙ документ.
+
+    Здесь проверяется само разрешение пути в обоих режимах: подделываем
+    frozen-режим, как это делает PyInstaller."""
+
+    def test_working_tree_path_points_at_the_real_config(self):
+        import config_cache
+        p = config_cache.default_config_path()
+        assert os.path.exists(p), p
+        assert os.path.samefile(p, CFG)
+
+    def test_frozen_mode_reads_from_meipass(self, monkeypatch, tmp_path):
+        import config_cache
+        (tmp_path / "entity_types.yaml").write_text("entity_types: {}\n",
+                                                    encoding="utf-8")
+        monkeypatch.setattr(sys, "frozen", True, raising=False)
+        monkeypatch.setattr(sys, "_MEIPASS", str(tmp_path), raising=False)
+        assert config_cache.default_config_path() == str(
+            tmp_path / "entity_types.yaml")
+
+    def test_frozen_without_the_file_falls_back_to_the_tree(self, monkeypatch,
+                                                            tmp_path):
+        """Фолбэк остаётся — но только когда в бандле файла НЕТ вовсе."""
+        import config_cache
+        monkeypatch.setattr(sys, "frozen", True, raising=False)
+        monkeypatch.setattr(sys, "_MEIPASS", str(tmp_path), raising=False)
+        assert os.path.samefile(config_cache.default_config_path(), CFG)
+
+    def test_every_masking_type_of_the_real_config_has_a_priority(self):
+        """Прямое зеркало отказа exe: контракт арбитража на боевом конфиге
+        держится (в сборке он падал именно здесь)."""
+        import tokenizer
+        tokenizer.assert_priority_contract(CFG)

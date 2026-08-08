@@ -8,6 +8,7 @@
 только путь.
 """
 import os
+import sys
 
 import yaml
 
@@ -26,3 +27,24 @@ def load_yaml_cached(config_path: str) -> dict:
     _cache.clear()  # один конфиг за раз в проекте — держать старые mtime незачем
     _cache[key] = config
     return config
+
+def default_config_path() -> str:
+    """Путь к корневому `entity_types.yaml` — ОДИНАКОВО в рабочем дереве и в
+    собранной программе.
+
+    ЭТАП FIX-3, найдено КРУГОМ СОБРАННОЙ ПРОГРАММЫ (не тестами и не корпусом).
+    `__file__`-арифметика («на уровень вверх от src/») в PyInstaller-сборке
+    указывает ВНУТРЬ бандла, где конфига нет: `packaging/shifrator.spec` кладёт
+    его в `sys._MEIPASS`. Следствие было не «не нашли файл», а МОЛЧАЛИВЫЙ откат
+    на умолчания — порядок арбитража и составы наборов теряли все фабричные
+    типы, и собранный exe ОТКАЗЫВАЛСЯ шифровать любой документ
+    (ArbitrationContractError). Ту же загадку уже решал `app/paths.py`; здесь
+    она сведена для библиотеки, которой на `app/` смотреть нельзя."""
+    if getattr(sys, "frozen", False):
+        base = getattr(sys, "_MEIPASS", "")
+        if base:
+            frozen = os.path.join(base, "entity_types.yaml")
+            if os.path.exists(frozen):
+                return frozen
+    return os.path.join(os.path.dirname(os.path.abspath(__file__)), "..",
+                        "entity_types.yaml")
