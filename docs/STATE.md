@@ -100,7 +100,7 @@ Entity_A/Entity_B по контракту B3; `\n` между сегментам
 | Остаток ACCOUNT/OGRN | 24 утечки, **все присутствуют в baseline** (новых 0): 8 эталонов ОГРН с невалидной КС (недоступны детектору в принципе), 5 «б»-край нормализатора, остальное — рваный якорь / двойной разрыв |
 
 **Реальный документ** (`C:\shifrator_real\dog.docx`): числа по всем типам
-идентичны A5 — OGRN 33, PASSPORT 29, BIK 1, ORG 70, PER 67, ADDRESS 28,
+идентичны A5 — OGRN 33, PASSPORT 29, BIK 1, ORG 69, PER 67, ADDRESS 28,
 EMAIL 10, PERCENT 84, TERM 77, SUM 8; INN/INN_PER/KPP/ACCOUNT/SNILS/PHONE — 0.
 **Ложных сборок ноль.** Детерминизм: 3 прогона в одном процессе побитно.
 Round-trip `mode=exact` — байт-в-байт (`mode=canonical` отличается по
