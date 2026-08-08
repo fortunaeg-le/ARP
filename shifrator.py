@@ -93,7 +93,7 @@ def cmd_encrypt(path, config_path, allow_lossy=False):
     from extractor import extract
     from pipeline import run_detection
     from tokenizer import tokenize
-    from storage import save_session, default_storage_dir
+    from storage import save_session, save_anon_text, save_unread_zones
     from ooxml_core import OoxmlError
     from unread_zones import UnreadZoneError
 
@@ -139,10 +139,15 @@ def cmd_encrypt(path, config_path, allow_lossy=False):
         print(f"Ошибка: конфиг не найден: {config_path}", file=sys.stderr)
         sys.exit(1)
 
-    session_id = save_session(final_entities, session_id=None, ttl_hours=24)
+    session_id = save_session(final_entities, session_id=None)
 
-    storage_dir = default_storage_dir()
-    (storage_dir / f"{session_id}.txt").write_text(anon_text, encoding="utf-8")
+    # ЭТАП STORE (санкция владельца): запись идёт через storage, а не прямо в
+    # файл. Прямая запись была последней дырой шифрования: интерфейс свои
+    # сайдкары уже шифровал, а CLI по-прежнему клал .txt и .unread.json на диск
+    # открытыми — то есть ровно то, что этап и закрывает, обходилось сменой
+    # точки входа. Заодно ttl теперь берётся из настройки срока хранения
+    # (было зашитых 24 часа) — та же политика, что у интерфейса.
+    save_anon_text(session_id, anon_text)
 
     if zones:
         # Sidecar lossy-режима. Он же — отметка сессии как lossy: формат
@@ -151,24 +156,20 @@ def cmd_encrypt(path, config_path, allow_lossy=False):
         # пометки нельзя. Отдельный файл рядом с {sid}.txt даёт то же самое —
         # «у этой сессии есть непрочитанное» — не трогая чужой контракт.
         #
-        # Внутри — СЫРОЙ текст зон (ПДн открытым текстом). Это осознанно: смысл
-        # файла в том, чтобы пользователь увидел, что именно выброшено. Наружу, в
-        # LLM, уходит только {sid}.txt; sidecar остаётся локально, как и {sid}.enc.
-        import json
-
+        # Внутри — СЫРОЙ текст зон. Это осознанно: смысл файла в том, чтобы
+        # пользователь увидел, что именно выброшено. Раз текст сырой — это
+        # чистые ПДн, и с этапа STORE файл шифруется (см. storage.save_unread_zones).
+        # Наружу, в LLM, уходит только {sid}.txt; sidecar остаётся локально.
         from unread_zones import zones_to_json
 
-        sidecar = storage_dir / f"{session_id}.unread.json"
-        sidecar.write_text(
-            json.dumps(
-                {"session_id": session_id, "source_path": os.path.abspath(path),
-                 "lossy": True, "zones": zones_to_json(zones)},
-                ensure_ascii=False, indent=2,
-            ),
-            encoding="utf-8",
-        )
+        save_unread_zones(session_id, {
+            "session_id": session_id, "source_path": os.path.abspath(path),
+            "lossy": True, "zones": zones_to_json(zones),
+        })
+        from storage import default_storage_dir
         print(
-            f"Текст непрочитанных зон сохранён: {sidecar}",
+            "Текст непрочитанных зон сохранён (в зашифрованном виде): "
+            f"{default_storage_dir() / f'{session_id}.unread.json'}",
             file=sys.stderr,
         )
 

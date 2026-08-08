@@ -185,7 +185,10 @@ def test_cli_ui_parity_byte_identical(tmp_path, monkeypatch):
     )
     assert enc.returncode == 0, enc.stderr
     sid = enc.stdout.strip()
-    cli_txt = (home / ".shifrator" / "sessions" / f"{sid}.txt").read_text(encoding="utf-8")
+    # ЭТАП STORE: {sid}.txt зашифрован — читаем расшифровкой, иначе паритет
+    # сравнивал бы шифротекст со строкой.
+    from testlib_store import read_anon_text
+    cli_txt = read_anon_text(home / ".shifrator" / "sessions", sid)
 
     # --- UI-путь: app/core.run_encrypt в том же изолированном HOME ---
     # ЭТАП STORE: заплатка снята. Раньше здесь стояли два monkeypatch.setattr —

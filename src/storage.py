@@ -550,7 +550,7 @@ def _write_markup_list(store: Path, session_id: str, entries: list[dict]) -> Non
     _write_encrypted_json(_markup_path(store, session_id), entries)
 
 
-def save_markup(session_id: str, entry: dict) -> str:
+def save_markup(session_id: str, entry: dict, segment_text: str | None = None) -> str:
     """Сохраняет ОДНУ запись ручной разметки (см. app/core.py — форма записи:
     kind/entity_type/segment_id/start/end/value/created_at/build_mark/applied).
     Список копится в {session_id}.markup.json в `default_markup_dir()` —
@@ -561,9 +561,49 @@ def save_markup(session_id: str, entry: dict) -> str:
     store = default_markup_dir()
     entries = _load_markup_list(store, session_id)
     markup_id = str(uuid.uuid4())
-    entries.append({**entry, "id": markup_id})
+    entries.append({**_structural(entry, segment_text), "id": markup_id})
     _write_markup_list(store, session_id, entries)
     return markup_id
+
+
+def _structural(entry: dict, segment_text: str | None) -> dict:
+    """ЭТАП STORE, часть 4: превращает запись с сырым `value` в структурную.
+
+    Преобразование живёт ЗДЕСЬ, а не у вызывающих, чтобы его нельзя было
+    обойти: любой путь сохранения разметки проходит через save_markup, и
+    исходное значение отсекается в одной точке. Вызывающему по-прежнему
+    разрешено передать `value` — он его просто не сохранит.
+    """
+    from markup_record import build_record
+
+    value = entry.get("value")
+    record = build_record(
+        kind=entry.get("kind"),
+        value=value,
+        segment_text=segment_text,
+        start=entry.get("start"),
+        end=entry.get("end"),
+        # Что предложила СИСТЕМА: тип и границы до правки плюс механизм,
+        # который эту маску поставил (для kind="missed" система не предлагала
+        # ничего — поля пустые, и это содержательное «ничего»).
+        proposed={
+            "entity_type": entry.get("old_entity_type"),
+            "detector": entry.get("old_detector"),
+            "segment_id": entry.get("old_segment_id"),
+            "start": entry.get("old_start"),
+            "end": entry.get("old_end"),
+        },
+        # Что решил ЧЕЛОВЕК.
+        decided={
+            "entity_type": entry.get("entity_type"),
+            "segment_id": entry.get("segment_id"),
+            "start": entry.get("start"),
+            "end": entry.get("end"),
+        },
+    )
+    out = {k: v for k, v in entry.items() if k != "value"}
+    out["record"] = record
+    return out
 
 
 def list_markup(session_id: str) -> list[dict]:

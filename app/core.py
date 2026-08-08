@@ -296,7 +296,7 @@ STORED_ITEMS = [
      "encrypted": True},
     {"file": "{sid}.doc.json", "what": "Текст документа по абзацам — нужен, чтобы пересобрать результат после ваших правок.",
      "encrypted": True},
-    {"file": "{sid}.txt", "what": "Обезличенный текст, который вы копируете в чат. Обезличен не полностью: часть значений программа могла пропустить.",
+    {"file": "{sid}.txt", "what": "Обезличенный текст, который вы копируете в чат. Обезличен не полностью: часть значений программа могла пропустить. Проверьте текст перед отправкой.",
      "encrypted": True},
     {"file": "{sid}.unread.json", "what": "Куски документа, которые программа не смогла прочитать, — как есть, чтобы вы их видели.",
      "encrypted": True},
@@ -822,8 +822,10 @@ def mark_missed(session_id: str, segment_id: str, start: int, end: int,
 
     session = load_session(session_id)          # SessionNotFoundError/Expired наружу
     doc = load_doc_segments(session_id)          # FileNotFoundError наружу (старая сессия)
-    _, value = _validate_missed(doc, session, segment_id, start, end, entity_type, config_path)
+    seg, value = _validate_missed(doc, session, segment_id, start, end, entity_type, config_path)
 
+    # ЭТАП STORE ч.4: текст сегмента передаётся, чтобы storage построил контекст
+    # по белому списку служебных слов; сам текст и `value` НЕ сохраняются.
     markup_id = save_markup(session_id, {
         "kind": "missed", "entity_type": entity_type,
         "segment_id": segment_id, "start": start, "end": end, "value": value,
@@ -831,16 +833,17 @@ def mark_missed(session_id: str, segment_id: str, start: int, end: int,
         "old_entity_type": None, "old_detector": None,
         "created_at": _now_iso(), "build_mark": BUILD_MARK, "applied": False, "apply_error": None,
         "census": _markup_census(session_id, session),
-    })
+    }, segment_text=seg.text)
     return {"markup_id": markup_id, "value": value}
 
 
 def mark_false_positive(session_id: str, segment_id: str, start: int, end: int, token: str) -> dict:
     """Пользователь щёлкнул по СУЩЕСТВУЮЩЕЙ маске и сказал «это не ПДн»."""
-    from storage import load_session, save_markup
+    from storage import load_session, load_doc_segments, save_markup
 
     session = load_session(session_id)
     rec, occ = _find_occurrence(session, token, segment_id, start, end)
+    seg_text = _segment_text_or_none(session_id, segment_id)
 
     markup_id = save_markup(session_id, {
         "kind": "false_mask", "entity_type": rec["entity_type"],
@@ -852,8 +855,26 @@ def mark_false_positive(session_id: str, segment_id: str, start: int, end: int, 
         "old_detector": occ.get("detector", rec.get("detector")),
         "created_at": _now_iso(), "build_mark": BUILD_MARK, "applied": False, "apply_error": None,
         "census": _markup_census(session_id, session),
-    })
+    }, segment_text=seg_text)
     return {"markup_id": markup_id}
+
+
+def _segment_text_or_none(session_id: str, segment_id: str) -> str | None:
+    """Текст сегмента для построения контекста записи разметки (ЭТАП STORE ч.4).
+
+    None — если структура документа не сохранена (сессия создана до этапа
+    разметки или через CLI). Отсутствие контекста запись не ломает: контекст в
+    ней необязателен, а падать из-за необязательного поля на пути «пользователь
+    отметил ложную маску» нельзя."""
+    from storage import load_doc_segments
+    try:
+        doc = load_doc_segments(session_id)
+    except (FileNotFoundError, OSError, ValueError):
+        return None
+    for s in doc.segments:
+        if s.id == segment_id:
+            return s.text
+    return None
 
 
 def mark_replace(session_id: str, old_token: str, old_segment_id: str, old_start: int, old_end: int,
@@ -875,7 +896,7 @@ def mark_replace(session_id: str, old_token: str, old_segment_id: str, old_start
     # имеет право пересекаться сама с собой/сузиться на месте старой маски).
     tmp_session = copy.deepcopy(session)
     _remove_occurrence(tmp_session, old_token, old_segment_id, old_start, old_end)
-    _, value = _validate_missed(doc, tmp_session, new_segment_id, new_start, new_end, entity_type, config_path)
+    new_seg, value = _validate_missed(doc, tmp_session, new_segment_id, new_start, new_end, entity_type, config_path)
 
     kind = "type" if entity_type != old_rec["entity_type"] else "boundary"
     markup_id = save_markup(session_id, {
@@ -886,7 +907,7 @@ def mark_replace(session_id: str, old_token: str, old_segment_id: str, old_start
         "old_detector": old_occ.get("detector", old_rec.get("detector")),
         "created_at": _now_iso(), "build_mark": BUILD_MARK, "applied": False, "apply_error": None,
         "census": _markup_census(session_id, session),
-    })
+    }, segment_text=new_seg.text)
     return {"markup_id": markup_id, "value": value, "kind": kind}
 
 

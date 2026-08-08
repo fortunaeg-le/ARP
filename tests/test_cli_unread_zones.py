@@ -18,6 +18,7 @@ import sys
 import pytest
 
 from testlib_policy import pin_all_types
+from testlib_store import read_anon_text, read_unread_sidecar
 from docx import Document
 
 SHIFRATOR = os.path.join(
@@ -136,7 +137,8 @@ class TestAllowLossy:
         sidecar = _sessions_dir(tmp_path) / f"{sid}.unread.json"
         assert sidecar.is_file(), "sidecar {sid}.unread.json не создан"
 
-        data = json.loads(sidecar.read_text(encoding="utf-8"))
+        # STORE: сайдкар зашифрован — внутри СЫРОЙ текст зон, то есть чистые ПДн.
+        data = read_unread_sidecar(_sessions_dir(tmp_path), sid)
         assert data["lossy"] is True
         assert data["session_id"] == sid
         kinds = [z["kind"] for z in data["zones"]]
@@ -155,7 +157,7 @@ class TestAllowLossy:
         единственное место, где пользователь его увидит."""
         r = _run(["encrypt", str(docx_with_header), "--allow-lossy"], tmp_path)
         sid = r.stdout.strip().splitlines()[-1]
-        anon = (_sessions_dir(tmp_path) / f"{sid}.txt").read_text(encoding="utf-8")
+        anon = read_anon_text(_sessions_dir(tmp_path), sid)   # STORE: файл зашифрован
         assert "Смирнов" not in anon
 
 
@@ -184,7 +186,7 @@ class TestCleanDocumentNoRegression:
         r = _run(["encrypt", str(docx_clean)], tmp_path)
         assert r.returncode == 0, f"stdout={r.stdout!r} stderr={r.stderr!r}"
         sid = r.stdout.strip()
-        anon = (_sessions_dir(tmp_path) / f"{sid}.txt").read_text(encoding="utf-8")
+        anon = read_anon_text(_sessions_dir(tmp_path), sid)   # STORE: файл зашифрован
         assert "[INN_1]" in anon
 
     def test_clean_document_gets_no_sidecar(self, docx_clean, tmp_path):

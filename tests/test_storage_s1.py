@@ -143,7 +143,11 @@ def test_markup_own_retention_not_24h(iso_store):
     removed = storage.purge_expired_markup()
     assert removed == 1
     remaining = storage.list_markup(sid)
-    assert len(remaining) == 1 and remaining[0]["value"] == "fresh"
+    # ЭТАП STORE ч.4: сырого `value` в записи больше нет — уцелевшую отличаем
+    # по границам, а заодно требуем, чтобы значение там и не появилось.
+    assert len(remaining) == 1
+    assert remaining[0]["start"] == 7 and remaining[0]["end"] == 12
+    assert "value" not in remaining[0]
 
 
 def test_migrate_legacy_markup_moves_and_merges(iso_store):

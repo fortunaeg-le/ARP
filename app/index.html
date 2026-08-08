@@ -179,6 +179,7 @@
     <button id="nav-res" onclick="show('res')">3 · Восстановление</button>
     <button id="nav-ana" onclick="show('ana')">4 · Аналитика</button>
     <button id="nav-set" onclick="show('set')">5 · Что маскировать</button>
+    <button id="nav-sto" onclick="show('sto')">6 · Что хранится</button>
   </nav>
 </header>
 
@@ -371,6 +372,59 @@
     </div>
   </section>
 
+  <!-- ============ SCREEN 6: ЧТО ХРАНИТСЯ (ЭТАП STORE, часть 5) ============
+       Тексты утверждены владельцем; приходят с сервера (app/core.py
+       STORED_ITEMS/KEY_NOTE_*), а не зашиты здесь — иначе экран и код
+       разъехались бы при первой же правке хранилища. -->
+  <section id="scr-sto" class="screen">
+    <div class="card">
+      <h2>Что хранится на этом компьютере</h2>
+      <p class="sub">Всё перечисленное лежит только у вас и никуда не отправляется. Файлы <b>зашифрованы</b> — открыть их без вашей учётной записи Windows нельзя.</p>
+
+      <div id="sto-status" class="status"><span id="sto-spin" class="spinner"></span><span id="sto-msg"></span></div>
+
+      <div id="sto-body" class="hidden">
+        <div id="sto-purged" class="warn hidden" style="margin-bottom:12px"></div>
+
+        <div class="ana-sec">
+          <h3>Где</h3>
+          <pre class="preview" id="sto-path" style="max-height:none"></pre>
+        </div>
+
+        <div class="ana-sec">
+          <h3>Что именно</h3>
+          <div id="sto-items"></div>
+        </div>
+
+        <div class="ana-sec">
+          <h3>Ключ</h3>
+          <p class="note" id="sto-key"></p>
+        </div>
+
+        <div class="ana-sec">
+          <h3>Сколько времени</h3>
+          <p class="sub" style="margin:2px 0 10px">Просроченное удаляется само при запуске программы. Сроки можно изменить.</p>
+          <div class="row" style="display:flex;gap:14px;flex-wrap:wrap;align-items:center">
+            <label>Сессии хранятся
+              <input type="number" id="sto-days-ses" min="1" max="365" style="width:70px"> дней</label>
+            <label>Ваши правки разметки —
+              <input type="number" id="sto-days-mk" min="1" max="365" style="width:70px"> дней</label>
+            <button class="primary" onclick="saveRetention()">Сохранить сроки</button>
+            <span class="note" id="sto-ret-msg"></span>
+          </div>
+          <p class="note" id="sto-counts" style="margin-top:10px"></p>
+        </div>
+
+        <div class="ana-sec">
+          <h3>Удалить сейчас</h3>
+          <p class="sub" style="margin:2px 0 10px">Удалит все сессии и все ваши правки разметки. Отменить это нельзя: восстановить обезличенные документы будет уже невозможно.</p>
+          <button class="primary" onclick="deleteEverything()">Удалить всё</button>
+          <span class="note" id="sto-del-msg"></span>
+        </div>
+      </div>
+    </div>
+  </section>
+
   <!-- ===================== SCREEN 5: SETTINGS (T1-UI) ===================== -->
   <section id="scr-set" class="screen">
     <div class="card">
@@ -408,7 +462,7 @@ let PENDING_FILE = null;    // файл, ждущий решения по зон
 const TYPE_LABELS = {PERSON:"ФИО",ORG:"Организация",ADDRESS:"Адрес",INN:"ИНН организации (10 цифр)",INN_PERSON:"ИНН человека (12 цифр)",OGRN:"ОГРН/ОГРНИП",KPP:"КПП",BANK_ACCOUNT:"Банковский счёт",BIK:"БИК",PASSPORT:"Паспорт",PHONE:"Телефон",EMAIL:"E-mail",SNILS:"СНИЛС",BIRTHDATE:"Дата рождения",SUM:"Сумма",PERCENT:"Процент (ставка, неустойка)",TERM:"Срок исполнения",DATE:"Дата"};
 
 function show(which){
-  for(const s of ['enc','ver','res','ana','set']){
+  for(const s of ['enc','ver','res','ana','set','sto']){
     document.getElementById('scr-'+s).classList.toggle('active', s===which);
     document.getElementById('nav-'+s).classList.toggle('active', s===which);
   }
@@ -416,6 +470,7 @@ function show(which){
   if(which==='ver' && CUR) loadMarkupPanel();
   if(which==='ana') loadAnalytics();
   if(which==='set') loadSettings();
+  if(which==='sto') loadStorageInfo();
   closeMarkupMenu();
   BOUNDARY_EDIT=null;
 }
@@ -1095,6 +1150,81 @@ async function loadMarkupSummary(){
       line.textContent=' Сейчас накопленной разметки нет.';
     }
   }catch(err){ /* сводка не критична для работы экрана */ }
+}
+
+/* ============ ЭТАП STORE, часть 5: экран «Что хранится» ============
+   Ни одна формулировка здесь не сочиняется на месте: перечень файлов и текст
+   про ключ приходят с сервера (app/core.py STORED_ITEMS / KEY_NOTE_*). Иначе
+   при следующей правке хранилища экран остался бы рассказывать про прошлое
+   устройство — а это ровно тот сорт неправды, который часть 5 и убирает. */
+let STO = null;
+
+async function loadStorageInfo(){
+  const st=document.getElementById('sto-status'), msg=document.getElementById('sto-msg');
+  const spin=document.getElementById('sto-spin'), body=document.getElementById('sto-body');
+  st.className='status'; spin.style.display='inline-block'; msg.textContent='Читаю…'; body.classList.add('hidden');
+  try{
+    const resp=await fetch('/api/storage/info');
+    const d=await resp.json();
+    if(d.status!=='ok') throw new Error(d.message||'не удалось прочитать');
+    STO=d;
+    spin.style.display='none'; msg.textContent=''; st.className='status hidden';
+    body.classList.remove('hidden');
+
+    document.getElementById('sto-path').textContent=d.storage_path;
+    document.getElementById('sto-key').textContent=d.key_note;
+
+    document.getElementById('sto-items').innerHTML=d.items.map(it=>
+      '<div class="row" style="padding:6px 0;border-bottom:1px solid #eee">'+
+      '<code>'+esc(it.file)+'</code> — '+esc(it.what)+
+      (it.encrypted?' <b>Зашифровано.</b>':'')+'</div>').join('');
+
+    document.getElementById('sto-days-ses').value=d.retention.session_days;
+    document.getElementById('sto-days-mk').value=d.retention.markup_days;
+
+    document.getElementById('sto-counts').textContent=
+      'Сейчас: сессий '+d.sessions_count+', записей разметки '+d.markup.entries+
+      (d.markup.oldest_created_at?' (самая старая — '+fmtDate(d.markup.oldest_created_at)+')':'')+'.';
+
+    // Пользователь должен УВИДЕТЬ, что удаление произошло: молчаливая
+    // автоочистка неотличима от потери данных.
+    const p=d.last_purge, purged=document.getElementById('sto-purged');
+    if(p && (p.sessions || p.markup_entries)){
+      purged.textContent='При запуске программы удалено по сроку хранения: сессий '+
+        p.sessions+', записей разметки '+p.markup_entries+'.';
+      purged.classList.remove('hidden');
+    } else { purged.classList.add('hidden'); }
+  }catch(err){
+    spin.style.display='none'; st.className='status err'; msg.textContent=String(err.message||err);
+  }
+}
+
+async function saveRetention(){
+  const out=document.getElementById('sto-ret-msg');
+  out.textContent='Сохраняю…';
+  try{
+    const resp=await fetch('/api/storage/retention',{method:'POST',headers:{'Content-Type':'application/json'},
+      body:JSON.stringify({
+        session_days:parseInt(document.getElementById('sto-days-ses').value,10),
+        markup_days:parseInt(document.getElementById('sto-days-mk').value,10)})});
+    const d=await resp.json();
+    if(d.status!=='ok'){ out.textContent=d.message||'не сохранилось'; return; }
+    out.textContent='Сохранено: '+d.session_days+' и '+d.markup_days+' дней.';
+    loadStorageInfo();
+  }catch(err){ out.textContent=String(err.message||err); }
+}
+
+async function deleteEverything(){
+  if(!confirm('Удалить все сессии и все ваши правки разметки? Восстановить обезличенные документы после этого будет нельзя.')) return;
+  const out=document.getElementById('sto-del-msg');
+  out.textContent='Удаляю…';
+  try{
+    const resp=await fetch('/api/storage/delete-all',{method:'POST',headers:{'Content-Type':'application/json'},body:'{}'});
+    const d=await resp.json();
+    if(d.status!=='ok'){ out.textContent=d.message||'не удалилось'; return; }
+    out.textContent='Удалено: сессий '+d.sessions_deleted+', файлов разметки '+d.markup_files_deleted+'.';
+    loadStorageInfo();
+  }catch(err){ out.textContent=String(err.message||err); }
 }
 async function deleteAllMarkupUI(){
   if(!confirm('Удалить ВСЮ накопленную разметку по ВСЕМ сессиям (не только текущей)? Действие необратимо. Сами сессии и текущий документ не пострадают.')) return;

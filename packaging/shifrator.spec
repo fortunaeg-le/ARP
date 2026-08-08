@@ -120,6 +120,11 @@ hiddenimports = [
     "anchor_registry", "syntax_compound", "multispan", "detokenizer",
     "file_detokenizer", "unread_zones", "ooxml_core", "docx_rewriter",
     "pptx_rewriter", "xlsx_rewriter", "type_policy",
+    # ЭТАП STORE: `vault` (обёртка ключа DPAPI и шифрование сайдкаров) и
+    # `markup_record` (структурная запись разметки) импортируются ЛЕНИВО —
+    # внутри функций storage.py. Без них в собранном exe не открылась бы ни
+    # одна сессия: ключ хранится завёрнутым, разворачивает его именно vault.
+    "vault", "markup_record",
     # ЭТАП U4: `report` импортируется ЛЕНИВО (внутри функций core/server) —
     # ровно тот случай, ради которого этот список и существует. Без него в
     # собранном exe экран «Аналитика» отвалился бы, а `core._markup_census`

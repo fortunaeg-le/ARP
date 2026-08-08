@@ -34,6 +34,12 @@ def _run(args, tmp_path, stdin_text=None):
     )
 
 
+def _read_anon_text(tmp_path, sid):
+    """Обезличенный текст из {sid}.txt подменённого HOME (с этапа STORE — зашифрован)."""
+    from testlib_store import read_anon_text
+    return read_anon_text(tmp_path / "home" / ".shifrator" / "sessions", sid)
+
+
 class TestCliEncryptTxtRoundtrip:
     """HANDOFF_7, Пример 2 — .txt-вход, encrypt затем decrypt."""
 
@@ -45,7 +51,7 @@ class TestCliEncryptTxtRoundtrip:
 
         result = _run(["encrypt", str(txt_path)], tmp_path)
         sid = result.stdout.strip()
-        anon_text = (tmp_path / "home" / ".shifrator" / "sessions" / f"{sid}.txt").read_text(encoding="utf-8")
+        anon_text = _read_anon_text(tmp_path, sid)
         assert anon_text == "ИНН [INN_1], email [EMAIL_1]\nВторая строка"
 
     def test_encrypt_prints_valid_session_id_to_stdout(self, tmp_path):
@@ -67,7 +73,7 @@ class TestCliEncryptTxtRoundtrip:
 
         enc = _run(["encrypt", str(txt_path)], tmp_path)
         sid = enc.stdout.strip()
-        anon_text = (tmp_path / "home" / ".shifrator" / "sessions" / f"{sid}.txt").read_text(encoding="utf-8")
+        anon_text = _read_anon_text(tmp_path, sid)
 
         dec = _run(["decrypt", sid], tmp_path, stdin_text=anon_text)
         assert dec.stdout.rstrip("\n") == "ИНН 7707083893, email test@example.com\nВторая строка"

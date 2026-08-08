@@ -533,9 +533,13 @@ def test_build_report_raises_when_guard_trips(iso_store, monkeypatch):
     """Часовой стоит ВНУТРИ build_report: отчёт с утечкой не возвращается вообще,
     а не возвращается «с предупреждением»."""
     _seed_known_answer()
-    orig = report_mod._value_shape
-    monkeypatch.setattr(report_mod, "_value_shape",
-                        lambda v: {**orig(v), "case_shape": str(v)})
+    # ЭТАП STORE ч.4: признаки фрагмента собирает _shape_fields (запись хранит
+    # структуру, сырого value в ней нет) — подменяем ту функцию, через которую
+    # признаки реально проходят, иначе «утечку» просто некуда было бы внести и
+    # тест зеленел бы, ничего не проверив.
+    orig = report_mod._shape_fields
+    monkeypatch.setattr(report_mod, "_shape_fields",
+                        lambda e: {**orig(e), "case_shape": MARK_PERSON})
     with pytest.raises(report_mod.ReportLeakError):
         report_mod.build_report("all")
 
