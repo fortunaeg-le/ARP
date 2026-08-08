@@ -1,8 +1,3 @@
-# ФАЙЛ СОБРАН tests/corpus_v2/assemble_types.py — НЕ ПРАВИТЬ РУКАМИ:
-# правку сотрёт следующая сборка. Источники: entity_types.base.yaml
-# (непереведённые типы, текст дословно) + tests/corpus_v2/typedefs/*.yaml
-# (фабричные типы). Сверка: assemble_types.py --check; страж —
-# tests/test_type_factory.py.
 # Этап 1b — политика непрочитанных зон .docx (колонтитулы, сноски, надписи,
 # вложенные таблицы). true (умолчание, fail-closed): encrypt ОТКАЗЫВАЕТСЯ работать
 # с документом, часть текста которого система прочитать не умеет — молчаливая
@@ -518,9 +513,3 @@ entity_types:
   COLLECTIVE:
     method: anchor_registry
     suppress_masking: true
-
-# Порядок арбитража пересечений (rule 3/rule 4 tokenizer._winner).
-# СОБРАН из базового порядка (до фабрики) и rank фабричных типов.
-arbitration_order:
-  regex: [BANK_ACCOUNT, OGRN, INN, INN_PERSON, BIK, SNILS, KPP, PASSPORT, PHONE, SUM, EMAIL, BIRTHDATE, DATE, PERCENT, TERM]
-  ner: [ADDRESS, ORG, PERSON]
