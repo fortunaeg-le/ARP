@@ -17,6 +17,14 @@ CLAUDE.md — это контекст, а не конфигурация: мод�
   3. Правка констант допусков `tests/corpus/gate_config.py`.
   4. Правка точки отсчёта `tests/corpus/results_baseline.json` и
      `tests/corpus/MANIFEST.sha256` мимо `promote_baseline.py`.
+  5. (этап AUDIT) Пересъёмка точки отсчёта СРЕЗА
+     `tests/corpus/results_iter_baseline.json` мимо `promote_iter_baseline.py`,
+     включая обе обходные дороги — прямой запуск `run_iter_baseline.py` и
+     `update_manifest.py` (последний без `--check`).
+  6. (этап AUDIT) Запись защищённого файла ИНТЕРПРЕТАТОРОМ. Замеряно живьём:
+     `python -c "open('tests/corpus/gold.json','w')"` проходил все замки —
+     в команде нет ни глагола оболочки, ни перенаправления, а имя файла хук
+     видел и молчал. Теперь такая команда считается изменяющей.
 
 Чтение не блокируется НИКОГДА — ни одного из этих файлов.
 """
@@ -44,6 +52,18 @@ BASELINE = (
     "tests/corpus/results_baseline.json",
     "tests/corpus/manifest.sha256",
 )
+#: Точка отсчёта быстрого набора. Двигается только `promote_iter_baseline.py`,
+#: который дописывает запись в `iter_baseline_ledger.json` (этап AUDIT: до него
+#: срез можно было переснять бесследно — журнал вёлся только для полного корпуса).
+ITER_BASELINE = ("tests/corpus/results_iter_baseline.json",)
+#: Скрипты, которые ДВИГАЮТ охраняемое сами по себе: их запуск и есть правка.
+#: `update_manifest.py --check` ничего не пишет и разрешён отдельно.
+ITER_TOOLS = (
+    "tests/corpus/run_iter_baseline.py",
+    "run_iter_baseline.py",
+    "tests/corpus/update_manifest.py",
+    "update_manifest.py",
+)
 
 WRITE_TOOLS = ("Write", "Edit", "NotebookEdit", "MultiEdit")
 SHELL_TOOLS = ("Bash", "PowerShell")
@@ -61,6 +81,18 @@ MUTATING = re.compile(
 )
 #: Перенаправление вывода в файл: `> путь`, `>> путь`.
 REDIRECT = re.compile(r">>?\s*['\"]?([^\s'\";|&]+)")
+
+#: Запуск интерпретатора: `python`, `python.exe`, `venv/Scripts/python.exe`, `py`.
+INTERPRETER = re.compile(r"(^|[\s|;&(\\/])(python(3|\.exe)?|py)($|[\s'\"])", re.IGNORECASE)
+#: Признак записи внутри кода/команды интерпретатора. Намеренно ШИРОКИЙ по
+#: письму и УЗКИЙ по чтению: `json.load(open(gold))` обязан проходить, иначе
+#: сторож начнёт мешать разбору, ради которого корпус и читают.
+PY_WRITE = re.compile(
+    r"(open\s*\([^)]*['\"][wax]b?\+?['\"]|\.write\s*\(|json\.dump|"
+    r"shutil\.(copy|move)|os\.(remove|unlink|rename|replace)|"
+    r"Path\([^)]*\)\.(write_text|write_bytes|unlink|rename|replace))",
+    re.IGNORECASE,
+)
 
 #: Кавычки в начальном классе — намеренно: `bash -c "git push"` обязан ловиться.
 PUSH = re.compile(
@@ -135,6 +167,16 @@ def check_write(path: str):
             "манифест. Прямая правка не оставляет ни автора, ни причины.\n"
             "См. CLAUDE.md, запрет 3.\n" % path
         )
+    t = hits(where, ITER_BASELINE)
+    if t:
+        deny(
+            "ЗАБЛОКИРОВАНО (замок точки отсчёта СРЕЗА). %s меняется ТОЛЬКО через\n"
+            "  venv/Scripts/python.exe tests/corpus/promote_iter_baseline.py \\\n"
+            "      --author \"кто\" --reason \"почему\" --delta \"расхождение\" …\n"
+            "Инструмент дописывает запись в iter_baseline_ledger.json: автор,\n"
+            "причина, хеши до/после и ВСЕ расхождения — в обе стороны. Пересъёмка\n"
+            "без записи делает прибор отладки самоподтверждающимся.\n" % path
+        )
 
 
 def check_shell(raw_command: str):
@@ -147,10 +189,29 @@ def check_shell(raw_command: str):
         )
 
     low = norm(command)
-    # Санкционированная дорога к baseline: инструмент сам себе разрешение.
-    sanctioned = "promote_baseline.py" in low
+    # Санкционированные дороги: инструмент сам себе разрешение. Проверяется
+    # ДЛИННОЕ имя первым — "promote_iter_baseline.py" содержит "baseline.py",
+    # но не "promote_baseline.py", так что подмены одного другим не выйдет.
+    sanctioned_iter = "promote_iter_baseline.py" in low
+    sanctioned = "promote_baseline.py" in low or sanctioned_iter
 
-    protected = FROZEN_CORPUS + GATE_CONFIG + (() if sanctioned else BASELINE)
+    # Запуск инструмента, который двигает охраняемое сам: сам вызов и есть правка.
+    if not sanctioned_iter and hits(low, ITER_TOOLS):
+        if not ("update_manifest.py" in low and "--check" in low):
+            deny(
+                "ЗАБЛОКИРОВАНО (замок точки отсчёта СРЕЗА). Команда двигает\n"
+                "results_iter_baseline.json и/или MANIFEST.sha256 мимо журнала:\n\n"
+                "    %s\n\n"
+                "Штатная дорога — tests/corpus/promote_iter_baseline.py с --author,\n"
+                "--reason и --delta: она пересоберёт срез, допишет запись в\n"
+                "iter_baseline_ledger.json и пересоберёт манифест сама.\n"
+                "Только сверка манифеста (`update_manifest.py --check`) разрешена.\n"
+                % command.strip()
+            )
+
+    protected = (FROZEN_CORPUS + GATE_CONFIG
+                 + (() if sanctioned else BASELINE)
+                 + (() if sanctioned_iter else ITER_BASELINE))
     touched = hits(low, protected)
     if not touched:
         return
@@ -161,6 +222,10 @@ def check_shell(raw_command: str):
             if hits(m.group(1), protected):
                 mutating = True
                 break
+    if not mutating:
+        # Этап AUDIT: интерпретатор с признаком записи — тоже правка. Замеряно
+        # живьём: раньше `python -c "open('…/gold.json','w')"` проходил все замки.
+        mutating = bool(INTERPRETER.search(command) and PY_WRITE.search(command))
     if not mutating:
         return  # чтение защищённого файла — разрешено
 

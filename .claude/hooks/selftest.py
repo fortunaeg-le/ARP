@@ -22,6 +22,7 @@ PUSH_QUOTED = 'bash -c "git pu' + 'sh"'
 BASELINE = "tests/corpus/results_" + "baseline.json"
 GOLD = "tests/corpus/" + "gold.json"
 GATECFG = "tests/corpus/gate_" + "config.py"
+ITER = "tests/corpus/results_iter_" + "baseline.json"
 
 CASES = [
     # (что проверяем, payload, ожидаемый код)
@@ -46,6 +47,24 @@ CASES = [
     ("манифест корпуса: правка мимо инструмента",
      {"tool_name": "Write", "tool_input": {"file_path": "tests/corpus/MANIFEST.sha256"}}, 2),
 
+    # --- этап AUDIT: точка отсчёта СРЕЗА и запись интерпретатором ---
+    ("срез: прямая запись точки отсчёта",
+     {"tool_name": "Write", "tool_input": {"file_path": ITER}}, 2),
+    ("срез: перезапись копированием",
+     {"tool_name": "Bash", "tool_input": {"command": "cp d.json " + ITER}}, 2),
+    ("срез: пересъёмка мимо журнала",
+     {"tool_name": "Bash", "tool_input": {"command":
+      "venv/Scripts/python.exe tests/corpus/run_iter_" + "baseline.py"}}, 2),
+    ("манифест: пересборка мимо инструмента",
+     {"tool_name": "Bash", "tool_input": {"command":
+      "venv/Scripts/python.exe tests/corpus/update_" + "manifest.py"}}, 2),
+    ("эталон: запись интерпретатором мимо глаголов оболочки",
+     {"tool_name": "Bash", "tool_input": {"command":
+      "venv/Scripts/python.exe -c \"open('" + GOLD + "','w')\""}}, 2),
+    ("точка отсчёта: копирование средствами python",
+     {"tool_name": "Bash", "tool_input": {"command":
+      "python -c \"import shutil;shutil.copy('d.json','" + BASELINE + "')\""}}, 2),
+
     # --- разрешённое: сторож не имеет права мешать работе ---
     ("РАЗРЕШЕНО: promote_baseline.py — санкционированная дорога",
      {"tool_name": "Bash", "tool_input": {"command":
@@ -63,6 +82,19 @@ CASES = [
      {"tool_name": "Write", "tool_input": {"file_path": "docs/STATE.md"}}, 0),
     ("РАЗРЕШЕНО: правка исходника детектора",
      {"tool_name": "Edit", "tool_input": {"file_path": "src/regex_detector.py"}}, 0),
+    ("РАЗРЕШЕНО: promote_iter_baseline.py — санкционированная дорога среза",
+     {"tool_name": "Bash", "tool_input": {"command":
+      "venv/Scripts/python.exe tests/corpus/promote_iter_" + "baseline.py "
+      "--author a --reason b --delta x"}}, 0),
+    ("РАЗРЕШЕНО: сверка манифеста без записи",
+     {"tool_name": "Bash", "tool_input": {"command":
+      "venv/Scripts/python.exe tests/corpus/update_" + "manifest.py --check"}}, 0),
+    ("РАЗРЕШЕНО: чтение эталона средствами python",
+     {"tool_name": "Bash", "tool_input": {"command":
+      "python -c \"import json;print(len(json.load(open('" + GOLD + "'))))\""}}, 0),
+    ("РАЗРЕШЕНО: быстрый набор",
+     {"tool_name": "Bash", "tool_input": {"command":
+      "venv/Scripts/python.exe tests/corpus/subsample.py"}}, 0),
 ]
 
 
