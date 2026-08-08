@@ -63,13 +63,18 @@ class TestSaveLoadRoundtrip:
         """Спека, блок 5, Приёмка: load_session в новом процессе (перезапуск интерпретатора) находит данные."""
         entities = [_entity("p3", "[ORG_1]", "ORG", "ООО «Ромашка»")]
         sid = save_session(entities, storage_dir=str(tmp_path))
+        # Корень берётся у ЗАПУЩЕННОГО дерева, а не абсолютной константой
+        # "C:\Jesus\ARP": в git-worktree такой путь тихо подсовывал подпроцессу
+        # session_store ДРУГОГО дерева, и тест проверял не тот код, что тестирует.
+        import os
+        proj_root = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
         script = (
-            "import sys; sys.path.insert(0, r'{proj}');"
+            "import sys; sys.path.insert(0, r'{src}'); sys.path.insert(0, r'{proj}');"
             "from session_store import load_session;"
             "s = load_session('{sid}', storage_dir=r'{storage}');"
             "print(s['entities'][0]['original_text'])"
-        ).format(proj="C:\\Jesus\\ARP", sid=sid, storage=str(tmp_path))
-        import os
+        ).format(proj=proj_root, src=os.path.join(proj_root, "src"),
+                 sid=sid, storage=str(tmp_path))
         env = dict(os.environ, PYTHONIOENCODING="utf-8")
         result = subprocess.run(
             [sys.executable, "-c", script], capture_output=True, text=True, encoding="utf-8", env=env
@@ -174,8 +179,10 @@ class TestLoadSessionExpiry:
         """Спека, блок 5, Приёмка: ручное изменение expires_at на прошедшую дату -> SessionExpiredError."""
         sid = save_session([], storage_dir=str(tmp_path))
         enc_path = tmp_path / f"{sid}.enc"
-        key = (tmp_path / "key.bin").read_bytes()
-        fernet = Fernet(key)
+        # ЭТАП STORE: key.bin на диске лежит завёрнутым (DPAPI) — сырой
+        # Fernet-ключ достаётся через vault.unwrap_key, а не чтением файла.
+        import vault
+        fernet = Fernet(vault.unwrap_key((tmp_path / "key.bin").read_bytes()))
         data = json.loads(fernet.decrypt(enc_path.read_bytes()))
         data["expires_at"] = (datetime.now(timezone.utc) - timedelta(hours=1)).isoformat()
         enc_path.write_bytes(fernet.encrypt(json.dumps(data).encode("utf-8")))

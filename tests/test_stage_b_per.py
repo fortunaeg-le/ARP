@@ -185,17 +185,17 @@ def test_cli_ui_parity_byte_identical(tmp_path, monkeypatch):
     )
     assert enc.returncode == 0, enc.stderr
     sid = enc.stdout.strip()
-    cli_txt = (home / ".shifrator" / "sessions" / f"{sid}.txt").read_text(encoding="utf-8")
+    # ЭТАП STORE: {sid}.txt зашифрован — читаем расшифровкой, иначе паритет
+    # сравнивал бы шифротекст со строкой.
+    from testlib_store import read_anon_text
+    cli_txt = read_anon_text(home / ".shifrator" / "sessions", sid)
 
     # --- UI-путь: app/core.run_encrypt в том же изолированном HOME ---
-    # session_store._DEFAULT_STORAGE_DIR читается ОДИН раз при первом импорте
-    # модуля в процессе (см. session_store.py:35) — переменные окружения ниже
-    # её не переоткрывают, поэтому без явного monkeypatch save_session писал бы
-    # в РЕАЛЬНЫЙ ~/.shifrator того, кто гоняет тесты (см. tests/test_storage_s1.py
-    # iso_store — тот же прецедент, тот же приём).
-    ui_sessions = home / ".shifrator" / "sessions"
-    monkeypatch.setattr(session_store, "_DEFAULT_STORAGE_DIR", ui_sessions)
-    monkeypatch.setattr(storage, "default_storage_dir", lambda: ui_sessions)
+    # ЭТАП STORE: заплатка снята. Раньше здесь стояли два monkeypatch.setattr —
+    # session_store хранил путь константой, вычисленной на импорте, и подмена
+    # USERPROFILE/HOME ниже на неё не действовала: save_session писал в РЕАЛЬНЫЙ
+    # ~/.shifrator того, кто гоняет тесты. Теперь default_storage_dir() читает
+    # Path.home() при вызове, и подмены окружения довольно.
     # Сохраняем ИСХОДНЫЕ значения переменных (sentinel для отсутствующих) и точно
     # восстанавливаем — иначе tmp-HOME протёк бы в последующие тесты (default_storage_dir).
     _MISSING = object()

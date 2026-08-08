@@ -218,6 +218,9 @@ class Handler(BaseHTTPRequestHandler):
         if self.path == "/api/markup/summary":
             self._handle_markup_summary()
             return
+        if self.path == "/api/storage/info":
+            self._handle_storage_info()
+            return
         if self.path.startswith("/api/report"):
             self._handle_report()
             return
@@ -264,6 +267,10 @@ class Handler(BaseHTTPRequestHandler):
             self._handle_markup_op(self._op_mark_reviewed)
         elif self.path == "/api/markup/delete-all":
             self._handle_markup_delete_all()
+        elif self.path == "/api/storage/retention":
+            self._handle_storage_retention()
+        elif self.path == "/api/storage/delete-all":
+            self._handle_storage_delete_all()
         else:
             self.send_error(404)
 
@@ -464,6 +471,45 @@ class Handler(BaseHTTPRequestHandler):
         self._send_json({"status": "ok", "removed_sessions": removed})
 
     # ------------------------------------------------------------------ #
+    # ЭТАП STORE, часть 5 — честность перед пользователем.
+    # Экран «Что хранится»: что лежит, где, сколько времени, как удалить сейчас.
+    # ------------------------------------------------------------------ #
+    def _handle_storage_info(self):
+        try:
+            self._send_json({"status": "ok", **core.storage_view(LAST_PURGE)})
+        except Exception as e:  # noqa: BLE001
+            self._send_json({"status": "error", "message": str(e)}, status=500)
+
+    def _handle_storage_retention(self):
+        """Пользователь меняет срок хранения. Значение вне разумных границ —
+        внятная ошибка на экран, а не тихая подстановка ближайшего допустимого."""
+        data = self._read_body()
+        if data is None:
+            self._send_json({"status": "error", "message": "Слишком большой запрос."})
+            return
+        try:
+            payload = json.loads(data.decode("utf-8"))
+            from storage import set_retention
+            current = set_retention(
+                session_days=payload.get("session_days"),
+                markup_days=payload.get("markup_days"),
+            )
+            self._send_json({"status": "ok", **current})
+        except (ValueError, AttributeError) as e:
+            self._send_json({"status": "error", "message": str(e)})
+        except Exception as e:  # noqa: BLE001
+            self._send_json({"status": "error", "message": str(e)}, status=500)
+
+    def _handle_storage_delete_all(self):
+        """Кнопка «Удалить всё сейчас»: все сессии со всеми сайдкарами и вся
+        накопленная разметка, одним явным действием пользователя. Ключ хранилища
+        не трогаем — новые сессии должны шифроваться, а не остаться без ключа."""
+        try:
+            self._send_json({"status": "ok", **core.delete_everything()})
+        except Exception as e:  # noqa: BLE001
+            self._send_json({"status": "error", "message": str(e)}, status=500)
+
+    # ------------------------------------------------------------------ #
     # U4 — метрики и отчёт для разработчика.
     # ------------------------------------------------------------------ #
 
@@ -601,8 +647,39 @@ def _migrate_legacy_markup_once():
         print(f"  [предупреждение] перенос старой разметки не удался: {e}", file=sys.stderr)
 
 
+#: Результат последней автоочистки — чтобы интерфейс МОГ ПОКАЗАТЬ пользователю,
+#: что удаление произошло. Молчаливая автоочистка неотличима от потери данных.
+LAST_PURGE = {"sessions": 0, "markup_entries": 0}
+
+
+def _purge_expired_once():
+    """ЭТАП STORE, часть 3: автоочистка по сроку хранения при старте интерфейса.
+
+    До этого этапа `purge_expired` звалась ТОЛЬКО из CLI `decrypt`, а
+    `purge_expired_markup` — ниоткуда: пользователь интерфейса не терял по сроку
+    ничего и никогда, хотя срок был ему объявлен. Отложено это было сознательно
+    (HANDOFF_S1 §7: таймер в ThreadingHTTPServer — отдельное архитектурное
+    решение), поэтому фонового потока здесь по-прежнему НЕТ: чистим на старте,
+    в понятный момент и в главном потоке.
+
+    Сбой очистки не должен мешать запуску: интерфейс важнее уборки."""
+    try:
+        from storage import purge_all
+        result = purge_all()
+        LAST_PURGE.update(result)
+        if result["sessions"] or result["markup_entries"]:
+            print(
+                f"  Удалено по сроку хранения: сессий {result['sessions']}, "
+                f"записей разметки {result['markup_entries']}.",
+                file=sys.stderr,
+            )
+    except Exception as e:  # noqa: BLE001
+        print(f"  [предупреждение] очистка по сроку хранения не выполнена: {e}", file=sys.stderr)
+
+
 def main():
     _migrate_legacy_markup_once()
+    _purge_expired_once()
     port = find_free_port(DEFAULT_PORT)
     if port != DEFAULT_PORT:
         print(f"  Порт {DEFAULT_PORT} занят — использую {port}.", file=sys.stderr)

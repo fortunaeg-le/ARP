@@ -275,17 +275,12 @@ _PUNCT_RE = re.compile(r"[^\w\s]", re.UNICODE)
 
 
 def _case_shape(value: str) -> str:
-    letters = [c for c in value if c.isalpha()]
-    if not letters:
-        return "no_letters"
-    if all(c.isupper() for c in letters):
-        return "upper"
-    if all(c.islower() for c in letters):
-        return "lower"
-    words = [w for w in value.split() if any(c.isalpha() for c in w)]
-    if words and all(w[0].isupper() for w in words if w[0].isalpha()):
-        return "title"
-    return "mixed"
+    """ЭТАП STORE ч.4: единственная реализация живёт в `src/markup_record.py` —
+    её же применяет запись разметки при сохранении. Две копии этой функции
+    означали бы, что старая и новая запись за одну и ту же строку получают
+    разные коды, и расхождение вылезло бы не здесь, а в цифрах отчёта."""
+    from markup_record import value_case_shape
+    return value_case_shape(value)
 
 
 def _value_shape(value) -> dict:
@@ -301,6 +296,33 @@ def _value_shape(value) -> dict:
         "has_punct": bool(_PUNCT_RE.search(value)),
         "has_initials": bool(_INITIALS_RE.search(value)),
         "case_shape": _case_shape(value),
+    }
+
+
+def _shape_fields(entry: dict) -> dict:
+    """Признаки фрагмента для отчёта — из записи разметки любого поколения.
+
+    ЭТАП STORE ч.4: новые записи хранят структуру (`record.token_shapes`) и
+    сырого `value` не имеют вовсе; записи, сохранённые ДО этапа, ещё несут
+    `value` — считаем по нему, как раньше. Ветка по НАЛИЧИЮ структурного поля,
+    а не по дате: дата в записи есть, но верить ей для выбора формата — значит
+    сломаться на первой же записи с правленым временем.
+    """
+    record = entry.get("record")
+    if not isinstance(record, dict):
+        return _value_shape(entry.get("value"))
+
+    shapes = record.get("token_shapes") or []
+    span = record.get("span") or {}
+    return {
+        "length_chars": span.get("length_chars", 0),
+        "tokens": span.get("tokens", len(shapes)),
+        "has_digits": any(s.get("has_digits") for s in shapes),
+        "has_latin": any(s.get("has_latin") for s in shapes),
+        "has_cyrillic": any(s.get("has_cyrillic") for s in shapes),
+        "has_punct": any(s.get("has_punct") for s in shapes),
+        "has_initials": any(s.get("is_initial") for s in shapes),
+        "case_shape": record.get("case_shape", "no_letters"),
     }
 
 
@@ -611,7 +633,7 @@ def build_report(scope: str = "all", session_id: str | None = None,
                 "entity_type": etype,
                 "detector": det,
                 **_context(entry.get("segment_id")),
-                **_value_shape(entry.get("value")),
+                **_shape_fields(entry),
                 "build": build,
             })
 

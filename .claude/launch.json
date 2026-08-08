@@ -3,8 +3,8 @@
   "configurations": [
     {
       "name": "shifrator-ui",
-      "runtimeExecutable": "venv\\Scripts\\python.exe",
-      "runtimeArgs": ["app\\server.py"],
+      "runtimeExecutable": "C:\\Jesus\\ARP\\venv\\Scripts\\python.exe",
+      "runtimeArgs": ["C:\\Jesus\\ARP_STORE\\app\\server.py"],
       "port": 8765
     }
   ]
