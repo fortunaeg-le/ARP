@@ -3,8 +3,10 @@
 Изоляция: как везде в проекте, USERPROFILE/HOME подменяются на tmp_path, чтобы
 launcher.lock и хранилище сессий не трогали реальный профиль пользователя.
 """
+import ast
 import json
 import os
+import re
 import socket
 import subprocess
 import sys
@@ -200,22 +202,80 @@ def test_stale_lock_with_live_responding_process_is_left_alone(isolated_home, mo
 # писать слепок знаменателя метрик. То есть отказ был бы ТИХИМ. Обычный прогон
 # тестов идёт из исходников и такого не видит вовсе; поэтому проверяем спеку
 # как данные, а не собираем exe.
+#
+# ЭТАП AUDIT (находка `INSTR-PKGSPEC-SUBSTRING`). Оба теста ниже проверяли
+# `f'"{m}"' not in spec` — то есть присутствие имени в кавычках ГДЕ УГОДНО в
+# тексте спеки: в комментарии, в `excludes`, в `datas`, в пути. Заявлено было
+# «модуль в hiddenimports». Имя, попавшее в спеку любой другой строкой, красило
+# тест зелёным, а сборка теряла модуль — ровно тот класс тихой деградации,
+# ради которого тест и заведён. Теперь `hiddenimports` разбирается КАК СПИСОК.
 # --------------------------------------------------------------------------- #
 
-def test_pyinstaller_spec_lists_every_app_module():
+def _spec_hiddenimports():
+    """Список `hiddenimports` из `packaging/shifrator.spec`, разобранный как
+    данные, а не как подстрока.
+
+    Спека — исполняемый python, но присваивание `hiddenimports = [...]` в ней
+    литеральное, поэтому срез до закрывающей скобки читается `ast.literal_eval`
+    (комментарии внутри списка ему не мешают). Если литерал перестанет быть
+    литералом, тест обязан упасть, а не молча перейти на слабую проверку.
+    """
     spec_path = os.path.join(_ROOT, "packaging", "shifrator.spec")
     spec = open(spec_path, encoding="utf-8").read()
+    m = re.search(r"^hiddenimports\s*=\s*\[", spec, re.MULTILINE)
+    assert m, "в packaging/shifrator.spec нет присваивания hiddenimports = [...]"
+    start = m.end() - 1
+    depth, end = 0, None
+    for i in range(start, len(spec)):
+        if spec[i] == "[":
+            depth += 1
+        elif spec[i] == "]":
+            depth -= 1
+            if depth == 0:
+                end = i + 1
+                break
+    assert end, "не найдена закрывающая скобка списка hiddenimports"
+    try:
+        names = ast.literal_eval(spec[start:end])
+    except (ValueError, SyntaxError) as exc:                  # pragma: no cover
+        raise AssertionError(
+            "hiddenimports перестал быть литеральным списком (%s) — проверка "
+            "спеки как данных больше не работает, чинить надо её, а не тест" % exc
+        )
+    assert isinstance(names, list) and all(isinstance(n, str) for n in names)
+    return set(names)
 
+
+def test_pyinstaller_spec_lists_every_app_module():
+    listed = _spec_hiddenimports()
     app_modules = {
         os.path.splitext(name)[0]
         for name in os.listdir(_APP)
         if name.endswith(".py") and name != "launcher.py"   # launcher — точка входа
     }
-    missing = sorted(m for m in app_modules if f'"{m}"' not in spec)
+    missing = sorted(app_modules - listed)
     assert not missing, (
         f"модули app/ отсутствуют в hiddenimports спеки PyInstaller: {missing}. "
         "В собранном exe они не окажутся, а ленивый импорт внутри функции даст "
         "тихую деградацию вместо явной ошибки."
+    )
+
+
+def test_spec_module_check_is_not_a_substring_search():
+    """Само-проверка прибора (находка `INSTR-PKGSPEC-SUBSTRING`).
+
+    Имя, присутствующее в спеке ВНЕ `hiddenimports`, не должно считаться
+    перечисленным. Берём заведомо существующую в тексте спеки строку, которой
+    в списке нет, — если она «нашлась», проверка снова стала подстроковой.
+    """
+    listed = _spec_hiddenimports()
+    spec = open(os.path.join(_ROOT, "packaging", "shifrator.spec"),
+                encoding="utf-8").read()
+    outsider = "index.html"                    # лежит в datas, модулем не является
+    assert f'"{outsider}"' in spec, "фикстура устарела: строки нет в спеке вовсе"
+    assert outsider not in listed, (
+        "проверка спеки снова ищет подстроку по всему файлу вместо разбора "
+        "hiddenimports — это находка INSTR-PKGSPEC-SUBSTRING, она закрыта"
     )
 
 
@@ -227,14 +287,13 @@ def test_pyinstaller_spec_lists_every_app_module():
 # --------------------------------------------------------------------------- #
 
 def test_pyinstaller_spec_lists_every_src_module():
-    spec = open(os.path.join(_ROOT, "packaging", "shifrator.spec"), encoding="utf-8").read()
-
+    listed = _spec_hiddenimports()
     src_modules = {
         os.path.splitext(name)[0]
         for name in os.listdir(os.path.join(_ROOT, "src"))
         if name.endswith(".py")
     }
-    missing = sorted(m for m in src_modules if f'"{m}"' not in spec)
+    missing = sorted(src_modules - listed)
     assert not missing, (
         f"модули src/ отсутствуют в hiddenimports спеки PyInstaller: {missing}"
     )
