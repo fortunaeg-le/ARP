@@ -521,7 +521,8 @@ def _detect_boundary_entities(
     """
     import bisect
 
-    from regex_detector import detect_regex
+    from regex_detector import (detect_regex, _load_regex_types,
+                                _fold_anchor_context)
     from ner_detector import (
         _segmenter,
         _ner_tagger,
@@ -583,6 +584,9 @@ def _detect_boundary_entities(
 
     # локальные спаны на окно: (start, end, entity_type, detector, confidence)
     per_win: list[list[tuple]] = [[] for _ in wins]
+    #: ЭТАП FIX-2 — сущности, найденные ЯКОРЕМ ИЗ СОСЕДНЕЙ ЯЧЕЙКИ (шаг 3c).
+    #: Они не пересекают стык и потому мимо шага 4 — уходят в результат прямо.
+    anchor_across: list[Entity] = []
 
     blob_doc = SourceDocument(
         segments=[TextSegment(id="__batch__", text=blob, source_type="txt_line", metadata={})],
@@ -611,6 +615,56 @@ def _detect_boundary_entities(
         for (ls, le, etype) in collect_seam_entities(
                 w["window"], w["tail_end"], w["head_start"], config_path):
             per_win[k].append((ls, le, etype, "regex", 1.0))
+
+    # 3c. ЭТАП FIX-2 — ЯКОРЬ ЧЕРЕЗ ГРАНИЦУ ЯЧЕЙКИ (долг DOG-ANCHOR-SPLIT).
+    #
+    # ЧТО ЭТО ЗА КЛАСС. A6 закрывал разрыв ЗНАЧЕНИЯ границей сегментов; здесь
+    # значение целое, а границей оторван ЯКОРЬ: «БИК» в одной ячейке строки,
+    # число — в соседней. Посегментная детекция якоря не видит (он в чужом
+    # сегменте), а шаг 4 ниже отдаёт только спаны, ПЕРЕСЁКШИЕ стык, — этот не
+    # пересекает ничего. Значение проваливалось между двумя проходами. Ровно так
+    # этап NEG, поставив BIK якорь-шлагбаум, потерял единственный настоящий БИК
+    # реального договора.
+    #
+    # ГРАНИЦА РАЗЛИЧАЕТСЯ ПО РАЗМЕТКЕ, НЕ ПО СИМВОЛУ. Берутся ТОЛЬКО окна с
+    # `tail_end == head_start`, то есть с пустым `_boundary_sep`, а он пуст
+    # исключительно у двух ячеек ОДНОЙ СТРОКИ ОДНОЙ ТАБЛИЦЫ (проверка по
+    # metadata: table_index/row_index). Мягкий перенос и граница абзаца сюда не
+    # попадают вовсе — там `_has_anchor` и так обязан остановиться на
+    # переводе строки.
+    #
+    # НАПРАВЛЕНИЕ ОШИБКИ — «лучше не найти, чем захватить лишнее»: приклеенный
+    # хвост виден ТОЛЬКО якорю (`detect_regex(anchor_prefix=…)`), спан ищется и
+    # вырезается по-прежнему из своего сегмента, анти-якорь и ограничитель
+    # соседних цифр смотрят на ту же склейку и потому только ужесточают. Ничего
+    # нового не эмитится там, где посегментный проход уже нашёл то же самое.
+    anchored_res = [spec[4] for spec in _load_regex_types(config_path)
+                    if spec[4] is not None]
+    if anchored_res:
+        seen_seg = {(e.segment_id, e.start, e.end, e.entity_type)
+                    for e in (segment_entities or ())}
+        for w in wins:
+            if w["tail_end"] != w["head_start"]:
+                continue                      # не соседние ячейки одной строки
+            tail = w["window"][:w["tail_end"]]
+            # Дешёвый отсев: без якорного слова в хвосте склейка ничего не даёт,
+            # а detect_regex по каждой паре ячеек стоил бы заметно.
+            if not any(a.search(_fold_anchor_context(tail)) for a in anchored_res):
+                continue
+            seg_b = w["seg_b"]
+            tmp_doc = SourceDocument(
+                segments=[seg_b], source_format=doc.source_format,
+                source_path=doc.source_path,
+            )
+            base = {(e.start, e.end, e.entity_type)
+                    for e in detect_regex(tmp_doc, config_path)}
+            for e in detect_regex(tmp_doc, config_path, anchor_prefix=tail):
+                if (e.start, e.end, e.entity_type) in base:
+                    continue              # нашлось бы и без соседней ячейки
+                if (seg_b.id, e.start, e.end, e.entity_type) in seen_seg:
+                    continue              # уже есть у посегментного прохода
+                seen_seg.add((seg_b.id, e.start, e.end, e.entity_type))
+                anchor_across.append(e)
 
     # 3b. NER-тэггер — один проход по блобу; PER/ORG раскладываются по окнам, LOC копятся
     # как адресные анкоры. yargy — ПОСЕГМЕНТНО, только на окнах с анкором (короткий текст).
@@ -773,7 +827,7 @@ def _detect_boundary_entities(
                     entity_type=entity_type, detector=detector, confidence=confidence,
                 ))
 
-    return extra
+    return extra + anchor_across
 
 
 def _barrier_types(config_path: str) -> frozenset[str]:
