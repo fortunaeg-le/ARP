@@ -138,8 +138,8 @@ def print_report(agg, n_docs):
     l8 = (100.0 * bt["leak_v2_8"] / n) if n else 0.0
     print("%-10s %6d | %9.1f%% | %11.1f%% | %11.1f%% | %8d" % (
         "TOTAL*", n, recall, l6, l8, agg["fp_on_neg_total"]))
-    print("* TOTAL — агрегат BIK-excl (как в gate.py). Крешей: %d/%d документов."
-          % (len(agg["crashed"]), n_docs))
+    print("* TOTAL — агрегат BIK-excl (как в gate.py). Крешей: %d/%d, отказано (не "
+          "креш): %d/%d документов." % (len(agg["crashed"]), n_docs, len(agg["refused"]), n_docs))
 
 
 ITER_BASELINE = os.path.join(HERE, "results_iter_baseline.json")

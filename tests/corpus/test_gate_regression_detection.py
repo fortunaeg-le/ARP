@@ -314,6 +314,58 @@ def test_no_crash_stays_green_on_condition_1():
 
 
 # --------------------------------------------------------------------------- #
+#   ЭТАП INSTR, ЧАСТЬ 2 — "отказано" (outcome == "refused") НЕ "упало"        #
+#   (outcome == "crashed"): у харнесса разные коды и разные счётчики          #
+# --------------------------------------------------------------------------- #
+def _refused_doc(doc_id):
+    """Форма честного отказа обработки политикой непрочитанных зон
+    (run_measurement.process_doc, allow_lossy=False) — не поломка."""
+    return {"outcome": "refused", "doc_id": doc_id, "format": "docx",
+            "source": "gen", "n_entities": 0, "refused_zones": []}
+
+
+def test_refused_is_not_reported_as_crash():
+    """Отказ НЕ должен зажигать линию «КРЕШИ» — это разные исходы харнесса."""
+    baseline = ML.aggregate_results([_processed_doc("doc_a"), _processed_doc("doc_b")])
+    current_refused = ML.aggregate_results([_processed_doc("doc_a"), _refused_doc("doc_b")])
+
+    _, regressions, _ = G.compare(baseline, current_refused, fp_tolerance=0)
+
+    assert not any("КРЕШИ" in r for r in regressions), (
+        f"Отказ (refused) ошибочно посчитан крешем: {regressions}"
+    )
+
+
+def test_refused_and_crashed_counted_separately():
+    """aggregate_results обязан различать 'crashed' и 'refused' — до фикса оба
+    попадали в один и тот же список ('outcome != processed')."""
+    agg = ML.aggregate_results([
+        _processed_doc("doc_a"), _crashed_doc("doc_b"), _refused_doc("doc_c"),
+    ])
+    assert agg["crashed"] == ["doc_b"]
+    assert agg["refused"] == ["doc_c"]
+    assert agg["n_docs_processed"] == 1
+
+
+def test_new_refused_is_visible_but_does_not_redden():
+    """Рост числа отказов виден (warning), но сам по себе гейт не роняет —
+    отказ не поломка. Условие 1 (креши) при этом остаётся зелёным.
+
+    Базируется на _green_pair() (masks/bnd заполнены), а не на голом
+    _processed_doc: у последнего пустые "masks"/entities сами по себе красят
+    линии «в»/«г»/«е» ("нечем мерить"), и это заслонило бы проверяемый сигнал."""
+    baseline_results, current_results = _green_pair()
+    current_results[1] = _refused_doc(current_results[1]["doc_id"])
+
+    v = G.evaluate(baseline_results, current_results, known_leaks_ids=set())
+
+    assert not v["red"], f"Рост отказов ошибочно уронил гейт: {v['regressions']}"
+    assert any("ОТКАЗАНО" in w for w in v["warnings"]), (
+        f"Рост отказов не отражён предупреждением: {v['warnings']}"
+    )
+
+
+# --------------------------------------------------------------------------- #
 #   ЭТАП T2-INN — НОВЫЙ ТИП ПОД ОХРАНОЙ (тип, на котором гейт ни разу не       #
 #   краснел, охраняется только на словах)                                      #
 # --------------------------------------------------------------------------- #
