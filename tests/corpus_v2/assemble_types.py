@@ -65,10 +65,12 @@ _TOP_KEYS = {"type", "title", "status", "detect", "generator", "notes"}
 #: Белый список detect-ключей — ЕДИНСТВЕННОЕ, что переносится в артефакт
 #: (сама стена). form/rank/sets/measure потребляются сборщиком.
 _DETECT_KEYS = {"method", "form", "patterns", "validate", "anchor", "anti_anchor",
-                "anti_anchor_window", "span_group", "enabled", "token_prefix",
-                "rank", "sets", "sets_why", "measure"}
+                "anti_anchor_window", "anti_anchor_right",
+                "anti_anchor_right_window", "span_group", "enabled",
+                "token_prefix", "rank", "sets", "sets_why", "measure"}
 _PATTERN_ENTRY_KEYS = {"pattern", "form", "span_group", "validate", "anchor",
-                       "anti_anchor", "anti_anchor_window"}
+                       "anti_anchor", "anti_anchor_window",
+                       "anti_anchor_right", "anti_anchor_right_window"}
 _FORM_CLASSES = ("raw", "digit_run")
 
 
@@ -309,12 +311,14 @@ def emit_type_block(td):
         for entry in detect["patterns"]:
             lines.append("      - pattern: " + _q(compile_form(t, entry["form"])))
             for k in ("span_group", "validate", "anchor", "anti_anchor",
-                      "anti_anchor_window"):
+                      "anti_anchor_window", "anti_anchor_right",
+                      "anti_anchor_right_window"):
                 if k in entry:
                     lines.append(f"        {k}: " + _emit_value(entry[k]))
     else:
         lines.append("    pattern: " + _q(compile_form(t, detect["form"])))
         for k in ("validate", "anchor", "anti_anchor", "anti_anchor_window",
+                  "anti_anchor_right", "anti_anchor_right_window",
                   "span_group"):
             if k in detect:
                 lines.append(f"    {k}: " + _emit_value(detect[k]))

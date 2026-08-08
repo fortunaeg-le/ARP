@@ -196,6 +196,41 @@ def _has_anti_anchor(search_text: str, match_start: int, match_end: int,
     return anti_anchor_re.search(_fold_anchor_context(context)) is not None
 
 
+#: ЭТАП FIX-3 — умолчание окна ПРАВОГО анти-якоря (`anti_anchor_right_window:`).
+#: Заведено ОТДЕЛЬНОЙ константой от левого (`_ANTI_ANCHOR_WINDOW`) намеренно:
+#: левое окно уже разведено по типам этапом FIX-2, и связывать их одной
+#: величиной значило бы двигать оба, правя одно.
+_ANTI_ANCHOR_RIGHT_WINDOW = 40
+
+
+def _has_anti_anchor_right(search_text: str, match_end: int,
+                           anti_anchor_re: re.Pattern,
+                           window: int = _ANTI_ANCHOR_RIGHT_WINDOW) -> bool:
+    """ЭТАП FIX-3 — ДИСКВАЛИФИКАТОР СПРАВА (долг `FIX2-ANTIANCHOR-RIGHT`).
+
+    Окно анти-якоря было левосторонним по построению, и один вид случая
+    (`term/norm-ref`, 138 из 138) им не закрывался НИКАКИМ расширением:
+    уточнитель стоит ПОСЛЕ значения — «в течение одного года, КАК УСТАНОВЛЕНО
+    статьёй 725 ГК РФ». Расширить левое окно нельзя не потому, что мало, а
+    потому, что смотрит в другую сторону.
+
+    Правила те же, что у левого окна, и по той же причине:
+      * окно НЕ пересекает `\\n` — уточнитель из следующего абзаца не в счёт
+        (иначе дисквалификатор ловил бы чужое предложение);
+      * контекст сводится `_fold_anchor_context` — омоглиф в слове-уточнителе
+        не должен снимать дисквалификацию;
+      * направление ошибки — «лучше не найти»: сработавший дисквалификатор
+        ОТМЕНЯЕТ маску, поэтому ошибка здесь стоит пропуска, а не порчи, и
+        список слов обязан состоять из оборотов, которые рядом с настоящим
+        обязательством Стороны не встречаются.
+    """
+    context = search_text[match_end:match_end + window]
+    nl = context.find("\n")
+    if nl != -1:
+        context = context[:nl]
+    return anti_anchor_re.search(_fold_anchor_context(context)) is not None
+
+
 def _load_regex_types(config_path: str) -> list[tuple[str, re.Pattern, object, int, object]]:
     """Читает entity_types.yaml и возвращает
     [(entity_type, compiled_pattern, validator|None, span_group)] для записей с
@@ -246,7 +281,10 @@ def _load_regex_types(config_path: str) -> list[tuple[str, re.Pattern, object, i
                             "span_group": spec.get("span_group", 0),
                             "anchor": spec.get("anchor"),
                             "anti_anchor": spec.get("anti_anchor"),
-                            "anti_anchor_window": spec.get("anti_anchor_window")}]
+                            "anti_anchor_window": spec.get("anti_anchor_window"),
+                            "anti_anchor_right": spec.get("anti_anchor_right"),
+                            "anti_anchor_right_window":
+                                spec.get("anti_anchor_right_window")}]
 
         for entry in raw_entries:
             pattern_str = entry.get("pattern")
@@ -304,8 +342,29 @@ def _load_regex_types(config_path: str) -> list[tuple[str, re.Pattern, object, i
                       file=sys.stderr)
                 anti_window = _ANTI_ANCHOR_WINDOW
 
+            # ЭТАП FIX-3 — правый дисквалификатор (свой ключ, своё окно).
+            anti_right = None
+            anti_right_str = entry.get("anti_anchor_right")
+            if anti_right_str is not None:
+                try:
+                    anti_right = re.compile(anti_right_str)
+                except re.error as exc:
+                    print(f"ПРЕДУПРЕЖДЕНИЕ: anti_anchor_right типа {entity_type} не "
+                          f"компилируется ({exc}) — правый анти-якорь проигнорирован",
+                          file=sys.stderr)
+            anti_right_window = entry.get("anti_anchor_right_window")
+            try:
+                anti_right_window = (int(anti_right_window)
+                                     if anti_right_window is not None
+                                     else _ANTI_ANCHOR_RIGHT_WINDOW)
+            except (TypeError, ValueError):
+                print(f"ПРЕДУПРЕЖДЕНИЕ: anti_anchor_right_window типа {entity_type} не "
+                      f"число ({anti_right_window!r}) — взято умолчание "
+                      f"{_ANTI_ANCHOR_RIGHT_WINDOW}", file=sys.stderr)
+                anti_right_window = _ANTI_ANCHOR_RIGHT_WINDOW
+
             result.append((entity_type, pattern, validator, span_group, anchor,
-                           anti_anchor, anti_window))
+                           anti_anchor, anti_window, anti_right, anti_right_window))
     return result
 
 
@@ -348,7 +407,7 @@ def detect_regex(doc: SourceDocument, config_path: str,
         anchor_ctx = anchor_prefix + search_text if anchor_prefix else search_text
         shift = len(anchor_prefix)
         for (entity_type, pattern, validator, span_group, anchor,
-             anti_anchor, anti_window) in regex_types:
+             anti_anchor, anti_window, anti_right, anti_right_window) in regex_types:
             for m in pattern.finditer(search_text):
                 if m.start(span_group) < 0:
                     continue  # группа не участвовала в матче — спана нет
@@ -369,6 +428,16 @@ def detect_regex(doc: SourceDocument, config_path: str,
                         and _has_anti_anchor(
                             anchor_ctx, shift + m.start(0), shift + m.end(0),
                             anti_anchor, anti_window)):
+                    continue
+
+                # ЭТАП FIX-3 — тот же приём с ПРАВОЙ стороны значения
+                # (FIX2-ANTIANCHOR-RIGHT). Смотрит в search_text, а НЕ в
+                # anchor_ctx: приклеенный слева хвост соседней ячейки сдвигает
+                # только левые координаты, справа его нет вовсе.
+                if (anti_right is not None and not anchored
+                        and _has_anti_anchor_right(
+                            search_text, m.end(0), anti_right,
+                            anti_right_window)):
                     continue
 
                 # ЭТАП 4 — КС как сигнал уверенности, а не шлагбаум (STATE §6).
