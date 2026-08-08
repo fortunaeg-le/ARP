@@ -1899,16 +1899,36 @@
   {
    "chunks": [
     {
-     "s": "6.1. Полномочия представителя подтверждены доверенностью, реестровый номер "
+     "s": "6.1. Работы выполняются на основании ранее заключённого Договора № "
     },
     {
      "e": {
       "cat": "canonical",
       "id": "services_0012-e22",
       "note": "фабричный тип: пример из файла-описания владельца",
-      "type": "REG_NUMBER"
+      "type": "CONTRACT_NO"
      },
-     "s": "23/5-н/23-2025-2-1104"
+     "s": "01Ф-00034/16-124Д"
+    },
+    {
+     "s": " между теми же сторонами."
+    }
+   ],
+   "style": "normal",
+   "t": "p"
+  },
+  {
+   "chunks": [
+    {
+     "s": "6.2. Первичные документы: "
+    },
+    {
+     "n": {
+      "kind": "invoice",
+      "type": "CONTRACT_NO",
+      "why": "счёт-фактура — не договор; номера нет вовсе"
+     },
+     "s": "счёт-фактура выставлена без ссылки на номер"
     },
     {
      "s": "."
@@ -1920,15 +1940,118 @@
   {
    "chunks": [
     {
-     "s": "6.2. Для сопоставления в учёте указывается: "
+     "s": "6.3. Запись о лицензии внесена в реестр за регистрационным номером "
+    },
+    {
+     "e": {
+      "cat": "canonical",
+      "id": "services_0012-e23",
+      "note": "фабричный тип: пример из файла-описания владельца",
+      "type": "REG_ID"
+     },
+     "s": "268530417"
+    },
+    {
+     "s": "."
+    }
+   ],
+   "style": "normal",
+   "t": "p"
+  },
+  {
+   "chunks": [
+    {
+     "s": "6.4. Внутренний учёт ведётся отдельно: "
     },
     {
      "n": {
-      "kind": "date-slash",
-      "type": "REG_NUMBER",
-      "why": "диапазон месяцев: нет буквенной группы, две группы-даты"
+      "kind": "order-number",
+      "type": "REG_ID",
+      "why": "номер заявки — не запись реестра; якоря нет"
      },
-     "s": "срок действия 12/2024-06/2025"
+     "s": "номер заявки 987654321"
+    },
+    {
+     "s": "."
+    }
+   ],
+   "style": "normal",
+   "t": "p"
+  },
+  {
+   "chunks": [
+    {
+     "s": "6.5. Полномочия представителя подтверждены доверенностью, реестровый номер "
+    },
+    {
+     "e": {
+      "cat": "canonical",
+      "id": "services_0012-e24",
+      "note": "фабричный тип: пример из файла-описания владельца",
+      "type": "REG_NUMBER"
+     },
+     "s": "16/89-н/16-2024-3-215"
+    },
+    {
+     "s": "."
+    }
+   ],
+   "style": "normal",
+   "t": "p"
+  },
+  {
+   "chunks": [
+    {
+     "s": "6.6. Для сопоставления в учёте указывается: "
+    },
+    {
+     "n": {
+      "kind": "gost-ref",
+      "type": "REG_NUMBER",
+      "why": "ссылка на стандарт — не реестровый номер"
+     },
+     "s": "ГОСТ Р 52044-2003"
+    },
+    {
+     "s": "."
+    }
+   ],
+   "style": "normal",
+   "t": "p"
+  },
+  {
+   "chunks": [
+    {
+     "s": "6.7. Решение принято большинством в "
+    },
+    {
+     "e": {
+      "cat": "canonical",
+      "id": "services_0012-e25",
+      "note": "фабричный тип: пример из файла-описания владельца",
+      "type": "SHARE_PCT"
+     },
+     "s": "75 % голосов"
+    },
+    {
+     "s": " от общего числа голосов членов совета директоров."
+    }
+   ],
+   "style": "normal",
+   "t": "p"
+  },
+  {
+   "chunks": [
+    {
+     "s": "6.8. Кворум определяется уставом: "
+    },
+    {
+     "n": {
+      "kind": "quorum-no-number",
+      "type": "SHARE_PCT",
+      "why": "нет числа — маскировать нечего"
+     },
+     "s": "большинством голосов присутствующих участников"
     },
     {
      "s": "."
@@ -1975,7 +2098,7 @@
          {
           "e": {
            "cat": "adversarial",
-           "id": "services_0012-e41",
+           "id": "services_0012-e44",
            "note": "голая строка ПДн в ячейке, без предложения вокруг",
            "trick": "bare_cell_no_sentence",
            "type": "PER"
@@ -1994,7 +2117,7 @@
          {
           "e": {
            "cat": "canonical",
-           "id": "services_0012-e23",
+           "id": "services_0012-e26",
            "type": "PER"
           },
           "s": "Смирнов Юрий Петрович"
@@ -2011,7 +2134,7 @@
          {
           "e": {
            "cat": "canonical",
-           "id": "services_0012-e24",
+           "id": "services_0012-e27",
            "note": "стиль адреса: canonical",
            "type": "ADDRESS"
           },
@@ -2030,7 +2153,7 @@
           "e": {
            "cat": "canonical",
            "checksum": "invalid",
-           "id": "services_0012-e25",
+           "id": "services_0012-e28",
            "note": "12-значный ИНН",
            "type": "INN"
           },
@@ -2043,7 +2166,7 @@
           "e": {
            "cat": "ugly",
            "checksum": "invalid",
-           "id": "services_0012-e26",
+           "id": "services_0012-e29",
            "note": "ОГРНИП, 15 знаков",
            "type": "OGRN"
           },
@@ -2062,7 +2185,7 @@
           "e": {
            "cat": "canonical",
            "checksum": "invalid",
-           "id": "services_0012-e27",
+           "id": "services_0012-e30",
            "type": "ACCOUNT"
           },
           "s": "40802810784994078567"
@@ -2076,7 +2199,7 @@
          {
           "e": {
            "cat": "canonical",
-           "id": "services_0012-e28",
+           "id": "services_0012-e31",
            "type": "BIK"
           },
           "s": "044525974"
@@ -2093,7 +2216,7 @@
          {
           "e": {
            "cat": "canonical",
-           "id": "services_0012-e29",
+           "id": "services_0012-e32",
            "note": "формат: canonical",
            "type": "PHONE"
           },
@@ -2111,7 +2234,7 @@
          {
           "e": {
            "cat": "canonical",
-           "id": "services_0012-e30",
+           "id": "services_0012-e33",
            "type": "EMAIL"
           },
           "s": "smirnov@gmail.com"
@@ -2133,7 +2256,7 @@
          {
           "e": {
            "cat": "ugly",
-           "id": "services_0012-e31",
+           "id": "services_0012-e34",
            "note": "фамилия + инициалы",
            "type": "PER"
           },
@@ -2161,7 +2284,7 @@
          {
           "e": {
            "cat": "adversarial",
-           "id": "services_0012-e42",
+           "id": "services_0012-e45",
            "note": "голый адрес в ячейке",
            "trick": "bare_cell_no_sentence",
            "type": "ADDRESS"
@@ -2180,7 +2303,7 @@
          {
           "e": {
            "cat": "canonical",
-           "id": "services_0012-e32",
+           "id": "services_0012-e35",
            "type": "PER"
           },
           "s": "Семёнов Михаил Олегович"
@@ -2197,7 +2320,7 @@
          {
           "e": {
            "cat": "canonical",
-           "id": "services_0012-e33",
+           "id": "services_0012-e36",
            "note": "стиль адреса: canonical",
            "type": "ADDRESS"
           },
@@ -2216,7 +2339,7 @@
           "e": {
            "cat": "canonical",
            "checksum": "invalid",
-           "id": "services_0012-e34",
+           "id": "services_0012-e37",
            "note": "12-значный ИНН",
            "type": "INN"
           },
@@ -2229,7 +2352,7 @@
           "e": {
            "cat": "ugly",
            "checksum": "invalid",
-           "id": "services_0012-e35",
+           "id": "services_0012-e38",
            "note": "ОГРНИП, 15 знаков",
            "type": "OGRN"
           },
@@ -2248,7 +2371,7 @@
           "e": {
            "cat": "canonical",
            "checksum": "invalid",
-           "id": "services_0012-e36",
+           "id": "services_0012-e39",
            "type": "ACCOUNT"
           },
           "s": "40802810617983701081"
@@ -2262,7 +2385,7 @@
          {
           "e": {
            "cat": "canonical",
-           "id": "services_0012-e37",
+           "id": "services_0012-e40",
            "type": "BIK"
           },
           "s": "044525225"
@@ -2279,7 +2402,7 @@
          {
           "e": {
            "cat": "canonical",
-           "id": "services_0012-e38",
+           "id": "services_0012-e41",
            "note": "формат: canonical",
            "type": "PHONE"
           },
@@ -2297,7 +2420,7 @@
          {
           "e": {
            "cat": "canonical",
-           "id": "services_0012-e39",
+           "id": "services_0012-e42",
            "type": "EMAIL"
           },
           "s": "semenov@yandex.ru"
@@ -2319,7 +2442,7 @@
          {
           "e": {
            "cat": "ugly",
-           "id": "services_0012-e40",
+           "id": "services_0012-e43",
            "note": "фамилия + инициалы",
            "type": "PER"
           },
@@ -2380,7 +2503,7 @@
               {
                "e": {
                 "cat": "adversarial",
-                "id": "services_0012-e43",
+                "id": "services_0012-e46",
                 "note": "счёт во вложенной таблице",
                 "trick": "nested_table",
                 "type": "ACCOUNT"
@@ -2415,7 +2538,7 @@
               {
                "e": {
                 "cat": "adversarial",
-                "id": "services_0012-e44",
+                "id": "services_0012-e47",
                 "note": "ФИО во вложенной таблице",
                 "trick": "nested_table",
                 "type": "PER"
@@ -2465,7 +2588,7 @@
     {
      "e": {
       "cat": "ugly",
-      "id": "services_0012-e45",
+      "id": "services_0012-e48",
       "note": "подпись: фамилия+инициалы",
       "type": "PER"
      },
@@ -2486,7 +2609,7 @@
     {
      "e": {
       "cat": "ugly",
-      "id": "services_0012-e46",
+      "id": "services_0012-e49",
       "note": "подпись: фамилия+инициалы",
       "type": "PER"
      },

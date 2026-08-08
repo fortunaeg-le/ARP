@@ -1912,16 +1912,36 @@
   {
    "chunks": [
     {
-     "s": "6.1. Полномочия представителя подтверждены доверенностью, реестровый номер "
+     "s": "6.1. Работы выполняются на основании ранее заключённого Договора № "
     },
     {
      "e": {
       "cat": "canonical",
       "id": "cx_agency_0007-e21",
       "note": "фабричный тип: пример из файла-описания владельца",
-      "type": "REG_NUMBER"
+      "type": "CONTRACT_NO"
      },
-     "s": "50/121-н/50-2023-4-88"
+     "s": "2/17"
+    },
+    {
+     "s": " между теми же сторонами."
+    }
+   ],
+   "style": "normal",
+   "t": "p"
+  },
+  {
+   "chunks": [
+    {
+     "s": "6.2. Первичные документы: "
+    },
+    {
+     "n": {
+      "kind": "invoice",
+      "type": "CONTRACT_NO",
+      "why": "счёт-фактура — не договор; номера нет вовсе"
+     },
+     "s": "счёт-фактура выставлена без ссылки на номер"
     },
     {
      "s": "."
@@ -1933,15 +1953,118 @@
   {
    "chunks": [
     {
-     "s": "6.2. Для сопоставления в учёте указывается: "
+     "s": "6.3. Запись о лицензии внесена в реестр за регистрационным номером "
+    },
+    {
+     "e": {
+      "cat": "canonical",
+      "id": "cx_agency_0007-e22",
+      "note": "фабричный тип: пример из файла-описания владельца",
+      "type": "REG_ID"
+     },
+     "s": "731004592"
+    },
+    {
+     "s": "."
+    }
+   ],
+   "style": "normal",
+   "t": "p"
+  },
+  {
+   "chunks": [
+    {
+     "s": "6.4. Внутренний учёт ведётся отдельно: "
     },
     {
      "n": {
-      "kind": "clause-chain",
-      "type": "REG_NUMBER",
-      "why": "короткие цепочки пунктов: меньше групп, нет «-н», нет года"
+      "kind": "order-number",
+      "type": "REG_ID",
+      "why": "номер заявки — не запись реестра; якоря нет"
      },
-     "s": "пп. 4/5-1 и 7/2-3 Правил страхования"
+     "s": "номер заявки 987654321"
+    },
+    {
+     "s": "."
+    }
+   ],
+   "style": "normal",
+   "t": "p"
+  },
+  {
+   "chunks": [
+    {
+     "s": "6.5. Полномочия представителя подтверждены доверенностью, реестровый номер "
+    },
+    {
+     "e": {
+      "cat": "canonical",
+      "id": "cx_agency_0007-e23",
+      "note": "фабричный тип: пример из файла-описания владельца",
+      "type": "REG_NUMBER"
+     },
+     "s": "78/1445-н/78-2022-12-7"
+    },
+    {
+     "s": "."
+    }
+   ],
+   "style": "normal",
+   "t": "p"
+  },
+  {
+   "chunks": [
+    {
+     "s": "6.6. Для сопоставления в учёте указывается: "
+    },
+    {
+     "n": {
+      "kind": "cadastral",
+      "type": "REG_NUMBER",
+      "why": "чужая номенклатура: двоеточия, нет группы «-н» — не реестровый номер стороны"
+     },
+     "s": "кадастровый номер 77:01:0004012:2211"
+    },
+    {
+     "s": "."
+    }
+   ],
+   "style": "normal",
+   "t": "p"
+  },
+  {
+   "chunks": [
+    {
+     "s": "6.7. Решение принято большинством в "
+    },
+    {
+     "e": {
+      "cat": "canonical",
+      "id": "cx_agency_0007-e24",
+      "note": "фабричный тип: пример из файла-описания владельца",
+      "type": "SHARE_PCT"
+     },
+     "s": "9 % уставного капитала общества"
+    },
+    {
+     "s": " от общего числа голосов членов совета директоров."
+    }
+   ],
+   "style": "normal",
+   "t": "p"
+  },
+  {
+   "chunks": [
+    {
+     "s": "6.8. Кворум определяется уставом: "
+    },
+    {
+     "n": {
+      "kind": "quorum-no-number",
+      "type": "SHARE_PCT",
+      "why": "нет числа — маскировать нечего"
+     },
+     "s": "большинством голосов присутствующих участников"
     },
     {
      "s": "."
@@ -1988,7 +2111,7 @@
          {
           "e": {
            "cat": "canonical",
-           "id": "cx_agency_0007-e22",
+           "id": "cx_agency_0007-e25",
            "type": "ORG"
           },
           "s": "АО «Василёк»"
@@ -2005,7 +2128,7 @@
          {
           "e": {
            "cat": "canonical",
-           "id": "cx_agency_0007-e23",
+           "id": "cx_agency_0007-e26",
            "note": "стиль адреса: canonical",
            "type": "ADDRESS"
           },
@@ -2024,7 +2147,7 @@
           "e": {
            "cat": "canonical",
            "checksum": "valid",
-           "id": "cx_agency_0007-e24",
+           "id": "cx_agency_0007-e27",
            "type": "INN"
           },
           "s": "5038429165"
@@ -2035,7 +2158,7 @@
          {
           "e": {
            "cat": "canonical",
-           "id": "cx_agency_0007-e25",
+           "id": "cx_agency_0007-e28",
            "type": "KPP"
           },
           "s": "148640003"
@@ -2053,7 +2176,7 @@
           "e": {
            "cat": "canonical",
            "checksum": "valid",
-           "id": "cx_agency_0007-e26",
+           "id": "cx_agency_0007-e29",
            "type": "OGRN"
           },
           "s": "1404004411964"
@@ -2071,7 +2194,7 @@
           "e": {
            "cat": "canonical",
            "checksum": "valid",
-           "id": "cx_agency_0007-e27",
+           "id": "cx_agency_0007-e30",
            "type": "ACCOUNT"
           },
           "s": "40702810707675561869"
@@ -2091,7 +2214,7 @@
          {
           "e": {
            "cat": "canonical",
-           "id": "cx_agency_0007-e28",
+           "id": "cx_agency_0007-e31",
            "note": "корреспондентский счёт банка",
            "type": "ACCOUNT"
           },
@@ -2103,7 +2226,7 @@
          {
           "e": {
            "cat": "canonical",
-           "id": "cx_agency_0007-e29",
+           "id": "cx_agency_0007-e32",
            "type": "BIK"
           },
           "s": "044525555"
@@ -2120,7 +2243,7 @@
          {
           "e": {
            "cat": "canonical",
-           "id": "cx_agency_0007-e30",
+           "id": "cx_agency_0007-e33",
            "note": "формат: canonical",
            "type": "PHONE"
           },
@@ -2138,7 +2261,7 @@
          {
           "e": {
            "cat": "canonical",
-           "id": "cx_agency_0007-e31",
+           "id": "cx_agency_0007-e34",
            "type": "EMAIL"
           },
           "s": "ivanova@gmail.com"
@@ -2160,7 +2283,7 @@
          {
           "e": {
            "cat": "ugly",
-           "id": "cx_agency_0007-e32",
+           "id": "cx_agency_0007-e35",
            "note": "инициалы перед фамилией",
            "type": "PER"
           },
@@ -2191,7 +2314,7 @@
          {
           "e": {
            "cat": "canonical",
-           "id": "cx_agency_0007-e33",
+           "id": "cx_agency_0007-e36",
            "type": "PER"
           },
           "s": "Титова Юлия Владимировна"
@@ -2208,7 +2331,7 @@
          {
           "e": {
            "cat": "canonical",
-           "id": "cx_agency_0007-e34",
+           "id": "cx_agency_0007-e37",
            "note": "стиль адреса: canonical",
            "type": "ADDRESS"
           },
@@ -2227,7 +2350,7 @@
           "e": {
            "cat": "canonical",
            "checksum": "valid",
-           "id": "cx_agency_0007-e35",
+           "id": "cx_agency_0007-e38",
            "note": "12-значный ИНН",
            "type": "INN"
           },
@@ -2240,7 +2363,7 @@
           "e": {
            "cat": "ugly",
            "checksum": "valid",
-           "id": "cx_agency_0007-e36",
+           "id": "cx_agency_0007-e39",
            "note": "ОГРНИП, 15 знаков",
            "type": "OGRN"
           },
@@ -2259,7 +2382,7 @@
           "e": {
            "cat": "canonical",
            "checksum": "valid",
-           "id": "cx_agency_0007-e37",
+           "id": "cx_agency_0007-e40",
            "type": "ACCOUNT"
           },
           "s": "40802810561077715603"
@@ -2273,7 +2396,7 @@
          {
           "e": {
            "cat": "canonical",
-           "id": "cx_agency_0007-e38",
+           "id": "cx_agency_0007-e41",
            "type": "BIK"
           },
           "s": "044525360"
@@ -2290,7 +2413,7 @@
          {
           "e": {
            "cat": "canonical",
-           "id": "cx_agency_0007-e39",
+           "id": "cx_agency_0007-e42",
            "note": "формат: canonical",
            "type": "PHONE"
           },
@@ -2308,7 +2431,7 @@
          {
           "e": {
            "cat": "canonical",
-           "id": "cx_agency_0007-e40",
+           "id": "cx_agency_0007-e43",
            "type": "EMAIL"
           },
           "s": "titova@inbox.ru"
@@ -2330,7 +2453,7 @@
          {
           "e": {
            "cat": "ugly",
-           "id": "cx_agency_0007-e41",
+           "id": "cx_agency_0007-e44",
            "note": "фамилия + инициалы",
            "type": "PER"
           },
@@ -2368,7 +2491,7 @@
     {
      "e": {
       "cat": "ugly",
-      "id": "cx_agency_0007-e46",
+      "id": "cx_agency_0007-e49",
       "note": "подпись: фамилия+инициалы",
       "type": "PER"
      },
@@ -2389,7 +2512,7 @@
     {
      "e": {
       "cat": "ugly",
-      "id": "cx_agency_0007-e47",
+      "id": "cx_agency_0007-e50",
       "note": "подпись: фамилия+инициалы",
       "type": "PER"
      },
@@ -2418,7 +2541,7 @@
     {
      "e": {
       "cat": "adversarial",
-      "id": "cx_agency_0007-e44",
+      "id": "cx_agency_0007-e47",
       "note": "ФИО в нижнем колонтитуле",
       "trick": "in_footer",
       "type": "PER"
@@ -2431,7 +2554,7 @@
     {
      "e": {
       "cat": "adversarial",
-      "id": "cx_agency_0007-e45",
+      "id": "cx_agency_0007-e48",
       "note": "телефон в нижнем колонтитуле",
       "trick": "in_footer",
       "type": "PHONE"
@@ -2453,7 +2576,7 @@
     {
      "e": {
       "cat": "adversarial",
-      "id": "cx_agency_0007-e42",
+      "id": "cx_agency_0007-e45",
       "note": "телефон в колонтитуле (верхнем)",
       "trick": "in_header",
       "type": "PHONE"
@@ -2466,7 +2589,7 @@
     {
      "e": {
       "cat": "adversarial",
-      "id": "cx_agency_0007-e43",
+      "id": "cx_agency_0007-e46",
       "note": "e-mail в колонтитуле",
       "trick": "in_header",
       "type": "EMAIL"

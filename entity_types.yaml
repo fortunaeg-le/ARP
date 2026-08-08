@@ -388,7 +388,7 @@ entity_types:
   # [собрано фабрикой из tests/corpus_v2/typedefs/SUM.yaml — правки только там]
   SUM:
     method: regex
-    pattern: '(?i)\d[\d  ]*+([.,]\d+)?\s?(руб(лей|ля|\.)?|₽|USD|\$|долл(аров|\.)?)(?![а-яА-ЯёЁ])'
+    pattern: '(?i)\d[\d  ]*+([.,]\d+)?(?:\s?\([^)\n\d]{1,120}\))?\s?(руб(лей|ля|\.)?|₽|USD|\$|долл(аров|\.)?)(?:[  ]\d{2}[  ]коп(?:еек|ейки|\.)?)?(?![а-яА-ЯёЁ])'
     token_prefix: 'SUM'
     sets: [with_money]
     measure: {leak_class: numeric}
@@ -569,6 +569,24 @@ entity_types:
     method: anchor_registry
     suppress_masking: true
 
+  # [собрано фабрикой из tests/corpus_v2/typedefs/CONTRACT_NO.yaml — правки только там]
+  CONTRACT_NO:
+    method: regex
+    pattern: '(?i)(?:договор\w*|соглашени\w*|контракт\w*)[^\n\d№n]{0,25}(?:№|номер\w*|\bn\b)\s*((?=[0-9а-яёa-z/-]{0,25}\d)[0-9а-яёa-z][0-9а-яёa-z/-]{0,24}[0-9а-яёa-z]|[0-9]{1,2})'
+    span_group: 1
+    token_prefix: 'CONTRACT'
+    sets: [with_money]
+    measure: {leak_class: numeric}
+
+  # [собрано фабрикой из tests/corpus_v2/typedefs/REG_ID.yaml — правки только там]
+  REG_ID:
+    method: regex
+    pattern: '\b\d(?:[  ]?\d){8}\b'
+    anchor: '(?i)реестр\w*|регистрац\w*'
+    token_prefix: 'REGID'
+    sets: [personal_requisites, with_money]
+    measure: {leak_class: numeric}
+
   # [собрано фабрикой из tests/corpus_v2/typedefs/REG_NUMBER.yaml — правки только там]
   REG_NUMBER:
     method: regex
@@ -577,8 +595,24 @@ entity_types:
     sets: [personal_requisites, with_money]
     measure: {leak_class: numeric}
 
+  # [собрано фабрикой из tests/corpus_v2/typedefs/SHARE_PCT.yaml — правки только там]
+  SHARE_PCT:
+    method: regex
+    pattern: '(?i)(?<![\d.,])\d(?:[ ]?\d){0,2}(?:[.,]\d{1,2})?\s?(?:%|процент\w*)\s+(?:голос\w*(?:\s+от\s+общего\s+числа)?|(?:долей\s+)?(?:в\s+)?уставн\w+\s+капитал\w*|акци\w+)'
+    token_prefix: 'SHARE'
+    sets: [with_money]
+    measure: {leak_class: text}
+
+  # [собрано фабрикой из tests/corpus_v2/typedefs/TRANCHE.yaml — правки только там]
+  TRANCHE:
+    method: regex
+    pattern: '(?i)транш\w*\s*[«"„][^»"“\n]{1,60}[»"“]'
+    token_prefix: 'TRANCHE'
+    sets: [with_money]
+    measure: {leak_class: text}
+
 # Порядок арбитража пересечений (rule 3/rule 4 tokenizer._winner).
 # СОБРАН из базового порядка (до фабрики) и rank фабричных типов.
 arbitration_order:
-  regex: [BANK_ACCOUNT, OGRN, INN, INN_PERSON, BIK, SNILS, KPP, PASSPORT, PHONE, REG_NUMBER, SUM, EMAIL, BIRTHDATE, DATE, PERCENT, TERM]
+  regex: [BANK_ACCOUNT, OGRN, INN, INN_PERSON, BIK, SNILS, REG_ID, KPP, PASSPORT, PHONE, REG_NUMBER, CONTRACT_NO, SUM, EMAIL, BIRTHDATE, DATE, SHARE_PCT, PERCENT, TRANCHE, TERM]
   ner: [ADDRESS, ORG, PERSON]

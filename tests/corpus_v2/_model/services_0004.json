@@ -1921,16 +1921,36 @@
   {
    "chunks": [
     {
-     "s": "6.1. Полномочия представителя подтверждены доверенностью, реестровый номер "
+     "s": "6.1. Работы выполняются на основании ранее заключённого Договора № "
     },
     {
      "e": {
       "cat": "canonical",
       "id": "services_0004-e21",
       "note": "фабричный тип: пример из файла-описания владельца",
-      "type": "REG_NUMBER"
+      "type": "CONTRACT_NO"
      },
-     "s": "16/89-н/16-2024-3-215"
+     "s": "17595/001-сс"
+    },
+    {
+     "s": " между теми же сторонами."
+    }
+   ],
+   "style": "normal",
+   "t": "p"
+  },
+  {
+   "chunks": [
+    {
+     "s": "6.2. Первичные документы: "
+    },
+    {
+     "n": {
+      "kind": "license-doc",
+      "type": "CONTRACT_NO",
+      "why": "номер чужого документа: слова «договор» рядом нет"
+     },
+     "s": "лицензия Л035-01298-77/00123456 Рособрнадзора"
     },
     {
      "s": "."
@@ -1942,15 +1962,118 @@
   {
    "chunks": [
     {
-     "s": "6.2. Для сопоставления в учёте указывается: "
+     "s": "6.3. Запись о лицензии внесена в реестр за регистрационным номером "
+    },
+    {
+     "e": {
+      "cat": "canonical",
+      "id": "services_0004-e22",
+      "note": "фабричный тип: пример из файла-описания владельца",
+      "type": "REG_ID"
+     },
+     "s": "144625873"
+    },
+    {
+     "s": "."
+    }
+   ],
+   "style": "normal",
+   "t": "p"
+  },
+  {
+   "chunks": [
+    {
+     "s": "6.4. Внутренний учёт ведётся отдельно: "
     },
     {
      "n": {
-      "kind": "date-slash",
-      "type": "REG_NUMBER",
-      "why": "диапазон месяцев: нет буквенной группы, две группы-даты"
+      "kind": "registry-no-number",
+      "type": "REG_ID",
+      "why": "слово-якорь есть, значения нет — маскировать нечего"
      },
-     "s": "срок действия 12/2024-06/2025"
+     "s": "сведения внесены в реестр, номер записи не присвоен"
+    },
+    {
+     "s": "."
+    }
+   ],
+   "style": "normal",
+   "t": "p"
+  },
+  {
+   "chunks": [
+    {
+     "s": "6.5. Полномочия представителя подтверждены доверенностью, реестровый номер "
+    },
+    {
+     "e": {
+      "cat": "canonical",
+      "id": "services_0004-e23",
+      "note": "фабричный тип: пример из файла-описания владельца",
+      "type": "REG_NUMBER"
+     },
+     "s": "50/121-н/50-2023-4-88"
+    },
+    {
+     "s": "."
+    }
+   ],
+   "style": "normal",
+   "t": "p"
+  },
+  {
+   "chunks": [
+    {
+     "s": "6.6. Для сопоставления в учёте указывается: "
+    },
+    {
+     "n": {
+      "kind": "gost-ref",
+      "type": "REG_NUMBER",
+      "why": "ссылка на стандарт — не реестровый номер"
+     },
+     "s": "ГОСТ Р 52044-2003"
+    },
+    {
+     "s": "."
+    }
+   ],
+   "style": "normal",
+   "t": "p"
+  },
+  {
+   "chunks": [
+    {
+     "s": "6.7. Решение принято большинством в "
+    },
+    {
+     "e": {
+      "cat": "canonical",
+      "id": "services_0004-e24",
+      "note": "фабричный тип: пример из файла-описания владельца",
+      "type": "SHARE_PCT"
+     },
+     "s": "25,5 % голосов от общего числа"
+    },
+    {
+     "s": " от общего числа голосов членов совета директоров."
+    }
+   ],
+   "style": "normal",
+   "t": "p"
+  },
+  {
+   "chunks": [
+    {
+     "s": "6.8. Кворум определяется уставом: "
+    },
+    {
+     "n": {
+      "kind": "fraction-words",
+      "type": "SHARE_PCT",
+      "why": "дробно-словесная форма — СЕМ, правилами не берётся (ENTITY_SPEC §3.5); честный негатив, а не молчаливый пропуск"
+     },
+     "s": "большинством в две трети голосов"
     },
     {
      "s": "."
@@ -1997,7 +2120,7 @@
          {
           "e": {
            "cat": "canonical",
-           "id": "services_0004-e22",
+           "id": "services_0004-e25",
            "type": "ORG"
           },
           "s": "ООО «Альтаир»"
@@ -2014,7 +2137,7 @@
          {
           "e": {
            "cat": "canonical",
-           "id": "services_0004-e23",
+           "id": "services_0004-e26",
            "note": "стиль адреса: canonical",
            "type": "ADDRESS"
           },
@@ -2033,7 +2156,7 @@
           "e": {
            "cat": "canonical",
            "checksum": "invalid",
-           "id": "services_0004-e24",
+           "id": "services_0004-e27",
            "type": "INN"
           },
           "s": "3466443415"
@@ -2044,7 +2167,7 @@
          {
           "e": {
            "cat": "canonical",
-           "id": "services_0004-e25",
+           "id": "services_0004-e28",
            "type": "KPP"
           },
           "s": "770007190"
@@ -2062,7 +2185,7 @@
           "e": {
            "cat": "canonical",
            "checksum": "invalid",
-           "id": "services_0004-e26",
+           "id": "services_0004-e29",
            "type": "OGRN"
           },
           "s": "1747701729380"
@@ -2080,7 +2203,7 @@
           "e": {
            "cat": "canonical",
            "checksum": "invalid",
-           "id": "services_0004-e27",
+           "id": "services_0004-e30",
            "type": "ACCOUNT"
           },
           "s": "40702810666726014176"
@@ -2100,7 +2223,7 @@
          {
           "e": {
            "cat": "canonical",
-           "id": "services_0004-e28",
+           "id": "services_0004-e31",
            "note": "корреспондентский счёт банка",
            "type": "ACCOUNT"
           },
@@ -2112,7 +2235,7 @@
          {
           "e": {
            "cat": "canonical",
-           "id": "services_0004-e29",
+           "id": "services_0004-e32",
            "type": "BIK"
           },
           "s": "044525555"
@@ -2129,7 +2252,7 @@
          {
           "e": {
            "cat": "canonical",
-           "id": "services_0004-e30",
+           "id": "services_0004-e33",
            "note": "формат: canonical",
            "type": "PHONE"
           },
@@ -2147,7 +2270,7 @@
          {
           "e": {
            "cat": "canonical",
-           "id": "services_0004-e31",
+           "id": "services_0004-e34",
            "type": "EMAIL"
           },
           "s": "ded@gmail.com"
@@ -2169,7 +2292,7 @@
          {
           "e": {
            "cat": "ugly",
-           "id": "services_0004-e32",
+           "id": "services_0004-e35",
            "note": "инициалы перед фамилией",
            "type": "PER"
           },
@@ -2200,7 +2323,7 @@
          {
           "e": {
            "cat": "canonical",
-           "id": "services_0004-e33",
+           "id": "services_0004-e36",
            "type": "PER"
           },
           "s": "Сорока Татьяна Павловна"
@@ -2217,7 +2340,7 @@
          {
           "e": {
            "cat": "canonical",
-           "id": "services_0004-e34",
+           "id": "services_0004-e37",
            "note": "стиль адреса: canonical",
            "type": "ADDRESS"
           },
@@ -2236,7 +2359,7 @@
           "e": {
            "cat": "canonical",
            "checksum": "invalid",
-           "id": "services_0004-e35",
+           "id": "services_0004-e38",
            "note": "12-значный ИНН",
            "type": "INN"
           },
@@ -2249,7 +2372,7 @@
           "e": {
            "cat": "ugly",
            "checksum": "invalid",
-           "id": "services_0004-e36",
+           "id": "services_0004-e39",
            "note": "ОГРНИП, 15 знаков",
            "type": "OGRN"
           },
@@ -2268,7 +2391,7 @@
           "e": {
            "cat": "canonical",
            "checksum": "invalid",
-           "id": "services_0004-e37",
+           "id": "services_0004-e40",
            "type": "ACCOUNT"
           },
           "s": "40802810045497270767"
@@ -2282,7 +2405,7 @@
          {
           "e": {
            "cat": "canonical",
-           "id": "services_0004-e38",
+           "id": "services_0004-e41",
            "type": "BIK"
           },
           "s": "044030790"
@@ -2299,7 +2422,7 @@
          {
           "e": {
            "cat": "canonical",
-           "id": "services_0004-e39",
+           "id": "services_0004-e42",
            "note": "формат: canonical",
            "type": "PHONE"
           },
@@ -2317,7 +2440,7 @@
          {
           "e": {
            "cat": "canonical",
-           "id": "services_0004-e40",
+           "id": "services_0004-e43",
            "type": "EMAIL"
           },
           "s": "soroka@romashka.ru"
@@ -2339,7 +2462,7 @@
          {
           "e": {
            "cat": "ugly",
-           "id": "services_0004-e41",
+           "id": "services_0004-e44",
            "note": "фамилия + инициалы",
            "type": "PER"
           },
@@ -2400,7 +2523,7 @@
               {
                "e": {
                 "cat": "adversarial",
-                "id": "services_0004-e42",
+                "id": "services_0004-e45",
                 "note": "счёт во вложенной таблице",
                 "trick": "nested_table",
                 "type": "ACCOUNT"
@@ -2435,7 +2558,7 @@
               {
                "e": {
                 "cat": "adversarial",
-                "id": "services_0004-e43",
+                "id": "services_0004-e46",
                 "note": "ФИО во вложенной таблице",
                 "trick": "nested_table",
                 "type": "PER"
@@ -2485,7 +2608,7 @@
     {
      "e": {
       "cat": "ugly",
-      "id": "services_0004-e46",
+      "id": "services_0004-e49",
       "note": "подпись: фамилия+инициалы",
       "type": "PER"
      },
@@ -2506,7 +2629,7 @@
     {
      "e": {
       "cat": "ugly",
-      "id": "services_0004-e47",
+      "id": "services_0004-e50",
       "note": "подпись: фамилия+инициалы",
       "type": "PER"
      },
@@ -2539,7 +2662,7 @@
     {
      "e": {
       "cat": "adversarial",
-      "id": "services_0004-e44",
+      "id": "services_0004-e47",
       "note": "телефон в колонтитуле (верхнем)",
       "trick": "in_header",
       "type": "PHONE"
@@ -2552,7 +2675,7 @@
     {
      "e": {
       "cat": "adversarial",
-      "id": "services_0004-e45",
+      "id": "services_0004-e48",
       "note": "e-mail в колонтитуле",
       "trick": "in_header",
       "type": "EMAIL"

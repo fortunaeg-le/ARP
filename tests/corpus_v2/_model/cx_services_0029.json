@@ -2031,16 +2031,36 @@
   {
    "chunks": [
     {
-     "s": "6.1. Полномочия представителя подтверждены доверенностью, реестровый номер "
+     "s": "6.1. Работы выполняются на основании ранее заключённого Договора № "
     },
     {
      "e": {
       "cat": "canonical",
       "id": "cx_services_0029-e27",
       "note": "фабричный тип: пример из файла-описания владельца",
-      "type": "REG_NUMBER"
+      "type": "CONTRACT_NO"
      },
-     "s": "78/1445-н/78-2022-12-7"
+     "s": "СУБ-44/2023"
+    },
+    {
+     "s": " между теми же сторонами."
+    }
+   ],
+   "style": "normal",
+   "t": "p"
+  },
+  {
+   "chunks": [
+    {
+     "s": "6.2. Первичные документы: "
+    },
+    {
+     "n": {
+      "kind": "license-doc",
+      "type": "CONTRACT_NO",
+      "why": "номер чужого документа: слова «договор» рядом нет"
+     },
+     "s": "лицензия Л035-01298-77/00123456 Рособрнадзора"
     },
     {
      "s": "."
@@ -2052,15 +2072,118 @@
   {
    "chunks": [
     {
-     "s": "6.2. Для сопоставления в учёте указывается: "
+     "s": "6.3. Запись о лицензии внесена в реестр за регистрационным номером "
+    },
+    {
+     "e": {
+      "cat": "canonical",
+      "id": "cx_services_0029-e28",
+      "note": "фабричный тип: пример из файла-описания владельца",
+      "type": "REG_ID"
+     },
+     "s": "895217304"
+    },
+    {
+     "s": "."
+    }
+   ],
+   "style": "normal",
+   "t": "p"
+  },
+  {
+   "chunks": [
+    {
+     "s": "6.4. Внутренний учёт ведётся отдельно: "
     },
     {
      "n": {
-      "kind": "cadastral",
-      "type": "REG_NUMBER",
-      "why": "чужая номенклатура: двоеточия, нет группы «-н» — не реестровый номер стороны"
+      "kind": "registry-no-number",
+      "type": "REG_ID",
+      "why": "слово-якорь есть, значения нет — маскировать нечего"
      },
-     "s": "кадастровый номер 77:01:0004012:2211"
+     "s": "сведения внесены в реестр, номер записи не присвоен"
+    },
+    {
+     "s": "."
+    }
+   ],
+   "style": "normal",
+   "t": "p"
+  },
+  {
+   "chunks": [
+    {
+     "s": "6.5. Полномочия представителя подтверждены доверенностью, реестровый номер "
+    },
+    {
+     "e": {
+      "cat": "canonical",
+      "id": "cx_services_0029-e29",
+      "note": "фабричный тип: пример из файла-описания владельца",
+      "type": "REG_NUMBER"
+     },
+     "s": "77/714-н/77-2024-1-502"
+    },
+    {
+     "s": "."
+    }
+   ],
+   "style": "normal",
+   "t": "p"
+  },
+  {
+   "chunks": [
+    {
+     "s": "6.6. Для сопоставления в учёте указывается: "
+    },
+    {
+     "n": {
+      "kind": "clause-chain",
+      "type": "REG_NUMBER",
+      "why": "короткие цепочки пунктов: меньше групп, нет «-н», нет года"
+     },
+     "s": "пп. 4/5-1 и 7/2-3 Правил страхования"
+    },
+    {
+     "s": "."
+    }
+   ],
+   "style": "normal",
+   "t": "p"
+  },
+  {
+   "chunks": [
+    {
+     "s": "6.7. Решение принято большинством в "
+    },
+    {
+     "e": {
+      "cat": "canonical",
+      "id": "cx_services_0029-e30",
+      "note": "фабричный тип: пример из файла-описания владельца",
+      "type": "SHARE_PCT"
+     },
+     "s": "40 % уставного капитала"
+    },
+    {
+     "s": " от общего числа голосов членов совета директоров."
+    }
+   ],
+   "style": "normal",
+   "t": "p"
+  },
+  {
+   "chunks": [
+    {
+     "s": "6.8. Кворум определяется уставом: "
+    },
+    {
+     "n": {
+      "kind": "fraction-words",
+      "type": "SHARE_PCT",
+      "why": "дробно-словесная форма — СЕМ, правилами не берётся (ENTITY_SPEC §3.5); честный негатив, а не молчаливый пропуск"
+     },
+     "s": "большинством в две трети голосов"
     },
     {
      "s": "."
@@ -2110,7 +2233,7 @@
          {
           "e": {
            "cat": "canonical",
-           "id": "cx_services_0029-e28",
+           "id": "cx_services_0029-e31",
            "type": "PER"
           },
           "s": "Никитина Дарья Дмитриевна"
@@ -2127,7 +2250,7 @@
          {
           "e": {
            "cat": "canonical",
-           "id": "cx_services_0029-e29",
+           "id": "cx_services_0029-e32",
            "note": "стиль адреса: canonical",
            "type": "ADDRESS"
           },
@@ -2146,7 +2269,7 @@
           "e": {
            "cat": "canonical",
            "checksum": "valid",
-           "id": "cx_services_0029-e30",
+           "id": "cx_services_0029-e33",
            "note": "12-значный ИНН",
            "type": "INN"
           },
@@ -2159,7 +2282,7 @@
           "e": {
            "cat": "ugly",
            "checksum": "valid",
-           "id": "cx_services_0029-e31",
+           "id": "cx_services_0029-e34",
            "note": "ОГРНИП, 15 знаков",
            "type": "OGRN"
           },
@@ -2178,7 +2301,7 @@
           "e": {
            "cat": "canonical",
            "checksum": "valid",
-           "id": "cx_services_0029-e32",
+           "id": "cx_services_0029-e35",
            "type": "ACCOUNT"
           },
           "s": "40802810741568819270"
@@ -2192,7 +2315,7 @@
          {
           "e": {
            "cat": "canonical",
-           "id": "cx_services_0029-e33",
+           "id": "cx_services_0029-e36",
            "type": "BIK"
           },
           "s": "044525555"
@@ -2209,7 +2332,7 @@
          {
           "e": {
            "cat": "canonical",
-           "id": "cx_services_0029-e34",
+           "id": "cx_services_0029-e37",
            "note": "формат: canonical",
            "type": "PHONE"
           },
@@ -2227,7 +2350,7 @@
          {
           "e": {
            "cat": "canonical",
-           "id": "cx_services_0029-e35",
+           "id": "cx_services_0029-e38",
            "type": "EMAIL"
           },
           "s": "nikitina@yandex.ru"
@@ -2249,7 +2372,7 @@
          {
           "e": {
            "cat": "ugly",
-           "id": "cx_services_0029-e36",
+           "id": "cx_services_0029-e39",
            "note": "фамилия + инициалы",
            "type": "PER"
           },
@@ -2277,7 +2400,7 @@
          {
           "e": {
            "cat": "canonical",
-           "id": "cx_services_0029-e37",
+           "id": "cx_services_0029-e40",
            "type": "PER"
           },
           "s": "Титова Людмила Петровна"
@@ -2294,7 +2417,7 @@
          {
           "e": {
            "cat": "canonical",
-           "id": "cx_services_0029-e38",
+           "id": "cx_services_0029-e41",
            "note": "стиль записи из BIRTHDATE_STYLES",
            "type": "BIRTHDATE"
           },
@@ -2312,7 +2435,7 @@
          {
           "e": {
            "cat": "canonical",
-           "id": "cx_services_0029-e39",
+           "id": "cx_services_0029-e42",
            "note": "стиль адреса: canonical",
            "type": "ADDRESS"
           },
@@ -2330,7 +2453,7 @@
          {
           "e": {
            "cat": "canonical",
-           "id": "cx_services_0029-e40",
+           "id": "cx_services_0029-e43",
            "note": "серия+номер, стиль записи из PASSPORT_STYLES",
            "type": "PASSPORT"
           },
@@ -2345,7 +2468,7 @@
          {
           "e": {
            "cat": "ugly",
-           "id": "cx_services_0029-e41",
+           "id": "cx_services_0029-e44",
            "note": "код подразделения, стиль записи из DEPTCODE_STYLES",
            "type": "PASSPORT"
           },
@@ -2364,7 +2487,7 @@
           "e": {
            "cat": "canonical",
            "checksum": "valid",
-           "id": "cx_services_0029-e42",
+           "id": "cx_services_0029-e45",
            "note": "стиль записи из SNILS_STYLES",
            "type": "SNILS"
           },
@@ -2377,7 +2500,7 @@
           "e": {
            "cat": "ugly",
            "checksum": "valid",
-           "id": "cx_services_0029-e43",
+           "id": "cx_services_0029-e46",
            "note": "ИНН физлица (12 знаков)",
            "type": "INN"
           },
@@ -2395,7 +2518,7 @@
          {
           "e": {
            "cat": "canonical",
-           "id": "cx_services_0029-e44",
+           "id": "cx_services_0029-e47",
            "note": "формат: canonical",
            "type": "PHONE"
           },
@@ -2413,7 +2536,7 @@
          {
           "e": {
            "cat": "canonical",
-           "id": "cx_services_0029-e45",
+           "id": "cx_services_0029-e48",
            "type": "EMAIL"
           },
           "s": "titova@inbox.ru"
@@ -2435,7 +2558,7 @@
          {
           "e": {
            "cat": "ugly",
-           "id": "cx_services_0029-e46",
+           "id": "cx_services_0029-e49",
            "note": "фамилия + инициалы",
            "type": "PER"
           },
@@ -2473,7 +2596,7 @@
     {
      "e": {
       "cat": "ugly",
-      "id": "cx_services_0029-e47",
+      "id": "cx_services_0029-e50",
       "note": "подпись: фамилия+инициалы",
       "type": "PER"
      },
@@ -2494,7 +2617,7 @@
     {
      "e": {
       "cat": "ugly",
-      "id": "cx_services_0029-e48",
+      "id": "cx_services_0029-e51",
       "note": "подпись: фамилия+инициалы",
       "type": "PER"
      },
