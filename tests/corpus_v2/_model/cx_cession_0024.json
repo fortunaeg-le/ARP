@@ -566,15 +566,14 @@
      "s": "2.4. Порядок выборки: "
     },
     {
-     "e": {
+     "n": {
       "axes": {
        "оборот": "период выборки траншей"
       },
-      "cat": "ugly",
       "form": "tranche|оборот=период выборки траншей",
-      "id": "cx_cession_0024-e11",
-      "note": "описательный оборот без числового значения; договорной формулировки транша в открытых источниках не нашлось — ВИД ДАННЫХ НЕИЗМЕРИМ, детектор не писать",
-      "type": "TRANCHE"
+      "kind": "ordinal-tranche",
+      "type": "TRANCHE",
+      "why": "порядковый/описательный оборот транша не маскируется — решение владельца (TYPE-FACTORY-2, 2026-08-08); маскируется только именная ветвь (транш «Имя»), она идёт фабрикой"
      },
      "s": "период выборки траншей"
     },
@@ -774,7 +773,7 @@
       },
       "cat": "canonical",
       "form": "money|разделитель разрядов=пробел|копейки=,00|валюта=₽|пропись=нет|НДС=в т.ч. НДС 18%|заполненность=значение",
-      "id": "cx_cession_0024-e12",
+      "id": "cx_cession_0024-e11",
       "note": "сумма",
       "type": "MONEY"
      },
@@ -790,7 +789,7 @@
       },
       "cat": "canonical",
       "form": "percent|запись=15%",
-      "id": "cx_cession_0024-e13",
+      "id": "cx_cession_0024-e12",
       "note": "ставка НДС",
       "type": "PERCENT"
      },
@@ -1196,7 +1195,7 @@
     {
      "e": {
       "cat": "canonical",
-      "id": "cx_cession_0024-e14",
+      "id": "cx_cession_0024-e13",
       "note": "стиль адреса: canonical",
       "type": "ADDRESS"
      },
@@ -1217,7 +1216,7 @@
     {
      "e": {
       "cat": "canonical",
-      "id": "cx_cession_0024-e15",
+      "id": "cx_cession_0024-e14",
       "note": "ФИО в дательном падеже",
       "type": "PER"
      },
@@ -1229,7 +1228,7 @@
     {
      "e": {
       "cat": "canonical",
-      "id": "cx_cession_0024-e16",
+      "id": "cx_cession_0024-e15",
       "note": "формат: canonical",
       "type": "PHONE"
      },
@@ -1257,7 +1256,7 @@
       },
       "cat": "canonical",
       "form": "term|запись числа=30 (Тридцати)|вид дней=банковских|отправная точка=нет|вместо срока — дата=нет",
-      "id": "cx_cession_0024-e17",
+      "id": "cx_cession_0024-e16",
       "note": "срок длительностью",
       "type": "TERM"
      },
@@ -1507,7 +1506,7 @@
       },
       "cat": "canonical",
       "form": "percent|запись=0,1 %|пропись=(одна десятая процента) им.|привязка=годовых|ограничение=нет|дробь ставки=нет",
-      "id": "cx_cession_0024-e18",
+      "id": "cx_cession_0024-e17",
       "note": "процент",
       "type": "PERCENT"
      },
@@ -1527,7 +1526,7 @@
       },
       "cat": "canonical",
       "form": "percent|запись=15%|пропись=нет|привязка=от цены Договора|ограничение=нет|дробь ставки=нет",
-      "id": "cx_cession_0024-e19",
+      "id": "cx_cession_0024-e18",
       "note": "процент",
       "type": "PERCENT"
      },
@@ -1570,7 +1569,7 @@
       },
       "cat": "canonical",
       "form": "term|запись числа=трех|вид дней=месяцев|отправная точка=с даты подписания Сторонами акта сдачи-приемки оказанных услуг|вместо срока — дата=нет",
-      "id": "cx_cession_0024-e20",
+      "id": "cx_cession_0024-e19",
       "note": "срок длительностью",
       "type": "TERM"
      },
@@ -1601,7 +1600,7 @@
       },
       "cat": "canonical",
       "form": "term|запись числа=10|вид дней=банковских|отправная точка=с момента выставления счета|вместо срока — дата=нет",
-      "id": "cx_cession_0024-e21",
+      "id": "cx_cession_0024-e20",
       "note": "срок длительностью",
       "type": "TERM"
      },
@@ -1896,7 +1895,7 @@
       },
       "cat": "adversarial",
       "form": "money|копейки=00 копеек|валюта=рублей|пропись=вместо цифр|НДС=нет|заполненность=значение",
-      "id": "cx_cession_0024-e22",
+      "id": "cx_cession_0024-e21",
       "note": "число разорвано форматированием: половина цифр в одном ране, половина в другом",
       "trick": "format_split",
       "type": "MONEY"
@@ -1925,7 +1924,7 @@
       },
       "cat": "adversarial",
       "form": "percent|привязка=за каждый день просрочки|ограничение=нет|дробь ставки=1/150",
-      "id": "cx_cession_0024-e23",
+      "id": "cx_cession_0024-e22",
       "note": "число разорвано форматированием: половина цифр в одном ране, половина в другом",
       "trick": "format_split",
       "type": "PERCENT"
@@ -1951,7 +1950,7 @@
       },
       "cat": "adversarial",
       "form": "term|вместо срока — дата=не позднее 01.11.2025",
-      "id": "cx_cession_0024-e24",
+      "id": "cx_cession_0024-e23",
       "note": "величина разорвана переводом строки",
       "trick": "linebreak",
       "type": "TERM"
@@ -1998,7 +1997,7 @@
       },
       "cat": "canonical",
       "form": "percent|привязка=за каждый день просрочки|ограничение=нет|дробь ставки=1/150",
-      "id": "cx_cession_0024-e25",
+      "id": "cx_cession_0024-e24",
       "note": "процент",
       "type": "PERCENT"
      },
@@ -2048,7 +2047,7 @@
          {
           "e": {
            "cat": "canonical",
-           "id": "cx_cession_0024-e26",
+           "id": "cx_cession_0024-e25",
            "type": "PER"
           },
           "s": "Крылова Светлана Сергеевна"
@@ -2065,7 +2064,7 @@
          {
           "e": {
            "cat": "canonical",
-           "id": "cx_cession_0024-e27",
+           "id": "cx_cession_0024-e26",
            "note": "стиль адреса: canonical",
            "type": "ADDRESS"
           },
@@ -2084,7 +2083,7 @@
           "e": {
            "cat": "canonical",
            "checksum": "valid",
-           "id": "cx_cession_0024-e28",
+           "id": "cx_cession_0024-e27",
            "note": "12-значный ИНН",
            "type": "INN"
           },
@@ -2097,7 +2096,7 @@
           "e": {
            "cat": "ugly",
            "checksum": "valid",
-           "id": "cx_cession_0024-e29",
+           "id": "cx_cession_0024-e28",
            "note": "ОГРНИП, 15 знаков",
            "type": "OGRN"
           },
@@ -2116,7 +2115,7 @@
           "e": {
            "cat": "canonical",
            "checksum": "valid",
-           "id": "cx_cession_0024-e30",
+           "id": "cx_cession_0024-e29",
            "type": "ACCOUNT"
           },
           "s": "40802810676579837178"
@@ -2130,7 +2129,7 @@
          {
           "e": {
            "cat": "canonical",
-           "id": "cx_cession_0024-e31",
+           "id": "cx_cession_0024-e30",
            "type": "BIK"
           },
           "s": "044525360"
@@ -2147,7 +2146,7 @@
          {
           "e": {
            "cat": "canonical",
-           "id": "cx_cession_0024-e32",
+           "id": "cx_cession_0024-e31",
            "note": "формат: canonical",
            "type": "PHONE"
           },
@@ -2165,7 +2164,7 @@
          {
           "e": {
            "cat": "canonical",
-           "id": "cx_cession_0024-e33",
+           "id": "cx_cession_0024-e32",
            "type": "EMAIL"
           },
           "s": "krylova@yandex.ru"
@@ -2187,7 +2186,7 @@
          {
           "e": {
            "cat": "ugly",
-           "id": "cx_cession_0024-e34",
+           "id": "cx_cession_0024-e33",
            "note": "фамилия + инициалы",
            "type": "PER"
           },
@@ -2215,7 +2214,7 @@
          {
           "e": {
            "cat": "canonical",
-           "id": "cx_cession_0024-e35",
+           "id": "cx_cession_0024-e34",
            "type": "PER"
           },
           "s": "Гусева Светлана Николаевна"
@@ -2232,7 +2231,7 @@
          {
           "e": {
            "cat": "canonical",
-           "id": "cx_cession_0024-e36",
+           "id": "cx_cession_0024-e35",
            "note": "стиль записи из BIRTHDATE_STYLES",
            "type": "BIRTHDATE"
           },
@@ -2250,7 +2249,7 @@
          {
           "e": {
            "cat": "canonical",
-           "id": "cx_cession_0024-e37",
+           "id": "cx_cession_0024-e36",
            "note": "стиль адреса: canonical",
            "type": "ADDRESS"
           },
@@ -2268,7 +2267,7 @@
          {
           "e": {
            "cat": "canonical",
-           "id": "cx_cession_0024-e38",
+           "id": "cx_cession_0024-e37",
            "note": "серия+номер, стиль записи из PASSPORT_STYLES",
            "type": "PASSPORT"
           },
@@ -2283,7 +2282,7 @@
          {
           "e": {
            "cat": "ugly",
-           "id": "cx_cession_0024-e39",
+           "id": "cx_cession_0024-e38",
            "note": "код подразделения, стиль записи из DEPTCODE_STYLES",
            "type": "PASSPORT"
           },
@@ -2302,7 +2301,7 @@
           "e": {
            "cat": "canonical",
            "checksum": "valid",
-           "id": "cx_cession_0024-e40",
+           "id": "cx_cession_0024-e39",
            "note": "стиль записи из SNILS_STYLES",
            "type": "SNILS"
           },
@@ -2315,7 +2314,7 @@
           "e": {
            "cat": "ugly",
            "checksum": "valid",
-           "id": "cx_cession_0024-e41",
+           "id": "cx_cession_0024-e40",
            "note": "ИНН физлица (12 знаков)",
            "type": "INN"
           },
@@ -2333,7 +2332,7 @@
          {
           "e": {
            "cat": "canonical",
-           "id": "cx_cession_0024-e42",
+           "id": "cx_cession_0024-e41",
            "note": "формат: canonical",
            "type": "PHONE"
           },
@@ -2351,7 +2350,7 @@
          {
           "e": {
            "cat": "canonical",
-           "id": "cx_cession_0024-e43",
+           "id": "cx_cession_0024-e42",
            "type": "EMAIL"
           },
           "s": "guseva@corp-tehno.ru"
@@ -2373,7 +2372,7 @@
          {
           "e": {
            "cat": "ugly",
-           "id": "cx_cession_0024-e44",
+           "id": "cx_cession_0024-e43",
            "note": "фамилия + инициалы",
            "type": "PER"
           },
@@ -2411,7 +2410,7 @@
     {
      "e": {
       "cat": "ugly",
-      "id": "cx_cession_0024-e45",
+      "id": "cx_cession_0024-e44",
       "note": "подпись: фамилия+инициалы",
       "type": "PER"
      },
@@ -2432,7 +2431,7 @@
     {
      "e": {
       "cat": "ugly",
-      "id": "cx_cession_0024-e46",
+      "id": "cx_cession_0024-e45",
       "note": "подпись: фамилия+инициалы",
       "type": "PER"
      },

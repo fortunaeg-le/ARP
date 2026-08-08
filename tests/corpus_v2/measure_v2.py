@@ -72,6 +72,12 @@ _GOLD_ALIAS = {"MONEY": "SUM"}
 #: печати: по ним таблицы даются с разбивкой «обычные / испорченные».
 T2_TYPES = ("SUM", "PERCENT", "TERM")
 
+#: Типы, у которых утечка меряется ТОЛЬКО ПО ПОЗИЦИИ (текстовая метрика
+#: нечестна: короткое ядро или словесное значение совпадёт в анонимном
+#: тексте случайно). ЭТАП TYPE-FACTORY-2 добавил SHARE_PCT («40 %» — то же
+#: короткое ядро, что у PERCENT) и TRANCHE (именной транш — слова без цифр).
+_POSITIONAL_TYPES = ("PERCENT", "TERM", "SHARE_PCT", "TRANCHE")
+
 #: Типизированные негативы v2 — конструкции, которые НЕ маскируются по решению
 #: владельца (решение по номерам договоров и датам документа не принято). Маска
 #: на них — ложное срабатывание новых детекторов, считается отдельно.
@@ -217,13 +223,13 @@ def process_doc(d, config=None):
 
         # утечка: текстовая (как в старом харнессе) — для типов, где она честна;
         # позиционная — для всех, она же единственная для PERCENT/TERM.
-        if gt in ("PERCENT", "TERM"):
+        if gt in _POSITIONAL_TYPES:
             v2 = {"status": "none", "fragments": []}
         else:
             v2 = RM.leak_v2(gt, e["text"], anon_norm_v2, anon_digit_field, anon_date_field)
         uncovered = ML.uncovered_pieces(gs, ge, all_mask_spans)
         pos = leak_by_position(G[gs:ge], gs, uncovered)
-        if gt in ("PERCENT", "TERM"):
+        if gt in _POSITIONAL_TYPES:
             v2 = dict(pos)   # для этих типов позиционная метрика И ЕСТЬ утечка
 
         ent_records.append({

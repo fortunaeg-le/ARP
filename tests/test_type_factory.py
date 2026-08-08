@@ -194,7 +194,9 @@ class TestAssembly:
         sys.path.insert(0, SRC)
         import type_policy as TP
         assert set(TP.PERSONAL) == set(TP.PERSONAL_DEFAULT)
-        assert set(TP.PERSONAL_REQUISITES) == set(TP.PERSONAL_REQUISITES_DEFAULT)
+        # >=: новые фабричные типы вправе входить в широкие наборы; сузиться
+        # против исторического состава набор не может
+        assert set(TP.PERSONAL_REQUISITES) >= set(TP.PERSONAL_REQUISITES_DEFAULT)
         assert set(TP.WITH_MONEY) >= set(TP.WITH_MONEY_DEFAULT)
         assert TP._sets_from_config() is not None, (
             "конфиг без sets — наборы молча живут на умолчаниях")

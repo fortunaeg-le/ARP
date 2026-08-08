@@ -45,7 +45,13 @@ CORPUS_V2 = os.path.join(ROOT, "tests", "corpus_v2")
 # Исходники генератора. Всё остальное (docs/, _model/, gold_v2.json, манифест)
 # — результат сборки, копировать его во временный каталог нельзя: тогда
 # сравнивалась бы копия с копией.
-SOURCES = ("generate.py", "corpus_lib.py", "values.py", "data.py")
+SOURCES = ("generate.py", "corpus_lib.py", "values.py", "data.py",
+           # ЭТАП TYPE-FACTORY-2: генератор читает файлы-описания типов
+           "typedef_lib.py")
+
+#: Каталог файлов-описаний — тоже ИСХОДНИК генератора (фабричные типы
+#: вплетаются из typedefs/*.yaml). Копируется деревом.
+SOURCE_DIRS = ("typedefs",)
 
 # Разные семена хеширования — см. шапку.
 SEEDS = ("0", "12345")
@@ -55,7 +61,8 @@ def _sha_tree(root):
     """{относительный путь -> sha256} по всем порождённым файлам."""
     out = {}
     for dirpath, dirnames, names in os.walk(root):
-        dirnames[:] = [d for d in dirnames if d != "__pycache__"]
+        dirnames[:] = [d for d in dirnames
+                       if d != "__pycache__" and d not in SOURCE_DIRS]
         for n in sorted(names):
             if n.endswith(".pyc") or n in SOURCES:
                 continue
@@ -71,6 +78,10 @@ def _build(tmpdir, seed):
     os.makedirs(work)
     for name in SOURCES:
         shutil.copy(os.path.join(CORPUS_V2, name), os.path.join(work, name))
+    for d in SOURCE_DIRS:
+        src_dir = os.path.join(CORPUS_V2, d)
+        if os.path.isdir(src_dir):
+            shutil.copytree(src_dir, os.path.join(work, d))
     env = dict(os.environ)
     env["PYTHONHASHSEED"] = seed
     env["PYTHONIOENCODING"] = "utf-8"

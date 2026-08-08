@@ -124,6 +124,13 @@ TYPE_MAP = {
     "PERCENT": "PERCENT",
     "TERM": "TERM",
     "DATE": "DATE",
+    # ЭТАП TYPE-FACTORY-2: имена типа в конфиге и в разметке СОВПАДАЮТ (правило
+    # T2 — новых алиасов не заводим). Записи тождественные — ради полноты карты.
+    "REG_NUMBER": "REG_NUMBER",
+    "REG_ID": "REG_ID",
+    "CONTRACT_NO": "CONTRACT_NO",
+    "SHARE_PCT": "SHARE_PCT",
+    "TRANCHE": "TRANCHE",
 }
 
 
@@ -1021,6 +1028,10 @@ def mc_rates(stats):
 ALL_ENTITY_TYPES = (
     "PER", "ORG", "ADDRESS", "INN", "INN_PER", "OGRN", "KPP", "ACCOUNT", "BIK",
     "PHONE", "EMAIL", "PASSPORT", "SNILS", "BIRTHDATE", "SUM", "PERCENT", "TERM",
+    # ЭТАП TYPE-FACTORY-2 — пять фабричных типов. В gold корпуса v1 их нет и не
+    # будет (корпус заморожен): их вклад на v1 виден по линиям «а»/«д» (маски на
+    # негативах и прозе), эталон и recall — только на корпусе v2.
+    "REG_NUMBER", "REG_ID", "CONTRACT_NO", "SHARE_PCT", "TRANCHE",
 )
 
 

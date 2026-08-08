@@ -41,6 +41,12 @@ import values as V
 from corpus_lib import (NBSP, NNBSP, ZWSP, ZWJ, SHY, WJ, CYR2LAT, DIGIT2CYR,
                         chunk, ent, neg as cl_neg, para, table, cell, textbox,
                         render, update_gold, serialize, gold_entry)
+import typedef_lib
+
+# ЭТАП TYPE-FACTORY-2: фабричные типы (typedefs с полной generator-секцией)
+# вплетаются в документы отдельным блоком. Загружается один раз на импорт —
+# состав детерминирован содержимым каталога typedefs/.
+FACTORY_TYPES = typedef_lib.load_factory_types()
 
 ROOT = os.path.dirname(os.path.abspath(__file__))
 
@@ -184,8 +190,9 @@ class D:
             if p[0] == "t":
                 out.append(chunk(p[1], wrap=wrap))
             elif p[0] == "n":
-                _, s, type_, why, form, axes = p
-                out.append(chunk(s, neg=cl_neg(why, type_, form, axes), wrap=wrap))
+                _, s, type_, why, form, axes, kind = p
+                out.append(chunk(s, neg=cl_neg(why, type_, form, axes, kind=kind),
+                                 wrap=wrap))
             else:
                 _, s, type_, form, note, cat, axes = p
                 out.append(self.E(s, type_, cat, note=note, form=form, wrap=wrap,
@@ -793,7 +800,7 @@ def _adv_apply(d, part, trick, note):
     """
     rnd = d.rnd
     if part[0] == "n":
-        _, s, type_, why, form, axes = part
+        _, s, type_, why, form, axes, neg_kind = part
         kind, cat = "n", None
     else:
         _, s, type_, form, pnote, cat, axes = part
@@ -815,8 +822,10 @@ def _adv_apply(d, part, trick, note):
         i = digit_cut(s)
         eid = d.nid()
         if kind == "n":
-            return [d.N(s[:i], why, type_, form, axes, trick=trick, nid=eid),
-                    d.N(s[i:], why, type_, form, axes, trick=trick, nid=eid)]
+            return [d.N(s[:i], why, type_, form, axes, trick=trick, nid=eid,
+                        kind=neg_kind),
+                    d.N(s[i:], why, type_, form, axes, trick=trick, nid=eid,
+                        kind=neg_kind)]
         return [d.E(s[:i], type_, "adversarial", trick=trick, note=note, eid=eid,
                     form=form, axes=axes),
                 d.E(s[i:], type_, "adversarial", trick=trick, eid=eid,
@@ -825,7 +834,8 @@ def _adv_apply(d, part, trick, note):
         raise ValueError(trick)
 
     if kind == "n":
-        return [d.N(s, why, type_, form, axes, trick=trick, bs=bs)]
+        return [d.N(s, why, type_, form, axes, trick=trick, bs=bs,
+                    kind=neg_kind)]
     return [d.E(s, type_, "adversarial", trick=trick, note=note, form=form,
                 bs=bs, axes=axes)]
 
@@ -1789,6 +1799,42 @@ NOISE_PLAIN = [
 
 
 # --------------------------------------------------------------------- сборка
+def factory_block(d, doc_no):
+    """Блок фабричных типов (ЭТАП TYPE-FACTORY-2).
+
+    Выбор примера и негатива — от СКВОЗНОГО номера документа (doc_no), а не от
+    d.rnd: блок не трогает генератор случайности документа, поэтому все
+    остальные розыгрыши (реквизиты, адреса, шум) остаются теми же, что были
+    до фабрики. Каждый документ несёт по одному примеру и одному негативу
+    каждого фабричного типа; за корпус перебираются все примеры и все виды
+    негативов (курсоры смещены и номером документа, и номером типа).
+    """
+    if not FACTORY_TYPES:
+        return []
+    out = [para([d.t("6. ОСОБЫЕ УСЛОВИЯ ОТДЕЛЬНЫХ ВИДОВ ДАННЫХ")], style="bold")]
+    n = 0
+    for k, ft in enumerate(FACTORY_TYPES):
+        if ft["only_ctypes"] and d.ctype not in ft["only_ctypes"]:
+            continue
+        ex = ft["examples"][(doc_no + k) % len(ft["examples"])]
+        text, form, axes = (ex["text"], ex.get("form"), ex.get("axes")) \
+            if isinstance(ex, dict) else (ex, None, None)
+        n += 1
+        out.append(para([d.t("6.%d. %s" % (n, ft["intro"]))]
+                        + [d.E(text, ft["type"], "canonical", form=form,
+                               axes=axes, note="фабричный тип: пример из "
+                                               "файла-описания владельца")]
+                        + [d.t(ft["outro"])]))
+        neg = ft["negatives"][(doc_no + k) % len(ft["negatives"])]
+        n += 1
+        out.append(para([d.t("6.%d. %s" % (n, ft["neg_intro"]))]
+                        + [d.N(neg["text"], neg["why"], type_=ft["type"],
+                               kind=neg.get("kind"))]
+                        + [d.t(".")]))
+    out.append(para([]))
+    return out if n else []
+
+
 def build_doc(idx, ctype, cname, fmt, flags, seed, parties_kind, long_doc,
               group="simple", struct_tricks=(), form_start=0, prefix=""):
     doc_id = "%s%s_%04d" % (prefix, ctype, idx)
@@ -1918,6 +1964,9 @@ def build_doc(idx, ctype, cname, fmt, flags, seed, parties_kind, long_doc,
     d.body.extend(complex_block(d))
     if "huge_paragraphs" in d.struct_tricks:
         d.body.extend(huge_tail(d))
+
+    # ------- фабричные типы (TYPE-FACTORY-2) — свой блок, БЕЗ d.rnd
+    d.body.extend(factory_block(d, form_start))
 
     # ------- реквизиты
     d.body.append(para([d.t("РЕКВИЗИТЫ И ПОДПИСИ СТОРОН")], style="bold"))

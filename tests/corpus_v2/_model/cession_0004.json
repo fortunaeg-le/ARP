@@ -511,15 +511,14 @@
      "s": "2.4. Порядок выборки: "
     },
     {
-     "e": {
+     "n": {
       "axes": {
        "оборот": "график выдачи траншей"
       },
-      "cat": "ugly",
       "form": "tranche|оборот=график выдачи траншей",
-      "id": "cession_0004-e9",
-      "note": "описательный оборот без числового значения; договорной формулировки транша в открытых источниках не нашлось — ВИД ДАННЫХ НЕИЗМЕРИМ, детектор не писать",
-      "type": "TRANCHE"
+      "kind": "ordinal-tranche",
+      "type": "TRANCHE",
+      "why": "порядковый/описательный оборот транша не маскируется — решение владельца (TYPE-FACTORY-2, 2026-08-08); маскируется только именная ветвь (транш «Имя»), она идёт фабрикой"
      },
      "s": "график выдачи траншей"
     },
@@ -1118,7 +1117,7 @@
     {
      "e": {
       "cat": "ugly",
-      "id": "cession_0004-e10",
+      "id": "cession_0004-e9",
       "note": "стиль адреса: pobox",
       "type": "ADDRESS"
      },
@@ -1139,7 +1138,7 @@
     {
      "e": {
       "cat": "canonical",
-      "id": "cession_0004-e11",
+      "id": "cession_0004-e10",
       "note": "ФИО в дательном падеже",
       "type": "PER"
      },
@@ -1151,7 +1150,7 @@
     {
      "e": {
       "cat": "canonical",
-      "id": "cession_0004-e12",
+      "id": "cession_0004-e11",
       "note": "формат: canonical",
       "type": "PHONE"
      },
@@ -1176,7 +1175,7 @@
       },
       "cat": "canonical",
       "form": "term|вместо срока — дата=не позднее 01.11.2025",
-      "id": "cession_0004-e13",
+      "id": "cession_0004-e12",
       "note": "срок задан КОНКРЕТНОЙ ДАТОЙ, а не длительностью",
       "type": "TERM"
      },
@@ -1424,7 +1423,7 @@
       },
       "cat": "canonical",
       "form": "percent|привязка=от общей суммы счета|ограничение=нет|дробь ставки=1/300",
-      "id": "cession_0004-e14",
+      "id": "cession_0004-e13",
       "note": "процент",
       "type": "PERCENT"
      },
@@ -1442,7 +1441,7 @@
       },
       "cat": "canonical",
       "form": "percent|привязка=от стоимости неоплаченных работ|ограничение=нет|дробь ставки=1/130",
-      "id": "cession_0004-e15",
+      "id": "cession_0004-e14",
       "note": "процент",
       "type": "PERCENT"
      },
@@ -1485,7 +1484,7 @@
       },
       "cat": "canonical",
       "form": "term|запись числа=трех|вид дней=банковских|отправная точка=с момента выставления счета|вместо срока — дата=нет",
-      "id": "cession_0004-e16",
+      "id": "cession_0004-e15",
       "note": "срок длительностью",
       "type": "TERM"
      },
@@ -1516,7 +1515,7 @@
       },
       "cat": "canonical",
       "form": "term|запись числа=10|вид дней=не указан|отправная точка=с момента подписания акта|вместо срока — дата=нет",
-      "id": "cession_0004-e17",
+      "id": "cession_0004-e16",
       "note": "срок длительностью",
       "type": "TERM"
      },
@@ -1772,7 +1771,7 @@
     {
      "e": {
       "cat": "adversarial",
-      "id": "cession_0004-e18",
+      "id": "cession_0004-e17",
       "note": "кириллические О/З/Ч на месте цифр 0/3/4",
       "trick": "homoglyph_cyrillic_in_digits",
       "type": "INN"
@@ -1791,7 +1790,7 @@
     {
      "e": {
       "cat": "adversarial",
-      "id": "cession_0004-e19",
+      "id": "cession_0004-e18",
       "note": "латинские A/E/O/C/P внутри русского ФИО",
       "trick": "homoglyph_latin_in_cyrillic",
       "type": "PER"
@@ -1810,7 +1809,7 @@
     {
      "e": {
       "cat": "adversarial",
-      "id": "cession_0004-e20",
+      "id": "cession_0004-e19",
       "trick": "homoglyph_cyrillic_in_digits",
       "type": "BIK"
      },
@@ -1825,7 +1824,7 @@
     {
      "e": {
       "cat": "adversarial",
-      "id": "cession_0004-e21",
+      "id": "cession_0004-e20",
       "note": "без кавычек, в плотной строке",
       "trick": "dense_line",
       "type": "ORG"
@@ -1838,7 +1837,7 @@
     {
      "e": {
       "cat": "adversarial",
-      "id": "cession_0004-e22",
+      "id": "cession_0004-e21",
       "trick": "dense_line",
       "type": "INN"
      },
@@ -1850,7 +1849,7 @@
     {
      "e": {
       "cat": "adversarial",
-      "id": "cession_0004-e23",
+      "id": "cession_0004-e22",
       "trick": "dense_line",
       "type": "KPP"
      },
@@ -1862,7 +1861,7 @@
     {
      "e": {
       "cat": "adversarial",
-      "id": "cession_0004-e24",
+      "id": "cession_0004-e23",
       "note": "адрес без пунктуации и маркеров",
       "trick": "dense_line",
       "type": "ADDRESS"
@@ -1875,7 +1874,7 @@
     {
      "e": {
       "cat": "adversarial",
-      "id": "cession_0004-e25",
+      "id": "cession_0004-e24",
       "trick": "dense_line",
       "type": "PHONE"
      },
@@ -1947,7 +1946,7 @@
       },
       "cat": "adversarial",
       "form": "money|разделитель разрядов=неразрывный пробел|копейки=00 копеек|валюта=рублей|пропись=(десять тысяч)|НДС=нет|заполненность=значение",
-      "id": "cession_0004-e26",
+      "id": "cession_0004-e25",
       "note": "число разорвано форматированием: половина цифр в одном ране, половина в другом",
       "trick": "format_split",
       "type": "MONEY"
@@ -1978,7 +1977,7 @@
       },
       "cat": "adversarial",
       "form": "percent|запись=0,1 %|пропись=нет|привязка=от стоимости неоплаченных работ|ограничение=но не более 20% от цены договора|дробь ставки=нет",
-      "id": "cession_0004-e27",
+      "id": "cession_0004-e26",
       "note": "число разорвано форматированием: половина цифр в одном ране, половина в другом",
       "trick": "format_split",
       "type": "PERCENT"
@@ -2007,7 +2006,7 @@
       },
       "cat": "adversarial",
       "form": "term|запись числа=30 (Тридцати)|вид дней=месяцев|отправная точка=с даты подписания Сторонами акта сдачи-приемки оказанных услуг|вместо срока — дата=нет",
-      "id": "cession_0004-e28",
+      "id": "cession_0004-e27",
       "note": "пробелы внутри цифр",
       "trick": "digit_spaces",
       "type": "TERM"
@@ -2059,7 +2058,7 @@
          {
           "e": {
            "cat": "ugly",
-           "id": "cession_0004-e29",
+           "id": "cession_0004-e28",
            "note": "название ЮЛ = фамилия",
            "type": "ORG"
           },
@@ -2077,7 +2076,7 @@
          {
           "e": {
            "cat": "ugly",
-           "id": "cession_0004-e30",
+           "id": "cession_0004-e29",
            "note": "стиль адреса: pobox",
            "type": "ADDRESS"
           },
@@ -2096,7 +2095,7 @@
           "e": {
            "cat": "canonical",
            "checksum": "valid",
-           "id": "cession_0004-e31",
+           "id": "cession_0004-e30",
            "type": "INN"
           },
           "s": "5778253749"
@@ -2107,7 +2106,7 @@
          {
           "e": {
            "cat": "canonical",
-           "id": "cession_0004-e32",
+           "id": "cession_0004-e31",
            "type": "KPP"
           },
           "s": "824878617"
@@ -2125,7 +2124,7 @@
           "e": {
            "cat": "canonical",
            "checksum": "valid",
-           "id": "cession_0004-e33",
+           "id": "cession_0004-e32",
            "type": "OGRN"
           },
           "s": "1519062173630"
@@ -2143,7 +2142,7 @@
           "e": {
            "cat": "canonical",
            "checksum": "valid",
-           "id": "cession_0004-e34",
+           "id": "cession_0004-e33",
            "type": "ACCOUNT"
           },
           "s": "40702810773132762267"
@@ -2163,7 +2162,7 @@
          {
           "e": {
            "cat": "canonical",
-           "id": "cession_0004-e35",
+           "id": "cession_0004-e34",
            "note": "корреспондентский счёт банка",
            "type": "ACCOUNT"
           },
@@ -2175,7 +2174,7 @@
          {
           "e": {
            "cat": "canonical",
-           "id": "cession_0004-e36",
+           "id": "cession_0004-e35",
            "type": "BIK"
           },
           "s": "044525700"
@@ -2192,7 +2191,7 @@
          {
           "e": {
            "cat": "canonical",
-           "id": "cession_0004-e37",
+           "id": "cession_0004-e36",
            "note": "формат: canonical",
            "type": "PHONE"
           },
@@ -2210,7 +2209,7 @@
          {
           "e": {
            "cat": "canonical",
-           "id": "cession_0004-e38",
+           "id": "cession_0004-e37",
            "type": "EMAIL"
           },
           "s": "morozov@list.ru"
@@ -2232,7 +2231,7 @@
          {
           "e": {
            "cat": "ugly",
-           "id": "cession_0004-e39",
+           "id": "cession_0004-e38",
            "note": "инициалы перед фамилией",
            "type": "PER"
           },
@@ -2263,7 +2262,7 @@
          {
           "e": {
            "cat": "canonical",
-           "id": "cession_0004-e40",
+           "id": "cession_0004-e39",
            "type": "PER"
           },
           "s": "Коваль Павел Владимирович"
@@ -2280,7 +2279,7 @@
          {
           "e": {
            "cat": "ugly",
-           "id": "cession_0004-e41",
+           "id": "cession_0004-e40",
            "note": "стиль адреса: pobox",
            "type": "ADDRESS"
           },
@@ -2299,7 +2298,7 @@
           "e": {
            "cat": "canonical",
            "checksum": "valid",
-           "id": "cession_0004-e42",
+           "id": "cession_0004-e41",
            "note": "12-значный ИНН",
            "type": "INN"
           },
@@ -2312,7 +2311,7 @@
           "e": {
            "cat": "ugly",
            "checksum": "valid",
-           "id": "cession_0004-e43",
+           "id": "cession_0004-e42",
            "note": "ОГРНИП, 15 знаков",
            "type": "OGRN"
           },
@@ -2331,7 +2330,7 @@
           "e": {
            "cat": "canonical",
            "checksum": "valid",
-           "id": "cession_0004-e44",
+           "id": "cession_0004-e43",
            "type": "ACCOUNT"
           },
           "s": "40802810461675808782"
@@ -2345,7 +2344,7 @@
          {
           "e": {
            "cat": "canonical",
-           "id": "cession_0004-e45",
+           "id": "cession_0004-e44",
            "type": "BIK"
           },
           "s": "044525360"
@@ -2362,7 +2361,7 @@
          {
           "e": {
            "cat": "canonical",
-           "id": "cession_0004-e46",
+           "id": "cession_0004-e45",
            "note": "формат: canonical",
            "type": "PHONE"
           },
@@ -2380,7 +2379,7 @@
          {
           "e": {
            "cat": "canonical",
-           "id": "cession_0004-e47",
+           "id": "cession_0004-e46",
            "type": "EMAIL"
           },
           "s": "koval@gmail.com"
@@ -2402,7 +2401,7 @@
          {
           "e": {
            "cat": "ugly",
-           "id": "cession_0004-e48",
+           "id": "cession_0004-e47",
            "note": "фамилия + инициалы",
            "type": "PER"
           },
@@ -2436,7 +2435,7 @@
          {
           "e": {
            "cat": "adversarial",
-           "id": "cession_0004-e49",
+           "id": "cession_0004-e48",
            "note": "первые цифры ИНН в одной ячейке, остальные — в соседней",
            "trick": "cell_boundary_split",
            "type": "INN"
@@ -2456,7 +2455,7 @@
          {
           "e": {
            "cat": "adversarial",
-           "id": "cession_0004-e49",
+           "id": "cession_0004-e48",
            "trick": "cell_boundary_split",
            "type": "INN"
           },
@@ -2477,7 +2476,7 @@
          {
           "e": {
            "cat": "adversarial",
-           "id": "cession_0004-e50",
+           "id": "cession_0004-e49",
            "note": "ФИО разорвано границей ячейки",
            "trick": "cell_boundary_split",
            "type": "PER"
@@ -2497,7 +2496,7 @@
          {
           "e": {
            "cat": "adversarial",
-           "id": "cession_0004-e50",
+           "id": "cession_0004-e49",
            "trick": "cell_boundary_split",
            "type": "PER"
           },
@@ -2535,7 +2534,7 @@
     {
      "e": {
       "cat": "ugly",
-      "id": "cession_0004-e53",
+      "id": "cession_0004-e52",
       "note": "подпись: фамилия+инициалы",
       "type": "PER"
      },
@@ -2556,7 +2555,7 @@
     {
      "e": {
       "cat": "ugly",
-      "id": "cession_0004-e54",
+      "id": "cession_0004-e53",
       "note": "подпись: фамилия+инициалы",
       "type": "PER"
      },
@@ -2590,7 +2589,7 @@
     {
      "e": {
       "cat": "adversarial",
-      "id": "cession_0004-e51",
+      "id": "cession_0004-e50",
       "note": "ФИО в нижнем колонтитуле",
       "trick": "in_footer",
       "type": "PER"
@@ -2603,7 +2602,7 @@
     {
      "e": {
       "cat": "adversarial",
-      "id": "cession_0004-e52",
+      "id": "cession_0004-e51",
       "note": "телефон в нижнем колонтитуле",
       "trick": "in_footer",
       "type": "PHONE"
