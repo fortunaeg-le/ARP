@@ -171,6 +171,22 @@ class TestAssembly:
         assert regex_base == AT.BASE_REGEX_ORDER
         assert order.get("ner") == AT.BASE_NER_ORDER
 
+    def test_tokenizer_priority_lists_come_from_assembled_config(self):
+        """Шаг 1 плана: рабочие списки tokenizer'а == arbitration_order
+        собранного конфига, и для дофабричных типов == историческим умолчаниям
+        (двойное равенство = поведение не сдвинулось)."""
+        sys.path.insert(0, SRC)
+        import tokenizer as TOK
+        with open(CONFIG, encoding="utf-8") as f:
+            order = yaml.safe_load(f)["arbitration_order"]
+        assert TOK._REGEX_PRIORITY == order["regex"]
+        assert TOK._NER_PRIORITY == order["ner"]
+        base_only = [t for t in TOK._REGEX_PRIORITY
+                     if t in TOK._REGEX_PRIORITY_DEFAULT]
+        assert base_only == TOK._REGEX_PRIORITY_DEFAULT
+        assert [t for t in TOK._NER_PRIORITY
+                if t in TOK._NER_PRIORITY_DEFAULT] == TOK._NER_PRIORITY_DEFAULT
+
     def test_digit_run_class_reproduces_historical_patterns(self):
         """Класс digit_run обязан выдавать ПОСИМВОЛЬНО те же паттерны, что
         стояли в конфиге до фабрики (иначе тип переводится raw, а не паттерн

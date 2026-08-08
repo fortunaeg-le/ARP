@@ -19,6 +19,7 @@
 dataclass'ы импортируются из models.py, не переопределены.
 """
 
+import os
 import sys
 import uuid
 
@@ -52,11 +53,21 @@ _BOUNDARY_WINDOW = 60
 # алфавитным. NB: правило длины (rule 2) срабатывает РАНЬШЕ приоритета, поэтому
 # длинный спан срока мог бы победить реквизит внутри себя — от этого защищает
 # не список, а САМ ПАТТЕРН: в хвосте основания цифры запрещены (entity_types.yaml).
-_REGEX_PRIORITY = [
+#
+# ЭТАП TYPE-FACTORY (сессия 2, шаг 1): списки ниже — УМОЛЧАНИЕ (исторические
+# 15+3 типа), а рабочий порядок читается из ключа `arbitration_order`
+# собранного entity_types.yaml — его пишет tests/corpus_v2/assemble_types.py
+# из base-порядка и rank фабричных типов. Одно место истины: новый тип
+# получает место в арбитраже из своего файла-описания, а не правкой этого
+# файла. Фолбэк на умолчание — только если конфиг недоступен/без ключа
+# (например, временный конфиг теста): для дофабричных типов оба источника
+# дают ОДИН И ТОТ ЖЕ порядок (страж — tests/test_type_factory.py).
+_REGEX_PRIORITY_DEFAULT = [
     "BANK_ACCOUNT", "OGRN", "INN", "INN_PERSON", "BIK", "SNILS", "KPP",
     "PASSPORT", "PHONE", "SUM", "EMAIL", "BIRTHDATE", "DATE",
     "PERCENT", "TERM",
 ]
+_REGEX_PRIORITY = _REGEX_PRIORITY_DEFAULT
 # Приоритет типов среди двух ner при равной длине/confidence и неидентичных интервалах.
 # ЭТАП T-ARB: список для типов из anchor_registry/ner (method: anchor_registry ИЛИ
 # method: ner в entity_types.yaml — Entity таких типов несёт detector="ner", см.
@@ -65,7 +76,34 @@ _REGEX_PRIORITY = [
 # всех трёх перечисленных при равной длине/confidence — то же самое молчаливое
 # поражение, от которого страхует assert_priority_contract ниже. T3 введёт шесть
 # новых якорных типов — КАЖДЫЙ обязан появиться здесь явно, иначе сборка упадёт.
-_NER_PRIORITY = ["ADDRESS", "ORG", "PERSON"]
+_NER_PRIORITY_DEFAULT = ["ADDRESS", "ORG", "PERSON"]
+_NER_PRIORITY = _NER_PRIORITY_DEFAULT
+
+
+def _load_arbitration_order() -> None:
+    """Читает arbitration_order из КОРНЕВОГО собранного entity_types.yaml один
+    раз при импорте. Тихий фолбэк на умолчания намеренный: рабочие пути всегда
+    идут через корневой конфиг, а тесты с временными конфигами не обязаны
+    объявлять порядок (им хватает исторического)."""
+    global _REGEX_PRIORITY, _NER_PRIORITY
+    path = os.path.join(os.path.dirname(os.path.abspath(__file__)),
+                        "..", "entity_types.yaml")
+    try:
+        config = load_yaml_cached(path)
+    except Exception:
+        return
+    order = config.get("arbitration_order")
+    if not isinstance(order, dict):
+        return
+    regex_order = order.get("regex")
+    ner_order = order.get("ner")
+    if isinstance(regex_order, list) and regex_order:
+        _REGEX_PRIORITY = list(regex_order)
+    if isinstance(ner_order, list) and ner_order:
+        _NER_PRIORITY = list(ner_order)
+
+
+_load_arbitration_order()
 
 
 class ArbitrationContractError(Exception):
