@@ -71,7 +71,7 @@ _DETECT_KEYS = {"method", "form", "patterns", "validate", "anchor", "anti_anchor
 _PATTERN_ENTRY_KEYS = {"pattern", "form", "span_group", "validate", "anchor",
                        "anti_anchor", "anti_anchor_window",
                        "anti_anchor_right", "anti_anchor_right_window"}
-_FORM_CLASSES = ("raw", "digit_run")
+_FORM_CLASSES = ("raw", "digit_run", "number_with_unit", "compound")
 
 
 class TypedefError(SystemExit):
@@ -124,6 +124,42 @@ def compile_form(t, form):
         if extra:
             pat += r"(?:(?:%s\d){%d})?" % (sep, extra)
         return pat + r"\b"
+    if cls == "number_with_unit":
+        # КЛАСС К4 — «число + слово закрытого списка» (ЭТАП FIX-3).
+        # Слоты идут ПОСЛЕДОВАТЕЛЬНО и все, кроме number/units, необязательны.
+        # Смысл класса не в экономии знаков, а в том, что у каждого куска
+        # появляется ИМЯ: «где здесь единица измерения» видно без чтения
+        # регэкспа, и новый тип заполняет слоты, а не сочиняет форму заново.
+        p = form.get("params") or {}
+        if not p.get("number") or not p.get("units"):
+            raise TypedefError(
+                f"{t}: number_with_unit требует params.number (форма числа) и "
+                f"params.units (закрытый список единиц). Единица — это то, что "
+                f"делает число величиной; без неё класс не про что.")
+        parts = [p.get("flags", "(?i)"), p.get("left_boundary", ""),
+                 p["number"], p.get("decimals", ""), p.get("parenthetical", ""),
+                 p.get("gap", ""), p["units"], p.get("suffix", ""),
+                 p.get("right_boundary", "")]
+        return "".join(x for x in parts if x)
+    if cls == "compound":
+        # КЛАСС К5 — «составная конструкция»: несколько ВЗАИМНО ИСКЛЮЧАЮЩИХ
+        # ветвей формы плюс необязательный хвост-основание. Ровно эта форма у
+        # процента («число+%» ИЛИ «доля ключевой ставки») и у срока
+        # («в течение …» ИЛИ «не позднее …»), и ровно она чаще всего нужна
+        # новому типу из живого договора.
+        p = form.get("params") or {}
+        branches = p.get("branches") or []
+        if len(branches) < 1:
+            raise TypedefError(
+                f"{t}: compound требует params.branches — хотя бы одну ветвь "
+                f"формы. Ветвь одна и хвоста нет — это не составная "
+                f"конструкция, берите raw.")
+        out = p.get("flags", "(?i)") + p.get("left_boundary", "")
+        out += "(?:" + "|".join(branches) + ")"
+        tail = p.get("tail") or []
+        if tail:
+            out += "(?:" + "|".join(tail) + ")?"
+        return out + p.get("right_boundary", "")
     raise TypedefError(
         f"{t}: неизвестный класс формы «{cls}». Разрешены: "
         f"{', '.join(_FORM_CLASSES)}. Не ложится ни в один — берите raw "
