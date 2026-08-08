@@ -25,6 +25,7 @@ sys.path.insert(0, os.path.join(ROOT, "src"))
 
 from extractor import extract          # noqa: E402
 from pipeline import run_detection     # noqa: E402
+from tokenizer import resolve_for_masking  # noqa: E402
 
 DOC = r"C:\shifrator_real\dog.docx"
 CONFIG = os.path.join(ROOT, "entity_types.yaml")
@@ -41,7 +42,12 @@ def main():
     doc = extract(DOC)
     prints = []
     for run in range(3):
-        ents = run_detection(doc, CONFIG)
+        # ЭТАП FIX-2 — считаем ПРОДУКТОВЫЙ путь целиком. run_detection —
+        # только посегментная детекция; граничные окна (а с ними и якорь через
+        # границу ячейки) живут в resolve_for_masking. До этого этапа замер
+        # реального документа шёл по короткому пути и класс DOG-ANCHOR-SPLIT
+        # был для него невидим в обе стороны.
+        ents = resolve_for_masking(doc, run_detection(doc, CONFIG), CONFIG)
         by_type = collections.Counter(e.entity_type for e in ents)
         key = sorted((e.entity_type, e.start, e.end) for e in ents)
         prints.append(hashlib.sha256(repr(key).encode()).hexdigest()[:16])

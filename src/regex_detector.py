@@ -98,6 +98,16 @@ _ANCHOR_WINDOW = 40
 # паспорт» (уточнение ПЕРЕД якорем, вне матча — его не увидеть без окна слева).
 # Окно короче _ANCHOR_WINDOW: дисквалифицирующее слово всегда СЛИТНО с якорем
 # («технический паспорт», не «технический документ, а также паспорт»).
+#
+# ЭТАП FIX-2 — ОКНО СТАЛО СВОИМ У КАЖДОГО ТИПА (`anti_anchor_window:` в
+# entity_types.yaml), а это значение — УМОЛЧАНИЕМ. Повод: этап NEG не закрыл
+# семь видов ложных срабатываний ровно потому, что уточнитель у них стоит не
+# вплотную («массовая доля ПРИМЕСИ в товаре — не более 0,4 %», «Общество
+# осуществляет ДЕЯТЕЛЬНОСТЬ в течение 11 лет»), а расширить общую константу
+# нельзя: у PASSPORT она подобрана под свой класс дисквалификаторов
+# («ТЕХНИЧЕСКИЙ паспорт»), и её движение меняло бы поведение типа, к находке
+# отношения не имеющего. Умолчание оставлено прежним, поэтому все типы, у
+# которых ключа нет, работают побайтно как до этапа.
 _ANTI_ANCHOR_WINDOW = 20
 
 
@@ -171,13 +181,14 @@ def _digit_run_neighbour(search_text: str, start: int, end: int) -> bool:
 
 
 def _has_anti_anchor(search_text: str, match_start: int, match_end: int,
-                      anti_anchor_re: re.Pattern) -> bool:
+                      anti_anchor_re: re.Pattern,
+                      window: int = _ANTI_ANCHOR_WINDOW) -> bool:
     """Есть ли дисквалифицирующее слово в окне [start - _ANTI_ANCHOR_WINDOW,
     end) — т.е. НЕПОСРЕДСТВЕННО перед матчем (для «ТЕХНИЧЕСКИЙ паспорт») ИЛИ
     внутри самого матча (для «паспорт КАЧЕСТВА» — уточнение уже в m.group(0),
     см. `_ANTI_ANCHOR_WINDOW`). Не пересекает перевод строки — тот же приём,
     что и `_has_anchor`, дисквалификатор из чужого абзаца не в счёт."""
-    window_start = max(0, match_start - _ANTI_ANCHOR_WINDOW)
+    window_start = max(0, match_start - window)
     context = search_text[window_start:match_end]
     nl = context.rfind("\n", 0, match_start - window_start)
     if nl != -1:
@@ -234,7 +245,8 @@ def _load_regex_types(config_path: str) -> list[tuple[str, re.Pattern, object, i
                             "validate": spec.get("validate"),
                             "span_group": spec.get("span_group", 0),
                             "anchor": spec.get("anchor"),
-                            "anti_anchor": spec.get("anti_anchor")}]
+                            "anti_anchor": spec.get("anti_anchor"),
+                            "anti_anchor_window": spec.get("anti_anchor_window")}]
 
         for entry in raw_entries:
             pattern_str = entry.get("pattern")
@@ -283,11 +295,42 @@ def _load_regex_types(config_path: str) -> list[tuple[str, re.Pattern, object, i
                     print(f"ПРЕДУПРЕЖДЕНИЕ: anti_anchor типа {entity_type} не компилируется "
                           f"({exc}) — анти-якорь проигнорирован", file=sys.stderr)
 
-            result.append((entity_type, pattern, validator, span_group, anchor, anti_anchor))
+            anti_window = entry.get("anti_anchor_window")
+            try:
+                anti_window = int(anti_window) if anti_window is not None                     else _ANTI_ANCHOR_WINDOW
+            except (TypeError, ValueError):
+                print(f"ПРЕДУПРЕЖДЕНИЕ: anti_anchor_window типа {entity_type} не число "
+                      f"({anti_window!r}) — взято умолчание {_ANTI_ANCHOR_WINDOW}",
+                      file=sys.stderr)
+                anti_window = _ANTI_ANCHOR_WINDOW
+
+            result.append((entity_type, pattern, validator, span_group, anchor,
+                           anti_anchor, anti_window))
     return result
 
 
-def detect_regex(doc: SourceDocument, config_path: str) -> list[Entity]:
+def detect_regex(doc: SourceDocument, config_path: str,
+                 anchor_prefix: str = "") -> list[Entity]:
+    """ЭТАП FIX-2 — `anchor_prefix`: ТЕКСТ СЛЕВА, ВИДИМЫЙ ТОЛЬКО ЯКОРЮ.
+
+    Зачем. Якорь ищется в окне слева от значения и не пересекает ни '\\n', ни
+    цифру (`_has_anchor`); детекция идёт ПОСЕГМЕНТНО. Поэтому «БИК» в одной
+    ячейке таблицы и число в СОСЕДНЕЙ — это якорь, до которого нельзя дотянуться
+    ниоткуда: в своём сегменте значение стоит без подтверждения, а граничное
+    окно B3 отдаёт только спаны, ПЕРЕСЁКШИЕ стык (здесь не пересекает ничего —
+    значение целиком лежит во второй ячейке). Ровно на этом этап NEG потерял
+    единственный настоящий БИК реального договора (`DOG-ANCHOR-SPLIT`).
+
+    Класс родственный A6: там разрыв рвал ЗНАЧЕНИЕ, здесь отрывает ЯКОРЬ от
+    значения. Механизм тот же — граничное окно, — и новый здесь не заводится:
+    вызывающий (`tokenizer._detect_boundary_entities`, шаг 3c) склеивает хвост
+    соседней ячейки и передаёт его сюда. Спан, координаты, валидатор, анти-якорь
+    и ограничитель соседних цифр остаются прежними; меняется ровно одно — в
+    какой строке ищется ЯКОРЬ.
+
+    При `anchor_prefix=""` (все прочие вызовы) поведение побайтно прежнее:
+    сдвиг ноль, контекст — сам сегмент.
+    """
     regex_types = _load_regex_types(config_path)
 
     entities: list[Entity] = []
@@ -299,13 +342,19 @@ def detect_regex(doc: SourceDocument, config_path: str) -> list[Entity]:
         # строка (чистые цифры), поэтому валидатор чек-суммы работает по ней прямо.
         # На неискажённом тексте нормализация — тождество, поведение прежнее.
         search_text, offset_map = detection_view(segment)
-        for entity_type, pattern, validator, span_group, anchor, anti_anchor in regex_types:
+        # Контекст ЯКОРЯ (и только его): сегмент, при нужде — с приклеенным
+        # слева хвостом соседней ячейки. Спан по-прежнему ищется и вырезается
+        # из search_text, поэтому координаты не сдвигаются никогда.
+        anchor_ctx = anchor_prefix + search_text if anchor_prefix else search_text
+        shift = len(anchor_prefix)
+        for (entity_type, pattern, validator, span_group, anchor,
+             anti_anchor, anti_window) in regex_types:
             for m in pattern.finditer(search_text):
                 if m.start(span_group) < 0:
                     continue  # группа не участвовала в матче — спана нет
 
                 anchored = anchor is not None and _has_anchor(
-                    search_text, m.start(span_group), anchor)
+                    anchor_ctx, shift + m.start(span_group), anchor)
 
                 # ЭТАП A2 — анти-якорь: дисквалифицирующее слово рядом с якорем
                 # («паспорт КАЧЕСТВА», «ТЕХНИЧЕСКИЙ паспорт») отменяет матч
@@ -318,7 +367,8 @@ def detect_regex(doc: SourceDocument, config_path: str) -> list[Entity]:
                 # там всегда False — поведение A2 сохраняется байт-в-байт.
                 if (anti_anchor is not None and not anchored
                         and _has_anti_anchor(
-                            search_text, m.start(0), m.end(0), anti_anchor)):
+                            anchor_ctx, shift + m.start(0), shift + m.end(0),
+                            anti_anchor, anti_window)):
                     continue
 
                 # ЭТАП 4 — КС как сигнал уверенности, а не шлагбаум (STATE §6).
@@ -340,8 +390,12 @@ def detect_regex(doc: SourceDocument, config_path: str) -> list[Entity]:
                         # ЭТАП A7 — ограничитель для КС: значение, вырезанное
                         # из более длинного прогона цифр, контрольной суммой
                         # НЕ подтверждается (см. _digit_run_neighbour).
-                        if _digit_run_neighbour(search_text, m.start(span_group),
-                                                m.end(span_group)):
+                        # По anchor_ctx, а не по сегменту: цифра в конце
+                        # соседней ячейки — такой же сосед, и направление
+                        # ошибки здесь «лучше не найти, чем нахватать».
+                        if _digit_run_neighbour(anchor_ctx,
+                                                shift + m.start(span_group),
+                                                shift + m.end(span_group)):
                             continue
                 # span_group>0: якорь остаётся вне спана (см. _load_regex_types)
                 start, end = norm_to_src(offset_map, m.start(span_group), m.end(span_group))
