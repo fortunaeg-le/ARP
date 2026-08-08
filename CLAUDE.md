@@ -15,7 +15,7 @@
 |---|---|
 | `src/` | Библиотека: детекция, маскирование, восстановление. Плоские импорты (`from tokenizer import …`), `src/` — не пакет |
 | `shifrator.py` | CLI: `encrypt` / `decrypt` / `decrypt-file` / `delete` |
-| `entity_types.yaml` | Реестр типов: паттерны, префиксы токенов, флаги. Порядок арбитража здесь НЕ задан — он в `src/tokenizer.py` |
+| `entity_types.yaml` | СОБРАННЫЙ артефакт (руками не править!): `tests/corpus_v2/assemble_types.py` из `entity_types.base.yaml` + `tests/corpus_v2/typedefs/*.yaml`. Порядок арбитража — ключ `arbitration_order` там же. Новый тип — одним файлом-описанием: `docs/HOWTO_NEW_TYPE.md` |
 | `app/` | Десктопный интерфейс: stdlib `http.server` + один `index.html`, только `127.0.0.1` |
 | `tests/` | pytest; `tests/corpus/` — корпус v1 + гейт; `tests/corpus_v2/` — корпус v2 + генератор; `tests/component2/` — OOXML |
 | `docs/` | Рабочий контур: `JOURNAL.md`, `STATE.md`, `ARCHITECTURE.md`, `FINDINGS.md`. Остальное — `docs/archive/`, реестр переездов — `docs/archive/DOC_REGISTRY.md` |
@@ -75,13 +75,16 @@ venv\Scripts\pyinstaller.exe packaging\shifrator.spec --distpath dist --workpath
    Допуски в `tests/corpus/gate_config.py` не ослаблять — все нулевые, и это
    измеренный факт, а не осторожность.
 4. **Стена между детекцией и генератором корпуса v2.** Код в `src/` не читает и
-   не импортирует `tests/corpus_v2/values.py`, `generate.py` и эталон `gold_v2.json`.
+   не импортирует `tests/corpus_v2/` (values, generate, typedefs, эталоны).
    Иначе детектор учится на ответах, и цифры перестают что-либо значить.
+   С TYPE-FACTORY-2 стена механическая: AST-страж
+   `tests/test_type_factory.py::TestWall` + белый список сборки.
 5. **Красный тест не чинится ослаблением теста.** Падение — либо дефект в коде,
    либо честная находка в `FINDINGS.md`.
-6. **TRANCHE не детектировать** — тип объявлен неизмеримым (`tests/corpus_v2/README.md`).
-   Автособираемого стража у запрета НЕТ (проверено этапом AUDIT): держат баннер,
-   реестр и ручной `validate.py`. Долг — `V2-TRANCHE-NOGUARD`.
+6. **Запрет детекции TRANCHE СНЯТ владельцем 2026-08-08** (TYPE-FACTORY-2:
+   черновик — из живой документации, условие сторожа исполнено). Маскируется
+   ТОЛЬКО именная ветвь (транш «Имя»); порядковая и описательные обороты —
+   негативы `kind=ordinal-tranche`. Страж «TRANCHE с числом = ошибка» остаётся.
 7. **Реальные документы не коммитить.** Публичный репозиторий, в истории уже была
    утечка договора. Дампы реальных текстов — никуда, включая `experiments/` и `docs/`.
 8. **Путь и формат хранилища сессий не менять** (`~/.shifrator/`, `key.bin`,
