@@ -131,6 +131,10 @@ TYPE_MAP = {
     "CONTRACT_NO": "CONTRACT_NO",
     "SHARE_PCT": "SHARE_PCT",
     "TRANCHE": "TRANCHE",
+    # ЭТАП TYPES-2 — три новых фабричных типа, то же правило (без алиасов).
+    "PASSPORT_ISSUER": "PASSPORT_ISSUER",
+    "REGISTRY_NAME": "REGISTRY_NAME",
+    "CONTRACT_KIND": "CONTRACT_KIND",
 }
 
 
@@ -1032,6 +1036,8 @@ ALL_ENTITY_TYPES = (
     # будет (корпус заморожен): их вклад на v1 виден по линиям «а»/«д» (маски на
     # негативах и прозе), эталон и recall — только на корпусе v2.
     "REG_NUMBER", "REG_ID", "CONTRACT_NO", "SHARE_PCT", "TRANCHE",
+    # ЭТАП TYPES-2 — ещё три фабричных типа, на v1 эталона тоже не имеют.
+    "PASSPORT_ISSUER", "REGISTRY_NAME", "CONTRACT_KIND",
 )
 
 
