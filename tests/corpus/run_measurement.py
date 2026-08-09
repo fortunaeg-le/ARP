@@ -334,13 +334,22 @@ def process_doc(d, allow_lossy=ALLOW_LOSSY):
     # вне своего эталона = порча читаемости). Штатные поля exact/left_trim/
     # right_trim направление промаха не различают — см. measure_lib, блок
     # «границы по направлению ошибки».
+    #
+    # ЭТАП REG — НЕМАСКИРУЕМЫЙ ШОВ. Символы-разделители сборки PT-1 ('\n' между
+    # блоками, '\t' между ячейками) не принадлежат ни одному сегменту системы,
+    # поэтому маску на них поставить нечем ни при каком качестве детекции.
+    # Значение, разорванное вёрсткой и закрытое масками с обеих сторон шва,
+    # прибор считал недобором — то есть утечкой, которой нет. Условия узости и
+    # что правка НЕ трогает — measure_lib, блок «немаскируемый шов».
+    _seam = ML.seam_spans(doc.segments, offs, G, body_start, body_end)
     _all_mask_spans = [(x["start"], x["end"]) for x in det_located]
     _bnd_by_pos = {}
     for _t in sorted({e["type"] for e in d["entities"]}):
         _pos_t = [i for i, e in enumerate(d["entities"]) if e["type"] == _t]
         _golds_t = [d["entities"][i] for i in _pos_t]
         _masks_t = [(x["start"], x["end"]) for x in det_located if x["gtype"] == _t]
-        for _i, _b in zip(_pos_t, ML.boundary_by_gold(_golds_t, _masks_t, _all_mask_spans)):
+        for _i, _b in zip(_pos_t, ML.boundary_by_gold(_golds_t, _masks_t,
+                                                      _all_mask_spans, seam=_seam)):
             _bnd_by_pos[_i] = _b
 
     # ---- сопоставление эталонных сущностей ----
