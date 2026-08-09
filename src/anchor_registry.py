@@ -469,21 +469,82 @@ def _addr_type_left(low: str, s: int) -> bool:
 # фамилия при ДВУХ известных тёзках) получает нейтральную «фамильную» персону
 # со скромным каноном (только фамилия) — ложная атрибуция хуже неатрибуции.
 
-def _nominative_word(word: str, role: str) -> str:
-    """Именительный падеж слова-части имени (role: 'surn'|'name'|'patr') через
-    pymorphy inflect. Род/число сохраняются разбором («Новиковой» femn → «Новикова»,
-    не «Новиков»). Не разобралось — слово как есть. Титульный регистр."""
-    tag_marker = {"surn": "Surn", "name": "Name", "patr": "Patr"}[role]
-    best = None
-    for p in _MORPH(word):
-        if p.score < _NAMEPART_MIN_SCORE or tag_marker not in p.tag:
+_GENDER_TAGS = ("femn", "masc")
+
+
+def _span_gender(text: str) -> str | None:
+    """Род персоны по ИМЕНИ и ОТЧЕСТВУ спана ФИО ('femn'|'masc'|None).
+
+    Отчество и имя различают род однозначно там, где фамилия его не различает:
+    «Дмитриевна»/«Олегович», «Мария»/«Олег». Фамилию сюда НЕ берём — ради неё
+    всё и считается. Разнобой между именем и отчеством (разбор ошибся) — None:
+    догадка хуже воздержания."""
+    seen = set()
+    for w in _WORD_RE.findall(text):
+        if _is_initial(w):
             continue
-        if best is None or p.score > best.score:
-            best = p
+        roles = _nameparts(w)
+        marker = "Patr" if "patr" in roles else ("Name" if "name" in roles else None)
+        if marker is None:
+            continue
+        best = None
+        for p in _MORPH(w):
+            if p.score < _NAMEPART_MIN_SCORE or marker not in p.tag:
+                continue
+            if best is None or p.score > best.score:
+                best = p
+        if best is None:
+            continue
+        for g in _GENDER_TAGS:
+            if g in best.tag:
+                seen.add(g)
+    return seen.pop() if len(seen) == 1 else None
+
+
+def _nominative_word(word: str, role: str, gender: str | None = None) -> str:
+    """Именительный падеж слова-части имени (role: 'surn'|'name'|'patr').
+
+    ДЕФЕКТ, КОТОРЫЙ ЭТО ЧИНИТ (`MFIX-CANON-FEMSURN`, решение владельца).
+    Прежняя версия брала разбор с НАИБОЛЬШИМ score и звала `inflect({'Nom'})`.
+    Женская фамилия в именительном омонимична мужской в родительном, и разбор
+    «Кузнецова» отдаёт `masc,gent` со score 0.5 против верного `femn,nomn` со
+    score 0.333 — канон получался «Кузнецов». Восстановление подставляет канон,
+    то есть документ возвращался пользователю с ЧУЖИМ именем: женщина названа
+    мужской фамилией. Это порча имени стороны сделки, а не косметика.
+
+    Три правила, в порядке применения:
+      1. РОД СПАНА СИЛЬНЕЕ SCORE. Если имя/отчество того же ФИО назвали род
+         («Кузнецова МАРИЯ ДМИТРИЕВНА» — femn), разборы другого рода
+         отбрасываются целиком. Это самый надёжный сигнал, и он снимает
+         омонимию там, где она вообще разрешима.
+      2. УЖЕ ИМЕНИТЕЛЬНЫЙ ЕДИНСТВЕННОГО ЧИСЛА — НЕ СКЛОНЯЕМ. Слово
+         возвращается КАК ЕСТЬ: склонять именительное в именительное незачем, а
+         любая попытка проходит через выбор разбора и может сменить род (ровно
+         то, что и случалось). Единственное число в условии ОБЯЗАТЕЛЬНО:
+         «Марии» и «Егоровны» разбираются как именительный МНОЖЕСТВЕННОГО, и
+         без `sing` правило погасило бы склонение имени и отчества
+         («Кузнецовой Марии Дмитриевне» → «Кузнецова Марии Дмитриевна»).
+      3. Иначе — прежнее поведение: лучший разбор и `inflect({'Nom'})`.
+         `_MORPH` — natasha.MorphVocab: её inflect принимает UD-граммемы
+         ('Nom'), а не opencorpora ('nomn').
+    Цена правила 2 названа прямо: «Иванова» в значении «доверенность Иванова
+    И. И.» (родительный от мужской фамилии) останется «Иванова», если род спана
+    не назван. Владелец выбрал эту сторону: женская именительная форма не должна
+    проигрывать мужской родительной.
+
+    Не разобралось — слово как есть. Титульный регистр."""
+    tag_marker = {"surn": "Surn", "name": "Name", "patr": "Patr"}[role]
+    parses = [p for p in _MORPH(word)
+              if p.score >= _NAMEPART_MIN_SCORE and tag_marker in p.tag]
+    if gender in _GENDER_TAGS:
+        same = [p for p in parses if gender in p.tag]
+        if same:                      # правило 1: род спана сильнее score
+            parses = same
     out = word
-    if best is not None:
-        # _MORPH — natasha.MorphVocab: её inflect принимает UD-граммемы ('Nom'),
-        # а не opencorpora ('nomn'). Род/число сохраняются из разбора.
+    if parses:
+        if any("nomn" in p.tag and "sing" in p.tag for p in parses):
+            return out[:1].upper() + out[1:]      # правило 2: уже именительный
+        best = max(parses, key=lambda p: p.score)  # правило 3
         try:
             nom = best.inflect({"Nom"})
         except Exception:
@@ -501,6 +562,10 @@ def _per_signature(text: str):
     surn = name = patr = None
     canon = {}
     initials = []
+    # род спана считаем ОДИН раз и до разбора фамилии: он снимает омонимию
+    # «Кузнецова» femn,nomn / masc,gent, на которой канон делал женщину
+    # мужчиной (MFIX-CANON-FEMSURN, см. _nominative_word)
+    gender = _span_gender(text)
     for w in _WORD_RE.findall(text):
         if _is_initial(w):
             initials.append(w.upper())
@@ -508,13 +573,13 @@ def _per_signature(text: str):
         roles = _nameparts(w)
         if "surn" in roles and surn is None:
             surn = _lemma_first(w)
-            canon["surn"] = _nominative_word(w, "surn")
+            canon["surn"] = _nominative_word(w, "surn", gender)
         elif "name" in roles and name is None:
             name = _lemma_first(w)
-            canon["name"] = _nominative_word(w, "name")
+            canon["name"] = _nominative_word(w, "name", gender)
         elif "patr" in roles and patr is None:
             patr = _lemma_first(w)
-            canon["patr"] = _nominative_word(w, "patr")
+            canon["patr"] = _nominative_word(w, "patr", gender)
     return surn, name, patr, tuple(initials), canon
 
 
