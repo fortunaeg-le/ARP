@@ -223,7 +223,18 @@ class TestClosedListGuard:
         document.add_paragraph("Тело.")
         hp = document.sections[0].header.paragraphs[0]
         hp.text = "Колонтитул: "
+        # ЭТАП CLIENT: у формулы теперь есть СОДЕРЖИМОЕ. До этапа здесь висел
+        # пустой `m:oMath`, и проба проходила только потому, что отказ шёл на
+        # любом узле вне переписи — даже на заведомо пустом. Часть 2 этапа сузила
+        # отказ до узлов, внутри которых есть что терять, поэтому фикстура
+        # приведена к тому же виду, что и дисковая (`_omath("ИНН …")`): проба
+        # проверяет «сторож работает и в колонтитуле», а не «пустое отказывает».
         omath = OxmlElement("m:oMath")
+        r = OxmlElement("m:r")
+        t = OxmlElement("m:t")
+        t.text = "ИНН 7736050003"
+        r.append(t)
+        omath.append(r)
         hp._p.append(omath)
 
         with tempfile.TemporaryDirectory() as d:
@@ -259,3 +270,155 @@ class TestClosedListGuard:
 
         assert [z.kind for z in zones] == ["unknown_node"]
         assert "7736050003" not in text
+
+
+# --------------------------------------------------------------------------
+# ЭТАП CLIENT, часть 2 — сужение отказа на узле вне переписи.
+#
+# `mc:AlternateContent` (новый Word, LibreOffice: фигуры, надписи, SmartArt) до
+# этапа отказывал ВСЕГДА — в том числе на фигуре без единого символа. Отказ
+# сужен ровно до случаев, где есть что терять. Молчаливый пропуск не заведён
+# ни в одном из них: каждая проба ниже либо отказывает, либо доказывает, что
+# терять нечего.
+
+_ALT_NS = (
+    'xmlns:w="http://schemas.openxmlformats.org/wordprocessingml/2006/main" '
+    'xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" '
+    'xmlns:wps="http://schemas.microsoft.com/office/word/2010/wordprocessingShape" '
+    'xmlns:v="urn:schemas-microsoft-com:vml" '
+    'xmlns:r="http://schemas.openxmlformats.org/officeDocument/2006/relationships"'
+)
+
+
+def _alt(choice_inner: str, fallback_inner: str) -> str:
+    return (f"<mc:AlternateContent {_ALT_NS}>"
+            f'<mc:Choice Requires="wps">{choice_inner}</mc:Choice>'
+            f"<mc:Fallback>{fallback_inner}</mc:Fallback>"
+            f"</mc:AlternateContent>")
+
+
+def _txbx(tag: str, text: str) -> str:
+    return (f"<{tag}><w:txbxContent><w:p><w:r><w:t>{text}</w:t></w:r></w:p>"
+            f"</w:txbxContent></{tag}>")
+
+
+def _docx_with(tmp_path, xml: str, name: str = "alt.docx") -> str:
+    """Документ с одним абзацем текста и приложенным к нему сырым узлом."""
+    from docx.oxml import parse_xml
+
+    document = Document()
+    p = document.add_paragraph("Тело договора.")
+    p._p.append(parse_xml(xml))
+    path = os.path.join(str(tmp_path), name)
+    document.save(path)
+    return path
+
+
+class TestAlternateContentNarrowing:
+
+    def test_shape_with_text_still_refuses(self, tmp_path):
+        """Надпись с текстом — отказ как прежде. Это главный инвариант: сужение
+        не имеет права выпустить наружу ни одного значения."""
+        path = _docx_with(tmp_path, _alt(_txbx("wps:txbx", "ИНН 7736050003"),
+                                         _txbx("v:textbox", "ИНН 7736050003")))
+        zones = scan_unread_zones(path)
+        assert [z.kind for z in zones] == ["unknown_node"]
+        assert zones[0].detail == "mc:AlternateContent"
+        assert "7736050003" not in _all_text(path)
+
+    def test_two_branches_are_not_counted_twice(self, tmp_path):
+        """`mc:Choice` и `mc:Fallback` — ДВА кодирования одного содержимого.
+        Наивная склейка показывала пользователю текст дважды (72 символа там,
+        где текста 36) и столько же писала в sidecar lossy-режима."""
+        text = "ИНН 7736050003"
+        path = _docx_with(tmp_path, _alt(_txbx("wps:txbx", text),
+                                         _txbx("v:textbox", text)))
+        (zone,) = scan_unread_zones(path)
+        assert zone.char_count == len(text)
+        assert zone.text == text
+
+    def test_text_only_in_fallback_still_refuses(self, tmp_path):
+        """Предпочтение `mc:Choice` не имеет права ослепить нас к тексту,
+        который лежит ТОЛЬКО в запасной ветви."""
+        path = _docx_with(tmp_path, _alt("<wps:spPr/>",
+                                         _txbx("v:textbox", "ИНН 7736050003")))
+        (zone,) = scan_unread_zones(path)
+        assert zone.text == "ИНН 7736050003"
+
+    def test_shape_without_any_text_does_not_refuse(self, tmp_path):
+        """Фигура без единого символа (линия, рамка) — терять нечего, и отказ
+        на ней был отказом на пустом месте. Ровно этот случай этап и снимает."""
+        path = _docx_with(tmp_path, _alt("<wps:spPr/>",
+                                         '<w:pict><v:shape style="width:9pt"/></w:pict>'))
+        assert scan_unread_zones(path) == []
+
+    def test_text_outside_w_t_is_still_seen(self, tmp_path):
+        """Проверка пустоты идёт ШИРЕ, чем `w:t`. Формула держит текст в `m:t`,
+        и узкая проверка превратила бы отказ в тихий пропуск — на дисковой
+        фикстуре `unknown_node.docx` её `m:oMath` по `w:t` даёт РОВНО НОЛЬ."""
+        from docx.oxml import parse_xml
+
+        omath = parse_xml(
+            '<m:oMath xmlns:m="http://schemas.openxmlformats.org/'
+            'officeDocument/2006/math"><m:r><m:t>7736050003</m:t></m:r></m:oMath>')
+        assert uz._zone_text(omath) == ""          # узкая проверка слепа
+        assert uz._subtree_has_text(omath) is True  # широкая — видит
+        assert [z.kind for z in scan_unread_zones(UNKNOWN)] == ["unknown_node"]
+
+    def test_wordart_text_in_attribute_is_seen(self, tmp_path):
+        """WordArt держит надпись в АТРИБУТЕ `v:textpath/@string`; `itertext()`
+        до неё не добирается."""
+        path = _docx_with(tmp_path, _alt(
+            "<wps:spPr/>",
+            '<w:pict><v:shape><v:textpath string="Орлов Сергей Ильич"/>'
+            "</v:shape></w:pict>"))
+        assert [z.kind for z in scan_unread_zones(path)] == ["unknown_node"]
+
+    def test_reference_to_non_image_part_still_refuses(self, tmp_path):
+        """Ссылка на НЕрастровую часть (диаграмма, OLE, SmartArt) означает
+        содержимое в другой части пакета, которую мы не смотрели. Символов в
+        самом узле ноль — и всё равно отказ."""
+        from docx.oxml import parse_xml
+
+        document = Document()
+        p = document.add_paragraph("Тело договора.")
+        # Связь заводим настоящую, средствами пакета (иначе python-docx не
+        # откроет файл). Цель связи для проверки безразлична — важен ТИП.
+        rid = document.part.relate_to(
+            document.part, "http://schemas.openxmlformats.org/"
+            "officeDocument/2006/relationships/chart")
+        p._p.append(parse_xml(_alt(f'<wps:spPr><c:chart xmlns:c="http://'
+                                   f'schemas.openxmlformats.org/drawingml/2006/chart" '
+                                   f'r:id="{rid}"/></wps:spPr>',
+                                   '<w:pict><v:shape style="width:9pt"/></w:pict>')))
+        path = os.path.join(str(tmp_path), "chart.docx")
+        document.save(path)
+        assert [z.kind for z in scan_unread_zones(path)] == ["unknown_node"]
+
+    def test_reference_to_image_part_does_not_refuse(self, tmp_path):
+        """Растр текста не несёт, и обычная картинка в теле отказа не вызывает
+        и сегодня. Обёртка вокруг неё не имеет права менять вердикт."""
+        from docx.oxml import parse_xml
+
+        document = Document()
+        p = document.add_paragraph("Тело договора.")
+        rid = document.part.relate_to(
+            document.part, "http://schemas.openxmlformats.org/"
+            "officeDocument/2006/relationships/image")
+        p._p.append(parse_xml(_alt(f'<wps:spPr><a:blip xmlns:a="http://'
+                                   f'schemas.openxmlformats.org/drawingml/2006/main" '
+                                   f'r:embed="{rid}"/></wps:spPr>',
+                                   '<w:pict><v:shape style="width:9pt"/></w:pict>')))
+        path = os.path.join(str(tmp_path), "img.docx")
+        document.save(path)
+        assert scan_unread_zones(path) == []
+
+    def test_unresolvable_reference_refuses(self, tmp_path):
+        """Ссылка, которую нечем разрешить (нет .rels, битый .rels, чужой rId),
+        обязана оставить отказ: положительный ответ «это картинка» мы обязаны
+        ПОЛУЧИТЬ, а не предположить."""
+        path = _docx_with(tmp_path, _alt(
+            '<wps:spPr><a:blip xmlns:a="http://schemas.openxmlformats.org/'
+            'drawingml/2006/main" r:embed="rIdНеСуществует"/></wps:spPr>',
+            '<w:pict><v:shape style="width:9pt"/></w:pict>'))
+        assert [z.kind for z in scan_unread_zones(path)] == ["unknown_node"]
