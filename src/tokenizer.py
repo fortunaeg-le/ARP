@@ -331,6 +331,11 @@ def _trim_to_free(loser: Entity, winner: Entity) -> list[Entity]:
             entity_type=loser.entity_type,
             detector=loser.detector,
             confidence=loser.confidence,
+            # ЭТАП DEFAULT-GATE: обрезок наследует тень проигравшего. Кандидаты
+            # внутри неё будут проверены на попадание в спан обрезка, поэтому
+            # лишнего не вернётся, а вот потеря тени при обрезке сделала бы
+            # восстановление зависимым от порядка арбитража.
+            shadowed=(list(loser.shadowed) if loser.shadowed else None),
         ))
     return out
 
@@ -372,6 +377,14 @@ def _resolve_overlaps(
             if e is winner:
                 continue
             if _overlaps(e, winner):
+                # ЭТАП DEFAULT-GATE: запоминаем вытесненного НА ПОБЕДИТЕЛЕ.
+                # Если победитель окажется типом, выключенным в наборе
+                # пользователя, он маски не получит — и тогда вытесненный
+                # кандидат включённого типа обязан закрыть территорию, а не
+                # оставлять её открытой (см. _recover_shadowed).
+                if winner.shadowed is None:
+                    winner.shadowed = []
+                winner.shadowed.append(e)
                 if (suppression_log is not None
                         and winner.entity_type in barrier_types
                         and e.entity_type not in barrier_types):
@@ -1055,6 +1068,103 @@ def resolve_for_masking(
     return kept
 
 
+def _recover_shadowed(kept, enabled_types, barrier_types):
+    """Кандидаты, которых вытеснил ВЫКЛЮЧЕННЫЙ тип, — обратно под маску.
+
+    ЗАЧЕМ (решение владельца по `MFIX-PROFILE-IP-PER`). Арбитраж пересечений
+    считается ОДИН раз и не зависит от набора типов — это правильно: границы
+    масок включённых типов не должны ездить от того, что пользователь выключил
+    что-то другое. Но у этого была цена: если пересечение выиграл тип, которого
+    в наборе НЕТ, он маски не получает, и территория остаётся ОТКРЫТОЙ вместе с
+    вытесненным кандидатом. Так «ИП Беляев Олег Олегович» выигрывал как `ORG`, а
+    в наборе «Только персональные данные» `ORG` выключен — и имя человека
+    уходило в LLM открытым текстом. Имя человека внутри названия ИП —
+    персональные данные независимо от оформления юрлица.
+
+    ПРАВИЛО, и узость каждого условия здесь принципиальна:
+      * возвращаются ТОЛЬКО кандидаты ВКЛЮЧЁННЫХ типов — то есть тех, маску
+        которых пользователь и так ждёт;
+      * только вытесненные ВЫКЛЮЧЕННЫМ типом: кандидат обязан пересекать
+        территорию, которая осталась без маски (`vacated`);
+      * победа ОТРИЦАТЕЛЬНОГО класса (`barrier_types`) территорию НЕ открывает:
+        там победитель говорит «это не сущность», и вернуть подавленного значило
+        бы отменить этап T4 руками;
+      * кандидат не должен налезать на УЖЕ поставленную маску — кроме своего
+        собственного обрезка: когда выключенный победитель отрезал у кандидата
+        часть спана, остаток мог остаться в `kept` отдельной короткой маской
+        (12-значный ИНН физлица против 10-значного ИНН юрлица — ровно этот
+        случай). Такой обрезок заменяется полным кандидатом, иначе значение
+        осталось бы открытым наполовину;
+      * конфликты между самими возвращёнными разрешает тот же `_resolve_overlaps`.
+    Маска не может появиться нигде, кроме спана сущности, которую детекция и так
+    нашла и отнесла к ВКЛЮЧЁННОМУ типу; шире исходного кандидата не бывает.
+
+    Возвращает (кандидаты-к-добавлению, обрезки-к-удалению).
+
+    При `enabled_types=None` (набор «Максимум») выключенных типов нет вовсе —
+    функция возвращает пустоту, и поведение побайтно прежнее. Именно поэтому
+    гейт и все прежние замеры (они всегда меряют на максимуме) не сдвигаются ни
+    на символ.
+    """
+    if enabled_types is None:
+        return [], []
+
+    def _maskable(e):
+        return e.entity_type not in barrier_types
+
+    vacated: dict[str, list[tuple[int, int]]] = {}
+    for e in kept:
+        if _maskable(e) and e.entity_type not in enabled_types:
+            vacated.setdefault(e.segment_id, []).append((e.start, e.end))
+    if not vacated:
+        return [], []
+
+    enabled_kept = [e for e in kept if _maskable(e) and e.entity_type in enabled_types]
+    taken: dict[str, list[Entity]] = {}
+    for e in enabled_kept:
+        taken.setdefault(e.segment_id, []).append(e)
+
+    candidates: list[Entity] = []
+    drop: list[Entity] = []
+    for w in kept:
+        if not _maskable(w) or w.entity_type in enabled_types:
+            continue                      # маску получит сам победитель
+        for c in (w.shadowed or ()):
+            if c.entity_type not in enabled_types or not _maskable(c):
+                continue
+            if c.segment_id != w.segment_id:
+                continue
+            if not any(max(c.start, s) < min(c.end, e)
+                       for s, e in vacated.get(c.segment_id, ())):
+                continue                  # ничего не освободилось под ним
+            blockers = [k for k in taken.get(c.segment_id, ())
+                        if max(c.start, k.start) < min(c.end, k.end)]
+            # свой же обрезок (лежит целиком внутри кандидата) — не помеха, его
+            # заменяет полный кандидат; чужая маска — помеха, кандидат не берём
+            own = [k for k in blockers if k.start >= c.start and k.end <= c.end]
+            if len(own) != len(blockers):
+                continue
+            candidates.append(c)
+            drop.extend(own)
+
+    if not candidates:
+        return [], []
+    out: list[Entity] = []
+    by_segment: dict[str, list[Entity]] = {}
+    for c in candidates:
+        by_segment.setdefault(c.segment_id, []).append(c)
+    for _seg_id, group in by_segment.items():
+        # дубликаты одного кандидата (вытеснен несколькими победителями за
+        # несколько раундов) схлопываем по координатам и типу
+        uniq: dict[tuple, Entity] = {}
+        for c in group:
+            uniq.setdefault((c.start, c.end, c.entity_type), c)
+        out.extend(_resolve_overlaps(list(uniq.values()), barrier_types))
+    keep_ids = {id(e) for e in out}
+    drop = [d for d in drop if id(d) not in keep_ids]
+    return out, drop
+
+
 def apply_masking(
     doc: SourceDocument,
     kept: list[Entity],
@@ -1092,7 +1202,15 @@ def apply_masking(
     kept = [e for e in kept if e.entity_type not in barrier_types]
 
     if enabled_types is not None:
-        kept = [e for e in kept if e.entity_type in enabled_types]
+        # ЭТАП DEFAULT-GATE: сначала вернуть кандидатов, вытесненных
+        # ВЫКЛЮЧЕННЫМ типом (см. _recover_shadowed — там же, почему это узко и
+        # почему на наборе «Максимум» не меняется ничего), потом фильтровать.
+        recovered, dropped = _recover_shadowed(kept, enabled_types, barrier_types)
+        dropped_ids = {id(e) for e in dropped}
+        kept = [e for e in kept
+                if e.entity_type in enabled_types and id(e) not in dropped_ids] + recovered
+        seg_order = {seg.id: i for i, seg in enumerate(doc.segments)}
+        kept.sort(key=lambda e: (seg_order.get(e.segment_id, 0), e.start))
 
     # --- Присвоение токенов ---
     # Правило переиспользования (этап E, часть 2 — ЕДИНЫЙ ID НА СУЩНОСТЬ):
