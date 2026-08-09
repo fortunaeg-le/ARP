@@ -1,0 +1,47 @@
+INN           было масок/оценено/b_ok (318, 318, 275)   стало (323, 323, 275)
+INN_PER       было масок/оценено/b_ok (681, 681, 582)   стало (700, 700, 586)
+OGRN          было масок/оценено/b_ok (417, 417, 391)   стало (427, 427, 393)
+BANK_ACCOUNT  было масок/оценено/b_ok (0, 0, 0)   стало (0, 0, 0)
+SNILS         было масок/оценено/b_ok (238, 238, 208)   стало (238, 238, 208)
+
+НОВЫЕ маски (есть после, нет до):
+  + labor_0005__m2718_linebreak  INN       b_ok=False c_ok=True  gold=INN       '34'
+  + labor_0005__m2718_linebreak  INN       b_ok=False c_ok=True  gold=INN       '78735100'
+  + labor_0005__m2718_linebreak  INN_PER   b_ok=False c_ok=True  gold=INN_PER   '03029272'
+  + labor_0005__m2718_linebreak  INN_PER   b_ok=False c_ok=True  gold=INN_PER   '8066'
+  + labor_0005__m2718_linebreak  OGRN      b_ok=False c_ok=True  gold=OGRN      '19037227191'
+  + labor_0005__m2718_linebreak  OGRN      b_ok=False c_ok=True  gold=OGRN      '31'
+  + labor_0011__m2718_linebreak  INN       b_ok=False c_ok=True  gold=INN       '16046281'
+  + labor_0011__m2718_linebreak  INN       b_ok=False c_ok=True  gold=INN       '49'
+  + labor_0011__m2718_linebreak  INN_PER   b_ok=False c_ok=True  gold=INN_PER   '366993586'
+  + labor_0011__m2718_linebreak  INN_PER   b_ok=False c_ok=True  gold=INN_PER   '732'
+  + lease_0010__m1337_linebreak  INN_PER   b_ok=True  c_ok=True  gold=INN_PER   '36\n1220201569'
+  + lease_0010__m1337_linebreak  INN_PER   b_ok=True  c_ok=True  gold=INN_PER   '361\n220201569'
+  + lease_0010__m1337_linebreak  INN_PER   b_ok=True  c_ok=True  gold=INN_PER   '41785505\n0890'
+  + lease_0010__m1337_linebreak  INN_PER   b_ok=True  c_ok=True  gold=INN_PER   '4178550508\n90'
+  + lease_0010__m1337_linebreak  OGRN      b_ok=True  c_ok=True  gold=OGRN      '3098484\n16157618'
+  + lease_0010__m1337_linebreak  OGRN      b_ok=True  c_ok=True  gold=OGRN      '31535445163\n3792'
+  + sale_0013__m2718_linebreak   INN_PER   b_ok=False c_ok=True  gold=INN_PER   '0192'
+  + sale_0013__m2718_linebreak   INN_PER   b_ok=False c_ok=True  gold=INN_PER   '171132624'
+  + sale_0013__m2718_linebreak   INN_PER   b_ok=False c_ok=True  gold=INN_PER   '221'
+  + sale_0013__m2718_linebreak   INN_PER   b_ok=False c_ok=True  gold=INN_PER   '39031124'
+  + sale_0013__m2718_linebreak   OGRN      b_ok=False c_ok=True  gold=OGRN      '0851'
+  + sale_0013__m2718_linebreak   OGRN      b_ok=False c_ok=True  gold=OGRN      '33867860631'
+  + services_0011__m2718_linebreak INN       b_ok=False c_ok=True  gold=INN       '5881178'
+  + services_0011__m2718_linebreak INN       b_ok=False c_ok=True  gold=INN       '678'
+  + services_0011__m2718_linebreak INN_PER   b_ok=False c_ok=True  gold=INN_PER   '27'
+  + services_0011__m2718_linebreak OGRN      b_ok=False c_ok=True  gold=OGRN      '134400'
+  + services_0011__m2718_linebreak OGRN      b_ok=False c_ok=True  gold=OGRN      '9759270'
+  + works_0005__m2718_linebreak  INN_PER   b_ok=False c_ok=True  gold=INN_PER   '214436879'
+  + works_0005__m2718_linebreak  INN_PER   b_ok=False c_ok=True  gold=INN_PER   '320'
+  + works_0005__m2718_linebreak  INN_PER   b_ok=False c_ok=True  gold=INN_PER   '58'
+  + works_0005__m2718_linebreak  OGRN      b_ok=False c_ok=True  gold=OGRN      '359'
+  + works_0005__m2718_linebreak  OGRN      b_ok=False c_ok=True  gold=OGRN      '366332881608'
+  + works_0011__m2718_linebreak  INN_PER   b_ok=False c_ok=True  gold=INN_PER   '24'
+  + works_0011__m2718_linebreak  INN_PER   b_ok=False c_ok=True  gold=INN_PER   '27'
+  + works_0011__m2718_linebreak  INN_PER   b_ok=False c_ok=True  gold=INN_PER   '7340727414'
+
+ИСЧЕЗНУВШИЕ маски (есть до, нет после):
+  - lease_0010__m1337_linebreak  INN       b_ok=False gold=INN_PER   '4178550508'
+
+ИТОГ по новым маскам (тип, b_ok): {('INN', False): 6, ('INN_PER', False): 15, ('OGRN', False): 8, ('INN_PER', True): 4, ('OGRN', True): 2}
