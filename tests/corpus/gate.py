@@ -968,6 +968,20 @@ def main(argv=None):
         print(f"\nОценка ГОТОВОГО прогона: {results_path} (корпус не гоняется; "
               "свежесть файла гейт проверить не может — отвечает запускающий)")
         current_results = json.load(open(results_path, encoding="utf-8"))
+        # ЭТАП METRIC-FIX (долг AUD1-RESULTS-TRUST). Свежесть файла гейт
+        # действительно проверить не может, а вот СОГЛАСОВАННОСТЬ — обязан:
+        # подложенная АУДИТОМ-1 катастрофа «сняты все маски в десяти
+        # документах» двигала только точность, потому что полнота и утечка
+        # живут в других полях той же записи. Рассогласованный дамп больше не
+        # оценивается вовсе: считать по нему — значит выдать ложно-зелёное.
+        problems = ML.check_results_consistency(current_results)
+        if problems:
+            print(f"\nДАМП РАССОГЛАСОВАН — оценка отменена ({len(problems)} претензий):")
+            for p in problems[:20]:
+                print("  !!", p)
+            if len(problems) > 20:
+                print(f"  … ещё {len(problems) - 20}")
+            return 2
     else:
         gold = RM.load_gold()
         print(f"\nПрогон измерения: {len(gold)} документов (encrypt+decrypt, изолированное хранилище)…")

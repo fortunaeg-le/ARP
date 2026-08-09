@@ -1317,6 +1317,67 @@ def _leak_v2_hits(entity_type: str, v2: dict):
     return hit, hit
 
 
+# =========================================================================== #
+#   ЭТАП METRIC-FIX — СВЕРКА СОСТАВА ДАМПА (долг AUD1-RESULTS-TRUST)           #
+# =========================================================================== #
+# Режим `--results` (и у гейта, и у measure_v2) считает отчёт по ГОТОВОМУ файлу.
+# Он доверял предвычисленным полям записи и не сверял их между собой — АУДИТ-1
+# подложил катастрофу «сняты ВСЕ маски в десяти документах», и она сдвинула
+# только точность: полнота, утечка и границы не шелохнулись, потому что живут в
+# полях `entities`, а маски — в `masks`. Рассогласованный или устаревший дамп
+# давал ложно-зелёную картину.
+#
+# Здесь сверяются ОТНОШЕНИЯ между блоками одной записи — то, что живой прогон
+# держит по построению и что порча дампа обязана нарушить. Правила выбраны так,
+# чтобы не зависеть от качества детекции (иначе проверка краснела бы на честном
+# ухудшении системы, а не на порче файла).
+def check_results_consistency(results):
+    """Список претензий к СОСТАВУ дампа (пустой = дамп согласован).
+
+    Проверяется:
+      1. запись целая — есть обязательные блоки;
+      2. n_detected == числу записей масок (счётчик и список — об одном);
+      3. найденная эталонная сущность требует хоть одной маски, легшей на
+         эталон (`scored`): «всё найдено, но масок нет» физически невозможно;
+      4. ложное срабатывание требует существования маски: fp — это маска;
+      5. doc_leaked/doc_leaked_v2 согласованы с полями сущностей.
+    Претензия — строка «doc_id: что не сходится»."""
+    problems = []
+    for r in results:
+        doc_id = r.get("doc_id", "?")
+        if r.get("outcome") != "processed":
+            continue
+        for key in ("entities", "masks", "false_positives"):
+            if key not in r:
+                problems.append(f"{doc_id}: в записи нет блока {key!r}")
+        if problems and problems[-1].startswith(f"{doc_id}: в записи нет блока"):
+            continue
+        masks = r["masks"]
+        ents = r["entities"]
+        if r.get("n_detected") is not None and r["n_detected"] != len(masks):
+            problems.append(
+                f"{doc_id}: n_detected={r['n_detected']}, а записей масок {len(masks)}")
+        n_found = sum(1 for e in ents if e.get("found"))
+        n_scored = sum(1 for m in masks if m.get("scored"))
+        if n_found and not n_scored:
+            problems.append(
+                f"{doc_id}: {n_found} эталонных сущностей помечены найденными, "
+                "но ни одна маска не легла на эталон — блоки рассогласованы")
+        if r.get("false_positives") and not masks:
+            problems.append(
+                f"{doc_id}: {len(r['false_positives'])} ложных срабатываний "
+                "при нуле масок — ложное срабатывание это маска")
+        leaked = any(e.get("leaked") for e in ents)
+        if r.get("doc_leaked") is not None and bool(r["doc_leaked"]) != leaked:
+            problems.append(f"{doc_id}: doc_leaked={r['doc_leaked']}, "
+                            f"а по сущностям {leaked}")
+        leaked2 = any(e.get("leak_v2", {}).get("status", "none") != "none" for e in ents)
+        if r.get("doc_leaked_v2") is not None and bool(r["doc_leaked_v2"]) != leaked2:
+            problems.append(f"{doc_id}: doc_leaked_v2={r['doc_leaked_v2']}, "
+                            f"а по сущностям {leaked2}")
+    return problems
+
+
 def _empty_type_stats():
     return {"n": 0, "found": 0, "leak_v1": 0, "leak_v2_6": 0, "leak_v2_8": 0}
 

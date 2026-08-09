@@ -567,6 +567,15 @@ def main(argv=None):
 
     if args.results:
         results = json.load(open(args.results, encoding="utf-8"))
+        # ЭТАП METRIC-FIX (долг AUD1-RESULTS-TRUST) — тот же сторож, что у
+        # гейта v1: рассогласованный дамп («сняты все маски») двигал у отчёта
+        # только точность, а полнота и утечка оставались ложно-зелёными.
+        problems = ML.check_results_consistency(results)
+        if problems:
+            print("ДАМП РАССОГЛАСОВАН — отчёт отменён (%d претензий):" % len(problems))
+            for p in problems[:20]:
+                print("  !!", p)
+            return 2
     else:
         gold = load_gold()
         if args.limit:

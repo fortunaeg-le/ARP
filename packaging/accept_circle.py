@@ -30,6 +30,58 @@ PYTHON = ROOT / "venv" / "Scripts" / "python.exe"
 PYINSTALLER = ROOT / "venv" / "Scripts" / "pyinstaller.exe"
 SPEC = ROOT / "packaging" / "shifrator.spec"
 SAMPLE_DOC = ROOT / "tests" / "corpus" / "docs" / "agency_0003.txt"
+# ЭТАП METRIC-FIX, часть 3.2 (долг AUD1-CIRCLE-THIN). Круг гонял ОДИН .txt и
+# проверял «масок больше нуля»: деградация 28 -> 1 прошла бы зелёной, а .docx
+# через собранную программу не проходил вовсе — то есть python-docx, lxml,
+# чтение колонтитулов и сканер зон в СБОРКЕ не проверялись ничем.
+SAMPLE_DOCX = ROOT / "tests" / "corpus" / "docs" / "agency_0002.docx"
+
+# ОЖИДАЕМЫЕ ЗНАЧЕНИЯ, а не «сколько-нибудь масок». Взяты из синтетического
+# документа корпуса (реальных ПДн в репозитории нет и быть не может). Каждое
+# обязано ИСЧЕЗНУТЬ из анонимного текста и вернуться БАЙТ-В-БАЙТ после
+# восстановления. Список короткий намеренно: он держит смысл круга (значение
+# спрятано и возвращено), а полноту меряет гейт на корпусе.
+# ВАЖНО: круг ходит через интерфейс, а интерфейс работает НАБОРОМ ПО УМОЛЧАНИЮ
+# («Только персональные данные», type_policy.PERSONAL). Значения вне этого
+# набора (ИНН организации, счёт, ОГРН) в анонимном тексте остаются ОТКРЫТЫМИ —
+# и это работа по правилам, а не утечка. Первая же редакция этого списка на
+# том и споткнулась: ИНН юрлица честно остался в тексте.
+EXPECTED_VALUES_TXT = [
+    "Кузнецова Мария Дмитриевна",     # ФИО
+    "13 10 006794",                   # паспорт
+    "+7 (495) 409-87-66",             # телефон
+]
+# БАЙТ-В-БАЙТ проверяются НЕ ВСЕ спрятанные значения, и это не недосмотр.
+# Восстановление текстового пути подставляет КАНОН сущности, а канон ФИО
+# сегодня портит женскую фамилию: «Кузнецова» -> «Кузнецов» (находка
+# MFIX-CANON-FEMSURN, вскрыта этим же кругом, см. docs/FINDINGS.md). Требовать
+# от круга байт-в-байт на склоняемом ФИО — значит держать его вечно красным по
+# известному чужому долгу. Поэтому ФИО обязано ИСЧЕЗНУТЬ (список выше), а
+# байт-в-байт спрашивается с несклоняемых значений (список ниже), и расхождение
+# по всему тексту печатается замечанием, а не прячется.
+BYTE_EXACT_TXT = ["13 10 006794", "+7 (495) 409-87-66"]
+# У .docx список свой, и в нём НАМЕРЕННО есть значение из ВЕРХНЕГО КОЛОНТИТУЛА
+# (почта): именно эту зону система научилась читать этапом NODES, а собранная
+# программа её до сих пор не проходила ни разу.
+EXPECTED_VALUES_DOCX = [
+    "Беляеву Олегу Олеговичу",        # ФИО из тела (косвенный падеж)
+    "366822495272",                   # ИНН физлица (это ПДн, набор по умолчанию)
+    "sidorova@mail.ru",               # почта из ВЕРХНЕГО КОЛОНТИТУЛА
+]
+# ФИО «Беляев Олег Олегович» в этот список НЕ входит, и это не оплошность.
+# В наборе по умолчанию оно остаётся ОТКРЫТЫМ: в максимальном наборе его
+# закрывает маска ORG («ИП Беляев Олег Олегович»), а в наборе «Только
+# персональные данные» ORG выключен, и закрывать нечем. Находка
+# MFIX-PROFILE-IP-PER, вскрыта этим кругом; гейт её не видит по построению —
+# он всегда меряет на МАКСИМУМЕ. Круг печатает её замечанием каждый прогон.
+LEAKS_IN_DEFAULT_PROFILE = ["Беляев Олег Олегович"]
+BYTE_EXACT_DOCX = ["366822495272", "sidorova@mail.ru"]
+
+# Ожидаемое число масок круга. Сверяется ТОЧНО: цифра, не «больше нуля».
+# Двигать её можно только вместе с объяснением, что изменилось в системе, —
+# ровно как планку гейта. Снята на build-20260729 живым прогоном круга.
+EXPECTED_MASKS_TXT = 28
+EXPECTED_MASKS_DOCX = 22
 
 STEP = 0
 
@@ -42,6 +94,15 @@ def report(ok, name, detail=""):
     if not ok:
         print(f"КРУГ УПАЛ на шаге {STEP}: {name}")
         sys.exit(1)
+
+
+def note(ok, name, detail=""):
+    """Диагностическая строка круга: печатается всегда, круг НЕ роняет.
+
+    Нужна ровно для одного случая — факт, который обязан быть на виду, но
+    объяснён чужим открытым долгом. Прятать его нельзя (тогда долг забудется),
+    ронять на нём круг тоже нельзя (вечно красный круг перестают читать)."""
+    print(f"[-] {name}: {'ОК' if ok else 'ЗАМЕЧАНИЕ'}" + (f" — {detail}" if detail else ""))
 
 
 def build():
@@ -126,14 +187,30 @@ def main():
         anon_text = enc["anon_text"]
 
         n_masks = len(re.findall(r"\[[A-Z_]+_\d+\]", anon_text))
-        report(n_masks > 0, "маски расставлены", f"{n_masks} шт.")
+        report(n_masks == EXPECTED_MASKS_TXT, "масок ровно столько, сколько ждём (.txt)",
+               f"{n_masks} шт., ожидалось {EXPECTED_MASKS_TXT}")
+
+        leaked = [v for v in EXPECTED_VALUES_TXT if v in anon_text]
+        report(not leaked, "ожидаемые значения исчезли из анонимного текста (.txt)",
+               f"осталось открытым: {leaked}" if leaked else f"{len(EXPECTED_VALUES_TXT)} значений")
 
         dec = http("POST", f"http://127.0.0.1:{port}/api/decrypt",
                     payload={"session_id": session_id, "text": anon_text})
         ok = dec.get("status") == "ok" and not dec.get("unresolved")
         report(ok, "восстановление из ответа", f"unresolved={dec.get('unresolved')}")
-        leftover = len(re.findall(r"\[[A-Z_]+_\d+\]", dec.get("restored", "")))
+        restored = dec.get("restored", "")
+        leftover = len(re.findall(r"\[[A-Z_]+_\d+\]", restored))
         report(leftover == 0, "токенов в восстановленном тексте нет", f"{leftover} шт.")
+
+        lost = [v for v in BYTE_EXACT_TXT if v not in restored]
+        report(not lost, "значения вернулись БАЙТ-В-БАЙТ (.txt)",
+               f"не вернулось: {lost}" if lost else f"{len(BYTE_EXACT_TXT)} значений")
+        note(restored == original, "восстановленный текст побайтно равен исходному (.txt)",
+             "" if restored == original else
+             "расходится — ожидаемо, канон ФИО (MFIX-CANON-FEMSURN); "
+             f"длины {len(restored)} vs {len(original)}. Посимвольную дельту "
+             "здесь не печатаем намеренно: первое же изменение длины сдвигает "
+             "весь хвост, и число вышло бы враньём о масштабе")
 
         sessions = http("GET", f"http://127.0.0.1:{port}/api/sessions")
         ids = [s.get("session_id") for s in sessions.get("sessions", [])]
@@ -143,6 +220,51 @@ def main():
                      payload={"session_id": session_id, "text": anon_text})
         report(dec2.get("status") == "ok" and dec2.get("restored") == dec.get("restored"),
                "сессия повторно открывается по id")
+
+        # --- ДОКУМЕНТ WORD через СОБРАННУЮ программу ---------------------- #
+        # До этого шага .docx не проходил через exe вовсе: python-docx, lxml,
+        # чтение колонтитулов и сканер непрочитанных зон в сборке не
+        # проверялись ничем (долг AUD1-CIRCLE-THIN). Класс дефекта у сборки
+        # свой — путь к ресурсу, потерянный hiddenimport, — и рабочее дерево
+        # его не видит по построению.
+        try:
+            encd = http("POST", f"http://127.0.0.1:{port}/api/encrypt",
+                        payload=SAMPLE_DOCX.read_bytes(),
+                        headers={"X-Filename": "agency_0002.docx",
+                                 "X-Allow-Lossy": "1",
+                                 "Content-Type": "application/octet-stream"},
+                        timeout=180)
+        except urllib.error.HTTPError as e:
+            encd = {"status": "error", "message": f"HTTP {e.code}: {e.read()[:500]}"}
+        ok = encd.get("status") == "ok" and encd.get("session_id") and encd.get("anon_text")
+        report(ok, "шифрование документа Word (.docx)", encd.get("message", ""))
+        anon_docx = encd["anon_text"]
+        sid_docx = encd["session_id"]
+
+        n_docx = len(re.findall(r"\[[A-Z_]+_\d+\]", anon_docx))
+        report(n_docx == EXPECTED_MASKS_DOCX, "масок ровно столько, сколько ждём (.docx)",
+               f"{n_docx} шт., ожидалось {EXPECTED_MASKS_DOCX}")
+
+        leaked_d = [v for v in EXPECTED_VALUES_DOCX if v in anon_docx]
+        report(not leaked_d, "ожидаемые значения исчезли из анонимного текста (.docx)",
+               f"осталось открытым: {leaked_d}" if leaked_d else
+               f"{len(EXPECTED_VALUES_DOCX)} значений")
+
+        still_open = [v for v in LEAKS_IN_DEFAULT_PROFILE if v in anon_docx]
+        note(not still_open, "ФИО внутри имени ИП закрыто набором по умолчанию",
+             f"открыто: {still_open} — известный долг MFIX-PROFILE-IP-PER "
+             "(в наборе по умолчанию ORG выключен, закрывать спан нечем)"
+             if still_open else "")
+
+        decd = http("POST", f"http://127.0.0.1:{port}/api/decrypt",
+                    payload={"session_id": sid_docx, "text": anon_docx})
+        ok = decd.get("status") == "ok" and not decd.get("unresolved")
+        report(ok, "восстановление документа Word", f"unresolved={decd.get('unresolved')}")
+        restored_d = decd.get("restored", "")
+        lost_d = [v for v in BYTE_EXACT_DOCX if v not in restored_d]
+        report(not lost_d, "значения вернулись БАЙТ-В-БАЙТ (.docx)",
+               f"не вернулось: {lost_d}" if lost_d else
+               f"{len(BYTE_EXACT_DOCX)} значений")
 
         print("КРУГ ПРОЙДЕН")
     finally:
