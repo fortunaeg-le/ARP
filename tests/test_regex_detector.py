@@ -175,14 +175,22 @@ class TestDetectRegexChecksumIsFilterOnlyWithoutAnchor:
 class TestDetectRegexPassportAnchor:
     """HANDOFF_2, Пример 2 — паспорт: якорь обязателен."""
 
-    def test_passport_with_anchor_produces_single_entity_including_anchor(self, config_path):
-        """HANDOFF_2, Пример 2: 'паспорт серия 45 12 345678 выдан ОВД' -> один PASSPORT [0:26], якорь включён в спан."""
+    def test_passport_with_anchor_produces_single_entity_without_anchor(self, config_path):
+        """ЭТАП DEBTS, долг 0c-B: якорь ОБЯЗАТЕЛЕН для поиска и ЗАПРЕЩЁН в спане.
+
+        Прежняя редакция этого теста пришпиливала ровно обратное («якорь включён
+        в спан») — она фиксировала сам дефект 0c-B, а не контракт: слово
+        «паспорт» уходило под маску вместе со значением, и на корпусе v1 это
+        стоило 428 сущностей / 3441 символ перебора границ (линия «е» гейта).
+        Контракт перевёрнут по заданию владельца; ослаблением теста это не
+        является — требование «без якоря паспорта нет» ниже осталось прежним.
+        """
         doc = _doc("паспорт серия 45 12 345678 выдан ОВД")
         entities = detect_regex(doc, config_path)
         passport = [e for e in entities if e.entity_type == "PASSPORT"]
         assert len(passport) == 1
-        assert passport[0].original_text == "паспорт серия 45 12 345678"
-        assert (passport[0].start, passport[0].end) == (0, 26)
+        assert passport[0].original_text == "45 12 345678"
+        assert (passport[0].start, passport[0].end) == (14, 26)
 
     def test_random_10_digit_number_without_anchor_produces_no_passport(self, config_path):
         """HANDOFF_2, Пример 2: 'случайное число 4512345678 без якоря' -> ни одного PASSPORT (и ИНН тоже не сходится)."""
