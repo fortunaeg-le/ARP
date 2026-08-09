@@ -371,3 +371,96 @@ def test_lease_0001_kpp_not_leaked_via_kbk(lease_0001_record):
     for e in ents:
         assert e["leak_v2"]["status"] == "none", (
             f"КПП {e['text']!r} замаскирован, но считается утёкшим: {e['leak_v2']}")
+
+
+# =========================================================================== #
+#  ЭТАП METRIC-FIX — РАЗДРОБЛЕННОЕ ЗНАЧЕНИЕ (долг AUD1-LEAK-SUBTHRESHOLD)      #
+# =========================================================================== #
+# Прибор мерил утечку самым длинным непрерывным окном и потому НЕ ВИДЕЛ
+# значения, разорванного вёрсткой на куски короче порога: «704\n-068» открыт
+# целиком, вердикт был «утечки нет». Ниже — обе стороны правила: ловит
+# настоящий разрыв и НЕ ловит совпадение.
+
+
+def test_fragmented_passport_is_seen_as_leak():
+    """Паспортный код «704\n-068» открыт полностью — обе половины подряд."""
+    anon = "код подразделения 704\n-068, именуемый"
+    r = ML.leak_v2_numeric("704068", ML.v2_digit_runs(anon),
+                           anon_runs=ML.v2_digit_runs_pos(anon))
+    assert r["status"] == "full", r
+    assert r["assembled"] == 6
+    assert r["assembled_parts"] == [3, 3]
+
+
+def test_fragmented_kpp_assembles_across_single_char_seam():
+    anon = "К\nПП 20832\n1813\nОГ\nРН"
+    r = ML.leak_v2_numeric("208321813", ML.v2_digit_runs(anon),
+                           anon_runs=ML.v2_digit_runs_pos(anon))
+    assert r["status"] == "full"
+    assert r["assembled"] == 9
+
+
+def test_fragmented_branch_needs_adjacency_not_just_pieces():
+    """ЗЕРКАЛО. Те же куски, но РАЗВЕДЁННЫЕ по документу, — не утечка.
+    Без этого теста правило нельзя отличить от «кричит утечку всегда»:
+    сумма кусков без требования соседства давала +753 ложных на корпусе."""
+    anon = "704 " + ("прочий текст " * 8) + "068"
+    r = ML.leak_v2_numeric("704068", ML.v2_digit_runs(anon),
+                           anon_runs=ML.v2_digit_runs_pos(anon))
+    assert r["status"] == "none", r
+
+
+def test_fragmented_branch_has_a_floor_on_piece_length():
+    """ЗЕРКАЛО. Одиночные цифры не собираются в значение: без пола длины
+    цепочка складывалась из нулей, разбросанных по документу (165 призрачных
+    ACCOUNT в замере)."""
+    # разделитель — БУКВА: пробел и дефис между цифрами склеиваются в один run
+    # (v2_digit_runs), и «1 2 3» было бы непрерывным числом, а не кусками.
+    anon = "1x2x3x4x5x6"
+    r = ML.leak_v2_numeric("123456", ML.v2_digit_runs(anon),
+                           anon_runs=ML.v2_digit_runs_pos(anon))
+    assert r["status"] == "none", r
+    assert ML.FRAG_MIN_LEN >= 2
+
+
+def test_fragmented_branch_does_not_touch_continuous_verdicts():
+    """УЗОСТЬ в малом: значение, решённое непрерывным окном, обязано дать РОВНО
+    ту же запись с anon_runs и без него (полное сличение дампов — отдельно,
+    experiments/stage_metric_fix/narrowness.py)."""
+    core = "40802810445145901597"
+    for anon in (f"счёт {core} в банке", "счёт [account_1] в банке",
+                 "... [kpp_1] 45145901597 pekb ..."):
+        a = ML.leak_v2_numeric(core, ML.v2_digit_runs(anon))
+        b = ML.leak_v2_numeric(core, ML.v2_digit_runs(anon),
+                               anon_runs=ML.v2_digit_runs_pos(anon))
+        assert a == b, anon
+
+
+def test_digit_runs_pos_matches_the_string_field():
+    """Позиционный разбор обязан давать ТЕ ЖЕ группы, что строковое поле:
+    разъехались бы — раздроблённая ветвь мерила бы не то, что непрерывная."""
+    for s in ("4080 2810-4451", "123 abc 456", "К\nПП 20832\n1813",
+              "сумма 893 033,00 руб.", "10.07.1996", "704\n-068"):
+        assert [r[0] for r in ML.v2_digit_runs_pos(s)] == ML.v2_digit_runs(s).split()
+
+
+def test_harness_passes_positions_to_the_metric():
+    """СТОРОЖ ПРОВОДКИ. Раздроблённая ветвь неприменима без anon_runs — если
+    харнесс перестанет их передавать, метрика тихо вернётся к слепоте."""
+    import inspect
+    import run_measurement as RM
+    src = inspect.getsource(RM.process_doc)
+    assert "anon_runs = ML.v2_digit_runs_pos(anon_text)" in src
+    assert "anon_runs=anon_runs" in src
+    assert "anon_runs=anon_runs" in inspect.getsource(RM.leak_v2)
+
+
+def test_strict_line_counts_assembled_length():
+    """Строгий порог (>=8) берёт ОТКРЫТУЮ длину, а не длину непрерывного окна:
+    счёт, открытый двумя кусками, — тяжёлая утечка ровно так же."""
+    hit6, hit8 = ML._leak_v2_hits("KPP", {"status": "full", "window_len": 5,
+                                          "core_len": 9, "assembled": 9})
+    assert hit6 and hit8
+    hit6, hit8 = ML._leak_v2_hits("KPP", {"status": "partial", "window_len": 6,
+                                          "core_len": 9})
+    assert hit6 and not hit8

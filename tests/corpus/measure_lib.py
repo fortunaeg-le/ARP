@@ -459,8 +459,135 @@ def longest_surviving_window(core: str, field: str) -> str:
     return best
 
 
+# =========================================================================== #
+#  ЭТАП METRIC-FIX — РАЗДРОБЛЕННОЕ ЗНАЧЕНИЕ (долг AUD1-LEAK-SUBTHRESHOLD)      #
+# =========================================================================== #
+# ЧЕМ БЫЛ СЛЕП ПРИБОР.  Утечка числового реквизита меряется САМЫМ ДЛИННЫМ
+# выжившим окном ядра.  Значение, разорванное вёрсткой на куски короче мягкого
+# порога (6), получало вердикт «утечки нет» — при том, что открыто целиком:
+#
+#     код подразделения 704\n-068          (паспорт открыт полностью)
+#     КПП 20832\n1813                       (девять цифр подряд, порознь 5 и 4)
+#     БИ\nК 04452\n5700
+#
+# Читателю (в т.ч. LLM) достаточно собрать куски глазами: они стоят ПОДРЯД, их
+# разделяет только шов вёрстки.  Порог 6 задумывался как «узнаваемый хвост» и
+# для ОДНОГО куска остаётся верным; ошибка была в том, что прибор смотрел на
+# куски по отдельности и не видел их совокупности.
+#
+# ПОЧЕМУ НЕ ПРОСТО СУММА ОТКРЫТЫХ КУСКОВ (замер experiments/stage_metric_fix/
+# calib_fragments.py, 5901 числовая эталонная сущность корпуса v1):
+#   пол куска 2 — «утечек» +753, из них 410 ACCOUNT: 20-значное ядро настолько
+#     длинное, что почти любой двух-трёхзначный run документа совпадает с
+#     каким-нибудь его окном.  Это шум, а не утечка;
+#   пол куска 5 — +0: правило вырождается в старое.
+# То есть голая сумма требует такого пола, при котором она уже ничего не ловит.
+#
+# ЧТО ПРИНЯТО — ВОССТАНОВИМОСТЬ.  Значение считается открытым, если его куски
+# дожили ПОДРЯД: соседними цифровыми группами анонимного текста, в порядке ядра,
+# стыкующимися без пропуска (конкатенация — непрерывная подстрока ядра), с
+# зазором между соседями не больше FRAG_GAP_MAX символов.  Это ровно то, что
+# делает читатель, и это не ловится совпадением: чужое число, случайно похожее
+# на кусок ядра, не имеет СОСЕДА, продолжающего ядро дальше.
+#
+# ДВА ЧИСЛА ПРАВИЛА ВЫБРАНЫ ЗАМЕРОМ (experiments/stage_metric_fix/calib_chain.py,
+# сетка пол x зазор по тому же корпусу; «+N» — вхождений, невидимых прибором до
+# правки и видимых после):
+#         зазор<=1  <=2   <=3   <=5   <=10  <=20
+#   пол 2      +33  +41   +41   +41   +41   +41
+#   пол 3       +5  +37   +37   +37   +37   +37
+#   пол 4       +5   +5    +5    +5    +5    +5
+# Пол 1 не рассматривается: без пола цепочка собирается из одиночных нулей,
+# разбросанных по документу («0»,«0»,«0»…) — 165 призрачных ACCOUNT.
+# Пол 2 принят: кусок в 2 цифры встречается в НАСТОЯЩИХ разрывах (формы «2+4» и
+# «4+2», 10 вхождений корпуса), а требование соседства не даёт ему поймать шум.
+# Зазор 3 принят: у всех настоящих случаев зазор 1-2 ('\n', '\n-'), а 3 — ширина
+# самого широкого шва сборки PT-1 (' | ' между ячейками).  Результат на отрезке
+# зазоров 2..20 ОДИН И ТОТ ЖЕ — число не балансирует на пороге.
+#
+# ВСЕ 41 новых случая проверены глазами (experiments/stage_metric_fix/
+# verify_cases.py): каждый — значение, разорванное переносом строки, стоящее в
+# документе одним местом и читаемое целиком.
+FRAG_MIN_LEN = 2
+FRAG_GAP_MAX = 3
+
+
+def v2_digit_runs_pos(s: str):
+    """[(цифровой run, start, end)] в координатах ИСХОДНОГО текста.
+
+    Тот же разбор, что v2_digit_runs (снятие невидимых, свод буквы-на-месте-цифры,
+    склейка пробела/дефиса ВНУТРИ числа), но с позициями: правилу восстановимости
+    нужен зазор между соседними группами, а строковое поле его теряет.
+    Инвариант «список run-ов совпадает с v2_digit_runs» заперт тестом
+    (tests/test_leak_v2.py)."""
+    out = []
+    cur = []
+    start = None
+    end = None
+    for i, ch in enumerate(s):
+        if ord(ch) in _V2_INVIS or _ud.category(ch) == "Cf":
+            continue
+        c = _V2_LETTER2DIGIT.get(ch, ch)
+        if c.isdigit():
+            if start is None:
+                start = i
+            cur.append(c)
+            end = i + 1
+        elif cur and ch in (" ", "-"):
+            continue          # разделитель ВНУТРИ числа — как в v2_digit_runs
+        else:
+            if cur:
+                out.append(("".join(cur), start, end))
+                cur, start, end = [], None, None
+    if cur:
+        out.append(("".join(cur), start, end))
+    return out
+
+
+def assembled_open_value(core: str, anon_runs, gap_max: int = FRAG_GAP_MAX,
+                         min_frag: int = FRAG_MIN_LEN):
+    """Самая длинная цепочка СОСЕДНИХ кусков ядра, дожившая в анонимном тексте.
+
+    Кусок — цифровая группа анонимного текста, целиком являющаяся подстрокой
+    ядра и не короче `min_frag`.  Соседние куски засчитываются вместе, если
+    между ними в тексте не больше `gap_max` символов И их конкатенация — тоже
+    непрерывная подстрока ядра (то есть куски идут в порядке значения и
+    стыкуются без пропуска).
+
+    Возвращает (длина собранного, [куски], [зазоры]).  Обоснование чисел и
+    отвергнутых вариантов правила — в комментарии блока выше."""
+    best = (0, [], [])
+    if not core or not anon_runs:
+        return best
+    starts = [k for k, r in enumerate(anon_runs)
+              if len(r[0]) >= min_frag and r[0] in core]
+    for i in starts:
+        acc = anon_runs[i][0]
+        parts, gaps = [acc], []
+        if len(acc) > best[0]:
+            best = (len(acc), list(parts), list(gaps))
+        j = i + 1
+        while j < len(anon_runs):
+            piece = anon_runs[j][0]
+            if len(piece) < min_frag:
+                break
+            gap = anon_runs[j][1] - anon_runs[j - 1][2]
+            if gap > gap_max:
+                break
+            nxt = acc + piece
+            if nxt not in core:
+                break
+            acc = nxt
+            parts.append(piece)
+            gaps.append(gap)
+            if len(acc) > best[0]:
+                best = (len(acc), list(parts), list(gaps))
+            j += 1
+    return best
+
+
 def leak_v2_numeric(gtext: str, anon_digit_field: str,
-                    strict: int = 8, soft: int = 6):
+                    strict: int = 8, soft: int = 6, anon_runs=None):
     """Частичная утечка числового реквизита.
 
     core = все цифры эталона подряд.  Ищем самое длинное окно core, дожившее в
@@ -471,23 +598,43 @@ def leak_v2_numeric(gtext: str, anon_digit_field: str,
       window_len: длина этого окна
       threshold: строгий порог, если окно прошло его; иначе мягкий, если прошло
                  мягкий; иначе None
-      core_len: длина ядра (чтобы отличать «короткое ядро» при аудите)."""
+      core_len: длина ядра (чтобы отличать «короткое ядро» при аудите).
+
+    ЭТАП METRIC-FIX.  `anon_runs` (см. v2_digit_runs_pos) включает вторую,
+    РАЗДРОБЛЕННУЮ ветвь: если непрерывного окна не хватило, значение всё равно
+    считается утёкшим, когда его куски дожили ПОДРЯД (assembled_open_value).
+    Такая запись получает ДОПОЛНИТЕЛЬНЫЕ поля `assembled`/`assembled_parts` —
+    и получает их ТОЛЬКО она: записи, решённые непрерывным окном, остаются
+    побайтно теми же, что до правки, и узость доказывается сличением дампов, а
+    не рассуждением.  Без `anon_runs` ветвь неприменима (старое поведение);
+    вызов из харнесса обязан её передавать, это заперто тестом."""
     core = v2_core_digits(gtext)
     res = {"status": "none", "fragments": [], "window_len": 0,
            "threshold": None, "core_len": len(core)}
     if not core:
         return res
-    best = longest_surviving_window(core, anon_digit_field)
-    if not best:
-        return res
     thr_strict = min(strict, len(core))
     thr_soft = min(soft, len(core))
-    if len(best) < thr_soft:
-        return res  # окно есть, но короче мягкого порога — не считаем утечкой
-    res["fragments"] = [best]
-    res["window_len"] = len(best)
-    res["threshold"] = thr_strict if len(best) >= thr_strict else thr_soft
-    res["status"] = "full" if best == core else "partial"
+    best = longest_surviving_window(core, anon_digit_field)
+    if best and len(best) >= thr_soft:
+        res["fragments"] = [best]
+        res["window_len"] = len(best)
+        res["threshold"] = thr_strict if len(best) >= thr_strict else thr_soft
+        res["status"] = "full" if best == core else "partial"
+        return res
+    # непрерывного окна не хватило — пробуем собрать значение из соседних кусков
+    if anon_runs is None:
+        return res
+    total, parts, gaps = assembled_open_value(core, anon_runs)
+    if total < thr_soft:
+        return res
+    res["fragments"] = list(parts)
+    res["window_len"] = max((len(p) for p in parts), default=0)
+    res["threshold"] = thr_soft
+    res["status"] = "full" if total == len(core) else "partial"
+    res["assembled"] = total
+    res["assembled_parts"] = [len(p) for p in parts]
+    res["assembled_gaps"] = list(gaps)
     return res
 
 
@@ -1069,7 +1216,14 @@ def _leak_v2_hits(entity_type: str, v2: dict):
     core_len = v2.get("core_len")
     if window_len is not None and core_len is not None:
         hit_soft = status != "none"
-        hit_strict = hit_soft and window_len >= min(8, core_len)
+        # ЭТАП METRIC-FIX: строгий порог берёт ОТКРЫТУЮ ДЛИНУ, а не длину
+        # непрерывного окна.  У записи, решённой раздроблённой ветвью, окна нет
+        # по построению (иначе сработала бы первая ветвь), и literal window_len
+        # означал бы «раздроблённое значение не бывает тяжёлой утечкой» — а
+        # счёт, открытый двумя кусками по десять цифр, тяжёлый ровно так же.
+        # У записей БЕЗ поля assembled выражение тождественно прежнему.
+        open_len = v2.get("assembled") or window_len
+        hit_strict = hit_soft and open_len >= min(8, core_len)
         return hit_soft, hit_strict
     hit = status != "none"
     return hit, hit

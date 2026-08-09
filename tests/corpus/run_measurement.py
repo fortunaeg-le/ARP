@@ -182,7 +182,8 @@ def leak_pieces(gtype, gtext, anon_norm, anon_glue):
     return sorted(set(pieces))
 
 
-def leak_v2(gtype, gtext, anon_norm_v2, anon_digit_field, anon_date_field):
+def leak_v2(gtype, gtext, anon_norm_v2, anon_digit_field, anon_date_field,
+            anon_runs=None):
     """Метрика ЧАСТИЧНОЙ утечки (этап 0b).  Диспетчер по типу сущности.
     Возвращает dict {status: none|partial|full, fragments: [...], ...}.
     Считается ПАРАЛЛЕЛЬНО со старой (v1); v1 не удаляется — нужна для тренда.
@@ -201,7 +202,10 @@ def leak_v2(gtype, gtext, anon_norm_v2, anon_digit_field, anon_date_field):
     if gtype == "BIRTHDATE":
         return ML.leak_v2_birthdate(gtext, anon_date_field)
     if gtype in V2_NUMERIC_TYPES:
-        return ML.leak_v2_numeric(gtext, anon_digit_field, strict=8, soft=6)
+        # ЭТАП METRIC-FIX: anon_runs включает раздроблённую ветвь (значение,
+        # разорванное вёрсткой на куски короче порога, но дожившее ПОДРЯД).
+        return ML.leak_v2_numeric(gtext, anon_digit_field, strict=8, soft=6,
+                                  anon_runs=anon_runs)
     if gtype in ("PER", "ORG"):
         return ML.leak_v2_per(gtext, anon_norm_v2)
     if gtype == "ADDRESS":
@@ -327,6 +331,10 @@ def process_doc(d, allow_lossy=ALLOW_LOSSY):
     anon_digit_field = ML.v2_digit_runs(anon_text)
     # поле для ДАТ: точка/слэш/перенос между цифрами склеены (см. v2_date_field)
     anon_date_field = ML.v2_date_field(anon_text)
+    # ЭТАП METRIC-FIX: те же цифровые группы, но с ПОЗИЦИЯМИ — правилу
+    # восстановимости нужен зазор между соседями, строковое поле его теряет.
+    # Считается один раз на документ, как и остальные поля.
+    anon_runs = ML.v2_digit_runs_pos(anon_text)
 
     # ---- границы по НАПРАВЛЕНИЮ ошибки (линия «е» гейта, этап GATE-2) ----
     # Считается ОДИН раз на документ, по типам: недобор (символы эталона, не
@@ -384,7 +392,8 @@ def process_doc(d, allow_lossy=ALLOW_LOSSY):
         in_body = (gs >= body_start and ge <= body_end)
         # residual leak — ДВЕ метрики параллельно (v1 бинарная + v2 частичная)
         pieces = leak_pieces(gt, e["text"], anon_norm, anon_glue)
-        v2 = leak_v2(gt, e["text"], anon_norm_v2, anon_digit_field, anon_date_field)
+        v2 = leak_v2(gt, e["text"], anon_norm_v2, anon_digit_field, anon_date_field,
+                     anon_runs=anon_runs)
         ent_records.append({
             "type": gt, "category": e.get("category", ""), "trick": e.get("trick"),
             "checksum": e.get("checksum"), "text": e["text"],
