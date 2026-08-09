@@ -237,6 +237,15 @@ class TestScanRuns:
         drops = runs[0][0]
         assert drops == ["40 04 \n123456".index("\n")]
 
+    def test_double_newline_is_structural(self):
+        """'\\n\\n' — пустая строка, граница абзацев по разметке: не лечится."""
+        assert layout_repair._scan_runs("titova@rom\n\nashka.ru") == []
+
+    def test_underscore_not_value_edge(self):
+        """Линия подписи «____» за переносом не притягивается к значению."""
+        runs = layout_repair._scan_runs("x.ru\n_____")
+        assert runs == []
+
     def test_midword_break_person_ok(self):
         runs = layout_repair._scan_runs("Кузнецо\nва А. М.")
         (_drops, klass, left, right) = runs[0]

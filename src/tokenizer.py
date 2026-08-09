@@ -661,117 +661,6 @@ def _detect_boundary_entities(
                 w["window"], w["tail_end"], w["head_start"], config_path):
             per_win[k].append((ls, le, etype, "regex", 1.0))
 
-    # 3a''. ЭТАП LAYOUT — РЕМОНТ СТЫКА: значение, разорванное границей
-    # сегментов НЕ по границе цифровых групп (это зона A6 выше), а произвольно:
-    # «makarov@gma\nil.com», «Кузнецо\nва А. М.», «+7 (49\n9) …». Шовный '\n'
-    # ВЫБРАСЫВАЕТСЯ из текста окна, по залеченному тексту гоняются штатные
-    # детекторы; принимается ТОЛЬКО спан, пересекающий точку стыка, и только
-    # через стражи layout_repair (поглощение/«ремонт, а не расползание»):
-    #   * regex-типы — на любом стыке: различение «мягкий разрыв vs граница»
-    #     несут их собственный якорь/КС/фиксированная форма, а стопку двух
-    #     целых значений отсекает страж (обе половины целы порознь = дубль);
-    #   * PERSON (структурный движок) — только если стык рвёт СЛОВО со
-    #     строчным продолжением (заглавная справа = новый структурный блок).
-    # Эмит парой Entity_A/Entity_B делает общий шаг 4 (контракт B3,
-    # обратимость доказана round-trip-тестами).
-    import layout_repair as _LR
-    if _LR.ENABLED:
-        seg_spans_all: dict[str, list[tuple[int, int, str]]] = {}
-        for e in (segment_entities or ()):
-            seg_spans_all.setdefault(e.segment_id, []).append(
-                (e.start, e.end, e.entity_type))
-
-        def _lr_guard_ok(w, ls: int, le_w: int, etype: str) -> bool:
-            """Стражи приёма залеченного спана окна (координаты ОКНА [ls, le_w)).
-
-            Пересечение половины с посегментной сущностью ЧУЖОГО типа или
-            частичное пересечение со своей — отказ (направление ошибки). Обе
-            половины, целиком накрытые своими же посегментными сущностями, —
-            стопка двух целых значений либо дубль, не ремонт (урок A2/S3)."""
-            halves = [
-                (w["seg_a"].id, w["tail_off"] + ls, len(w["text_a"])),
-                (w["seg_b"].id, 0, le_w - w["head_start"]),
-            ]
-            covered = 0
-            for seg_id, hs, he in halves:
-                for ps, pe, ptype in seg_spans_all.get(seg_id, ()):
-                    if max(hs, ps) >= min(he, pe):
-                        continue
-                    if ptype != etype:
-                        return False
-                    if ps <= hs and he <= pe:
-                        covered += 1
-                        break
-                    if not (hs <= ps and pe <= he):
-                        return False
-            return covered < 2
-
-        rep_idx: list[int] = []
-        rep_texts: list[str] = []
-        person_rows: list[int] = []
-        for k, w in enumerate(wins):
-            if w["tail_end"] == w["head_start"]:
-                continue   # соседние ячейки одной строки: шва в тексте окна нет
-            _rx_ok, person_ok = _LR.seam_eligibility(
-                w["window"], w["tail_end"], w["head_start"])
-            rep_idx.append(k)
-            rep_texts.append(w["window"][:w["tail_end"]]
-                             + w["window"][w["head_start"]:])
-            if person_ok:
-                person_rows.append(len(rep_texts) - 1)
-
-        if rep_texts:
-            starts2: list[int] = []
-            pos2 = 0
-            for rt in rep_texts:
-                starts2.append(pos2)
-                pos2 += len(rt) + len(_BATCH_SEP)
-            blob2_doc = SourceDocument(
-                segments=[TextSegment(id="__lrbatch__",
-                                      text=_BATCH_SEP.join(rep_texts),
-                                      source_type="txt_line", metadata={})],
-                source_format=doc.source_format, source_path=doc.source_path,
-            )
-            for e in detect_regex(blob2_doc, config_path):
-                m = bisect.bisect_right(starts2, e.start) - 1
-                ls, le = e.start - starts2[m], e.end - starts2[m]
-                if le > len(rep_texts[m]):
-                    continue   # спан пересёк разделитель блоба — не бывает
-                k = rep_idx[m]
-                w = wins[k]
-                j = w["tail_end"]
-                if not (ls < j and le > j):
-                    continue   # стык не пересечён — дубль посегментной детекции
-                le_w = le + (w["head_start"] - w["tail_end"])
-                if _lr_guard_ok(w, ls, le_w, e.entity_type):
-                    per_win[k].append((ls, le_w, e.entity_type, "regex", 1.0))
-
-        if person_rows:
-            import anchor_registry as _ARL
-            row_by_id = {f"__lrw{m}__": m for m in person_rows}
-            p_doc = SourceDocument(
-                segments=[TextSegment(id=f"__lrw{m}__", text=rep_texts[m],
-                                      source_type="txt_line", metadata={})
-                          for m in person_rows],
-                source_format=doc.source_format, source_path=doc.source_path,
-            )
-            try:
-                p_entities = _ARL.detect_structural(p_doc, regex_entities=[])
-            except Exception:
-                p_entities = []
-            for e in p_entities:
-                if e.entity_type != "PERSON":
-                    continue
-                m = row_by_id[e.segment_id]
-                k = rep_idx[m]
-                w = wins[k]
-                j = w["tail_end"]
-                if not (e.start < j and e.end > j):
-                    continue
-                le_w = e.end + (w["head_start"] - w["tail_end"])
-                if _lr_guard_ok(w, e.start, le_w, "PERSON"):
-                    per_win[k].append((e.start, le_w, "PERSON", "ner", 1.0))
-
     # 3c. ЭТАП FIX-2 — ЯКОРЬ ЧЕРЕЗ ГРАНИЦУ ЯЧЕЙКИ (долг DOG-ANCHOR-SPLIT).
     #
     # ЧТО ЭТО ЗА КЛАСС. A6 закрывал разрыв ЗНАЧЕНИЯ границей сегментов; здесь
@@ -956,6 +845,116 @@ def _detect_boundary_entities(
                 if not _org_pair_is_a_repair(w, ws_, we_, org_seg_spans):
                     continue
                 per_win[k].append((ws_, we_, "ORG", "ner", 1.0))
+
+    # 3a''. ЭТАП LAYOUT — РЕМОНТ СТЫКА: значение, разорванное границей
+    # сегментов НЕ по границе цифровых групп (это зона A6 выше), а произвольно:
+    # «makarov@gma\nil.com», «Кузнецо\nва А. М.», «+7 (49\n9) …». Шовный '\n'
+    # ВЫБРАСЫВАЕТСЯ из текста окна, по залеченному тексту гоняются штатные
+    # детекторы; принимается ТОЛЬКО спан, пересекающий точку стыка, и только
+    # через стражи layout_repair (поглощение/«ремонт, а не расползание»):
+    #   * regex-типы — на любом стыке: различение «мягкий разрыв vs граница»
+    #     несут их собственный якорь/КС/фиксированная форма, а стопку двух
+    #     целых значений отсекает страж (обе половины целы порознь = дубль);
+    #   * PERSON (структурный движок) — только если стык рвёт СЛОВО со
+    #     строчным продолжением (заглавная справа = новый структурный блок).
+    # Эмит парой Entity_A/Entity_B делает общий шаг 4 (контракт B3,
+    # обратимость доказана round-trip-тестами).
+    import layout_repair as _LR
+    if _LR.ENABLED:
+        seg_spans_all: dict[str, list[tuple[int, int, str]]] = {}
+        for e in (segment_entities or ()):
+            seg_spans_all.setdefault(e.segment_id, []).append(
+                (e.start, e.end, e.entity_type))
+
+        def _lr_guard_ok(w, ls: int, le_w: int, etype: str) -> bool:
+            """Стражи приёма залеченного спана окна (координаты ОКНА [ls, le_w)).
+
+            Regex-типы: ЛЮБОЕ пересечение половины с посегментной сущностью —
+            отказ. Матч паттерна — целое значение: стопка двух целых значений
+            («телефоны в столбик») уже найдена посегментно и сшивать нечего, а
+            «расширение» найденного целого — захват соседней этикетки (класс
+            перебора границ, вскрытый подвыборкой). PERSON: частичная находка
+            NER — норма, допустимо полное накрытие своей же сущности; чужой тип
+            или частичное пересечение — отказ (урок A2/S3)."""
+            halves = [
+                (w["seg_a"].id, w["tail_off"] + ls, len(w["text_a"])),
+                (w["seg_b"].id, 0, le_w - w["head_start"]),
+            ]
+            for seg_id, hs, he in halves:
+                for ps, pe, ptype in seg_spans_all.get(seg_id, ()):
+                    if max(hs, ps) >= min(he, pe):
+                        continue
+                    if etype != "PERSON" or ptype != etype:
+                        return False
+                    if not (hs <= ps and pe <= he):
+                        return False
+            return True
+
+        rep_idx: list[int] = []
+        rep_texts: list[str] = []
+        person_rows: list[int] = []
+        for k, w in enumerate(wins):
+            if w["tail_end"] == w["head_start"]:
+                continue   # соседние ячейки одной строки: шва в тексте окна нет
+            _rx_ok, person_ok = _LR.seam_eligibility(
+                w["window"], w["tail_end"], w["head_start"])
+            rep_idx.append(k)
+            rep_texts.append(w["window"][:w["tail_end"]]
+                             + w["window"][w["head_start"]:])
+            if person_ok:
+                person_rows.append(len(rep_texts) - 1)
+
+        if rep_texts:
+            starts2: list[int] = []
+            pos2 = 0
+            for rt in rep_texts:
+                starts2.append(pos2)
+                pos2 += len(rt) + len(_BATCH_SEP)
+            blob2_doc = SourceDocument(
+                segments=[TextSegment(id="__lrbatch__",
+                                      text=_BATCH_SEP.join(rep_texts),
+                                      source_type="txt_line", metadata={})],
+                source_format=doc.source_format, source_path=doc.source_path,
+            )
+            for e in detect_regex(blob2_doc, config_path):
+                m = bisect.bisect_right(starts2, e.start) - 1
+                ls, le = e.start - starts2[m], e.end - starts2[m]
+                if le > len(rep_texts[m]):
+                    continue   # спан пересёк разделитель блоба — не бывает
+                k = rep_idx[m]
+                w = wins[k]
+                j = w["tail_end"]
+                if not (ls < j and le > j):
+                    continue   # стык не пересечён — дубль посегментной детекции
+                le_w = le + (w["head_start"] - w["tail_end"])
+                if _lr_guard_ok(w, ls, le_w, e.entity_type):
+                    per_win[k].append((ls, le_w, e.entity_type, "regex", 1.0))
+
+        if person_rows:
+            import anchor_registry as _ARL
+            row_by_id = {f"__lrw{m}__": m for m in person_rows}
+            p_doc = SourceDocument(
+                segments=[TextSegment(id=f"__lrw{m}__", text=rep_texts[m],
+                                      source_type="txt_line", metadata={})
+                          for m in person_rows],
+                source_format=doc.source_format, source_path=doc.source_path,
+            )
+            try:
+                p_entities = _ARL.detect_structural(p_doc, regex_entities=[])
+            except Exception:
+                p_entities = []
+            for e in p_entities:
+                if e.entity_type != "PERSON":
+                    continue
+                m = row_by_id[e.segment_id]
+                k = rep_idx[m]
+                w = wins[k]
+                j = w["tail_end"]
+                if not (e.start < j and e.end > j):
+                    continue
+                le_w = e.end + (w["head_start"] - w["tail_end"])
+                if _lr_guard_ok(w, e.start, le_w, "PERSON"):
+                    per_win[k].append((e.start, le_w, "PERSON", "ner", 1.0))
 
     # 4. Пересекающие стык спаны -> пары Entity_A/Entity_B (та же логика, что и раньше).
     extra: list[Entity] = []

@@ -45,6 +45,7 @@ normalize_for_detection), и второй проход штатных детек
 segment.text по карте индексов (spans мультиспана отображаются той же картой).
 """
 
+import os
 import unicodedata
 import uuid
 
@@ -52,14 +53,18 @@ from models import Entity, SourceDocument, TextSegment
 from config_cache import load_yaml_cached
 from normalizer import _SPACE_LIKE
 
-#: выключатель для стража монотонности (tests monkeypatch); в бою всегда True
-ENABLED = True
+#: выключатель для стража монотонности (tests monkeypatch) и разведочных
+#: замеров до/после (переменная окружения доходит до воркеров Pool, в отличие
+#: от monkeypatch). В бою переменная не выставляется — всегда True.
+ENABLED = os.environ.get("SHIFRATOR_LAYOUT_REPAIR", "1") != "0"
 
 #: метка временного сегмента ремонтного вида — защита от рекурсии repair_pass
 _REPAIR_FLAG = "_layout_repair"
 
-#: символы «края значения» для regex-класса разрыва (email/телефон/реквизит)
-_WORDLIKE_EXT = frozenset("@.-_")
+#: символы «края значения» для regex-класса разрыва (email/телефон/реквизит).
+#: '_' НАМЕРЕННО не входит: подчёркивание рядом с разрывом — это линия подписи
+#: «____», и '_' внутри \w дотягивал домен email до неё (вскрыто подвыборкой).
+_WORDLIKE_EXT = frozenset("@.-")
 
 
 def _is_cf(ch: str) -> bool:
@@ -106,6 +111,12 @@ def _scan_runs(base: str) -> list[tuple[list[int], str, str, str]]:
         # типографика границы слов, а не разрыв внутри токена.
         if has_space and all(base[p] != "\n" for p in drops):
             drops = []
+        # ДВА и более переносов в прогоне — пустая строка, настоящая граница
+        # абзацев по самой разметке. Не лечится никогда: мягкий разрыв внутри
+        # значения — это ОДИН перенос (вскрыто подвыборкой: '\n\n' перед
+        # линией подписи склеивал домен email с «____»).
+        if sum(1 for p in drops if base[p] == "\n") >= 2:
+            drops = []
         if drops:
             left = base[i - 1] if i > 0 else ""
             right = base[j] if j < n else ""
@@ -143,11 +154,23 @@ def _covers(spans, p0: int, p1: int) -> bool:
     return any(s <= p0 and p1 < e for s, e in spans)
 
 
-def _absorb_ok(rs: int, re_: int, etype: str, primary_here) -> bool:
-    """Страж поглощения (приём 3 docstring): всякое пересечение с основной
-    сущностью — только полное накрытие сущности ТОГО ЖЕ типа."""
+def _absorb_ok(rs: int, re_: int, etype: str, primary_here,
+               allow_absorb: bool) -> bool:
+    """Страж поглощения (приём 3 docstring).
+
+    PERSON (allow_absorb=True): пересечение с основной сущностью допустимо
+    только как полное накрытие сущности ТОГО ЖЕ типа — частичная находка NER
+    расширяется до целого значения, это норма механизма.
+
+    Regex-типы (allow_absorb=False): ЛЮБОЕ пересечение — отказ. Матч паттерна —
+    всегда ЦЕЛОЕ значение; если по одну сторону разрыва значение уже найдено
+    целиком, разрыв не внутри значения, а между значением и соседним словом, и
+    «расширение» — это захват этикетки («Почта\\nvolkov@…» → EMAIL забирал
+    «Почта»: класс перебора границ, вскрытый подвыборкой)."""
     for ps, pe, ptype in primary_here:
         if max(rs, ps) < min(re_, pe):
+            if not allow_absorb:
+                return False
             if ptype != etype or not (rs <= ps and pe <= re_) or (ps == rs and pe == re_):
                 return False
     return True
@@ -230,7 +253,8 @@ def repair_pass(doc: SourceDocument, config_path: str,
                     continue
             elif e.detector != "regex" or e.entity_type not in maskable:
                 continue   # ORG/ADDRESS/отрицательные классы — не через ремонт
-            if not _absorb_ok(rs, re_, e.entity_type, prim_here):
+            if not _absorb_ok(rs, re_, e.entity_type, prim_here,
+                              allow_absorb=(e.entity_type == "PERSON")):
                 continue
             spans = None
             if e.spans:
