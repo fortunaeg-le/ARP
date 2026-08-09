@@ -15,13 +15,15 @@
      "s": "№ "
     },
     {
-     "n": {
+     "e": {
       "axes": {
        "формат": "чисто числовой (2/17, 27/16)"
       },
+      "cat": "canonical",
       "form": "docnum|формат=чисто числовой (2/17, 27/16)",
-      "type": "DOCNUM",
-      "why": "номер договора — не ПДн"
+      "id": "services_0002-e1",
+      "note": "переклассифицирован из негатива (этап MARKUP-V2): номер договора маскируется",
+      "type": "DOCNUM"
      },
      "s": "4/11"
     }
@@ -70,7 +72,7 @@
     {
      "e": {
       "cat": "canonical",
-      "id": "services_0002-e1",
+      "id": "services_0002-e2",
       "type": "PER"
      },
      "s": "Ершова Ольга Егоровна"
@@ -84,7 +86,7 @@
     {
      "e": {
       "cat": "ugly",
-      "id": "services_0002-e2",
+      "id": "services_0002-e3",
       "note": "серия+номер, стиль записи из PASSPORT_STYLES",
       "type": "PASSPORT"
      },
@@ -111,7 +113,7 @@
     {
      "e": {
       "cat": "ugly",
-      "id": "services_0002-e3",
+      "id": "services_0002-e4",
       "note": "код подразделения, стиль записи из DEPTCODE_STYLES",
       "type": "PASSPORT"
      },
@@ -126,7 +128,7 @@
     {
      "e": {
       "cat": "canonical",
-      "id": "services_0002-e4",
+      "id": "services_0002-e5",
       "type": "PER"
      },
      "s": "Морозова Вера Ивановна"
@@ -140,7 +142,7 @@
     {
      "e": {
       "cat": "ugly",
-      "id": "services_0002-e5",
+      "id": "services_0002-e6",
       "note": "серия+номер, стиль записи из PASSPORT_STYLES",
       "type": "PASSPORT"
      },
@@ -167,7 +169,7 @@
     {
      "e": {
       "cat": "ugly",
-      "id": "services_0002-e6",
+      "id": "services_0002-e7",
       "note": "код подразделения, стиль записи из DEPTCODE_STYLES",
       "type": "PASSPORT"
      },
@@ -180,13 +182,15 @@
      "s": ", с другой стороны, совместно именуемые «Стороны», заключили настоящий Договор № "
     },
     {
-     "n": {
+     "e": {
       "axes": {
        "формат": "17595/001-сс"
       },
+      "cat": "canonical",
       "form": "docnum|формат=17595/001-сс",
-      "type": "DOCNUM",
-      "why": "номер договора — не ПДн"
+      "id": "services_0002-e8",
+      "note": "переклассифицирован из негатива (этап MARKUP-V2): номер договора маскируется",
+      "type": "DOCNUM"
      },
      "s": "91931/693-сс"
     },
@@ -250,7 +254,7 @@
       },
       "cat": "canonical",
       "form": "term|вместо срока — дата=не позднее 01.11.2025",
-      "id": "services_0002-e7",
+      "id": "services_0002-e9",
       "note": "срок задан КОНКРЕТНОЙ ДАТОЙ, а не длительностью",
       "type": "TERM"
      },
@@ -476,7 +480,7 @@
       },
       "cat": "canonical",
       "form": "money|копейки=нет|валюта=рублей|пропись=вместо цифр|НДС=в т.ч. НДС 18%|заполненность=значение",
-      "id": "services_0002-e8",
+      "id": "services_0002-e10",
       "note": "сумма",
       "type": "MONEY"
      },
@@ -492,7 +496,7 @@
       },
       "cat": "canonical",
       "form": "percent|запись=15%",
-      "id": "services_0002-e9",
+      "id": "services_0002-e11",
       "note": "ставка НДС",
       "type": "PERCENT"
      },
@@ -519,7 +523,7 @@
       },
       "cat": "canonical",
       "form": "percent|привязка=от стоимости неоплаченных работ|ограничение=нет|дробь ставки=1/150",
-      "id": "services_0002-e10",
+      "id": "services_0002-e12",
       "note": "процент",
       "type": "PERCENT"
      },
@@ -547,7 +551,7 @@
       },
       "cat": "canonical",
       "form": "term|запись числа=30 (Тридцати)|вид дней=месяцев|отправная точка=с момента подписания акта|вместо срока — дата=нет",
-      "id": "services_0002-e11",
+      "id": "services_0002-e13",
       "note": "срок длительностью",
       "type": "TERM"
      },
@@ -749,7 +753,7 @@
       },
       "cat": "canonical",
       "form": "money|разделитель разрядов=неразрывный пробел|копейки=00 копеек|валюта=руб.|пропись=нет|НДС=НДС не облагается|заполненность=значение",
-      "id": "services_0002-e12",
+      "id": "services_0002-e14",
       "note": "сумма",
       "type": "MONEY"
      },
@@ -1158,7 +1162,7 @@
     {
      "e": {
       "cat": "canonical",
-      "id": "services_0002-e13",
+      "id": "services_0002-e15",
       "note": "стиль адреса: canonical",
       "type": "ADDRESS"
      },
@@ -1179,7 +1183,7 @@
     {
      "e": {
       "cat": "canonical",
-      "id": "services_0002-e14",
+      "id": "services_0002-e16",
       "note": "ФИО в дательном падеже",
       "type": "PER"
      },
@@ -1191,7 +1195,7 @@
     {
      "e": {
       "cat": "canonical",
-      "id": "services_0002-e15",
+      "id": "services_0002-e17",
       "note": "формат: canonical",
       "type": "PHONE"
      },
@@ -1219,7 +1223,7 @@
       },
       "cat": "canonical",
       "form": "term|запись числа=10|вид дней=не указан|отправная точка=с момента поступления денежных средств на расчетный счет|вместо срока — дата=нет",
-      "id": "services_0002-e16",
+      "id": "services_0002-e18",
       "note": "срок длительностью",
       "type": "TERM"
      },
@@ -1467,7 +1471,7 @@
       },
       "cat": "canonical",
       "form": "percent|привязка=от общей суммы счета|ограничение=но не более 20% от цены договора|дробь ставки=1/150",
-      "id": "services_0002-e17",
+      "id": "services_0002-e19",
       "note": "процент",
       "type": "PERCENT"
      },
@@ -1487,7 +1491,7 @@
       },
       "cat": "canonical",
       "form": "percent|запись=15%|пропись=нет|привязка=от цены Договора|ограничение=нет|дробь ставки=нет",
-      "id": "services_0002-e18",
+      "id": "services_0002-e20",
       "note": "потолок ответственности",
       "type": "PERCENT"
      },
@@ -1507,7 +1511,7 @@
       },
       "cat": "canonical",
       "form": "percent|запись=0,1 процента|пропись=(одной десятой) род.|привязка=за каждый день просрочки|ограничение=нет|дробь ставки=нет",
-      "id": "services_0002-e19",
+      "id": "services_0002-e21",
       "note": "процент",
       "type": "PERCENT"
      },
@@ -1550,7 +1554,7 @@
       },
       "cat": "canonical",
       "form": "term|запись числа=трех|вид дней=календарных|отправная точка=с момента заключения контракта|вместо срока — дата=нет",
-      "id": "services_0002-e20",
+      "id": "services_0002-e22",
       "note": "срок длительностью",
       "type": "TERM"
      },
@@ -1581,7 +1585,7 @@
       },
       "cat": "canonical",
       "form": "term|запись числа=30 (Тридцати)|вид дней=не указан|отправная точка=с момента подписания акта|вместо срока — дата=нет",
-      "id": "services_0002-e21",
+      "id": "services_0002-e23",
       "note": "срок длительностью",
       "type": "TERM"
      },
@@ -1849,7 +1853,7 @@
       },
       "cat": "adversarial",
       "form": "percent|привязка=от цены Договора|ограничение=нет|дробь ставки=1/130",
-      "id": "services_0002-e22",
+      "id": "services_0002-e24",
       "note": "число разорвано форматированием: половина цифр в одном ране, половина в другом",
       "trick": "format_split",
       "type": "PERCENT"
@@ -1876,7 +1880,7 @@
       },
       "cat": "adversarial",
       "form": "term|вместо срока — дата=не позднее 01.11.2025",
-      "id": "services_0002-e23",
+      "id": "services_0002-e25",
       "note": "число разорвано форматированием: половина цифр в одном ране, половина в другом",
       "trick": "format_split",
       "type": "TERM"
@@ -1897,14 +1901,16 @@
     },
     {
      "bs": 5,
-     "n": {
+     "e": {
       "axes": {
        "формат": "2/2025-П"
       },
+      "cat": "adversarial",
       "form": "docnum|формат=2/2025-П",
+      "id": "services_0002-e26",
+      "note": "число разорвано форматированием: половина цифр в одном ране, половина в другом",
       "trick": "format_split",
-      "type": "DOCNUM",
-      "why": "номер договора — не ПДн"
+      "type": "DOCNUM"
      },
      "s": "99/2025-С"
     },
@@ -1932,7 +1938,7 @@
       },
       "cat": "adversarial",
       "form": "money|разделитель разрядов=пробел|копейки=0 коп.|валюта=рублей|пропись=(Двух миллионов) род.|НДС=нет|заполненность=значение",
-      "id": "services_0002-e24",
+      "id": "services_0002-e27",
       "note": "пробелы внутри цифр",
       "trick": "digit_spaces",
       "type": "MONEY"
@@ -1968,7 +1974,7 @@
     {
      "e": {
       "cat": "canonical",
-      "id": "services_0002-e25",
+      "id": "services_0002-e28",
       "note": "фабричный тип: пример из файла-описания владельца",
       "type": "CONTRACT_NO"
      },
@@ -2009,7 +2015,7 @@
     {
      "e": {
       "cat": "canonical",
-      "id": "services_0002-e26",
+      "id": "services_0002-e29",
       "note": "фабричный тип: пример из файла-описания владельца",
       "type": "REG_ID"
      },
@@ -2050,7 +2056,7 @@
     {
      "e": {
       "cat": "canonical",
-      "id": "services_0002-e27",
+      "id": "services_0002-e30",
       "note": "фабричный тип: пример из файла-описания владельца",
       "type": "REG_NUMBER"
      },
@@ -2091,7 +2097,7 @@
     {
      "e": {
       "cat": "canonical",
-      "id": "services_0002-e28",
+      "id": "services_0002-e31",
       "note": "фабричный тип: пример из файла-описания владельца",
       "type": "SHARE_PCT"
      },
@@ -2162,7 +2168,7 @@
          {
           "e": {
            "cat": "canonical",
-           "id": "services_0002-e29",
+           "id": "services_0002-e32",
            "type": "PER"
           },
           "s": "Ершова Ольга Егоровна"
@@ -2179,7 +2185,7 @@
          {
           "e": {
            "cat": "canonical",
-           "id": "services_0002-e30",
+           "id": "services_0002-e33",
            "note": "стиль записи из BIRTHDATE_STYLES",
            "type": "BIRTHDATE"
           },
@@ -2197,7 +2203,7 @@
          {
           "e": {
            "cat": "canonical",
-           "id": "services_0002-e31",
+           "id": "services_0002-e34",
            "note": "стиль адреса: canonical",
            "type": "ADDRESS"
           },
@@ -2215,7 +2221,7 @@
          {
           "e": {
            "cat": "canonical",
-           "id": "services_0002-e32",
+           "id": "services_0002-e35",
            "note": "серия+номер, стиль записи из PASSPORT_STYLES",
            "type": "PASSPORT"
           },
@@ -2230,7 +2236,7 @@
          {
           "e": {
            "cat": "ugly",
-           "id": "services_0002-e33",
+           "id": "services_0002-e36",
            "note": "код подразделения, стиль записи из DEPTCODE_STYLES",
            "type": "PASSPORT"
           },
@@ -2249,7 +2255,7 @@
           "e": {
            "cat": "canonical",
            "checksum": "valid",
-           "id": "services_0002-e34",
+           "id": "services_0002-e37",
            "note": "стиль записи из SNILS_STYLES",
            "type": "SNILS"
           },
@@ -2262,7 +2268,7 @@
           "e": {
            "cat": "ugly",
            "checksum": "valid",
-           "id": "services_0002-e35",
+           "id": "services_0002-e38",
            "note": "ИНН физлица (12 знаков)",
            "type": "INN"
           },
@@ -2280,7 +2286,7 @@
          {
           "e": {
            "cat": "canonical",
-           "id": "services_0002-e36",
+           "id": "services_0002-e39",
            "note": "формат: canonical",
            "type": "PHONE"
           },
@@ -2298,7 +2304,7 @@
          {
           "e": {
            "cat": "canonical",
-           "id": "services_0002-e37",
+           "id": "services_0002-e40",
            "type": "EMAIL"
           },
           "s": "ershova@sibtrans.ru"
@@ -2320,7 +2326,7 @@
          {
           "e": {
            "cat": "ugly",
-           "id": "services_0002-e38",
+           "id": "services_0002-e41",
            "note": "фамилия + инициалы",
            "type": "PER"
           },
@@ -2348,7 +2354,7 @@
          {
           "e": {
            "cat": "canonical",
-           "id": "services_0002-e39",
+           "id": "services_0002-e42",
            "type": "PER"
           },
           "s": "Морозова Вера Ивановна"
@@ -2365,7 +2371,7 @@
          {
           "e": {
            "cat": "canonical",
-           "id": "services_0002-e40",
+           "id": "services_0002-e43",
            "note": "стиль записи из BIRTHDATE_STYLES",
            "type": "BIRTHDATE"
           },
@@ -2383,7 +2389,7 @@
          {
           "e": {
            "cat": "canonical",
-           "id": "services_0002-e41",
+           "id": "services_0002-e44",
            "note": "стиль адреса: canonical",
            "type": "ADDRESS"
           },
@@ -2401,7 +2407,7 @@
          {
           "e": {
            "cat": "canonical",
-           "id": "services_0002-e42",
+           "id": "services_0002-e45",
            "note": "серия+номер, стиль записи из PASSPORT_STYLES",
            "type": "PASSPORT"
           },
@@ -2416,7 +2422,7 @@
          {
           "e": {
            "cat": "ugly",
-           "id": "services_0002-e43",
+           "id": "services_0002-e46",
            "note": "код подразделения, стиль записи из DEPTCODE_STYLES",
            "type": "PASSPORT"
           },
@@ -2435,7 +2441,7 @@
           "e": {
            "cat": "canonical",
            "checksum": "valid",
-           "id": "services_0002-e44",
+           "id": "services_0002-e47",
            "note": "стиль записи из SNILS_STYLES",
            "type": "SNILS"
           },
@@ -2448,7 +2454,7 @@
           "e": {
            "cat": "ugly",
            "checksum": "valid",
-           "id": "services_0002-e45",
+           "id": "services_0002-e48",
            "note": "ИНН физлица (12 знаков)",
            "type": "INN"
           },
@@ -2466,7 +2472,7 @@
          {
           "e": {
            "cat": "canonical",
-           "id": "services_0002-e46",
+           "id": "services_0002-e49",
            "note": "формат: canonical",
            "type": "PHONE"
           },
@@ -2484,7 +2490,7 @@
          {
           "e": {
            "cat": "canonical",
-           "id": "services_0002-e47",
+           "id": "services_0002-e50",
            "type": "EMAIL"
           },
           "s": "morozova@corp-tehno.ru"
@@ -2506,7 +2512,7 @@
          {
           "e": {
            "cat": "ugly",
-           "id": "services_0002-e48",
+           "id": "services_0002-e51",
            "note": "фамилия + инициалы",
            "type": "PER"
           },
@@ -2544,7 +2550,7 @@
     {
      "e": {
       "cat": "ugly",
-      "id": "services_0002-e49",
+      "id": "services_0002-e52",
       "note": "подпись: фамилия+инициалы",
       "type": "PER"
      },
@@ -2565,7 +2571,7 @@
     {
      "e": {
       "cat": "ugly",
-      "id": "services_0002-e50",
+      "id": "services_0002-e53",
       "note": "подпись: фамилия+инициалы",
       "type": "PER"
      },
