@@ -1035,6 +1035,32 @@ def _expand_person_span(text: str, start: int, end: int) -> tuple[int, int]:
     return start, end
 
 
+# ЭТАП DEBT-1: кеш РАЗОБРАННОГО ТЕКСТА. Профиль (experiments/debt1_profile.py):
+# yargy-разбор адреса — 87% времени детекции, и стоимость почти ЛИНЕЙНА по числу
+# символов, отданных парсеру (2.6e-4 c/симв. на коротких сегментах, 3.5e-4 на
+# длинных). Перепись вызовов (experiments/debt1_yargy_calls.py) показала: 53 из
+# 280 вызовов приходятся на ПОВТОРЯЮЩИЙСЯ текст — одинаковые ячейки таблиц,
+# штатный проход против ремонтного вида, шапки/подвалы. Разбор ЧИСТАЯ ФУНКЦИЯ
+# текста (yargy.Parser.chart строит таблицу с нуля, состояния между вызовами не
+# живут), поэтому кеш по строке даёт ТОТ ЖЕ результат по определению, а не «почти
+# тот же». Ключ — сам текст: сегменты уже целиком в памяти, копии строки не
+# создаётся. Потолок — чтобы длинный документ не рос без границы.
+_ADDR_PARSE_CACHE: dict[str, list[tuple[int, int]]] = {}
+_ADDR_PARSE_CACHE_MAX = 4096
+
+
+def _addr_parse(text: str) -> list[tuple[int, int]]:
+    """yargy-разбор адреса + склейка соседних Match'ей, с кешем по тексту.
+    Возвращает КОПИЮ списка спанов: вызывающие складывают его с LOC-спанами."""
+    hit = _ADDR_PARSE_CACHE.get(text)
+    if hit is None:
+        hit = _glue_address_matches(text, list(_addr_extractor(text)))
+        if len(_ADDR_PARSE_CACHE) >= _ADDR_PARSE_CACHE_MAX:
+            _ADDR_PARSE_CACHE.clear()
+        _ADDR_PARSE_CACHE[text] = hit
+    return list(hit)
+
+
 def _glue_address_matches(text: str, matches: list) -> list[tuple[int, int]]:
     """Склеивает соседние Match'и AddrExtractor в цепочки-адреса.
     Соседние склеиваются, если разрыв между match_i.stop и match_{i+1}.start
@@ -1325,6 +1351,7 @@ def detect_ner(
     regex_entities: list[Entity] | None = None,
     org_entities: list[Entity] | None = None,
     per_entities: list[Entity] | None = None,
+    skip_address: bool = False,
 ) -> list[Entity]:
     """regex_entities — результат detect_regex, ЕСЛИ он уже посчитан вызывающим
     (нормативный путь: реквизиты дают «карту занятой территории» ДО расширения
@@ -1340,8 +1367,20 @@ def detect_ner(
     per_entities — структурные PER-сущности anchor_registry (этап B): такой же
     безусловный барьер расширения адреса, что ORG. Natasha-PER в конфиге выключена
     (structure-first PER), поэтому адрес больше не видит людей через NER — барьер
-    ставит готовый PER-спан, чтобы адрес не заходил на ФИО (подготовка к этапу C)."""
+    ставит готовый PER-спан, чтобы адрес не заходил на ФИО (подготовка к этапу C).
+
+    skip_address (ЭТАП DEBT-1) — не считать адрес вовсе. Ставится ОДНИМ вызывающим:
+    ремонтным проходом layout_repair, который адресные сущности всё равно
+    ОТБРАСЫВАЕТ (layout_repair.py: эмитятся только PERSON и regex-типы, «ORG/
+    ADDRESS через ремонт не эмитятся»). Внутри run_detection адрес-сущности идут
+    транзитом: suppress_conflicts режет только их самих, merge_compound_entities
+    трогает исключительно ORG/PERSON, отрицательные классы считаются отдельно — на
+    ЭМИТИРУЕМЫЙ ремонтом результат они не влияют никак. Это мёртвый счёт: 33%
+    времени детекции (профиль DEBT-1). Метки Natasha (ner_label) флаг НЕ трогает —
+    если их когда-нибудь вернут в конфиг, ремонт продолжит их считать."""
     ner_label_map, addr_types = _load_ner_config(config_path)
+    if skip_address:
+        addr_types = []
 
     # Карта regex-территории по сегментам: расширение адреса на неё не наступает.
     regex_by_seg: dict[str, list[tuple[int, int]]] = {}
@@ -1419,7 +1458,7 @@ def detect_ner(
         if addr_types:
             if loc_spans or _addr_has_seed(text):
                 # yargy — только здесь (окрестность хита), не по всему тексту
-                yargy_spans = _glue_address_matches(text, list(_addr_extractor(text)))
+                yargy_spans = _addr_parse(text)
                 # Структурные ORG/PER-спаны (anchor_registry, этапы A/B) в координатах
                 # норм-текста — нужны и для ОТСЕВА yargy-ложняков (ниже), и как барьеры
                 # расширения. regex/ORG/PER хранятся в ИСХОДНЫХ координатах.
@@ -1480,7 +1519,7 @@ def detect_ner(
                 v_doc.tag_ner(_ner_tagger)
                 v_loc = [(sp.start, sp.stop) for sp in v_doc.spans if sp.type == "LOC"]
                 if v_loc or _addr_has_seed(view) or glue_src:
-                    v_yargy = _glue_address_matches(view, list(_addr_extractor(view)))
+                    v_yargy = _addr_parse(view)
                     regex_v = [src_to_norm(vmap, s, e)
                                for s, e in regex_by_seg.get(segment.id, [])]
                     org_v = [src_to_norm(vmap, s, e)

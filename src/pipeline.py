@@ -23,7 +23,7 @@ from regex_detector import detect_regex
 from syntax_compound import merge_compound_entities
 
 
-def run_detection(doc, config_path):
+def run_detection(doc, config_path, skip_address=False):
     """Полный конвейер ДЕТЕКЦИИ для одного SourceDocument. Порядок (единственная копия):
 
       1. detect_regex — реквизиты (ИНН/ОГРН/счёт/телефон/…) И, с этапа T4, CLAUSE_REF
@@ -68,9 +68,13 @@ def run_detection(doc, config_path):
     org_e = [e for e in struct_e if e.entity_type == "ORG"]
     per_e = [e for e in struct_e if e.entity_type == "PERSON"]
 
+    # skip_address (ЭТАП DEBT-1) — только для ремонтного прохода layout_repair:
+    # он адресные сущности отбрасывает, а считает их дороже всего остального
+    # конвейера вместе взятого. Обоснование эквивалентности — docstring detect_ner.
     ner_e = detect_ner(
         doc, config_path,
         regex_entities=regex_e, org_entities=org_e, per_entities=per_e,
+        skip_address=skip_address,
     )
     ner_e = suppress_conflicts(struct_e, ner_e)
 
