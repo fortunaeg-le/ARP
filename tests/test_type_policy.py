@@ -67,8 +67,14 @@ def test_profiles_are_nested_and_maximum_is_everything():
     # у type_policy.WITH_MONEY). ЭТАП TYPE-FACTORY-2: + три коммерческих типа
     # из черновика владельца (номер договора, доля голосов, именной транш) —
     # sets: [with_money] в их файлах-описаниях.
+    # ЭТАП TYPES-2: + CONTRACT_KIND (вид договора). Это НЕ персональные данные
+    # — он не относится к человеку и не сужает круг лиц, он раскрывает суть
+    # сделки; отсюда `sets: [with_money]` и место ровно здесь, а не в наборе
+    # юриста. Два других типа этапа (орган выдачи паспорта, регистрирующий
+    # орган) в наборе «данные и реквизиты» и в эту разность не входят.
     assert (set(type_policy.WITH_MONEY) - set(type_policy.PERSONAL_REQUISITES)
-            == {"SUM", "PERCENT", "TERM", "CONTRACT_NO", "SHARE_PCT", "TRANCHE"})
+            == {"SUM", "PERCENT", "TERM", "CONTRACT_NO", "SHARE_PCT", "TRANCHE",
+                "CONTRACT_KIND"})
     assert type_policy.MAXIMUM is None
     # «Максимум» ⊇ «всё, включая деньги» — и с запасом на будущие типы.
     known = set(type_policy.known_types(CONFIG))

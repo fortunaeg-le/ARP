@@ -576,6 +576,16 @@ entity_types:
     method: anchor_registry
     suppress_masking: true
 
+  # [собрано фабрикой из tests/corpus_v2/typedefs/CONTRACT_KIND.yaml — правки только там]
+  CONTRACT_KIND:
+    method: regex
+    patterns:
+      - pattern: '(?i)(?:договор\w*|соглашени\w*|контракт\w*)\s+(?:возмездного\s+оказания\s+услуг|оказания\s+услуг|поставки|подряда|субподряда|аренды|субаренды|займа|цессии|купли-продажи|мены|дарения|уступки\s+прав\w*(?:\s+требования)?|комиссии|поручения|хранения|перевозки|лизинга|страхования|коммерческой\s+концессии)'
+      - pattern: '(?i)(?:лицензионн|агентск|субагентск|абонентск|трудов|концессионн|учредительн|рамочн)\w*\s+договор\w*'
+    token_prefix: 'CTKIND'
+    sets: [with_money]
+    measure: {leak_class: text}
+
   # [собрано фабрикой из tests/corpus_v2/typedefs/CONTRACT_NO.yaml — правки только там]
   CONTRACT_NO:
     method: regex
@@ -584,6 +594,25 @@ entity_types:
     token_prefix: 'CONTRACT'
     sets: [with_money]
     measure: {leak_class: numeric}
+
+  # [собрано фабрикой из tests/corpus_v2/typedefs/PASSPORT_ISSUER.yaml — правки только там]
+  PASSPORT_ISSUER:
+    method: regex
+    pattern: '(?i)выдан\w*\s*[:\-—]?\s*((?:[^\n]{0,30}?)(?:УФМС|ФМС|МВД|УВД|ОВД|ПВС|ГУВД|отделом?\s+внутренних\s+дел|отделени\w*\s+по\s+вопросам\s+миграции|паспортн\w*\s+стол\w*)[^\n\d]{0,60}?)(?=\s*(?:[,;]|\d|код\s+подразделен|\n|$)|\s*\.\s*(?:\n|$))'
+    span_group: 1
+    token_prefix: 'ISSUER'
+    sets: [personal_requisites, with_money]
+    measure: {leak_class: text}
+
+  # [собрано фабрикой из tests/corpus_v2/typedefs/REGISTRY_NAME.yaml — правки только там]
+  REGISTRY_NAME:
+    method: regex
+    patterns:
+      - pattern: '(?i)(?:межрайонн\w+\s+)?(?:инспекци\w+\s+|управлени\w+\s+)?(?:ми?фнс|уфнс|ифнс|фнс)\s*(?:росси\w+\s*)?№\s?\d{1,3}(?:\s+по\s+(?:[^\n,;.]|(?<=\bг)\.|(?<=\bобл)\.|(?<=\bгор)\.|(?<=\bокр)\.|(?<=\bресп)\.){1,45})?'
+      - pattern: '(?i)(?:межрайонн\w+\s+)?(?:инспекци\w+\s+|управлени\w+\s+)?(?:ми?фнс|уфнс|ифнс|фнс)\s+(?:росси\w+\s+)?по\s+(?:[^\n,;.]|(?<=\bг)\.|(?<=\bобл)\.|(?<=\bгор)\.|(?<=\bокр)\.|(?<=\bресп)\.){1,45}'
+    token_prefix: 'REGORG'
+    sets: [personal_requisites, with_money]
+    measure: {leak_class: text}
 
   # [собрано фабрикой из tests/corpus_v2/typedefs/REG_ID.yaml — правки только там]
   REG_ID:
@@ -621,5 +650,5 @@ entity_types:
 # Порядок арбитража пересечений (rule 3/rule 4 tokenizer._winner).
 # СОБРАН из базового порядка (до фабрики) и rank фабричных типов.
 arbitration_order:
-  regex: [BANK_ACCOUNT, OGRN, INN, INN_PERSON, BIK, SNILS, REG_ID, KPP, PASSPORT, PHONE, REG_NUMBER, CONTRACT_NO, SUM, EMAIL, BIRTHDATE, DATE, SHARE_PCT, PERCENT, TRANCHE, TERM]
+  regex: [BANK_ACCOUNT, OGRN, INN, INN_PERSON, BIK, SNILS, REG_ID, KPP, PASSPORT, PASSPORT_ISSUER, PHONE, REG_NUMBER, CONTRACT_NO, CONTRACT_KIND, REGISTRY_NAME, SUM, EMAIL, BIRTHDATE, DATE, SHARE_PCT, PERCENT, TRANCHE, TERM]
   ner: [ADDRESS, ORG, PERSON]
