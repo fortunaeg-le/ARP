@@ -1,0 +1,3 @@
+miss_reason: [('nothing', 422), ('wrong_type:ORG', 365), ('wrong_type:ADDRESS', 3)]
+category: [('adversarial', 1972), ('ugly', 880), ('canonical', 568)]
+trick: [(None, 1448), ('mut:linebreak', 357), ('mut:homoglyph', 350), ('mut:combo', 349), ('mut:case', 342), ('mut:invisible', 337), ('lowercase', 20), ('alternating_case', 20), ('uppercase', 18), ('in_footer', 17), ('nested_table', 16), ('bold_split_runs', 16), ('homoglyph_latin_in_cyrillic', 15), ('cell_boundary_split', 15), ('zwj_and_soft_hyphen', 15), ('invisible_chars', 14), ('in_footnote', 14), ('in_textbox', 14), ('bare_cell_no_sentence', 14), ('mut:cell_split', 14), ('linebreak_inside_entity', 13), ('dense_line', 2)]
