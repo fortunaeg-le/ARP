@@ -1,0 +1,20 @@
+ENTITY KEYS: ['type', 'category', 'trick', 'checksum', 'text', 'found', 'exact', 'full', 'left_trim', 'right_trim', 'miss_reason', 'in_body', 'leaked', 'leak_pieces', 'leak_v1', 'leak_v2', 'bnd']
+  {"type": "ORG", "category": "canonical", "trick": null, "checksum": null, "text": "ПАО «ПромСнаб»", "found": true, "exact": true, "full": true, "left_trim": false, "right_trim": false, "miss_reason": null, "in_body": true, "leaked": false, "leak_pieces": [], "leak_v1": false, "leak_v2": {"status": "none", "fragments": []}, "bnd": {"under": 0, "over": 0, "direction": "exact"}}
+  {"type": "PER", "category": "ugly", "trick": null, "checksum": null, "text": "Новиковой Ольги Егоровны", "found": true, "exact": true, "full": true, "left_trim": false, "right_trim": false, "miss_reason": null, "in_body": true, "leaked": false, "leak_pieces": [], "leak_v1": false, "leak_v2": {"status": "none", "fragments": []}, "bnd": {"under": 0, "over": 0, "direction": "exact"}}
+  {"type": "ORG", "category": "canonical", "trick": null, "checksum": null, "text": "ПАО «Титан»", "found": true, "exact": true, "full": true, "left_trim": false, "right_trim": false, "miss_reason": null, "in_body": true, "leaked": false, "leak_pieces": [], "leak_v1": false, "leak_v2": {"status": "none", "fragments": []}, "bnd": {"under": 0, "over": 0, "direction": "exact"}}
+  {"type": "PER", "category": "ugly", "trick": null, "checksum": null, "text": "Зайцева Сергея Петровича", "found": true, "exact": true, "full": true, "left_trim": false, "right_trim": false, "miss_reason": null, "in_body": true, "leaked": false, "leak_pieces": [], "leak_v1": false, "leak_v2": {"status": "none", "fragments": []}, "bnd": {"under": 0, "over": 0, "direction": "exact"}}
+  {"type": "SUM", "category": "canonical", "trick": null, "checksum": null, "text": "893 033,00 руб.", "found": true, "exact": true, "full": true, "left_trim": false, "right_trim": false, "miss_reason": null, "in_body": true, "leaked": false, "leak_pieces": [], "leak_v1": false, "leak_v2": {"status": "none", "fragments": [], "window_len": 0, "threshold": null, "core_len": 9}, "bnd": {"under": 0, "over": 0, "direction": "exact"}}
+  {"type": "SUM", "category": "canonical", "trick": null, "checksum": null, "text": "112 649,00 руб.", "found": true, "exact": true, "full": true, "left_trim": false, "right_trim": false, "miss_reason": null, "in_body": true, "leaked": false, "leak_pieces": [], "leak_v1": false, "leak_v2": {"status": "none", "fragments": [], "window_len": 0, "threshold": null, "core_len": 9}, "bnd": {"under": 0, "over": 0, "direction": "exact"}}
+
+MASK KEYS: ['gtype', 'raw_type', 'token', 'text', 'a_ok', 'a_channel_ok', 'a_reason', 'scored', 'b_ok', 'c_ok', 'gold_type']
+  {"gtype": "CONTRACT_KIND", "raw_type": "CONTRACT_KIND", "token": "[CTKIND_1]", "text": "АГЕНТСКИЙ ДОГОВОР", "a_ok": true, "a_channel_ok": true, "a_reason": "ok", "scored": false, "b_ok": null, "c_ok": null, "gold_type": null}
+  {"gtype": "ORG", "raw_type": "ORG", "token": "[ORG_1]", "text": "ПАО «ПромСнаб»", "a_ok": true, "a_channel_ok": true, "a_reason": "ok", "scored": true, "b_ok": true, "c_ok": true, "gold_type": "ORG"}
+  {"gtype": "PER", "raw_type": "PERSON", "token": "[PERSON_1]", "text": "Новиковой Ольги Егоровны", "a_ok": true, "a_channel_ok": true, "a_reason": "ok", "scored": true, "b_ok": true, "c_ok": true, "gold_type": "PER"}
+  {"gtype": "ORG", "raw_type": "ORG", "token": "[ORG_2]", "text": "ПАО «Титан»", "a_ok": true, "a_channel_ok": true, "a_reason": "ok", "scored": true, "b_ok": true, "c_ok": true, "gold_type": "ORG"}
+
+FP KEYS: ['raw_type', 'gtype', 'text', 'on_negative', 'cross_type']
+category: Counter({'adversarial': 6498, 'canonical': 3614, 'ugly': 1921})
+miss_reason: Counter({None: 10687, 'nothing': 932, 'wrong_type:ORG': 365, 'wrong_type:ADDRESS': 35, 'wrong_type:PHONE': 7, 'wrong_type:INN': 6, 'wrong_type:PER': 1})
+leak_v2.status: Counter({'none': 10545, 'partial': 911, 'full': 577})
+прочие ключи сущности: Counter({'bnd': 12033})
+leak_v2 sample: [{"status": "none", "fragments": []}, {"status": "none", "fragments": []}, {"status": "none", "fragments": []}]

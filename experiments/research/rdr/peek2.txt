@@ -1,0 +1,36 @@
+format(док): Counter({'txt': 162, 'docx': 162})
+source(док): Counter({'base': 108, 'mutated:1337:combo': 26, 'mutated:2718:homoglyph': 26, 'mutated:1337:invisible': 26, 'mutated:2718:case': 26, 'mutated:1337:digit_spaces': 26, 'mutated:2718:linebreak': 26, 'mutated:2718:digit_spaces': 8, 'mutated:2718:combo': 8, 'mutated:1337:homoglyph': 8, 'mutated:1337:case': 8, 'mutated:1337:linebreak': 7, 'mutated:2718:cell_split': 7, 'mutated:1337:cell_split': 7, 'mutated:2718:invisible': 7})
+тип сущности: [('PER', 3420), ('ADDRESS', 1308), ('PHONE', 1218), ('PASSPORT', 912), ('ACCOUNT', 732), ('EMAIL', 714), ('INN_PER', 675), ('SUM', 648), ('ORG', 462), ('BIK', 453), ('OGRN', 420), ('INN', 369), ('KPP', 246), ('BIRTHDATE', 228), ('SNILS', 228)]
+bnd.direction: Counter({'exact': 9354, 'not_found': 1354, 'shorter': 846, 'longer': 436, 'both': 43})
+
+trick — всего / из них с ошибкой:
+  None                                       5535  bad=   907
+  mut:invisible                              1211  bad=   279
+  mut:combo                                  1194  bad=   436
+  mut:homoglyph                              1192  bad=   309
+  mut:linebreak                              1123  bad=   849
+  mut:case                                    613  bad=   282
+  mut:digit_spaces                            556  bad=   165
+  dense_line                                   87  bad=    16
+  in_footnote                                  41  bad=    41
+  in_header                                    35  bad=    35
+  invisible_chars                              34  bad=     3
+  homoglyph_cyrillic_in_digits                 32  bad=     3
+  nested_table                                 32  bad=    32
+  in_textbox                                   32  bad=    32
+  in_footer                                    30  bad=     2
+  cell_boundary_split                          29  bad=    29
+  linebreak_inside_entity                      28  bad=    15
+  bare_cell_no_sentence                        28  bad=    15
+  homoglyph_in_email                           21  bad=     0
+  lowercase                                    20  bad=     0
+  alternating_case                             20  bad=     0
+  glued_to_prev_entity                         19  bad=    19
+  uppercase                                    18  bad=     3
+  digit_grouping                               16  bad=     0
+  digit_grouping_dashes                        16  bad=     0
+  bold_split_runs                              16  bad=     0
+  homoglyph_latin_in_cyrillic                  15  bad=     3
+  zwj_and_soft_hyphen                          15  bad=     5
+  mut:cell_split                               14  bad=    14
+  glued_to_next_entity                         11  bad=    11

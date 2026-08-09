@@ -1,0 +1,57 @@
+всего: 826
+по типам: [('ADDRESS', 605), ('PER', 192), ('PASSPORT', 11), ('INN', 10), ('INN_PER', 5), ('ORG', 3)]
+
+=== ADDRESS ===
+  agency_0001      '630099, г. Новосибирск, ш. Ленинградская, д. ' pieces=['11'] lv2=none
+  agency_0001__m1337_combo '62оОі4, г. ЕкАтEрИнБуРг\u200d, бУл. ГаГаРиНа, Д\xad.\u202f' pieces=['25'] lv2=none
+  agency_0001__m1337_combo '630099\xad, г. н\u200doвoсибирск, ш. ленингрaд\u200dcкая, ' pieces=['11'] lv2=none
+  agency_0001__m1337_combo '44з01О,\u200b Г\xad. СаМаPа, НaБ. сАд\u202fоВаЯ, д. 57, Кв' pieces=['010'] lv2=none
+  agency_0001__m2718_homoglyph '62ООІ4, г. Екатеpинбург, ул. Ленинградская, д' pieces=['620014'] lv2=partial
+  agency_0001__m2718_homoglyph '63ОО99, г. Новосибирcк, ш. Ленинградcкая, д. ' pieces=['11'] lv2=none
+  agency_0002      'Ростов-на-Дону Промышленная 12/2 кв 50'      pieces=['12', 'pocтoв', 'дoнy'] lv2=partial
+  agency_0002      'Нижний Новгород Промышленная 47/2 кв 12'     pieces=['12'] lv2=none
+  agency_0002__m1337_invisible 'Ростов-на-Дону Промышленная 1\u20602/2 кв\xa0 \u200b50' pieces=['12', 'pocтoв', 'дoнy'] lv2=partial
+  agency_0002__m1337_invisible 'Ни\u202fж\u200bний \u202fНовгород Промышленная 47/2 кв 12' pieces=['12'] lv2=none
+  agency_0002__m2718_digit_spaces 'Ростов-на-Дону Промышленная 12/2 кв 50'      pieces=['12', 'pocтoв', 'дoнy'] lv2=partial
+  agency_0002__m2718_digit_spaces 'Нижний Новгород Промышленная 47/2 кв 12'     pieces=['12'] lv2=none
+
+=== PER ===
+  agency_0001__m2718_homoglyph 'Зaйцев С. П.'                                pieces=['aйцeв'] lv2=none
+  agency_0003__m2718_case 'ВИНОГРАДОВ П. Ю.'                            pieces=['гpaд'] lv2=partial
+  agency_0010__m2718_linebreak 'Попов Олег Олегов\nич'                       pieces=['лeгoв'] lv2=partial
+  cession_0002__m2718_cell_split 'Макаров Юрий Николаевич'                     pieces=['hиkoлaeвич', 'юpий'] lv2=partial
+  cession_0002__m2718_cell_split 'Богданов Владимир Николаевич'                pieces=['hиkoлaeвич'] lv2=partial
+  cession_0002__m2718_cell_split 'Макаров Юрий Николаевич'                     pieces=['hиkoлaeвич', 'юpий'] lv2=partial
+  cession_0002__m2718_cell_split 'Богданов Владимир Николаевич'                pieces=['hиkoлaeвич'] lv2=partial
+  cession_0002__m2718_cell_split 'Макаров Юрий Николаевич'                     pieces=['hиkoлaeвич', 'юpий'] lv2=partial
+  cession_0002__m2718_cell_split 'Богданов Владимир Николаевич'                pieces=['hиkoлaeвич'] lv2=partial
+  cession_0003__m1337_combo 'гУсЕвА\u200d eK\xadАтЕрИнА\u202f \u2060ДmИтРиEвНа' pieces=['гyceвa'] lv2=partial
+  cession_0004     'Волкова М. Ю.'                               pieces=['boлkoвa'] lv2=partial
+  cession_0004     'Волкова М. Ю.'                               pieces=['boлkoвa'] lv2=partial
+
+=== PASSPORT ===
+  cession_0008__m2718_combo '08З-2І\xad8'                                 pieces=['083-218', '083218'] lv2=full
+  cession_0008__m2718_combo '68І-2\u200b87'                               pieces=['681-287', '681287'] lv2=full
+  labor_0001__m2718_homoglyph '622-51З'                                     pieces=['622-513', '622513'] lv2=full
+  lease_0009__m1337_invisible '907-10\xad8'                                 pieces=['907-108', '907108'] lv2=full
+  loan_0003__m1337_invisible '70\xa08-657'                                 pieces=['708-657', '708657'] lv2=full
+  services_0001__m1337_combo '812-4\xa00О'                                 pieces=['812-400', '812400'] lv2=full
+  services_0008__m2718_combo '106-\xa0З52'                                 pieces=['106-352', '106352'] lv2=full
+  services_0013__m1337_combo '9Ч0-2\u206019'                               pieces=['940-219', '940219'] lv2=full
+  services_0013__m2718_homoglyph '9Ч0-219'                                     pieces=['940-219', '940219'] lv2=full
+  supply_0011__m1337_combo 'О7\xad8-640'                                 pieces=['078-640', '078640'] lv2=full
+  supply_0011__m2718_homoglyph 'О78-6Ч0'                                     pieces=['078-640', '078640'] lv2=full
+
+=== INN ===
+  agency_0008      '6597769253'                                  pieces=['6597769253'] lv2=full
+  agency_0008      '6597769253'                                  pieces=['6597769253'] lv2=full
+  agency_0008__m2718_case '6597769253'                                  pieces=['6597769253'] lv2=full
+  agency_0008__m2718_case '6597769253'                                  pieces=['6597769253'] lv2=full
+  loan_0002        '6619448286'                                  pieces=['6619448286'] lv2=full
+  loan_0002        '6619448286'                                  pieces=['6619448286'] lv2=full
+  loan_0002__m1337_invisible '661944828\u20606'                            pieces=['6619448286'] lv2=full
+  loan_0002__m1337_invisible '661\xa09448286'                              pieces=['6619448286'] lv2=full
+  loan_0002__m2718_digit_spaces '661944 82 86'                                pieces=['6619448286'] lv2=full
+  loan_0002__m2718_digit_spaces '6619\xa044\xa082\xa086'                      pieces=['6619448286'] lv2=full
+
+leak_v2-статус этих же: Counter({'none': 538, 'partial': 256, 'full': 32})

@@ -1,0 +1,7 @@
+# Порождаемые кеши прогона (пересобираются dump_subset.py / collect_cases.py /
+# profile_errors.py за одну команду). В репозиторий не идут: сотни килобайт
+# машинного JSON с текстами корпуса, дифф по ним нечитаем.
+subset_dump.json
+cases_subset.json
+residual.json
+__pycache__/
