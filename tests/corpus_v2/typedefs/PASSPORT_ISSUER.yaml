@@ -29,16 +29,15 @@ detect:
   span_group: 1
   token_prefix: ISSUER
   rank: 810
-  # НАБОР ПО УМОЛЧАНИЮ («Только персональные данные») НЕ ТРОНУТ, И ЭТО
-  # РЕШЕНИЕ ВЛАДЕЛЬЦА, А НЕ ОЦЕНКА ТИПА. По смыслу орган выдачи — прямые
-  # персональные данные (владелец: «орган плюс дата сужают круг не хуже
-  # номера»), и место ему в наборе `personal` рядом с PASSPORT. Но состав
+  # НАБОР ПО УМОЛЧАНИЮ («Только персональные данные») ВКЛЮЧЁН САНКЦИЕЙ
+  # ВЛАДЕЛЬЦА (этап MERGE-2, 2026-08-09): «это прямые ПДн — орган выдачи
+  # плюс дата сужают круг не хуже номера паспорта». До этого тип стоял
+  # только в наборах `personal_requisites`/`with_money`, потому что состав
   # набора по умолчанию заперт стражем
   # (tests/test_type_factory.py::test_type_policy_sets_match_config —
-  # строгое равенство с PERSONAL_DEFAULT): новый тип не входит в набор
-  # юриста молча. Включение = одна строка сюда и одна в
-  # src/type_policy.py::PERSONAL_DEFAULT, санкцией владельца.
-  sets: [personal_requisites, with_money]
+  # строгое равенство с PERSONAL_DEFAULT) и новый тип не входит в набор
+  # юриста молча. Парная строка — src/type_policy.py::PERSONAL_DEFAULT.
+  sets: [personal, personal_requisites, with_money]
   measure: {leak_class: text}
 generator:
   provenance: >-
