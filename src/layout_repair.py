@@ -233,7 +233,10 @@ def repair_pass(doc: SourceDocument, config_path: str,
         segments=tmp_segments, source_format=doc.source_format,
         source_path=doc.source_path,
     )
-    found = run_detection(tmp_doc, config_path)
+    # skip_address: ниже (блок эмита) адресные сущности отбрасываются безусловно —
+    # «ORG/ADDRESS через ремонт не эмитятся». Считать их незачем, а стоят они 33%
+    # времени детекции (ЭТАП DEBT-1, профиль). Эквивалентность — docstring detect_ner.
+    found = run_detection(tmp_doc, config_path, skip_address=True)
 
     by_seg: dict[str, list[Entity]] = {}
     for e in found:
