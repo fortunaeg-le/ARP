@@ -105,6 +105,9 @@ MANIFEST = os.path.join(HERE, "MANIFEST.sha256")
 BASELINE = os.path.join(HERE, "results_baseline.json")
 CURRENT_DUMP = os.path.join(HERE, "results_gate_current.json")
 KNOWN_LEAKS = os.path.join(ROOT, "docs", "known_leaks_stage_c.json")
+# ЭТАП DEFAULT-GATE, линия «з». Реестр лежит В ЗОНЕ ГЕЙТА, а не в docs/:
+# это данные приёмки, а не документ (правило рождения документов).
+KNOWN_DEFAULT_LEAKS = os.path.join(HERE, "known_default_leaks.json")
 
 EMPTY_STATS = {"n": 0, "found": 0, "leak_v1": 0, "leak_v2_6": 0, "leak_v2_8": 0}
 
@@ -594,8 +597,69 @@ def compare_suppression(current_results):
     return regressions, suppressed_gold_all
 
 
+def compare_default_profile(base_def, cur_def, registry_ids):
+    """ЛИНИЯ «з» — эталонные сущности, закрытые на МАКСИМУМЕ и открытые при
+    настройках ПО УМОЛЧАНИЮ (см. measure_lib, блок линии «з»: там же — почему
+    это линия гейта, а не отдельный инструмент).
+
+    Требование ДВОЙНОЕ, и второе не менее важно первого:
+      1. число не растёт (допуск 0: это утечка персональных данных у
+         пользователя, работающего настройками по умолчанию);
+      2. каждый случай ДОКУМЕНТИРОВАН реестром `known_default_leaks.json` —
+         иначе подмена одного случая другим при том же числе прошла бы молча
+         (тот же приём, что у линии известного долга ADDRESS).
+
+    Точка отсчёта, снятая ДО появления линии, поля не имеет вовсе. Тогда
+    сравнивать не с чем, и это говорится вслух: сравнение с нулём выдало бы
+    ложную краснОту, а молчание — ложную зелень. Реестр при этом проверяется
+    всегда: он от точки отсчёта не зависит."""
+    regressions, warnings = [], []
+    cur_ids = set(cur_def["cases"])
+
+    if not base_def.get("present"):
+        # поля нет ВОВСЕ (точка отсчёта старше линии) — молчим, если и мерить
+        # нечего, и говорим вслух, если случаи есть: сравнение с нулём выдало бы
+        # ложную краснОту, молчание при непустом счёте — ложную зелень
+        if cur_def["n"]:
+            warnings.append(
+                "(з) набор по умолчанию: в точке отсчёта поля нет (снята до появления "
+                "линии) — сравнить не с чем, судим ТОЛЬКО по реестру. Сейчас: %d "
+                "случаев %s" % (cur_def["n"], cur_def["per_type"]))
+    elif cur_def["n"] > base_def["n"]:
+        regressions.append(
+            "(з) НАСТРОЙКИ ПО УМОЛЧАНИЮ: %d -> %d эталонных сущностей открыто "
+            "(на максимуме они закрыты) — утечка ПДн у пользователя, который "
+            "ничего не настраивал. По типам: %s"
+            % (base_def["n"], cur_def["n"], cur_def["per_type"]))
+    elif cur_def["n"] < base_def["n"]:
+        pass  # улучшение печатается ниже, в print_default_profile
+
+    undocumented = sorted(cur_ids - registry_ids)
+    if undocumented:
+        regressions.append(
+            "(з) НАСТРОЙКИ ПО УМОЛЧАНИЮ: %d случаев НЕ документированы реестром "
+            "known_default_leaks.json (состав долга подменён): %s"
+            % (len(undocumented), "; ".join("%s %s [%d:%d]" % c for c in undocumented[:10])))
+    return regressions, warnings
+
+
+def print_default_profile(base_def, cur_def, registry_ids):
+    print("\n(з) НАСТРОЙКИ ПО УМОЛЧАНИЮ — эталон закрыт на МАКСИМУМЕ и ОТКРЫТ у "
+          "пользователя, который ничего не настраивал")
+    print("  (гейт меряет на максимуме; этот класс дыр всем прочим линиям не виден "
+          "по построению — допуск 0, реестр tests/corpus/known_default_leaks.json)")
+    print("  случаев: %s -> %d   по типам: %s"
+          % (base_def["n"] if base_def.get("present") else "нет данных",
+             cur_def["n"], cur_def["per_type"] or "{}"))
+    gone = sorted(registry_ids - set(cur_def["cases"]))
+    if gone:
+        print("  из реестра больше НЕ открыто: %d (реестр пора чистить)" % len(gone))
+    for c in cur_def["cases"][:10]:
+        print("     %s %s [%d:%d]" % c)
+
+
 def evaluate(baseline_results, current_results, known_leaks_ids, cfg=GC,
-             check_ledger=False, ledger_latest=None):
+             check_ledger=False, ledger_latest=None, default_leaks_ids=frozenset()):
     """ПОЛНАЯ оценка четырёх линий — чистая функция над двумя списками results.
     Ничего не печатает и не гоняет корпус: ровно эту функцию дёргает само-тест
     гейта (tests/corpus/test_gate_regression_detection.py), подкладывая
@@ -665,6 +729,13 @@ def evaluate(baseline_results, current_results, known_leaks_ids, cfg=GC,
     j_reg, suppressed_gold_all = compare_suppression(current_results)
     regressions += j_reg
 
+    # --- линия «з»: что открыто при настройках ПО УМОЛЧАНИЮ ---
+    base_def = ML.default_profile_summary(baseline_results)
+    cur_def = ML.default_profile_summary(current_results)
+    z_reg, z_warn = compare_default_profile(base_def, cur_def, default_leaks_ids)
+    regressions += z_reg
+    warnings += z_warn
+
     # masking C — мягкий уровень (решение владельца, STATE §6): предупреждение
     mb = base_agg.get("masking_correctness", {}).get("total")
     mc = cur_agg.get("masking_correctness", {}).get("total")
@@ -685,6 +756,7 @@ def evaluate(baseline_results, current_results, known_leaks_ids, cfg=GC,
         "base_prec": base_prec, "cur_prec": cur_prec,
         "base_bnd": base_bnd, "cur_bnd": cur_bnd,
         "suppressed_gold_all": suppressed_gold_all,
+        "base_def": base_def, "cur_def": cur_def,
     }
 
 
@@ -937,6 +1009,17 @@ def _known_leaks():
     return set((r["doc_id"], r["value"]) for r in kl["leaks"]), len(kl["leaks"])
 
 
+def _known_default_leaks():
+    """Реестр линии «з»: множество ключей (doc_id, тип, start, end). Ключ — тот
+    же, что у measure_lib.default_profile_summary()["cases"], иначе сверка
+    состава молча превратилась бы в сверку числа."""
+    if not os.path.isfile(KNOWN_DEFAULT_LEAKS):
+        return frozenset()
+    reg = json.load(open(KNOWN_DEFAULT_LEAKS, encoding="utf-8"))
+    return frozenset((c["doc_id"], c["type"], c["start"], c["end"])
+                     for c in reg["cases"])
+
+
 def main(argv=None):
     argv = sys.argv[1:] if argv is None else argv
     results_path = None
@@ -999,7 +1082,8 @@ def main(argv=None):
     kl_ids, kl_count = _known_leaks()
     # check_ledger=True — только здесь: это настоящий прогон против настоящей
     # точки отсчёта, и уровень линии «д» обязан совпадать с журналом обоснований.
-    v = evaluate(baseline_results, current_results, kl_ids, check_ledger=True)
+    v = evaluate(baseline_results, current_results, kl_ids, check_ledger=True,
+                 default_leaks_ids=_known_default_leaks())
 
     # ЭТАП INSTR, ЧАСТЬ 2 — счётчики ВСЕГДА на виду, а не только при росте
     # относительно baseline (регресс/warning выше срабатывают лишь на дельте).
@@ -1017,6 +1101,7 @@ def main(argv=None):
     print_boundaries(v["base_bnd"], v["cur_bnd"])
     print_debt(v["composition"], kl_count)
     print_suppression(current_results, v["suppressed_gold_all"])
+    print_default_profile(v["base_def"], v["cur_def"], _known_default_leaks())
 
     regressions = list(v["regressions"])
     if not (ok_before and ok_after):

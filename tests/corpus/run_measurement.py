@@ -33,7 +33,8 @@ import measure_lib as ML  # noqa: E402
 from extractor import extract  # noqa: E402
 from unread_zones import scan_unread_zones  # noqa: E402
 from pipeline import run_detection  # noqa: E402
-from tokenizer import tokenize, build_plain_text  # noqa: E402
+from tokenizer import (tokenize, build_plain_text,  # noqa: E402,F401
+                       resolve_for_masking, apply_masking)
 import type_policy  # noqa: E402
 from session_store import save_session  # noqa: E402
 from detokenizer import detokenize  # noqa: E402
@@ -268,10 +269,23 @@ def process_doc(d, allow_lossy=ALLOW_LOSSY):
     # (CLAUSE_REF/ROLE_TERM/COLLECTIVE) победил пересечение с маскируемым типом,
     # записывается tokenizer.resolve_for_masking (см. suppression_log).
     suppression_log: list = []
-    anon_text, kept = tokenize(
-        doc, entities, CONFIG, enabled_types=type_policy.MAXIMUM,
-        suppression_log=suppression_log,
-    )
+    # ЭТАП DEFAULT-GATE — ДВА раскладывания масок поверх ОДНОГО арбитража.
+    # Гейт меряет на МАКСИМУМЕ, а пользователь работает на наборе ПО УМОЛЧАНИЮ,
+    # и класс дыр «на максимуме закрыто, по умолчанию открыто» был невидим по
+    # построению (так нашли MFIX-PROFILE-IP-PER — не гейтом, а кругом на
+    # собранной программе). Дорогая часть (resolve_for_masking, внутри второй
+    # проход детекции по граничным окнам) считается ОДИН раз, поверх неё два
+    # дешёвых apply_masking.
+    #
+    # ПОРЯДОК ВАЖЕН: сначала набор по умолчанию, потом МАКСИМУМ. apply_masking
+    # проставляет `token` на самих объектах Entity, и последним обязан отработать
+    # максимум — все прочие метрики документа считаются по нему.
+    resolved = resolve_for_masking(doc, entities, CONFIG,
+                                   suppression_log=suppression_log)
+    anon_default, kept_default = apply_masking(
+        doc, resolved, CONFIG, type_policy.PERSONAL)
+    anon_text, kept = apply_masking(
+        doc, resolved, CONFIG, type_policy.MAXIMUM)
 
     # round-trip — СТРУКТУРНЫЙ (этап E, приёмка 1a): mode="exact" восстанавливает
     # n-е вхождение токена его собственной поверхностной формой из occurrences.
@@ -473,6 +487,30 @@ def process_doc(d, allow_lossy=ALLOW_LOSSY):
             "gold_type": bc["gold_type"],
         })
 
+    # ---- ЛИНИЯ «з»: что открыто при настройках ПО УМОЛЧАНИЮ ----
+    # Считаем ТОЛЬКО класс, невидимый прочим линиям: эталонная сущность типа,
+    # ВХОДЯЩЕГО в набор по умолчанию (то есть пользователь ждёт маску), которая
+    # на МАКСИМУМЕ закрыта, а при настройках по умолчанию открыта. Сущности
+    # типов вне набора (ORG, суммы, реквизиты юрлица) сюда не идут: их
+    # открытость — работа по правилам. Пропуски детекции сюда тоже не идут —
+    # они уже меряются полнотой и утечкой; здесь разница ДВУХ раскладок на
+    # одной и той же детекции.
+    det_def = ML.map_entities_to_pt1(kept_default, offs, G)
+    def_spans = [(x["start"], x["end"]) for x in det_def if x["start"] is not None]
+    max_spans = [(x["start"], x["end"]) for x in det_located]
+    default_open = []
+    for e in d["entities"]:
+        if e["type"] not in ML.DEFAULT_PROFILE_GOLD_TYPES:
+            continue
+        u_max = ML.uncovered_chars(e["start"], e["end"], max_spans)
+        u_def = ML.uncovered_chars(e["start"], e["end"], def_spans)
+        if u_def > u_max:
+            default_open.append({
+                "type": e["type"], "start": e["start"], "end": e["end"],
+                "uncovered_max": u_max, "uncovered_default": u_def,
+                "len": e["end"] - e["start"],
+            })
+
     doc_leaked = any(r["leaked"] for r in ent_records)
     doc_leaked_v2 = any(r["leak_v2"]["status"] != "none" for r in ent_records)
     return {
@@ -505,6 +543,10 @@ def process_doc(d, allow_lossy=ALLOW_LOSSY):
         # НЕ-эталонный кандидат) + пересечение с эталоном (ДОЛЖНО быть пустым).
         "suppressions": suppressions_global,
         "suppressed_gold": suppressed_gold,
+        # ЭТАП DEFAULT-GATE, линия «з»: эталонные сущности, закрытые на
+        # МАКСИМУМЕ и открытые при настройках ПО УМОЛЧАНИЮ (см. выше).
+        "default_profile_open": default_open,
+        "n_masks_default": len(kept_default),
     }
 
 

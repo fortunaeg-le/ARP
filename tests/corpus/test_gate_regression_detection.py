@@ -689,3 +689,94 @@ def test_viii_missing_field_defaults_to_empty_not_crash():
     baseline, current = _green_pair()  # ни один _doc() здесь не несёт suppressed_gold
     v = _verdict(baseline, current)
     assert not v["red"], _reasons(v)
+
+
+# --------------------------------------------------------------------------- #
+#  ЛИНИЯ «з» — НАСТРОЙКИ ПО УМОЛЧАНИЮ (этап DEFAULT-GATE)                      #
+# --------------------------------------------------------------------------- #
+# Класс, ради которого линия заведена, невидим всем прочим линиям ПО
+# ПОСТРОЕНИЮ: гейт меряет на МАКСИМУМЕ, а пользователь работает набором по
+# умолчанию. Поэтому у линии два требования, и подложка нужна под каждое:
+# число не растёт И состав не подменяется.
+
+
+def _dp(doc_id, cases):
+    d = _doc(doc_id)
+    d["default_profile_open"] = [
+        {"type": t, "start": s_, "end": e_, "uncovered_max": 0,
+         "uncovered_default": e_ - s_, "len": e_ - s_}
+        for (t, s_, e_) in cases
+    ]
+    return d
+
+
+def test_z_new_open_value_in_default_profile_reddens_line_z():
+    """РОСТ ЧИСЛА. Значение, закрытое на максимуме и открытое по умолчанию, —
+    утечка ПДн у пользователя, который ничего не настраивал."""
+    baseline, current = _green_pair()
+    baseline.append(_dp("doc_c", []))
+    current.append(_dp("doc_c", [("PER", 100, 120)]))
+
+    v = G.evaluate(baseline, current, set(),
+                   default_leaks_ids=frozenset({("doc_c", "PER", 100, 120)}))
+
+    assert v["red"], "Открытое по умолчанию ФИО не покрасило гейт"
+    assert any(r.startswith("(з)") for r in v["regressions"]),         "Красный не по линии «з»: %s" % _reasons(v)
+
+
+def test_z_swapped_case_at_the_same_count_reddens_line_z():
+    """ПОДМЕНА СОСТАВА при том же числе. Без сверки с реестром долг мог бы
+    молча переехать с одного значения на другое — счёт бы не дрогнул."""
+    baseline, current = _green_pair()
+    baseline.append(_dp("doc_c", [("PER", 100, 120)]))
+    current.append(_dp("doc_c", [("PASSPORT", 300, 312)]))
+
+    v = G.evaluate(baseline, current, set(),
+                   default_leaks_ids=frozenset({("doc_c", "PER", 100, 120)}))
+
+    assert v["red"], "Подмена случая при том же числе не покрасила гейт"
+    assert any("НЕ документированы реестром" in r for r in v["regressions"]),         _reasons(v)
+
+
+def test_z_documented_debt_does_not_redden():
+    """ЗЕРКАЛО. Задокументированный реестром долг того же размера гейт не
+    роняет — иначе линия краснеет всегда и её перестают читать."""
+    baseline, current = _green_pair()
+    baseline.append(_dp("doc_c", [("PER", 100, 120)]))
+    current.append(_dp("doc_c", [("PER", 100, 120)]))
+
+    v = G.evaluate(baseline, current, set(),
+                   default_leaks_ids=frozenset({("doc_c", "PER", 100, 120)}))
+
+    assert not v["red"], _reasons(v)
+
+
+def test_z_baseline_without_the_field_warns_instead_of_lying():
+    """Точка отсчёта, снятая ДО появления линии, поля не имеет. Сравнивать не с
+    чем — и это говорится вслух предупреждением: сравнение с нулём выдало бы
+    ложную краснОту, молчание — ложную зелень. Реестр при этом проверяется."""
+    baseline, current = _green_pair()          # в baseline поля нет вовсе
+    current.append(_dp("doc_c", [("PER", 100, 120)]))
+
+    v = G.evaluate(baseline, current, set(),
+                   default_leaks_ids=frozenset({("doc_c", "PER", 100, 120)}))
+
+    assert not v["red"], _reasons(v)
+    assert any(r.startswith("(з)") for r in v["warnings"]), v["warnings"]
+
+
+def test_z_registry_matches_the_live_dump():
+    """Реестр — не бумажка: его ключи обязаны совпадать с тем, что печатает
+    гейт на текущем дампе. Разъехались — значит долг переехал, а реестр
+    остался, и линия охраняет вчерашний день."""
+    import json
+    dump_path = os.path.join(HERE, "results_gate_current.json")
+    if not os.path.isfile(dump_path):
+        import pytest
+        pytest.skip("нет свежего дампа гейта")
+    results = json.load(open(dump_path, encoding="utf-8"))
+    live = set(ML.default_profile_summary(results)["cases"])
+    registry = G._known_default_leaks()
+    assert live == registry, (
+        "реестр линии «з» разошёлся с дампом; только в дампе: %s; только в реестре: %s"
+        % (sorted(live - registry), sorted(registry - live)))
