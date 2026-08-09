@@ -927,6 +927,11 @@ def _detect_boundary_entities(
                 if not (ls < j and le > j):
                     continue   # стык не пересечён — дубль посегментной детекции
                 le_w = le + (w["head_start"] - w["tail_end"])
+                # строгий страж сборки (правило A6): КС сходится всегда,
+                # голая цифровая цепь — только под якорем типа
+                if not _LR._strict_seam_ok(rep_texts[m][ls:le], e.entity_type,
+                                           rep_texts[m], ls, config_path):
+                    continue
                 if _lr_guard_ok(w, ls, le_w, e.entity_type):
                     per_win[k].append((ls, le_w, e.entity_type, "regex", 1.0))
 

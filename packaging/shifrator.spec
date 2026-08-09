@@ -120,6 +120,8 @@ hiddenimports = [
     "anchor_registry", "syntax_compound", "multispan", "detokenizer",
     "file_detokenizer", "unread_zones", "ooxml_core", "docx_rewriter",
     "pptx_rewriter", "xlsx_rewriter", "type_policy",
+    # ЭТАП LAYOUT: ремонтный проход импортируется лениво из pipeline/tokenizer
+    "layout_repair",
     # ЭТАП STORE: `vault` (обёртка ключа DPAPI и шифрование сайдкаров) и
     # `markup_record` (структурная запись разметки) импортируются ЛЕНИВО —
     # внутри функций storage.py. Без них в собранном exe не открылась бы ни

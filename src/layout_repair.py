@@ -218,14 +218,16 @@ def repair_pass(doc: SourceDocument, config_path: str,
         metadata[_REPAIR_FLAG] = True
         if rdet != rtext:
             metadata["detection_text"] = rdet
-        tmp_segments.append(TextSegment(
+        tmp_seg = TextSegment(
             id=seg.id, text=rtext, source_type=seg.source_type, metadata=metadata,
-        ))
+        )
+        tmp_segments.append(tmp_seg)
         jobs.append((seg, rmap, drop_meta))
 
     if not jobs:
         return []
 
+    tmp_by_id = {s.id: s for s in tmp_segments}
     from pipeline import run_detection
     tmp_doc = SourceDocument(
         segments=tmp_segments, source_format=doc.source_format,
@@ -253,6 +255,13 @@ def repair_pass(doc: SourceDocument, config_path: str,
                     continue
             elif e.detector != "regex" or e.entity_type not in maskable:
                 continue   # ORG/ADDRESS/отрицательные классы — не через ремонт
+            elif any(seg.text[p] == "\n" for p, _ok in inside):
+                # значение СОБРАНО через перенос строки — строгий страж A6
+                rdet = tmp_by_id[seg.id].metadata.get(
+                    "detection_text", tmp_by_id[seg.id].text)
+                if not _strict_seam_ok(tmp_by_id[seg.id].text[e.start:e.end],
+                                       e.entity_type, rdet, e.start, config_path):
+                    continue
             if not _absorb_ok(rs, re_, e.entity_type, prim_here,
                               allow_absorb=(e.entity_type == "PERSON")):
                 continue
@@ -267,6 +276,54 @@ def repair_pass(doc: SourceDocument, config_path: str,
                 group_key=e.group_key, canonical=e.canonical,
             ))
     return out
+
+
+# --------------------------------------------------------------------------- #
+#            СТРОГИЙ СТРАЖ СБОРКИ ЧЕРЕЗ '\n' (правило A6 для ремонта)          #
+# --------------------------------------------------------------------------- #
+# Посегментная детекция под якорем маскирует значение и с несошедшейся КС
+# (опечатка в ПДн — всё равно ПДн, regex_detector этап 4). СБОРКА через разрыв
+# строже: она конструирует значение, которого в тексте не было, и обязана
+# доказать его сама — КС, где определена, сходится ВСЕГДА (тест
+# test_broken_checksum_is_not_stitched), а голая цифровая цепь без якоря типа
+# не принимается вовсе (две ячейки соседних строк «770708»/«3893» — это не ИНН,
+# тест test_boundary_does_not_stitch_across_pipe_separated_prose).
+
+#: зеркало multispan._LOOKALIKE — счёт эффективных цифр значения
+_DIGIT_FOLD = {"О": "0", "о": "0", "O": "0", "o": "0", "З": "3", "з": "3",
+               "Ч": "4", "ч": "4", "І": "1", "і": "1", "б": "6"}
+
+#: символы «голой цифровой цепи»: цифры/омоглифы цифр, пробельные, дефисы.
+#: Скобки/плюс/точки — уже СТРУКТУРА значения (телефон, дата): их формы
+#: доказывают тип сами, на них правило якоря не распространяется.
+_BARE_EXTRA = frozenset(" \t\n\r-–—‑‒−")
+
+
+def _strict_seam_ok(matched: str, etype: str, ctx: str, start: int,
+                    config_path: str) -> bool:
+    """Пропускает regex-находку, СОБРАННУЮ через '\\n', по правилу A6."""
+    from regex_detector import VALIDATORS, _has_anchor, _fold_anchor_context
+    from multispan import _LOCAL_SEAM_ANCHORS
+    import re as _re
+    spec = load_yaml_cached(config_path)["entity_types"].get(etype) or {}
+    validator = VALIDATORS.get(spec.get("validate") or "")
+    if validator is not None:
+        digits = "".join(_DIGIT_FOLD.get(ch, ch) for ch in matched
+                         if ch.isdigit() or ch in _DIGIT_FOLD)
+        if not validator(digits):
+            return False
+    bare = all(ch.isdigit() or ch in _DIGIT_FOLD or ch in _BARE_EXTRA
+               for ch in matched)
+    if bare:
+        anchor = spec.get("anchor")
+        anchor_re = (_re.compile(anchor) if anchor
+                     else _LOCAL_SEAM_ANCHORS.get(etype))
+        if anchor_re is None:
+            return False
+        folded = _fold_anchor_context(ctx)
+        if not _has_anchor(folded, start, anchor_re):
+            return False
+    return True
 
 
 # --------------------------------------------------------------------------- #
