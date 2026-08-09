@@ -15,13 +15,15 @@
      "s": "№ "
     },
     {
-     "n": {
+     "e": {
       "axes": {
        "формат": "01Ф-00034/16-124Д"
       },
+      "cat": "canonical",
       "form": "docnum|формат=01Ф-00034/16-124Д",
-      "type": "DOCNUM",
-      "why": "номер договора — не ПДн"
+      "id": "cx_works_0013-e1",
+      "note": "переклассифицирован из негатива (этап MARKUP-V2): номер договора маскируется",
+      "type": "DOCNUM"
      },
      "s": "50Ф-84071/19-674Д"
     }
@@ -70,7 +72,7 @@
     {
      "e": {
       "cat": "canonical",
-      "id": "cx_works_0013-e1",
+      "id": "cx_works_0013-e2",
       "type": "ORG"
      },
      "s": "АО «Северный Ветер»"
@@ -81,7 +83,7 @@
     {
      "e": {
       "cat": "canonical",
-      "id": "cx_works_0013-e2",
+      "id": "cx_works_0013-e3",
       "note": "ФИО в родительном падеже",
       "type": "PER"
      },
@@ -99,7 +101,7 @@
     {
      "e": {
       "cat": "canonical",
-      "id": "cx_works_0013-e3",
+      "id": "cx_works_0013-e4",
       "type": "PER"
      },
      "s": "Пирогова Ольга Егоровна"
@@ -113,7 +115,7 @@
     {
      "e": {
       "cat": "ugly",
-      "id": "cx_works_0013-e4",
+      "id": "cx_works_0013-e5",
       "note": "серия+номер, стиль записи из PASSPORT_STYLES",
       "type": "PASSPORT"
      },
@@ -140,7 +142,7 @@
     {
      "e": {
       "cat": "ugly",
-      "id": "cx_works_0013-e5",
+      "id": "cx_works_0013-e6",
       "note": "код подразделения, стиль записи из DEPTCODE_STYLES",
       "type": "PASSPORT"
      },
@@ -153,13 +155,15 @@
      "s": ", с другой стороны, совместно именуемые «Стороны», заключили настоящий Договор № "
     },
     {
-     "n": {
+     "e": {
       "axes": {
        "формат": "чисто числовой (2/17, 27/16)"
       },
+      "cat": "canonical",
       "form": "docnum|формат=чисто числовой (2/17, 27/16)",
-      "type": "DOCNUM",
-      "why": "номер договора — не ПДн"
+      "id": "cx_works_0013-e7",
+      "note": "переклассифицирован из негатива (этап MARKUP-V2): номер договора маскируется",
+      "type": "DOCNUM"
      },
      "s": "5/25"
     },
@@ -235,7 +239,7 @@
       },
       "cat": "canonical",
       "form": "term|вместо срока — дата=не позднее 01.11.2025",
-      "id": "cx_works_0013-e6",
+      "id": "cx_works_0013-e8",
       "note": "срок задан КОНКРЕТНОЙ ДАТОЙ, а не длительностью",
       "type": "TERM"
      },
@@ -449,7 +453,7 @@
       },
       "cat": "canonical",
       "form": "money|копейки=00 копеек|валюта=рублей|пропись=вместо цифр|НДС=НДС не облагается|заполненность=значение",
-      "id": "cx_works_0013-e7",
+      "id": "cx_works_0013-e9",
       "note": "сумма",
       "type": "MONEY"
      },
@@ -481,7 +485,7 @@
       },
       "cat": "canonical",
       "form": "percent|запись=0,1 %|пропись=нет|привязка=от стоимости неоплаченных работ|ограничение=нет|дробь ставки=нет",
-      "id": "cx_works_0013-e8",
+      "id": "cx_works_0013-e10",
       "note": "процент",
       "type": "PERCENT"
      },
@@ -509,7 +513,7 @@
       },
       "cat": "canonical",
       "form": "term|запись числа=трех|вид дней=не указан|отправная точка=с момента выставления счета|вместо срока — дата=нет",
-      "id": "cx_works_0013-e9",
+      "id": "cx_works_0013-e11",
       "note": "срок длительностью",
       "type": "TERM"
      },
@@ -711,7 +715,7 @@
       },
       "cat": "canonical",
       "form": "money|разделитель разрядов=пробел|копейки=00 копеек|валюта=руб.|пропись=(Десять тысяч)|НДС=в т.ч. НДС 18%|заполненность=значение",
-      "id": "cx_works_0013-e10",
+      "id": "cx_works_0013-e12",
       "note": "сумма",
       "type": "MONEY"
      },
@@ -727,7 +731,7 @@
       },
       "cat": "canonical",
       "form": "percent|запись=15%",
-      "id": "cx_works_0013-e11",
+      "id": "cx_works_0013-e13",
       "note": "ставка НДС",
       "type": "PERCENT"
      },
@@ -1133,7 +1137,7 @@
     {
      "e": {
       "cat": "canonical",
-      "id": "cx_works_0013-e12",
+      "id": "cx_works_0013-e14",
       "note": "стиль адреса: canonical",
       "type": "ADDRESS"
      },
@@ -1154,7 +1158,7 @@
     {
      "e": {
       "cat": "canonical",
-      "id": "cx_works_0013-e13",
+      "id": "cx_works_0013-e15",
       "note": "ФИО в дательном падеже",
       "type": "PER"
      },
@@ -1166,7 +1170,7 @@
     {
      "e": {
       "cat": "canonical",
-      "id": "cx_works_0013-e14",
+      "id": "cx_works_0013-e16",
       "note": "формат: canonical",
       "type": "PHONE"
      },
@@ -1194,7 +1198,7 @@
       },
       "cat": "canonical",
       "form": "term|запись числа=10|вид дней=месяцев|отправная точка=со дня предъявления требования|вместо срока — дата=нет",
-      "id": "cx_works_0013-e15",
+      "id": "cx_works_0013-e17",
       "note": "срок длительностью",
       "type": "TERM"
      },
@@ -1443,7 +1447,7 @@
       },
       "cat": "canonical",
       "form": "percent|запись=10 (десять) процентов|привязка=от цены Договора|ограничение=но не более 20% от цены договора|дробь ставки=нет",
-      "id": "cx_works_0013-e16",
+      "id": "cx_works_0013-e18",
       "note": "процент",
       "type": "PERCENT"
      },
@@ -1462,7 +1466,7 @@
       },
       "cat": "canonical",
       "form": "percent|запись=10 (десять) процентов|привязка=от цены Договора|ограничение=нет|дробь ставки=нет",
-      "id": "cx_works_0013-e17",
+      "id": "cx_works_0013-e19",
       "note": "потолок ответственности",
       "type": "PERCENT"
      },
@@ -1480,7 +1484,7 @@
       },
       "cat": "canonical",
       "form": "percent|привязка=годовых|ограничение=нет|дробь ставки=1/130",
-      "id": "cx_works_0013-e18",
+      "id": "cx_works_0013-e20",
       "note": "процент",
       "type": "PERCENT"
      },
@@ -1523,7 +1527,7 @@
       },
       "cat": "canonical",
       "form": "term|запись числа=трех|вид дней=рабочих|отправная точка=с даты подписания Сторонами акта сдачи-приемки оказанных услуг|вместо срока — дата=нет",
-      "id": "cx_works_0013-e19",
+      "id": "cx_works_0013-e21",
       "note": "срок длительностью",
       "type": "TERM"
      },
@@ -1554,7 +1558,7 @@
       },
       "cat": "canonical",
       "form": "term|запись числа=30 (Тридцати)|вид дней=банковских|отправная точка=с момента выставления счета|вместо срока — дата=нет",
-      "id": "cx_works_0013-e20",
+      "id": "cx_works_0013-e22",
       "note": "срок длительностью",
       "type": "TERM"
      },
@@ -1825,7 +1829,7 @@
       },
       "cat": "adversarial",
       "form": "money|разделитель разрядов=слитно|копейки=,0|валюта=рубля|пропись=(десять тысяч)|НДС=нет|заполненность=значение",
-      "id": "cx_works_0013-e21",
+      "id": "cx_works_0013-e23",
       "note": "число разорвано форматированием: половина цифр в одном ране, половина в другом",
       "trick": "format_split",
       "type": "MONEY"
@@ -1854,7 +1858,7 @@
       },
       "cat": "adversarial",
       "form": "percent|привязка=от цены Договора|ограничение=нет|дробь ставки=1/300",
-      "id": "cx_works_0013-e22",
+      "id": "cx_works_0013-e24",
       "note": "число разорвано форматированием: половина цифр в одном ране, половина в другом",
       "trick": "format_split",
       "type": "PERCENT"
@@ -1881,7 +1885,7 @@
       },
       "cat": "adversarial",
       "form": "term|вместо срока — дата=не позднее 01.11.2025",
-      "id": "cx_works_0013-e23",
+      "id": "cx_works_0013-e25",
       "note": "число разорвано форматированием: половина цифр в одном ране, половина в другом",
       "trick": "format_split",
       "type": "TERM"
@@ -1901,14 +1905,16 @@
      "s": "9.4. Контрольная запись: "
     },
     {
-     "n": {
+     "e": {
       "axes": {
        "формат": "17595/001-сс"
       },
+      "cat": "adversarial",
       "form": "docnum|формат=17595/001-сс",
+      "id": "cx_works_0013-e26",
+      "note": "пробелы внутри цифр",
       "trick": "digit_spaces",
-      "type": "DOCNUM",
-      "why": "номер договора — не ПДн"
+      "type": "DOCNUM"
      },
      "s": "17 8 69/048-сс"
     },
@@ -1932,7 +1938,7 @@
       },
       "cat": "adversarial",
       "form": "money|разделитель разрядов=неразрывный пробел|заполненность=значение",
-      "id": "cx_works_0013-e24",
+      "id": "cx_works_0013-e27",
       "note": "цифровая часть суммы, расходящейся с прописью",
       "trick": "words_mismatch",
       "type": "MONEY"
@@ -1951,7 +1957,7 @@
       },
       "cat": "adversarial",
       "form": "money|валюта=рублей|пропись=вместо цифр|заполненность=значение",
-      "id": "cx_works_0013-e25",
+      "id": "cx_works_0013-e28",
       "note": "пропись, не совпадающая с цифрами (и неграмматичная)",
       "trick": "words_mismatch",
       "type": "MONEY"
@@ -1992,7 +1998,7 @@
     {
      "e": {
       "cat": "adversarial",
-      "id": "cx_works_0013-e26",
+      "id": "cx_works_0013-e29",
       "note": "ФИО внутри w:smartTag",
       "trick": "in_smart_tag",
       "type": "PER"
@@ -2024,7 +2030,7 @@
     {
      "e": {
       "cat": "canonical",
-      "id": "cx_works_0013-e27",
+      "id": "cx_works_0013-e30",
       "note": "фабричный тип: пример из файла-описания владельца",
       "type": "CONTRACT_NO"
      },
@@ -2065,7 +2071,7 @@
     {
      "e": {
       "cat": "canonical",
-      "id": "cx_works_0013-e28",
+      "id": "cx_works_0013-e31",
       "note": "фабричный тип: пример из файла-описания владельца",
       "type": "REG_ID"
      },
@@ -2106,7 +2112,7 @@
     {
      "e": {
       "cat": "canonical",
-      "id": "cx_works_0013-e29",
+      "id": "cx_works_0013-e32",
       "note": "фабричный тип: пример из файла-описания владельца",
       "type": "REG_NUMBER"
      },
@@ -2147,7 +2153,7 @@
     {
      "e": {
       "cat": "canonical",
-      "id": "cx_works_0013-e30",
+      "id": "cx_works_0013-e33",
       "note": "фабричный тип: пример из файла-описания владельца",
       "type": "SHARE_PCT"
      },
@@ -2218,7 +2224,7 @@
          {
           "e": {
            "cat": "canonical",
-           "id": "cx_works_0013-e31",
+           "id": "cx_works_0013-e34",
            "type": "ORG"
           },
           "s": "АО «Северный Ветер»"
@@ -2235,7 +2241,7 @@
          {
           "e": {
            "cat": "canonical",
-           "id": "cx_works_0013-e32",
+           "id": "cx_works_0013-e35",
            "note": "стиль адреса: canonical",
            "type": "ADDRESS"
           },
@@ -2253,7 +2259,7 @@
          {
           "e": {
            "cat": "canonical",
-           "id": "cx_works_0013-e33",
+           "id": "cx_works_0013-e36",
            "note": "стиль адреса: canonical",
            "type": "ADDRESS"
           },
@@ -2272,7 +2278,7 @@
           "e": {
            "cat": "canonical",
            "checksum": "valid",
-           "id": "cx_works_0013-e34",
+           "id": "cx_works_0013-e37",
            "type": "INN"
           },
           "s": "5468932765"
@@ -2283,7 +2289,7 @@
          {
           "e": {
            "cat": "canonical",
-           "id": "cx_works_0013-e35",
+           "id": "cx_works_0013-e38",
            "type": "KPP"
           },
           "s": "110952465"
@@ -2301,7 +2307,7 @@
           "e": {
            "cat": "canonical",
            "checksum": "valid",
-           "id": "cx_works_0013-e36",
+           "id": "cx_works_0013-e39",
            "type": "OGRN"
           },
           "s": "1179367523961"
@@ -2319,7 +2325,7 @@
           "e": {
            "cat": "canonical",
            "checksum": "valid",
-           "id": "cx_works_0013-e37",
+           "id": "cx_works_0013-e40",
            "type": "ACCOUNT"
           },
           "s": "40702810382784312041"
@@ -2339,7 +2345,7 @@
          {
           "e": {
            "cat": "canonical",
-           "id": "cx_works_0013-e38",
+           "id": "cx_works_0013-e41",
            "note": "корреспондентский счёт банка",
            "type": "ACCOUNT"
           },
@@ -2351,7 +2357,7 @@
          {
           "e": {
            "cat": "canonical",
-           "id": "cx_works_0013-e39",
+           "id": "cx_works_0013-e42",
            "type": "BIK"
           },
           "s": "044525593"
@@ -2368,7 +2374,7 @@
          {
           "e": {
            "cat": "canonical",
-           "id": "cx_works_0013-e40",
+           "id": "cx_works_0013-e43",
            "note": "формат: canonical",
            "type": "PHONE"
           },
@@ -2386,7 +2392,7 @@
          {
           "e": {
            "cat": "canonical",
-           "id": "cx_works_0013-e41",
+           "id": "cx_works_0013-e44",
            "type": "EMAIL"
           },
           "s": "pirogova@inbox.ru"
@@ -2408,7 +2414,7 @@
          {
           "e": {
            "cat": "ugly",
-           "id": "cx_works_0013-e42",
+           "id": "cx_works_0013-e45",
            "note": "инициалы перед фамилией",
            "type": "PER"
           },
@@ -2436,7 +2442,7 @@
          {
           "e": {
            "cat": "canonical",
-           "id": "cx_works_0013-e43",
+           "id": "cx_works_0013-e46",
            "type": "PER"
           },
           "s": "Пирогова Ольга Егоровна"
@@ -2453,7 +2459,7 @@
          {
           "e": {
            "cat": "canonical",
-           "id": "cx_works_0013-e44",
+           "id": "cx_works_0013-e47",
            "note": "стиль записи из BIRTHDATE_STYLES",
            "type": "BIRTHDATE"
           },
@@ -2471,7 +2477,7 @@
          {
           "e": {
            "cat": "canonical",
-           "id": "cx_works_0013-e45",
+           "id": "cx_works_0013-e48",
            "note": "стиль адреса: canonical",
            "type": "ADDRESS"
           },
@@ -2489,7 +2495,7 @@
          {
           "e": {
            "cat": "canonical",
-           "id": "cx_works_0013-e46",
+           "id": "cx_works_0013-e49",
            "note": "серия+номер, стиль записи из PASSPORT_STYLES",
            "type": "PASSPORT"
           },
@@ -2504,7 +2510,7 @@
          {
           "e": {
            "cat": "ugly",
-           "id": "cx_works_0013-e47",
+           "id": "cx_works_0013-e50",
            "note": "код подразделения, стиль записи из DEPTCODE_STYLES",
            "type": "PASSPORT"
           },
@@ -2523,7 +2529,7 @@
           "e": {
            "cat": "canonical",
            "checksum": "valid",
-           "id": "cx_works_0013-e48",
+           "id": "cx_works_0013-e51",
            "note": "стиль записи из SNILS_STYLES",
            "type": "SNILS"
           },
@@ -2536,7 +2542,7 @@
           "e": {
            "cat": "ugly",
            "checksum": "valid",
-           "id": "cx_works_0013-e49",
+           "id": "cx_works_0013-e52",
            "note": "ИНН физлица (12 знаков)",
            "type": "INN"
           },
@@ -2554,7 +2560,7 @@
          {
           "e": {
            "cat": "canonical",
-           "id": "cx_works_0013-e50",
+           "id": "cx_works_0013-e53",
            "note": "формат: canonical",
            "type": "PHONE"
           },
@@ -2572,7 +2578,7 @@
          {
           "e": {
            "cat": "canonical",
-           "id": "cx_works_0013-e51",
+           "id": "cx_works_0013-e54",
            "type": "EMAIL"
           },
           "s": "pirogova@gmail.com"
@@ -2594,7 +2600,7 @@
          {
           "e": {
            "cat": "ugly",
-           "id": "cx_works_0013-e52",
+           "id": "cx_works_0013-e55",
            "note": "фамилия + инициалы",
            "type": "PER"
           },
@@ -2632,7 +2638,7 @@
     {
      "e": {
       "cat": "ugly",
-      "id": "cx_works_0013-e53",
+      "id": "cx_works_0013-e56",
       "note": "подпись: фамилия+инициалы",
       "type": "PER"
      },
@@ -2653,7 +2659,7 @@
     {
      "e": {
       "cat": "ugly",
-      "id": "cx_works_0013-e54",
+      "id": "cx_works_0013-e57",
       "note": "подпись: фамилия+инициалы",
       "type": "PER"
      },
