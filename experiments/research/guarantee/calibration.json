@@ -1,0 +1,236 @@
+{
+ "seed": 20260809,
+ "beta": 0.05,
+ "delta": 0.05,
+ "n_families": 108,
+ "n_cal_docs": 162,
+ "n_hold_docs": 162,
+ "n_cal_families": 54,
+ "n_hold_families": 54,
+ "by_lambda": {
+  "1": {
+   "cal_mean_risk": 0.10371982413406752,
+   "cal_conformal_bound": 0.3333333333333333,
+   "cal_order_stat_k": 155,
+   "cal_hoeffding_ucb_mean": 0.1998764009453056,
+   "cal_mean_loss": 77.67283950617283,
+   "cal_zero_leak_docs": 0.2777777777777778
+  },
+  "2": {
+   "cal_mean_risk": 0.17241087105594755,
+   "cal_conformal_bound": 0.39473684210526316,
+   "cal_order_stat_k": 155,
+   "cal_hoeffding_ucb_mean": 0.2685674478671856,
+   "cal_mean_loss": 119.3395061728395,
+   "cal_zero_leak_docs": 0.08641975308641975
+  },
+  "3": {
+   "cal_mean_risk": 0.18924084563641508,
+   "cal_conformal_bound": 0.42105263157894735,
+   "cal_order_stat_k": 155,
+   "cal_hoeffding_ucb_mean": 0.28539742244765315,
+   "cal_mean_loss": 128.7716049382716,
+   "cal_zero_leak_docs": 0.08641975308641975
+  },
+  "4": {
+   "cal_mean_risk": 0.29740083617433494,
+   "cal_conformal_bound": 0.4444444444444444,
+   "cal_order_stat_k": 155,
+   "cal_hoeffding_ucb_mean": 0.393557412985573,
+   "cal_mean_loss": 195.4320987654321,
+   "cal_zero_leak_docs": 0.0
+  }
+ },
+ "lambda_star": 1,
+ "alpha_claimed": 0.3333333333333333,
+ "calibration_size_curve": [
+  {
+   "n_cal_families": 10,
+   "n_cal_docs": 30,
+   "bound_mean": 0.3815578403309354,
+   "bound_max": 0.45161290322580644,
+   "inner_violation_mean": 0.03068181818181817
+  },
+  {
+   "n_cal_families": 20,
+   "n_cal_docs": 60,
+   "bound_mean": 0.34425261393640005,
+   "bound_max": 0.3888888888888889,
+   "inner_violation_mean": 0.04681372549019607
+  },
+  {
+   "n_cal_families": 30,
+   "n_cal_docs": 90,
+   "bound_mean": 0.3494999694702582,
+   "bound_max": 0.38461538461538464,
+   "inner_violation_mean": 0.042708333333333334
+  },
+  {
+   "n_cal_families": 40,
+   "n_cal_docs": 120,
+   "bound_mean": 0.3397291093173947,
+   "bound_max": 0.35714285714285715,
+   "inner_violation_mean": 0.05178571428571427
+  },
+  {
+   "n_cal_families": 54,
+   "n_cal_docs": 162,
+   "bound_mean": 0.3333333333333335,
+   "bound_max": 0.3333333333333333,
+   "inner_violation_mean": null
+  },
+  {
+   "n_cal_families": 54,
+   "n_cal_docs": 162,
+   "bound_mean": 0.3333333333333335,
+   "bound_max": 0.3333333333333333,
+   "inner_violation_mean": null
+  },
+  {
+   "n_cal_families": 54,
+   "n_cal_docs": 162,
+   "bound_mean": 0.3333333333333335,
+   "bound_max": 0.3333333333333333,
+   "inner_violation_mean": null
+  }
+ ],
+ "distribution_shift_within_cal": [
+  {
+   "calibrated_on": "оказание услуг",
+   "n": 21,
+   "bound": 0.3548387096774194,
+   "violation_rate_elsewhere": 0.0425531914893617
+  },
+  {
+   "calibrated_on": "поставка",
+   "n": 42,
+   "bound": 0.38461538461538464,
+   "violation_rate_elsewhere": 0.016666666666666666
+  }
+ ],
+ "holdout": {
+  "lambda": 1,
+  "alpha_claimed": 0.3333333333333333,
+  "n_docs": 162,
+  "mean_risk": 0.12067694226850391,
+  "violation_rate": 0.08024691358024691,
+  "target_violation_rate": 0.05,
+  "holds": false,
+  "max_risk": 0.48484848484848486,
+  "hoeffding_ucb_mean_on_cal": 0.1998764009453056,
+  "mean_risk_vs_ucb_holds": true
+ },
+ "holdout_by_type": {
+  "ACCOUNT": {
+   "entities": 361,
+   "leaked": 7,
+   "leak_rate": 0.019390581717451522
+  },
+  "ADDRESS": {
+   "entities": 663,
+   "leaked": 114,
+   "leak_rate": 0.17194570135746606
+  },
+  "BIK": {
+   "entities": 204,
+   "leaked": 3,
+   "leak_rate": 0.014705882352941176
+  },
+  "BIRTHDATE": {
+   "entities": 120,
+   "leaked": 5,
+   "leak_rate": 0.041666666666666664
+  },
+  "EMAIL": {
+   "entities": 357,
+   "leaked": 0,
+   "leak_rate": 0.0
+  },
+  "INN": {
+   "entities": 170,
+   "leaked": 8,
+   "leak_rate": 0.047058823529411764
+  },
+  "INN_PER": {
+   "entities": 254,
+   "leaked": 13,
+   "leak_rate": 0.051181102362204724
+  },
+  "KPP": {
+   "entities": 112,
+   "leaked": 7,
+   "leak_rate": 0.0625
+  },
+  "OGRN": {
+   "entities": 204,
+   "leaked": 7,
+   "leak_rate": 0.03431372549019608
+  },
+  "ORG": {
+   "entities": 160,
+   "leaked": 36,
+   "leak_rate": 0.225
+  },
+  "PASSPORT": {
+   "entities": 282,
+   "leaked": 43,
+   "leak_rate": 0.1524822695035461
+  },
+  "PER": {
+   "entities": 1299,
+   "leaked": 385,
+   "leak_rate": 0.2963818321785989
+  },
+  "PHONE": {
+   "entities": 621,
+   "leaked": 22,
+   "leak_rate": 0.03542673107890499
+  },
+  "SNILS": {
+   "entities": 120,
+   "leaked": 1,
+   "leak_rate": 0.008333333333333333
+  },
+  "SUM": {
+   "entities": 324,
+   "leaked": 10,
+   "leak_rate": 0.030864197530864196
+  }
+ },
+ "family_level": {
+  "n_cal_families": 54,
+  "n_hold_families": 54,
+  "cal_mean_risk": 0.20047579122952394,
+  "conformal_bound": 0.4,
+  "order_stat_k": 53,
+  "holdout_violation_rate": 0.07407407407407407,
+  "holdout_max_risk": 0.48484848484848486,
+  "holds": false
+ },
+ "tolerance_bounds_family_level": {
+  "0.95/0.95": {
+   "k_needed": null,
+   "n_available": 54,
+   "bound": null,
+   "min_n_for_this_claim": 59
+  },
+  "0.9/0.95": {
+   "k_needed": 54,
+   "n_available": 54,
+   "bound": 0.45161290322580644,
+   "min_n_for_this_claim": 29
+  },
+  "0.9/0.9": {
+   "k_needed": 54,
+   "n_available": 54,
+   "bound": 0.45161290322580644,
+   "min_n_for_this_claim": 22
+  },
+  "0.8/0.95": {
+   "k_needed": 54,
+   "n_available": 54,
+   "bound": 0.45161290322580644,
+   "min_n_for_this_claim": 14
+  }
+ }
+}
