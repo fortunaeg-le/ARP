@@ -76,5 +76,13 @@ def run_detection(doc, config_path):
 
     entities = regex_e + ner_e + struct_e
     entities = merge_compound_entities(doc, entities)
+    # 7. ЭТАП LAYOUT — ремонтный проход: значение, разорванное вёрсткой ВНУТРИ
+    #    сегмента (перенос/NBSP внутри токена). Монотонное ДОПОЛНЕНИЕ: основной
+    #    вид не меняется, проход может только добавить сущности (страж —
+    #    tests/test_layout_repair.py). Внутри ремонтный вид гоняет этот же
+    #    run_detection по временному документу (защита от рекурсии — метка
+    #    сегмента), поэтому порядок слоёв по-прежнему живёт в одном месте.
+    from layout_repair import repair_pass
+    entities = entities + repair_pass(doc, config_path, entities)
     entities = entities + detect_negative_classes(doc, config_path)
     return entities
