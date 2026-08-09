@@ -315,7 +315,12 @@ def process_doc(d, allow_lossy=ALLOW_LOSSY):
     aligned = (len(restored) == len(plain))
 
     # глобализация найденных
-    offs, loc_misses = ML.build_segment_offsets(doc, G, body_start)
+    # ЭТАП METRIC-FIX: локализация ПО ЧАСТЯМ пакета. Сегменты колонтитулов (их
+    # читает система с этапа NODES) лежат в PT-1 вне тела, и поиск от body_start
+    # не находил их никогда — значение считалось «не найденным», хотя было
+    # замаскировано (долг AUD1-HEADER-FALSEMISS).
+    offs, loc_misses = ML.build_segment_offsets(
+        doc, G, body_start, regions=ML.part_regions(path, G))
     det = ML.map_entities_to_pt1(kept, offs, G)
     det_located = [x for x in det if x["start"] is not None]
 

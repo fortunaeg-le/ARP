@@ -71,8 +71,14 @@ def main():
                     leak_by_type[x["type"]] += 1
                 else:
                     other.append((doc_id, i, x["type"], "leak", sb, sa))
-            elif set(diff) <= FOUND_FIELDS:
-                if not x["found"] and y["found"]:
+            elif set(diff) <= FOUND_FIELDS | {"bnd"}:
+                # ЧАСТЬ 2. Локализация колонтитула двигает не только «найдено»:
+                # у сущности появляются координаты, а значит и границы (bnd).
+                # Но всё это ОБЯЗАНО происходить только ВНЕ тела: сущность тела
+                # правка не касается вовсе.
+                if x["in_body"]:
+                    other.append((doc_id, i, x["type"], "В ТЕЛЕ", sorted(diff), ""))
+                elif not x["found"] and y["found"]:
                     found_by_type[x["type"]] += 1
                 else:
                     other.append((doc_id, i, x["type"], "found",

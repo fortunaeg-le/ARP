@@ -68,34 +68,122 @@ def body_offset(path: str, full_text: str) -> int:
 
 
 # --------------------------------------------------------------------------- #
+#  ЭТАП METRIC-FIX — УЧАСТКИ ЧАСТЕЙ ПАКЕТА (долг AUD1-HEADER-FALSEMISS)        #
+# --------------------------------------------------------------------------- #
+# ЧЕМ ВРАЛ ПРИБОР — В ПЕССИМИЗМ.  Этап NODES научил систему читать колонтитулы:
+# их сегменты идут в `doc.segments` ПОСЛЕ тела и несут `metadata["part"]`.  А
+# локализация (`build_segment_offsets`) искала текст сегмента курсором-вперёд,
+# начиная с body_start.  В PT-1 верхний колонтитул стоит ПЕРЕД телом — значит
+# `find` не находил его НИКОГДА, сегмент получал offset=None, его маски не
+# глобализовались, и эталонная сущность колонтитула записывалась «не найдено».
+# Значение при этом было найдено и замаскировано: в анонимном тексте его нет.
+# Нижний колонтитул при этом локализовался — но по случайности порядка (он
+# стоит в PT-1 ПОСЛЕ тела), а не потому, что прибор про части знал.
+#
+# Пессимизм не безопаснее слепоты: по этим числам мы решаем, ГДЕ чинить.
+def _docx_part_texts(path: str):
+    """(header|None, body, [тексты сносок], footer|None) по правилу PT-1.
+
+    Порядок склейки PT-1 (corpus_lib.extract_docx): header1, тело, сноски по
+    одной, footer1 — через '\\n'.  Повторяется здесь ровно потому, что участки
+    считаются в ТЕХ ЖЕ координатах, в которых размечен gold."""
+    z = zipfile.ZipFile(path)
+    names = set(z.namelist())
+    header = None
+    if "word/header1.xml" in names:
+        header = _blocks_text(etree.fromstring(z.read("word/header1.xml")))
+    doc = etree.fromstring(z.read("word/document.xml"))
+    body = doc.find(WNS + "body")
+    body_blocks = [c for c in body if c.tag in (WNS + "p", WNS + "tbl")]
+    body_text = "\n".join(
+        _p_text(c) if c.tag == WNS + "p" else _tbl_text(c) for c in body_blocks
+    )
+    notes = []
+    if "word/footnotes.xml" in names:
+        root = etree.fromstring(z.read("word/footnotes.xml"))
+        for f in root.findall(WNS + "footnote"):
+            if f.get(WNS + "id") in ("-1", "0"):
+                continue
+            notes.append("\n".join(_p_text(p) for p in f.findall(WNS + "p")))
+    footer = None
+    if "word/footer1.xml" in names:
+        footer = _blocks_text(etree.fromstring(z.read("word/footer1.xml")))
+    return header, body_text, notes, footer
+
+
+def part_regions(path: str, full_text: str):
+    """{имя части OOXML | None: (start, end)} — участок PT-1 каждой части.
+
+    Ключ None — тело документа (сегменты тела `metadata["part"]` не имеют).
+    Части, которых в PT-1 нет (сноски система не читает; header2/footer2 в
+    правило PT-1 не входят вовсе), ключа не получают — их сегменты останутся
+    нелокализованными, как и были.  Это НАМЕРЕННО: выдуманный участок был бы
+    хуже честного «не локализовано»."""
+    if path.lower().endswith(".txt"):
+        return {None: (0, len(full_text))}
+    header, body_text, notes, footer = _docx_part_texts(path)
+    regions = {}
+    pos = 0
+    if header is not None:
+        regions["word/header1.xml"] = (pos, pos + len(header))
+        pos += len(header) + 1
+    regions[None] = (pos, pos + len(body_text))
+    pos += len(body_text) + 1
+    for n in notes:
+        pos += len(n) + 1
+    if footer is not None:
+        regions["word/footer1.xml"] = (pos, pos + len(footer))
+    return regions
+
+
+# --------------------------------------------------------------------------- #
 #      Отображение (segment_id, local offset) -> глобальное PT-1-смещение      #
 # --------------------------------------------------------------------------- #
-def build_segment_offsets(doc, full_text: str, body_start: int):
+def build_segment_offsets(doc, full_text: str, body_start: int, regions=None):
     """Курсором-вперёд находит абсолютное смещение каждого сегмента системы в
-    участке тела PT-1-текста.  Порядок сегментов системы совпадает с порядком тела
-    PT-1 (оба идут по дочерним элементам body в порядке документа), поэтому
-    однопроходный курсор устойчив к повторам (пустые ячейки, одинаковые значения).
+    PT-1-тексте.  Порядок сегментов системы внутри одной части совпадает с
+    порядком этой части в PT-1 (оба идут по дочерним элементам контейнера в
+    порядке документа), поэтому однопроходный курсор устойчив к повторам
+    (пустые ячейки, одинаковые значения).
+
+    ЭТАП METRIC-FIX — `regions` (см. part_regions): у КАЖДОЙ части пакета свой
+    участок и свой курсор.  Без него сегменты верхнего колонтитула искались в
+    теле и не находились никогда (долг AUD1-HEADER-FALSEMISS): recall по ним
+    занижался ложно.  `regions=None` — прежнее поведение (только тело); оно
+    остаётся для вызовов, у которых пути к документу нет.
 
     Возвращает (offsets: dict segment_id->abs_start|None, misses: list segment_id
     с текстом, который не удалось локализовать)."""
     offsets = {}
     misses = []
-    cursor = body_start
+    cursors = {}
     for seg in doc.segments:
         if not seg.text:
             offsets[seg.id] = None
             continue
-        idx = full_text.find(seg.text, cursor)
+        part = seg.metadata.get("part") if regions is not None else None
+        if regions is None:
+            lo, hi = body_start, len(full_text)
+        elif part in regions:
+            lo, hi = regions[part]
+        else:
+            # часть, которой в правиле PT-1 нет (сноски, header2/footer2):
+            # выдумывать участок нельзя — честный промах локализации.
+            offsets[seg.id] = None
+            misses.append(seg.id)
+            continue
+        cursor = cursors.get(part, lo)
+        idx = full_text.find(seg.text, cursor, hi)
         if idx == -1:
-            # запасной путь: ищем с начала тела (на случай редкого рассогласования
-            # порядка); если и так нет — фиксируем промах локализации честно.
-            idx = full_text.find(seg.text, body_start)
+            # запасной путь: ищем с начала участка (на случай редкого
+            # рассогласования порядка); если и так нет — промах честно.
+            idx = full_text.find(seg.text, lo, hi)
         if idx == -1:
             offsets[seg.id] = None
             misses.append(seg.id)
             continue
         offsets[seg.id] = idx
-        cursor = idx + len(seg.text)
+        cursors[part] = idx + len(seg.text)
     return offsets, misses
 
 

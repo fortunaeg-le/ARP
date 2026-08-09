@@ -243,7 +243,11 @@ def process_doc(d, config=None):
     assert plain2 == plain, f"{doc_id}: plain_segment_offsets разошлась с build_plain_text"
     aligned = (len(restored) == len(plain))
 
-    offs, loc_misses = ML.build_segment_offsets(doc, G, body_start)
+    # ЭТАП METRIC-FIX: локализация ПО ЧАСТЯМ пакета — тот же класс, что на
+    # корпусе v1 (AUD1-HEADER-FALSEMISS). 17 из 84 docx корпуса v2 имеют
+    # верхний колонтитул; без участков их сегменты не находились никогда.
+    offs, loc_misses = ML.build_segment_offsets(
+        doc, G, body_start, regions=ML.part_regions(path, G))
     det = ML.map_entities_to_pt1(kept, offs, G)
     det_located = [x for x in det if x["start"] is not None]
 
@@ -253,6 +257,9 @@ def process_doc(d, config=None):
 
     anon_norm_v2 = ML.v2_norm_text(anon_text)
     anon_digit_field = ML.v2_digit_runs(anon_text)
+    # ЭТАП METRIC-FIX: позиции цифровых групп — раздроблённая ветвь leak_v2
+    # (значение, разорванное вёрсткой на куски короче порога).
+    anon_runs = ML.v2_digit_runs_pos(anon_text)
     anon_date_field = ML.v2_date_field(anon_text)
 
     # ---- границы по направлению ошибки (тот же прибор, что линия «е») ----
@@ -294,7 +301,8 @@ def process_doc(d, config=None):
         if gt in _POSITIONAL_TYPES:
             v2 = {"status": "none", "fragments": []}
         else:
-            v2 = RM.leak_v2(gt, e["text"], anon_norm_v2, anon_digit_field, anon_date_field)
+            v2 = RM.leak_v2(gt, e["text"], anon_norm_v2, anon_digit_field,
+                            anon_date_field, anon_runs=anon_runs)
         uncovered = ML.uncovered_pieces(gs, ge, all_mask_spans)
         pos = leak_by_position(G[gs:ge], gs, uncovered)
         if gt in _POSITIONAL_TYPES:
