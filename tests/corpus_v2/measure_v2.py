@@ -68,8 +68,9 @@ OUT = os.path.join(HERE, "results_v2_current.json")
 #: v2; переименовав любое, мы порвали бы сравнимость с прошлым.
 _GOLD_ALIAS = {"MONEY": "SUM"}
 
-#: Типы, которые ЭТОТ этап вводит и меряет прицельно. Отдельная константа нужна
-#: печати: по ним таблицы даются с разбивкой «обычные / испорченные».
+#: Типы, которые ВВЁЛ этап T2. Оставлено ИСТОРИЧЕСКОЙ меткой (на неё ссылаются
+#: отчёты) и запасным составом, если конфиг вдруг не прочитался. Составом
+#: форменной таблицы БОЛЬШЕ НЕ ЯВЛЯЕТСЯ — см. measured_types().
 T2_TYPES = ("SUM", "PERCENT", "TERM")
 
 #: Типы, у которых утечка меряется ТОЛЬКО ПО ПОЗИЦИИ (текстовая метрика
@@ -89,6 +90,50 @@ STORAGE = tempfile.mkdtemp(prefix="shifrator_measure_v2_")
 
 def gold_type(raw: str) -> str:
     return _GOLD_ALIAS.get(raw, raw)
+
+
+# --------------------------------------------------------------------------- #
+#   СОСТАВ ФОРМЕННОЙ ТАБЛИЦЫ — ИЗ СОБРАННОГО КОНФИГА, А НЕ ИЗ СПИСКА ЗДЕСЬ      #
+# --------------------------------------------------------------------------- #
+# ЭТАП DEBT-1, часть 2 (находка MEASURE-NOW). Состав таблицы был константой
+# T2_TYPES = (SUM, PERCENT, TERM) — тремя типами, которые ввёл этап T2. Типы,
+# заведённые ФАБРИКОЙ после него (CONTRACT_NO, REG_ID, REG_NUMBER, SHARE_PCT,
+# TRANCHE — пять штук на дату этапа), в таблицу не попадали: они детектировались,
+# считались в дампе, но в форменный отчёт не выводились. Это МОЛЧАЛИВОЕ слепое
+# пятно: новый тип заводится одним файлом-описанием, а его полнота/границы/утечка
+# в отчёте не появляются, и никакая линия об этом не краснеет.
+#
+# Теперь состав ВЫЧИСЛЯЕТСЯ:
+#   * берём типы собранного entity_types.yaml, у которых есть блок `measure:` —
+#     это ровно отпечаток фабрики (assemble_types.py переносит его из
+#     typedefs/<ТИП>.yaml; ручные PERSON/ORG/ADDRESS/CLAUSE_REF его не имеют);
+#   * имя типа в РАЗМЕТКЕ v2 может отличаться от ключа конфига (конфиг
+#     BANK_ACCOUNT — разметка ACCOUNT), поэтому кандидатами берём И ключ, И
+#     token_prefix и оставляем тот, что реально встречается в gold_v2;
+#   * типизированные негативы (DOCNUM/DATE) исключаем: у них СВОЯ таблица, где
+#     маска считается ложным срабатыванием, а не полнотой.
+# Тип, которого в разметке нет вовсе (INN_PERSON), молча выпадает — считать
+# нечего; появится в разметке — появится в таблице сам, без правки этого файла.
+def measured_types(config_path=None, gold=None):
+    """Состав форменной таблицы: фабричные типы собранного конфига ∩ разметка v2.
+    Порядок — как в конфиге (он же порядок арбитража)."""
+    from config_cache import load_yaml_cached
+    spec = load_yaml_cached(config_path or CONFIG)["entity_types"]
+    marked = set()
+    for d in (gold if gold is not None else load_gold()):
+        for e in d.get("entities", ()):
+            marked.add(gold_type(e["type"]))
+    out = []
+    for t, s in spec.items():
+        if not isinstance(s, dict) or not isinstance(s.get("measure"), dict):
+            continue          # не фабричный тип — своей таблицы не просит
+        if t in TYPED_NEGATIVES:
+            continue          # у негативов отдельная таблица (print_typed_negatives)
+        for name in (t, s.get("token_prefix")):
+            if name in marked and name not in TYPED_NEGATIVES:
+                out.append(name)
+                break
+    return tuple(out)
 
 
 # --------------------------------------------------------------------------- #
@@ -483,7 +528,9 @@ def main(argv=None):
     ap.add_argument("--limit", type=int, default=None)
     ap.add_argument("--results", default=None, help="отчёт по готовому дампу, без прогона")
     ap.add_argument("--out", default=OUT)
-    ap.add_argument("--types", default=",".join(T2_TYPES))
+    ap.add_argument("--types", default=None,
+                    help="состав форменной таблицы; по умолчанию — ИЗ СОБРАННОГО "
+                         "КОНФИГА (фабричные типы ∩ разметка v2), см. measured_types()")
     ap.add_argument("--config", default=CONFIG, help="иной entity_types.yaml (точка отсчёта шага 0в)")
     args = ap.parse_args(argv)
 
@@ -499,7 +546,12 @@ def main(argv=None):
         json.dump(results, open(args.out, "w", encoding="utf-8"), ensure_ascii=False)
         print("DONE %d docs in %.0fs -> %s" % (len(results), time.time() - t0, args.out))
 
-    report(results, tuple(t for t in args.types.split(",") if t))
+    types = (tuple(t for t in args.types.split(",") if t) if args.types
+             else measured_types(args.config))
+    print("\nсостав таблицы (%d типов, из собранного конфига%s): %s"
+          % (len(types), "" if not args.types else " — ПЕРЕОПРЕДЕЛЁН --types",
+             ", ".join(types)))
+    report(results, types)
     return 0
 
 
