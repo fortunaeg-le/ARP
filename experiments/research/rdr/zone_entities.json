@@ -1,0 +1,1362 @@
+[
+ {
+  "doc": "agency_0002",
+  "trick": "in_header",
+  "type": "PHONE",
+  "text": "+7 (383) 383-56-70",
+  "err": "не найдено",
+  "leak": false
+ },
+ {
+  "doc": "agency_0002",
+  "trick": "in_header",
+  "type": "EMAIL",
+  "text": "sidorova@mail.ru",
+  "err": "не найдено",
+  "leak": false
+ },
+ {
+  "doc": "agency_0002",
+  "trick": "nested_table",
+  "type": "ACCOUNT",
+  "text": "40802810445145901597",
+  "err": "не найдено",
+  "leak": false
+ },
+ {
+  "doc": "agency_0002",
+  "trick": "nested_table",
+  "type": "PER",
+  "text": "Беляев О. О.",
+  "err": "не найдено",
+  "leak": false
+ },
+ {
+  "doc": "agency_0002__m2718_digit_spaces",
+  "trick": "in_header",
+  "type": "EMAIL",
+  "text": "sidorova@mail.ru",
+  "err": "не найдено",
+  "leak": false
+ },
+ {
+  "doc": "agency_0002__m2718_digit_spaces",
+  "trick": "nested_table",
+  "type": "PER",
+  "text": "Беляев О. О.",
+  "err": "не найдено",
+  "leak": false
+ },
+ {
+  "doc": "agency_0004",
+  "trick": "in_footer",
+  "type": "PER",
+  "text": "Смирнов Р. И.",
+  "err": "ok",
+  "leak": false
+ },
+ {
+  "doc": "agency_0004",
+  "trick": "in_footer",
+  "type": "PHONE",
+  "text": "8(383)1784068",
+  "err": "ok",
+  "leak": false
+ },
+ {
+  "doc": "agency_0004__m1337_digit_spaces",
+  "trick": "in_footer",
+  "type": "PER",
+  "text": "Смирнов Р. И.",
+  "err": "ok",
+  "leak": false
+ },
+ {
+  "doc": "agency_0006",
+  "trick": "in_footnote",
+  "type": "ADDRESS",
+  "text": "101000, г. Москва, пер. Полевая, д. 30, кв. 194",
+  "err": "не найдено",
+  "leak": false
+ },
+ {
+  "doc": "agency_0006",
+  "trick": "in_footnote",
+  "type": "INN",
+  "text": "6584461879",
+  "err": "не найдено",
+  "leak": false
+ },
+ {
+  "doc": "agency_0006",
+  "trick": "in_footnote",
+  "type": "PER",
+  "text": "Кузнецов Роман Николаевич",
+  "err": "не найдено",
+  "leak": false
+ },
+ {
+  "doc": "agency_0008",
+  "trick": "in_textbox",
+  "type": "PER",
+  "text": "Семёнов Сергей Егорович",
+  "err": "не найдено",
+  "leak": false
+ },
+ {
+  "doc": "agency_0008",
+  "trick": "in_textbox",
+  "type": "PHONE",
+  "text": "+7 (383) 140-80-23 доб. 510",
+  "err": "не найдено",
+  "leak": false
+ },
+ {
+  "doc": "agency_0008__m2718_case",
+  "trick": "in_textbox",
+  "type": "PHONE",
+  "text": "+7 (383) 140-80-23 доб. 510",
+  "err": "не найдено",
+  "leak": false
+ },
+ {
+  "doc": "agency_0010",
+  "trick": "nested_table",
+  "type": "ACCOUNT",
+  "text": "40802810717011235378",
+  "err": "не найдено",
+  "leak": false
+ },
+ {
+  "doc": "agency_0010",
+  "trick": "nested_table",
+  "type": "PER",
+  "text": "Попов О. О.",
+  "err": "не найдено",
+  "leak": false
+ },
+ {
+  "doc": "agency_0010__m1337_case",
+  "trick": "nested_table",
+  "type": "ACCOUNT",
+  "text": "40802810717011235378",
+  "err": "не найдено",
+  "leak": false
+ },
+ {
+  "doc": "cession_0002",
+  "trick": "in_header",
+  "type": "PHONE",
+  "text": "+7 (499) 125-61-37",
+  "err": "не найдено",
+  "leak": false
+ },
+ {
+  "doc": "cession_0002",
+  "trick": "in_header",
+  "type": "EMAIL",
+  "text": "makarov@gmail.com",
+  "err": "не найдено",
+  "leak": false
+ },
+ {
+  "doc": "cession_0002__m2718_cell_split",
+  "trick": "in_header",
+  "type": "PHONE",
+  "text": "+7 (499) 125-61-37",
+  "err": "не найдено",
+  "leak": false
+ },
+ {
+  "doc": "cession_0002__m2718_cell_split",
+  "trick": "in_header",
+  "type": "EMAIL",
+  "text": "makarov@gmail.com",
+  "err": "не найдено",
+  "leak": false
+ },
+ {
+  "doc": "cession_0004",
+  "trick": "in_footer",
+  "type": "PER",
+  "text": "Волкова Е. А.",
+  "err": "выжило в другом месте",
+  "leak": true
+ },
+ {
+  "doc": "cession_0004",
+  "trick": "in_footer",
+  "type": "PHONE",
+  "text": "8(812)6188052",
+  "err": "ok",
+  "leak": false
+ },
+ {
+  "doc": "cession_0004__m1337_cell_split",
+  "trick": "in_footer",
+  "type": "PER",
+  "text": "Волкова Е. А.",
+  "err": "выжило в другом месте",
+  "leak": true
+ },
+ {
+  "doc": "cession_0004__m1337_cell_split",
+  "trick": "in_footer",
+  "type": "PHONE",
+  "text": "8(812)6188052",
+  "err": "ok",
+  "leak": false
+ },
+ {
+  "doc": "cession_0006",
+  "trick": "in_footnote",
+  "type": "ADDRESS",
+  "text": "141400, г. Химки, ул. Мира, д. 2, кв. 39",
+  "err": "не найдено",
+  "leak": false
+ },
+ {
+  "doc": "cession_0006",
+  "trick": "in_footnote",
+  "type": "INN",
+  "text": "0184096116",
+  "err": "не найдено",
+  "leak": false
+ },
+ {
+  "doc": "cession_0006",
+  "trick": "in_footnote",
+  "type": "PER",
+  "text": "Смирнова Татьяна Андреевна",
+  "err": "не найдено",
+  "leak": false
+ },
+ {
+  "doc": "cession_0006__m2718_digit_spaces",
+  "trick": "in_footnote",
+  "type": "PER",
+  "text": "Смирнова Татьяна Андреевна",
+  "err": "не найдено",
+  "leak": false
+ },
+ {
+  "doc": "cession_0008",
+  "trick": "in_textbox",
+  "type": "PER",
+  "text": "Семёнов Владимир Михайлович",
+  "err": "не найдено",
+  "leak": false
+ },
+ {
+  "doc": "cession_0008",
+  "trick": "in_textbox",
+  "type": "PHONE",
+  "text": "+7 (499) 583-65-19 доб. 343",
+  "err": "не найдено",
+  "leak": false
+ },
+ {
+  "doc": "cession_0008__m1337_digit_spaces",
+  "trick": "in_textbox",
+  "type": "PER",
+  "text": "Семёнов Владимир Михайлович",
+  "err": "не найдено",
+  "leak": false
+ },
+ {
+  "doc": "labor_0002",
+  "trick": "in_header",
+  "type": "PHONE",
+  "text": "+7 (383) 186-40-57",
+  "err": "не найдено",
+  "leak": false
+ },
+ {
+  "doc": "labor_0002",
+  "trick": "in_header",
+  "type": "EMAIL",
+  "text": "oganesyan@romashka.ru",
+  "err": "не найдено",
+  "leak": false
+ },
+ {
+  "doc": "labor_0004",
+  "trick": "in_footer",
+  "type": "PER",
+  "text": "Титова О. Д.",
+  "err": "ok",
+  "leak": false
+ },
+ {
+  "doc": "labor_0004",
+  "trick": "in_footer",
+  "type": "PHONE",
+  "text": "8(495)9226482",
+  "err": "ok",
+  "leak": false
+ },
+ {
+  "doc": "labor_0004__m2718_case",
+  "trick": "in_footer",
+  "type": "PHONE",
+  "text": "8(495)9226482",
+  "err": "ok",
+  "leak": false
+ },
+ {
+  "doc": "labor_0006",
+  "trick": "in_footnote",
+  "type": "ADDRESS",
+  "text": "344002, г. Ростов-на-Дону, ш. Космонавтов, д. 82, кв. 31",
+  "err": "не найдено",
+  "leak": false
+ },
+ {
+  "doc": "labor_0006",
+  "trick": "in_footnote",
+  "type": "INN",
+  "text": "2916792527",
+  "err": "не найдено",
+  "leak": false
+ },
+ {
+  "doc": "labor_0006",
+  "trick": "in_footnote",
+  "type": "PER",
+  "text": "Пирогова Светлана Егоровна",
+  "err": "не найдено",
+  "leak": false
+ },
+ {
+  "doc": "labor_0006__m1337_case",
+  "trick": "in_footnote",
+  "type": "INN",
+  "text": "2916792527",
+  "err": "не найдено",
+  "leak": false
+ },
+ {
+  "doc": "labor_0008",
+  "trick": "in_textbox",
+  "type": "PER",
+  "text": "Ершова Екатерина Алексеевна",
+  "err": "не найдено",
+  "leak": false
+ },
+ {
+  "doc": "labor_0008",
+  "trick": "in_textbox",
+  "type": "PHONE",
+  "text": "+7 (843) 249-51-42 доб. 541",
+  "err": "не найдено",
+  "leak": false
+ },
+ {
+  "doc": "labor_0008__m2718_cell_split",
+  "trick": "in_textbox",
+  "type": "PER",
+  "text": "Ершова Екатерина Алексеевна",
+  "err": "не найдено",
+  "leak": false
+ },
+ {
+  "doc": "labor_0008__m2718_cell_split",
+  "trick": "in_textbox",
+  "type": "PHONE",
+  "text": "+7 (843) 249-51-42 доб. 541",
+  "err": "не найдено",
+  "leak": false
+ },
+ {
+  "doc": "labor_0010",
+  "trick": "in_header",
+  "type": "PHONE",
+  "text": "+7 (499) 711-73-62",
+  "err": "не найдено",
+  "leak": false
+ },
+ {
+  "doc": "labor_0010",
+  "trick": "in_header",
+  "type": "EMAIL",
+  "text": "melnik@sibtrans.ru",
+  "err": "не найдено",
+  "leak": false
+ },
+ {
+  "doc": "labor_0010",
+  "trick": "nested_table",
+  "type": "ACCOUNT",
+  "text": "40817810661898519375",
+  "err": "не найдено",
+  "leak": false
+ },
+ {
+  "doc": "labor_0010",
+  "trick": "nested_table",
+  "type": "PER",
+  "text": "Сидоров Ю. О.",
+  "err": "не найдено",
+  "leak": false
+ },
+ {
+  "doc": "labor_0010__m1337_cell_split",
+  "trick": "in_header",
+  "type": "PHONE",
+  "text": "+7 (499) 711-73-62",
+  "err": "не найдено",
+  "leak": false
+ },
+ {
+  "doc": "labor_0010__m1337_cell_split",
+  "trick": "in_header",
+  "type": "EMAIL",
+  "text": "melnik@sibtrans.ru",
+  "err": "не найдено",
+  "leak": false
+ },
+ {
+  "doc": "labor_0010__m1337_cell_split",
+  "trick": "nested_table",
+  "type": "ACCOUNT",
+  "text": "40817810661898519375",
+  "err": "не найдено",
+  "leak": false
+ },
+ {
+  "doc": "labor_0010__m1337_cell_split",
+  "trick": "nested_table",
+  "type": "PER",
+  "text": "Сидоров Ю. О.",
+  "err": "не найдено",
+  "leak": false
+ },
+ {
+  "doc": "labor_0012",
+  "trick": "in_footer",
+  "type": "PER",
+  "text": "Тарасов Н. А.",
+  "err": "ok",
+  "leak": false
+ },
+ {
+  "doc": "labor_0012",
+  "trick": "in_footer",
+  "type": "PHONE",
+  "text": "8(846)8968487",
+  "err": "ok",
+  "leak": false
+ },
+ {
+  "doc": "labor_0012__m2718_digit_spaces",
+  "trick": "in_footer",
+  "type": "PER",
+  "text": "Тарасов Н. А.",
+  "err": "ok",
+  "leak": false
+ },
+ {
+  "doc": "lease_0002",
+  "trick": "in_footer",
+  "type": "PER",
+  "text": "Новиков С. Ю.",
+  "err": "ok",
+  "leak": false
+ },
+ {
+  "doc": "lease_0002",
+  "trick": "in_footer",
+  "type": "PHONE",
+  "text": "8(495)4852257",
+  "err": "ok",
+  "leak": false
+ },
+ {
+  "doc": "lease_0002__m1337_digit_spaces",
+  "trick": "in_footer",
+  "type": "PER",
+  "text": "Новиков С. Ю.",
+  "err": "ok",
+  "leak": false
+ },
+ {
+  "doc": "lease_0004",
+  "trick": "in_footnote",
+  "type": "ADDRESS",
+  "text": "170100, г. Тверь, проезд Кутузовский, д. 8, кв. 179",
+  "err": "не найдено",
+  "leak": false
+ },
+ {
+  "doc": "lease_0004",
+  "trick": "in_footnote",
+  "type": "INN",
+  "text": "2817479810",
+  "err": "не найдено",
+  "leak": false
+ },
+ {
+  "doc": "lease_0004",
+  "trick": "in_footnote",
+  "type": "PER",
+  "text": "Соколова Наталья Алексеевна",
+  "err": "не найдено",
+  "leak": false
+ },
+ {
+  "doc": "lease_0006",
+  "trick": "in_textbox",
+  "type": "PER",
+  "text": "Петрова Наталья Ивановна",
+  "err": "не найдено",
+  "leak": false
+ },
+ {
+  "doc": "lease_0006",
+  "trick": "in_textbox",
+  "type": "PHONE",
+  "text": "+7 (846) 854-96-55 доб. 518",
+  "err": "не найдено",
+  "leak": false
+ },
+ {
+  "doc": "lease_0006__m2718_case",
+  "trick": "in_textbox",
+  "type": "PHONE",
+  "text": "+7 (846) 854-96-55 доб. 518",
+  "err": "не найдено",
+  "leak": false
+ },
+ {
+  "doc": "lease_0008",
+  "trick": "in_header",
+  "type": "PHONE",
+  "text": "+7 (499) 167-19-83",
+  "err": "не найдено",
+  "leak": false
+ },
+ {
+  "doc": "lease_0008",
+  "trick": "in_header",
+  "type": "EMAIL",
+  "text": "petrov@bk.ru",
+  "err": "не найдено",
+  "leak": false
+ },
+ {
+  "doc": "lease_0008",
+  "trick": "nested_table",
+  "type": "ACCOUNT",
+  "text": "40802810871707550461",
+  "err": "не найдено",
+  "leak": false
+ },
+ {
+  "doc": "lease_0008",
+  "trick": "nested_table",
+  "type": "PER",
+  "text": "Оганесян Г. А.",
+  "err": "не найдено",
+  "leak": false
+ },
+ {
+  "doc": "lease_0008__m1337_case",
+  "trick": "in_header",
+  "type": "PHONE",
+  "text": "+7 (499) 167-19-83",
+  "err": "не найдено",
+  "leak": false
+ },
+ {
+  "doc": "lease_0008__m1337_case",
+  "trick": "nested_table",
+  "type": "ACCOUNT",
+  "text": "40802810871707550461",
+  "err": "не найдено",
+  "leak": false
+ },
+ {
+  "doc": "lease_0010",
+  "trick": "in_footer",
+  "type": "PER",
+  "text": "Кузнецов А. О.",
+  "err": "ok",
+  "leak": false
+ },
+ {
+  "doc": "lease_0010",
+  "trick": "in_footer",
+  "type": "PHONE",
+  "text": "8(495)3586789",
+  "err": "ok",
+  "leak": false
+ },
+ {
+  "doc": "lease_0010__m2718_cell_split",
+  "trick": "in_footer",
+  "type": "PER",
+  "text": "Кузнецов А. О.",
+  "err": "ok",
+  "leak": false
+ },
+ {
+  "doc": "lease_0010__m2718_cell_split",
+  "trick": "in_footer",
+  "type": "PHONE",
+  "text": "8(495)3586789",
+  "err": "ok",
+  "leak": false
+ },
+ {
+  "doc": "lease_0012",
+  "trick": "in_footnote",
+  "type": "ADDRESS",
+  "text": "394000, г. Воронеж, ш. Лесная, д. 59, кв. 143",
+  "err": "не найдено",
+  "leak": false
+ },
+ {
+  "doc": "lease_0012",
+  "trick": "in_footnote",
+  "type": "INN",
+  "text": "2269514711",
+  "err": "не найдено",
+  "leak": false
+ },
+ {
+  "doc": "lease_0012",
+  "trick": "in_footnote",
+  "type": "PER",
+  "text": "Орлов Владимир Михайлович",
+  "err": "не найдено",
+  "leak": false
+ },
+ {
+  "doc": "lease_0012__m1337_cell_split",
+  "trick": "in_footnote",
+  "type": "ADDRESS",
+  "text": "394000, г. Воронеж, ш. Лесная, д. 59, кв. 143",
+  "err": "не найдено",
+  "leak": false
+ },
+ {
+  "doc": "lease_0012__m1337_cell_split",
+  "trick": "in_footnote",
+  "type": "INN",
+  "text": "2269514711",
+  "err": "не найдено",
+  "leak": false
+ },
+ {
+  "doc": "lease_0012__m1337_cell_split",
+  "trick": "in_footnote",
+  "type": "PER",
+  "text": "Орлов Владимир Михайлович",
+  "err": "не найдено",
+  "leak": false
+ },
+ {
+  "doc": "loan_0002",
+  "trick": "in_header",
+  "type": "PHONE",
+  "text": "+7 (812) 116-82-15",
+  "err": "не найдено",
+  "leak": false
+ },
+ {
+  "doc": "loan_0002",
+  "trick": "in_header",
+  "type": "EMAIL",
+  "text": "pirogova@gmail.com",
+  "err": "не найдено",
+  "leak": false
+ },
+ {
+  "doc": "loan_0002",
+  "trick": "nested_table",
+  "type": "ACCOUNT",
+  "text": "40802810766306971620",
+  "err": "не найдено",
+  "leak": false
+ },
+ {
+  "doc": "loan_0002",
+  "trick": "nested_table",
+  "type": "PER",
+  "text": "Смирнов В. А.",
+  "err": "не найдено",
+  "leak": false
+ },
+ {
+  "doc": "loan_0002__m2718_digit_spaces",
+  "trick": "in_header",
+  "type": "PHONE",
+  "text": "+7 (812) 116-82-15",
+  "err": "не найдено",
+  "leak": false
+ },
+ {
+  "doc": "loan_0002__m2718_digit_spaces",
+  "trick": "in_header",
+  "type": "EMAIL",
+  "text": "pirogova@gmail.com",
+  "err": "не найдено",
+  "leak": false
+ },
+ {
+  "doc": "loan_0002__m2718_digit_spaces",
+  "trick": "nested_table",
+  "type": "PER",
+  "text": "Смирнов В. А.",
+  "err": "не найдено",
+  "leak": false
+ },
+ {
+  "doc": "loan_0004",
+  "trick": "in_footer",
+  "type": "PER",
+  "text": "Белов Е. П.",
+  "err": "ok",
+  "leak": false
+ },
+ {
+  "doc": "loan_0004",
+  "trick": "in_footer",
+  "type": "PHONE",
+  "text": "8(812)6519687",
+  "err": "ok",
+  "leak": false
+ },
+ {
+  "doc": "loan_0004__m1337_digit_spaces",
+  "trick": "in_footer",
+  "type": "PER",
+  "text": "Белов Е. П.",
+  "err": "ok",
+  "leak": false
+ },
+ {
+  "doc": "loan_0006",
+  "trick": "in_footnote",
+  "type": "ADDRESS",
+  "text": "344002, г. Ростов-на-Дону, ул. Пушкина, д. 85, кв. 31",
+  "err": "не найдено",
+  "leak": false
+ },
+ {
+  "doc": "loan_0006",
+  "trick": "in_footnote",
+  "type": "INN",
+  "text": "6541079263",
+  "err": "не найдено",
+  "leak": false
+ },
+ {
+  "doc": "loan_0006",
+  "trick": "in_footnote",
+  "type": "PER",
+  "text": "Сидоров Роман Егорович",
+  "err": "не найдено",
+  "leak": false
+ },
+ {
+  "doc": "loan_0008",
+  "trick": "in_textbox",
+  "type": "PER",
+  "text": "Титова Наталья Олеговна",
+  "err": "не найдено",
+  "leak": false
+ },
+ {
+  "doc": "loan_0008",
+  "trick": "in_textbox",
+  "type": "PHONE",
+  "text": "+7 (846) 173-27-20 доб. 109",
+  "err": "не найдено",
+  "leak": false
+ },
+ {
+  "doc": "loan_0008__m2718_case",
+  "trick": "in_textbox",
+  "type": "PHONE",
+  "text": "+7 (846) 173-27-20 доб. 109",
+  "err": "не найдено",
+  "leak": false
+ },
+ {
+  "doc": "loan_0010",
+  "trick": "nested_table",
+  "type": "ACCOUNT",
+  "text": "40802810513492937727",
+  "err": "не найдено",
+  "leak": false
+ },
+ {
+  "doc": "loan_0010",
+  "trick": "nested_table",
+  "type": "PER",
+  "text": "Воробьёв И. Е.",
+  "err": "не найдено",
+  "leak": false
+ },
+ {
+  "doc": "loan_0010__m1337_case",
+  "trick": "nested_table",
+  "type": "ACCOUNT",
+  "text": "40802810513492937727",
+  "err": "не найдено",
+  "leak": false
+ },
+ {
+  "doc": "sale_0002",
+  "trick": "in_footnote",
+  "type": "ADDRESS",
+  "text": "614000, г. Пермь, просп. Кутузовский, д. 64, кв. 99",
+  "err": "не найдено",
+  "leak": false
+ },
+ {
+  "doc": "sale_0002",
+  "trick": "in_footnote",
+  "type": "INN",
+  "text": "3491768608",
+  "err": "не найдено",
+  "leak": false
+ },
+ {
+  "doc": "sale_0002",
+  "trick": "in_footnote",
+  "type": "PER",
+  "text": "Максимова Светлана Петровна",
+  "err": "не найдено",
+  "leak": false
+ },
+ {
+  "doc": "sale_0002__m2718_cell_split",
+  "trick": "in_footnote",
+  "type": "ADDRESS",
+  "text": "614000, г. Пермь, просп. Кутузовский, д. 64, кв. 99",
+  "err": "не найдено",
+  "leak": false
+ },
+ {
+  "doc": "sale_0002__m2718_cell_split",
+  "trick": "in_footnote",
+  "type": "INN",
+  "text": "3491768608",
+  "err": "не найдено",
+  "leak": false
+ },
+ {
+  "doc": "sale_0002__m2718_cell_split",
+  "trick": "in_footnote",
+  "type": "PER",
+  "text": "Максимова Светлана Петровна",
+  "err": "не найдено",
+  "leak": false
+ },
+ {
+  "doc": "sale_0004",
+  "trick": "in_textbox",
+  "type": "PER",
+  "text": "Волков Олег Павлович",
+  "err": "не найдено",
+  "leak": false
+ },
+ {
+  "doc": "sale_0004",
+  "trick": "in_textbox",
+  "type": "PHONE",
+  "text": "+7 (846) 289-43-11 доб. 259",
+  "err": "не найдено",
+  "leak": false
+ },
+ {
+  "doc": "sale_0004__m1337_cell_split",
+  "trick": "in_textbox",
+  "type": "PER",
+  "text": "Волков Олег Павлович",
+  "err": "не найдено",
+  "leak": false
+ },
+ {
+  "doc": "sale_0004__m1337_cell_split",
+  "trick": "in_textbox",
+  "type": "PHONE",
+  "text": "+7 (846) 289-43-11 доб. 259",
+  "err": "не найдено",
+  "leak": false
+ },
+ {
+  "doc": "sale_0006",
+  "trick": "nested_table",
+  "type": "ACCOUNT",
+  "text": "40802810166008185855",
+  "err": "не найдено",
+  "leak": false
+ },
+ {
+  "doc": "sale_0006",
+  "trick": "nested_table",
+  "type": "PER",
+  "text": "Волков В. С.",
+  "err": "не найдено",
+  "leak": false
+ },
+ {
+  "doc": "sale_0006__m2718_digit_spaces",
+  "trick": "nested_table",
+  "type": "PER",
+  "text": "Волков В. С.",
+  "err": "не найдено",
+  "leak": false
+ },
+ {
+  "doc": "sale_0008",
+  "trick": "in_header",
+  "type": "PHONE",
+  "text": "+7 (846) 406-40-97",
+  "err": "не найдено",
+  "leak": false
+ },
+ {
+  "doc": "sale_0008",
+  "trick": "in_header",
+  "type": "EMAIL",
+  "text": "ershova@gmail.com",
+  "err": "не найдено",
+  "leak": false
+ },
+ {
+  "doc": "sale_0008__m1337_digit_spaces",
+  "trick": "in_header",
+  "type": "EMAIL",
+  "text": "ershova@gmail.com",
+  "err": "не найдено",
+  "leak": false
+ },
+ {
+  "doc": "sale_0010",
+  "trick": "in_footer",
+  "type": "PER",
+  "text": "Фёдоров М. Д.",
+  "err": "ok",
+  "leak": false
+ },
+ {
+  "doc": "sale_0010",
+  "trick": "in_footer",
+  "type": "PHONE",
+  "text": "8(812)9559362",
+  "err": "ok",
+  "leak": false
+ },
+ {
+  "doc": "sale_0012",
+  "trick": "in_footnote",
+  "type": "ADDRESS",
+  "text": "143000, г. Одинцово, пер. Космонавтов, д. 9, кв. 55",
+  "err": "не найдено",
+  "leak": false
+ },
+ {
+  "doc": "sale_0012",
+  "trick": "in_footnote",
+  "type": "INN",
+  "text": "2565142492",
+  "err": "не найдено",
+  "leak": false
+ },
+ {
+  "doc": "sale_0012",
+  "trick": "in_footnote",
+  "type": "PER",
+  "text": "Киселёв Михаил Владимирович",
+  "err": "не найдено",
+  "leak": false
+ },
+ {
+  "doc": "sale_0012__m2718_case",
+  "trick": "in_footnote",
+  "type": "INN",
+  "text": "2565142492",
+  "err": "не найдено",
+  "leak": false
+ },
+ {
+  "doc": "sale_0014",
+  "trick": "in_textbox",
+  "type": "PER",
+  "text": "Белов Артём Павлович",
+  "err": "не найдено",
+  "leak": false
+ },
+ {
+  "doc": "sale_0014",
+  "trick": "in_textbox",
+  "type": "PHONE",
+  "text": "+7 (499) 932-59-55 доб. 979",
+  "err": "не найдено",
+  "leak": false
+ },
+ {
+  "doc": "sale_0014__m1337_case",
+  "trick": "in_textbox",
+  "type": "PHONE",
+  "text": "+7 (499) 932-59-55 доб. 979",
+  "err": "не найдено",
+  "leak": false
+ },
+ {
+  "doc": "services_0004",
+  "trick": "in_header",
+  "type": "PHONE",
+  "text": "+7 (812) 672-45-37",
+  "err": "не найдено",
+  "leak": false
+ },
+ {
+  "doc": "services_0004",
+  "trick": "in_header",
+  "type": "EMAIL",
+  "text": "orlov@bk.ru",
+  "err": "не найдено",
+  "leak": false
+ },
+ {
+  "doc": "services_0004",
+  "trick": "nested_table",
+  "type": "ACCOUNT",
+  "text": "40802810900664549727",
+  "err": "не найдено",
+  "leak": false
+ },
+ {
+  "doc": "services_0004",
+  "trick": "nested_table",
+  "type": "PER",
+  "text": "Белов Р. Д.",
+  "err": "не найдено",
+  "leak": false
+ },
+ {
+  "doc": "services_0004__m1337_cell_split",
+  "trick": "in_header",
+  "type": "PHONE",
+  "text": "+7 (812) 672-45-37",
+  "err": "не найдено",
+  "leak": false
+ },
+ {
+  "doc": "services_0004__m1337_cell_split",
+  "trick": "in_header",
+  "type": "EMAIL",
+  "text": "orlov@bk.ru",
+  "err": "не найдено",
+  "leak": false
+ },
+ {
+  "doc": "services_0004__m1337_cell_split",
+  "trick": "nested_table",
+  "type": "ACCOUNT",
+  "text": "40802810900664549727",
+  "err": "не найдено",
+  "leak": false
+ },
+ {
+  "doc": "services_0004__m1337_cell_split",
+  "trick": "nested_table",
+  "type": "PER",
+  "text": "Белов Р. Д.",
+  "err": "не найдено",
+  "leak": false
+ },
+ {
+  "doc": "services_0006",
+  "trick": "in_footer",
+  "type": "PER",
+  "text": "Семёнов О. Д.",
+  "err": "ok",
+  "leak": false
+ },
+ {
+  "doc": "services_0006",
+  "trick": "in_footer",
+  "type": "PHONE",
+  "text": "8(812)6098160",
+  "err": "ok",
+  "leak": false
+ },
+ {
+  "doc": "services_0006__m2718_digit_spaces",
+  "trick": "in_footer",
+  "type": "PER",
+  "text": "Семёнов О. Д.",
+  "err": "ok",
+  "leak": false
+ },
+ {
+  "doc": "services_0008",
+  "trick": "in_footnote",
+  "type": "ADDRESS",
+  "text": "141300, г. Сергиев Посад, пер. Полевая, д. 63, кв. 27",
+  "err": "не найдено",
+  "leak": false
+ },
+ {
+  "doc": "services_0008",
+  "trick": "in_footnote",
+  "type": "INN",
+  "text": "7795727671",
+  "err": "не найдено",
+  "leak": false
+ },
+ {
+  "doc": "services_0008",
+  "trick": "in_footnote",
+  "type": "PER",
+  "text": "Зайцев Михаил Дмитриевич",
+  "err": "не найдено",
+  "leak": false
+ },
+ {
+  "doc": "services_0008__m1337_digit_spaces",
+  "trick": "in_footnote",
+  "type": "PER",
+  "text": "Зайцев Михаил Дмитриевич",
+  "err": "не найдено",
+  "leak": false
+ },
+ {
+  "doc": "services_0010",
+  "trick": "in_textbox",
+  "type": "PER",
+  "text": "Виноградов Сергей Петрович",
+  "err": "не найдено",
+  "leak": false
+ },
+ {
+  "doc": "services_0010",
+  "trick": "in_textbox",
+  "type": "PHONE",
+  "text": "+7 (495) 905-88-44 доб. 188",
+  "err": "не найдено",
+  "leak": false
+ },
+ {
+  "doc": "services_0012",
+  "trick": "nested_table",
+  "type": "ACCOUNT",
+  "text": "40802810517983701081",
+  "err": "не найдено",
+  "leak": false
+ },
+ {
+  "doc": "services_0012",
+  "trick": "nested_table",
+  "type": "PER",
+  "text": "Семёнов М. О.",
+  "err": "не найдено",
+  "leak": false
+ },
+ {
+  "doc": "services_0012__m2718_case",
+  "trick": "nested_table",
+  "type": "ACCOUNT",
+  "text": "40802810517983701081",
+  "err": "не найдено",
+  "leak": false
+ },
+ {
+  "doc": "services_0014",
+  "trick": "in_header",
+  "type": "PHONE",
+  "text": "+7 (383) 779-15-94",
+  "err": "не найдено",
+  "leak": false
+ },
+ {
+  "doc": "services_0014",
+  "trick": "in_header",
+  "type": "EMAIL",
+  "text": "guseva@sibtrans.ru",
+  "err": "не найдено",
+  "leak": false
+ },
+ {
+  "doc": "services_0014__m1337_case",
+  "trick": "in_header",
+  "type": "PHONE",
+  "text": "+7 (383) 779-15-94",
+  "err": "не найдено",
+  "leak": false
+ },
+ {
+  "doc": "services_0014__m1337_case",
+  "trick": "in_header",
+  "type": "EMAIL",
+  "text": "guseva@sibtrans.ru",
+  "err": "не найдено",
+  "leak": false
+ },
+ {
+  "doc": "works_0002",
+  "trick": "in_textbox",
+  "type": "PER",
+  "text": "Кузнецова Вера Андреевна",
+  "err": "не найдено",
+  "leak": false
+ },
+ {
+  "doc": "works_0002",
+  "trick": "in_textbox",
+  "type": "PHONE",
+  "text": "+7 (843) 982-79-72 доб. 910",
+  "err": "не найдено",
+  "leak": false
+ },
+ {
+  "doc": "works_0002__m1337_cell_split",
+  "trick": "in_textbox",
+  "type": "PER",
+  "text": "Кузнецова Вера Андреевна",
+  "err": "не найдено",
+  "leak": false
+ },
+ {
+  "doc": "works_0002__m1337_cell_split",
+  "trick": "in_textbox",
+  "type": "PHONE",
+  "text": "+7 (843) 982-79-72 доб. 910",
+  "err": "не найдено",
+  "leak": false
+ },
+ {
+  "doc": "works_0004",
+  "trick": "nested_table",
+  "type": "ACCOUNT",
+  "text": "40802810247611131507",
+  "err": "не найдено",
+  "leak": false
+ },
+ {
+  "doc": "works_0004",
+  "trick": "nested_table",
+  "type": "PER",
+  "text": "Михайлов П. С.",
+  "err": "не найдено",
+  "leak": false
+ },
+ {
+  "doc": "works_0004__m2718_digit_spaces",
+  "trick": "nested_table",
+  "type": "PER",
+  "text": "Михайлов П. С.",
+  "err": "не найдено",
+  "leak": false
+ },
+ {
+  "doc": "works_0006",
+  "trick": "in_header",
+  "type": "PHONE",
+  "text": "+7 (812) 229-62-35",
+  "err": "не найдено",
+  "leak": false
+ },
+ {
+  "doc": "works_0006",
+  "trick": "in_header",
+  "type": "EMAIL",
+  "text": "novikov@gmail.com",
+  "err": "не найдено",
+  "leak": false
+ },
+ {
+  "doc": "works_0006__m1337_digit_spaces",
+  "trick": "in_header",
+  "type": "PHONE",
+  "text": "+7 (812) 229-62-35",
+  "err": "не найдено",
+  "leak": false
+ },
+ {
+  "doc": "works_0006__m1337_digit_spaces",
+  "trick": "in_header",
+  "type": "EMAIL",
+  "text": "novikov@gmail.com",
+  "err": "не найдено",
+  "leak": false
+ },
+ {
+  "doc": "works_0008",
+  "trick": "in_footer",
+  "type": "PER",
+  "text": "Крылова Ю. Е.",
+  "err": "ok",
+  "leak": false
+ },
+ {
+  "doc": "works_0008",
+  "trick": "in_footer",
+  "type": "PHONE",
+  "text": "8(499)4716335",
+  "err": "ok",
+  "leak": false
+ },
+ {
+  "doc": "works_0010",
+  "trick": "in_footnote",
+  "type": "ADDRESS",
+  "text": "190000, г. Санкт-Петербург, ул. Ленинградская, д. 18, кв. 45",
+  "err": "не найдено",
+  "leak": false
+ },
+ {
+  "doc": "works_0010",
+  "trick": "in_footnote",
+  "type": "INN",
+  "text": "2574793934",
+  "err": "не найдено",
+  "leak": false
+ },
+ {
+  "doc": "works_0010",
+  "trick": "in_footnote",
+  "type": "PER",
+  "text": "Волкова Анна Юрьевна",
+  "err": "не найдено",
+  "leak": false
+ },
+ {
+  "doc": "works_0010__m2718_case",
+  "trick": "in_footnote",
+  "type": "INN",
+  "text": "2574793934",
+  "err": "не найдено",
+  "leak": false
+ },
+ {
+  "doc": "works_0012",
+  "trick": "in_textbox",
+  "type": "PER",
+  "text": "Семёнов Юрий Михайлович",
+  "err": "не найдено",
+  "leak": false
+ },
+ {
+  "doc": "works_0012",
+  "trick": "in_textbox",
+  "type": "PHONE",
+  "text": "+7 (499) 916-97-46 доб. 558",
+  "err": "не найдено",
+  "leak": false
+ },
+ {
+  "doc": "works_0012__m1337_case",
+  "trick": "in_textbox",
+  "type": "PHONE",
+  "text": "+7 (499) 916-97-46 доб. 558",
+  "err": "не найдено",
+  "leak": false
+ }
+]
