@@ -29,7 +29,8 @@
 
 Правила зон лежат по месту: [`src/CLAUDE.md`](src/CLAUDE.md),
 [`tests/corpus/CLAUDE.md`](tests/corpus/CLAUDE.md),
-[`tests/corpus_v2/CLAUDE.md`](tests/corpus_v2/CLAUDE.md).
+[`tests/corpus_v2/CLAUDE.md`](tests/corpus_v2/CLAUDE.md),
+[`packaging/CLAUDE.md`](packaging/CLAUDE.md).
 
 ## Команды
 
@@ -66,31 +67,25 @@ venv\Scripts\pyinstaller.exe packaging\shifrator.spec --distpath dist --workpath
 ## Запреты навсегда
 
 1. **Не пушить.** Коммитить самому, `git push` — решение владельца.
-2. **Корпус v1 заморожен.** `tests/corpus/docs/**` и `tests/corpus/gold.json` не
-   редактировать, не удалять, не дополнять. `sha256sum -c MANIFEST.sha256` в
-   `tests/corpus/` обязан быть OK до и после любой правки.
-3. **Планку гейта молча не двигать.** `tests/corpus/results_baseline.json` и
-   `MANIFEST.sha256` меняются ТОЛЬКО через `tests/corpus/promote_baseline.py`
-   с `--author` и `--reason`; инструмент пишет журнал `overmask_ledger.json`.
-   Допуски в `tests/corpus/gate_config.py` не ослаблять — все нулевые, и это
-   измеренный факт, а не осторожность. Снять тип с линии гейта можно ТОЛЬКО
-   записью в `tests/corpus/scope_exclusions.py` (автор + обоснование, иначе
-   сборка падает); линии «б» (утечка) и «в» (обратимость) не снимаются никогда.
-4. **Стена между детекцией и генератором корпуса v2.** Код в `src/` не читает и
-   не импортирует `tests/corpus_v2/` (values, generate, typedefs, эталоны).
-   Иначе детектор учится на ответах, и цифры перестают что-либо значить.
-   С TYPE-FACTORY-2 стена механическая: AST-страж
-   `tests/test_type_factory.py::TestWall` + белый список сборки.
+2. **Корпус v1 заморожен.** Не редактировать, не удалять, не дополнять —
+   подробности и сторож: [`tests/corpus/CLAUDE.md`](tests/corpus/CLAUDE.md).
+3. **Планку гейта молча не двигать.** Только через `promote_baseline.py`/
+   `promote_iter_baseline.py` с автором и причиной — подробности:
+   [`tests/corpus/CLAUDE.md`](tests/corpus/CLAUDE.md).
+4. **Стена между детекцией и генератором корпуса v2.** `src/` не читает и не
+   импортирует `tests/corpus_v2/` — механическая с TYPE-FACTORY-2 (AST-страж),
+   подробности: [`src/CLAUDE.md`](src/CLAUDE.md).
 5. **Красный тест не чинится ослаблением теста.** Падение — либо дефект в коде,
    либо честная находка в `FINDINGS.md`.
-6. **Запрет детекции TRANCHE СНЯТ владельцем 2026-08-08** (TYPE-FACTORY-2:
-   черновик — из живой документации, условие сторожа исполнено). Маскируется
-   ТОЛЬКО именная ветвь (транш «Имя»); порядковая и описательные обороты —
-   негативы `kind=ordinal-tranche`. Страж «TRANCHE с числом = ошибка» остаётся.
+6. **Запрет детекции TRANCHE СНЯТ владельцем 2026-08-08** — условия и объём:
+   [`tests/corpus_v2/CLAUDE.md`](tests/corpus_v2/CLAUDE.md).
 7. **Реальные документы не коммитить.** Публичный репозиторий, в истории уже была
    утечка договора. Дампы реальных текстов — никуда, включая `experiments/` и `docs/`.
 8. **Путь и формат хранилища сессий не менять** (`~/.shifrator/`, `key.bin`,
    `{sid}.enc`): смена делает существующие сессии пользователя невосстановимыми.
+9. **Этап, тронувший `src/` или конфигурацию, обязан закончиться кругом на
+   собранной программе** — команда и причина:
+   [`packaging/CLAUDE.md`](packaging/CLAUDE.md).
 
 ## Правила сессии
 
@@ -126,14 +121,6 @@ venv\Scripts\pyinstaller.exe packaging\shifrator.spec --distpath dist --workpath
 
 Ничего не удаляется физически — только `git mv` в `docs/archive/`.
 
-## Правило прогона корпуса
-
-Полный корпус (`gate.py`, 324 документа) гоняется **один раз, последним
-действием** этапа, на чистом дереве — прогон стоит ~10 минут и перезаписывает
-`results_gate_current.json`. Во время работы — быстрый набор (`subsample.py`,
-33 документа), но он **не приёмка**: у него собственная точка отсчёта
-`results_iter_baseline.json`, и его «регрессы» — находка, а не вердикт.
-
-Если гейт покраснел — не двигать планку. Сначала понять, это регресс продукта
-или сдвиг разметки масок (MASK-SHIFT: маски те же, но метрика их считает иначе).
-Разница видна поимённым сравнением масок, а не агрегатом.
+Прогон корпуса и круг на собранной программе — правила запретов 3 и 9 выше,
+подробности в [`tests/corpus/CLAUDE.md`](tests/corpus/CLAUDE.md) и
+[`packaging/CLAUDE.md`](packaging/CLAUDE.md).
