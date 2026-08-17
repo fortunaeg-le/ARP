@@ -3,7 +3,8 @@
 
 Третий вопрос владельца по итогам первого замера. Печатается ТОЛЬКО КОЛИЧЕСТВО:
 ни одной строки документа, ни одного значения. Реальный договор лежит вне
-репозитория (`C:\\shifrator_real\\dog.docx`), в историю не попадает ничего.
+репозитория, в историю не попадает ничего; путь к нему задаётся снаружи (см.
+"Запуск" ниже) — значение по умолчанию не предусмотрено.
 
 Что считается по каждому из девяти массовых случаев — ровно тот признак, по
 которому детектор и ошибается:
@@ -23,7 +24,8 @@
            давности».
 
 Запуск:
-    venv/Scripts/python.exe experiments/stage_a3/real_probe.py [путь.docx]
+    venv/Scripts/python.exe experiments/stage_a3/real_probe.py <путь.docx>
+    ARP_REAL_DOC=<путь.docx> venv/Scripts/python.exe experiments/stage_a3/real_probe.py
 """
 import os
 import re
@@ -36,8 +38,6 @@ sys.path.insert(0, os.path.join(ROOT, "src"))
 for _s in (sys.stdout, sys.stderr):
     if hasattr(_s, "reconfigure"):
         _s.reconfigure(encoding="utf-8", errors="replace")
-
-DEFAULT = r"C:\shifrator_real\dog.docx"
 
 from extractor import extract          # noqa: E402
 from normalizer import normalize_for_detection  # noqa: E402
@@ -64,7 +64,11 @@ def anchored(text, start, word_re):
 
 
 def main():
-    path = sys.argv[1] if len(sys.argv) > 1 else DEFAULT
+    path = sys.argv[1] if len(sys.argv) > 1 else os.environ.get("ARP_REAL_DOC")
+    if not path:
+        print("нужен путь к документу: задайте переменную окружения ARP_REAL_DOC=<путь> "
+              "или передайте путь первым аргументом командной строки")
+        return 1
     if not os.path.exists(path):
         print("документ не найден: %s — замер не проводился" % path)
         return 1

@@ -13,9 +13,10 @@
 Наружу печатаются только числа, координаты и имена тегов. Ни одного символа
 содержимого.
 """
-import sys, io, time
+import sys, io, os, time
 sys.stdout = io.TextIOWrapper(sys.stdout.buffer, encoding='utf-8')
-sys.path.insert(0, r'C:\Jesus\ARP\src')
+ROOT = os.path.dirname(os.path.dirname(os.path.dirname(os.path.abspath(__file__))))
+sys.path.insert(0, os.path.join(ROOT, 'src'))
 
 from collections import Counter
 from ooxml_core import parse_xml, read_zip_parts
@@ -23,7 +24,10 @@ from ooxml_core import parse_xml, read_zip_parts
 W = '{http://schemas.openxmlformats.org/wordprocessingml/2006/main}'
 def w(t): return W + t
 
-PATH = r'C:\shifrator_real\dog.docx'
+PATH = os.environ.get('ARP_REAL_DOC') or (sys.argv[1] if len(sys.argv) > 1 else None)
+if not PATH:
+    sys.exit('нужен путь к документу: задайте переменную окружения ARP_REAL_DOC=<путь> '
+              'или передайте путь первым аргументом командной строки')
 parts = read_zip_parts(PATH)
 
 

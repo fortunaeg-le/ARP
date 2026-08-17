@@ -34,7 +34,7 @@ import os
 import sys
 import gc
 
-ROOT = r"C:\Jesus\ARP"
+ROOT = os.path.dirname(os.path.dirname(os.path.dirname(os.path.abspath(__file__))))
 sys.path.insert(0, os.path.join(ROOT, "src"))
 os.chdir(ROOT)
 

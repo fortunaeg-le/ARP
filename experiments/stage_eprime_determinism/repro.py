@@ -1,7 +1,7 @@
 # -*- coding: utf-8 -*-
 """E'' repro: same-process N-run determinism check on the synthetic large fixture."""
 import os, sys, hashlib
-ROOT = r"C:\Jesus\ARP"
+ROOT = os.path.dirname(os.path.dirname(os.path.dirname(os.path.abspath(__file__))))
 sys.path.insert(0, os.path.join(ROOT, "src"))
 os.chdir(ROOT)
 CFG = os.path.join(ROOT, "entity_types.yaml")

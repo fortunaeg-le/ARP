@@ -14,13 +14,20 @@
 Запуск:
   determinism.py inproc N   — N прогонов в ОДНОМ процессе, печатает таблицу
   determinism.py one        — ОДИН прогон, печатает строку JSON (для мультипроцессного режима)
-"""
-import sys, io, json, hashlib
-sys.stdout = io.TextIOWrapper(sys.stdout.buffer, encoding='utf-8')
-sys.path.insert(0, r'C:\Jesus\ARP\src')
 
-PATH = r'C:\shifrator_real\dog.docx'
-CFG = r'C:\Jesus\ARP\entity_types.yaml'
+Путь к документу задаётся снаружи переменной окружения ARP_REAL_DOC (позиционные
+аргументы заняты режимом/N) — иначе скрипт останавливается с сообщением.
+"""
+import sys, io, os, json, hashlib
+sys.stdout = io.TextIOWrapper(sys.stdout.buffer, encoding='utf-8')
+ROOT = os.path.dirname(os.path.dirname(os.path.dirname(os.path.abspath(__file__))))
+sys.path.insert(0, os.path.join(ROOT, 'src'))
+
+PATH = os.environ.get('ARP_REAL_DOC')
+if not PATH:
+    sys.exit('нужен путь к документу: задайте переменную окружения ARP_REAL_DOC=<путь> '
+              '(режим/N уже заняты позиционными аргументами командной строки)')
+CFG = os.path.join(ROOT, 'entity_types.yaml')
 
 
 def sha(s):

@@ -2,7 +2,8 @@
 """Изолированный проб: детерминизм самого Natasha NewsNERTagger на большом
 куске текста, вне пайплайна SHIFRATOR (искать причину именно в NER-слое)."""
 import sys, os, hashlib, random
-sys.path.insert(0, r"C:\Jesus\ARP\src")
+ROOT = os.path.dirname(os.path.dirname(os.path.dirname(os.path.abspath(__file__))))
+sys.path.insert(0, os.path.join(ROOT, "src"))
 
 from natasha import Segmenter, Doc, NewsEmbedding, NewsNERTagger
 

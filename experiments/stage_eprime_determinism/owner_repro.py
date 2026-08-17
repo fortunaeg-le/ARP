@@ -49,7 +49,7 @@ if _threads > 0:
 import hashlib
 from collections import Counter
 
-ROOT = r"C:\Jesus\ARP"
+ROOT = os.path.dirname(os.path.dirname(os.path.dirname(os.path.abspath(__file__))))
 sys.path.insert(0, os.path.join(ROOT, "src"))
 os.chdir(ROOT)
 CFG = os.path.join(ROOT, "entity_types.yaml")

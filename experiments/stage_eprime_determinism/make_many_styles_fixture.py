@@ -25,7 +25,7 @@ import os
 import docx
 from docx.enum.style import WD_STYLE_TYPE
 
-ROOT = r"C:\Jesus\ARP"
+ROOT = os.path.dirname(os.path.dirname(os.path.dirname(os.path.abspath(__file__))))
 OUT = os.path.join(ROOT, "tests", "fixtures", "synthetic_many_styles.docx")
 
 N_STYLES = 120

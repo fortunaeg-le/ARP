@@ -11,8 +11,12 @@
 публичный репозиторий, в истории уже была утечка договора). Печатаются только
 количества и хеш.
 
+Путь к документу задаётся снаружи — переменной окружения ARP_REAL_DOC или первым
+аргументом командной строки; значение по умолчанию не предусмотрено.
+
 Запуск:
-    venv/Scripts/python.exe experiments/stage_neg/real_and_determinism.py
+    ARP_REAL_DOC=<путь> venv/Scripts/python.exe experiments/stage_neg/real_and_determinism.py
+    venv/Scripts/python.exe experiments/stage_neg/real_and_determinism.py <путь>
 """
 import collections
 import hashlib
@@ -27,7 +31,7 @@ from extractor import extract          # noqa: E402
 from pipeline import run_detection     # noqa: E402
 from tokenizer import resolve_for_masking  # noqa: E402
 
-DOC = r"C:\shifrator_real\dog.docx"
+DOC = os.environ.get("ARP_REAL_DOC") or (sys.argv[1] if len(sys.argv) > 1 else None)
 CONFIG = os.path.join(ROOT, "entity_types.yaml")
 
 for _s in (sys.stdout, sys.stderr):
@@ -36,6 +40,10 @@ for _s in (sys.stdout, sys.stderr):
 
 
 def main():
+    if not DOC:
+        print("нужен путь к документу: задайте переменную окружения ARP_REAL_DOC=<путь> "
+              "или передайте путь первым аргументом командной строки")
+        return 1
     if not os.path.exists(DOC):
         print("НЕТ ДОКУМЕНТА:", DOC)
         return 1

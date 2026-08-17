@@ -22,7 +22,7 @@ import random
 import docx
 from docx.shared import Pt
 
-ROOT = r"C:\Jesus\ARP"
+ROOT = os.path.dirname(os.path.dirname(os.path.dirname(os.path.abspath(__file__))))
 OUT_DOCX = os.path.join(ROOT, "tests", "fixtures", "synthetic_corporate_large.docx")
 OUT_TXT = os.path.join(ROOT, "tests", "fixtures", "synthetic_corporate_large.txt")
 

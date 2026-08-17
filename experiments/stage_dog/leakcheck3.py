@@ -15,13 +15,18 @@
 """
 import sys, io, re, os, subprocess, collections
 sys.stdout = io.TextIOWrapper(sys.stdout.buffer, encoding='utf-8')
-sys.path.insert(0, r'C:\Jesus\ARP\src')
+REPO = os.path.dirname(os.path.dirname(os.path.dirname(os.path.abspath(__file__))))
+sys.path.insert(0, os.path.join(REPO, 'src'))
 from extractor import extract
 
-REPO = r'C:\Jesus\ARP'
 BASE = '0d8caf0'
 
-text = '\n'.join(s.text for s in extract(r'C:\shifrator_real\dog.docx').segments)
+DOC_PATH = os.environ.get('ARP_REAL_DOC') or (sys.argv[1] if len(sys.argv) > 1 else None)
+if not DOC_PATH:
+    sys.exit('нужен путь к документу: задайте переменную окружения ARP_REAL_DOC=<путь> '
+              'или передайте путь первым аргументом командной строки')
+
+text = '\n'.join(s.text for s in extract(DOC_PATH).segments)
 
 # --- 5-граммы ---
 toks = re.findall(r'[А-Яа-яЁёA-Za-z0-9]+', text)
