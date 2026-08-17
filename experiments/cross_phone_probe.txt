@@ -1,0 +1,2 @@
+SEG l73 '499-293-47-91'
+ENT INN          seg=l73      [0:13] det=regex spans=None '499-293-47-91'
