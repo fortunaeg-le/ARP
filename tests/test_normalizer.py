@@ -182,6 +182,34 @@ class TestSeparatorCollapse:
 
 
 # --------------------------------------------------------------------------- #
+# Пустая скобка-ноль — артефакт OCR/распознавания («2()23», «500 ()()()»),
+# НЕ скобка с цифрами внутри — код города «(495) …» остаётся скобкой.
+# --------------------------------------------------------------------------- #
+class TestEmptyParenZero:
+    def test_empty_paren_between_digits_becomes_zero(self):
+        # «2()23» — дата с пустой скобкой вместо нуля, поймана ПОСЛЕ нормализации.
+        norm, omap = normalize_for_detection("2()23")
+        _assert_map_invariant("2()23", norm, omap)
+        assert norm == "2023"
+
+    def test_phone_with_digits_in_parens_not_touched(self):
+        # РЕГРЕСС: «(495) 123-45-67» — скобка НЕ пустая (цифры внутри),
+        # телефон ловится ЦЕЛИКОМ включая код города, скобки не съедены.
+        base = "(495) 123-45-67"
+        norm, omap = normalize_for_detection(base)
+        _assert_map_invariant(base, norm, omap)
+        assert norm.startswith("(495)")
+        s, e = norm_to_src(omap, 0, len(norm))
+        assert base[s:e] == base
+
+    def test_empty_paren_without_digit_context_untouched(self):
+        # Пустая скобка БЕЗ цифр по соседству — не реквизит, не трогаем.
+        base = "см. приложение () к договору"
+        norm, _ = normalize_for_detection(base)
+        assert norm == base
+
+
+# --------------------------------------------------------------------------- #
 # Алфавитные омоглифы латиница→кириллица (только в смешанном слове)
 # --------------------------------------------------------------------------- #
 class TestAlphaFold:

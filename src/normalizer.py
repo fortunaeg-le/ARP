@@ -180,6 +180,11 @@ _FAST_TRIGGER_RE = re.compile(
     + re.escape("".join(sorted(_ALPHA_FOLD)))
     + "]"
     "|[0-9] {2,}[0-9]"
+    # ОСR-артефакт пустой скобки-нуля («2()23», «500 ()()()») — новый проход
+    # 1.5 ниже трогает текст ТОЛЬКО при наличии буквального "()"; проверка
+    # контекста (цифра рядом) там же, здесь достаточно грубого триггера —
+    # консервативно в безопасную сторону, как и остальные альтернативы.
+    "|\\(\\)"
 )
 _DEL_LINE_WS = {ord(c): None for c in "\n\r\t"}
 
@@ -216,11 +221,15 @@ def normalize_for_detection(base: str) -> tuple[str, list[int]]:
     # обычный пробел между числами — законный разделитель ЗНАЧЕНИЙ, а
     # неразрывный/узкий внутри числа — артефакт вёрстки того же значения.
     soft: list[bool] = []
-    for i, ch in enumerate(base):
+    n = len(base)
+    i = 0
+    while i < n:
+        ch = base[i]
         if ch in _SPACE_LIKE:
             chars.append(" ")
             src.append(i)
             soft.append(True)
+            i += 1
             continue
         if ch in _HYPHEN_LIKE:
             chars.append(ch)
@@ -229,11 +238,66 @@ def normalize_for_detection(base: str) -> tuple[str, list[int]]:
         elif unicodedata.category(ch) == "Cf":
             # Zero-width/невидимые управляющие форматирования: ZWSP/ZWNJ/ZWJ/WJ/
             # SHY/BOM/LRM/RLM. Удаляем целиком — длина падает, карта это учитывает.
+            i += 1
             continue
         else:
             chars.append(ch)
             src.append(i)
             soft.append(False)
+        i += 1
+
+    # --- Проход 1.5: пустая скобка-ноль, артефакт распознавания/OCR. «2()23»
+    # (дата, пустая скобка = ноль), «500 ()()()» (нули) — НО «(495) 123-45-67»
+    # (код города, скобка С цифрами внутри) не трогается: между '(' и ')'
+    # там не пусто, условие ниже просто не выполняется, отдельного анти-правила
+    # не требуется. Гейт КОНТЕКСТНЫЙ (цифра/двойник до и после, пробелы и уже
+    # свёрнутые соседние "()"-пары можно пропускать) — это часть существующей
+    # цепочки цифровых токенов (проход 2 ниже увидит готовый ноль как обычную
+    # цифру своего токена), а не изолированный regex по всему тексту.
+    # Длина падает («()» -> «0»): в карте остаётся исходный индекс открывающей
+    # скобки, закрывающая выбрасывается как разделитель — тот же приём, что и
+    # для невидимых Cf-символов выше.
+    #
+    # Известное сужение: группа "()" без цифры ПОСЛЕ (например, самая последняя
+    # в хвосте числа без продолжения) этим гейтом не сводится — требование
+    # «цифра по обе стороны» защищает от порчи прозы («см. приложение ()»)
+    # ценой того, что не каждый мыслимый OCR-случай покрыт.
+    def _is_digitlike(c: str) -> bool:
+        return _is_ascii_digit(c) or c in _DIGIT_LOOKALIKE
+
+    chars2: list[str] = []
+    src2: list[int] = []
+    soft2: list[bool] = []
+    ln = len(chars)
+    i = 0
+    while i < ln:
+        if chars[i] == "(" and i + 1 < ln and chars[i + 1] == ")":
+            li = len(chars2) - 1
+            while li >= 0 and chars2[li] == " ":
+                li -= 1
+            prev_ok = li >= 0 and _is_digitlike(chars2[li])
+
+            rj = i + 2
+            while True:
+                while rj < ln and chars[rj] == " ":
+                    rj += 1
+                if rj + 1 < ln and chars[rj] == "(" and chars[rj + 1] == ")":
+                    rj += 2
+                    continue
+                break
+            next_ok = rj < ln and _is_digitlike(chars[rj])
+
+            if prev_ok and next_ok:
+                chars2.append("0")
+                src2.append(src[i])
+                soft2.append(False)
+                i += 2
+                continue
+        chars2.append(chars[i])
+        src2.append(src[i])
+        soft2.append(soft[i])
+        i += 1
+    chars, src, soft = chars2, src2, soft2
 
     m = len(chars)
     is_sep = [c == " " or c in _HYPHEN_LIKE for c in chars]
