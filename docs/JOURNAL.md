@@ -2841,3 +2841,37 @@ EMAIL +1/+6, ВСЕГО +1/+12) — те самые 16 от METRIC-FIX, слов
 **Правило пуша изменено решением владельца** (`CLAUDE.md`, запрет 1): пушить
 сразу после приёмки этапа. Номер пункта сохранён, чтобы ссылки «по запрету 9» в
 других файлах не поехали. Этот этап — первый, который пушится.
+
+## MERGE-W1 — слияние волны 1: ПРИБОРЫ + PATHS-DEAD (2026-08-18, `main`)
+
+**Две ветки слиты `--no-ff` без конфликтов.** `tools-fix` (`cb09b38`,
+ПРИБОРЫ) → `paths-fix` (`3777694`, PATHS-DEAD). `tools-fix`: опись
+BLOCKED/ALLOWED в `.claude/hooks/selftest.py` и `tests/test_audit_instrument_guards.py`
+досогласована с сужением замка push до принудительного (`GUARD-PUSH`,
+`71750de`) — обычный `git push origin main` теперь в ALLOWED, `--force`/`-f`/
+`+refspec` остаются в BLOCKED; `tests/corpus/gate.py` пишет stdout/stderr
+жёстко в UTF-8 (`errors=replace`), чтобы вердикт гейта не терялся
+`UnicodeEncodeError`'ом в cp1251-консоли; таблица правила 7 (реальные
+документы) перенесена из ручного `.claude/hooks/selftest.py` в обычный pytest
+— долг **GUARD-SELFTEST закрыт**. `paths-fix`: расшиты мёртвые абсолютные пути
+`C:\Jesus\ARP` и `C:\shifrator_real` в `experiments/` (stage_a3, stage_client,
+stage_dog, stage_eprime_determinism, stage_neg) на переносимое определение
+корня через `os.path.dirname(...__file__)`.
+
+**Хвост PATHS-DEAD — пометки-призраки в `experiments/INDEX.md`.** Одна живая
+пометка **«НЕ ТРОГАТЬ»** нашлась у `stage_eprime_determinism/corpus_anon_sha.py`
+(«правится в параллельной сессии») — файл действительно ещё держал
+`ROOT = r"C:\Jesus\ARP"`, `paths-fix` его не касалась. Расшито тем же приёмом,
+что у пяти соседних инструментов той же папки (`os.path.dirname` трижды от
+`__file__`), пометка снята. Прочих таких пометок в `experiments/INDEX.md` и
+остальном дереве (кроме `docs/archive/`, не в скоупе) не нашлось — список
+пуст.
+
+**Приёмка. Полный набор: 1796 passed, 3 skipped, 6 xfailed, 0 failed** (605 с).
+Гейт не гонялся — ни одна из двух веток и хвост PATHS-DEAD не трогали `src/` и
+корпус (запрет молчаливого сдвига планки не при делах). `git status` чист,
+`push` прошёл (`71750de` → `5e0d77e`), рабочие деревья `ARP-tools`/`ARP-paths`
+и ветки `tools-fix`/`paths-fix` удалены.
+
+**PDF-ARCH сдан замыслом без кода** — вне этой сессии, отдельным долгом,
+код по нему не влит и не начат.
