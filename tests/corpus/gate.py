@@ -91,6 +91,19 @@ import json
 import os
 import sys
 
+# Вердикт обязан доходить до лога целиком независимо от кодировки консоли:
+# по умолчанию Windows отдаёт cp1251, и печать символов вроде "⚠" валила
+# print() UnicodeEncodeError'ом ПОСЛЕ того, как замер уже отработал — красные
+# строки терялись целиком, потому что traceback приходит уже после вывода.
+# Тот же приём, что в .claude/hooks/guard.py: жёстко UTF-8 с заменой
+# нечитаемого, а не зависимость от PYTHONIOENCODING или кодовой страницы.
+for _stream in (sys.stdout, sys.stderr):
+    if hasattr(_stream, "reconfigure"):
+        try:
+            _stream.reconfigure(encoding="utf-8", errors="replace")
+        except Exception:
+            pass
+
 HERE = os.path.dirname(os.path.abspath(__file__))
 ROOT = os.path.abspath(os.path.join(HERE, "..", ".."))
 sys.path.insert(0, HERE)

@@ -25,7 +25,10 @@ _TMP = tempfile.mkdtemp(prefix="guard_docs_")
 _NEUTRAL = tempfile.mkdtemp(prefix="guard_neutral_")   # не репозиторий вовсе
 
 PUSH = "git pu" + "sh origin main"          # собрано, чтобы не ловить себя
-PUSH_QUOTED = 'bash -c "git pu' + 'sh"'
+#: Замок сужен до ПРИНУДИТЕЛЬНОЙ отправки (CLAUDE.md, запрет 1, решение
+#: владельца 2026-08-17) — обычный PUSH выше теперь РАЗРЕШЁН, см. CASES ниже.
+FORCE_PUSH = "git pu" + "sh --force origin main"
+PUSH_QUOTED = 'bash -c "git pu' + 'sh --force"'
 BASELINE = "tests/corpus/results_" + "baseline.json"
 GOLD = "tests/corpus/" + "gold.json"
 GATECFG = "tests/corpus/gate_" + "config.py"
@@ -33,10 +36,12 @@ ITER = "tests/corpus/results_iter_" + "baseline.json"
 
 CASES = [
     # (что проверяем, payload, ожидаемый код)
-    ("push — прямой",
-     {"tool_name": "Bash", "tool_input": {"command": PUSH}}, 2),
-    ("push — спрятанный в кавычки",
+    ("push — force, прямой",
+     {"tool_name": "Bash", "tool_input": {"command": FORCE_PUSH}}, 2),
+    ("push — force, спрятанный в кавычки",
      {"tool_name": "Bash", "tool_input": {"command": PUSH_QUOTED}}, 2),
+    ("push — обычная отправка разрешена",
+     {"tool_name": "Bash", "tool_input": {"command": PUSH}}, 0),
     ("корпус v1: запись в gold.json",
      {"tool_name": "Write", "tool_input": {"file_path": "C:/Jesus/ARP/" + GOLD}}, 2),
     ("корпус v1: правка документа корпуса",
