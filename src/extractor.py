@@ -915,6 +915,63 @@ def _extract_txt(path: str) -> SourceDocument:
     return SourceDocument(segments=segments, source_format="txt", source_path=path)
 
 
+def _extract_pdf(path: str) -> SourceDocument:
+    """PDF-ветка (PDF-ARCH, ветка А — текстовый слой; свой OCR не входит).
+
+    Один сегмент на СТРАНИЦУ (не на текстовый блок): страница — естественная
+    единица PDF, у неё есть номер, который нужен и предупреждению о неполноте
+    (pdf_completeness.py), и пользователю, читающему таблицу непрочитанного.
+    Дробление на блоки добавило бы координаты layout-движка без выигрыша для
+    конвейера ниже (`run_detection`/`tokenize` не знают и не должны знать про
+    происхождение сегмента).
+
+    Библиотека — pypdf (чистый Python, wheel без бинарных зависимостей, лёгкий:
+    ~0.4 МБ против PyMuPDF/pdfplumber с компилированными C-расширениями). Читает
+    ТОЛЬКО текстовый слой — страница-скан без слоя даёт пустую строку, страница
+    с повреждённым/нераспознанным шрифтом — мусорные глифы; оба случая ловит
+    pdf_completeness.py ПОСЛЕ этой функции (extract() сам зон не проверяет,
+    ровно как для .docx — см. unread_zones.py).
+
+    Битый/зашифрованный PDF — ValueError (не проглатываем молча, тот же принцип,
+    что и у _extract_txt: явный отказ лучше тихой утечки).
+    """
+    from pypdf import PdfReader
+    from pypdf.errors import PdfReadError
+
+    try:
+        reader = PdfReader(path)
+        if reader.is_encrypted:
+            # Пустой пароль пробуем один раз (частый случай "защиты" от печати,
+            # текст открыт) — иначе честный отказ, а не пустой документ молча.
+            try:
+                reader.decrypt("")
+            except Exception:
+                pass
+            if reader.is_encrypted:
+                raise ValueError(
+                    f"PDF защищён паролем и не может быть прочитан: {path}"
+                )
+        pages_text = [page.extract_text() or "" for page in reader.pages]
+    except ValueError:
+        raise
+    except PdfReadError as e:
+        raise ValueError(f"Не удалось прочитать PDF: {path}. {e}")
+    except Exception as e:
+        raise ValueError(f"Не удалось прочитать PDF: {path}. {e}")
+
+    segments = [
+        TextSegment(
+            id=f"pg{index}",
+            text=text,
+            source_type="pdf_page",
+            metadata={"page_index": index, "page_number": index + 1},
+        )
+        for index, text in enumerate(pages_text)
+    ]
+
+    return SourceDocument(segments=segments, source_format="pdf", source_path=path)
+
+
 def extract(path: str) -> SourceDocument:
     if not Path(path).is_file():
         raise FileNotFoundError(path)
@@ -924,8 +981,10 @@ def extract(path: str) -> SourceDocument:
         doc = _extract_docx(path)
     elif ext == ".txt":
         doc = _extract_txt(path)
+    elif ext == ".pdf":
+        doc = _extract_pdf(path)
     else:
-        raise ValueError(f"Неподдерживаемый формат: {ext}. Поддерживаются: .docx, .txt")
+        raise ValueError(f"Неподдерживаемый формат: {ext}. Поддерживаются: .docx, .txt, .pdf")
 
     # Изменение 2: узкая эвристика для настоящего строчного/заглавного ввода —
     # для .docx и .txt, поверх сегментов, у которых detection_text не задан.

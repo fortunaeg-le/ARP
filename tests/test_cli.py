@@ -89,12 +89,23 @@ class TestCliErrors:
         assert "файл не найден" in result.stderr
 
     def test_encrypt_unsupported_format_prints_error_and_exits_1(self, tmp_path):
-        """HANDOFF_7, Пример 3: encrypt dummy.pdf -> stderr с сообщением о неподдерживаемом формате, код 1."""
+        """HANDOFF_7, Пример 3 (обновлён PDF-ARCH: .pdf теперь ПОДДЕРЖИВАЕТСЯ,
+        см. TestCliPdfEncrypt в test_pdf_extractor.py) -> заведомо неизвестное
+        расширение вместо .pdf."""
+        bad_path = tmp_path / "dummy.xyz"
+        bad_path.write_bytes(b"dummy")
+        result = _run(["encrypt", str(bad_path)], tmp_path)
+        assert result.returncode == 1
+        assert "Неподдерживаемый формат" in result.stderr
+
+    def test_encrypt_invalid_pdf_prints_error_and_exits_1(self, tmp_path):
+        """PDF-ARCH: .pdf с мусорным содержимым -> явная ошибка чтения, код 1
+        (не отказ через UnreadZoneError — это другой класс: файл не открылся)."""
         pdf_path = tmp_path / "dummy.pdf"
         pdf_path.write_bytes(b"dummy")
         result = _run(["encrypt", str(pdf_path)], tmp_path)
         assert result.returncode == 1
-        assert "Неподдерживаемый формат" in result.stderr
+        assert "Не удалось прочитать PDF" in result.stderr
 
     def test_decrypt_unknown_session_prints_error_and_exits_1(self, tmp_path):
         """HANDOFF_7, Пример 3: decrypt на несуществующий session_id -> stderr 'сессия не найдена', код 1."""

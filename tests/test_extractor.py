@@ -251,15 +251,25 @@ class TestExtractErrors:
             extract("nope_does_not_exist.docx")
 
     def test_unsupported_extension_raises_value_error_with_message(self, tmp_path):
-        """HANDOFF_1, Пример 4: extract('file.pdf') -> ValueError('Неподдерживаемый формат: .pdf. Поддерживаются: .docx, .txt')."""
-        path = tmp_path / "file.pdf"
+        """HANDOFF_1, Пример 4 (обновлён PDF-ARCH: .pdf теперь ПОДДЕРЖИВАЕТСЯ,
+        см. TestExtractPdf в test_pdf_extractor.py) -> берём заведомо
+        неизвестное расширение вместо .pdf."""
+        path = tmp_path / "file.xyz"
         path.write_bytes(b"dummy")
-        with pytest.raises(ValueError, match=r"Неподдерживаемый формат: \.pdf\. Поддерживаются: \.docx, \.txt"):
+        with pytest.raises(ValueError, match=r"Неподдерживаемый формат: \.xyz\. Поддерживаются: \.docx, \.txt, \.pdf"):
             extract(str(path))
 
     def test_unsupported_extension_is_case_insensitive(self, tmp_path):
         """Спека, блок 1: расширение определяется в нижнем регистре."""
-        path = tmp_path / "file.PDF"
+        path = tmp_path / "file.XYZ"
         path.write_bytes(b"dummy")
         with pytest.raises(ValueError):
+            extract(str(path))
+
+    def test_invalid_pdf_content_raises_value_error(self, tmp_path):
+        """PDF-ARCH: расширение .pdf распознано, но файл не PDF — явный
+        ValueError (не тихая пустая выдача), как и у битого .txt."""
+        path = tmp_path / "file.pdf"
+        path.write_bytes(b"dummy")
+        with pytest.raises(ValueError, match=r"Не удалось прочитать PDF"):
             extract(str(path))
