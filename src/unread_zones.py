@@ -117,6 +117,130 @@ _SERVICE_NOTE_IDS = {"-1", "0"}
 
 _PREVIEW_LEN = 120
 
+# --- СУЖЕНИЕ ОТКАЗА НА off-list-узле (этап CLIENT, часть 2) -------------------
+#
+# `mc:AlternateContent` — обёртка совместимости разметки: так новый Word и
+# LibreOffice кладут фигуру, надпись, SmartArt. Внутри ДВЕ ветви одного и того
+# же содержимого: `mc:Choice` (современное кодирование) и `mc:Fallback`
+# (запасное, обычно VML). Узла нет в закрытом списке, поэтому он даёт
+# `unknown_node` и отказ — а таких документов у клиента много.
+#
+# ПРОЧИТАТЬ содержимое нельзя: внутри лежит `w:txbxContent`, то есть текст
+# НАДПИСИ, а надписи система не читает нигде (открытая запись AUD1-Z-ZONES) —
+# это отдельная работа, а не правка здесь. Значит остаётся сузить отказ.
+#
+# Сужаем ровно до доказуемо пустого случая. Узел перестаёт быть зоной, только
+# если выполнены ОБА условия:
+#   1. во всём поддереве нет ни одного непробельного символа — проверка идёт по
+#      `itertext()`, а НЕ по `w:t`: формула держит текст в `m:t`, фигура
+#      DrawingML — в `a:t`, и узкая проверка по `w:t` превратила бы отказ в
+#      тихий пропуск (проверено на фикстуре `unknown_node.docx`: её `m:oMath`
+#      по `w:t` даёт РОВНО НОЛЬ символов);
+#   2. каждая ссылка `r:id`/`r:embed`/… внутри ведёт на связь типа
+#      «изображение». Растр текста не несёт и никогда не читался: обычная
+#      картинка в теле отказа не вызывает и сегодня, поэтому обёртка вокруг неё
+#      не имеет права менять вердикт. Любая другая связь — диаграмма, OLE,
+#      SmartArt, внешняя ссылка — означает содержимое в ДРУГОЙ части пакета,
+#      которое мы не смотрели: отказ остаётся.
+#
+# Молчаливого пропуска не заводится ни в одном другом случае: есть хоть один
+# символ или хоть одна нерастровая связь — отказ прежний.
+
+_R_NS = "{http://schemas.openxmlformats.org/officeDocument/2006/relationships}"
+# Все способы сослаться на связь из содержимого части. Список закрытый — тем же
+# принципом, что и перепись узлов: незнакомый способ ссылки нас не выпустит,
+# потому что решение о пустоте требует ПОЛОЖИТЕЛЬНОГО ответа по каждой ссылке.
+_REL_ATTRS = frozenset(
+    _R_NS + name for name in ("id", "embed", "link", "pict", "dm", "lo", "qs", "cs")
+)
+_IMAGE_REL_TYPE = "http://schemas.openxmlformats.org/officeDocument/2006/relationships/image"
+
+_MC_NS = "{http://schemas.openxmlformats.org/markup-compatibility/2006}"
+_MC_ALTERNATE = _MC_NS + "AlternateContent"
+_MC_CHOICE = _MC_NS + "Choice"
+_MC_FALLBACK = _MC_NS + "Fallback"
+
+# Текст, лежащий не в элементе, а в АТРИБУТЕ: WordArt VML держит надпись в
+# v:textpath/@string, и itertext() до неё не доберётся.
+_TEXT_ATTRS = ("string",)
+
+
+def _rels_part_name(part: str) -> str:
+    """'word/document.xml' -> 'word/_rels/document.xml.rels'."""
+    head, _, tail = part.rpartition("/")
+    return f"{head}/_rels/{tail}.rels" if head else f"_rels/{tail}.rels"
+
+
+def _read_rel_types(parts: "dict[str, bytes]", part: str) -> "dict[str, str]":
+    """{rId: тип связи} для одной части. Внешняя связь получает тип '', то есть
+    заведомо не-картинку: содержимое лежит вне пакета, судить о нём мы не можем.
+    Нечитаемый/отсутствующий .rels даёт пустую карту — и тогда ЛЮБАЯ ссылка не
+    разрешится, то есть отказ сохранится (безопасная сторона)."""
+    data = parts.get(_rels_part_name(part))
+    if not data:
+        return {}
+    try:
+        root = parse_xml(data).getroot()
+    except Exception:
+        return {}
+    out: "dict[str, str]" = {}
+    for rel in root.iterchildren():
+        rid = rel.get("Id")
+        if rid is None:
+            continue
+        out[rid] = "" if rel.get("TargetMode") == "External" else (rel.get("Type") or "")
+    return out
+
+
+def _subtree_has_text(el) -> bool:
+    """Есть ли в поддереве хоть один непробельный символ — ГДЕ УГОДНО.
+
+    Шире, чем `_zone_text`: там мы намеренно считаем только `w:t` (видимый текст
+    тела), здесь же решается вопрос «терять нечего», и ошибиться в эту сторону
+    нельзя. Поэтому берём весь `itertext()` (он накрывает `m:t`, `a:t`, `w:t`,
+    `w:instrText`) плюс текстонесущие атрибуты."""
+    for chunk in el.itertext():
+        if chunk and chunk.strip():
+            return True
+    for node in el.iter():
+        for name in _TEXT_ATTRS:
+            value = node.get(name)
+            if value and value.strip():
+                return True
+    return False
+
+
+def _only_image_refs(el, rel_types: "dict[str, str]") -> bool:
+    """Все ссылки на связи внутри поддерева ведут на картинки (или ссылок нет)."""
+    for node in el.iter():
+        for attr, value in node.attrib.items():
+            if attr in _REL_ATTRS and rel_types.get(value, "") != _IMAGE_REL_TYPE:
+                return False
+    return True
+
+
+def _offlist_is_provably_empty(el, rel_types: "dict[str, str]") -> bool:
+    """Узел вне переписи, из которого доказуемо нечего терять (см. блок выше)."""
+    return not _subtree_has_text(el) and _only_image_refs(el, rel_types)
+
+
+def _offlist_text(el) -> str:
+    """Текст off-list-узла для отчёта и sidecar, БЕЗ дубля ветвей совместимости.
+
+    У `mc:AlternateContent` `mc:Choice` и `mc:Fallback` — два кодирования ОДНОГО
+    содержимого, и наивная склейка по `w:t` показывала пользователю его дважды
+    (проба: 72 символа там, где текста 36). Берём ту ветвь, что несёт текст:
+    сначала `mc:Choice` (её и показывает редактор), иначе `mc:Fallback`.
+    Прочие узлы — как прежде, всё поддерево целиком."""
+    if el.tag != _MC_ALTERNATE:
+        return _zone_text(el)
+    for tag in (_MC_CHOICE, _MC_FALLBACK):
+        for branch in el.iterchildren(tag):
+            text = _zone_text(branch)
+            if text.strip():
+                return text
+    return _zone_text(el)
+
 
 class UnreadZoneError(Exception):
     """Документ содержит зоны, которые система не умеет читать (этап 1b).
@@ -377,7 +501,7 @@ def _classify_unreached(t, offlist_set: set) -> "tuple[object, str] | None":
     return t, "unknown_node"
 
 
-def _scan_readable_part(root, part: str) -> "list[Zone]":
+def _scan_readable_part(root, part: str, rel_types: "dict[str, str] | None" = None) -> "list[Zone]":
     """Непрочитанные подузлы ВНУТРИ читаемой части (тело или колонтитул).
 
     Часть читается, поэтому объявлять её зоной целиком нельзя — иначе отказ шёл
@@ -397,12 +521,22 @@ def _scan_readable_part(root, part: str) -> "list[Zone]":
        ли текста в стороне.
     """
     reached, offlist = walk_readable(root)
-    offlist_set = {el for el, _ in offlist}
+    rel_types = rel_types or {}
+
+    # ЭТАП CLIENT, часть 2: узел вне переписи, из которого ДОКАЗУЕМО нечего
+    # терять (ни символа текста, ни ссылки на нерастровую часть), зоной не
+    # объявляется — иначе фигура без надписи и рамка-линия давали отказ на
+    # пустом месте. Всё остальное отказывает ровно как прежде. Отсеянные узлы
+    # НЕ попадают и в offlist_set: если бы внутри вопреки проверке нашёлся w:t,
+    # сверка ниже поймала бы его как textbox/nested_table/unknown_node — то
+    # есть послабление прикрыто вторым проходом, а не только само собой.
+    kept = [(el, tag) for el, tag in offlist
+            if not _offlist_is_provably_empty(el, rel_types)]
+    offlist_set = {el for el, _ in kept}
 
     zones: "list[Zone]" = []
-    for el, tag in offlist:
-        text = _zone_text(el)
-        zones.append(_make_zone("unknown_node", part, text, detail=_short(tag)))
+    for el, tag in kept:
+        zones.append(_make_zone("unknown_node", part, _offlist_text(el), detail=_short(tag)))
 
     seen_owners: set = set()
     for t in root.iter(_W_T):
@@ -465,7 +599,7 @@ def scan_unread_zones(docx_path: str) -> "list[Zone]":
             # ЭТАП NODES: колонтитулы теперь ЧИТАЮТСЯ наравне с телом, поэтому
             # частью целиком больше не объявляются — как и document.xml, они
             # проходят разбор подузлов.
-            zones.extend(_scan_readable_part(root, name))
+            zones.extend(_scan_readable_part(root, name, _read_rel_types(parts, name)))
         elif name == "word/footnotes.xml":
             zones.extend(_scan_notes(root, name, _W_FOOTNOTE, "footnote"))
         elif name == "word/endnotes.xml":

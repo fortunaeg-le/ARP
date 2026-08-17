@@ -1,0 +1,34 @@
+﻿======================================================================
+alt_text
+  зон: 1
+    kind=unknown_node detail=mc:AlternateContent  chars=  36 preview='<mc:AlternateContent> Иванов Иван Иванович, ИНН 7707083893'
+  сегментов extract(): 1
+    p0: 'Тело договора.'
+======================================================================
+alt_notext
+  зон: 0
+  сегментов extract(): 1
+    p0: 'Тело договора.'
+======================================================================
+alt_only_fb
+  зон: 1
+    kind=unknown_node detail=mc:AlternateContent  chars=  36 preview='<mc:AlternateContent> Иванов Иван Иванович, ИНН 7707083893'
+  сегментов extract(): 1
+    p0: 'Тело договора.'
+======================================================================
+alt_image
+  зон: 0
+  сегментов extract(): 1
+    p0: 'Тело договора.'
+======================================================================
+alt_chart
+  зон: 1
+    kind=unknown_node detail=mc:AlternateContent  chars=   0 preview='<mc:AlternateContent>'
+  сегментов extract(): 1
+    p0: 'Тело договора.'
+======================================================================
+alt_wordart
+  зон: 1
+    kind=unknown_node detail=mc:AlternateContent  chars=   0 preview='<mc:AlternateContent>'
+  сегментов extract(): 1
+    p0: 'Тело договора.'
