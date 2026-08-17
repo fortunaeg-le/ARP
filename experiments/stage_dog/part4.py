@@ -8,14 +8,18 @@
 
 Плюс общий разбор: почему в договоре с ОГРН/КПП найдено 0 ИНН.
 """
-import sys, io, re, json
+import sys, io, os, re, json
 sys.stdout = io.TextIOWrapper(sys.stdout.buffer, encoding='utf-8')
-sys.path.insert(0, r'C:\Jesus\ARP\src')
+ROOT = os.path.dirname(os.path.dirname(os.path.dirname(os.path.abspath(__file__))))
+sys.path.insert(0, os.path.join(ROOT, 'src'))
 
 from collections import Counter
 
-PATH = r'C:\shifrator_real\dog.docx'
-CFG = r'C:\Jesus\ARP\entity_types.yaml'
+PATH = os.environ.get('ARP_REAL_DOC') or (sys.argv[1] if len(sys.argv) > 1 else None)
+if not PATH:
+    sys.exit('нужен путь к документу: задайте переменную окружения ARP_REAL_DOC=<путь> '
+              'или передайте путь первым аргументом командной строки')
+CFG = os.path.join(ROOT, 'entity_types.yaml')
 
 from extractor import extract
 from pipeline import run_detection
