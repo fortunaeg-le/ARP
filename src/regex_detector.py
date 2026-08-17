@@ -251,6 +251,12 @@ def _load_regex_types(config_path: str) -> list[tuple[str, re.Pattern, object, i
     m.group(0) включает слово «паспорт» и спан шире эталонного (recall_exact 0%).
     Детектируем ПО якорю, маскируем БЕЗ якоря.
 
+    `span_group_end: M` — ЭТАП DEBTS (долг `0c-B`). Спан сущности = от НАЧАЛА
+    группы `span_group` до КОНЦА группы M. Нужен там, где значение записано
+    ДВУМЯ группами с разделителем между ними («45 06 № 123456»): одной группой
+    его не выделить, а m.group(0) тянет в спан слово-якорь. По умолчанию
+    M == span_group, и тогда поведение побайтно прежнее.
+
     `anchor:` — ЭТАП 4. Отдельный (необязательный) regex-якорь, ищется в окне слева
     от значения В ТОМ ЖЕ сегменте (см. `_has_anchor`), но НЕ встроен в `pattern:` —
     в отличие от span_group-якорей выше, значение матчится САМО ПО СЕБЕ (голым
@@ -305,6 +311,23 @@ def _load_regex_types(config_path: str) -> list[tuple[str, re.Pattern, object, i
                       f"а групп в паттерне {pattern.groups} — паттерн пропущен",
                       file=sys.stderr)
                 continue
+
+            # ЭТАП DEBTS: правый край спана отдельной группой (см. докстроку).
+            span_group_end = entry.get("span_group_end")
+            if span_group_end is None:
+                span_group_end = span_group
+            else:
+                try:
+                    span_group_end = int(span_group_end)
+                except (TypeError, ValueError):
+                    print(f"ПРЕДУПРЕЖДЕНИЕ: span_group_end типа {entity_type} не число "
+                          f"({span_group_end!r}) — паттерн пропущен", file=sys.stderr)
+                    continue
+                if span_group_end > pattern.groups or span_group_end < span_group:
+                    print(f"ПРЕДУПРЕЖДЕНИЕ: у типа {entity_type} span_group_end="
+                          f"{span_group_end} вне диапазона (групп {pattern.groups}, "
+                          f"span_group {span_group}) — паттерн пропущен", file=sys.stderr)
+                    continue
 
             validator = None
             validate_name = entry.get("validate")
@@ -364,7 +387,8 @@ def _load_regex_types(config_path: str) -> list[tuple[str, re.Pattern, object, i
                 anti_right_window = _ANTI_ANCHOR_RIGHT_WINDOW
 
             result.append((entity_type, pattern, validator, span_group, anchor,
-                           anti_anchor, anti_window, anti_right, anti_right_window))
+                           anti_anchor, anti_window, anti_right, anti_right_window,
+                           span_group_end))
     return result
 
 
@@ -407,9 +431,10 @@ def detect_regex(doc: SourceDocument, config_path: str,
         anchor_ctx = anchor_prefix + search_text if anchor_prefix else search_text
         shift = len(anchor_prefix)
         for (entity_type, pattern, validator, span_group, anchor,
-             anti_anchor, anti_window, anti_right, anti_right_window) in regex_types:
+             anti_anchor, anti_window, anti_right, anti_right_window,
+             span_group_end) in regex_types:
             for m in pattern.finditer(search_text):
-                if m.start(span_group) < 0:
+                if m.start(span_group) < 0 or m.end(span_group_end) < 0:
                     continue  # группа не участвовала в матче — спана нет
 
                 anchored = anchor is not None and _has_anchor(
@@ -466,8 +491,10 @@ def detect_regex(doc: SourceDocument, config_path: str,
                                                 shift + m.start(span_group),
                                                 shift + m.end(span_group)):
                             continue
-                # span_group>0: якорь остаётся вне спана (см. _load_regex_types)
-                start, end = norm_to_src(offset_map, m.start(span_group), m.end(span_group))
+                # span_group>0: якорь остаётся вне спана (см. _load_regex_types).
+                # Правый край — span_group_end (по умолчанию тот же span_group).
+                start, end = norm_to_src(offset_map,
+                                         m.start(span_group), m.end(span_group_end))
                 entities.append(Entity(
                     id=str(uuid.uuid4()),
                     segment_id=segment.id,

@@ -66,9 +66,11 @@ _TOP_KEYS = {"type", "title", "status", "detect", "generator", "notes"}
 #: (сама стена). form/rank/sets/measure потребляются сборщиком.
 _DETECT_KEYS = {"method", "form", "patterns", "validate", "anchor", "anti_anchor",
                 "anti_anchor_window", "anti_anchor_right",
-                "anti_anchor_right_window", "span_group", "enabled",
+                "anti_anchor_right_window", "span_group", "span_group_end",
+                "enabled",
                 "token_prefix", "rank", "sets", "sets_why", "measure"}
-_PATTERN_ENTRY_KEYS = {"pattern", "form", "span_group", "validate", "anchor",
+_PATTERN_ENTRY_KEYS = {"pattern", "form", "span_group", "span_group_end",
+                       "validate", "anchor",
                        "anti_anchor", "anti_anchor_window",
                        "anti_anchor_right", "anti_anchor_right_window"}
 _FORM_CLASSES = ("raw", "digit_run", "number_with_unit", "compound")
@@ -352,7 +354,8 @@ def emit_type_block(td):
         lines.append("    patterns:")
         for entry in detect["patterns"]:
             lines.append("      - pattern: " + _q(compile_form(t, entry["form"])))
-            for k in ("span_group", "validate", "anchor", "anti_anchor",
+            for k in ("span_group", "span_group_end", "validate", "anchor",
+                      "anti_anchor",
                       "anti_anchor_window", "anti_anchor_right",
                       "anti_anchor_right_window"):
                 if k in entry:
@@ -361,7 +364,7 @@ def emit_type_block(td):
         lines.append("    pattern: " + _q(compile_form(t, detect["form"])))
         for k in ("validate", "anchor", "anti_anchor", "anti_anchor_window",
                   "anti_anchor_right", "anti_anchor_right_window",
-                  "span_group"):
+                  "span_group", "span_group_end"):
             if k in detect:
                 lines.append(f"    {k}: " + _emit_value(detect[k]))
     if "enabled" in detect:
