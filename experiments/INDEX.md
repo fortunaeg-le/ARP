@@ -75,7 +75,7 @@
 - `update_known_leaks.py` — пересборка `docs/known_leaks_stage_c.json` по факту E′
 
 ## stage_eprime_determinism/ — E″ (недетерминизм Natasha, EPRIME-A-CONFIRM)
-- `corpus_anon_sha.py` — per-doc sha256 анонимизированного текста по всему корпусу (**НЕ ТРОГАТЬ** — правится в параллельной сессии)
+- `corpus_anon_sha.py` — per-doc sha256 анонимизированного текста по всему корпусу
 - `make_many_styles_fixture.py` — фикстура «много стилей» (нужна `tests/test_determinism.py`)
 - `make_synthetic_large.py` — синтетический двойник крупного договора (нужна `tests/test_determinism.py`)
 - `owner_repro.py` — репро+диагностика для владельца на реальном документе (числа/sha, без текста)

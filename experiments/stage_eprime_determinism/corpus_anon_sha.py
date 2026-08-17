@@ -45,7 +45,7 @@ SIM_OLD = "--simulate-old" in sys.argv
 if SIM_OLD:
     sys.argv.remove("--simulate-old")
 
-ROOT = r"C:\Jesus\ARP"
+ROOT = os.path.dirname(os.path.dirname(os.path.dirname(os.path.abspath(__file__))))
 sys.path.insert(0, os.path.join(ROOT, "src"))
 os.chdir(ROOT)
 CFG = os.path.join(ROOT, "entity_types.yaml")
