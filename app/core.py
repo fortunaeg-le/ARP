@@ -170,17 +170,52 @@ ZONE_KIND_LABELS = {
 }
 
 
-# Типы, доступные при ручной разметке «Пометить пропущенное» (постановка U3,
-# задача 1) — ровно список из постановки, в её порядке. BIK/SUM(порядок)/DATE
-# намеренно не входят как отдельные пункты меню там, где постановка их не
-# называла; DATE выключен в entity_types.yaml и здесь тоже не предлагается.
-# ЭТАП T2-INN: INN_PERSON добавлен рядом с INN. Пропущенный ИНН физлица — это
-# пропущенные ПДн, и пометить его пользователь должен уметь ровно так же, как
-# пропущенный ИНН организации; без записи здесь пункт меню просто отсутствовал бы.
-MARKUP_TYPES = [
+# Типы, доступные при ручной разметке «Пометить пропущенное».
+#
+# ЭТАП UI-REBUILD. Раньше здесь лежал ЗАКРЫТЫЙ список из 14 типов, переписанный
+# руками из постановки U3. Он молча отставал от `entity_types.yaml`: к этому
+# этапу маскируемых типов стало 26, и двенадцати из них (DATE, BIK, PERCENT,
+# TERM, CONTRACT_NO, CONTRACT_KIND, PASSPORT_ISSUER, REGISTRY_NAME, REG_ID,
+# REG_NUMBER, SHARE_PCT, TRANCHE) в меню просто не было. Пользователь, увидевший
+# пропущенную дату, не мог её пометить — то есть отставание этого списка ЕСТЬ
+# тихая утечка, а не косметика (жалоба владельца: «выделил дату — плашки нет»).
+#
+# Теперь список ВЫВОДИТСЯ из конфигурации: маскируемый тип — тот, у которого
+# есть `token_prefix` (служебные CLAUSE_REF / ROLE_TERM / COLLECTIVE его не
+# имеют и в меню не попадают). Новый тип, заведённый по docs/HOWTO_NEW_TYPE.md,
+# появляется в меню сам.
+#
+# `enabled: false` в конфигурации (сегодня — только DATE) выключает
+# АВТОДЕТЕКЦИЮ, а не право человека пометить значение руками: движок дату не
+# ищет ИМЕННО потому, что решение о ней оставлено человеку. Сервер такую
+# пометку принимает и без этого этапа (`_load_token_prefixes` смотрит на
+# `token_prefix`, а не на `enabled`) — не хватало ровно строки в меню.
+#
+# MARKUP_TYPES_COMMON — «частые сверху» в меню (задача 3 постановки UI-REBUILD):
+# порядок ровно тот, что был в старом закрытом списке, он выверен на договорах.
+# Всё, чего здесь нет, идёт следом по алфавиту НАЗВАНИЯ (не кода — юрист ищет
+# глазами по-русски).
+MARKUP_TYPES_COMMON = [
     "PERSON", "ORG", "ADDRESS", "INN", "INN_PERSON", "PASSPORT", "PHONE",
     "BANK_ACCOUNT", "EMAIL", "BIRTHDATE", "SNILS", "OGRN", "KPP", "SUM",
 ]
+
+
+def markup_types(config_path: str = None) -> list[str]:
+    """Все маскируемые типы в порядке показа: частые сверху, остальные по
+    алфавиту русского названия. Источник состава — entity_types.yaml."""
+    from tokenizer import _load_token_prefixes
+
+    prefixes = _load_token_prefixes(config_path or DEFAULT_CONFIG)
+    common = [t for t in MARKUP_TYPES_COMMON if t in prefixes]
+    rest = sorted((t for t in prefixes if t not in MARKUP_TYPES_COMMON),
+                  key=lambda t: type_label(t).lower())
+    return common + rest
+
+
+# Обратная совместимость имени: часть кода и проб ссылалась на MARKUP_TYPES как
+# на список. Он остаётся, но теперь СОБИРАЕТСЯ из конфигурации, а не пишется.
+MARKUP_TYPES = MARKUP_TYPES_COMMON
 
 
 def type_label(entity_type: str) -> str:
@@ -285,8 +320,20 @@ def policy_summary(policy: dict, config_path: str = None) -> dict:
     }
 
 
-def markup_type_options() -> list[dict]:
-    return [{"type": t, "label": TYPE_LABELS[t]} for t in MARKUP_TYPES]
+def markup_type_options(config_path: str = None) -> list[dict]:
+    """Меню ручной разметки: тип, русское название, признак «частый».
+
+    `common` нужен экрану, чтобы отбить частые типы от длинного хвоста
+    (задача 3 UI-REBUILD) — своего представления о частоте у экрана нет,
+    иначе оно разошлось бы с этим файлом.
+
+    Название берётся из TYPE_LABELS; тип без названия показывается СВОИМ КОДОМ,
+    а не пропускается: пропустить — значит опять лишить человека возможности
+    пометить пропущенное, то есть вернуть ровно тот дефект, ради которого этот
+    список и стал выводимым."""
+    common = set(MARKUP_TYPES_COMMON)
+    return [{"type": t, "label": type_label(t), "common": t in common}
+            for t in markup_types(config_path)]
 
 
 def storage_dir():

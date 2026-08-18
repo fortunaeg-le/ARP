@@ -4,8 +4,18 @@
     {
       "name": "shifrator-ui",
       "runtimeExecutable": "venv\\Scripts\\python.exe",
-      "runtimeArgs": ["app\\server.py"],
+      "runtimeArgs": [
+        "app\\server.py"
+      ],
       "port": 8765
+    },
+    {
+      "name": "shifrator-ui-probe",
+      "runtimeExecutable": "venv\\Scripts\\python.exe",
+      "runtimeArgs": [
+        "C:\\Users\\user\\AppData\\Local\\Temp\\claude\\C--Users-user-ARP\\b785dba1-f6c8-4772-9060-648104635191\\scratchpad\\run_ui.py"
+      ],
+      "port": 8791
     }
   ]
 }

@@ -63,8 +63,23 @@
   .verify-grid{display:grid;grid-template-columns:1fr 340px;gap:16px;align-items:start}
   .panes{display:grid;grid-template-columns:1fr 1fr;gap:14px;min-width:0}
   .pane h4{margin:0;padding:10px 14px;font-size:13px;color:var(--muted);border-bottom:1px solid var(--line);background:#fafbfd;border-radius:12px 12px 0 0;text-transform:uppercase;letter-spacing:.4px}
-  .pane .body{padding:14px;white-space:pre-wrap;word-break:break-word;font-size:13.5px;max-height:62vh;overflow:auto;line-height:1.7}
+  .pane .body{position:relative;padding:14px;white-space:pre-wrap;word-break:break-word;font-size:13.5px;max-height:62vh;overflow:auto;line-height:1.7}
   .pane{background:var(--panel);border:1px solid var(--line);border-radius:12px;min-width:0}
+
+  /* --- ЭТАП UI-REBUILD: нумерация строк и синхронная прокрутка (задача 6) ---
+     Строка — ЛОГИЧЕСКАЯ (между переводами строки исходного документа), а не
+     экранная: перенос длинной строки не даёт нового номера, номер один на всю
+     обёрнутую строку. Номер лежит в отдельной ячейке с user-select:none —
+     копирование текста номера не захватывает (проверено нажатием). */
+  .pane .body.numbered{padding:8px 0 14px;white-space:normal}
+  .ln-row{display:flex;align-items:flex-start;gap:0;padding:0 6px 0 0}
+  .ln-row:hover,.ln-row.ln-peer{background:#eef3ff}
+  .ln-num{flex:0 0 46px;text-align:right;padding:0 10px 0 4px;color:#9aa4b8;
+    font:12px/1.7 ui-monospace,Consolas,monospace;user-select:none;-webkit-user-select:none;
+    -moz-user-select:none;cursor:pointer;border-right:1px solid var(--line);margin-right:10px}
+  .ln-num:hover{color:var(--accent-d);font-weight:700}
+  .ln-txt{flex:1 1 auto;min-width:0;white-space:pre-wrap;word-break:break-word}
+  .ln-row.ln-target{background:#fff6da}
 
   mark.ent{border-radius:4px;padding:0 2px;cursor:default;box-decoration-break:clone;-webkit-box-decoration-break:clone}
   mark.ent.active{outline:2px solid rgba(0,0,0,.35);outline-offset:0}
@@ -106,11 +121,17 @@
   /* --- U3: разметка на экране проверки --- */
   .lit{cursor:text}
   mark.ent.pending{outline:2px dashed #9a5b00;outline-offset:1px}
-  #markup-menu{position:fixed;z-index:70;background:#fff;border:1px solid var(--line);border-radius:10px;
+  #markup-menu{position:fixed;z-index:2147483000;background:#fff;border:1px solid var(--line);border-radius:10px;
     box-shadow:var(--shadow);padding:10px;display:none;max-width:300px}
   #markup-menu .mm-title{font-size:12px;color:var(--muted);margin-bottom:8px;word-break:break-word}
-  #markup-menu .mm-types{display:flex;flex-wrap:wrap;gap:6px;max-width:280px}
-  #markup-menu button.mm-type{border:1px solid var(--line);background:#fafbfd;border-radius:7px;padding:5px 9px;font-size:12.5px;cursor:pointer}
+  #markup-menu .mm-types{display:flex;flex-direction:column;gap:3px;max-width:320px;max-height:44vh;overflow:auto}
+  #markup-menu .mm-search{width:100%;box-sizing:border-box;padding:6px 9px;font-size:13px;
+    border:1px solid var(--line);border-radius:7px;margin-bottom:7px}
+  #markup-menu .mm-sep{font-size:11px;color:var(--muted);text-transform:uppercase;letter-spacing:.4px;margin:6px 0 3px}
+  #markup-menu .mm-none{font-size:12px;color:var(--muted);padding:6px 2px}
+  #markup-menu button.mm-type.mm-cur{border-color:var(--accent);background:#eef3ff;color:var(--accent-d)}
+  #markup-menu .mm-hint{font-size:11px;color:var(--muted);margin-top:7px}
+  #markup-menu button.mm-type{border:1px solid var(--line);background:#fafbfd;border-radius:7px;padding:5px 9px;font-size:12.5px;cursor:pointer;text-align:left;width:100%}
   #markup-menu button.mm-type:hover{border-color:var(--accent);color:var(--accent-d)}
   #markup-menu .mm-actions{display:flex;flex-direction:column;gap:6px}
   #markup-menu button.mm-action{text-align:left;border:1px solid var(--line);background:#fafbfd;border-radius:7px;padding:7px 10px;font-size:13px;cursor:pointer}
@@ -642,8 +663,11 @@ function esc(s){ return (s||'').replace(/&/g,'&amp;').replace(/</g,'&lt;').repla
 function renderVerify(d){
   document.getElementById('v-sid').textContent=d.session_id;
   document.getElementById('v-count').textContent='спрятано '+d.values_hidden+' знач. · '+d.entities_total+' замен';
-  document.getElementById('pane-orig').innerHTML=d.original_html||'<span class="note">(пусто)</span>';
-  document.getElementById('pane-anon').innerHTML=d.anon_html||'<span class="note">(пусто)</span>';
+  const po=document.getElementById('pane-orig'), pa=document.getElementById('pane-anon');
+  po.classList.remove('numbered'); pa.classList.remove('numbered');
+  po.innerHTML=d.original_html||'<span class="note">(пусто)</span>';
+  pa.innerHTML=d.anon_html||'<span class="note">(пусто)</span>';
+  wireLineNumbers();
 
   // lossy banner
   const lb=document.getElementById('v-lossy');
@@ -827,10 +851,19 @@ function downloadRestored(){ const sid=document.getElementById('r-sid').value.tr
 // типа, 2+ — легитимная, но именующая маски ошибка); см. onAnonSelectionUp и
 // docs/archive/reports/U5A_REPORT.md, вопрос 4.
 
-const MARKUP_TYPES_FALLBACK=[["PERSON","ФИО"],["ORG","Организация"],["ADDRESS","Адрес"],["INN","ИНН организации (10 цифр)"],["INN_PERSON","ИНН человека (12 цифр)"],
-  ["PASSPORT","Паспорт"],["PHONE","Телефон"],["BANK_ACCOUNT","Банковский счёт"],["EMAIL","E-mail"],
-  ["BIRTHDATE","Дата рождения"],["SNILS","СНИЛС"],["OGRN","ОГРН/ОГРНИП"],["KPP","КПП"],["SUM","Сумма"]]
-  .map(([type,label])=>({type,label}));
+/* Запасной список — на случай, если /api/markup/types не ответил. ЭТАП
+   UI-REBUILD: он тоже обязан быть ПОЛНЫМ (все 26 маскируемых типов), иначе
+   отказ одного запроса тихо вернул бы ровно тот дефект, ради которого этап
+   и затевался — «нужного типа в меню нет, пометить нечем». Первые 14 —
+   частые (порядок как в app/core.py::MARKUP_TYPES_COMMON). */
+const MARKUP_TYPES_FALLBACK=[["PERSON","ФИО",1],["ORG","Организация",1],["ADDRESS","Адрес",1],["INN","ИНН организации (10 цифр)",1],["INN_PERSON","ИНН человека (12 цифр)",1],
+  ["PASSPORT","Паспорт",1],["PHONE","Телефон",1],["BANK_ACCOUNT","Банковский счёт",1],["EMAIL","E-mail",1],
+  ["BIRTHDATE","Дата рождения",1],["SNILS","СНИЛС",1],["OGRN","ОГРН/ОГРНИП",1],["KPP","КПП",1],["SUM","Сумма",1],
+  ["BIK","БИК",0],["CONTRACT_KIND","Вид договора",0],["DATE","Дата",0],["SHARE_PCT","Доля голосов / доля участия",0],
+  ["CONTRACT_NO","Номер договора",0],["PASSPORT_ISSUER","Орган выдачи паспорта",0],["PERCENT","Процент (ставка, неустойка)",0],
+  ["REG_ID","Регистрационный номер в реестре",0],["REGISTRY_NAME","Регистрирующий орган (налоговая инспекция)",0],
+  ["REG_NUMBER","Реестровый номер",0],["TERM","Срок исполнения",0],["TRANCHE","Транш (именной)",0]]
+  .map(([type,label,common])=>({type,label,common:!!common}));
 let MARKUP_TYPES=null;
 async function ensureMarkupTypes(){
   if(MARKUP_TYPES) return;
@@ -841,6 +874,161 @@ async function ensureMarkupTypes(){
 }
 
 let BOUNDARY_EDIT=null;   // {token,seg,oldStart,oldEnd,oldType,mergedEl} — активен между "Исправить границу" и новым выделением
+
+/* ======================================================================
+   ЭТАП UI-REBUILD, задача 6 — НУМЕРАЦИЯ СТРОК И СИНХРОННАЯ ПРОКРУТКА.
+
+   Почему НЕ по пикселям и НЕ по проценту прокрутки: панели заведомо разной
+   высоты. Маска "[PERSON_1]" короче или длиннее исходного значения, строки
+   переносятся по-разному, и к середине документа пиксельная привязка
+   разъезжается на экран и больше. Привязка идёт по НОМЕРУ ЛОГИЧЕСКОЙ СТРОКИ.
+
+   Почему номера в двух панелях гарантированно совпадают. Обе панели собраны
+   одним и тем же _assemble() из ОДНИХ И ТЕХ ЖЕ сегментов; текст ВНЕ масок в
+   них посимвольно один и тот же, значит и переводы строки вне масок стоят в
+   одних местах. Разойтись они могли бы только на переводе строки ВНУТРИ
+   значения (в исходной панели он есть, в обезличенной вместо значения стоит
+   однострочный токен) — поэтому mark.ent режется не по '\n', а '\n' внутри
+   маски заменяется пробелом (ровно так же поступает tokenizer._render_table с
+   ячейками таблиц). После этого число логических строк в панелях одинаково
+   ПО ПОСТРОЕНИЮ, а не по совпадению.
+
+   Номер лежит в отдельной ячейке .ln-num c user-select:none — в копирование
+   не попадает. ЭТО ПРОВЕРЯЕТСЯ НАЖАТИЕМ, а не на слово.
+   ====================================================================== */
+const LN = {syncing:false, wired:false};
+
+function paginatePane(pane){
+  /* Разворачивает плоское содержимое панели в строки .ln-row с номерами.
+     .lit режется по '\n' С ПЕРЕСЧЁТОМ data-s/data-e — координаты в исходном
+     сегменте обязаны остаться верными, на них стоит вся ручная разметка. */
+  if(!pane || pane.classList.contains('numbered')) return;
+  const src=[...pane.childNodes];
+  const rows=[]; let cur=[];
+  const flush=()=>{ rows.push(cur); cur=[]; };
+  for(const node of src){
+    if(node.nodeType===3){
+      const parts=node.data.split('\n');
+      parts.forEach((t,i)=>{ if(i) flush(); if(t) cur.push(document.createTextNode(t)); });
+    } else if(node.nodeType===1 && node.classList.contains('lit')){
+      const base=+node.dataset.s, seg=node.dataset.seg, txt=node.textContent;
+      const parts=txt.split('\n'); let off=0;
+      parts.forEach((t,i)=>{
+        if(i){ flush(); off+=1; }
+        const sp=document.createElement('span');
+        sp.className='lit'; sp.dataset.seg=seg;
+        sp.dataset.s=base+off; sp.dataset.e=base+off+t.length;
+        sp.textContent=t; off+=t.length;
+        cur.push(sp);            // пустой .lit тоже нужен: он держит координату
+      });
+    } else if(node.nodeType===1){
+      if(node.classList && node.classList.contains('ent')){
+        // маска атомарна: '\n' внутри значения -> пробел (см. шапку блока)
+        if(node.textContent.indexOf('\n')>=0) node.textContent=node.textContent.replace(/\n/g,' ');
+        cur.push(node);
+      } else cur.push(node);
+    }
+  }
+  flush();
+  const frag=document.createDocumentFragment();
+  rows.forEach((kids,i)=>{
+    const row=document.createElement('div');
+    row.className='ln-row'; row.dataset.line=String(i+1);
+    const num=document.createElement('span');
+    num.className='ln-num'; num.textContent=String(i+1);
+    num.title='Строка '+(i+1)+' — щёлкните, чтобы перемотать вторую панель сюда же';
+    const txt=document.createElement('span');
+    txt.className='ln-txt';
+    kids.forEach(k=>txt.appendChild(k));
+    if(!kids.length) txt.appendChild(document.createTextNode('​'));
+    row.appendChild(num); row.appendChild(txt);
+    frag.appendChild(row);
+  });
+  pane.innerHTML=''; pane.appendChild(frag);
+  pane.classList.add('numbered');
+}
+
+function lnRow(pane, line){ return pane.querySelector('.ln-row[data-line="'+line+'"]'); }
+
+function lnTopLine(pane){
+  /* Номер первой строки, видимой сверху панели. */
+  const top=pane.scrollTop;
+  let lo=null;
+  for(const r of pane.querySelectorAll('.ln-row')){
+    if(r.offsetTop+r.offsetHeight>top+1){ lo=r; break; }
+  }
+  return lo ? {line:+lo.dataset.line, delta:lo.offsetTop-top} : null;
+}
+
+function lnSyncFrom(srcPane, dstPane){
+  if(LN.syncing) return;
+  const a=lnTopLine(srcPane); if(!a) return;
+  const r=lnRow(dstPane, a.line); if(!r) return;
+  LN.syncing=true;
+  /* delta — насколько строка-якорь утоплена под верхний край в ИСХОДНОЙ панели.
+     В панели-приёмнике та же строка может быть НИЖЕ ростом (иначе перенеслась),
+     и слепое применение delta утопило бы её под край целиком — верхней видимой
+     стала бы ПРЕДЫДУЩАЯ строка, то самое расхождение на единицу. Нижняя граница
+     delta держит якорь видимым хотя бы на пиксель, то есть верхней строкой
+     приёмника гарантированно остаётся именно он. */
+  const delta=Math.max(a.delta, 2-r.offsetHeight);
+  dstPane.scrollTop=Math.max(0, r.offsetTop-delta);
+  /* Замок снимается setTimeout, а НЕ requestAnimationFrame: rAF не выполняется
+     в фоновой вкладке, и замок остался бы взведён навсегда — прокрутка
+     перестала бы синхронизироваться до перезагрузки страницы. */
+  setTimeout(()=>{ LN.syncing=false; }, 0);
+}
+
+function lnMark(line){
+  document.querySelectorAll('.ln-row.ln-peer').forEach(r=>r.classList.remove('ln-peer'));
+  if(line==null) return;
+  document.querySelectorAll('.ln-row[data-line="'+line+'"]').forEach(r=>r.classList.add('ln-peer'));
+}
+
+function lnScrollIntoView(pane, line, flash){
+  const r=lnRow(pane,line); if(!r) return;
+  const top=r.offsetTop - pane.clientHeight/3;
+  LN.syncing=true; pane.scrollTop=Math.max(0,top);
+  setTimeout(()=>{ LN.syncing=false; }, 0);
+  if(flash){ r.classList.add('ln-target'); setTimeout(()=>r.classList.remove('ln-target'),1200); }
+}
+
+function lnRowOf(node){
+  const el = node && (node.nodeType===3 ? node.parentElement : node);
+  return el ? el.closest('.ln-row') : null;
+}
+
+function wireLineNumbers(){
+  const orig=document.getElementById('pane-orig'), anon=document.getElementById('pane-anon');
+  paginatePane(orig); paginatePane(anon);
+  if(LN.wired) return; LN.wired=true;
+  orig.addEventListener('scroll', ()=>lnSyncFrom(orig,anon));
+  anon.addEventListener('scroll', ()=>lnSyncFrom(anon,orig));
+  // подсветка строки, на которую наведена мышь, — в ОБЕИХ панелях
+  [orig,anon].forEach(p=>{
+    p.addEventListener('mousemove', e=>{ const r=lnRowOf(e.target); lnMark(r?r.dataset.line:null); });
+    p.addEventListener('mouseleave', ()=>lnMark(null));
+    // клик по НОМЕРУ строки — перемотать вторую панель на неё же
+    p.addEventListener('click', e=>{
+      if(!e.target.classList || !e.target.classList.contains('ln-num')) return;
+      const line=e.target.parentElement.dataset.line;
+      lnScrollIntoView(p===orig?anon:orig, line, true);
+      lnScrollIntoView(p, line, true);
+    });
+  });
+}
+
+/* Показать в исходной панели то место, которое пользователь выделил в
+   обезличенной (задача 6: «соответствующее место второй панели видно на
+   экране, а не за его пределами»). */
+function lnRevealPeer(node){
+  const row=lnRowOf(node); if(!row) return;
+  const orig=document.getElementById('pane-orig');
+  const line=row.dataset.line, r=lnRow(orig,line); if(!r) return;
+  const vis = r.offsetTop>=orig.scrollTop && r.offsetTop+r.offsetHeight<=orig.scrollTop+orig.clientHeight;
+  if(!vis) lnScrollIntoView(orig,line,true);
+  lnMark(line);
+}
 
 /* ---- выделение мышью -> координаты в ИСХОДНОМ сегменте (без ввода вручную) ---- */
 function closestLit(node){
@@ -871,8 +1059,14 @@ function litOffset(litEl, node, offset){
 function computeSelectionInfo(range){
   const pane=document.getElementById('pane-anon');
   const touched=[];
-  for(const el of pane.children){
-    if(!(el.classList.contains('lit')||el.classList.contains('ent'))) continue;
+  /* ЭТАП UI-REBUILD: раньше здесь был обход pane.children — ПРЯМЫХ детей.
+     После нумерации строк (задача 6) .lit и mark.ent лежат внутри .ln-txt,
+     прямыми детьми панели они быть перестали, и обход по children нашёл бы
+     НОЛЬ фрагментов — то есть любое выделение молча пропадало бы. Обход идёт
+     по всему поддереву; querySelectorAll отдаёт узлы в порядке документа,
+     значит touched[0]/touched[последний] по-прежнему первый и последний
+     задетые фрагменты. */
+  for(const el of pane.querySelectorAll('.lit, mark.ent')){
     if(range.intersectsNode(el)) touched.push(el);
   }
   if(!touched.length) return null;
@@ -916,10 +1110,10 @@ function cancelBoundaryEdit(){
   resetAnonView();
 }
 
-function onAnonSelectionUp(e){
+function onAnonSelectionUp(e, rangeIn){
   const sel=window.getSelection();
   if(!sel || sel.rangeCount===0 || sel.isCollapsed) return;
-  const range=sel.getRangeAt(0);
+  const range=rangeIn || sel.getRangeAt(0);
 
   if(BOUNDARY_EDIT){
     // Явная правка через "Исправить границу" — засчитывается ТОЛЬКО выделение
@@ -958,9 +1152,16 @@ function onAnonSelectionUp(e){
   }
 
   if(info.masks.length===0){
-    // случай "чистый текст" — меню типов, по отпусканию мыши, рядом с выделением.
+    // случай "чистый текст" — меню типов рядом с выделением.
     const base=+info.first.dataset.s;
     const text=info.first.textContent.slice(info.srcStart-base, info.srcEnd-base);
+    /* ЭТАП UI-REBUILD: выделение из ОДНИХ ПРОБЕЛОВ плашки не даёт (задача 2).
+       Раньше плашка появлялась, пользователь выбирал тип — и только тогда
+       сервер отвечал отказом «Пустое выделение…» (app/core.py::_validate_missed).
+       Отказ верный, но узнавать о нём после выбора типа — впустую потраченное
+       действие; решение принимается здесь, до показа. */
+    if(!text.trim()){ closeMarkupMenu(); return; }
+    lnRevealPeer(info.first);
     openTypeMenu(e, {mode:'missed', seg:info.seg, start:info.srcStart, end:info.srcEnd, text, range});
     return;
   }
@@ -990,13 +1191,156 @@ function onAnonSelectionUp(e){
   markupToast('Выделение задевает несколько масок: '+names+' — снимите лишние или выделите фрагмент, задевающий ровно одну.','err');
   sel.removeAllRanges();
 }
-document.getElementById('pane-anon').addEventListener('mouseup', onAnonSelectionUp);
+/* ======================================================================
+   ЭТАП UI-REBUILD, задача 2 — ВЫДЕЛЕНИЕ ЛОВИТСЯ ВСЕГДА.
+
+   Было: единственная привязка mouseup на #pane-anon. Из-за этого молча
+   не работали (проверено нажатием на ветке до правки):
+     * КЛАВИАТУРА — Shift+стрелки, Shift+Home/End, Ctrl+A: mouseup не приходит
+       вовсе, выделение есть, плашки нет;
+     * ПРОТЯЖКА ЗА КРАЙ ПАНЕЛИ — кнопку отпустили вне #pane-anon (обычное дело
+       при выделении с прокруткой), mouseup ушёл мимо слушателя;
+     * КАСАНИЕ на сенсорном экране — выделение правится ручками-маркерами,
+       mouseup по панели может не прийти ни разу.
+   Стало: три независимых источника, сведённые в одну точку fireSelection():
+     1) mouseup НА DOCUMENT — ловит отпускание где угодно, в т.ч. вне панели;
+     2) selectionchange с задержкой — ловит клавиатуру, касание, Ctrl+A,
+        двойной и тройной щелчок; во время протяжки подавлен (MOUSE_DOWN),
+        иначе плашка дёргалась бы на каждом промежуточном положении;
+     3) keyup по клавишам выделения — быстрый путь для клавиатуры.
+   Повторы гасятся подписью выделения (SEL_SIG): один и тот же диапазон
+   обрабатывается один раз, сколько бы источников о нём ни сообщило.
+   ====================================================================== */
+let MOUSE_DOWN=false, SEL_TIMER=null, SEL_SIG='';
+
+function selSignature(){
+  const s=window.getSelection();
+  if(!s || s.rangeCount===0 || s.isCollapsed) return '';
+  const r=s.getRangeAt(0);
+  const nm=n=>{ const e=n.nodeType===3?n.parentElement:n; return e?(e.className||'')+'#'+(e.dataset&&e.dataset.s||''):''; };
+  return nm(r.startContainer)+':'+r.startOffset+'>'+nm(r.endContainer)+':'+r.endOffset+'='+s.toString().length;
+}
+
+function selectionInsideAnon(){
+  const s=window.getSelection();
+  if(!s || s.rangeCount===0 || s.isCollapsed) return null;
+  const pane=document.getElementById('pane-anon');
+  const r=s.getRangeAt(0);
+  const inside = pane.contains(r.startContainer) || pane.contains(r.endContainer) || r.intersectsNode(pane);
+  return inside ? r : null;
+}
+
+/* Единая точка. anchorEvent — событие, у которого берутся координаты для
+   плашки; для клавиатуры и касания его нет, тогда координаты берутся из
+   прямоугольника самого выделения (иначе плашка ушла бы в угол экрана). */
+function markupMenuOpen(){
+  const m=document.getElementById('markup-menu');
+  return !!(m && m.style.display==='block');
+}
+function fireSelection(anchorEvent){
+  const r=selectionInsideAnon();
+  if(!r){
+    SEL_SIG='';
+    /* Снятие выделения гасит плашку (задача 2) — НО не тогда, когда выделение
+       сняли МЫ САМИ: focus() на поле поиска типов сбрасывает выделение в
+       документе, и без этой проверки плашка закрывалась бы в то же мгновение,
+       как открылась. Координаты пометки к этому моменту уже сняты и лежат в
+       ctx, живое выделение плашке больше не нужно. */
+    const m=document.getElementById('markup-menu');
+    if(markupMenuOpen() && m.contains(document.activeElement)) return;
+    closeMarkupMenu();
+    return;
+  }
+  const sig=selSignature();
+  if(sig && sig===SEL_SIG) return;      // тот же диапазон — уже обработан
+  SEL_SIG=sig;
+  let ev=anchorEvent;
+  if(!ev || ev.clientX==null || (ev.clientX===0 && ev.clientY===0)){
+    const rect=r.getBoundingClientRect();
+    ev={clientX:Math.round(rect.left+rect.width/2), clientY:Math.round(rect.bottom)};
+  }
+  onAnonSelectionUp(ev, r);
+}
+
+function scheduleSelection(delay){
+  clearTimeout(SEL_TIMER);
+  SEL_TIMER=setTimeout(()=>{ if(!MOUSE_DOWN) fireSelection(null); }, delay);
+}
+
+/* GESTURE — номер текущего жеста мыши. Растёт на КАЖДОМ mousedown, поэтому
+   mousedown -> mouseup -> click одного нажатия несут ОДИН номер. Этим лечится
+   главный дефект этапа (диагноз Д-1): глобальный обработчик click гасил плашку,
+   которую только что открыл mouseup ТОГО ЖЕ нажатия. Раньше это спасалось
+   случайно — fetch списка типов задерживал показ до после click; со второго
+   выделения список был в кэше, await резолвился микрозадачей, плашка успевала
+   открыться до click и гасла мгновенно. Сверка номеров жеста — точная, а не
+   по времени: гасим только клик СЛЕДУЮЩЕГО жеста. */
+let GESTURE=0, MENU_GESTURE=-1;
+document.addEventListener('mousedown', e=>{
+  GESTURE++;
+  MOUSE_DOWN=true;
+  const menu=document.getElementById('markup-menu');
+  if(menu && menu.contains(e.target)) return;
+  SEL_SIG='';                            // новая протяжка — прошлая подпись недействительна
+});
+/* mouseup НА DOCUMENT: протяжка, отпущенная за краем панели, тоже считается. */
+document.addEventListener('mouseup', e=>{
+  MOUSE_DOWN=false;
+  const menu=document.getElementById('markup-menu');
+  if(menu && menu.contains(e.target)) return;
+  setTimeout(()=>fireSelection(e), 0);   // дать браузеру дособрать выделение
+});
+/* Клавиатура: Shift+стрелки/Home/End/PageUp/PageDown и Ctrl+A. */
+document.addEventListener('keyup', e=>{
+  const navKeys=['ArrowLeft','ArrowRight','ArrowUp','ArrowDown','Home','End','PageUp','PageDown'];
+  if((e.shiftKey && navKeys.indexOf(e.key)>=0) || ((e.ctrlKey||e.metaKey) && (e.key==='a'||e.key==='A' || e.key==='ф'||e.key==='Ф'))){
+    scheduleSelection(10);
+  }
+});
+/* Касание/тачпад и всё остальное, о чём мы не догадались. */
+document.addEventListener('selectionchange', ()=>{ if(!MOUSE_DOWN) scheduleSelection(220); });
+document.addEventListener('touchend', ()=>scheduleSelection(60), {passive:true});
+
+/* ======================================================================
+   ЭТАП UI-REBUILD — БРАУЗЕРНЫЕ ПОМЕХИ, поимённо.
+
+   1. КОНТЕКСТНОЕ МЕНЮ ПРАВОЙ КНОПКИ — НЕ ГЛУШИМ. Через него пользователь
+      копирует текст, это его право (прямое требование постановки). Наша
+      плашка открывается ЛЕВОЙ кнопкой и живёт в другом слое, конфликта нет.
+   2. ПРОВЕРКА ОРФОГРАФИИ — мешает: красное подчёркивание поверх цветных
+      масок читается как ошибка программы, а её меню предлагает ЗАМЕНИТЬ
+      слово прямо в панели. Гасится spellcheck="false".
+   3. ПЕРЕТАСКИВАНИЕ ВЫДЕЛЕННОГО МЫШЬЮ — мешает: медленная протяжка по уже
+      выделенному тексту превращается в drag, выделение схлопывается, и
+      человек вместо плашки получает призрак текста под курсором. Гасится
+      dragstart -> preventDefault ТОЛЬКО внутри панелей.
+   4. ВСТРОЕННЫЙ ПЕРЕВОДЧИК (всплывающая кнопка перевода) — мешает: панель
+      перевода перерисовывает текст и убивает наши data-координаты. Гасится
+      translate="no" + class="notranslate" на панелях.
+   5. ВСТРОЕННЫЙ ПОИСК ПО ВЫДЕЛЕНИЮ и ПОДСКАЗКИ РАСШИРЕНИЙ — живут в пунктах
+      контекстного меню либо в своём наложении. Не глушим (см. п.1), но наша
+      плашка стоит выше по слою: z-index у #markup-menu максимальный.
+   ====================================================================== */
+(function guardBrowserNoise(){
+  ['pane-anon','pane-orig'].forEach(id=>{
+    const el=document.getElementById(id); if(!el) return;
+    el.setAttribute('spellcheck','false');
+    el.setAttribute('translate','no');
+    el.classList.add('notranslate');
+    el.addEventListener('dragstart', e=>e.preventDefault());
+    el.addEventListener('drop', e=>e.preventDefault());
+  });
+})();
 
 function clearSelection(){ const s=window.getSelection(); if(s) s.removeAllRanges(); }
-function resetAnonView(){ if(CUR && CUR.anon_html!=null){ document.getElementById('pane-anon').innerHTML=CUR.anon_html; wireMarks(); } }
+function resetAnonView(){ if(CUR && CUR.anon_html!=null){
+  const pa=document.getElementById('pane-anon');
+  pa.classList.remove('numbered'); pa.innerHTML=CUR.anon_html;
+  paginatePane(pa); wireMarks(); } }
 
 /* ---- плавающее меню: тип / действия над существующей маской ---- */
 function positionMenu(menu, e){
+  MENU_GESTURE=GESTURE;                  // см. комментарий у GESTURE выше
   menu.style.display='block'; menu.style.left='-9999px'; menu.style.top='-9999px';
   const pad=8, r=menu.getBoundingClientRect();
   let x=e.clientX+pad, y=e.clientY+pad;
@@ -1007,14 +1351,58 @@ function positionMenu(menu, e){
 function closeMarkupMenu(){ const m=document.getElementById('markup-menu'); if(m) m.style.display='none'; }
 document.addEventListener('click', e=>{
   const menu=document.getElementById('markup-menu');
+  if(MENU_GESTURE===GESTURE) return;     // это click ТОГО ЖЕ нажатия, что открыло плашку
   if(menu && menu.style.display==='block' && !menu.contains(e.target) && !e.target.closest('mark.ent')) closeMarkupMenu();
 });
 
+/* ЭТАП UI-REBUILD, задача 3: типов стало 26 (было 14 — см. app/core.py,
+   MARKUP_TYPES). Простыня из 26 кнопок нечитаема, поэтому список получил
+   поиск по НАЗВАНИЮ, отбивку «частые/все остальные» и работу с клавиатуры:
+   печатаешь -> стрелки -> Enter, Esc закрывает. Поле поиска само получает
+   фокус, так что руку с клавиатуры убирать не нужно. */
 function typeButtonsHtml(){
-  return '<div class="mm-types">'+MARKUP_TYPES.map(t=>'<button type="button" class="mm-type" data-type="'+esc(t.type)+'">'+esc(t.label)+'</button>').join('')+'</div>';
+  return '<input class="mm-search" type="text" placeholder="Поиск типа — начните печатать" '+
+         'spellcheck="false" autocomplete="off">'+
+         '<div class="mm-types"></div>'+
+         '<div class="mm-hint">↑↓ — выбор, Enter — применить, Esc — отмена</div>';
+}
+function mmRenderTypes(menu, query){
+  const box=menu.querySelector('.mm-types'); if(!box) return;
+  const q=(query||'').trim().toLowerCase();
+  const hit=t=>!q || (t.label||'').toLowerCase().indexOf(q)>=0 || (t.type||'').toLowerCase().indexOf(q)>=0;
+  const list=MARKUP_TYPES.filter(hit);
+  if(!list.length){ box.innerHTML='<div class="mm-none">Ничего не найдено. Очистите поиск, чтобы увидеть все '+MARKUP_TYPES.length+' типов.</div>'; return; }
+  const common=list.filter(t=>t.common!==false), rest=list.filter(t=>t.common===false);
+  const btn=t=>'<button type="button" class="mm-type" data-type="'+esc(t.type)+'">'+esc(t.label)+'</button>';
+  let html='';
+  if(common.length) html+= (rest.length&&!q ? '<div class="mm-sep">Частые</div>' : '')+common.map(btn).join('');
+  if(rest.length)   html+= (common.length&&!q ? '<div class="mm-sep">Остальные</div>' : '')+rest.map(btn).join('');
+  box.innerHTML=html;
+  const first=box.querySelector('.mm-type'); if(first) first.classList.add('mm-cur');
+}
+function mmMove(menu, dir){
+  const items=[...menu.querySelectorAll('.mm-type')]; if(!items.length) return;
+  let i=items.findIndex(b=>b.classList.contains('mm-cur'));
+  if(i<0) i=0; else items[i].classList.remove('mm-cur');
+  i=(i+dir+items.length)%items.length;
+  items[i].classList.add('mm-cur');
+  items[i].scrollIntoView({block:'nearest'});
 }
 function wireTypeButtons(menu, onPick){
-  menu.querySelectorAll('.mm-type').forEach(b=>{ b.onclick=()=>{ closeMarkupMenu(); onPick(b.dataset.type); }; });
+  const pick=type=>{ closeMarkupMenu(); onPick(type); };
+  const box=menu.querySelector('.mm-types');
+  if(box) box.onclick=e=>{ const b=e.target.closest('.mm-type'); if(b) pick(b.dataset.type); };
+  const inp=menu.querySelector('.mm-search');
+  if(!inp) return;
+  mmRenderTypes(menu,'');
+  inp.oninput=()=>mmRenderTypes(menu, inp.value);
+  inp.onkeydown=e=>{
+    if(e.key==='ArrowDown'){ e.preventDefault(); mmMove(menu,1); }
+    else if(e.key==='ArrowUp'){ e.preventDefault(); mmMove(menu,-1); }
+    else if(e.key==='Enter'){ e.preventDefault(); const c=menu.querySelector('.mm-type.mm-cur'); if(c) pick(c.dataset.type); }
+    else if(e.key==='Escape'){ e.preventDefault(); closeMarkupMenu(); clearSelection(); }
+  };
+  setTimeout(()=>{ try{ inp.focus({preventScroll:true}); }catch(err){ inp.focus(); } }, 0);
 }
 
 async function openTypeMenu(e, ctx){
