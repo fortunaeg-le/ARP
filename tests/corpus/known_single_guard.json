@@ -1,9 +1,9 @@
 {
  "why": "ЭТАП SINGLE-GUARD, линия «и» (долг DEFGATE-CROSSTYPE-LATENT). Поимённый список эталонных значений, которые на МАКСИМУМЕ закрыты маской ЧУЖОГО типа: тип из набора по умолчанию (пользователь ждёт маску) спрятан под именем типа вне набора. Сегодня это НЕ утечка — значение закрыто, и при настройках по умолчанию его подхватывает другая раскладка масок. Но защита у него ОДИНОЧНАЯ, и потеря её не видна ни одному счётчику: выпав из класса, случай УМЕНЬШАЕТ и число «под чужой маской», и разницу раскладок линии «з», то есть выглядит улучшением. Поэтому линия «и» судит поимённо: реестровый случай, ставший открытым, красит гейт безусловно. Пересборка реестра — только через tests/corpus/build_single_guard_registry.py и с записью в JOURNAL.",
  "source_dump": "results_gate_current.json",
- "n": 375,
+ "n": 394,
  "per_type": {
-  "PER": 342,
+  "PER": 361,
   "SNILS": 1,
   "PASSPORT": 32
  },
@@ -11,8 +11,7 @@
   "PASSPORT->ADDRESS": 1,
   "PASSPORT->INN": 29,
   "PASSPORT->PHONE": 2,
-  "PER->ADDRESS": 3,
-  "PER->ORG": 339,
+  "PER->ORG": 361,
   "SNILS->PHONE": 1
  },
  "cases": [
@@ -397,6 +396,46 @@
    ]
   },
   {
+   "doc_id": "cession_0001",
+   "type": "PER",
+   "start": 94,
+   "end": 120,
+   "len": 26,
+   "mask_types": [
+    "ORG"
+   ]
+  },
+  {
+   "doc_id": "cession_0001",
+   "type": "PER",
+   "start": 2712,
+   "end": 2738,
+   "len": 26,
+   "mask_types": [
+    "ORG"
+   ]
+  },
+  {
+   "doc_id": "cession_0001__m1337_digit_spaces",
+   "type": "PER",
+   "start": 95,
+   "end": 121,
+   "len": 26,
+   "mask_types": [
+    "ORG"
+   ]
+  },
+  {
+   "doc_id": "cession_0001__m1337_digit_spaces",
+   "type": "PER",
+   "start": 2719,
+   "end": 2745,
+   "len": 26,
+   "mask_types": [
+    "ORG"
+   ]
+  },
+  {
    "doc_id": "cession_0004",
    "type": "PER",
    "start": 287,
@@ -769,11 +808,41 @@
   {
    "doc_id": "labor_0010",
    "type": "PER",
+   "start": 153,
+   "end": 176,
+   "len": 23,
+   "mask_types": [
+    "ORG"
+   ]
+  },
+  {
+   "doc_id": "labor_0010",
+   "type": "PER",
    "start": 4695,
    "end": 4706,
    "len": 11,
    "mask_types": [
-    "ADDRESS"
+    "ORG"
+   ]
+  },
+  {
+   "doc_id": "labor_0010",
+   "type": "PER",
+   "start": 4833,
+   "end": 4856,
+   "len": 23,
+   "mask_types": [
+    "ORG"
+   ]
+  },
+  {
+   "doc_id": "labor_0010__m1337_cell_split",
+   "type": "PER",
+   "start": 153,
+   "end": 176,
+   "len": 23,
+   "mask_types": [
+    "ORG"
    ]
   },
   {
@@ -783,7 +852,27 @@
    "end": 4706,
    "len": 11,
    "mask_types": [
-    "ADDRESS"
+    "ORG"
+   ]
+  },
+  {
+   "doc_id": "labor_0010__m1337_cell_split",
+   "type": "PER",
+   "start": 4833,
+   "end": 4856,
+   "len": 23,
+   "mask_types": [
+    "ORG"
+   ]
+  },
+  {
+   "doc_id": "labor_0010__m2718_invisible",
+   "type": "PER",
+   "start": 163,
+   "end": 189,
+   "len": 26,
+   "mask_types": [
+    "ORG"
    ]
   },
   {
@@ -793,7 +882,17 @@
    "end": 4772,
    "len": 12,
    "mask_types": [
-    "ADDRESS"
+    "ORG"
+   ]
+  },
+  {
+   "doc_id": "labor_0010__m2718_invisible",
+   "type": "PER",
+   "start": 4908,
+   "end": 4934,
+   "len": 26,
+   "mask_types": [
+    "ORG"
    ]
   },
   {
@@ -1387,6 +1486,26 @@
    ]
   },
   {
+   "doc_id": "loan_0005",
+   "type": "PER",
+   "start": 91,
+   "end": 103,
+   "len": 12,
+   "mask_types": [
+    "ORG"
+   ]
+  },
+  {
+   "doc_id": "loan_0005",
+   "type": "PER",
+   "start": 2662,
+   "end": 2682,
+   "len": 20,
+   "mask_types": [
+    "ORG"
+   ]
+  },
+  {
    "doc_id": "loan_0005__m1337_digit_spaces",
    "type": "PASSPORT",
    "start": 283,
@@ -1394,6 +1513,26 @@
    "len": 14,
    "mask_types": [
     "PHONE"
+   ]
+  },
+  {
+   "doc_id": "loan_0005__m1337_digit_spaces",
+   "type": "PER",
+   "start": 91,
+   "end": 103,
+   "len": 12,
+   "mask_types": [
+    "ORG"
+   ]
+  },
+  {
+   "doc_id": "loan_0005__m1337_digit_spaces",
+   "type": "PER",
+   "start": 2669,
+   "end": 2689,
+   "len": 20,
+   "mask_types": [
+    "ORG"
    ]
   },
   {
@@ -3639,9 +3778,29 @@
   {
    "doc_id": "works_0010",
    "type": "PER",
+   "start": 72,
+   "end": 84,
+   "len": 12,
+   "mask_types": [
+    "ORG"
+   ]
+  },
+  {
+   "doc_id": "works_0010",
+   "type": "PER",
    "start": 260,
    "end": 285,
    "len": 25,
+   "mask_types": [
+    "ORG"
+   ]
+  },
+  {
+   "doc_id": "works_0010",
+   "type": "PER",
+   "start": 2705,
+   "end": 2727,
+   "len": 22,
    "mask_types": [
     "ORG"
    ]
@@ -3659,6 +3818,16 @@
   {
    "doc_id": "works_0010__m1337_homoglyph",
    "type": "PER",
+   "start": 72,
+   "end": 84,
+   "len": 12,
+   "mask_types": [
+    "ORG"
+   ]
+  },
+  {
+   "doc_id": "works_0010__m1337_homoglyph",
+   "type": "PER",
    "start": 260,
    "end": 285,
    "len": 25,
@@ -3669,9 +3838,29 @@
   {
    "doc_id": "works_0010__m1337_homoglyph",
    "type": "PER",
+   "start": 2705,
+   "end": 2727,
+   "len": 22,
+   "mask_types": [
+    "ORG"
+   ]
+  },
+  {
+   "doc_id": "works_0010__m1337_homoglyph",
+   "type": "PER",
    "start": 2992,
    "end": 3017,
    "len": 25,
+   "mask_types": [
+    "ORG"
+   ]
+  },
+  {
+   "doc_id": "works_0010__m2718_case",
+   "type": "PER",
+   "start": 72,
+   "end": 84,
+   "len": 12,
    "mask_types": [
     "ORG"
    ]
