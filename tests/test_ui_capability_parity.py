@@ -41,6 +41,22 @@ def _read(path):
         return f.read()
 
 
+def _code_only(text: str) -> str:
+    """Текст БЕЗ комментариев — только то, что исполняется и отрисовывается.
+
+    Живой прокол самого этого сторожа, найденный подлогом при приёмке: проверка
+    «экран читает поле d.pdf_issues» оставалась ЗЕЛЁНОЙ на УБРАННОМ чтении,
+    потому что рядом лежит комментарий, объясняющий тот самый дефект и
+    цитирующий `d.pdf_issues`. Сторож, которому хватает упоминания в
+    комментарии, стережёт комментарий, а не код.
+    """
+    text = re.sub(r"<!--.*?-->", " ", text, flags=re.S)
+    text = re.sub(r"/\*.*?\*/", " ", text, flags=re.S)
+    text = re.sub(r"(?m)^\s*//.*$", " ", text)
+    text = re.sub(r"(?m)^\s*#.*$", " ", text)
+    return text
+
+
 # --- 1. ЗАГРУЗКА: что движок читает, то интерфейс обязан пускать -------------
 
 # Расширения, которые пробуются у движка. Список НАМЕРЕННО шире поддерживаемого:
@@ -96,7 +112,7 @@ def test_server_allowlist_has_no_second_copy():
     import server
 
     assert server._ALLOWED_EXT == capabilities.input_extensions()
-    src = _read(SERVER_PY)
+    src = _code_only(_read(SERVER_PY))
     assert "_ALLOWED_EXT = capabilities.input_extensions()" in src, (
         "_ALLOWED_EXT снова объявлен своим литералом — вернулась вторая копия"
     )
@@ -140,7 +156,7 @@ def test_format_engine_reads_but_cannot_return_is_named_not_silent():
 
 def test_index_html_has_no_hardcoded_accept():
     """`accept=` в index.html обязан выставляться из CAPS, а не литералом."""
-    html = _read(INDEX_HTML)
+    html = _code_only(_read(INDEX_HTML))
     hard = re.findall(r'accept="\.[^"]*"', html)
     assert not hard, (
         f"в index.html снова захардкожен accept: {hard}. "
@@ -150,7 +166,7 @@ def test_index_html_has_no_hardcoded_accept():
 
 def test_index_html_does_not_compare_extensions_by_literal():
     """Проверка расширения на клиенте — по списку из CAPS, не по цепочке !==."""
-    html = _read(INDEX_HTML)
+    html = _code_only(_read(INDEX_HTML))
     bad = re.findall(r"""ext\s*[!=]==?\s*['"]\.\w+['"]""", html)
     assert not bad, (
         f"в index.html вернулось сравнение расширения с литералом: {bad}. "
@@ -159,7 +175,7 @@ def test_index_html_does_not_compare_extensions_by_literal():
 
 
 def test_index_html_reads_capabilities_route():
-    html = _read(INDEX_HTML)
+    html = _code_only(_read(INDEX_HTML))
     assert "/api/capabilities" in html and "loadCapabilities" in html
 
 
@@ -214,7 +230,7 @@ def test_every_incompleteness_field_is_rendered_on_screen():
     `pdf_issues` существовал в ответе, но `renderVerify` его не читал, и плашки
     на экране не было НИКОГДА.
     """
-    html = _read(INDEX_HTML)
+    html = _code_only(_read(INDEX_HTML))
     for field in capabilities.incompleteness_fields():
         assert re.search(r"\bd\.%s\b" % re.escape(field), html), (
             f"поле «{field}» сообщает, что часть документа НЕ ПРОЧИТАНА, но "
@@ -240,13 +256,13 @@ _NOT_ON_SCREEN = {
 
 
 def _server_routes():
-    src = _read(SERVER_PY)
+    src = _code_only(_read(SERVER_PY))
     return (set(re.findall(r'self\.path == "(/api/[a-z/-]+)"', src)) |
             set(re.findall(r'self\.path\.startswith\("(/api/[a-z/-]+)"\)', src)))
 
 
 def test_every_server_route_is_reachable_from_the_screen():
-    html = _read(INDEX_HTML)
+    html = _code_only(_read(INDEX_HTML))
     orphans = []
     for route in sorted(_server_routes()):
         if route in _NOT_ON_SCREEN:
@@ -264,10 +280,10 @@ def test_every_server_route_is_reachable_from_the_screen():
 
 def test_restore_file_route_is_on_the_screen():
     """Точечный страж задачи 2: возврат файлом обязан быть доступен с экрана."""
-    html = _read(INDEX_HTML)
+    html = _code_only(_read(INDEX_HTML))
     assert "/api/decrypt-file" in html, "маршрут возврата файлом не вызывается с экрана"
     assert "doDecryptFile" in html, "кнопки возврата файлом на экране нет"
-    assert '"/api/decrypt-file"' in _read(SERVER_PY), "маршрута нет на сервере"
+    assert '"/api/decrypt-file"' in _code_only(_read(SERVER_PY)), "маршрута нет на сервере"
 
 
 # --- 6. Собранная программа тоже обязана знать про capabilities --------------
