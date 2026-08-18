@@ -896,15 +896,25 @@ async function doDecrypt(){
       body:JSON.stringify({session_id:sid,text:text})});
     const data=await resp.json();
     if(data.status==='error'){ status('res',data.message,'err'); return; }
-    hideStatus('res');
     RESTORED=data.restored;
     document.getElementById('r-restored').textContent=data.restored;
     const un=document.getElementById('r-unresolved');
     if(data.unresolved && data.unresolved.length){
       un.classList.remove('hidden');
-      un.innerHTML='<h3>⚠️ Не восстановлены токены</h3><div class="note">Эти токены есть в тексте, но отсутствуют в сессии (возможно, текст из другой сессии): '+
-        data.unresolved.map(t=>'<code>'+esc(t)+'</code>').join(', ')+'</div>';
-    } else un.classList.add('hidden');
+      /* ЭТАП UI-REBUILD-2, задача 3: «не восстановлены токены» — слово из кода.
+         Человек видит в тексте метки вида [ФИО_1] и должен понять, почему
+         именно эти не раскрылись и что теперь делать. */
+      un.innerHTML='<h3>⚠️ Часть меток не раскрыта</h3><div class="note">В тексте остались метки, которых нет в этой сессии: '+
+        data.unresolved.map(t=>'<code>'+esc(t)+'</code>').join(', ')+
+        '. Обычно это значит, что ID сессии от другого документа, либо нейросеть изменила метку. '+
+        'Проверьте ID на шаге «Проверка» и вставьте ответ ещё раз — остальной текст восстановлен верно.</div>';
+      status('res','Текст восстановлен, но '+data.unresolved.length+' мет'+(data.unresolved.length===1?'ка':'ок')+' не раскрыт'+(data.unresolved.length===1?'а':'о')+' — смотрите пояснение ниже.','err');
+    } else {
+      un.classList.add('hidden');
+      /* Задача 5: успех тоже не проходит молча — раньше строка состояния просто
+         пряталась, и человек не получал подтверждения, что всё раскрылось. */
+      status('res','Готово: исходные значения возвращены на место, нераскрытых меток нет.','ok');
+    }
     document.getElementById('res-out').classList.remove('hidden');
   }catch(err){ status('res','Программа не ответила. Проверьте, не закрыто ли её окно, и нажмите «Восстановить оригинал» ещё раз.','err'); }
 }
