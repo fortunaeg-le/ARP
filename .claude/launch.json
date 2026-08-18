@@ -4,9 +4,7 @@
     {
       "name": "shifrator-ui",
       "runtimeExecutable": "venv\\Scripts\\python.exe",
-      "runtimeArgs": [
-        "app\\server.py"
-      ],
+      "runtimeArgs": ["app\\server.py"],
       "port": 8765
     }
   ]
