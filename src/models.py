@@ -3,17 +3,18 @@ from dataclasses import dataclass
 
 @dataclass
 class TextSegment:
-    id: str                 # уникальный id, напр. "p12" (параграф 12), "t0_r1_c2" (таблица 0, строка 1, ячейка 2), "l5" (строка 5 txt)
+    id: str                 # уникальный id, напр. "p12" (параграф 12), "t0_r1_c2" (таблица 0, строка 1, ячейка 2), "l5" (строка 5 txt), "pg2" (страница 2 pdf)
     text: str
-    source_type: str        # "docx_paragraph" | "docx_table_cell" | "txt_line"
+    source_type: str        # "docx_paragraph" | "docx_table_cell" | "txt_line" | "pdf_page"
     metadata: dict           # для параграфа: {"paragraph_index": 12, "style": "Heading1"}
                               # для ячейки таблицы (обязательно все три ключа): {"table_index": 0, "row_index": 1, "col_index": 2}
+                              # для страницы pdf: {"page_index": 0, "page_number": 1}
 
 
 @dataclass
 class SourceDocument:
     segments: list[TextSegment]
-    source_format: str       # "docx" | "txt"  ("pdf" зарезервировано для фазы 2, блок 1 его не выдаёт)
+    source_format: str       # "docx" | "txt" | "pdf"  (PDF-ARCH, ветка А — текстовый слой; свой OCR не входит)
     source_path: str
 
 

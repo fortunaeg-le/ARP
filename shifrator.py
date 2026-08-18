@@ -88,6 +88,28 @@ def _print_refusal(exc):
     )
 
 
+def _warn_pdf_completeness(path):
+    """Политика неполноты PDF (PDF-ARCH, задача 2) — ОТДЕЛЬНАЯ от .docx-strict.
+
+    Никогда не бросает исключение и не отказывает: собственного OCR блок не
+    делает (решение владельца), значит страница-скан — предел формата, а не
+    дефект чтения СВОЕГО формата (как непрочитанный XML-узел у .docx). Отказ
+    здесь означал бы никогда не анонимизировать документ, у которого есть хоть
+    одна страница-картинка. Вместо этого — работаем и громко предупреждаем в
+    ТОТ ЖЕ вывод (stderr), что видит пользователь вместе с session_id: таблица
+    страниц/причин плюс формулировка для юриста. Список PdfIssue возвращается
+    вызывающему для sidecar (машиночитаемый признак неполноты для интерфейса).
+    """
+    from pdf_completeness import scan_pdf_completeness, issues_table, legal_summary
+
+    issues = scan_pdf_completeness(path)
+    if not issues:
+        return issues
+    print(issues_table(issues), file=sys.stderr)
+    print(legal_summary(issues), file=sys.stderr)
+    return issues
+
+
 def cmd_encrypt(path, config_path, allow_lossy=False):
     import type_policy
     from extractor import extract
@@ -119,6 +141,12 @@ def cmd_encrypt(path, config_path, allow_lossy=False):
         # снисходительнее), а сканер — нет. Сообщаем, а не молчим.
         print(f"Ошибка: {e}", file=sys.stderr)
         sys.exit(1)
+
+    # PDF-путь неполноты — ОТДЕЛЬНАЯ ветка от .docx strict/lossy выше (см.
+    # docstring _warn_pdf_completeness): никогда не отказывает.
+    pdf_issues = []
+    if path.lower().endswith(".pdf"):
+        pdf_issues = _warn_pdf_completeness(path)
 
     try:
         # ЕДИНЫЙ конвейер детекции (этап B, консолидация): порядок шагов живёт в
@@ -169,6 +197,25 @@ def cmd_encrypt(path, config_path, allow_lossy=False):
         from storage import default_storage_dir
         print(
             "Текст непрочитанных зон сохранён (в зашифрованном виде): "
+            f"{default_storage_dir() / f'{session_id}.unread.json'}",
+            file=sys.stderr,
+        )
+
+    if pdf_issues:
+        # Тот же sidecar-паттерн, что и у .docx lossy-режима (save_unread_zones),
+        # адаптированный под PDF-специфику: страница+причина вместо kind/part,
+        # плюс явный булев признак "incomplete" — машиночитаемый для интерфейса
+        # (app/ может показать это программно, не парся текст предупреждения).
+        from pdf_completeness import issues_to_json
+
+        save_unread_zones(session_id, {
+            "session_id": session_id, "source_path": os.path.abspath(path),
+            "format": "pdf", "lossy": True, "incomplete": True,
+            "issues": issues_to_json(pdf_issues),
+        })
+        from storage import default_storage_dir
+        print(
+            "Информация о непрочитанных страницах PDF сохранена (в зашифрованном виде): "
             f"{default_storage_dir() / f'{session_id}.unread.json'}",
             file=sys.stderr,
         )

@@ -182,6 +182,61 @@ class TestSeparatorCollapse:
 
 
 # --------------------------------------------------------------------------- #
+# Пустая скобка-ноль — артефакт OCR/распознавания («2()23», «500 ()()()»),
+# НЕ скобка с цифрами внутри — код города «(495) …» остаётся скобкой.
+# --------------------------------------------------------------------------- #
+class TestEmptyParenZero:
+    def test_empty_paren_between_digits_becomes_zero(self):
+        # «2()23» — дата с пустой скобкой вместо нуля, поймана ПОСЛЕ нормализации.
+        norm, omap = normalize_for_detection("2()23")
+        _assert_map_invariant("2()23", norm, omap)
+        assert norm == "2023"
+
+    def test_phone_with_digits_in_parens_not_touched(self):
+        # РЕГРЕСС: «(495) 123-45-67» — скобка НЕ пустая (цифры внутри),
+        # телефон ловится ЦЕЛИКОМ включая код города, скобки не съедены.
+        base = "(495) 123-45-67"
+        norm, omap = normalize_for_detection(base)
+        _assert_map_invariant(base, norm, omap)
+        assert norm.startswith("(495)")
+        s, e = norm_to_src(omap, 0, len(norm))
+        assert base[s:e] == base
+
+    def test_empty_paren_without_digit_context_untouched(self):
+        # Пустая скобка БЕЗ цифр по соседству — не реквизит, не трогаем.
+        base = "см. приложение () к договору"
+        norm, _ = normalize_for_detection(base)
+        assert norm == base
+
+    def test_trailing_empty_parens_become_zeros(self):
+        # «500 ()()()» — хвостовые пустые скобки круглой суммы, цифра есть
+        # только ПЕРЕД (после — конец значения, не цифра).
+        base = "500 ()()()"
+        norm, omap = normalize_for_detection(base)
+        _assert_map_invariant(base, norm, omap)
+        assert norm == "500 000"
+
+    def test_trailing_empty_parens_before_word_become_zeros(self):
+        # «500 ()()() рублей» — та же порча в живом предложении, после хвоста
+        # не цифра, а слово: гейт по «цифра ПЕРЕД» не требует цифры после.
+        base = "500 ()()() рублей"
+        norm, _ = normalize_for_detection(base)
+        assert norm == "500 000 рублей"
+
+    def test_paragraph_ref_with_digits_in_parens_not_touched(self):
+        # РЕГРЕСС: «п. 5(2)» — скобка НЕ пустая (цифра внутри), не реквизит-ноль.
+        base = "см. п. 5(2) договора"
+        norm, _ = normalize_for_detection(base)
+        assert norm == base
+
+    def test_inclusive_vat_parens_not_touched(self):
+        # РЕГРЕСС: «(в том числе НДС)» — между скобками текст, не пусто.
+        base = "1000 (в том числе НДС)"
+        norm, _ = normalize_for_detection(base)
+        assert norm == base
+
+
+# --------------------------------------------------------------------------- #
 # Алфавитные омоглифы латиница→кириллица (только в смешанном слове)
 # --------------------------------------------------------------------------- #
 class TestAlphaFold:

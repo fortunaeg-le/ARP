@@ -29,7 +29,7 @@ HOST = "127.0.0.1"
 DEFAULT_PORT = int(os.environ.get("SHIFRATOR_UI_PORT", "8765"))
 _INDEX = os.path.join(app_root(), "app", "index.html")
 
-_ALLOWED_EXT = (".docx", ".txt")
+_ALLOWED_EXT = (".docx", ".txt", ".pdf")  # PDF-ARCH: ветка А, текстовый слой
 _MAX_UPLOAD = 50 * 1024 * 1024   # 50 МБ — договор столько не весит; защита от случайностей
 
 
@@ -310,7 +310,7 @@ class Handler(BaseHTTPRequestHandler):
         ext = os.path.splitext(filename)[1].lower()
         if ext not in _ALLOWED_EXT:
             self._send_json({"status": "error",
-                             "message": "Поддерживаются только файлы .docx и .txt."})
+                             "message": "Поддерживаются только файлы .docx, .txt и .pdf."})
             return
 
         data = self._read_body()
@@ -356,7 +356,7 @@ class Handler(BaseHTTPRequestHandler):
         ext = os.path.splitext(filename)[1].lower()
         if ext not in _ALLOWED_EXT:
             self._send_json({"status": "error",
-                             "message": "Поддерживаются только файлы .docx и .txt."})
+                             "message": "Поддерживаются только файлы .docx, .txt и .pdf."})
             return
 
         data = self._read_body()

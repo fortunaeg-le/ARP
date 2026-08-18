@@ -380,6 +380,30 @@ def delete_everything() -> dict:
 
 
 # --- Непрочитанные зоны -------------------------------------------------------
+def scan_pdf_issues(path: str) -> list[dict]:
+    """Список непрочитанных страниц .pdf в JSON-виде — PDF-ARCH, задача 2.
+
+    Параллель scan_zones для .docx, но у PDF своя природа неполноты (страница
+    без текстового слоя/скан/мусорные глифы, а не непрочитанный XML-узел) и
+    своя политика (см. pdf_completeness.py, shifrator._warn_pdf_completeness):
+    ВСЕГДА lossy, отказа не бывает. Для не-.pdf возвращает пустой список.
+    """
+    from pdf_completeness import scan_pdf_completeness
+
+    if not path.lower().endswith(".pdf"):
+        return []
+    issues = scan_pdf_completeness(path)
+    return [
+        {
+            "page_number": i.page_number,
+            "kind": i.kind,
+            "detail": i.detail,
+            "legal_message": i.legal_message,
+        }
+        for i in issues
+    ]
+
+
 def scan_zones(path: str) -> list[dict]:
     """Список непрочитанных зон .docx в JSON-виде (пустой — читается целиком).
 
@@ -590,6 +614,10 @@ def run_encrypt(path: str, allow_lossy: bool = False, config_path: str = DEFAULT
     if zones and not allow_lossy:
         raise EncryptRefused(zones)
 
+    # PDF-ARCH: неполнота PDF — ОТДЕЛЬНАЯ политика (см. scan_pdf_issues), НИКОГДА
+    # не отказывает через EncryptRefused — только несёт признак в ответ/sidecar.
+    pdf_issues = scan_pdf_issues(path)
+
     # --- Реальная детекция (ЕДИНЫЙ конвейер, никакой своей логики) ---
     # Порядок шагов — в pipeline.run_detection, ТА ЖЕ функция, что зовёт CLI. UI
     # больше не держит копию порядка и не может отстать от этапа (был инцидент, см.
@@ -637,12 +665,25 @@ def run_encrypt(path: str, allow_lossy: bool = False, config_path: str = DEFAULT
             "lossy": True, "zones": zones_to_json(scan_unread_zones(path)),
         })
 
+    # PDF-путь: тот же sidecar-паттерн, форма — под PDF (страница+причина), плюс
+    # явный булев incomplete — признак неполноты, доступный интерфейсу ПРОГРАММНО
+    # (не парсингом текста предупреждения), см. src/pdf_completeness.py.
+    if pdf_issues:
+        from pdf_completeness import scan_pdf_completeness, issues_to_json
+        save_unread_zones(session_id, {
+            "session_id": session_id, "source_path": os.path.abspath(path),
+            "format": "pdf", "lossy": True, "incomplete": True,
+            "issues": issues_to_json(scan_pdf_completeness(path)),
+        })
+
     return {
         "session_id": session_id,
         "source_name": display_name,
         **state,
         "zones": zones,
-        "lossy": bool(zones and allow_lossy),
+        "lossy": bool(zones and allow_lossy) or bool(pdf_issues),
+        "pdf_issues": pdf_issues,
+        "pdf_incomplete": bool(pdf_issues),
         "storage_dir": str(store),
         # T1-UI шаг 3: чем обезличено — слепок МОМЕНТА ШИФРАЦИИ (тот же, что ушёл
         # в sidecar сессии), а не текущего состояния файла настроек.

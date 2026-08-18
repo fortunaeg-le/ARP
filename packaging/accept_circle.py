@@ -36,6 +36,15 @@ SAMPLE_DOC = ROOT / "tests" / "corpus" / "docs" / "agency_0003.txt"
 # чтение колонтитулов и сканер зон в СБОРКЕ не проверялись ничем.
 SAMPLE_DOCX = ROOT / "tests" / "corpus" / "docs" / "agency_0002.docx"
 
+# PDF-ARCH: круг также гоняет синтетический PDF с текстовым слоем через
+# СОБРАННУЮ программу — до этого шага pypdf (и весь PDF-путь) в exe не
+# проверялся ничем: тесты и рабочее дерево видят его, сборка — нет (тот же
+# класс риска, что и AUD1-CIRCLE-THIN у .docx). Реальных документов в
+# репозитории быть не может (запрет 7) — PDF строится на лету низкоуровневыми
+# объектами pypdf (см. _make_synthetic_pdf_bytes), без reportlab/внешних
+# сервисов.
+SYNTHETIC_PDF_PII = "Кузнецова Мария Дмитриевна, ИНН 7707083893"
+
 # ОЖИДАЕМЫЕ ЗНАЧЕНИЯ, а не «сколько-нибудь масок». Взяты из синтетического
 # документа корпуса (реальных ПДн в репозитории нет и быть не может). Каждое
 # обязано ИСЧЕЗНУТЬ из анонимного текста и вернуться БАЙТ-В-БАЙТ после
@@ -91,6 +100,40 @@ EXPECTED_MASKS_TXT = 28
 # два ФИО внутри имён ИП, которые прежде уходили открытыми; проверено прогоном
 # обоих наборов на этом же документе.
 EXPECTED_MASKS_DOCX = 24
+
+def _make_synthetic_pdf_bytes(text: str) -> bytes:
+    """Минимальный валидный однострочный PDF с текстовым слоем (Helvetica,
+    ASCII — латиница/цифры, WinAnsi без встроенного шрифта кириллицу не
+    несёт). Строится объектами pypdf (уже в lock, task 1) — reportlab и
+    прочие сторонние генераторы не нужны и не заведены.
+    """
+    from pypdf import PdfWriter
+    from pypdf.generic import DecodedStreamObject, DictionaryObject, NameObject
+
+    writer = PdfWriter()
+    page = writer.add_blank_page(width=612, height=792)
+
+    font = DictionaryObject()
+    font.update({
+        NameObject("/Type"): NameObject("/Font"),
+        NameObject("/Subtype"): NameObject("/Type1"),
+        NameObject("/BaseFont"): NameObject("/Helvetica"),
+    })
+    font_ref = writer._add_object(font)
+    resources = DictionaryObject()
+    resources[NameObject("/Font")] = DictionaryObject({NameObject("/F1"): font_ref})
+    page[NameObject("/Resources")] = resources
+
+    content = DecodedStreamObject()
+    content.set_data(f"BT /F1 12 Tf 72 720 Td ({text}) Tj ET".encode("latin-1"))
+    content_ref = writer._add_object(content)
+    page[NameObject("/Contents")] = content_ref
+
+    import io
+    buf = io.BytesIO()
+    writer.write(buf)
+    return buf.getvalue()
+
 
 STEP = 0
 
@@ -276,6 +319,34 @@ def main():
         report(not lost_d, "значения вернулись БАЙТ-В-БАЙТ (.docx)",
                f"не вернулось: {lost_d}" if lost_d else
                f"{len(BYTE_EXACT_DOCX)} значений")
+
+        # --- PDF с текстовым слоем через СОБРАННУЮ программу (PDF-ARCH) --- #
+        # ИНН 7707083893 — 10 цифр, ИНН ЮРЛИЦА: круг ходит через интерфейс на
+        # наборе ПО УМОЛЧАНИЮ («Только персональные данные»), где ИНН
+        # организации сознательно остаётся открытым (см. предупреждение в
+        # шапке файла — «Первая же редакция этого списка на том и споткнулась:
+        # ИНН юрлица честно остался в тексте»; PDF-проба наступила на ТУ ЖЕ
+        # грабли живым прогоном). Проверяем на исчезновение ТЕЛЕФОН — он
+        # персональные данные и маскируется по умолчанию.
+        pdf_bytes = _make_synthetic_pdf_bytes(
+            "Contract INN 7707083893 phone +7 495 123-45-67"
+        )
+        try:
+            encp = http("POST", f"http://127.0.0.1:{port}/api/encrypt",
+                        payload=pdf_bytes,
+                        headers={"X-Filename": "synthetic.pdf",
+                                 "X-Allow-Lossy": "1",
+                                 "Content-Type": "application/octet-stream"},
+                        timeout=120)
+        except urllib.error.HTTPError as e:
+            encp = {"status": "error", "message": f"HTTP {e.code}: {e.read()[:500]}"}
+        ok = encp.get("status") == "ok" and encp.get("session_id") and encp.get("anon_text")
+        report(ok, "шифрование синтетического PDF (текстовый слой)", encp.get("message", ""))
+        anon_pdf = encp["anon_text"]
+
+        n_pdf = len(re.findall(r"\[[A-Z_]+_\d+\]", anon_pdf))
+        report(n_pdf > 0, "PDF: хотя бы одна маска в анонимном тексте", f"{n_pdf} шт.")
+        report("123-45-67" not in anon_pdf, "PDF: телефон (ПДн) исчез из анонимного текста")
 
         print("КРУГ ПРОЙДЕН")
     finally:

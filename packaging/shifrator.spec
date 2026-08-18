@@ -120,6 +120,10 @@ hiddenimports = [
     "anchor_registry", "syntax_compound", "multispan", "detokenizer",
     "file_detokenizer", "unread_zones", "ooxml_core", "docx_rewriter",
     "pptx_rewriter", "xlsx_rewriter", "type_policy",
+    # PDF-ARCH: `pdf_completeness` импортируется ЛЕНИВО из shifrator.cmd_encrypt
+    # (тот же паттерн, что и остальной список) — без него в собранном exe
+    # PDF-путь тихо терял бы предупреждение о непрочитанных страницах.
+    "pdf_completeness",
     # ЭТАП LAYOUT: ремонтный проход импортируется лениво из pipeline/tokenizer
     "layout_repair",
     # ЭТАП STORE: `vault` (обёртка ключа DPAPI и шифрование сайдкаров) и
