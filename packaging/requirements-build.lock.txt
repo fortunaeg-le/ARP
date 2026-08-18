@@ -12,7 +12,21 @@
 # Воспроизвести окружение:
 #   python -m venv venv
 #   venv\Scripts\python.exe -m pip install -r packaging/requirements-build.lock.txt
+#   venv\Scripts\python.exe -m pip install -e . --no-build-isolation
 #   venv\Scripts\pyinstaller.exe packaging\shifrator.spec --distpath dist --workpath build
+#
+# Третья строка (editable-установка) обязательна, чтобы запустить набор
+# тестов, а не только собрать exe: подпроцессные тесты test_g_regression.py
+# импортируют file_detokenizer из произвольного cwd, и без неё они красные
+# (см. pyproject.toml, [tool.setuptools]). На сборку exe эта строка не влияет
+# и в поставку не попадает.
+#
+# pytest-xdist и wheel ниже — тоже не для exe (детекцию не меняют, в
+# _PINNED_CRITICAL спеки их нет): pytest-xdist нужен, потому что pytest.ini
+# требует `-n auto`, без плагина набор тестов не стартует вообще; wheel нужен
+# редактируемой установке (шаг выше) — без него `pip install -e .
+# --no-build-isolation` не собирает editable-обёртку (найдено этапом
+# ENV-LOCK, долг ENV-LOCK-INCOMPLETE, docs/STATE.md §8).
 #
 # python: 3.11.9 (AMD64, win32)
 
@@ -23,6 +37,7 @@ cryptography==49.0.0
 DAWG-Python==0.7.2
 docopt==0.6.2
 et_xmlfile==2.0.0
+execnet==2.1.2
 git-filter-repo==2.47.0
 iniconfig==2.3.0
 intervaltree==3.2.1
@@ -43,6 +58,7 @@ pyinstaller-hooks-contrib==2026.6
 pymorphy2==0.9.1
 pymorphy2-dicts-ru==2.4.417127.4579844
 pytest==9.1.1
+pytest-xdist==3.8.0
 python-docx==1.2.0
 python-pptx==1.0.2
 pywin32-ctypes==0.2.3
@@ -52,5 +68,6 @@ slovnet==0.6.0
 sortedcontainers==2.4.0
 threadpoolctl==3.6.0
 typing_extensions==4.16.0
+wheel==0.48.0
 xlsxwriter==3.2.9
 yargy==0.16.0
