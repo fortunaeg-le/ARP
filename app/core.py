@@ -185,11 +185,12 @@ ZONE_KIND_LABELS = {
 # имеют и в меню не попадают). Новый тип, заведённый по docs/HOWTO_NEW_TYPE.md,
 # появляется в меню сам.
 #
-# `enabled: false` в конфигурации (сегодня — только DATE) выключает
-# АВТОДЕТЕКЦИЮ, а не право человека пометить значение руками: движок дату не
-# ищет ИМЕННО потому, что решение о ней оставлено человеку. Сервер такую
-# пометку принимает и без этого этапа (`_load_token_prefixes` смотрит на
-# `token_prefix`, а не на `enabled`) — не хватало ровно строки в меню.
+# `enabled: false` в конфигурации выключает АВТОДЕТЕКЦИЮ, а не право человека
+# пометить значение руками: сервер такую пометку принимает независимо
+# (`_load_token_prefixes` смотрит на `token_prefix`, а не на `enabled`) — не
+# хватало ровно строки в меню. ЭТАП DATE-ON: выключенных типов больше нет ни
+# одного (DATE был последним), но правило остаётся — меню строится по
+# `token_prefix`, а не по `enabled`, и молчащий детектор его не сужает.
 #
 # MARKUP_TYPES_COMMON — «частые сверху» в меню (задача 3 постановки UI-REBUILD):
 # порядок ровно тот, что был в старом закрытом списке, он выверен на договорах.
@@ -247,6 +248,7 @@ def settings_view(config_path: str = None) -> dict:
     base_set = set(known) if base is None else set(base)
     enabled = type_policy.enabled_types(cfg, settings=settings)
     enabled_set = set(known) if enabled is None else set(enabled)
+    detector_off = type_policy.detector_off_types(cfg)
 
     return {
         "profile": profile,
@@ -255,14 +257,17 @@ def settings_view(config_path: str = None) -> dict:
              "hint": type_policy.PROFILE_HINTS[p]}
             for p in type_policy.PROFILES
         ],
-        # DATE на экран не выводится: его ДЕТЕКТОР выключен в entity_types.yaml
-        # (`enabled: false`), масок этого типа не будет ни при какой галочке —
-        # предложить её значило бы обещать невыполнимое. Из состава политики тип
-        # при этом не выкинут (там он значим для набора «Максимум»).
+        # Тип с ВЫКЛЮЧЕННЫМ детектором на экран не выводится: масок этого типа
+        # не будет ни при какой галочке — предложить её значило бы обещать
+        # невыполнимое. Из состава политики он при этом не выкинут (там он
+        # значим для набора «Максимум»). ЭТАП DATE-ON: состав читается из
+        # конфига (`type_policy.detector_off_types`), а не зашит именем «DATE» —
+        # пока имя стояло здесь, включение типа владельцем оставило бы экран
+        # прятать тип, который маскирует текст по умолчанию.
         "types": [
             {"type": t, "label": type_label(t), "in_profile": t in base_set,
              "enabled": t in enabled_set, "override": overrides.get(t)}
-            for t in known if t != "DATE"
+            for t in known if t not in detector_off
         ],
         "settings_path": str(type_policy.settings_path()),
     }
@@ -307,10 +312,12 @@ def policy_summary(policy: dict, config_path: str = None) -> dict:
     import type_policy
 
     profile = policy.get("profile")
-    # DATE из перечня «осталось намеренно» исключён: его детектор выключен в
-    # entity_types.yaml (`enabled: false`), маски этого типа не появятся ни при
-    # каком наборе — обещать пользователю обратное было бы неправдой.
-    disabled = [t for t in policy.get("disabled_types") or [] if t != "DATE"]
+    # Тип с выключенным детектором из перечня «осталось намеренно» исключён:
+    # маски этого типа не появятся ни при каком наборе, и назвать его в списке
+    # «вы выключили» было бы неправдой. Состав — из конфига (DATE-ON), не именем.
+    detector_off = type_policy.detector_off_types(config_path or DEFAULT_CONFIG)
+    disabled = [t for t in policy.get("disabled_types") or []
+                if t not in detector_off]
     return {
         "profile": profile,
         "profile_label": type_policy.PROFILE_LABELS.get(profile, profile),

@@ -40,10 +40,42 @@ def test_factory_types_after_t2_are_in_the_table():
 
 
 def test_typed_negatives_stay_out():
-    """DOCNUM/DATE — своя таблица (маска на них = ложное срабатывание)."""
+    """Типизированный негатив — своя таблица (маска на нём = ложное
+    срабатывание), в форменную он не попадает. После DATE-ON состав пуст:
+    проверка стала бы пустой, поэтому рядом стоит ЖИВАЯ проба на выдуманном
+    негативе — механизм обязан работать и без сегодняшних участников."""
     types = M.measured_types()
     for t in M.TYPED_NEGATIVES:
         assert t not in types
+
+    gold = [{"doc_id": "probe", "entities": [{"type": "SUM"}, {"type": "GHOST_NEG"}]}]
+    src = yaml.safe_load(open(M.CONFIG, encoding="utf-8"))
+    src["entity_types"]["GHOST_NEG"] = {
+        "method": "regex", "pattern": r"\bпризрак-\d+\b",
+        "token_prefix": "GHOST", "rank": 1, "enabled": True,
+        "measure": {"leak_class": "text"},
+    }
+    import tempfile
+    with tempfile.NamedTemporaryFile("w", suffix=".yaml", delete=False,
+                                     encoding="utf-8") as fh:
+        yaml.safe_dump(src, fh, allow_unicode=True)
+        cfg = fh.name
+    assert "GHOST_NEG" in M.measured_types(cfg, gold=gold)
+    saved = M.TYPED_NEGATIVES
+    try:
+        M.TYPED_NEGATIVES = ("GHOST_NEG",)
+        assert "GHOST_NEG" not in M.measured_types(cfg, gold=gold)
+    finally:
+        M.TYPED_NEGATIVES = saved
+    os.unlink(cfg)
+
+
+def test_date_moved_into_the_table_after_date_on():
+    """ЭТАП DATE-ON — регресс-якорь реклассификации: дата больше не
+    типизированный негатив, а величина, и обязана меряться формой наравне с
+    остальными (полнота/границы/утечка), а не считаться ложным срабатыванием."""
+    assert "DATE" not in M.TYPED_NEGATIVES
+    assert "DATE" in M.measured_types()
 
 
 def test_manual_types_are_not_pulled_in():

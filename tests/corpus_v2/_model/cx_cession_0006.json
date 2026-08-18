@@ -48,15 +48,17 @@
      "s": "     "
     },
     {
-     "n": {
+     "e": {
       "axes": {
-       "запись": "24 июля 2007 г."
+       "запись": "24 июля 2007 года"
       },
-      "form": "date|запись=24 июля 2007 г.",
-      "type": "DATE",
-      "why": "дата документа — не ПДн"
+      "cat": "canonical",
+      "form": "date|запись=24 июля 2007 года",
+      "id": "cx_cession_0006-e2",
+      "note": "переклассифицирована из типизированного негатива (этап DATE-ON, 2026-08-18): решение владельца — дата маскируется во всех наборах",
+      "type": "DATE"
      },
-     "s": "28 сентября 2023 г."
+     "s": "28 сентября 2023 года"
     }
    ],
    "style": "normal",
@@ -72,7 +74,7 @@
     {
      "e": {
       "cat": "canonical",
-      "id": "cx_cession_0006-e2",
+      "id": "cx_cession_0006-e3",
       "type": "ORG"
      },
      "s": "ПАО «ПромСнаб»"
@@ -83,7 +85,7 @@
     {
      "e": {
       "cat": "canonical",
-      "id": "cx_cession_0006-e3",
+      "id": "cx_cession_0006-e4",
       "note": "ФИО в родительном падеже",
       "type": "PER"
      },
@@ -101,7 +103,7 @@
     {
      "e": {
       "cat": "canonical",
-      "id": "cx_cession_0006-e4",
+      "id": "cx_cession_0006-e5",
       "type": "ORG"
      },
      "s": "АО «Аквилон»"
@@ -112,7 +114,7 @@
     {
      "e": {
       "cat": "canonical",
-      "id": "cx_cession_0006-e5",
+      "id": "cx_cession_0006-e6",
       "note": "ФИО в родительном падеже",
       "type": "PER"
      },
@@ -134,7 +136,7 @@
       },
       "cat": "canonical",
       "form": "docnum|формат=17595/001-сс",
-      "id": "cx_cession_0006-e6",
+      "id": "cx_cession_0006-e7",
       "note": "переклассифицирован из негатива (этап MARKUP-V2): номер договора маскируется",
       "type": "DOCNUM"
      },
@@ -204,7 +206,7 @@
       },
       "cat": "canonical",
       "form": "money|копейки=нет|валюта=рубля|пропись=вместо цифр|НДС=Без НДС|заполненность=значение",
-      "id": "cx_cession_0006-e7",
+      "id": "cx_cession_0006-e8",
       "note": "сумма с оговоркой «Без НДС»",
       "type": "MONEY"
      },
@@ -445,7 +447,7 @@
       },
       "cat": "canonical",
       "form": "money|разделитель разрядов=пробел|копейки=,00|валюта=₽|пропись=(десять тысяч)|НДС=в т.ч. НДС 18%|заполненность=значение",
-      "id": "cx_cession_0006-e8",
+      "id": "cx_cession_0006-e9",
       "note": "сумма",
       "type": "MONEY"
      },
@@ -461,7 +463,7 @@
       },
       "cat": "canonical",
       "form": "percent|запись=15%",
-      "id": "cx_cession_0006-e9",
+      "id": "cx_cession_0006-e10",
       "note": "ставка НДС",
       "type": "PERCENT"
      },
@@ -488,7 +490,7 @@
       },
       "cat": "canonical",
       "form": "percent|привязка=от цены Договора|ограничение=нет|дробь ставки=1/300",
-      "id": "cx_cession_0006-e10",
+      "id": "cx_cession_0006-e11",
       "note": "процент",
       "type": "PERCENT"
      },
@@ -516,7 +518,7 @@
       },
       "cat": "canonical",
       "form": "term|запись числа=30 (Тридцати)|вид дней=банковских|отправная точка=с момента заключения контракта|вместо срока — дата=нет",
-      "id": "cx_cession_0006-e11",
+      "id": "cx_cession_0006-e12",
       "note": "срок длительностью",
       "type": "TERM"
      },
@@ -1141,7 +1143,7 @@
     {
      "e": {
       "cat": "canonical",
-      "id": "cx_cession_0006-e12",
+      "id": "cx_cession_0006-e13",
       "note": "стиль адреса: canonical",
       "type": "ADDRESS"
      },
@@ -1162,7 +1164,7 @@
     {
      "e": {
       "cat": "ugly",
-      "id": "cx_cession_0006-e13",
+      "id": "cx_cession_0006-e14",
       "note": "ФИО в родительном падеже",
       "type": "PER"
      },
@@ -1174,7 +1176,7 @@
     {
      "e": {
       "cat": "canonical",
-      "id": "cx_cession_0006-e14",
+      "id": "cx_cession_0006-e15",
       "note": "формат: canonical",
       "type": "PHONE"
      },
@@ -1199,7 +1201,7 @@
       },
       "cat": "canonical",
       "form": "term|вместо срока — дата=не позднее 01.11.2025",
-      "id": "cx_cession_0006-e15",
+      "id": "cx_cession_0006-e16",
       "note": "срок задан КОНКРЕТНОЙ ДАТОЙ, а не длительностью",
       "type": "TERM"
      },
@@ -1448,7 +1450,7 @@
       },
       "cat": "canonical",
       "form": "percent|запись=10 (десять) процентов|привязка=за каждый день просрочки|ограничение=нет|дробь ставки=нет",
-      "id": "cx_cession_0006-e16",
+      "id": "cx_cession_0006-e17",
       "note": "процент",
       "type": "PERCENT"
      },
@@ -1468,7 +1470,7 @@
       },
       "cat": "canonical",
       "form": "percent|запись=15%|пропись=нет|привязка=от стоимости неоплаченных работ|ограничение=нет|дробь ставки=нет",
-      "id": "cx_cession_0006-e17",
+      "id": "cx_cession_0006-e18",
       "note": "процент",
       "type": "PERCENT"
      },
@@ -1511,7 +1513,7 @@
       },
       "cat": "canonical",
       "form": "term|запись числа=10|вид дней=не указан|отправная точка=с даты подписания Сторонами акта сдачи-приемки оказанных услуг|вместо срока — дата=нет",
-      "id": "cx_cession_0006-e18",
+      "id": "cx_cession_0006-e19",
       "note": "срок длительностью",
       "type": "TERM"
      },
@@ -1542,7 +1544,7 @@
       },
       "cat": "canonical",
       "form": "term|запись числа=трех|вид дней=месяцев|отправная точка=с момента поступления денежных средств на расчетный счет|вместо срока — дата=нет",
-      "id": "cx_cession_0006-e19",
+      "id": "cx_cession_0006-e20",
       "note": "срок длительностью",
       "type": "TERM"
      },
@@ -1810,7 +1812,7 @@
       },
       "cat": "adversarial",
       "form": "percent|привязка=годовых|ограничение=нет|дробь ставки=1/300",
-      "id": "cx_cession_0006-e20",
+      "id": "cx_cession_0006-e21",
       "note": "число разорвано форматированием: половина цифр в одном ране, половина в другом",
       "trick": "format_split",
       "type": "PERCENT"
@@ -1837,7 +1839,7 @@
       },
       "cat": "adversarial",
       "form": "term|вместо срока — дата=не позднее 01.11.2025",
-      "id": "cx_cession_0006-e21",
+      "id": "cx_cession_0006-e22",
       "note": "число разорвано форматированием: половина цифр в одном ране, половина в другом",
       "trick": "format_split",
       "type": "TERM"
@@ -1864,7 +1866,7 @@
       },
       "cat": "adversarial",
       "form": "docnum|формат=чисто числовой (2/17, 27/16)",
-      "id": "cx_cession_0006-e22",
+      "id": "cx_cession_0006-e23",
       "note": "число разорвано форматированием: половина цифр в одном ране, половина в другом",
       "trick": "format_split",
       "type": "DOCNUM"
@@ -1895,7 +1897,7 @@
       },
       "cat": "adversarial",
       "form": "money|разделитель разрядов=неразрывный пробел|копейки=00 копеек|валюта=рублей|пропись=(Десять тысяч)|НДС=нет|заполненность=значение",
-      "id": "cx_cession_0006-e23",
+      "id": "cx_cession_0006-e24",
       "note": "кириллические О/З/Ч на месте цифр 0/3/4",
       "trick": "homoglyph",
       "type": "MONEY"
@@ -1945,7 +1947,7 @@
       },
       "cat": "canonical",
       "form": "money|разделитель разрядов=пробел|копейки=,0|валюта=рублей|пропись=(Двух миллионов) род.|НДС=НДС не облагается, т.к. применяется УСН|заполненность=значение",
-      "id": "cx_cession_0006-e24",
+      "id": "cx_cession_0006-e25",
       "note": "сумма",
       "type": "MONEY"
      },
@@ -1978,7 +1980,7 @@
       },
       "cat": "canonical",
       "form": "term|запись числа=30 (Тридцати)|вид дней=рабочих|отправная точка=с момента заключения контракта|вместо срока — дата=нет",
-      "id": "cx_cession_0006-e25",
+      "id": "cx_cession_0006-e26",
       "note": "срок длительностью",
       "type": "TERM"
      },
@@ -2009,7 +2011,7 @@
     {
      "e": {
       "cat": "canonical",
-      "id": "cx_cession_0006-e26",
+      "id": "cx_cession_0006-e27",
       "note": "фабричный тип: пример из файла-описания владельца",
       "type": "CONTRACT_KIND"
      },
@@ -2050,7 +2052,7 @@
     {
      "e": {
       "cat": "canonical",
-      "id": "cx_cession_0006-e27",
+      "id": "cx_cession_0006-e28",
       "note": "фабричный тип: пример из файла-описания владельца",
       "type": "CONTRACT_NO"
      },
@@ -2091,7 +2093,7 @@
     {
      "e": {
       "cat": "canonical",
-      "id": "cx_cession_0006-e28",
+      "id": "cx_cession_0006-e29",
       "note": "фабричный тип: пример из файла-описания владельца",
       "type": "PASSPORT_ISSUER"
      },
@@ -2132,7 +2134,7 @@
     {
      "e": {
       "cat": "canonical",
-      "id": "cx_cession_0006-e29",
+      "id": "cx_cession_0006-e30",
       "note": "фабричный тип: пример из файла-описания владельца",
       "type": "REGISTRY_NAME"
      },
@@ -2173,7 +2175,7 @@
     {
      "e": {
       "cat": "canonical",
-      "id": "cx_cession_0006-e30",
+      "id": "cx_cession_0006-e31",
       "note": "фабричный тип: пример из файла-описания владельца",
       "type": "REG_ID"
      },
@@ -2214,7 +2216,7 @@
     {
      "e": {
       "cat": "canonical",
-      "id": "cx_cession_0006-e31",
+      "id": "cx_cession_0006-e32",
       "note": "фабричный тип: пример из файла-описания владельца",
       "type": "REG_NUMBER"
      },
@@ -2255,7 +2257,7 @@
     {
      "e": {
       "cat": "canonical",
-      "id": "cx_cession_0006-e32",
+      "id": "cx_cession_0006-e33",
       "note": "фабричный тип: пример из файла-описания владельца",
       "type": "SHARE_PCT"
      },
@@ -2300,7 +2302,7 @@
       },
       "cat": "canonical",
       "form": "TRANCHE|оборот=именной: транш «Имя»",
-      "id": "cx_cession_0006-e33",
+      "id": "cx_cession_0006-e34",
       "note": "фабричный тип: пример из файла-описания владельца",
       "type": "TRANCHE"
      },
@@ -2375,7 +2377,7 @@
          {
           "e": {
            "cat": "canonical",
-           "id": "cx_cession_0006-e34",
+           "id": "cx_cession_0006-e35",
            "type": "ORG"
           },
           "s": "ПАО «ПромСнаб»"
@@ -2392,7 +2394,7 @@
          {
           "e": {
            "cat": "canonical",
-           "id": "cx_cession_0006-e35",
+           "id": "cx_cession_0006-e36",
            "note": "стиль адреса: canonical",
            "type": "ADDRESS"
           },
@@ -2411,7 +2413,7 @@
           "e": {
            "cat": "canonical",
            "checksum": "valid",
-           "id": "cx_cession_0006-e36",
+           "id": "cx_cession_0006-e37",
            "type": "INN"
           },
           "s": "2719553093"
@@ -2422,7 +2424,7 @@
          {
           "e": {
            "cat": "canonical",
-           "id": "cx_cession_0006-e37",
+           "id": "cx_cession_0006-e38",
            "type": "KPP"
           },
           "s": "172239792"
@@ -2440,7 +2442,7 @@
           "e": {
            "cat": "canonical",
            "checksum": "valid",
-           "id": "cx_cession_0006-e38",
+           "id": "cx_cession_0006-e39",
            "type": "OGRN"
           },
           "s": "1057143141736"
@@ -2458,7 +2460,7 @@
           "e": {
            "cat": "canonical",
            "checksum": "valid",
-           "id": "cx_cession_0006-e39",
+           "id": "cx_cession_0006-e40",
            "type": "ACCOUNT"
           },
           "s": "40702810896580444697"
@@ -2478,7 +2480,7 @@
          {
           "e": {
            "cat": "canonical",
-           "id": "cx_cession_0006-e40",
+           "id": "cx_cession_0006-e41",
            "note": "корреспондентский счёт банка",
            "type": "ACCOUNT"
           },
@@ -2490,7 +2492,7 @@
          {
           "e": {
            "cat": "canonical",
-           "id": "cx_cession_0006-e41",
+           "id": "cx_cession_0006-e42",
            "type": "BIK"
           },
           "s": "044525974"
@@ -2507,7 +2509,7 @@
          {
           "e": {
            "cat": "canonical",
-           "id": "cx_cession_0006-e42",
+           "id": "cx_cession_0006-e43",
            "note": "формат: canonical",
            "type": "PHONE"
           },
@@ -2525,7 +2527,7 @@
          {
           "e": {
            "cat": "canonical",
-           "id": "cx_cession_0006-e43",
+           "id": "cx_cession_0006-e44",
            "type": "EMAIL"
           },
           "s": "morozova@list.ru"
@@ -2547,7 +2549,7 @@
          {
           "e": {
            "cat": "ugly",
-           "id": "cx_cession_0006-e44",
+           "id": "cx_cession_0006-e45",
            "note": "инициалы перед фамилией",
            "type": "PER"
           },
@@ -2575,7 +2577,7 @@
          {
           "e": {
            "cat": "canonical",
-           "id": "cx_cession_0006-e45",
+           "id": "cx_cession_0006-e46",
            "type": "ORG"
           },
           "s": "АО «Аквилон»"
@@ -2592,7 +2594,7 @@
          {
           "e": {
            "cat": "canonical",
-           "id": "cx_cession_0006-e46",
+           "id": "cx_cession_0006-e47",
            "note": "стиль адреса: canonical",
            "type": "ADDRESS"
           },
@@ -2611,7 +2613,7 @@
           "e": {
            "cat": "canonical",
            "checksum": "valid",
-           "id": "cx_cession_0006-e47",
+           "id": "cx_cession_0006-e48",
            "type": "INN"
           },
           "s": "4859397828"
@@ -2622,7 +2624,7 @@
          {
           "e": {
            "cat": "canonical",
-           "id": "cx_cession_0006-e48",
+           "id": "cx_cession_0006-e49",
            "type": "KPP"
           },
           "s": "156268009"
@@ -2640,7 +2642,7 @@
           "e": {
            "cat": "canonical",
            "checksum": "valid",
-           "id": "cx_cession_0006-e49",
+           "id": "cx_cession_0006-e50",
            "type": "OGRN"
           },
           "s": "1700327137730"
@@ -2658,7 +2660,7 @@
           "e": {
            "cat": "canonical",
            "checksum": "valid",
-           "id": "cx_cession_0006-e50",
+           "id": "cx_cession_0006-e51",
            "type": "ACCOUNT"
           },
           "s": "40702810352324675780"
@@ -2678,7 +2680,7 @@
          {
           "e": {
            "cat": "canonical",
-           "id": "cx_cession_0006-e51",
+           "id": "cx_cession_0006-e52",
            "note": "корреспондентский счёт банка",
            "type": "ACCOUNT"
           },
@@ -2690,7 +2692,7 @@
          {
           "e": {
            "cat": "canonical",
-           "id": "cx_cession_0006-e52",
+           "id": "cx_cession_0006-e53",
            "type": "BIK"
           },
           "s": "044525187"
@@ -2707,7 +2709,7 @@
          {
           "e": {
            "cat": "canonical",
-           "id": "cx_cession_0006-e53",
+           "id": "cx_cession_0006-e54",
            "note": "формат: canonical",
            "type": "PHONE"
           },
@@ -2725,7 +2727,7 @@
          {
           "e": {
            "cat": "canonical",
-           "id": "cx_cession_0006-e54",
+           "id": "cx_cession_0006-e55",
            "type": "EMAIL"
           },
           "s": "zaycev@list.ru"
@@ -2747,7 +2749,7 @@
          {
           "e": {
            "cat": "ugly",
-           "id": "cx_cession_0006-e55",
+           "id": "cx_cession_0006-e56",
            "note": "инициалы перед фамилией",
            "type": "PER"
           },
@@ -2785,7 +2787,7 @@
     {
      "e": {
       "cat": "ugly",
-      "id": "cx_cession_0006-e56",
+      "id": "cx_cession_0006-e57",
       "note": "подпись: фамилия+инициалы",
       "type": "PER"
      },
@@ -2806,7 +2808,7 @@
     {
      "e": {
       "cat": "ugly",
-      "id": "cx_cession_0006-e57",
+      "id": "cx_cession_0006-e58",
       "note": "подпись: фамилия+инициалы",
       "type": "PER"
      },

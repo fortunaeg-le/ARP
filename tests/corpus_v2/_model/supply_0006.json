@@ -48,15 +48,17 @@
      "s": "     "
     },
     {
-     "n": {
+     "e": {
       "axes": {
-       "запись": "24 июля 2007 г."
+       "запись": "24 июля 2007 года"
       },
-      "form": "date|запись=24 июля 2007 г.",
-      "type": "DATE",
-      "why": "дата документа — не ПДн"
+      "cat": "canonical",
+      "form": "date|запись=24 июля 2007 года",
+      "id": "supply_0006-e2",
+      "note": "переклассифицирована из типизированного негатива (этап DATE-ON, 2026-08-18): решение владельца — дата маскируется во всех наборах",
+      "type": "DATE"
      },
-     "s": "17 апреля 2024 г."
+     "s": "17 апреля 2024 года"
     }
    ],
    "style": "normal",
@@ -72,7 +74,7 @@
     {
      "e": {
       "cat": "canonical",
-      "id": "supply_0006-e2",
+      "id": "supply_0006-e3",
       "type": "PER"
      },
      "s": "Никитина Екатерина Андреевна"
@@ -86,7 +88,7 @@
     {
      "e": {
       "cat": "ugly",
-      "id": "supply_0006-e3",
+      "id": "supply_0006-e4",
       "note": "серия+номер, стиль записи из PASSPORT_STYLES",
       "type": "PASSPORT"
      },
@@ -113,7 +115,7 @@
     {
      "e": {
       "cat": "ugly",
-      "id": "supply_0006-e4",
+      "id": "supply_0006-e5",
       "note": "код подразделения, стиль записи из DEPTCODE_STYLES",
       "type": "PASSPORT"
      },
@@ -128,7 +130,7 @@
     {
      "e": {
       "cat": "canonical",
-      "id": "supply_0006-e5",
+      "id": "supply_0006-e6",
       "type": "PER"
      },
      "s": "Макаров Иван Николаевич"
@@ -142,7 +144,7 @@
     {
      "e": {
       "cat": "ugly",
-      "id": "supply_0006-e6",
+      "id": "supply_0006-e7",
       "note": "серия+номер, стиль записи из PASSPORT_STYLES",
       "type": "PASSPORT"
      },
@@ -169,7 +171,7 @@
     {
      "e": {
       "cat": "ugly",
-      "id": "supply_0006-e7",
+      "id": "supply_0006-e8",
       "note": "код подразделения, стиль записи из DEPTCODE_STYLES",
       "type": "PASSPORT"
      },
@@ -188,7 +190,7 @@
       },
       "cat": "canonical",
       "form": "docnum|формат=17595/001-сс",
-      "id": "supply_0006-e8",
+      "id": "supply_0006-e9",
       "note": "переклассифицирован из негатива (этап MARKUP-V2): номер договора маскируется",
       "type": "DOCNUM"
      },
@@ -257,7 +259,7 @@
       },
       "cat": "canonical",
       "form": "term|запись числа=30 (Тридцати)|вид дней=банковских|отправная точка=с момента заключения контракта|вместо срока — дата=нет",
-      "id": "supply_0006-e9",
+      "id": "supply_0006-e10",
       "note": "срок длительностью",
       "type": "TERM"
      },
@@ -495,7 +497,7 @@
       },
       "cat": "canonical",
       "form": "money|копейки=нет|валюта=рубля|пропись=вместо цифр|НДС=Без НДС|заполненность=значение",
-      "id": "supply_0006-e10",
+      "id": "supply_0006-e11",
       "note": "сумма с оговоркой «Без НДС»",
       "type": "MONEY"
      },
@@ -536,7 +538,7 @@
       },
       "cat": "canonical",
       "form": "percent|привязка=от цены Договора|ограничение=нет|дробь ставки=1/300",
-      "id": "supply_0006-e11",
+      "id": "supply_0006-e12",
       "note": "процент",
       "type": "PERCENT"
      },
@@ -561,7 +563,7 @@
       },
       "cat": "canonical",
       "form": "term|вместо срока — дата=не позднее 01.11.2025",
-      "id": "supply_0006-e12",
+      "id": "supply_0006-e13",
       "note": "срок задан КОНКРЕТНОЙ ДАТОЙ, а не длительностью",
       "type": "TERM"
      },
@@ -763,7 +765,7 @@
       },
       "cat": "canonical",
       "form": "money|разделитель разрядов=пробел|копейки=,00|валюта=₽|пропись=(десять тысяч)|НДС=в т.ч. НДС 18%|заполненность=значение",
-      "id": "supply_0006-e13",
+      "id": "supply_0006-e14",
       "note": "сумма",
       "type": "MONEY"
      },
@@ -779,7 +781,7 @@
       },
       "cat": "canonical",
       "form": "percent|запись=15%",
-      "id": "supply_0006-e14",
+      "id": "supply_0006-e15",
       "note": "ставка НДС",
       "type": "PERCENT"
      },
@@ -1185,7 +1187,7 @@
     {
      "e": {
       "cat": "canonical",
-      "id": "supply_0006-e15",
+      "id": "supply_0006-e16",
       "note": "стиль адреса: canonical",
       "type": "ADDRESS"
      },
@@ -1206,7 +1208,7 @@
     {
      "e": {
       "cat": "canonical",
-      "id": "supply_0006-e16",
+      "id": "supply_0006-e17",
       "note": "ФИО в дательном падеже",
       "type": "PER"
      },
@@ -1218,7 +1220,7 @@
     {
      "e": {
       "cat": "canonical",
-      "id": "supply_0006-e17",
+      "id": "supply_0006-e18",
       "note": "формат: canonical",
       "type": "PHONE"
      },
@@ -1246,7 +1248,7 @@
       },
       "cat": "canonical",
       "form": "term|запись числа=10|вид дней=не указан|отправная точка=с даты подписания Сторонами акта сдачи-приемки оказанных услуг|вместо срока — дата=нет",
-      "id": "supply_0006-e18",
+      "id": "supply_0006-e19",
       "note": "срок длительностью",
       "type": "TERM"
      },
@@ -1495,7 +1497,7 @@
       },
       "cat": "canonical",
       "form": "percent|запись=10 (десять) процентов|привязка=за каждый день просрочки|ограничение=нет|дробь ставки=нет",
-      "id": "supply_0006-e19",
+      "id": "supply_0006-e20",
       "note": "процент",
       "type": "PERCENT"
      },
@@ -1515,7 +1517,7 @@
       },
       "cat": "canonical",
       "form": "percent|запись=15%|пропись=нет|привязка=от стоимости неоплаченных работ|ограничение=нет|дробь ставки=нет",
-      "id": "supply_0006-e20",
+      "id": "supply_0006-e21",
       "note": "процент",
       "type": "PERCENT"
      },
@@ -1558,7 +1560,7 @@
       },
       "cat": "canonical",
       "form": "term|запись числа=трех|вид дней=месяцев|отправная точка=с момента поступления денежных средств на расчетный счет|вместо срока — дата=нет",
-      "id": "supply_0006-e21",
+      "id": "supply_0006-e22",
       "note": "срок длительностью",
       "type": "TERM"
      },
@@ -1586,7 +1588,7 @@
       },
       "cat": "canonical",
       "form": "term|вместо срока — дата=не позднее 01.11.2025",
-      "id": "supply_0006-e22",
+      "id": "supply_0006-e23",
       "note": "срок задан КОНКРЕТНОЙ ДАТОЙ, а не длительностью",
       "type": "TERM"
      },
@@ -1854,7 +1856,7 @@
       },
       "cat": "adversarial",
       "form": "percent|привязка=годовых|ограничение=нет|дробь ставки=1/300",
-      "id": "supply_0006-e23",
+      "id": "supply_0006-e24",
       "note": "число разорвано форматированием: половина цифр в одном ране, половина в другом",
       "trick": "format_split",
       "type": "PERCENT"
@@ -1884,7 +1886,7 @@
       },
       "cat": "adversarial",
       "form": "term|запись числа=10|вид дней=календарных|отправная точка=со дня предъявления требования|вместо срока — дата=нет",
-      "id": "supply_0006-e24",
+      "id": "supply_0006-e25",
       "note": "число разорвано форматированием: половина цифр в одном ране, половина в другом",
       "trick": "format_split",
       "type": "TERM"
@@ -1911,7 +1913,7 @@
       },
       "cat": "adversarial",
       "form": "docnum|формат=чисто числовой (2/17, 27/16)",
-      "id": "supply_0006-e25",
+      "id": "supply_0006-e26",
       "note": "число разорвано форматированием: половина цифр в одном ране, половина в другом",
       "trick": "format_split",
       "type": "DOCNUM"
@@ -1942,7 +1944,7 @@
       },
       "cat": "adversarial",
       "form": "money|разделитель разрядов=слитно|копейки=0 коп.|валюта=руб.|пропись=нет|НДС=нет|заполненность=значение",
-      "id": "supply_0006-e26",
+      "id": "supply_0006-e27",
       "note": "кириллические О/З/Ч на месте цифр 0/3/4",
       "trick": "homoglyph",
       "type": "MONEY"
@@ -1978,7 +1980,7 @@
     {
      "e": {
       "cat": "canonical",
-      "id": "supply_0006-e27",
+      "id": "supply_0006-e28",
       "note": "фабричный тип: пример из файла-описания владельца",
       "type": "CONTRACT_KIND"
      },
@@ -2019,7 +2021,7 @@
     {
      "e": {
       "cat": "canonical",
-      "id": "supply_0006-e28",
+      "id": "supply_0006-e29",
       "note": "фабричный тип: пример из файла-описания владельца",
       "type": "CONTRACT_NO"
      },
@@ -2060,7 +2062,7 @@
     {
      "e": {
       "cat": "canonical",
-      "id": "supply_0006-e29",
+      "id": "supply_0006-e30",
       "note": "фабричный тип: пример из файла-описания владельца",
       "type": "PASSPORT_ISSUER"
      },
@@ -2101,7 +2103,7 @@
     {
      "e": {
       "cat": "canonical",
-      "id": "supply_0006-e30",
+      "id": "supply_0006-e31",
       "note": "фабричный тип: пример из файла-описания владельца",
       "type": "REGISTRY_NAME"
      },
@@ -2142,7 +2144,7 @@
     {
      "e": {
       "cat": "canonical",
-      "id": "supply_0006-e31",
+      "id": "supply_0006-e32",
       "note": "фабричный тип: пример из файла-описания владельца",
       "type": "REG_ID"
      },
@@ -2183,7 +2185,7 @@
     {
      "e": {
       "cat": "canonical",
-      "id": "supply_0006-e32",
+      "id": "supply_0006-e33",
       "note": "фабричный тип: пример из файла-описания владельца",
       "type": "REG_NUMBER"
      },
@@ -2224,7 +2226,7 @@
     {
      "e": {
       "cat": "canonical",
-      "id": "supply_0006-e33",
+      "id": "supply_0006-e34",
       "note": "фабричный тип: пример из файла-описания владельца",
       "type": "SHARE_PCT"
      },
@@ -2295,7 +2297,7 @@
          {
           "e": {
            "cat": "canonical",
-           "id": "supply_0006-e34",
+           "id": "supply_0006-e35",
            "type": "PER"
           },
           "s": "Никитина Екатерина Андреевна"
@@ -2312,7 +2314,7 @@
          {
           "e": {
            "cat": "canonical",
-           "id": "supply_0006-e35",
+           "id": "supply_0006-e36",
            "note": "стиль записи из BIRTHDATE_STYLES",
            "type": "BIRTHDATE"
           },
@@ -2330,7 +2332,7 @@
          {
           "e": {
            "cat": "canonical",
-           "id": "supply_0006-e36",
+           "id": "supply_0006-e37",
            "note": "стиль адреса: canonical",
            "type": "ADDRESS"
           },
@@ -2348,7 +2350,7 @@
          {
           "e": {
            "cat": "canonical",
-           "id": "supply_0006-e37",
+           "id": "supply_0006-e38",
            "note": "серия+номер, стиль записи из PASSPORT_STYLES",
            "type": "PASSPORT"
           },
@@ -2363,7 +2365,7 @@
          {
           "e": {
            "cat": "ugly",
-           "id": "supply_0006-e38",
+           "id": "supply_0006-e39",
            "note": "код подразделения, стиль записи из DEPTCODE_STYLES",
            "type": "PASSPORT"
           },
@@ -2382,7 +2384,7 @@
           "e": {
            "cat": "canonical",
            "checksum": "valid",
-           "id": "supply_0006-e39",
+           "id": "supply_0006-e40",
            "note": "стиль записи из SNILS_STYLES",
            "type": "SNILS"
           },
@@ -2395,7 +2397,7 @@
           "e": {
            "cat": "ugly",
            "checksum": "valid",
-           "id": "supply_0006-e40",
+           "id": "supply_0006-e41",
            "note": "ИНН физлица (12 знаков)",
            "type": "INN"
           },
@@ -2413,7 +2415,7 @@
          {
           "e": {
            "cat": "canonical",
-           "id": "supply_0006-e41",
+           "id": "supply_0006-e42",
            "note": "формат: canonical",
            "type": "PHONE"
           },
@@ -2431,7 +2433,7 @@
          {
           "e": {
            "cat": "canonical",
-           "id": "supply_0006-e42",
+           "id": "supply_0006-e43",
            "type": "EMAIL"
           },
           "s": "nikitina@corp-tehno.ru"
@@ -2453,7 +2455,7 @@
          {
           "e": {
            "cat": "ugly",
-           "id": "supply_0006-e43",
+           "id": "supply_0006-e44",
            "note": "фамилия + инициалы",
            "type": "PER"
           },
@@ -2481,7 +2483,7 @@
          {
           "e": {
            "cat": "canonical",
-           "id": "supply_0006-e44",
+           "id": "supply_0006-e45",
            "type": "PER"
           },
           "s": "Макаров Иван Николаевич"
@@ -2498,7 +2500,7 @@
          {
           "e": {
            "cat": "canonical",
-           "id": "supply_0006-e45",
+           "id": "supply_0006-e46",
            "note": "стиль записи из BIRTHDATE_STYLES",
            "type": "BIRTHDATE"
           },
@@ -2516,7 +2518,7 @@
          {
           "e": {
            "cat": "canonical",
-           "id": "supply_0006-e46",
+           "id": "supply_0006-e47",
            "note": "стиль адреса: canonical",
            "type": "ADDRESS"
           },
@@ -2534,7 +2536,7 @@
          {
           "e": {
            "cat": "canonical",
-           "id": "supply_0006-e47",
+           "id": "supply_0006-e48",
            "note": "серия+номер, стиль записи из PASSPORT_STYLES",
            "type": "PASSPORT"
           },
@@ -2549,7 +2551,7 @@
          {
           "e": {
            "cat": "ugly",
-           "id": "supply_0006-e48",
+           "id": "supply_0006-e49",
            "note": "код подразделения, стиль записи из DEPTCODE_STYLES",
            "type": "PASSPORT"
           },
@@ -2568,7 +2570,7 @@
           "e": {
            "cat": "canonical",
            "checksum": "valid",
-           "id": "supply_0006-e49",
+           "id": "supply_0006-e50",
            "note": "стиль записи из SNILS_STYLES",
            "type": "SNILS"
           },
@@ -2581,7 +2583,7 @@
           "e": {
            "cat": "ugly",
            "checksum": "valid",
-           "id": "supply_0006-e50",
+           "id": "supply_0006-e51",
            "note": "ИНН физлица (12 знаков)",
            "type": "INN"
           },
@@ -2599,7 +2601,7 @@
          {
           "e": {
            "cat": "canonical",
-           "id": "supply_0006-e51",
+           "id": "supply_0006-e52",
            "note": "формат: canonical",
            "type": "PHONE"
           },
@@ -2617,7 +2619,7 @@
          {
           "e": {
            "cat": "canonical",
-           "id": "supply_0006-e52",
+           "id": "supply_0006-e53",
            "type": "EMAIL"
           },
           "s": "makarov@gmail.com"
@@ -2639,7 +2641,7 @@
          {
           "e": {
            "cat": "ugly",
-           "id": "supply_0006-e53",
+           "id": "supply_0006-e54",
            "note": "фамилия + инициалы",
            "type": "PER"
           },
@@ -2677,7 +2679,7 @@
     {
      "e": {
       "cat": "ugly",
-      "id": "supply_0006-e54",
+      "id": "supply_0006-e55",
       "note": "подпись: фамилия+инициалы",
       "type": "PER"
      },
@@ -2698,7 +2700,7 @@
     {
      "e": {
       "cat": "ugly",
-      "id": "supply_0006-e55",
+      "id": "supply_0006-e56",
       "note": "подпись: фамилия+инициалы",
       "type": "PER"
      },

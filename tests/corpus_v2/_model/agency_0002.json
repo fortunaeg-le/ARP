@@ -48,15 +48,17 @@
      "s": "     "
     },
     {
-     "n": {
+     "e": {
       "axes": {
-       "запись": "24 июля 2007 г."
+       "запись": "двадцать четвёртого июля 2007 года"
       },
-      "form": "date|запись=24 июля 2007 г.",
-      "type": "DATE",
-      "why": "дата документа — не ПДн"
+      "cat": "canonical",
+      "form": "date|запись=двадцать четвёртого июля 2007 года",
+      "id": "agency_0002-e2",
+      "note": "переклассифицирована из типизированного негатива (этап DATE-ON, 2026-08-18): решение владельца — дата маскируется во всех наборах",
+      "type": "DATE"
      },
-     "s": "11 декабря 2023 г."
+     "s": "одиннадцатого декабря 2023 года"
     }
    ],
    "style": "normal",
@@ -72,7 +74,7 @@
     {
      "e": {
       "cat": "ugly",
-      "id": "agency_0002-e2",
+      "id": "agency_0002-e3",
       "note": "название ЮЛ = фамилия",
       "type": "ORG"
      },
@@ -84,7 +86,7 @@
     {
      "e": {
       "cat": "canonical",
-      "id": "agency_0002-e3",
+      "id": "agency_0002-e4",
       "note": "ФИО в родительном падеже",
       "type": "PER"
      },
@@ -105,7 +107,7 @@
     {
      "e": {
       "cat": "ugly",
-      "id": "agency_0002-e4",
+      "id": "agency_0002-e5",
       "note": "составная форма: ИП+ФИО",
       "type": "PER"
      },
@@ -118,7 +120,7 @@
      "e": {
       "cat": "canonical",
       "checksum": "valid",
-      "id": "agency_0002-e5",
+      "id": "agency_0002-e6",
       "note": "ИНН физлица/ИП, 12 знаков",
       "type": "INN"
      },
@@ -137,7 +139,7 @@
       },
       "cat": "canonical",
       "form": "docnum|формат=чисто числовой (2/17, 27/16)",
-      "id": "agency_0002-e6",
+      "id": "agency_0002-e7",
       "note": "переклассифицирован из негатива (этап MARKUP-V2): номер договора маскируется",
       "type": "DOCNUM"
      },
@@ -205,7 +207,7 @@
       },
       "cat": "canonical",
       "form": "percent|привязка=годовых|ограничение=нет|дробь ставки=1/130",
-      "id": "agency_0002-e7",
+      "id": "agency_0002-e8",
       "note": "процент",
       "type": "PERCENT"
      },
@@ -432,7 +434,7 @@
       },
       "cat": "canonical",
       "form": "money|разделитель разрядов=неразрывный пробел|копейки=,00|валюта=рубля|пропись=нет|НДС=Без НДС|заполненность=значение",
-      "id": "agency_0002-e8",
+      "id": "agency_0002-e9",
       "note": "сумма с оговоркой «Без НДС»",
       "type": "MONEY"
      },
@@ -474,7 +476,7 @@
       },
       "cat": "canonical",
       "form": "percent|запись=10 (десять) процентов|привязка=за каждый день просрочки|ограничение=нет|дробь ставки=нет",
-      "id": "agency_0002-e9",
+      "id": "agency_0002-e10",
       "note": "процент",
       "type": "PERCENT"
      },
@@ -502,7 +504,7 @@
       },
       "cat": "canonical",
       "form": "term|запись числа=трех|вид дней=банковских|отправная точка=с момента выставления счета|вместо срока — дата=нет",
-      "id": "agency_0002-e10",
+      "id": "agency_0002-e11",
       "note": "срок длительностью",
       "type": "TERM"
      },
@@ -704,7 +706,7 @@
       },
       "cat": "canonical",
       "form": "money|разделитель разрядов=пробел|копейки=,0|валюта=₽|пропись=(Двух миллионов) род.|НДС=НДС не облагается, т.к. применяется УСН|заполненность=значение",
-      "id": "agency_0002-e11",
+      "id": "agency_0002-e12",
       "note": "сумма",
       "type": "MONEY"
      },
@@ -1113,7 +1115,7 @@
     {
      "e": {
       "cat": "ugly",
-      "id": "agency_0002-e12",
+      "id": "agency_0002-e13",
       "note": "стиль адреса: city_middle",
       "type": "ADDRESS"
      },
@@ -1134,7 +1136,7 @@
     {
      "e": {
       "cat": "canonical",
-      "id": "agency_0002-e13",
+      "id": "agency_0002-e14",
       "note": "ФИО в дательном падеже",
       "type": "PER"
      },
@@ -1146,7 +1148,7 @@
     {
      "e": {
       "cat": "canonical",
-      "id": "agency_0002-e14",
+      "id": "agency_0002-e15",
       "note": "формат: canonical",
       "type": "PHONE"
      },
@@ -1171,7 +1173,7 @@
       },
       "cat": "canonical",
       "form": "term|вместо срока — дата=не позднее 01.11.2025",
-      "id": "agency_0002-e15",
+      "id": "agency_0002-e16",
       "note": "срок задан КОНКРЕТНОЙ ДАТОЙ, а не длительностью",
       "type": "TERM"
      },
@@ -1421,7 +1423,7 @@
       },
       "cat": "canonical",
       "form": "percent|запись=0,1 процента|пропись=нет|привязка=за каждый день просрочки|ограничение=нет|дробь ставки=нет",
-      "id": "agency_0002-e16",
+      "id": "agency_0002-e17",
       "note": "процент",
       "type": "PERCENT"
      },
@@ -1439,7 +1441,7 @@
       },
       "cat": "canonical",
       "form": "percent|привязка=от цены Договора|ограничение=нет|дробь ставки=1/300",
-      "id": "agency_0002-e17",
+      "id": "agency_0002-e18",
       "note": "процент",
       "type": "PERCENT"
      },
@@ -1482,7 +1484,7 @@
       },
       "cat": "canonical",
       "form": "term|запись числа=10|вид дней=рабочих|отправная точка=с момента поступления денежных средств на расчетный счет|вместо срока — дата=нет",
-      "id": "agency_0002-e18",
+      "id": "agency_0002-e19",
       "note": "срок длительностью",
       "type": "TERM"
      },
@@ -1513,7 +1515,7 @@
       },
       "cat": "canonical",
       "form": "term|запись числа=30 (Тридцати)|вид дней=банковских|отправная точка=нет|вместо срока — дата=нет",
-      "id": "agency_0002-e19",
+      "id": "agency_0002-e20",
       "note": "срок длительностью",
       "type": "TERM"
      },
@@ -1769,7 +1771,7 @@
     {
      "e": {
       "cat": "adversarial",
-      "id": "agency_0002-e20",
+      "id": "agency_0002-e21",
       "note": "NBSP/ZWSP/SHY внутри номера",
       "trick": "invisible_chars",
       "type": "PHONE"
@@ -1788,7 +1790,7 @@
     {
      "e": {
       "cat": "adversarial",
-      "id": "agency_0002-e21",
+      "id": "agency_0002-e22",
       "note": "zero-width внутри ФИО",
       "trick": "invisible_chars",
       "type": "PER"
@@ -1807,7 +1809,7 @@
     {
      "e": {
       "cat": "adversarial",
-      "id": "agency_0002-e22",
+      "id": "agency_0002-e23",
       "note": "ФИО разорвано переводом строки",
       "trick": "linebreak_inside_entity",
       "type": "PER"
@@ -1826,7 +1828,7 @@
     {
      "e": {
       "cat": "adversarial",
-      "id": "agency_0002-e23",
+      "id": "agency_0002-e24",
       "note": "номер счёта разорван переводом строки",
       "trick": "linebreak_inside_entity",
       "type": "ACCOUNT"
@@ -1871,7 +1873,7 @@
       },
       "cat": "adversarial",
       "form": "percent|привязка=от общей суммы счета|ограничение=нет|дробь ставки=1/150",
-      "id": "agency_0002-e24",
+      "id": "agency_0002-e25",
       "note": "число разорвано форматированием: половина цифр в одном ране, половина в другом",
       "trick": "format_split",
       "type": "PERCENT"
@@ -1898,7 +1900,7 @@
       },
       "cat": "adversarial",
       "form": "term|вместо срока — дата=не позднее 01.11.2025",
-      "id": "agency_0002-e25",
+      "id": "agency_0002-e26",
       "note": "число разорвано форматированием: половина цифр в одном ране, половина в другом",
       "trick": "format_split",
       "type": "TERM"
@@ -1925,7 +1927,7 @@
       },
       "cat": "adversarial",
       "form": "docnum|формат=17595/001-сс",
-      "id": "agency_0002-e26",
+      "id": "agency_0002-e27",
       "note": "число разорвано форматированием: половина цифр в одном ране, половина в другом",
       "trick": "format_split",
       "type": "DOCNUM"
@@ -1956,7 +1958,7 @@
       },
       "cat": "adversarial",
       "form": "money|разделитель разрядов=неразрывный пробел|копейки=нет|валюта=RUB|пропись=(Двух миллионов) род.|НДС=нет|заполненность=значение",
-      "id": "agency_0002-e27",
+      "id": "agency_0002-e28",
       "note": "величина разорвана переводом строки",
       "trick": "linebreak",
       "type": "MONEY"
@@ -1992,7 +1994,7 @@
     {
      "e": {
       "cat": "canonical",
-      "id": "agency_0002-e28",
+      "id": "agency_0002-e29",
       "note": "фабричный тип: пример из файла-описания владельца",
       "type": "CONTRACT_KIND"
      },
@@ -2033,7 +2035,7 @@
     {
      "e": {
       "cat": "canonical",
-      "id": "agency_0002-e29",
+      "id": "agency_0002-e30",
       "note": "фабричный тип: пример из файла-описания владельца",
       "type": "CONTRACT_NO"
      },
@@ -2074,7 +2076,7 @@
     {
      "e": {
       "cat": "canonical",
-      "id": "agency_0002-e30",
+      "id": "agency_0002-e31",
       "note": "фабричный тип: пример из файла-описания владельца",
       "type": "PASSPORT_ISSUER"
      },
@@ -2115,7 +2117,7 @@
     {
      "e": {
       "cat": "canonical",
-      "id": "agency_0002-e31",
+      "id": "agency_0002-e32",
       "note": "фабричный тип: пример из файла-описания владельца",
       "type": "REGISTRY_NAME"
      },
@@ -2156,7 +2158,7 @@
     {
      "e": {
       "cat": "canonical",
-      "id": "agency_0002-e32",
+      "id": "agency_0002-e33",
       "note": "фабричный тип: пример из файла-описания владельца",
       "type": "REG_ID"
      },
@@ -2197,7 +2199,7 @@
     {
      "e": {
       "cat": "canonical",
-      "id": "agency_0002-e33",
+      "id": "agency_0002-e34",
       "note": "фабричный тип: пример из файла-описания владельца",
       "type": "REG_NUMBER"
      },
@@ -2238,7 +2240,7 @@
     {
      "e": {
       "cat": "canonical",
-      "id": "agency_0002-e34",
+      "id": "agency_0002-e35",
       "note": "фабричный тип: пример из файла-описания владельца",
       "type": "SHARE_PCT"
      },
@@ -2309,7 +2311,7 @@
          {
           "e": {
            "cat": "ugly",
-           "id": "agency_0002-e35",
+           "id": "agency_0002-e36",
            "note": "название ЮЛ = фамилия",
            "type": "ORG"
           },
@@ -2327,7 +2329,7 @@
          {
           "e": {
            "cat": "ugly",
-           "id": "agency_0002-e36",
+           "id": "agency_0002-e37",
            "note": "стиль адреса: city_middle",
            "type": "ADDRESS"
           },
@@ -2345,7 +2347,7 @@
          {
           "e": {
            "cat": "ugly",
-           "id": "agency_0002-e37",
+           "id": "agency_0002-e38",
            "note": "стиль адреса: city_middle",
            "type": "ADDRESS"
           },
@@ -2364,7 +2366,7 @@
           "e": {
            "cat": "canonical",
            "checksum": "valid",
-           "id": "agency_0002-e38",
+           "id": "agency_0002-e39",
            "type": "INN"
           },
           "s": "8907632013"
@@ -2375,7 +2377,7 @@
          {
           "e": {
            "cat": "canonical",
-           "id": "agency_0002-e39",
+           "id": "agency_0002-e40",
            "type": "KPP"
           },
           "s": "594710325"
@@ -2393,7 +2395,7 @@
           "e": {
            "cat": "canonical",
            "checksum": "valid",
-           "id": "agency_0002-e40",
+           "id": "agency_0002-e41",
            "type": "OGRN"
           },
           "s": "1230042519343"
@@ -2411,7 +2413,7 @@
           "e": {
            "cat": "canonical",
            "checksum": "valid",
-           "id": "agency_0002-e41",
+           "id": "agency_0002-e42",
            "type": "ACCOUNT"
           },
           "s": "40702810052063749023"
@@ -2431,7 +2433,7 @@
          {
           "e": {
            "cat": "canonical",
-           "id": "agency_0002-e42",
+           "id": "agency_0002-e43",
            "note": "корреспондентский счёт банка",
            "type": "ACCOUNT"
           },
@@ -2443,7 +2445,7 @@
          {
           "e": {
            "cat": "canonical",
-           "id": "agency_0002-e43",
+           "id": "agency_0002-e44",
            "type": "BIK"
           },
           "s": "044525225"
@@ -2460,7 +2462,7 @@
          {
           "e": {
            "cat": "canonical",
-           "id": "agency_0002-e44",
+           "id": "agency_0002-e45",
            "note": "формат: canonical",
            "type": "PHONE"
           },
@@ -2478,7 +2480,7 @@
          {
           "e": {
            "cat": "canonical",
-           "id": "agency_0002-e45",
+           "id": "agency_0002-e46",
            "type": "EMAIL"
           },
           "s": "ter.petrosyan@corp-tehno.ru"
@@ -2500,7 +2502,7 @@
          {
           "e": {
            "cat": "ugly",
-           "id": "agency_0002-e46",
+           "id": "agency_0002-e47",
            "note": "инициалы перед фамилией",
            "type": "PER"
           },
@@ -2531,7 +2533,7 @@
          {
           "e": {
            "cat": "canonical",
-           "id": "agency_0002-e47",
+           "id": "agency_0002-e48",
            "type": "PER"
           },
           "s": "Беляев Олег Олегович"
@@ -2548,7 +2550,7 @@
          {
           "e": {
            "cat": "ugly",
-           "id": "agency_0002-e48",
+           "id": "agency_0002-e49",
            "note": "стиль адреса: city_middle",
            "type": "ADDRESS"
           },
@@ -2567,7 +2569,7 @@
           "e": {
            "cat": "canonical",
            "checksum": "valid",
-           "id": "agency_0002-e49",
+           "id": "agency_0002-e50",
            "note": "12-значный ИНН",
            "type": "INN"
           },
@@ -2580,7 +2582,7 @@
           "e": {
            "cat": "ugly",
            "checksum": "valid",
-           "id": "agency_0002-e50",
+           "id": "agency_0002-e51",
            "note": "ОГРНИП, 15 знаков",
            "type": "OGRN"
           },
@@ -2599,7 +2601,7 @@
           "e": {
            "cat": "canonical",
            "checksum": "valid",
-           "id": "agency_0002-e51",
+           "id": "agency_0002-e52",
            "type": "ACCOUNT"
           },
           "s": "40802810445145901597"
@@ -2613,7 +2615,7 @@
          {
           "e": {
            "cat": "canonical",
-           "id": "agency_0002-e52",
+           "id": "agency_0002-e53",
            "type": "BIK"
           },
           "s": "049205603"
@@ -2630,7 +2632,7 @@
          {
           "e": {
            "cat": "canonical",
-           "id": "agency_0002-e53",
+           "id": "agency_0002-e54",
            "note": "формат: canonical",
            "type": "PHONE"
           },
@@ -2648,7 +2650,7 @@
          {
           "e": {
            "cat": "canonical",
-           "id": "agency_0002-e54",
+           "id": "agency_0002-e55",
            "type": "EMAIL"
           },
           "s": "belyaev@romashka.ru"
@@ -2670,7 +2672,7 @@
          {
           "e": {
            "cat": "ugly",
-           "id": "agency_0002-e55",
+           "id": "agency_0002-e56",
            "note": "фамилия + инициалы",
            "type": "PER"
           },
@@ -2731,7 +2733,7 @@
               {
                "e": {
                 "cat": "adversarial",
-                "id": "agency_0002-e56",
+                "id": "agency_0002-e57",
                 "note": "счёт во вложенной таблице",
                 "trick": "nested_table",
                 "type": "ACCOUNT"
@@ -2766,7 +2768,7 @@
               {
                "e": {
                 "cat": "adversarial",
-                "id": "agency_0002-e57",
+                "id": "agency_0002-e58",
                 "note": "ФИО во вложенной таблице",
                 "trick": "nested_table",
                 "type": "PER"
@@ -2816,7 +2818,7 @@
     {
      "e": {
       "cat": "ugly",
-      "id": "agency_0002-e60",
+      "id": "agency_0002-e61",
       "note": "подпись: фамилия+инициалы",
       "type": "PER"
      },
@@ -2837,7 +2839,7 @@
     {
      "e": {
       "cat": "ugly",
-      "id": "agency_0002-e61",
+      "id": "agency_0002-e62",
       "note": "подпись: фамилия+инициалы",
       "type": "PER"
      },
@@ -2872,7 +2874,7 @@
     {
      "e": {
       "cat": "adversarial",
-      "id": "agency_0002-e58",
+      "id": "agency_0002-e59",
       "note": "телефон в колонтитуле (верхнем)",
       "trick": "in_header",
       "type": "PHONE"
@@ -2885,7 +2887,7 @@
     {
      "e": {
       "cat": "adversarial",
-      "id": "agency_0002-e59",
+      "id": "agency_0002-e60",
       "note": "e-mail в колонтитуле",
       "trick": "in_header",
       "type": "EMAIL"

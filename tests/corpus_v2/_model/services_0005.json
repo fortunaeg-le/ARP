@@ -48,15 +48,17 @@
      "s": "     "
     },
     {
-     "n": {
+     "e": {
       "axes": {
-       "запись": "24 июля 2007 г."
+       "запись": "24 июля 2007 года"
       },
-      "form": "date|запись=24 июля 2007 г.",
-      "type": "DATE",
-      "why": "дата документа — не ПДн"
+      "cat": "canonical",
+      "form": "date|запись=24 июля 2007 года",
+      "id": "services_0005-e2",
+      "note": "переклассифицирована из типизированного негатива (этап DATE-ON, 2026-08-18): решение владельца — дата маскируется во всех наборах",
+      "type": "DATE"
      },
-     "s": "1 августа 2024 г."
+     "s": "1 августа 2024 года"
     }
    ],
    "style": "normal",
@@ -72,7 +74,7 @@
     {
      "e": {
       "cat": "canonical",
-      "id": "services_0005-e2",
+      "id": "services_0005-e3",
       "type": "ORG"
      },
      "s": "ООО «Ромашка»"
@@ -83,7 +85,7 @@
     {
      "e": {
       "cat": "ugly",
-      "id": "services_0005-e3",
+      "id": "services_0005-e4",
       "note": "инициалы слитно И.И.Иванов",
       "type": "PER"
      },
@@ -101,7 +103,7 @@
     {
      "e": {
       "cat": "canonical",
-      "id": "services_0005-e4",
+      "id": "services_0005-e5",
       "type": "PER"
      },
      "s": "Новиков Николай Иванович"
@@ -115,7 +117,7 @@
     {
      "e": {
       "cat": "ugly",
-      "id": "services_0005-e5",
+      "id": "services_0005-e6",
       "note": "серия+номер, стиль записи из PASSPORT_STYLES",
       "type": "PASSPORT"
      },
@@ -142,7 +144,7 @@
     {
      "e": {
       "cat": "ugly",
-      "id": "services_0005-e6",
+      "id": "services_0005-e7",
       "note": "код подразделения, стиль записи из DEPTCODE_STYLES",
       "type": "PASSPORT"
      },
@@ -161,7 +163,7 @@
       },
       "cat": "canonical",
       "form": "docnum|формат=01Ф-00034/16-124Д",
-      "id": "services_0005-e7",
+      "id": "services_0005-e8",
       "note": "переклассифицирован из негатива (этап MARKUP-V2): номер договора маскируется",
       "type": "DOCNUM"
      },
@@ -230,7 +232,7 @@
       },
       "cat": "canonical",
       "form": "term|запись числа=трех|вид дней=календарных|отправная точка=с момента заключения контракта|вместо срока — дата=нет",
-      "id": "services_0005-e8",
+      "id": "services_0005-e9",
       "note": "срок длительностью",
       "type": "TERM"
      },
@@ -457,7 +459,7 @@
       },
       "cat": "canonical",
       "form": "money|разделитель разрядов=слитно|копейки=нет|валюта=рубля|пропись=нет|НДС=нет|заполненность=значение",
-      "id": "services_0005-e9",
+      "id": "services_0005-e10",
       "note": "сумма",
       "type": "MONEY"
      },
@@ -484,7 +486,7 @@
       },
       "cat": "canonical",
       "form": "percent|привязка=от цены Договора|ограничение=нет|дробь ставки=1/130",
-      "id": "services_0005-e10",
+      "id": "services_0005-e11",
       "note": "процент",
       "type": "PERCENT"
      },
@@ -512,7 +514,7 @@
       },
       "cat": "canonical",
       "form": "term|запись числа=30 (Тридцати)|вид дней=не указан|отправная точка=с момента подписания акта|вместо срока — дата=нет",
-      "id": "services_0005-e11",
+      "id": "services_0005-e12",
       "note": "срок длительностью",
       "type": "TERM"
      },
@@ -713,7 +715,7 @@
       },
       "cat": "canonical",
       "form": "money|копейки=0 коп.|валюта=рубля|пропись=вместо цифр|НДС=НДС не облагается, т.к. применяется УСН|заполненность=значение",
-      "id": "services_0005-e12",
+      "id": "services_0005-e13",
       "note": "сумма",
       "type": "MONEY"
      },
@@ -1122,7 +1124,7 @@
     {
      "e": {
       "cat": "canonical",
-      "id": "services_0005-e13",
+      "id": "services_0005-e14",
       "note": "стиль адреса: canonical",
       "type": "ADDRESS"
      },
@@ -1143,7 +1145,7 @@
     {
      "e": {
       "cat": "canonical",
-      "id": "services_0005-e14",
+      "id": "services_0005-e15",
       "note": "ФИО в дательном падеже",
       "type": "PER"
      },
@@ -1155,7 +1157,7 @@
     {
      "e": {
       "cat": "ugly",
-      "id": "services_0005-e15",
+      "id": "services_0005-e16",
       "note": "формат: dashes8",
       "type": "PHONE"
      },
@@ -1180,7 +1182,7 @@
       },
       "cat": "canonical",
       "form": "term|вместо срока — дата=не позднее 01.11.2025",
-      "id": "services_0005-e16",
+      "id": "services_0005-e17",
       "note": "срок задан КОНКРЕТНОЙ ДАТОЙ, а не длительностью",
       "type": "TERM"
      },
@@ -1428,7 +1430,7 @@
       },
       "cat": "canonical",
       "form": "percent|привязка=от стоимости неоплаченных работ|ограничение=нет|дробь ставки=1/300",
-      "id": "services_0005-e17",
+      "id": "services_0005-e18",
       "note": "процент",
       "type": "PERCENT"
      },
@@ -1448,7 +1450,7 @@
       },
       "cat": "canonical",
       "form": "percent|запись=0,1 процента|пропись=нет|привязка=от общей суммы счета|ограничение=нет|дробь ставки=нет",
-      "id": "services_0005-e18",
+      "id": "services_0005-e19",
       "note": "процент",
       "type": "PERCENT"
      },
@@ -1491,7 +1493,7 @@
       },
       "cat": "canonical",
       "form": "term|запись числа=трех|вид дней=рабочих|отправная точка=с момента поступления денежных средств на расчетный счет|вместо срока — дата=нет",
-      "id": "services_0005-e19",
+      "id": "services_0005-e20",
       "note": "срок длительностью",
       "type": "TERM"
      },
@@ -1522,7 +1524,7 @@
       },
       "cat": "canonical",
       "form": "term|запись числа=30 (Тридцати)|вид дней=банковских|отправная точка=нет|вместо срока — дата=нет",
-      "id": "services_0005-e20",
+      "id": "services_0005-e21",
       "note": "срок длительностью",
       "type": "TERM"
      },
@@ -1787,7 +1789,7 @@
       },
       "cat": "adversarial",
       "form": "docnum|формат=17595/001-сс",
-      "id": "services_0005-e21",
+      "id": "services_0005-e22",
       "note": "пробелы внутри цифр",
       "trick": "digit_spaces",
       "type": "DOCNUM"
@@ -1818,7 +1820,7 @@
       },
       "cat": "adversarial",
       "form": "money|разделитель разрядов=слитно|копейки=,0|валюта=RUB|пропись=(Двух миллионов) род.|НДС=нет|заполненность=значение",
-      "id": "services_0005-e22",
+      "id": "services_0005-e23",
       "note": "кириллические О/З/Ч на месте цифр 0/3/4",
       "trick": "homoglyph",
       "type": "MONEY"
@@ -1845,7 +1847,7 @@
       },
       "cat": "adversarial",
       "form": "money|разделитель разрядов=неразрывный пробел|заполненность=значение",
-      "id": "services_0005-e23",
+      "id": "services_0005-e24",
       "note": "цифровая часть суммы, расходящейся с прописью",
       "trick": "words_mismatch",
       "type": "MONEY"
@@ -1864,7 +1866,7 @@
       },
       "cat": "adversarial",
       "form": "money|валюта=рублей|пропись=вместо цифр|заполненность=значение",
-      "id": "services_0005-e24",
+      "id": "services_0005-e25",
       "note": "пропись, не совпадающая с цифрами (и неграмматичная)",
       "trick": "words_mismatch",
       "type": "MONEY"
@@ -1900,7 +1902,7 @@
     {
      "e": {
       "cat": "canonical",
-      "id": "services_0005-e25",
+      "id": "services_0005-e26",
       "note": "фабричный тип: пример из файла-описания владельца",
       "type": "CONTRACT_KIND"
      },
@@ -1941,7 +1943,7 @@
     {
      "e": {
       "cat": "canonical",
-      "id": "services_0005-e26",
+      "id": "services_0005-e27",
       "note": "фабричный тип: пример из файла-описания владельца",
       "type": "CONTRACT_NO"
      },
@@ -1982,7 +1984,7 @@
     {
      "e": {
       "cat": "canonical",
-      "id": "services_0005-e27",
+      "id": "services_0005-e28",
       "note": "фабричный тип: пример из файла-описания владельца",
       "type": "PASSPORT_ISSUER"
      },
@@ -2023,7 +2025,7 @@
     {
      "e": {
       "cat": "canonical",
-      "id": "services_0005-e28",
+      "id": "services_0005-e29",
       "note": "фабричный тип: пример из файла-описания владельца",
       "type": "REGISTRY_NAME"
      },
@@ -2064,7 +2066,7 @@
     {
      "e": {
       "cat": "canonical",
-      "id": "services_0005-e29",
+      "id": "services_0005-e30",
       "note": "фабричный тип: пример из файла-описания владельца",
       "type": "REG_ID"
      },
@@ -2105,7 +2107,7 @@
     {
      "e": {
       "cat": "canonical",
-      "id": "services_0005-e30",
+      "id": "services_0005-e31",
       "note": "фабричный тип: пример из файла-описания владельца",
       "type": "REG_NUMBER"
      },
@@ -2146,7 +2148,7 @@
     {
      "e": {
       "cat": "canonical",
-      "id": "services_0005-e31",
+      "id": "services_0005-e32",
       "note": "фабричный тип: пример из файла-описания владельца",
       "type": "SHARE_PCT"
      },
@@ -2212,7 +2214,7 @@
     {
      "e": {
       "cat": "canonical",
-      "id": "services_0005-e32",
+      "id": "services_0005-e33",
       "type": "ORG"
      },
      "s": "ООО «Ромашка»"
@@ -2229,7 +2231,7 @@
     {
      "e": {
       "cat": "canonical",
-      "id": "services_0005-e33",
+      "id": "services_0005-e34",
       "note": "стиль адреса: canonical",
       "type": "ADDRESS"
      },
@@ -2248,7 +2250,7 @@
      "e": {
       "cat": "canonical",
       "checksum": "valid",
-      "id": "services_0005-e34",
+      "id": "services_0005-e35",
       "type": "INN"
      },
      "s": "2945688440"
@@ -2259,7 +2261,7 @@
     {
      "e": {
       "cat": "canonical",
-      "id": "services_0005-e35",
+      "id": "services_0005-e36",
       "note": "связка ИНН/КПП, якорь отрезан числом ИНН",
       "type": "KPP"
      },
@@ -2278,7 +2280,7 @@
      "e": {
       "cat": "canonical",
       "checksum": "valid",
-      "id": "services_0005-e36",
+      "id": "services_0005-e37",
       "type": "OGRN"
      },
      "s": "1209726911261"
@@ -2296,7 +2298,7 @@
      "e": {
       "cat": "canonical",
       "checksum": "valid",
-      "id": "services_0005-e37",
+      "id": "services_0005-e38",
       "type": "ACCOUNT"
      },
      "s": "40702810068170663241"
@@ -2316,7 +2318,7 @@
     {
      "e": {
       "cat": "canonical",
-      "id": "services_0005-e38",
+      "id": "services_0005-e39",
       "note": "корреспондентский счёт банка",
       "type": "ACCOUNT"
      },
@@ -2328,7 +2330,7 @@
     {
      "e": {
       "cat": "canonical",
-      "id": "services_0005-e39",
+      "id": "services_0005-e40",
       "type": "BIK"
      },
      "s": "044030790"
@@ -2345,7 +2347,7 @@
     {
      "e": {
       "cat": "ugly",
-      "id": "services_0005-e40",
+      "id": "services_0005-e41",
       "note": "формат: tight8",
       "type": "PHONE"
      },
@@ -2363,7 +2365,7 @@
     {
      "e": {
       "cat": "canonical",
-      "id": "services_0005-e41",
+      "id": "services_0005-e42",
       "type": "EMAIL"
      },
      "s": "sokolova@mail.ru"
@@ -2385,7 +2387,7 @@
     {
      "e": {
       "cat": "ugly",
-      "id": "services_0005-e42",
+      "id": "services_0005-e43",
       "note": "инициалы перед фамилией",
       "type": "PER"
      },
@@ -2414,7 +2416,7 @@
     {
      "e": {
       "cat": "canonical",
-      "id": "services_0005-e43",
+      "id": "services_0005-e44",
       "type": "PER"
      },
      "s": "Новиков Николай Иванович"
@@ -2431,7 +2433,7 @@
     {
      "e": {
       "cat": "canonical",
-      "id": "services_0005-e44",
+      "id": "services_0005-e45",
       "note": "стиль записи из BIRTHDATE_STYLES",
       "type": "BIRTHDATE"
      },
@@ -2449,7 +2451,7 @@
     {
      "e": {
       "cat": "canonical",
-      "id": "services_0005-e45",
+      "id": "services_0005-e46",
       "note": "стиль адреса: canonical",
       "type": "ADDRESS"
      },
@@ -2467,7 +2469,7 @@
     {
      "e": {
       "cat": "canonical",
-      "id": "services_0005-e46",
+      "id": "services_0005-e47",
       "note": "серия+номер, стиль записи из PASSPORT_STYLES",
       "type": "PASSPORT"
      },
@@ -2482,7 +2484,7 @@
     {
      "e": {
       "cat": "ugly",
-      "id": "services_0005-e47",
+      "id": "services_0005-e48",
       "note": "код подразделения, стиль записи из DEPTCODE_STYLES",
       "type": "PASSPORT"
      },
@@ -2501,7 +2503,7 @@
      "e": {
       "cat": "canonical",
       "checksum": "valid",
-      "id": "services_0005-e48",
+      "id": "services_0005-e49",
       "note": "стиль записи из SNILS_STYLES",
       "type": "SNILS"
      },
@@ -2514,7 +2516,7 @@
      "e": {
       "cat": "ugly",
       "checksum": "valid",
-      "id": "services_0005-e49",
+      "id": "services_0005-e50",
       "note": "ИНН физлица (12 знаков)",
       "type": "INN"
      },
@@ -2532,7 +2534,7 @@
     {
      "e": {
       "cat": "ugly",
-      "id": "services_0005-e50",
+      "id": "services_0005-e51",
       "note": "формат: tight8",
       "type": "PHONE"
      },
@@ -2550,7 +2552,7 @@
     {
      "e": {
       "cat": "canonical",
-      "id": "services_0005-e51",
+      "id": "services_0005-e52",
       "type": "EMAIL"
      },
      "s": "novikov@bk.ru"
@@ -2572,7 +2574,7 @@
     {
      "e": {
       "cat": "ugly",
-      "id": "services_0005-e52",
+      "id": "services_0005-e53",
       "note": "фамилия + инициалы",
       "type": "PER"
      },
@@ -2609,7 +2611,7 @@
     {
      "e": {
       "cat": "ugly",
-      "id": "services_0005-e53",
+      "id": "services_0005-e54",
       "note": "подпись: фамилия+инициалы",
       "type": "PER"
      },
@@ -2630,7 +2632,7 @@
     {
      "e": {
       "cat": "ugly",
-      "id": "services_0005-e54",
+      "id": "services_0005-e55",
       "note": "подпись: фамилия+инициалы",
       "type": "PER"
      },
