@@ -20,6 +20,7 @@ import sys
 from pathlib import Path
 
 import pytest
+import yaml
 
 _ROOT = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 for _p in (_ROOT, os.path.join(_ROOT, "src"), os.path.join(_ROOT, "app")):
@@ -162,15 +163,46 @@ def test_screen_shows_all_four_sets_with_a_human_hint(home):
 
 def test_screen_type_list_comes_from_the_config_not_from_a_second_copy(home):
     """Экран не держит своего списка типов: он обязан совпасть с составом
-    конфига (минус DATE, чей детектор выключен) — иначе разойдётся при
-    появлении нового типа."""
+    конфига (минус типы с ВЫКЛЮЧЕННЫМ детектором) — иначе разойдётся при
+    появлении нового типа.
+
+    ЭТАП DATE-ON. Здесь стояло «минус DATE» ИМЕНЕМ, и ровно то же имя стояло в
+    `app/core.py`. Пока детектор даты молчал, обе записи были верны; в день,
+    когда владелец дату включил, экран продолжил бы прятать тип, который
+    маскирует текст ПО УМОЛЧАНИЮ, — и ни один страж этого не увидел бы, потому
+    что тест сверял одно зашитое имя с другим. Теперь обе стороны читают состав
+    из конфига, а имя не упоминается ни разу."""
     import core
 
     view = core.settings_view(CONFIG)
-    expected = [t for t in type_policy.known_types(CONFIG) if t != "DATE"]
+    off = type_policy.detector_off_types(CONFIG)
+    expected = [t for t in type_policy.known_types(CONFIG) if t not in off]
     assert [t["type"] for t in view["types"]] == expected
     assert all(t["label"] != t["type"] or t["type"] in ("INN", "OGRN", "KPP", "BIK")
                for t in view["types"])
+    # Регресс-якорь этапа DATE-ON: дата ВКЛЮЧЕНА и обязана быть на экране.
+    assert "DATE" not in off
+    assert "DATE" in [t["type"] for t in view["types"]]
+
+
+def test_screen_hides_a_type_whose_detector_is_switched_off(home, tmp_path):
+    """ЖИВАЯ ПРОБА механизма (он же красное состояние теста выше): тип с
+    `enabled: false` исчезает с экрана САМ, без правки `app/core.py`. Сегодня
+    выключенных типов нет ни одного, поэтому проверка идёт на своём конфиге —
+    иначе механизм остался бы без стража в тот самый момент, когда им
+    перестали пользоваться."""
+    import core
+
+    src = yaml.safe_load(open(CONFIG, encoding="utf-8"))
+    src["entity_types"]["EMAIL"]["enabled"] = False
+    cfg = tmp_path / "off.yaml"
+    cfg.write_text(yaml.safe_dump(src, allow_unicode=True), encoding="utf-8")
+
+    assert "EMAIL" in type_policy.known_types(str(cfg))       # маскировать умеет
+    assert type_policy.detector_off_types(str(cfg)) == {"EMAIL"}
+    view = core.settings_view(str(cfg))
+    assert "EMAIL" not in [t["type"] for t in view["types"]]
+    assert "PHONE" in [t["type"] for t in view["types"]]      # соседи на месте
 
 
 def test_screen_saves_into_the_same_file_the_mechanism_reads(home):
@@ -212,8 +244,30 @@ def test_result_line_says_the_set_is_not_full_and_names_what_was_left(home):
     )
     assert s["is_full"] is False
     assert s["profile_label"] == type_policy.PROFILE_LABELS["personal"]
-    assert s["disabled_labels"] == ["Организация", "ИНН организации (10 цифр)"]   # DATE не обещаем
+    # ЭТАП DATE-ON: «Дата» БОЛЬШЕ НЕ ЗАМАЛЧИВАЕТСЯ. Пока её детектор стоял
+    # выключенным, назвать её среди «вы выключили» было бы неправдой — маски
+    # не появились бы ни при какой галочке. Теперь детектор работает, значит
+    # выключение — настоящий выбор человека, и строка обязана о нём сказать.
+    assert s["disabled_labels"] == ["Организация", "ИНН организации (10 цифр)", "Дата"]
     assert "ФИО" in s["enabled_labels"]
+
+
+def test_result_line_stays_silent_about_a_type_whose_detector_is_off(home, tmp_path):
+    """Обратная сторона того же механизма: выключенный ДЕТЕКТОРОМ тип в перечне
+    «осталось намеренно» не называется — человек его не выключал."""
+    import core
+
+    src = yaml.safe_load(open(CONFIG, encoding="utf-8"))
+    src["entity_types"]["EMAIL"]["enabled"] = False
+    cfg = tmp_path / "off.yaml"
+    cfg.write_text(yaml.safe_dump(src, allow_unicode=True), encoding="utf-8")
+
+    s = core.policy_summary(
+        {"profile": "personal", "enabled_types": [],
+         "disabled_types": ["EMAIL", "ORG"]},
+        config_path=str(cfg),
+    )
+    assert s["disabled_labels"] == ["Организация"]
 
 
 def test_result_line_on_the_maximum_set_says_full(home):

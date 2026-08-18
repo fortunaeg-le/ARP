@@ -179,9 +179,9 @@ SETTINGS_FILENAME = "settings.json"
 def known_types(config_path: str) -> tuple[str, ...]:
     """Типы, которые программа умеет МАСКИРОВАТЬ = записи entity_types.yaml с
     `token_prefix` (без префикса тип нечем заменить в тексте). Порядок — как в
-    файле. `enabled: false` здесь НЕ фильтруется: это выключатель ДЕТЕКТОРА
-    (сегодня — только `DATE`), другой уровень, и знать о типе политика обязана
-    даже когда детектор молчит."""
+    файле. `enabled: false` здесь НЕ фильтруется: это выключатель ДЕТЕКТОРА,
+    другой уровень, и знать о типе политика обязана даже когда детектор молчит.
+    Кому нужен именно молчащий детектор — `detector_off_types` ниже."""
     import yaml
 
     with open(config_path, encoding="utf-8") as f:
@@ -189,6 +189,31 @@ def known_types(config_path: str) -> tuple[str, ...]:
     return tuple(
         t for t, spec in config["entity_types"].items()
         if isinstance(spec, dict) and "token_prefix" in spec
+    )
+
+
+def detector_off_types(config_path: str) -> frozenset[str]:
+    """Типы с ВЫКЛЮЧЕННЫМ детектором (`enabled: false`) — масок этого типа не
+    будет ни при какой галочке пользователя.
+
+    ЭТАП DATE-ON. До него это множество было ЗАШИТО ИМЕНЕМ в двух местах
+    `app/core.py` («… if t != "DATE"»): экран настроек прятал тип, а строка «чем
+    обезличено» не называла его среди выключенных. Пока `DATE` действительно
+    стоял `enabled: false`, обе оговорки были верны; в день, когда владелец тип
+    включил, они превратились в ЛОЖЬ, которую ни один страж не видел — экран
+    продолжал бы прятать тип, маскирующий текст по умолчанию. Теперь состав
+    ЧИТАЕТСЯ ИЗ КОНФИГА, и обе стороны двигаются вместе.
+
+    Сегодня множество ПУСТО. Это не повод убрать функцию: механизм
+    `enabled: false` остаётся, и следующий выключенный тип обязан исчезнуть с
+    экрана САМ, а не после того, как кто-то вспомнит про вторую копию списка."""
+    import yaml
+
+    with open(config_path, encoding="utf-8") as f:
+        config = yaml.safe_load(f)
+    return frozenset(
+        t for t, spec in config["entity_types"].items()
+        if isinstance(spec, dict) and spec.get("enabled") is False
     )
 
 
