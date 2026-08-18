@@ -1805,8 +1805,17 @@ async function applyMarkup(){
     renderVerify(CUR);
     const results=d.results||[];
     const ok=results.filter(r=>r.applied).length, fail=results.filter(r=>!r.applied).length;
+    /* ЭТАП UI-REBUILD, задача 4: сколько вхождений закрыло РАСПРОСТРАНЕНИЕ.
+       Число даёт core.py (spread_total, этап MARKUP-SPREAD), но экран его до
+       сих пор не показывал — человек, пометивший одну дату из трёх, не видел,
+       что закрылись все три, и шёл искать остальные руками. Молчать об этом
+       нельзя: это ровно та работа, ради которой распространение и заведено. */
+    const spread=+d.spread_total||0;
+    const spreadMsg = spread ? ' Ещё '+spread+' таких же '+
+      (spread===1?'вхождение закрыто':(spread<5?'вхождения закрыты':'вхождений закрыто'))+
+      ' по всему документу.' : '';
     if(!results.length) markupToast('Нечего применять — новых правок нет.','ok');
-    else markupToast('Применено правок: '+ok+(fail?', не удалось: '+fail:'')+'. Документ пересобран.', fail?'err':'ok');
+    else markupToast('Применено правок: '+ok+(fail?', не удалось: '+fail:'')+'. Документ пересобран.'+spreadMsg, fail?'err':'ok');
     loadMarkupPanel();
   }catch(err){ markupToast('Ошибка связи с сервером: '+err,'err'); }
   finally{ btn.disabled=false; btn.textContent=oldLabel; }
