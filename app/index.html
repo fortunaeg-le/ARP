@@ -215,9 +215,9 @@
       <div id="drop" class="drop">
         <div class="big">📄</div>
         <div><b>Перетащите файл сюда</b> или нажмите, чтобы выбрать</div>
-        <div style="margin-top:6px;font-size:13px">.docx / .txt</div>
+        <div style="margin-top:6px;font-size:13px">Word (.docx) · PDF (.pdf) · текст (.txt)</div>
       </div>
-      <input id="file" type="file" accept=".docx,.txt" class="hidden">
+      <input id="file" type="file" accept=".docx,.txt,.pdf" class="hidden">
 
       <div id="enc-status" class="status">
         <span id="enc-spin" class="spinner"></span>
@@ -254,7 +254,7 @@
       </div>
 
       <div id="v-lossy" class="warn hidden">
-        <h3>⚠️ Документ обработан частично</h3>
+        <h3>⚠️ Часть документа НЕ прочитана и НЕ обезличена</h3>
         <div class="note" id="v-lossy-text"></div>
       </div>
 
@@ -291,6 +291,8 @@
         <div id="markup-list"></div>
         <div class="verify-actions" style="margin-top:10px">
           <button class="primary" id="markup-apply-btn" onclick="applyMarkup()">Применить правки и пересобрать</button>
+          <button class="ghost" id="markup-undo-btn" onclick="undoLastMarkup()" disabled
+                  title="Отменить последнее действие с разметкой">↶ Отменить последнее</button>
           <button class="ghost" onclick="loadMarkupPanel()">Обновить список</button>
           <button class="ghost" onclick="markReviewedUI()">✅ Просмотрено, правок нет</button>
         </div>
@@ -298,7 +300,8 @@
       </div>
 
       <div class="verify-actions">
-        <button class="primary" onclick="downloadAnon()">⬇ Скачать обезличенный текст</button>
+        <button class="primary" id="copy-anon-btn" onclick="copyAnon()">📋 Скопировать обезличенный текст</button>
+        <button class="ghost" onclick="downloadAnon()">⬇ Скачать файлом</button>
         <button class="ghost" onclick="show('enc');resetEnc()">Загрузить другой документ</button>
         <span class="note">Сохраните <b>ID сессии</b> — по нему позже восстановите оригинал (срок хранения 24 ч).</span>
       </div>
@@ -536,7 +539,13 @@ function _encProgressUI(show){
 
 async function startEncrypt(file, allowLossy){
   const ext=(file.name.match(/\.[^.]+$/)||[''])[0].toLowerCase();
-  if(ext!=='.docx' && ext!=='.txt'){ status('enc','Поддерживаются только .docx и .txt.','err'); return; }
+  /* ЭТАП UI-REBUILD-2: PDF движок читает с этапа PDF-ARCH (app/server.py,
+     _ALLOWED_EXT), но интерфейс его НЕ ПУСКАЛ — ни этой проверкой, ни через
+     accept у поля выбора файла. Работающая возможность была недоступна с
+     экрана; это не косметика, а неполученный результат. */
+  if(ext!=='.docx' && ext!=='.txt' && ext!=='.pdf'){
+    status('enc','Этот файл программа не читает: «'+ext+'». Подойдёт договор в формате Word (.docx), PDF (.pdf) или обычный текст (.txt). '+
+      'Если у вас .doc старого образца — откройте его в Word и сохраните как .docx.','err'); return; }
   document.getElementById('zones-box').classList.add('hidden');
   const fillEl=document.getElementById('enc-progress-fill'), noteEl=document.getElementById('enc-progress-note');
   fillEl.style.width='0%';
@@ -572,7 +581,7 @@ async function startEncrypt(file, allowLossy){
     hideStatus('enc'); _encProgressUI(false);
     document.getElementById('nav-ver').disabled=false;
     show('ver');
-  }catch(err){ status('enc','Ошибка связи с локальным сервером: '+err,'err'); _encProgressUI(false); }
+  }catch(err){ status('enc','Программа не ответила. Она работает на этом же компьютере — проверьте, не закрыто ли её окно, и загрузите документ ещё раз.','err'); _encProgressUI(false); }
 }
 
 /* ---------- zones choice ---------- */
@@ -602,7 +611,7 @@ async function loadSettings(){
     SET = d; renderSettings();
     hideStatus('set');
     document.getElementById('set-body').classList.remove('hidden');
-  }catch(err){ status('set','Ошибка связи с локальным сервером: '+err,'err'); }
+  }catch(err){ status('set','Программа не ответила. Настройки НЕ сохранены — проверьте, не закрыто ли её окно, и повторите.','err'); }
 }
 
 function renderSettings(){
@@ -636,7 +645,7 @@ async function pickProfile(id){
     SET = d; renderSettings();
     hideStatus('set');
     document.getElementById('set-saved').textContent = 'Набор «'+ (SET.profiles.find(p=>p.id===SET.profile)||{}).label +'» сохранён.';
-  }catch(err){ status('set','Ошибка связи с локальным сервером: '+err,'err'); }
+  }catch(err){ status('set','Программа не ответила. Настройки НЕ сохранены — проверьте, не закрыто ли её окно, и повторите.','err'); }
 }
 
 function markDirty(){
@@ -656,13 +665,14 @@ async function saveSettings(){
     SET = d; renderSettings();
     hideStatus('set');
     document.getElementById('set-saved').textContent='Сохранено. Применится к следующему обезличиванию.';
-  }catch(err){ status('set','Ошибка связи с локальным сервером: '+err,'err'); }
+  }catch(err){ status('set','Программа не ответила. Настройки НЕ сохранены — проверьте, не закрыто ли её окно, и повторите.','err'); }
 }
 
 /* ---------- verify render ---------- */
 function esc(s){ return (s||'').replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;'); }
 
 function renderVerify(d){
+  markupLogClear();   // другой документ — прошлые правки к нему не относятся
   document.getElementById('v-sid').textContent=d.session_id;
   document.getElementById('v-count').textContent='спрятано '+d.values_hidden+' знач. · '+d.entities_total+' замен';
   const po=document.getElementById('pane-orig'), pa=document.getElementById('pane-anon');
@@ -672,12 +682,41 @@ function renderVerify(d){
   wireLineNumbers();
 
   // lossy banner
+  /* ЭТАП UI-REBUILD-2, задача 2: предупреждение о непрочитанном.
+     Раньше здесь читалось ТОЛЬКО d.zones — непрочитанные узлы .docx. У PDF
+     своя природа неполноты, и она приезжает в ДРУГОМ поле, d.pdf_issues
+     (app/core.py::scan_pdf_issues). Итог: договор в PDF со страницей-сканом
+     обрабатывался, страница молча не читалась, и человек НЕ УЗНАВАЛ об этом
+     вообще — худший вид утечки, когда текст считают обезличенным, а его даже
+     не прочитали. Теперь показываются оба источника.
+     Формулировку для PDF даёт сам движок (legal_message, написан для юриста);
+     здесь она не переписывается, только выводится. */
   const lb=document.getElementById('v-lossy');
-  if(d.lossy && d.zones && d.zones.length){
+  const zones=(d.lossy && d.zones && d.zones.length) ? d.zones : [];
+  const pdfIssues=(d.pdf_issues && d.pdf_issues.length) ? d.pdf_issues : [];
+  if(zones.length || pdfIssues.length){
     lb.classList.remove('hidden');
-    document.getElementById('v-lossy-text').innerHTML=
-      '<b>'+d.zones.length+'</b> зон(ы) документа не прочитаны и НЕ обезличены (их текст отсутствует в результате): '+
-      d.zones.map(z=>esc(z.kind_label)).join(', ')+'. Сырой текст сохранён локально в <code>'+esc(d.session_id)+'.unread.json</code>.';
+    let html='';
+    if(pdfIssues.length){
+      const pages=[...new Set(pdfIssues.map(i=>i.page_number))].sort((a,b)=>a-b);
+      html += '<b>Страниц не прочитано: '+pages.length+'</b> (номер'+(pages.length===1?'':'а')+
+              ' '+pages.join(', ')+'). Текста этих страниц в обезличенном результате НЕТ — '+
+              'значит, он и не проверен на персональные данные.'+
+              '<ul style="margin:6px 0 0 18px;padding:0">'+
+              pdfIssues.map(i=>'<li>'+esc(i.legal_message)+'</li>').join('')+'</ul>'+
+              '<div style="margin-top:6px"><b>Что делать:</b> откройте эти страницы в исходном файле и посмотрите глазами. '+
+              'Если на них есть ФИО, паспорт, адрес или счёт — перенесите их текст в документ и обработайте заново, '+
+              'иначе они уйдут в нейросеть непроверенными.</div>';
+    }
+    if(zones.length){
+      if(html) html+='<hr style="margin:10px 0;border:0;border-top:1px solid #f0d78c">';
+      html += '<b>Не прочитано частей документа: '+zones.length+'</b> — '+
+              zones.map(z=>esc(z.kind_label)).join(', ')+'. Их текста в результате нет, '+
+              'на персональные данные он не проверен.'+
+              '<div style="margin-top:6px"><b>Что делать:</b> перенесите содержимое этих частей в основной текст документа '+
+              'и загрузите его заново. Непрочитанный текст сохранён на этом компьютере рядом с сессией.</div>';
+    }
+    document.getElementById('v-lossy-text').innerHTML=html;
   } else lb.classList.add('hidden');
 
   // T1-UI шаг 3: каким набором получен результат. Пользователь обязан видеть,
@@ -761,6 +800,39 @@ function saveText(name,text){
   const a=document.createElement('a'); a.href=URL.createObjectURL(blob); a.download=name;
   document.body.appendChild(a); a.click(); a.remove(); URL.revokeObjectURL(a.href);
 }
+/* ЭТАП UI-REBUILD-2, задача 2: скопировать результат ОДНОЙ кнопкой.
+   Раньше единственным способом отдать текст нейросети было «скачать файлом»
+   и открыть файл — лишние шаги на самом частом действии всего инструмента.
+
+   Буфер обмена берётся через navigator.clipboard (localhost — доверенный
+   источник, разрешение не спрашивается), а если браузер его не дал — через
+   скрытое поле и execCommand: и то и другое работает БЕЗ СЕТИ, что для
+   офлайн-программы обязательно. Молча не проходит ни успех, ни отказ. */
+async function copyAnon(){
+  if(!CUR || !CUR.anon_text){ markupToast('Копировать пока нечего — сначала обработайте документ.','err'); return; }
+  const btn=document.getElementById('copy-anon-btn');
+  const keep=btn.textContent;
+  const done=(n)=>{ btn.textContent='✅ Скопировано';
+    markupToast('Обезличенный текст скопирован ('+n+' знач. спрятано). Вставьте его в нейросеть, а ответ верните на шаге 3 «Восстановление».','ok');
+    setTimeout(()=>{ btn.textContent=keep; }, 2500); };
+  try{
+    await navigator.clipboard.writeText(CUR.anon_text);
+    done(CUR.values_hidden); return;
+  }catch(err){ /* браузер не дал буфер — запасной путь ниже */ }
+  try{
+    const ta=document.createElement('textarea');
+    ta.value=CUR.anon_text; ta.setAttribute('readonly','');
+    ta.style.position='fixed'; ta.style.left='-9999px';
+    document.body.appendChild(ta); ta.select();
+    const ok=document.execCommand('copy');
+    ta.remove();
+    if(ok){ done(CUR.values_hidden); return; }
+    throw new Error('execCommand отказал');
+  }catch(err){
+    markupToast('Браузер не дал скопировать в буфер. Нажмите «⬇ Скачать файлом» — текст сохранится рядом, и его можно открыть и скопировать вручную.','err');
+  }
+}
+
 function downloadAnon(){ if(CUR) saveText(CUR.session_id+'.txt', CUR.anon_text); }
 
 /* ---------- sessions list ---------- */
@@ -834,7 +906,7 @@ async function doDecrypt(){
         data.unresolved.map(t=>'<code>'+esc(t)+'</code>').join(', ')+'</div>';
     } else un.classList.add('hidden');
     document.getElementById('res-out').classList.remove('hidden');
-  }catch(err){ status('res','Ошибка связи с локальным сервером: '+err,'err'); }
+  }catch(err){ status('res','Программа не ответила. Проверьте, не закрыто ли её окно, и нажмите «Восстановить оригинал» ещё раз.','err'); }
 }
 function downloadRestored(){ const sid=document.getElementById('r-sid').value.trim()||'restored'; saveText(sid+'_restored.txt',RESTORED); }
 
@@ -1179,7 +1251,7 @@ function onAnonSelectionUp(e, rangeIn){
     if(!isSameMerged){
       cancelBoundaryEdit();
       sel.removeAllRanges();
-      markupToast('Правка границы отменена — выделение вне исправляемого фрагмента. Начните заново, если нужно.','err');
+      markupToast('Исправление границы отменено: вы выделили текст в другом месте. Нажмите «Исправить границу» ещё раз и выделите нужное.','err');
       return;
     }
     const so=litOffset(startLit,range.startContainer,range.startOffset);
@@ -1247,7 +1319,7 @@ function onAnonSelectionUp(e, rangeIn){
     const m=info.masks[0];
     sel.removeAllRanges();
     if(info.srcStart===m.start && info.srcEnd===m.end){
-      markupToast('Выделение совпадает с текущей границей маски — изменений нет.','ok');
+      markupToast('Вы выделили ровно то, что уже закрыто. Менять нечего.','ok');
       return;
     }
     const oldLen=m.end-m.start, newLen=info.srcEnd-info.srcStart;
@@ -1262,7 +1334,7 @@ function onAnonSelectionUp(e, rangeIn){
 
   // случай "две и более масок" — легитимная ошибка, но называет, какие маски задеты.
   const names=info.masks.map(m=>(TYPE_LABELS[m.type]||m.type)+' '+m.token).join(', ');
-  markupToast('Выделение задевает несколько масок: '+names+' — снимите лишние или выделите фрагмент, задевающий ровно одну.','err');
+  markupToast('Выделение накрыло сразу несколько уже закрытых значений: '+names+'. Программа не может понять, какое из них вы правите. Выделите текст так, чтобы он задевал только одно.','err');
   sel.removeAllRanges();
 }
 /* ======================================================================
@@ -1548,10 +1620,62 @@ function enterBoundaryEdit(markEl){
   if(prevLit) prevLit.remove();
   if(nextLit) nextLit.remove();
   BOUNDARY_EDIT={token, seg, oldStart, oldEnd, oldType, mergedEl:merged};
-  markupToast('Выделите исправленный фрагмент мышью в тексте справа.','ok');
+  markupToast('Теперь выделите мышью то, что должно быть закрыто на самом деле — в правой панели.','ok');
 }
 
 /* ---- отправка правок на сервер (сохраняется сразу, документ не меняется) ---- */
+/* ======================================================================
+   ЭТАП UI-REBUILD-2, задача 4 — ОТМЕНА ПОСЛЕДНЕГО ДЕЙСТВИЯ.
+
+   Человек, который боится, что не сможет отыграть назад, инструмент трогать не
+   станет — а не тронув, отправит документ с пропущенными ПДн. Отмена здесь не
+   удобство, а условие того, чтобы правкой вообще пользовались.
+
+   Своего механизма отката не заводится: КАЖДАЯ операция разметки (пометить
+   пропущенное, снять ложную маску, поправить границу или тип) уже возвращает
+   markup_id, а сервер умеет `/api/markup/delete` по этому id. Отмена — это
+   удаление последней записи журнала, тем же путём, каким её удаляет список
+   правок. Журнал держится ТОЛЬКО в памяти вкладки: класть его в хранилище
+   браузера нельзя (запрет постановки — данные не живут дольше сессии), да и
+   незачем — правки лежат на сервере.
+
+   Отменяется по одному шагу назад, стопкой: несколько отмен подряд снимают
+   несколько последних правок. Уже ПРИМЕНЁННЫЕ правки из журнала выбывают —
+   после пересборки отменять нечего, документ уже собран заново. */
+const MARKUP_LOG=[];
+
+function markupLogPush(markupId, what){
+  if(!markupId) return;
+  MARKUP_LOG.push({id:markupId, what:what});
+  updateUndoButton();
+}
+function markupLogClear(){ MARKUP_LOG.length=0; updateUndoButton(); }
+function updateUndoButton(){
+  const b=document.getElementById('markup-undo-btn'); if(!b) return;
+  const last=MARKUP_LOG[MARKUP_LOG.length-1];
+  b.disabled=!last;
+  b.title = last ? ('Отменить: '+last.what) : 'Отменять пока нечего';
+  b.textContent = last ? '↶ Отменить: '+(last.what.length>28?last.what.slice(0,28)+'…':last.what)
+                       : '↶ Отменить последнее';
+}
+async function undoLastMarkup(){
+  const last=MARKUP_LOG[MARKUP_LOG.length-1];
+  if(!last){ markupToast('Отменять нечего — вы ещё ничего не правили в этом документе.','ok'); return; }
+  const btn=document.getElementById('markup-undo-btn');
+  const keep=btn.textContent; btn.disabled=true; btn.textContent='Отменяю…';
+  try{
+    const resp=await fetch('/api/markup/delete',{method:'POST',headers:{'Content-Type':'application/json'},
+      body:JSON.stringify({session_id:CUR.session_id, markup_id:last.id})});
+    const d=await resp.json();
+    if(d.status==='error'){ markupToast('Не удалось отменить: '+d.message,'err'); btn.textContent=keep; updateUndoButton(); return; }
+    MARKUP_LOG.pop();
+    resetAnonView();
+    markupToast('Отменено: '+last.what+'. Документ остался как был.','ok');
+    loadMarkupPanel();
+  }catch(err){ markupToast('Не удалось отменить — программа не отвечает. Попробуйте ещё раз.','err'); }
+  finally{ updateUndoButton(); }
+}
+
 async function submitMissed(ctx, type){
   try{
     const resp=await fetch('/api/markup/mark-missed',{method:'POST',headers:{'Content-Type':'application/json'},
@@ -1560,9 +1684,10 @@ async function submitMissed(ctx, type){
     if(d.status==='error'){ markupToast(d.message,'err'); return; }
     if(ctx.range){ try{ const wrap=document.createElement('span'); wrap.className='pending'; ctx.range.surroundContents(wrap); }catch(err){} }
     clearSelection();
+    markupLogPush(d.markup_id, 'пометку «'+ctx.text.trim()+'» как «'+(TYPE_LABELS[type]||type)+'»');
     markupToast('Помечено: «'+ctx.text+'» → '+(TYPE_LABELS[type]||type)+'. Не забудьте «Применить правки».','ok');
     loadMarkupPanel();
-  }catch(err){ markupToast('Ошибка связи с сервером: '+err,'err'); }
+  }catch(err){ markupToast('Программа не ответила. Она работает на этом же компьютере — проверьте, не закрыто ли её окно, и повторите действие. Правка НЕ сохранена.','err'); }
 }
 
 /* ЭТАП UI-REBUILD-2, задача 1: разорванное значение закрывается по маске на
@@ -1578,7 +1703,8 @@ async function submitMissedTorn(ctx, type){
         body:JSON.stringify({session_id:CUR.session_id, segment_id:part.seg,
                              start:part.start, end:part.end, entity_type:type})});
       const d=await resp.json();
-      if(d.status==='error') failed.push({t:part.text, why:d.message}); else done.push(part.text);
+      if(d.status==='error') failed.push({t:part.text, why:d.message});
+      else { done.push(part.text); markupLogPush(d.markup_id, 'пометку «'+part.text.trim()+'»'); }
     }catch(err){ failed.push({t:part.text, why:'нет связи с программой'}); }
   }
   clearSelection();
@@ -1606,18 +1732,20 @@ async function submitReplace(ctx, type, opts){
     const d=await resp.json();
     if(d.status==='error'){ markupToast(d.message,'err'); resetAnonView(); return; }
     clearSelection(); resetAnonView();
+    markupLogPush(d.markup_id, d.kind==='type' ? 'смену типа на «'+(TYPE_LABELS[type]||type)+'»'
+                                               : 'исправление границы маски');
     const msg = opts.successMessage ? opts.successMessage(d) :
       'Правка сохранена ('+(d.kind==='type'?'изменён тип':'исправлена граница')+'). Не забудьте «Применить правки».';
     markupToast(msg,'ok');
     loadMarkupPanel();
-  }catch(err){ markupToast('Ошибка связи с сервером: '+err,'err'); resetAnonView(); }
+  }catch(err){ markupToast('Программа не ответила. Она работает на этом же компьютере — проверьте, не закрыто ли её окно, и повторите действие. Правка НЕ сохранена.','err'); resetAnonView(); }
 }
 
 function confirmFalsePositive(seg,start,end,token,orig){
   if(!confirm('Пометить «'+orig+'» как НЕ персональные данные? Маска будет снята при следующем нажатии «Применить правки».')) return;
-  submitFalsePositive(seg,start,end,token);
+  submitFalsePositive(seg,start,end,token,orig);
 }
-async function submitFalsePositive(seg,start,end,token){
+async function submitFalsePositive(seg,start,end,token,orig){
   try{
     const resp=await fetch('/api/markup/false-positive',{method:'POST',headers:{'Content-Type':'application/json'},
       body:JSON.stringify({session_id:CUR.session_id, segment_id:seg, start, end, token})});
@@ -1625,9 +1753,10 @@ async function submitFalsePositive(seg,start,end,token){
     if(d.status==='error'){ markupToast(d.message,'err'); return; }
     const m=document.querySelector('#pane-anon mark.ent[data-seg="'+seg+'"][data-start="'+start+'"][data-end="'+end+'"][data-token="'+token+'"]');
     if(m) m.classList.add('pending');
-    markupToast('Отмечено как не ПДн. Не забудьте «Применить правки».','ok');
+    markupLogPush(d.markup_id, 'снятие маски с «'+((orig||'').trim()||token)+'»');
+    markupToast('Снято: «'+((orig||'').trim()||token)+'» больше не считается персональными данными. Не забудьте «Применить правки».','ok');
     loadMarkupPanel();
-  }catch(err){ markupToast('Ошибка связи с сервером: '+err,'err'); }
+  }catch(err){ markupToast('Программа не ответила. Она работает на этом же компьютере — проверьте, не закрыто ли её окно, и повторите действие. Правка НЕ сохранена.','err'); }
 }
 
 /* ---- уведомления ---- */
@@ -1736,7 +1865,7 @@ async function deleteAllMarkupUI(){
     const resp=await fetch('/api/markup/delete-all',{method:'POST'});
     const d=await resp.json();
     markupToast(d.status==='ok' ? 'Удалена разметка '+d.removed_sessions+' сессий.' : (d.message||'Не удалось удалить разметку.'), d.status==='ok'?'ok':'err');
-  }catch(err){ markupToast('Ошибка связи с сервером: '+err,'err'); }
+  }catch(err){ markupToast('Программа не ответила. Она работает на этом же компьютере — проверьте, не закрыто ли её окно, и повторите действие. Правка НЕ сохранена.','err'); }
   loadMarkupSummary();
   loadMarkupPanel();
 }
@@ -1782,9 +1911,9 @@ async function markReviewedUI(){
       body:JSON.stringify({session_id:CUR.session_id})});
     const d=await resp.json();
     if(d.status==='error'){ markupToast(d.message,'err'); return; }
-    markupToast('Отмечено: документ просмотрен, правок нет. Учтётся в отчёте.','ok');
+    markupToast('Записано: вы просмотрели документ и правок не нашли. Это попадёт в отчёт о качестве.','ok');
     loadMarkupPanel();
-  }catch(err){ markupToast('Ошибка связи с сервером: '+err,'err'); }
+  }catch(err){ markupToast('Программа не ответила. Она работает на этом же компьютере — проверьте, не закрыто ли её окно, и повторите действие. Правка НЕ сохранена.','err'); }
 }
 
 async function deleteMarkupRow(id){
@@ -1842,7 +1971,7 @@ async function loadAnalytics(){
     renderAnalytics(d.report);
     document.getElementById('ana-body').classList.remove('hidden');
     showPreview(PREVIEW_FMT);
-  }catch(err){ status('ana','Ошибка связи с сервером: '+err,'err'); }
+  }catch(err){ status('ana','Программа не ответила — цифры не обновились. Проверьте, не закрыто ли её окно, и обновите отчёт.','err'); }
 }
 
 function renderAnalytics(r){
@@ -1894,7 +2023,7 @@ function showPreview(fmt){
 }
 
 function downloadReport(fmt){
-  if(!REPORT){ markupToast('Отчёт ещё не собран.','err'); return; }
+  if(!REPORT){ markupToast('Отчёта пока нет: сначала обработайте хотя бы один документ на шаге «Шифрация».','err'); return; }
   showPreview(fmt);   // сначала ПОКАЗАТЬ то, что скачиваем
   const shown=document.getElementById('ana-preview').textContent;
   const scope=REPORT.report.scope==='session' ? 'document' : 'all';
@@ -1914,6 +2043,7 @@ async function applyMarkup(){
       replacements:d.replacements, entities_total:d.entities_total, values_hidden:d.values_hidden});
     renderVerify(CUR);
     const results=d.results||[];
+    markupLogClear();   // правки применены, документ пересобран — отменять нечего
     const ok=results.filter(r=>r.applied).length, fail=results.filter(r=>!r.applied).length;
     /* ЭТАП UI-REBUILD, задача 4: сколько вхождений закрыло РАСПРОСТРАНЕНИЕ.
        Число даёт core.py (spread_total, этап MARKUP-SPREAD), но экран его до
@@ -1924,10 +2054,10 @@ async function applyMarkup(){
     const spreadMsg = spread ? ' Ещё '+spread+' таких же '+
       (spread===1?'вхождение закрыто':(spread<5?'вхождения закрыты':'вхождений закрыто'))+
       ' по всему документу.' : '';
-    if(!results.length) markupToast('Нечего применять — новых правок нет.','ok');
+    if(!results.length) markupToast('Новых правок нет — применять нечего. Пометьте пропущенное или снимите лишнюю маску в правой панели.','ok');
     else markupToast('Применено правок: '+ok+(fail?', не удалось: '+fail:'')+'. Документ пересобран.'+spreadMsg, fail?'err':'ok');
     loadMarkupPanel();
-  }catch(err){ markupToast('Ошибка связи с сервером: '+err,'err'); }
+  }catch(err){ markupToast('Программа не ответила. Она работает на этом же компьютере — проверьте, не закрыто ли её окно, и повторите действие. Правка НЕ сохранена.','err'); }
   finally{ btn.disabled=false; btn.textContent=oldLabel; }
 }
 </script>
