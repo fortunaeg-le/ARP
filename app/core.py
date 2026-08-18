@@ -841,6 +841,61 @@ def _add_missed(doc, session: dict, segment_id: str, start: int, end: int,
     return token, value
 
 
+def _occupied_spans(session: dict) -> dict:
+    """{segment_id: [(start, end), …]} — ВСЕ уже закрытые масками диапазоны сессии,
+    в исходных координатах. Распространение туда не лезет: там маска уже стоит."""
+    out: dict = {}
+    for rec in session["entities"]:
+        for occ in rec["occurrences"]:
+            out.setdefault(occ["segment_id"], []).append((occ["start"], occ["end"]))
+    return out
+
+
+def _spread_occurrences(doc, session: dict, token: str, segment_id: str, start: int,
+                         end: int, entity_type: str, detector: str) -> list[dict]:
+    """ЭТАП MARKUP-SPREAD. Дописывает маске `token` вхождения ТОГО ЖЕ значения по
+    всему документу (падежи, таблицы, колонтитулы, узлы Word) — см. модульный
+    docstring `src/markup_spread.py`, где живёт вся морфология и все процедуры
+    точности. Мутирует session["entities"] на месте, возвращает список
+    добавленных вхождений (для показа человеку: «закрыто ещё N вхождений»).
+
+    Сбой распространения НЕ имеет права отменить саму правку: маска, которую
+    человек поставил руками, уже верна, и потерять её из-за отказа необязательной
+    надстройки нельзя. Поэтому исключение здесь гасится — правка остаётся
+    применённой, распространения просто не происходит.
+
+    Вхождения раскладываются в ПОРЯДКЕ ДОКУМЕНТА (сегмент за сегментом, внутри —
+    по смещению), а не в порядке находки: режим `exact` детокенизации
+    (`src/detokenizer.py`) подставляет поверхностные формы ПО ПОРЯДКУ списка
+    occurrences, и перепутанный порядок вернул бы «Ковалю» на место «Коваля»."""
+    try:
+        from markup_spread import find_occurrences
+
+        found = find_occurrences(doc, _occupied_spans(session), segment_id,
+                                  start, end, entity_type)
+    except Exception:  # noqa: BLE001 — надстройка не роняет саму правку
+        return []
+    if not found:
+        return []
+
+    rec = next((r for r in session["entities"] if r["token"] == token), None)
+    if rec is None:
+        return []
+    for sp in found:
+        rec["occurrences"].append({
+            "segment_id": sp["segment_id"], "start": sp["start"], "end": sp["end"],
+            "spans": None, "surface": sp["surface"],
+            "detector": detector, "group_key": rec.get("group_key"),
+        })
+    order = {s.id: i for i, s in enumerate(doc.segments)}
+    rec["occurrences"].sort(key=lambda o: (order.get(o["segment_id"], 1 << 30), o["start"]))
+    # Тем же порядком отдаём и список человеку: «где именно закрылось» читается
+    # сверху вниз по документу. Сам примитив сортирует по id сегмента как по
+    # строке («l10» < «l2»), порядок документа знает только этот слой.
+    found.sort(key=lambda o: (order.get(o["segment_id"], 1 << 30), o["start"]))
+    return found
+
+
 def _remove_occurrence(session: dict, token: str, segment_id: str, start: int, end: int) -> dict:
     """Мутирует session["entities"] на месте: убирает ОДНО вхождение токена по
     точным координатам. Если это было последнее вхождение — токен убирается
@@ -1089,6 +1144,7 @@ def apply_pending_markup(session_id: str, config_path: str = DEFAULT_CONFIG) -> 
     changed = False
     results = []
     for entry in pending:
+        spread = []          # правка могла не примениться — распространения нет
         try:
             if entry.get("old_token"):
                 _remove_occurrence(session, entry["old_token"], entry["old_segment_id"],
@@ -1104,8 +1160,17 @@ def apply_pending_markup(session_id: str, config_path: str = DEFAULT_CONFIG) -> 
                     origin_detector = entry.get("old_detector") or "manual"
                 else:
                     origin_detector = "manual"
-                _add_missed(doc, session, entry["segment_id"], entry["start"], entry["end"],
-                            entry["entity_type"], config_path, detector=origin_detector)
+                token, _value = _add_missed(
+                    doc, session, entry["segment_id"], entry["start"], entry["end"],
+                    entry["entity_type"], config_path, detector=origin_detector)
+                # ЭТАП MARKUP-SPREAD. Маска, которую поставил человек, обязана
+                # закрыть ВСЕ вхождения своего значения, а не одно выделенное
+                # мышкой: иначе пользователь видит маску там, куда смотрел,
+                # считает документ закрытым и отправляет его в стороннюю LLM с
+                # той же фамилией открытой в других местах.
+                spread = _spread_occurrences(
+                    doc, session, token, entry["segment_id"], entry["start"],
+                    entry["end"], entry["entity_type"], origin_detector)
             entry["applied"] = True
             entry["apply_error"] = None
             changed = True
@@ -1114,7 +1179,11 @@ def apply_pending_markup(session_id: str, config_path: str = DEFAULT_CONFIG) -> 
             entry["apply_error"] = str(exc)
         results.append({"id": entry["id"], "kind": entry["kind"], "applied": entry["applied"],
                          "apply_error": entry["apply_error"], "entity_type": entry["entity_type"],
-                         "value": entry.get("value")})
+                         "value": entry.get("value"),
+                         # ЭТАП MARKUP-SPREAD, задача 4: молчаливое распространение
+                         # пугает не меньше молчаливого пропуска, поэтому интерфейс
+                         # получает и ЧИСЛО, и КУДА именно встали остальные маски.
+                         "spread_count": len(spread), "spread": spread})
 
     # Пишем актуализированные (applied/apply_error) записи разметки в любом
     # случае — даже если ничего не применилось, статус попытки должен сохраниться.
@@ -1149,4 +1218,9 @@ def apply_pending_markup(session_id: str, config_path: str = DEFAULT_CONFIG) -> 
     else:
         state = _render_state(doc, session)
 
-    return {**state, "session_id": session_id, "results": results}
+    # ЭТАП MARKUP-SPREAD, задача 4: одно число на всю пересборку — сколько
+    # вхождений закрылось СВЕРХ выделенных мышкой. Ноль тоже значим: он говорит
+    # «других вхождений в документе нет», а не «мы не смотрели».
+    spread_total = sum(r.get("spread_count", 0) for r in results)
+    return {**state, "session_id": session_id, "results": results,
+            "spread_total": spread_total}
