@@ -15,6 +15,7 @@
 # collect_data_files. Без этого сборка стартует и падает на первом документе.
 
 import os
+import re
 import sys
 
 from PyInstaller.utils.hooks import collect_data_files, copy_metadata
@@ -100,6 +101,29 @@ datas += [
     (os.path.join(_ROOT, "entity_types.yaml"), "."),
     (os.path.join(_APP, "index.html"), "app"),
 ]
+
+# ЭТАП DESIGN-1: шрифты макета едут отдельными файлами (app/fonts/*.woff2) и
+# раздаются маршрутом /fonts/ в app/server.py. Продукт офлайновый — подтянуть
+# их из сети в собранной программе нельзя, забытый файл означает молча
+# «поехавший» интерфейс у юриста. Поэтому список берётся не глобом, а РОВНО из
+# того, на что ссылается сама разметка: так расходятся с ошибкой и пустая
+# папка, и переименованное начертание.
+_FONTS_DIR = os.path.join(_APP, "fonts")
+with open(os.path.join(_APP, "index.html"), encoding="utf-8") as _f:
+    _referenced = sorted(set(re.findall(r"url\(/fonts/([^)]+)\)", _f.read())))
+if not _referenced:
+    raise SystemExit(
+        "СБОРКА ОСТАНОВЛЕНА — app/index.html не ссылается ни на один /fonts/*: "
+        "либо разметка потеряла @font-face, либо шрифты снова вшиты в base64."
+    )
+_absent = [n for n in _referenced if not os.path.exists(os.path.join(_FONTS_DIR, n))]
+if _absent:
+    raise SystemExit(
+        "СБОРКА ОСТАНОВЛЕНА — разметка ссылается на шрифты, которых нет в "
+        "app/fonts:\n  " + "\n  ".join(_absent)
+    )
+datas += [(os.path.join(_FONTS_DIR, n), "app/fonts") for n in _referenced]
+print(f"[spec] шрифты интерфейса на месте ({len(_referenced)} шт.)")
 
 # ЭТАП U1b: файла данных, который «есть в спеке», но исчез с диска, PyInstaller
 # не заметит — просто не положит его в поставку. Отказ снова был бы тихим.

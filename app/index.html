@@ -5,50 +5,166 @@
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <title>SHIFRATOR — обезличивание договоров</title>
 <style>
+  @font-face{font-family:'Golos Text';font-style:normal;font-weight:400 700;font-display:swap;
+    src:url(/fonts/golos-text-400-700-normal-cyrillic.woff2) format('woff2');unicode-range:U+0301, U+0400-045F, U+0490-0491, U+04B0-04B1, U+2116}
+  @font-face{font-family:'Golos Text';font-style:normal;font-weight:400 700;font-display:swap;
+    src:url(/fonts/golos-text-400-700-normal-latin.woff2) format('woff2');unicode-range:U+0000-00FF, U+0131, U+0152-0153, U+02BB-02BC, U+02C6, U+02DA, U+02DC, U+2000-206F, U+20AC, U+2122, U+2191, U+2193, U+2212, U+2215, U+FEFF, U+FFFD}
+  @font-face{font-family:'JetBrains Mono';font-style:normal;font-weight:300 600;font-display:swap;
+    src:url(/fonts/jetbrains-mono-300-600-normal-cyrillic.woff2) format('woff2');unicode-range:U+0301, U+0400-045F, U+0490-0491, U+04B0-04B1, U+2116}
+  @font-face{font-family:'JetBrains Mono';font-style:normal;font-weight:300 600;font-display:swap;
+    src:url(/fonts/jetbrains-mono-300-600-normal-latin.woff2) format('woff2');unicode-range:U+0000-00FF, U+0131, U+0152-0153, U+02BB-02BC, U+02C6, U+02DA, U+02DC, U+2000-206F, U+20AC, U+2122, U+2191, U+2193, U+2212, U+2215, U+FEFF, U+FFFD}
+  @font-face{font-family:'PT Serif';font-style:normal;font-weight:400;font-display:swap;
+    src:url(/fonts/pt-serif-400-normal-cyrillic.woff2) format('woff2');unicode-range:U+0301, U+0400-045F, U+0490-0491, U+04B0-04B1, U+2116}
+  @font-face{font-family:'PT Serif';font-style:normal;font-weight:400;font-display:swap;
+    src:url(/fonts/pt-serif-400-normal-latin.woff2) format('woff2');unicode-range:U+0000-00FF, U+0131, U+0152-0153, U+02BB-02BC, U+02C6, U+02DA, U+02DC, U+2000-206F, U+20AC, U+2122, U+2191, U+2193, U+2212, U+2215, U+FEFF, U+FFFD}
+  @font-face{font-family:'PT Serif';font-style:normal;font-weight:700;font-display:swap;
+    src:url(/fonts/pt-serif-700-normal-cyrillic.woff2) format('woff2');unicode-range:U+0301, U+0400-045F, U+0490-0491, U+04B0-04B1, U+2116}
+  @font-face{font-family:'PT Serif';font-style:normal;font-weight:700;font-display:swap;
+    src:url(/fonts/pt-serif-700-normal-latin.woff2) format('woff2');unicode-range:U+0000-00FF, U+0131, U+0152-0153, U+02BB-02BC, U+02C6, U+02DA, U+02DC, U+2000-206F, U+20AC, U+2122, U+2191, U+2193, U+2212, U+2215, U+FEFF, U+FFFD}
+  @font-face{font-family:'PT Serif';font-style:italic;font-weight:400;font-display:swap;
+    src:url(/fonts/pt-serif-400-italic-cyrillic.woff2) format('woff2');unicode-range:U+0301, U+0400-045F, U+0490-0491, U+04B0-04B1, U+2116}
+  @font-face{font-family:'PT Serif';font-style:italic;font-weight:400;font-display:swap;
+    src:url(/fonts/pt-serif-400-italic-latin.woff2) format('woff2');unicode-range:U+0000-00FF, U+0131, U+0152-0153, U+02BB-02BC, U+02C6, U+02DA, U+02DC, U+2000-206F, U+20AC, U+2122, U+2191, U+2193, U+2212, U+2215, U+FEFF, U+FFFD}
+  @font-face{font-family:'Saira Condensed';font-style:normal;font-weight:200;font-display:swap;
+    src:url(/fonts/saira-condensed-200-normal-latin.woff2) format('woff2');unicode-range:U+0000-00FF, U+0131, U+0152-0153, U+02BB-02BC, U+02C6, U+02DA, U+02DC, U+2000-206F, U+20AC, U+2122, U+2191, U+2193, U+2212, U+2215, U+FEFF, U+FFFD}
+  @font-face{font-family:'Saira Condensed';font-style:normal;font-weight:300;font-display:swap;
+    src:url(/fonts/saira-condensed-300-normal-latin.woff2) format('woff2');unicode-range:U+0000-00FF, U+0131, U+0152-0153, U+02BB-02BC, U+02C6, U+02DA, U+02DC, U+2000-206F, U+20AC, U+2122, U+2191, U+2193, U+2212, U+2215, U+FEFF, U+FFFD}
   :root{
-    --bg:#f4f5f7; --panel:#fff; --ink:#1c2330; --muted:#5c6675; --line:#dfe3e9;
-    --accent:#2f6df6; --accent-d:#1f57d6; --ok:#137a4b; --okbg:#e7f6ee;
-    --warn:#9a5b00; --warnbg:#fff4e0; --warnline:#f0c987;
-    --err:#b32020; --errbg:#fdecec; --shadow:0 1px 3px rgba(20,30,50,.08),0 8px 24px rgba(20,30,50,.06);
+    --bg:#dedbd4; --panel:#fdfcfa; --panel-2:#f7f5f1; --ink:#20302a; --ink-2:#2b322c; --muted:#6b7268; --muted-2:#8a9187;
+    --line:#cfd3ca; --line-soft:rgba(32,48,42,.14);
+    --accent:#2f6152; --accent-d:#24493d; --accent-grad:linear-gradient(#3a6f5f,#2b5648);
+    --ok:#2b5648; --okbg:#e9f0ea; --okline:#bcd0c2;
+    --warn:#71501c; --warnbg:#f7f0dd; --warnline:#e3cf9c;
+    --err:#8c3350; --errbg:#fdf1f4; --errline:#eec3d1;
+    --shadow:0 1px 0 rgba(255,255,255,.8) inset,0 1px 2px rgba(30,38,32,.07),0 10px 20px -10px rgba(30,38,32,.16),0 26px 40px -28px rgba(30,38,32,.22);
+    --f-ui:'Golos Text',-apple-system,"Segoe UI",Roboto,Arial,sans-serif;
+    --f-doc:'PT Serif',Georgia,"Times New Roman",serif;
+    --f-mono:'JetBrains Mono',ui-monospace,Consolas,monospace;
+    --f-cond:'Saira Condensed',ui-sans-serif,sans-serif;
   }
   *{box-sizing:border-box}
-  body{margin:0;font:15px/1.5 -apple-system,Segoe UI,Roboto,Arial,sans-serif;background:var(--bg);color:var(--ink)}
-  header{background:var(--panel);border-bottom:1px solid var(--line);padding:10px 20px;display:flex;align-items:center;gap:16px;position:sticky;top:0;z-index:20}
-  header .brand{font-weight:700;letter-spacing:.5px}
-  header .brand small{font-weight:400;color:var(--muted);margin-left:8px}
-  nav{display:flex;gap:4px;margin-left:auto}
-  nav button{border:1px solid transparent;background:none;color:var(--muted);padding:6px 14px;border-radius:8px;cursor:pointer;font-size:14px}
-  nav button.active{background:#eef3ff;color:var(--accent-d);border-color:#d3e0ff;font-weight:600}
+  /* ДИЗАЙН: это окно программы, а не страница сайта. Высота ровно во весь экран,
+     страница целиком НЕ прокручивается — прокрутка живёт внутри панелей.
+
+     min-width здесь БЫЛ (1120px) и создавал мёртвую зону 900-1119: заглушка
+     на этой ширине уже выключена (её порог 900), а весь адаптив ниже 1120
+     был недостижим — вместо свёрнутой в иконки описи вылезал горизонтальный
+     скролл. У макета min-width нет вовсе: ниже 900 — заглушка, выше — адаптив,
+     третьего состояния не предусмотрено. */
+  html,body{height:100%}
+  body{margin:0;font:15px/1.5 var(--f-ui);background:var(--bg);color:var(--ink);
+    display:flex;flex-direction:column;overflow-x:hidden;overflow-y:hidden}
+  header{flex:none;z-index:20;display:flex;flex-direction:column;background:var(--bg)}
+  .topbar{flex:none;height:34px;display:flex;align-items:center;gap:10px;padding:0 16px;
+    background:linear-gradient(var(--panel-2),#eceae4);border-bottom:1px solid var(--line-soft);
+    box-shadow:0 1px 0 rgba(255,255,255,.7) inset}
+  .topbar .dots{display:flex;gap:6px;align-items:center}
+  .topbar .dots span{width:9px;height:9px;border-radius:2px;background:#c9c6bd;border:1px solid rgba(32,48,42,.18);display:block}
+  .topbar .wordmark{font-size:12px;font-weight:700;letter-spacing:.14em;text-transform:uppercase;color:#5c6459}
+  .topbar .tagline{color:var(--muted);font-size:11.5px;margin-left:2px}
+  .topbar-links{display:flex;gap:2px}
+  .topbar-links button{border:0;background:none;color:var(--muted);font-size:11.5px;font-weight:500;cursor:pointer;padding:4px 8px;border-radius:4px;font-family:var(--f-ui)}
+  .topbar-links button:hover{background:rgba(32,48,42,.08);color:var(--ink-2)}
+  .toolbar{flex:none;display:flex;align-items:center;gap:12px;padding:12px 16px 12px;flex-wrap:wrap}
+  .offline{flex:none;display:flex;align-items:center;gap:10px;padding:8px 14px 8px 12px;border-radius:6px;
+    background:var(--ink);color:#eef1ec;white-space:nowrap;
+    box-shadow:0 1px 1px rgba(20,28,23,.28),0 10px 20px -12px rgba(20,28,23,.5),0 1px 0 rgba(255,255,255,.14) inset}
+  .offline .dotwrap{position:relative;width:12px;height:12px;display:flex;align-items:center;justify-content:center;flex:none}
+  .offline .dotwrap .glow{position:absolute;inset:0;border-radius:50%;background:#2be99f;opacity:.3;animation:shf-breathe 5.5s ease-in-out infinite}
+  .offline .dotwrap .core{width:6px;height:6px;border-radius:50%;background:#2be99f}
+  .offline .txt b{display:block;font-size:13.5px;font-weight:600;letter-spacing:.01em}
+  .offline .txt small{display:block;font-size:11.5px;color:#a6b3aa;margin-top:1px;font-weight:400}
+  @keyframes shf-breathe{0%,100%{opacity:.35;transform:scale(.82)}50%{opacity:1;transform:scale(1)}}
+  @media (prefers-reduced-motion: reduce){.offline .dotwrap .glow{animation:none}}
+  nav{display:flex;gap:2px;flex-wrap:wrap;align-self:center;background:#d3d0c8;border:1px solid var(--line-soft);border-radius:7px;padding:2px}
+  nav button{border:1px solid transparent;background:none;color:var(--muted);padding:7px 13px;border-radius:5px;cursor:pointer;font-size:13px;font-weight:600;font-family:var(--f-ui)}
+  nav button.active{background:var(--panel);color:var(--accent-d);box-shadow:0 1px 2px rgba(30,38,32,.14)}
   nav button:disabled{opacity:.4;cursor:not-allowed}
-  main{max-width:1280px;margin:0 auto;padding:20px}
+  .doc-hint{min-width:0;font-size:13px;color:var(--muted);white-space:nowrap;overflow:hidden;text-overflow:ellipsis;font-family:var(--f-ui)}
+  .settings-chip{display:flex;align-items:center;gap:8px;padding:8px 12px;border-radius:6px;font-size:13px;font-weight:500;
+    color:#4d5449;background:#e6e4de;border:1px solid rgba(32,48,42,.12);cursor:pointer;white-space:nowrap;
+    box-shadow:0 1px 0 rgba(255,255,255,.8) inset;font-family:var(--f-ui)}
+  .settings-chip:hover{background:#eceae4}
+  .settings-chip .sc-box{width:12px;height:12px;border:1.5px solid #6b7268;border-radius:2px;flex:none}
+  main{flex:1;min-height:0;display:flex;flex-direction:column;padding:0 18px}
   .screen{display:none}
-  .screen.active{display:block}
-  .card{background:var(--panel);border:1px solid var(--line);border-radius:12px;box-shadow:var(--shadow);padding:22px}
-  h2{margin:0 0 6px;font-size:19px}
-  .sub{color:var(--muted);margin:0 0 18px;font-size:14px}
-  button.primary{background:var(--accent);color:#fff;border:none;padding:10px 18px;border-radius:8px;font-size:15px;font-weight:600;cursor:pointer}
-  button.primary:hover{background:var(--accent-d)}
-  button.ghost{background:none;border:1px solid var(--line);padding:9px 16px;border-radius:8px;cursor:pointer;color:var(--ink);font-size:14px}
-  button.ghost:hover{border-color:var(--accent);color:var(--accent-d)}
+  /* активный экран сам становится колонкой во всю высоту окна: панели тянутся,
+     прокручивается их содержимое, а не страница */
+  .screen.active{display:flex;flex-direction:column;flex:1;min-height:0}
+  /* экраны-документы (всё, кроме «Проверки») прокручиваются внутри себя целиком */
+  #scr-enc.screen.active,#scr-res.screen.active,#scr-ana.screen.active,#scr-sto.screen.active{
+    overflow-y:auto;padding-bottom:18px}
+  #scr-enc>.card,#scr-ana>.card,#scr-sto>.card{max-width:1280px;width:100%;margin:0 auto}
+  /* «Вернуть данные» (макет: resGridStyle). До 1400 — одна колонка и обычная
+     прокрутка секции; от 1400 — «440px + остаток» во всю высоту, причём
+     список сессий листается ВНУТРИ своей карточки, а не тянет весь экран. */
+  .res-grid{max-width:1280px;width:100%;margin:0 auto;display:grid;gap:14px;
+    grid-template-columns:minmax(0,1fr)}
+  .res-main{min-width:0;display:flex;flex-direction:column;gap:14px}
+  @media (min-width:1400px){
+    #scr-res.screen.active{overflow:hidden;padding-bottom:18px}
+    .res-grid{grid-template-columns:440px minmax(0,1fr);height:100%;min-height:0}
+    .res-sess{display:flex;flex-direction:column;min-height:0}
+    .res-sess #sess-list{flex:1 1 auto;min-height:0;overflow-y:auto}
+    .res-main{min-height:0;overflow-y:auto}
+  }
+  .card{background:var(--panel);border:1px solid var(--line-soft);border-radius:8px;box-shadow:var(--shadow);padding:22px}
+  h2{margin:0 0 6px;font-size:19px;font-weight:600;color:var(--ink)}
+  /* text-wrap:pretty — длинные абзацы-пояснения не оставляют висячее слово
+     в последней строке (макет: 190, 569) */
+  .sub{color:var(--muted);margin:0 0 18px;font-size:14px;text-wrap:pretty}
+  .warn .note,.note{text-wrap:pretty}
+  button.primary{background:var(--accent-grad);color:#f2f5f0;border:1px solid var(--accent-d);padding:9px 18px;border-radius:5px;font-size:13.5px;font-weight:600;cursor:pointer;font-family:var(--f-ui);box-shadow:0 1px 0 rgba(255,255,255,.2) inset}
+  button.primary:hover{filter:brightness(1.08)}
+  /* --- CTA: главное действие экрана. В дизайне это мятная «сквиркл»-кнопка
+     (акцент «мята», материал «стекло»): белое пятно под курсором ездит за мышью
+     через --mx/--my, --hov гасит его при уходе. --- */
+  button.primary.cta{position:relative;overflow:hidden;display:inline-flex;align-items:center;gap:11px;
+    border-radius:12px;corner-shape:squircle;padding:14px 26px;font-size:15.5px;font-weight:600;letter-spacing:.01em;
+    background:#2BE99F;color:#04231A;border:1px solid #1FC98A;
+    box-shadow:inset 0 1px 0 rgba(255,255,255,.45),inset 0 -1px 0 rgba(0,0,0,.12),
+      0 6px 16px -8px rgba(43,233,159,.7),0 1px 2px rgba(20,28,23,.14)}
+  button.primary.cta::after{content:"";position:absolute;inset:0;pointer-events:none;border-radius:inherit;
+    background:radial-gradient(150px circle at var(--mx,50%) var(--my,50%),
+      rgba(255,255,255,.34),rgba(255,255,255,.14) 30%,transparent 78%);
+    opacity:var(--hov,0);transition:opacity .3s}
+  button.primary.cta:hover{background:#4DEDAF;filter:none}
+  button.primary.cta:active{background:#21D18C;transform:translateY(1px);
+    box-shadow:inset 0 1px 0 rgba(255,255,255,.2),0 2px 6px -4px rgba(20,28,23,.4)}
+  button.primary.cta>*{position:relative;z-index:1}
+  .cta-ico{width:14px;height:14px;border:1.5px solid currentColor;border-radius:2px;position:relative;opacity:.9;flex:none}
+  .cta-ico::after{content:"";position:absolute;left:3px;top:3px;width:14px;height:14px;border:1.5px solid currentColor;border-radius:2px;opacity:.55}
+  button.ghost{background:#e8e6e0;border:1px solid var(--line-soft);padding:13px 18px;border-radius:6px;cursor:pointer;color:#3f463e;font-size:14px;font-weight:500;font-family:var(--f-ui);box-shadow:0 1px 0 rgba(255,255,255,.85) inset;display:inline-flex;align-items:center;gap:8px}
+  button.ghost:hover{background:#eeece6;border-color:var(--muted-2)}
   button:disabled{opacity:.5;cursor:not-allowed}
 
   /* --- drop zone --- */
-  .drop{border:2px dashed #c3ccd8;border-radius:12px;padding:44px 20px;text-align:center;color:var(--muted);cursor:pointer;transition:.15s;background:#fafbfd}
-  .drop:hover,.drop.over{border-color:var(--accent);background:#f2f6ff;color:var(--accent-d)}
-  .drop .big{font-size:42px;line-height:1;margin-bottom:10px}
+  /* ДИЗАЙН: пустой экран — коробка 520px с пунктиром и нарисованным значком
+     документа (три полоски внутри), а не эмодзи. */
+  .drop{width:520px;max-width:100%;margin:0 auto;border:1px dashed rgba(32,48,42,.28);border-radius:6px;
+    padding:46px 40px;text-align:center;color:var(--muted);cursor:pointer;transition:.15s;background:#faf9f6}
+  .drop:hover,.drop.over{border-color:var(--accent);background:#eef1ec}
+  .drop .doc-ico{width:56px;height:44px;margin:0 auto 20px;border:1.5px solid #8a9187;border-radius:3px;
+    position:relative;background:#fff;box-shadow:0 6px 12px -8px rgba(30,38,32,.4)}
+  .drop .doc-ico i{position:absolute;height:1.5px;background:#d6d8d2;left:9px}
+  .drop .doc-ico i:nth-child(1){right:9px;top:11px}
+  .drop .doc-ico i:nth-child(2){right:20px;top:19px}
+  .drop .doc-ico i:nth-child(3){right:26px;top:27px;background:var(--ink)}
+  .drop .dz-title{font-size:19px;font-weight:600;margin-bottom:8px;color:var(--ink)}
+  .drop .dz-sub{font-size:14px;line-height:1.5;color:var(--muted);margin-bottom:22px}
   .drop b{color:var(--ink)}
 
   /* --- status --- */
-  .status{margin-top:18px;padding:12px 16px;border-radius:10px;display:none;align-items:center;gap:10px}
+  .status{margin-top:18px;padding:12px 16px;border-radius:8px;display:none;align-items:center;gap:10px}
   .status.show{display:flex}
-  .status.busy{background:#eef3ff;color:var(--accent-d)}
-  .status.ok{background:var(--okbg);color:var(--ok)}
-  .status.err{background:var(--errbg);color:var(--err)}
-  .spinner{width:16px;height:16px;border:2px solid #cdd8ee;border-top-color:var(--accent);border-radius:50%;animation:spin .8s linear infinite;flex:0 0 auto}
+  .status.busy{background:var(--panel-2);color:var(--accent-d);border:1px solid var(--line-soft)}
+  .status.ok{background:var(--okbg);color:var(--ok);border:1px solid var(--okline)}
+  .status.err{background:var(--errbg);color:var(--err);border:1px solid var(--errline)}
+  .spinner{width:16px;height:16px;border:2px solid var(--line);border-top-color:var(--accent);border-radius:50%;animation:spin .8s linear infinite;flex:0 0 auto}
   @keyframes spin{to{transform:rotate(360deg)}}
 
   /* --- warning block --- */
-  .warn{background:var(--warnbg);border:1px solid var(--warnline);border-radius:10px;padding:14px 16px;margin-top:16px}
+  .warn{background:var(--warnbg);border:1px solid var(--warnline);border-radius:8px;padding:14px 16px;margin-top:16px}
   .warn h3{margin:0 0 6px;font-size:15px;color:var(--warn);display:flex;gap:8px;align-items:center}
   .warn table{width:100%;border-collapse:collapse;margin:10px 0;font-size:13px}
   .warn th,.warn td{text-align:left;padding:5px 8px;border-bottom:1px solid var(--warnline)}
@@ -57,14 +173,43 @@
   .warn .actions{display:flex;gap:10px;margin-top:6px;flex-wrap:wrap}
 
   /* --- verify layout --- */
-  .verify-top{display:flex;flex-wrap:wrap;gap:14px;align-items:center;margin-bottom:14px}
-  .badge{background:#eef3ff;color:var(--accent-d);border-radius:20px;padding:6px 14px;font-weight:600;font-size:14px}
-  .sid{font:13px ui-monospace,Consolas,monospace;background:#f0f2f6;border:1px solid var(--line);padding:5px 10px;border-radius:8px;user-select:all}
-  .verify-grid{display:grid;grid-template-columns:1fr 340px;gap:16px;align-items:start}
-  .panes{display:grid;grid-template-columns:1fr 1fr;gap:14px;min-width:0}
-  .pane h4{margin:0;padding:10px 14px;font-size:13px;color:var(--muted);border-bottom:1px solid var(--line);background:#fafbfd;border-radius:12px 12px 0 0;text-transform:uppercase;letter-spacing:.4px}
-  .pane .body{position:relative;padding:14px;white-space:pre-wrap;word-break:break-word;font-size:13.5px;max-height:62vh;overflow:auto;line-height:1.7}
-  .pane{background:var(--panel);border:1px solid var(--line);border-radius:12px;min-width:0}
+  .verify-top{display:flex;flex-wrap:wrap;gap:14px;align-items:center;margin-bottom:10px;flex:none}
+  /* Предупреждения и пояснения дизайн на экране проверки не рисует, но по
+     SHIFRATOR_UX_paths.md (путь 3) они обязаны стоять рядом с обезличенным
+     текстом и не прятаться. В окне фиксированной высоты держим их полосой
+     с собственной прокруткой — текст сохранён целиком, панели не съедены. */
+  .v-banners{flex:none;max-height:23vh;overflow-y:auto;margin-bottom:10px}
+  .badge{background:var(--ink);color:#eef1eb;border-radius:20px;padding:6px 14px;font-weight:600;font-size:14px;font-family:var(--f-mono)}
+  .sid{font:13px var(--f-mono);background:var(--panel-2);border:1px solid var(--line);padding:5px 10px;border-radius:6px;user-select:all}
+  /* макет: panesRowStyle — flex:1 1 0, overflow:hidden, пол по высоте окна
+     (min-height задан в блоке АДАПТИВ ниже) */
+  .verify-grid{display:flex;gap:16px;align-items:stretch;flex:1 1 0;overflow:hidden}
+  .verify-grid>.panes{flex:1;min-width:0}
+  /* ширина описи зависит от ширины окна — правило в блоке АДАПТИВ ниже */
+  /* ДИЗАЙН: на экране проверки ОДНА панель — обезличенный текст. Сравнение с
+     оригиналом даёт полоса AI vision: вне полосы стоят настоящие значения,
+     внутри — метки. Панель исходного текста поэтому убрана (решение владельца
+     2026-08-18, вопреки «две панели рядом» в SHIFRATOR_UX_paths.md). */
+  .panes{display:flex;min-width:0;min-height:0}
+  .pane h4{margin:0;padding:10px 14px;font-size:12px;color:var(--muted-2);border-bottom:1px solid var(--line-soft);background:linear-gradient(var(--panel),var(--panel-2));border-radius:8px 8px 0 0;text-transform:uppercase;letter-spacing:.12em;font-weight:600;display:flex;align-items:center;gap:10px;flex-wrap:wrap}
+  .pane-ctl{flex:none;white-space:nowrap;display:inline-flex;align-items:center;gap:6px;font-size:11px;letter-spacing:normal;text-transform:none;font-weight:500;color:var(--muted);cursor:pointer;padding:4px 9px;border-radius:5px;border:1px solid var(--line-soft);background:var(--panel);font-family:var(--f-ui)}
+  .pane-ctl:hover{border-color:var(--muted-2);color:var(--ink-2)}
+  .pane-ctl.active{background:var(--okbg);color:var(--accent-d);border-color:var(--okline)}
+  .pane-ctl .ctl-dot{width:6px;height:6px;border-radius:50%;background:var(--muted-2)}
+  .pane-ctl.active .ctl-dot{background:#2be99f;box-shadow:0 0 0 3px rgba(43,233,159,.25)}
+  .marks-switch{flex:none;display:flex;background:var(--panel-2);border:1px solid var(--line-soft);border-radius:5px;padding:2px}
+  .marks-switch .ms-opt{font-size:11px;letter-spacing:normal;text-transform:none;font-weight:500;padding:4px 9px;border-radius:4px;cursor:pointer;color:var(--muted)}
+  .marks-switch .ms-opt.active{background:var(--panel);color:var(--accent-d);box-shadow:0 1px 2px rgba(30,38,32,.12)}
+  /* ПЛОТНОСТЬ (макет: paneBodyStyle, вход density). Кегль тела договора —
+     ОТДЕЛЬНАЯ ручка, не следствие ширины: на одном и том же экране юрист может
+     хотеть либо крупный текст, либо больше строк разом. 14.5 / 13.5 px. */
+  html{--doc-size:14.5px}
+  html.dense{--doc-size:13.5px}
+  .pane .body{position:relative;flex:1;min-height:0;padding:14px;white-space:pre-wrap;word-break:break-word;
+    font-size:var(--doc-size);overflow:auto;line-height:1.72;font-family:var(--f-doc);color:var(--ink-2);overflow-anchor:none}
+  .pane{background:var(--panel);border:1px solid rgba(32,48,42,.16);border-radius:4px;min-width:0;box-shadow:var(--shadow);
+    display:flex;flex-direction:column;flex:1;min-height:0;overflow:hidden}
+  .pane h4{flex:none}
 
   /* --- ЭТАП UI-REBUILD: нумерация строк и синхронная прокрутка (задача 6) ---
      Строка — ЛОГИЧЕСКАЯ (между переводами строки исходного документа), а не
@@ -73,137 +218,485 @@
      копирование текста номера не захватывает (проверено нажатием). */
   .pane .body.numbered{padding:8px 0 14px;white-space:normal}
   .ln-row{display:flex;align-items:flex-start;gap:0;padding:0 6px 0 0}
-  .ln-row:hover,.ln-row.ln-peer{background:#eef3ff}
-  .ln-num{flex:0 0 46px;text-align:right;padding:0 10px 0 4px;color:#9aa4b8;
-    font:12px/1.7 ui-monospace,Consolas,monospace;user-select:none;-webkit-user-select:none;
-    -moz-user-select:none;cursor:pointer;border-right:1px solid var(--line);margin-right:10px}
-  .ln-num:hover{color:var(--accent-d);font-weight:700}
+  .ln-row:hover,.ln-row.ln-peer{background:var(--panel-2)}
+  /* ДИЗАЙН: номера строк — тонкая колонка 36px, 8.5px JetBrains Mono, без
+     разделительной линейки. line-height задан жёстко под кегль текста
+     (14.5px × 1.72), иначе номер уезжает от своей строки. */
+  .ln-num{flex:0 0 36px;text-align:right;padding:0 8px 0 4px;color:#bfc4ba;opacity:.75;
+    font-family:var(--f-mono);font-size:8.5px;font-weight:400;letter-spacing:.04em;
+    line-height:calc(var(--doc-size) * 1.72);user-select:none;-webkit-user-select:none;
+    -moz-user-select:none;cursor:pointer;margin-right:10px}
+  .ln-num:hover{color:var(--accent-d);opacity:1}
   .ln-txt{flex:1 1 auto;min-width:0;white-space:pre-wrap;word-break:break-word}
-  .ln-row.ln-target{background:#fff6da}
+  .ln-row.ln-target{background:#f2e9c9}
 
-  mark.ent{border-radius:4px;padding:0 2px;cursor:default;box-decoration-break:clone;-webkit-box-decoration-break:clone}
-  mark.ent.active{outline:2px solid rgba(0,0,0,.35);outline-offset:0}
-  /* type colors */
-  .t-PERSON{background:#ffd9e0}.t-ORG{background:#d7e6ff}.t-ADDRESS{background:#ffe6bd}
-  .t-INN{background:#d4f3dd}.t-INN_PERSON{background:#bfe9cd}.t-OGRN{background:#c9f0e6}.t-KPP{background:#e6dcff}
-  .t-BANK_ACCOUNT{background:#dbe7c8}.t-BIK{background:#cfeede}.t-PASSPORT{background:#ffd6c2}
-  .t-PHONE{background:#c6ecf5}.t-EMAIL{background:#e4e0c0}.t-SNILS{background:#f0d4f0}
-  .t-BIRTHDATE{background:#ffe0cc}.t-SUM{background:#e8eab0}.t-DATE{background:#e2e6ea}
-  .t-PERCENT{background:#f5e3a8}.t-TERM{background:#cfe3d0}
+  mark.ent{background:none;color:inherit;cursor:default;box-decoration-break:clone;-webkit-box-decoration-break:clone;transition:color .3s ease,background-color .3s ease}
+  mark.ent.active{outline:2px solid rgba(32,48,42,.45);outline-offset:1px}
 
-  footer.build-mark{color:var(--muted);font-size:11px;text-align:center;padding:10px 20px 22px;user-select:text}
+  /* Токены трёх смысловых пучков — как в макете «Шифратор»: pdn (данные
+     человека) — сплошная тёмная плашка; txt (организации/термины) — бледная
+     плашка с пунктирным подчёркиванием; num (числа/коды/сроки) — только
+     обводка, без заливки. Конкретные типы (28 шт., см. entity_types.yaml)
+     раскрашивать по одному — визуальный шум; макет группирует их в три пучка.
+     JS вешает на элемент только класс t-<TYPE> (см. app/index.html:806) —
+     поэтому пучок назначается группировкой самих селекторов .t-XXX. */
+  mark.ent.t-PERSON,mark.ent.t-ADDRESS,mark.ent.t-PHONE,mark.ent.t-EMAIL,mark.ent.t-PASSPORT,
+  mark.ent.t-PASSPORT_ISSUER,mark.ent.t-SNILS,mark.ent.t-BIRTHDATE,mark.ent.t-INN_PERSON{
+    background:var(--ink);color:#eef1eb;padding:2.5px 5px 1.5px;border-radius:3px;
+    font:300 12.5px/1.25 var(--f-mono);letter-spacing:.02em;white-space:nowrap;border:0}
+
+  mark.ent.t-ORG,mark.ent.t-ROLE_TERM,mark.ent.t-COLLECTIVE,mark.ent.t-CONTRACT_KIND,
+  mark.ent.t-REGISTRY_NAME,mark.ent.t-CLAUSE_REF{
+    background:#eaece7;border:1px solid #cfd3ca;border-bottom:1px dotted #a8ada2;border-radius:2.5px;
+    padding:2.5px 4px .5px;font:400 12px/1.25 var(--f-mono);color:#525950}
+
+  mark.ent.t-INN,mark.ent.t-OGRN,mark.ent.t-KPP,mark.ent.t-BANK_ACCOUNT,mark.ent.t-BIK,mark.ent.t-SUM,
+  mark.ent.t-PERCENT,mark.ent.t-TERM,mark.ent.t-DATE,mark.ent.t-CONTRACT_NO,mark.ent.t-REG_ID,
+  mark.ent.t-REG_NUMBER,mark.ent.t-SHARE_PCT,mark.ent.t-TRANCHE{
+    background:none;border:1px solid #a9afa3;padding:2.5px 4px .5px;border-radius:2.5px;
+    font:400 12.5px/1.25 var(--f-mono);color:#333a34;white-space:nowrap}
+
+  .swatch.t-PERSON,.swatch.t-ADDRESS,.swatch.t-PHONE,.swatch.t-EMAIL,.swatch.t-PASSPORT,
+  .swatch.t-PASSPORT_ISSUER,.swatch.t-SNILS,.swatch.t-BIRTHDATE,.swatch.t-INN_PERSON{background:#20302a}
+  .swatch.t-ORG,.swatch.t-ROLE_TERM,.swatch.t-COLLECTIVE,.swatch.t-CONTRACT_KIND,
+  .swatch.t-REGISTRY_NAME,.swatch.t-CLAUSE_REF{background:#8a9187}
+  .swatch.t-INN,.swatch.t-OGRN,.swatch.t-KPP,.swatch.t-BANK_ACCOUNT,.swatch.t-BIK,.swatch.t-SUM,
+  .swatch.t-PERCENT,.swatch.t-TERM,.swatch.t-DATE,.swatch.t-CONTRACT_NO,.swatch.t-REG_ID,
+  .swatch.t-REG_NUMBER,.swatch.t-SHARE_PCT,.swatch.t-TRANCHE{background:#c9cdc4;border:1px solid #a9afa3}
+
+  /* макет: 6px 20px 10px. Прежние 10px/22px забирали у тела договора ~18px
+     высоты — на низком окне это целая строка текста. */
+  footer.build-mark{color:var(--muted);font-size:11px;text-align:center;padding:6px 20px 10px;user-select:text}
 
   /* --- sidebar list --- */
-  .side{background:var(--panel);border:1px solid var(--line);border-radius:12px;max-height:70vh;overflow:auto;position:sticky;top:70px}
-  .side h4{margin:0;padding:12px 14px;font-size:14px;border-bottom:1px solid var(--line)}
-  .grp{border-bottom:1px solid var(--line)}
-  .grp-h{padding:9px 14px;font-size:12px;font-weight:700;color:var(--muted);display:flex;justify-content:space-between;text-transform:uppercase;letter-spacing:.4px;background:#fafbfd}
-  .swatch{display:inline-block;width:11px;height:11px;border-radius:3px;margin-right:7px;vertical-align:middle}
-  .rep{padding:7px 14px;font-size:13px;cursor:pointer;border-top:1px solid #f0f2f6;display:flex;justify-content:space-between;gap:8px}
-  .rep:hover,.rep.active{background:#eef3ff}
-  .rep .orig{overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
-  .rep .tok{font:11.5px ui-monospace,Consolas,monospace;color:var(--muted);flex:0 0 auto}
-  .rep .cnt{color:var(--muted);font-size:11px;flex:0 0 auto}
+  /* --- side: плавающая полупрозрачная панель «Спрятано», как в макете --- */
+  .side{background:rgba(252,252,249,.86);backdrop-filter:blur(16px) saturate(1.08);-webkit-backdrop-filter:blur(16px) saturate(1.08);
+    border:1px solid rgba(32,48,42,.11);border-radius:5px;box-shadow:var(--shadow);
+    display:flex;flex-direction:column;min-height:0;overflow:hidden}
+  .side h4{flex:none;margin:0;padding:16px 18px 11px;font-size:17px;font-weight:600;display:flex;align-items:baseline;gap:8px}
+  .side h4 .note{font-family:var(--f-mono);font-size:17px;font-weight:600;color:var(--accent)}
+  .bucket-bar{flex:none;display:flex;height:6px;border-radius:3px;overflow:hidden;background:#e4e2dc;margin:0 18px 12px}
+  #v-list{flex:1;min-height:0;overflow-y:auto;padding-bottom:10px}
+  /* подпись-сноска внизу панели описи — как в дизайне */
+  .side-foot{flex:none;padding:12px 18px;border-top:1px solid rgba(32,48,42,.09);
+    background:rgba(244,243,239,.7);font-size:12px;line-height:1.45;color:var(--muted)}
+  .bar-seg{height:100%}
+  .bar-pdn{background:#20302a}.bar-txt{background:#8a9187}.bar-num{background:#c9cdc4}
 
-  .verify-actions{display:flex;gap:12px;margin-top:16px;flex-wrap:wrap;align-items:center}
+  .grp{border-top:1px solid rgba(32,48,42,.07);padding:12px 16px 6px}
+  .grp:first-of-type{border-top:none}
+  .grp-h{display:flex;align-items:center;gap:9px;margin-bottom:3px}
+  .grp-chip{flex:none;font-size:10.5px;font-weight:700;text-transform:uppercase;letter-spacing:.06em;color:var(--muted);
+    background:var(--panel-2);border:1px solid var(--line-soft);border-radius:4px;padding:2px 6px}
+  .buck-pdn .grp-chip{color:#8c3350;border-color:#e0c1cb}
+  .buck-txt .grp-chip{color:#245c4f;border-color:#bcd1c8}
+  .buck-num .grp-chip{color:#71501c;border-color:#ddc998}
+  .grp-title{font-size:14px;font-weight:600;color:var(--ink-2)}
+  .grp-cnt{margin-left:auto;font-size:13px;font-family:var(--f-mono);color:var(--muted)}
+  .grp-hint{font-size:12px;color:var(--muted-2);line-height:1.4;margin-bottom:8px}
+
+  .swatch{display:inline-block;width:11px;height:11px;border-radius:3px;margin-right:7px;vertical-align:middle}
+  .rep{display:flex;align-items:baseline;gap:8px;padding:5px 0;cursor:pointer;border-top:1px solid rgba(32,48,42,.06)}
+  .rep:first-of-type{border-top:none}
+  .rep:hover,.rep.active{background:var(--panel-2)}
+  .rep.hidden{display:none}
+  .rep .tok{flex:none;font:11.5px var(--f-mono);color:var(--muted);background:var(--panel-2);border:1px solid var(--line-soft);border-radius:3px;padding:1px 5px}
+  .rep .orig{flex:1;min-width:0;overflow:hidden;text-overflow:ellipsis;white-space:nowrap;font-size:13px;color:var(--ink-2);
+    -webkit-text-security:disc}
+  #v-side.show-values .rep .orig{-webkit-text-security:none}
+  .rep .cnt{flex:none;font-size:11.5px;font-family:var(--f-mono);color:var(--muted-2)}
+  .rep-showmore{margin:7px 0 3px;font-size:12.5px;color:var(--accent);cursor:pointer}
+  .rep-showmore:hover{color:var(--accent-d);text-decoration:underline}
+
+  /* --- risk map: колонка плотности спрятанных данных по документу --- */
+  /* ДИЗАЙН: колонка риска — не полоска засечек, а график плотности по страницам:
+     три кривые (пучки pdn/num/txt), сетка, кликабельные столбцы страниц и
+     легенда внизу. Данные считаются из реальных меток, не выдумываются. */
+  .riskmap{flex:0 0 62px;display:flex;flex-direction:column;gap:4px;padding-top:2px;min-height:0}
+  .riskmap.hidden{display:none}
+  .riskmap-lbl{font:500 7.5px/1 var(--f-mono);letter-spacing:.12em;color:#9aa094;text-align:center}
+  .riskmap-track{flex:1;min-height:0;position:relative;border-radius:4px;border:1px solid rgba(32,48,42,.12);
+    background:#f3f2ed;overflow:hidden;box-shadow:0 1px 2px rgba(32,48,42,.07) inset}
+  .riskmap-track>svg{position:absolute;inset:0;width:100%;height:100%}
+  .riskmap-cols{position:absolute;inset:0;display:flex;flex-direction:column}
+  .riskmap-cols>div{flex:1;cursor:pointer}
+  .riskmap-legend{position:absolute;left:0;right:0;bottom:6px;display:flex;justify-content:center;gap:7px}
+  .riskmap-legend>div{width:13px;height:9px;cursor:default}
+
+  /* --- AI vision: постоянная полоса сканирования (как в дизайне).
+     ВНЕ полосы метка показывает НАСТОЯЩЕЕ значение и выглядит обычным текстом
+     договора; ВНУТРИ полосы — метку [ТИП_N]. Это подмена ТОЛЬКО на экране:
+     copyAnon()/downloadAnon() берут CUR.anon_text (строку с метками), а не DOM,
+     поэтому настоящее значение физически не может уйти в буфер или в файл. --- */
+  .scan-host{flex:1;min-height:0;position:relative;overflow:hidden;display:flex}
+  .scan-band{position:absolute;left:0;right:0;z-index:5;pointer-events:none;display:none}
+  .pane.ai-on .scan-band{display:block}
+  .scan-band .sb-fill{position:absolute;inset:0;mix-blend-mode:multiply;
+    background:linear-gradient(180deg,rgba(43,233,159,0) 0%,rgba(43,233,159,.09) 40px,rgba(43,233,159,.1) 50%,rgba(43,233,159,.09) calc(100% - 40px),rgba(43,233,159,0) 100%)}
+  .scan-band .sb-top{position:absolute;left:0;right:0;top:0;height:1px;
+    background:linear-gradient(90deg,transparent,rgba(33,209,140,.55) 12%,rgba(33,209,140,.55) 88%,transparent)}
+  .scan-band .sb-bot{position:absolute;left:0;right:0;bottom:0;height:1px;
+    background:linear-gradient(90deg,transparent,rgba(33,209,140,.4) 12%,rgba(33,209,140,.4) 88%,transparent)}
+  .scan-band .sb-lbl{position:absolute;right:14px;top:10px;display:flex;align-items:flex-start;gap:6px}
+  .scan-band .sb-lbl i{writing-mode:vertical-rl;font:500 9px/1 var(--f-mono);letter-spacing:.34em;
+    text-transform:uppercase;color:#1f7a5c;opacity:.72;font-style:normal}
+  .scan-band .sb-lbl u{width:1px;height:52px;text-decoration:none;
+    background:linear-gradient(180deg,rgba(33,209,140,.5),transparent)}
+  mark.ent[data-scan="1"]{text-shadow:0 0 9px rgba(43,233,159,.45)}
+  /* вне полосы стоит настоящее значение — и выглядит как обычный текст договора */
+  mark.ent[data-scan="0"]{background:none!important;border:0!important;box-shadow:none!important;
+    padding:0!important;border-radius:0!important;letter-spacing:normal!important;font:inherit!important;
+    color:inherit!important;display:inline!important;min-width:0!important;text-align:inherit!important;
+    white-space:normal!important;text-shadow:none!important}
+  mark.ent[data-scan="0"]::after{content:""!important;display:none!important;margin:0!important}
+  /* номер строки внутри полосы — двоичный, узким Saira Condensed */
+  .ln-num.ln-inband{font-family:var(--f-cond);font-size:10px;font-weight:200;
+    letter-spacing:-.02em;color:#5ba98c;opacity:.95}
+
+  /* --- тема меток «Стекло»: одна бледная плашка на пучок, различие — цвет
+     текста и надстрочный индекс пучка (01/02/03), как в макете --- */
+  [data-marks="glass"] mark.ent.t-PERSON,[data-marks="glass"] mark.ent.t-ADDRESS,[data-marks="glass"] mark.ent.t-PHONE,
+  [data-marks="glass"] mark.ent.t-EMAIL,[data-marks="glass"] mark.ent.t-PASSPORT,[data-marks="glass"] mark.ent.t-PASSPORT_ISSUER,
+  [data-marks="glass"] mark.ent.t-SNILS,[data-marks="glass"] mark.ent.t-BIRTHDATE,[data-marks="glass"] mark.ent.t-INN_PERSON,
+  [data-marks="glass"] mark.ent.t-ORG,[data-marks="glass"] mark.ent.t-ROLE_TERM,[data-marks="glass"] mark.ent.t-COLLECTIVE,
+  [data-marks="glass"] mark.ent.t-CONTRACT_KIND,[data-marks="glass"] mark.ent.t-REGISTRY_NAME,[data-marks="glass"] mark.ent.t-CLAUSE_REF,
+  [data-marks="glass"] mark.ent.t-INN,[data-marks="glass"] mark.ent.t-OGRN,[data-marks="glass"] mark.ent.t-KPP,
+  [data-marks="glass"] mark.ent.t-BANK_ACCOUNT,[data-marks="glass"] mark.ent.t-BIK,[data-marks="glass"] mark.ent.t-SUM,
+  [data-marks="glass"] mark.ent.t-PERCENT,[data-marks="glass"] mark.ent.t-TERM,[data-marks="glass"] mark.ent.t-DATE,
+  [data-marks="glass"] mark.ent.t-CONTRACT_NO,[data-marks="glass"] mark.ent.t-REG_ID,[data-marks="glass"] mark.ent.t-REG_NUMBER,
+  [data-marks="glass"] mark.ent.t-SHARE_PCT,[data-marks="glass"] mark.ent.t-TRANCHE{
+    background:#e9edec;border:0;padding:2px 8px;text-align:center;line-height:1.2;border-radius:7px;
+    corner-shape:squircle;
+    box-shadow:0 2px 6px -2px rgba(22,38,42,.28),inset 0 1px 0 rgba(255,255,255,.92)}
+  [data-marks="glass"] mark.ent.t-PERSON,[data-marks="glass"] mark.ent.t-ADDRESS,[data-marks="glass"] mark.ent.t-PHONE,
+  [data-marks="glass"] mark.ent.t-EMAIL,[data-marks="glass"] mark.ent.t-PASSPORT,[data-marks="glass"] mark.ent.t-PASSPORT_ISSUER,
+  [data-marks="glass"] mark.ent.t-SNILS,[data-marks="glass"] mark.ent.t-BIRTHDATE,[data-marks="glass"] mark.ent.t-INN_PERSON{color:#8c3350}
+  [data-marks="glass"] mark.ent.t-PERSON::after,[data-marks="glass"] mark.ent.t-ADDRESS::after,[data-marks="glass"] mark.ent.t-PHONE::after,
+  [data-marks="glass"] mark.ent.t-EMAIL::after,[data-marks="glass"] mark.ent.t-PASSPORT::after,[data-marks="glass"] mark.ent.t-PASSPORT_ISSUER::after,
+  [data-marks="glass"] mark.ent.t-SNILS::after,[data-marks="glass"] mark.ent.t-BIRTHDATE::after,[data-marks="glass"] mark.ent.t-INN_PERSON::after{content:"01"}
+  [data-marks="glass"] mark.ent.t-ORG,[data-marks="glass"] mark.ent.t-ROLE_TERM,[data-marks="glass"] mark.ent.t-COLLECTIVE,
+  [data-marks="glass"] mark.ent.t-CONTRACT_KIND,[data-marks="glass"] mark.ent.t-REGISTRY_NAME,[data-marks="glass"] mark.ent.t-CLAUSE_REF{color:#245c4f}
+  [data-marks="glass"] mark.ent.t-ORG::after,[data-marks="glass"] mark.ent.t-ROLE_TERM::after,[data-marks="glass"] mark.ent.t-COLLECTIVE::after,
+  [data-marks="glass"] mark.ent.t-CONTRACT_KIND::after,[data-marks="glass"] mark.ent.t-REGISTRY_NAME::after,[data-marks="glass"] mark.ent.t-CLAUSE_REF::after{content:"02"}
+  [data-marks="glass"] mark.ent.t-INN,[data-marks="glass"] mark.ent.t-OGRN,[data-marks="glass"] mark.ent.t-KPP,
+  [data-marks="glass"] mark.ent.t-BANK_ACCOUNT,[data-marks="glass"] mark.ent.t-BIK,[data-marks="glass"] mark.ent.t-SUM,
+  [data-marks="glass"] mark.ent.t-PERCENT,[data-marks="glass"] mark.ent.t-TERM,[data-marks="glass"] mark.ent.t-DATE,
+  [data-marks="glass"] mark.ent.t-CONTRACT_NO,[data-marks="glass"] mark.ent.t-REG_ID,[data-marks="glass"] mark.ent.t-REG_NUMBER,
+  [data-marks="glass"] mark.ent.t-SHARE_PCT,[data-marks="glass"] mark.ent.t-TRANCHE{color:#71501c}
+  [data-marks="glass"] mark.ent.t-INN::after,[data-marks="glass"] mark.ent.t-OGRN::after,[data-marks="glass"] mark.ent.t-KPP::after,
+  [data-marks="glass"] mark.ent.t-BANK_ACCOUNT::after,[data-marks="glass"] mark.ent.t-BIK::after,[data-marks="glass"] mark.ent.t-SUM::after,
+  [data-marks="glass"] mark.ent.t-PERCENT::after,[data-marks="glass"] mark.ent.t-TERM::after,[data-marks="glass"] mark.ent.t-DATE::after,
+  [data-marks="glass"] mark.ent.t-CONTRACT_NO::after,[data-marks="glass"] mark.ent.t-REG_ID::after,[data-marks="glass"] mark.ent.t-REG_NUMBER::after,
+  [data-marks="glass"] mark.ent.t-SHARE_PCT::after,[data-marks="glass"] mark.ent.t-TRANCHE::after{content:"03"}
+  [data-marks="glass"] mark.ent::after{font-size:7.5px;letter-spacing:.06em;vertical-align:super;margin-left:3px;color:#7e8e8a;font-weight:500}
+
+  /* нижний ряд окна: главное действие всегда на виду, страница не листается */
+  .verify-actions{position:relative;flex:none;display:flex;gap:12px;flex-wrap:wrap;align-items:center;
+    padding:14px 0 16px}
   .note{color:var(--muted);font-size:13px}
 
+  /* ДИЗАЙН: «Что прятать» — модальное окно поверх текущего экрана, а не
+     отдельная страница. Внутри сохранены все профили и все 26 типов. */
+  #scr-set.screen.active{position:fixed;inset:0;z-index:40;padding:24px;
+    background:rgba(28,34,30,.34);display:flex;flex-direction:row;align-items:center;justify-content:center}
+  #scr-set>.card{width:520px;max-width:100%;max-height:86vh;overflow-y:auto;margin:0;padding:0;
+    border-radius:7px;background:#fbfaf7;border:1px solid rgba(32,48,42,.18);
+    box-shadow:0 2px 4px rgba(20,28,23,.14),0 30px 60px -20px rgba(20,28,23,.45)}
+  #scr-set .set-head{padding:18px 22px 14px;border-bottom:1px solid rgba(32,48,42,.09)}
+  #scr-set .set-head h2{margin:0;font-size:17px}
+  #scr-set .set-head .sub{margin:4px 0 0;font-size:13px}
+  #scr-set .set-pad{padding:8px 22px 18px}
+  #scr-set .set-foot{padding:14px 22px;background:#f2f1ec;border-top:1px solid rgba(32,48,42,.09);
+    display:flex;gap:10px;justify-content:flex-end;position:sticky;bottom:0}
+
   /* --- tooltip --- */
-  #tip{position:fixed;z-index:60;background:#1c2330;color:#fff;padding:8px 11px;border-radius:8px;font-size:12.5px;max-width:340px;box-shadow:var(--shadow);pointer-events:none;display:none;line-height:1.45}
-  #tip b{color:#ffd9e0}
-  #tip .arrow{color:#8fb2ff}
-  #tip code{font:11.5px ui-monospace,Consolas,monospace;background:rgba(255,255,255,.15);padding:1px 4px;border-radius:4px}
+  /* ДИЗАЙН: подсказка — светлое стекло, а не тёмная плашка */
+  #tip{position:fixed;z-index:80;pointer-events:none;display:none;max-width:340px;padding:7px 11px;
+    border-radius:8px;corner-shape:squircle;font:400 11.5px/1.45 var(--f-mono);letter-spacing:.02em;color:var(--ink);
+    background:rgba(251,251,248,.74);backdrop-filter:blur(16px) saturate(1.2);
+    -webkit-backdrop-filter:blur(16px) saturate(1.2);border:1px solid rgba(32,48,42,.13);
+    box-shadow:0 1px 0 rgba(255,255,255,.92) inset,0 10px 28px -12px rgba(30,38,32,.42),0 2px 4px rgba(30,38,32,.08);
+    transition:opacity .16s ease;white-space:pre-line}
+  #tip b{color:#8c3350}
+  #tip .arrow{color:var(--accent)}
+  #tip code{font:11.5px var(--f-mono);background:rgba(32,48,42,.08);padding:1px 4px;border-radius:4px;color:#333a34}
 
   /* --- U3: прогресс шифрации --- */
-  .progress-track{height:6px;background:#e3e8f0;border-radius:4px;overflow:hidden;margin-top:10px}
-  .progress-fill{height:100%;background:var(--accent);transition:width .3s;width:0%}
+  .progress-track{height:6px;background:var(--line);border-radius:4px;overflow:hidden;margin-top:10px}
+  .progress-fill{height:100%;background:var(--accent-grad);transition:width .3s;width:0%}
 
   /* --- U3: разметка на экране проверки --- */
   .lit{cursor:text}
-  mark.ent.pending{outline:2px dashed #9a5b00;outline-offset:1px}
-  #markup-menu{position:fixed;z-index:2147483000;background:#fff;border:1px solid var(--line);border-radius:10px;
+  mark.ent.pending{outline:2px dashed var(--warn);outline-offset:1px}
+  #markup-menu{position:fixed;z-index:2147483000;background:var(--panel);border:1px solid var(--line-soft);border-radius:8px;
     box-shadow:var(--shadow);padding:10px;display:none;max-width:300px}
   #markup-menu .mm-title{font-size:12px;color:var(--muted);margin-bottom:8px;word-break:break-word}
   #markup-menu .mm-types{display:flex;flex-direction:column;gap:3px;max-width:320px;max-height:44vh;overflow:auto}
   #markup-menu .mm-search{width:100%;box-sizing:border-box;padding:6px 9px;font-size:13px;
-    border:1px solid var(--line);border-radius:7px;margin-bottom:7px}
+    border:1px solid var(--line);border-radius:6px;margin-bottom:7px;font-family:var(--f-ui)}
   #markup-menu .mm-sep{font-size:11px;color:var(--muted);text-transform:uppercase;letter-spacing:.4px;margin:6px 0 3px}
   #markup-menu .mm-none{font-size:12px;color:var(--muted);padding:6px 2px}
-  #markup-menu button.mm-type.mm-cur{border-color:var(--accent);background:#eef3ff;color:var(--accent-d)}
+  #markup-menu button.mm-type.mm-cur{border-color:var(--accent);background:var(--okbg);color:var(--accent-d)}
   #markup-menu .mm-hint{font-size:11px;color:var(--muted);margin-top:7px}
-  #markup-menu .mm-torn{font-size:11.5px;color:#8a5a00;background:#fff6da;border:1px solid #f0dca8;
-    border-radius:7px;padding:5px 8px;margin-bottom:7px;max-width:320px}
-  #markup-menu button.mm-type{border:1px solid var(--line);background:#fafbfd;border-radius:7px;padding:5px 9px;font-size:12.5px;cursor:pointer;text-align:left;width:100%}
+  #markup-menu .mm-torn{font-size:11.5px;color:var(--warn);background:var(--warnbg);border:1px solid var(--warnline);
+    border-radius:6px;padding:5px 8px;margin-bottom:7px;max-width:320px}
+  #markup-menu button.mm-type{border:1px solid var(--line);background:var(--panel-2);border-radius:6px;padding:5px 9px;font-size:12.5px;cursor:pointer;text-align:left;width:100%;font-family:var(--f-ui)}
   #markup-menu button.mm-type:hover{border-color:var(--accent);color:var(--accent-d)}
   #markup-menu .mm-actions{display:flex;flex-direction:column;gap:6px}
-  #markup-menu button.mm-action{text-align:left;border:1px solid var(--line);background:#fafbfd;border-radius:7px;padding:7px 10px;font-size:13px;cursor:pointer}
-  #markup-menu button.mm-action.danger{color:var(--err);border-color:#f2c9c9}
+  #markup-menu button.mm-action{text-align:left;border:1px solid var(--line);background:var(--panel-2);border-radius:6px;padding:7px 10px;font-size:13px;cursor:pointer;font-family:var(--f-ui)}
+  #markup-menu button.mm-action.danger{color:var(--err);border-color:var(--errline)}
   #markup-menu button.mm-action:hover{border-color:var(--accent)}
   #markup-menu .mm-cancel{margin-top:8px;font-size:12px;color:var(--muted);cursor:pointer;text-align:right}
-  .markup-panel{margin-top:16px}
-  .markup-panel h4{margin:0 0 8px;font-size:14px;display:flex;align-items:center;gap:8px}
-  .markup-row{display:flex;gap:8px;align-items:center;padding:8px 10px;border:1px solid var(--line);border-radius:8px;margin-bottom:6px;font-size:13px;background:#fafbfd}
+  /* «Ваши правки» — ВЫДВИЖНОЙ ЯЩИК СПРАВА (макет:446-494), а не плашка снизу.
+     Плашка во всю ширину без затемнения не читалась как модальный слой и не
+     ужималась на узком окне. Состав не урезан: те же правки, отмена,
+     применение и «просмотрено». */
+  #scr-ver{position:relative}
+  .markup-overlay{position:absolute;inset:0;z-index:35;display:none;
+    justify-content:flex-end;background:rgba(28,34,30,.28)}
+  .markup-overlay.open{display:flex}
+  .markup-panel{width:460px;max-width:92%;height:100%;background:var(--panel);
+    border-left:1px solid rgba(32,48,42,.16);box-shadow:-20px 0 50px -24px rgba(20,28,23,.45);
+    display:flex;flex-direction:column}
+  @media (max-width:1199px){ .markup-panel{width:380px} }
+  .mk-head{flex:none;padding:16px 20px 12px;border-bottom:1px solid rgba(32,48,42,.09);
+    display:flex;align-items:center;gap:10px;background:linear-gradient(var(--panel),var(--panel-2))}
+  .mk-head h4{margin:0;font-size:16px;font-weight:600}
+  .mk-head .mk-cnt{font:12.5px var(--f-mono);background:#20302a;color:#eef1eb;border-radius:12px;padding:2px 9px}
+  .mk-head .mk-x{border:1px solid var(--line-soft);background:var(--panel);border-radius:6px;
+    width:28px;height:28px;cursor:pointer;color:var(--muted);font-size:14px;line-height:1;font-family:inherit;padding:0}
+  .mk-head .mk-x:hover{border-color:#8a9187;color:var(--ink-2)}
+  .mk-body{flex:1;min-height:0;overflow-y:auto;padding:14px 20px}
+  .mk-foot{flex:none;padding:12px 20px;border-top:1px solid rgba(32,48,42,.09);background:#f2f1ec;
+    display:flex;gap:8px;align-items:center;flex-wrap:wrap}
+  .mk-foot .mk-apply{background:linear-gradient(#3a6f5f,#2b5648);color:#f2f5f0;border:1px solid #24493d;
+    padding:10px 16px;border-radius:6px;font-size:13.5px;font-weight:600;cursor:pointer;font-family:var(--f-ui)}
+  .mk-foot .mk-apply:disabled{opacity:.5;cursor:default}
+  .mk-foot .mk-undo{background:#e8e6e0;border:1px solid var(--line-soft);padding:10px 14px;border-radius:6px;
+    cursor:pointer;color:#3f463e;font-size:13px;font-family:var(--f-ui)}
+  .mk-foot .mk-undo:hover:not(:disabled){background:#eeece6;border-color:#8a9187}
+  .mk-foot .mk-undo:disabled{opacity:.5;cursor:default}
+  .mk-foot .mk-ok{background:#e9f0ea;border:1px solid #bcd0c2;padding:10px 14px;border-radius:6px;
+    cursor:pointer;color:#2b5648;font-size:13px;font-weight:500;font-family:var(--f-ui)}
+  .mk-foot .mk-ok:hover{background:#dfeae1}
+  .markup-row{display:flex;gap:8px;align-items:center;padding:8px 10px;border:1px solid var(--line-soft);border-radius:6px;margin-bottom:6px;font-size:13px;background:var(--panel-2)}
   .markup-row .mk-kind{font-weight:600;color:var(--accent-d);flex:0 0 auto;font-size:12px;text-transform:uppercase;letter-spacing:.3px}
   .markup-row .mk-snip{flex:1;overflow:hidden;text-overflow:ellipsis;white-space:nowrap;color:var(--ink)}
   .markup-row.applied{opacity:.55}
-  .markup-row.error{border-color:#f2c9c9;background:var(--errbg)}
+  .markup-row.error{border-color:var(--errline);background:var(--errbg)}
   #markup-toast{display:none}
   #markup-toast.show{display:block;position:fixed;left:50%;transform:translateX(-50%);bottom:24px;
-    padding:10px 18px;border-radius:10px;box-shadow:var(--shadow);z-index:80;font-size:13.5px;max-width:70vw}
+    padding:10px 18px;border-radius:8px;box-shadow:var(--shadow);z-index:80;font-size:13.5px;max-width:70vw}
   #markup-toast.ok{background:var(--okbg);color:var(--ok)}
   #markup-toast.err{background:var(--errbg);color:var(--err)}
 
   /* --- restore --- */
   .field{margin-bottom:14px}
   .field label{display:block;font-size:13px;color:var(--muted);margin-bottom:5px;font-weight:600}
-  .field input,.field textarea{width:100%;border:1px solid var(--line);border-radius:8px;padding:9px 11px;font-size:14px;font-family:inherit;background:#fff}
-  .field input{font-family:ui-monospace,Consolas,monospace}
+  .field input,.field textarea{width:100%;border:1px solid var(--line);border-radius:6px;padding:9px 11px;font-size:14px;font-family:var(--f-ui);background:var(--panel)}
+  .field input{font-family:var(--f-mono)}
   .field textarea{min-height:160px;resize:vertical;white-space:pre;overflow:auto}
-  .restored{margin-top:16px;white-space:pre-wrap;word-break:break-word;background:#fafbfd;border:1px solid var(--line);border-radius:10px;padding:14px;font-size:13.5px;max-height:52vh;overflow:auto;line-height:1.7}
+  .restored{margin-top:16px;white-space:pre-wrap;word-break:break-word;background:var(--panel-2);border:1px solid var(--line-soft);border-radius:8px;padding:14px;font-size:14px;max-height:52vh;overflow:auto;line-height:1.72;font-family:var(--f-doc);color:var(--ink-2)}
   .legend{display:flex;flex-wrap:wrap;gap:8px 14px;margin:4px 0 0;font-size:12px;color:var(--muted)}
   .hidden{display:none}
 
   /* --- U4: аналитика и отчёт --- */
-  .metrics{display:flex;flex-wrap:wrap;gap:12px;margin:14px 0}
-  .metric{flex:1 1 170px;border:1px solid var(--line);border-radius:10px;padding:12px 14px;background:#fafbfd}
-  .metric .val{font-size:24px;font-weight:700;letter-spacing:-.5px}
+  /* Метрики — СЕТКА, а не перенос флексом (макет): 6 колонок от 1500,
+     3 от 1180, иначе 2. minmax(0,1fr) обязателен — без него длинная подпись
+     распирает колонку и плитки разъезжаются по ширине. */
+  .metrics{display:grid;gap:12px;margin:14px 0;grid-template-columns:repeat(2,minmax(0,1fr))}
+  @media (min-width:1180px){ .metrics{grid-template-columns:repeat(3,minmax(0,1fr))} }
+  @media (min-width:1500px){ .metrics{grid-template-columns:repeat(6,minmax(0,1fr))} }
+  .metric{border:1px solid var(--line-soft);border-radius:8px;padding:12px 14px;background:var(--panel-2);min-width:0}
+  /* tabular-nums: без него колонка цифр пляшет по ширине от значения к значению */
+  .metric .val{font-size:25px;font-weight:700;letter-spacing:-.5px;font-family:var(--f-mono);color:var(--ink);
+    font-variant-numeric:tabular-nums}
   .metric .lbl{font-size:12px;color:var(--muted);margin-top:2px;line-height:1.35}
-  table.grid{width:100%;border-collapse:collapse;font-size:13px;margin-top:8px}
-  table.grid th,table.grid td{border:1px solid var(--line);padding:6px 9px;text-align:right}
+  .metric .sub{font-size:11px;color:#8a9187;margin-top:2px;line-height:1.35}
+  table.grid{width:100%;border-collapse:collapse;font-size:13px;margin-top:8px;font-variant-numeric:tabular-nums}
+  table.grid th,table.grid td{border:1px solid var(--line-soft);padding:6px 9px;text-align:right}
   table.grid th:first-child,table.grid td:first-child{text-align:left}
-  table.grid th{background:#f7f9fc;color:var(--muted);font-weight:600;font-size:12px}
+  table.grid th{background:var(--panel-2);color:var(--muted);font-weight:600;font-size:12px}
   .ana-sec{margin-top:22px}
-  .ana-sec h3{font-size:15px;margin:0 0 4px}
+  /* «Что хранится»: одна колонка, от 1280 px — две (макет: stoGridStyle) */
+  .sto-grid{display:grid;gap:26px;grid-template-columns:minmax(0,1fr)}
+  @media (min-width:1280px){ .sto-grid{grid-template-columns:repeat(2,minmax(0,1fr))} }
+  .sto-col{min-width:0}
+  .sto-col .ana-sec:first-child{margin-top:0}
+  .ana-sec h3{font-size:15px;margin:0 0 4px;font-weight:600;color:var(--ink)}
   .scope-row{display:flex;flex-wrap:wrap;gap:10px;align-items:center;margin-bottom:12px}
   .scope-row label{font-size:13.5px;display:flex;align-items:center;gap:6px;cursor:pointer}
   /* T1-UI: экран «Что маскировать» */
-  .set-prof{display:block;border:1px solid var(--line);border-radius:10px;padding:10px 12px;margin-bottom:8px;cursor:pointer}
-  .set-prof.on{border-color:var(--accent);background:#f5f8ff}
+  .set-prof{display:block;border:1px solid var(--line-soft);border-radius:8px;padding:10px 12px;margin-bottom:8px;cursor:pointer}
+  .set-prof.on{border-color:var(--accent);background:var(--okbg)}
   .set-prof .t{font-weight:600;font-size:14px}
   .set-prof .h{font-size:13px;color:var(--muted);margin-top:2px}
-  .set-types{display:flex;flex-wrap:wrap;gap:6px 18px}
-  .set-types label{font-size:13.5px;display:flex;align-items:center;gap:6px;cursor:pointer;min-width:190px}
+  /* макет: сетка auto-fill, а не перенос флексом — колонки чекбоксов стоят
+     ровно, а не рвутся по длине названия типа */
+  .set-types{display:grid;grid-template-columns:repeat(auto-fill,minmax(200px,1fr));gap:6px 18px}
+  .set-types label{font-size:13.5px;display:flex;align-items:center;gap:6px;cursor:pointer;min-width:0}
   .set-types label .off{color:var(--muted)}
+  /* фирменный зелёный на «родных» переключателях вместо синего системного */
+  .set-types input[type=checkbox],.scope-row input[type=radio]{accent-color:#2f6152}
   .policy-line{margin-top:10px;font-size:13px}
   .tabs{display:flex;gap:4px;margin:12px 0 0}
-  .tabs button{border:1px solid var(--line);background:#fafbfd;color:var(--muted);padding:5px 12px;border-radius:8px 8px 0 0;cursor:pointer;font-size:13px}
-  .tabs button.active{background:#fff;color:var(--accent-d);font-weight:600;border-bottom-color:#fff}
-  pre.preview{margin:0;border:1px solid var(--line);border-top:none;border-radius:0 8px 8px 8px;padding:14px;
-    background:#fff;font:12.5px/1.55 ui-monospace,Consolas,monospace;white-space:pre-wrap;word-break:break-word;
-    max-height:56vh;overflow:auto}
+  .tabs button{border:1px solid var(--line-soft);background:var(--panel-2);color:var(--muted);padding:5px 12px;border-radius:6px 6px 0 0;cursor:pointer;font-size:13px;font-family:var(--f-ui)}
+  .tabs button.active{background:var(--panel);color:var(--accent-d);font-weight:600;border-bottom-color:var(--panel)}
+  pre.preview{margin:0;border:1px solid var(--line-soft);border-top:none;border-radius:0 8px 8px 8px;padding:14px;
+    background:var(--panel);font:12.5px/1.55 var(--f-mono);white-space:pre-wrap;word-break:break-word;
+    max-height:56vh;overflow:auto;color:var(--ink-2)}
+
+  /* ==================================================================
+     АДАПТИВ. Пороги перенесены из макета (Shifrator.dc.html:857-863,
+     965-987), где они живут переменными состояния компонента и
+     пересчитываются ResizeObserver'ом. Здесь то же самое разложено на два
+     слоя: чистую геометрию тянет @media, а классы w-… и h-… на <html> ставит
+     shfLayout() — они нужны там, где от ширины зависит не оформление, а
+     СОДЕРЖИМОЕ (заголовок панели, вид ID сессии) или состояние сворачивания
+     описи, которое человек может перебить руками.
+
+     Высота окна здесь — такой же вход, как ширина: на низком экране первым
+     страдает тело договора, а оно и есть работа юриста.
+     ================================================================== */
+
+  /* --- w < 900: работать нельзя, показываем заглушку вместо интерфейса --- */
+  #scr-stub{display:none;flex:1;align-items:center;justify-content:center;padding:24px}
+  html.w-stub #scr-stub{display:flex}
+  html.w-stub header,html.w-stub main,html.w-stub footer.build-mark{display:none}
+  #scr-stub .stub-card{max-width:420px;background:var(--panel);border:1px solid rgba(32,48,42,.14);
+    border-radius:8px;padding:28px 24px;
+    box-shadow:0 1px 0 rgba(255,255,255,.8) inset,0 10px 20px -10px rgba(30,38,32,.16),
+      0 26px 40px -28px rgba(30,38,32,.22)}
+  #scr-stub .stub-brand{display:flex;align-items:center;gap:10px;margin-bottom:16px}
+  #scr-stub .stub-brand .dots{display:flex;gap:5px}
+  #scr-stub .stub-brand .dots span{width:9px;height:9px;border-radius:2px;background:#c9c6bd;
+    border:1px solid rgba(32,48,42,.18)}
+  #scr-stub .stub-brand b{font-size:12px;font-weight:700;letter-spacing:.14em;text-transform:uppercase;color:#5c6459}
+  #scr-stub h2{margin:0 0 8px;font-size:19px;font-weight:600}
+  #scr-stub p{margin:0 0 14px;font-size:14px;line-height:1.55;color:var(--muted)}
+  #scr-stub .stub-note{background:#f7f5f1;border:1px solid rgba(32,48,42,.14);border-radius:6px;
+    padding:12px 14px;font-size:13px;line-height:1.5;color:var(--muted)}
+  #scr-stub b.px{color:var(--ink)}
+
+  /* --- w < 1280: подписи-украшения уходят первыми --- */
+  @media (max-width:1279px){
+    .topbar .tagline{display:none}
+    .offline .txt small{display:none}
+  }
+
+  /* --- ширина описи: 392 от 1600 px, иначе 330 (макет: sideW) --- */
+  .verify-grid>.side{flex:0 0 330px}
+  @media (min-width:1600px){.verify-grid>.side{flex:0 0 392px}}
+
+  /* --- w < 1360: опись сворачивается в колонку иконок.
+     Разворот руками (кнопка «‹›») перебивает порог — поэтому состояние
+     держит класс side-open, а не только ширина. --- */
+  .side-rail{display:none;flex:0 0 60px;flex-direction:column;gap:6px;min-height:0;overflow:hidden;
+    background:rgba(252,252,249,.86);border:1px solid rgba(32,48,42,.11);border-radius:5px;padding:8px;
+    box-shadow:0 1px 2px rgba(30,38,32,.07),0 10px 20px -10px rgba(30,38,32,.16)}
+  .side-rail .rail-list{flex:1 1 auto;min-height:0;overflow-y:auto;display:flex;flex-direction:column;gap:6px}
+  .side-rail .rail-values{flex:none;text-align:center;font-size:11px;color:var(--muted);cursor:pointer;
+    padding:5px 0 1px;border-top:1px solid rgba(32,48,42,.09)}
+  .rail-tile .rail-sw{width:14px;height:14px;border-radius:4px;flex:none}
+  .rail-tile .rail-n{font:600 12px var(--f-mono);color:var(--ink)}
+  html.w-narrow:not(.side-open) .verify-grid>.side{display:none}
+  html.w-narrow:not(.side-open) .side-rail{display:flex}
+  .side-rail .rail-open{flex:none;border:1px solid rgba(32,48,42,.14);background:var(--panel);border-radius:6px;
+    padding:6px 0;cursor:pointer;color:var(--ink-2);font-family:inherit;font-size:13px}
+  .side-rail .rail-open:hover{border-color:#8a9187}
+  .rail-tile{flex:none;display:flex;flex-direction:column;align-items:center;gap:3px;padding:7px 0;
+    border-radius:6px;cursor:pointer;background:#f7f5f1}
+  .rail-tile:hover{background:#f0eee8}
+  .rail-badge{flex:none;font:600 9px/1.1 var(--f-mono);letter-spacing:.06em;color:#8a9187;text-align:center;padding:1px 0 2px}
+  .side-collapse{flex:none;cursor:pointer;font-size:12px;color:var(--muted);
+    border:1px solid rgba(32,48,42,.14);border-radius:5px;padding:3px 7px}
+  .side-collapse:hover{border-color:#8a9187;color:var(--ink-2)}
+  html:not(.w-narrow) .side-collapse{display:none}
+
+  /* --- напоминание «Проверьте глазами»: полное <-> строкой (макет:154,168-171).
+     Высокое окно — полный баннер, места хватает. Низкое (h<820) — строка в
+     шапке; щелчок разворачивает, ✕ сворачивает обратно. --- */
+  .banner-slim{display:none;flex:1 1 240px;min-width:0;align-items:center;gap:7px;
+    background:#eef3ff;border:1px solid #cddcff;border-radius:6px;padding:5px 10px;
+    cursor:pointer;font-size:12px;color:#33507f;line-height:1.35}
+  .banner-slim .bs-ico{flex:none;font-size:11px}
+  .banner-slim .bs-txt{flex:1;min-width:0;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
+  .banner-slim .bs-more{flex:none;font-size:11px;color:var(--accent);text-decoration:underline;text-underline-offset:2px}
+  .vt-sid{margin-left:auto;display:flex;gap:8px;align-items:center;min-width:0;max-width:100%}
+  #v-eyes h3{display:flex;gap:8px;align-items:center}
+  .eyes-x{flex:none;border:1px solid #cddcff;background:var(--panel);border-radius:6px;
+    width:24px;height:24px;cursor:pointer;color:#33507f;font-size:12px;line-height:1;font-family:inherit;padding:0}
+  .eyes-x:hover{border-color:#9fb3e8}
+  /* ✕ нужен только там, где есть куда сворачивать */
+  @media (min-height:820px){ .eyes-x{display:none} }
+  @media (max-height:819px){
+    html:not(.eyes-open) .banner-slim{display:flex}
+    html:not(.eyes-open) #v-eyes{display:none}
+    /* «Обезличено набором …» — часть развёрнутого вида (макет:174) */
+    html:not(.eyes-open) #v-policy{display:none}
+  }
+
+  /* --- h < 820: напоминания сворачиваются, легенда перестаёт переноситься --- */
+  @media (max-height:819px){
+    .v-banners{max-height:38vh}
+    .legend{flex-wrap:nowrap;overflow:hidden;white-space:nowrap}
+    #scr-ver>.card{padding:14px 16px 0}
+  }
+  @media (min-height:820px){
+    #scr-ver>.card{padding:18px 18px 0}
+  }
+
+  /* --- пол тела договора: 300 / 220 (h<820) / 160 (h<660) --- */
+  .verify-grid{min-height:300px}
+  @media (max-height:819px){.verify-grid{min-height:220px}}
+  @media (max-height:659px){.verify-grid{min-height:160px}}
+  /* --- h < 620: на бейдж в рейке места уже нет --- */
+  @media (max-height:619px){
+    .rail-badge{display:none}
+    .rail-tile{padding:5px 0}
+  }
 </style>
 </head>
 <body>
+<!-- АДАПТИВ, w < 900 (макет Shifrator.dc.html:32-44): интерфейс не ужимается
+     до планшета, а честно уступает место заглушке. Причина продуктовая, а не
+     эстетическая: проверка идёт в теле договора — с номерами строк, метками и
+     описью замен рядом; показать это на узком экране криво — значит подтолкнуть
+     юриста пропустить персональные данные. -->
+<section id="scr-stub">
+  <div class="stub-card">
+    <div class="stub-brand">
+      <span class="dots"><span></span><span></span><span></span></span>
+      <b>Шифратор</b>
+    </div>
+    <h2>Нужен экран пошире</h2>
+    <p>Это окно программы, а не сайт: проверка обезличенного договора идёт в тексте документа — с номерами строк, метками и описью замен. На экране уже <b class="px" id="stub-w">—</b> такую работу нельзя показать честно, а показывать её криво — значит подтолкнуть юриста пропустить персональные данные.</p>
+    <div class="stub-note">Разверните окно хотя бы до <b class="px">900&nbsp;px</b> в ширину, комфортно работать — от <b class="px">1280&nbsp;px</b>. Программа работает локально, данные никуда не уходят — просто разверните окно.</div>
+  </div>
+</section>
+
 <header>
-  <div class="brand">SHIFRATOR<small>обезличивание персональных данных в договорах · локально</small></div>
+  <div class="topbar">
+    <div class="dots"><span></span><span></span><span></span></div>
+    <div class="wordmark">Шифратор</div>
+    <div class="tagline">обезличивание персональных данных в договорах</div>
+    <div style="flex:1"></div>
+    <div class="topbar-links">
+      <button id="nav-ana" onclick="show('ana')">Аналитика</button>
+      <button id="nav-sto" onclick="show('sto')">Что хранится</button>
+    </div>
+  </div>
+  <div class="toolbar">
+  <div class="offline"><span class="dotwrap"><span class="glow"></span><span class="core"></span></span><span class="txt"><b>Интернет отключён</b><small>данные не покидают этот компьютер</small></span></div>
   <nav>
-    <button id="nav-enc" class="active" onclick="show('enc')">1 · Шифрация</button>
-    <button id="nav-ver" onclick="show('ver')" disabled>2 · Проверка</button>
-    <button id="nav-res" onclick="show('res')">3 · Восстановление</button>
-    <button id="nav-ana" onclick="show('ana')">4 · Аналитика</button>
-    <button id="nav-set" onclick="show('set')">5 · Что маскировать</button>
-    <button id="nav-sto" onclick="show('sto')">6 · Что хранится</button>
+    <button id="nav-enc" class="active" onclick="show(CUR?'ver':'enc')">1 · Обезличить</button>
+    <button id="nav-res" onclick="show('res')">2 · Вернуть данные</button>
   </nav>
+  <button id="nav-ver" onclick="show('ver')" disabled style="display:none"></button>
+  <div class="doc-hint note" id="hdr-doc-hint"></div>
+  <div style="flex:1"></div>
+  <button class="settings-chip" id="nav-set" onclick="openSettings()"><span class="sc-box"></span>Что прятать</button>
+  </div>
 </header>
 
 <main>
@@ -219,9 +712,10 @@
            говорили и файл не пускали. -->
       <p class="sub">Поддерживаются <b id="cap-input-inline">…</b>. Система спрячет персональные данные, а вы проверите результат перед выдачей. Обработка идёт на этом компьютере — файл никуда не отправляется.</p>
       <div id="drop" class="drop">
-        <div class="big">📄</div>
-        <div><b>Перетащите файл сюда</b> или нажмите, чтобы выбрать</div>
-        <div id="cap-input-list" style="margin-top:6px;font-size:13px">…</div>
+        <div class="doc-ico"><i></i><i></i><i></i></div>
+        <div class="dz-title">Перетащите договор сюда</div>
+        <div class="dz-sub" id="cap-input-list">…</div>
+        <button class="primary" type="button">Выбрать файл</button>
       </div>
       <input id="file" type="file" class="hidden">
 
@@ -253,19 +747,32 @@
       <div class="verify-top">
         <h2 style="margin:0">Проверка результата</h2>
         <span class="badge" id="v-count">спрятано 0</span>
-        <div style="margin-left:auto;display:flex;gap:8px;align-items:center">
+        <!-- Свёрнутое напоминание (макет:154). Появляется только на низком
+             окне (h<820), где полный баннер съедал бы тело договора. Насовсем
+             спрятать его нельзя: это предупреждение о НЕПОЛНОТЕ поиска ПДн —
+             строка остаётся на виду и разворачивается щелчком. -->
+        <div class="banner-slim" id="v-eyes-slim" onclick="toggleEyesBanner()" title="Развернуть напоминание">
+          <span class="bs-ico">🔍</span>
+          <span class="bs-txt"><b>Проверьте глазами</b> — полнота не гарантирована; пропуск выделяйте мышью в тексте</span>
+          <span class="bs-more">подробнее</span>
+        </div>
+        <div class="vt-sid">
           <span class="note">ID сессии:</span>
           <span class="sid" id="v-sid" title="Понадобится для восстановления">—</span>
         </div>
       </div>
 
+      <div class="v-banners">
       <div id="v-lossy" class="warn hidden">
         <h3>⚠️ Часть документа НЕ прочитана и НЕ обезличена</h3>
         <div class="note" id="v-lossy-text"></div>
       </div>
 
-      <div class="warn" style="background:#eef3ff;border-color:#cddcff;color:var(--accent-d)">
-        <h3 style="color:var(--accent-d)">🔍 Проверьте глазами</h3>
+      <div class="warn" id="v-eyes" style="background:#eef3ff;border-color:#cddcff;color:var(--accent-d)">
+        <h3 style="color:var(--accent-d)">🔍 Проверьте глазами
+          <span style="flex:1"></span>
+          <button type="button" class="eyes-x" onclick="toggleEyesBanner()" title="Свернуть">✕</button>
+        </h3>
         <div class="note" style="color:#33507f">Система прячет данные, но <b>не гарантирует полноту</b> — просмотрите обезличенный текст справа: не осталось ли ФИО, номеров, адресов открытым текстом. Наведите курсор на подсветку, чтобы увидеть, что и на что заменено. <b>Нашли пропуск — выделите его мышью прямо в тексте справа</b> и выберите тип; уже стоящую маску можно поправить щелчком по ней (снять как ложную, изменить тип или границу).</div>
       </div>
 
@@ -273,41 +780,106 @@
       <div id="v-policy" class="policy-line"></div>
 
       <div class="legend" id="v-legend"></div>
+      </div><!-- /.v-banners -->
 
       <div class="verify-grid" style="margin-top:14px">
         <div class="panes">
-          <div class="pane"><h4>Исходный текст</h4><div class="body" id="pane-orig"></div></div>
-          <div class="pane"><h4>Обезличенный текст — выделяйте пропуски здесь</h4><div class="body" id="pane-anon"></div></div>
+          <div class="pane" id="pane-anon-box">
+            <h4>
+              <span id="pane-anon-title">Обезличенный текст — выделяйте пропуски здесь</span>
+              <span style="flex:1"></span>
+              <span class="pane-ctl" id="ctl-riskmap" onclick="toggleRiskMap()" title="Плотность спрятанных данных по документу">📊 Карта риска</span>
+              <span class="pane-ctl" id="ctl-aivision" onclick="toggleAiVision()" title="Полоса сканирования: вне полосы видно настоящее значение, внутри — метка"><span class="ctl-dot"></span>AI vision</span>
+              <span class="marks-switch" id="ctl-density" title="Кегль текста договора">
+                <span class="ms-opt active" data-density="comfortable" onclick="setDensity('comfortable')">Свободно</span>
+                <span class="ms-opt" data-density="compact" onclick="setDensity('compact')">Плотно</span>
+              </span>
+              <span class="marks-switch" id="ctl-marktheme">
+                <span class="ms-opt active" data-theme="depth" onclick="setMarksTheme('depth')">Глубина</span>
+                <span class="ms-opt" data-theme="glass" onclick="setMarksTheme('glass')">Стекло</span>
+              </span>
+            </h4>
+            <div class="scan-host">
+              <div class="scan-band" id="scan-band">
+                <div class="sb-fill"></div><div class="sb-top"></div><div class="sb-bot"></div>
+                <div class="sb-lbl"><i>ai vision</i><u></u></div>
+              </div>
+              <div class="body" id="pane-anon"></div>
+            </div>
+          </div>
         </div>
-        <div class="side">
-          <h4>Что спрятано <span class="note" id="v-side-count"></span></h4>
+        <div class="riskmap hidden" id="v-riskmap">
+          <div class="riskmap-lbl">РИСК</div>
+          <div class="riskmap-track" id="v-riskmap-track"></div>
+        </div>
+        <!-- АДАПТИВ, w < 1360 (макет Shifrator.dc.html:339-357): опись
+             сворачивается в колонку иконок — три пучка со счётчиками, общий
+             итог и переключатель значений. Числа берутся из той же описи,
+             что и полная панель, — второго источника счётчиков нет. -->
+        <div class="side-rail" id="v-side-rail">
+          <button type="button" class="rail-open" onclick="setSideOpen(true)" id="rail-open">‹›</button>
+          <div class="rail-badge" id="rail-total">0</div>
+          <div class="rail-list">
+            <div class="rail-tile" onclick="setSideOpen(true)" id="rail-t-pdn">
+              <span class="rail-sw" style="background:#20302a"></span><span class="rail-n">0</span>
+            </div>
+            <div class="rail-tile" onclick="setSideOpen(true)" id="rail-t-txt">
+              <span class="rail-sw" style="background:#8a9187"></span><span class="rail-n">0</span>
+            </div>
+            <div class="rail-tile" onclick="setSideOpen(true)" id="rail-t-num">
+              <span class="rail-sw" style="background:#c9cdc4;border:1px solid #a9afa3"></span><span class="rail-n">0</span>
+            </div>
+          </div>
+          <div class="rail-values" onclick="toggleValues()" title="Показать значения">👁</div>
+        </div>
+        <div class="side" id="v-side">
+          <h4>
+            <span>Спрятано <span class="note" id="v-side-count"></span></span>
+            <span style="flex:1"></span>
+            <span class="pane-ctl" id="ctl-values" onclick="toggleValues()">Показать значения</span>
+            <span class="side-collapse" onclick="setSideOpen(false)" title="Свернуть опись">›‹</span>
+          </h4>
+          <div class="bucket-bar" id="v-bucket-bar"></div>
           <div id="v-list"></div>
+          <div class="side-foot">Соответствия хранятся только на этом компьютере и стираются вместе с сессией.</div>
         </div>
       </div>
 
+      <!-- Клик по затемнению закрывает ящик; клик внутри — нет (макет:447). -->
+      <div class="markup-overlay" id="markup-overlay" onclick="if(event.target===this) toggleMarkupPanel()">
       <div class="markup-panel">
-        <h4>Ваши правки <span class="badge" id="markup-count">0</span></h4>
-        <div class="note" style="margin-bottom:10px">Каждая правка сохраняется сразу — это и есть будущая эталонная разметка для улучшения системы, она хранится <b>только на этом компьютере</b>, никуда не отправляется. Документ не меняется, пока вы не нажмёте «Применить правки и пересобрать».</div>
-        <div class="warn" style="background:#fff7e6;border-color:#f0d78c;color:#7a5a00;margin-bottom:10px">
-          <div class="note" style="color:#7a5a00">⚠️ <b>Разметка хранится ОТДЕЛЬНО от сессии и ДОЛЬШЕ</b> (<span id="markup-ttl-days">30</span> дней, а не 24 часа) — она нужна для накопления эталонных примеров и <b>содержит фрагменты текста вашего документа</b> (то самое выделение и его значение). Удаление сессии эту разметку НЕ стирает — управляйте ей отдельно.
-            <span id="markup-summary-line"></span>
-            <br><button class="ghost" style="margin-top:6px;padding:4px 10px;font-size:12px" onclick="deleteAllMarkupUI()">Удалить всю накопленную разметку (все сессии)</button>
+        <div class="mk-head">
+          <h4>Ваши правки</h4>
+          <span class="mk-cnt" id="markup-count">0</span>
+          <span style="flex:1"></span>
+          <button type="button" class="mk-x" onclick="toggleMarkupPanel()" title="Закрыть">✕</button>
+        </div>
+        <div class="mk-body">
+          <div class="note" style="margin-bottom:10px;text-wrap:pretty">Каждая правка сохраняется сразу — это и есть будущая эталонная разметка для улучшения системы, она хранится <b>только на этом компьютере</b>, никуда не отправляется. Документ не меняется, пока вы не нажмёте «Применить и пересобрать».</div>
+          <div id="markup-list"></div>
+          <div class="warn" style="background:#f7f0dd;border-color:#e3cf9c;color:#71501c;margin-top:12px">
+            <div class="note" style="color:#71501c;text-wrap:pretty">⚠️ <b>Разметка хранится ОТДЕЛЬНО от сессии и ДОЛЬШЕ</b> (<span id="markup-ttl-days">30</span> дней, а не 24 часа) — она нужна для накопления эталонных примеров и <b>содержит фрагменты текста вашего документа</b> (то самое выделение и его значение). Удаление сессии эту разметку НЕ стирает — управляйте ей отдельно.
+              <span id="markup-summary-line"></span>
+              <br><button class="ghost" style="margin-top:6px;padding:4px 10px;font-size:12px" onclick="deleteAllMarkupUI()">Удалить всю накопленную разметку (все сессии)</button>
+            </div>
           </div>
+          <div class="note" style="margin-top:10px;text-wrap:pretty">«Просмотрено, правок нет» — если посмотрели документ целиком и поправлять нечего: иначе документ без единой правки не попадёт в отчёт вообще, и «программа не ошиблась» будет невозможно показать.</div>
+          <div style="margin-top:10px"><button class="ghost" onclick="loadMarkupPanel()">Обновить список</button></div>
         </div>
-        <div id="markup-list"></div>
-        <div class="verify-actions" style="margin-top:10px">
-          <button class="primary" id="markup-apply-btn" onclick="applyMarkup()">Применить правки и пересобрать</button>
-          <button class="ghost" id="markup-undo-btn" onclick="undoLastMarkup()" disabled
+        <div class="mk-foot">
+          <button class="mk-apply" id="markup-apply-btn" onclick="applyMarkup()">Применить и пересобрать</button>
+          <button class="mk-undo" id="markup-undo-btn" onclick="undoLastMarkup()" disabled
                   title="Отменить последнее действие с разметкой">↶ Отменить последнее</button>
-          <button class="ghost" onclick="loadMarkupPanel()">Обновить список</button>
-          <button class="ghost" onclick="markReviewedUI()">✅ Просмотрено, правок нет</button>
+          <span style="flex:1"></span>
+          <button class="mk-ok" onclick="markReviewedUI()">✓ Просмотрено, правок нет</button>
         </div>
-        <div class="note" style="margin-top:8px">Нажмите, если посмотрели документ целиком и ничего поправлять не нужно — иначе документ без единой правки не попадёт в отчёт вообще, и «программа не ошиблась» будет невозможно показать.</div>
+      </div>
       </div>
 
       <div class="verify-actions">
-        <button class="primary" id="copy-anon-btn" onclick="copyAnon()">📋 Скопировать обезличенный текст</button>
+        <button class="primary cta" id="copy-anon-btn" onclick="copyAnon()"><span class="cta-ico"></span>Скопировать обезличенный текст</button>
         <button class="ghost" onclick="downloadAnon()">⬇ Скачать файлом</button>
+        <button class="ghost" id="markup-toggle" onclick="toggleMarkupPanel()">✎ Ваши правки</button>
         <button class="ghost" onclick="show('enc');resetEnc()">Загрузить другой документ</button>
         <span class="note">Сохраните <b>ID сессии</b> — по нему позже восстановите оригинал (срок хранения 24 ч).</span>
       </div>
@@ -315,15 +887,19 @@
   </section>
 
   <!-- ===================== SCREEN 3: RESTORE ===================== -->
+  <!-- макет: сетка на 1280, от 1400 px — «440px + остаток», левая колонка со
+       списком сессий листается внутри себя, а не тянет весь экран. -->
   <section id="scr-res" class="screen">
-    <div class="card" style="max-width:820px;margin:0 auto 16px">
+    <div class="res-grid">
+    <div class="card res-sess">
       <h2 style="font-size:17px">Ваши сессии</h2>
       <div class="warn" style="background:#eef3ff;border-color:#cddcff;color:var(--accent-d)">
         <div class="note" style="color:#33507f"><b>Без файла сессии восстановление невозможно.</b> Сессия — это единственное место, где хранится соответствие меток (<code>[PERSON_1]</code> и т.п.) исходным данным; без неё систему нельзя попросить «вспомнить», что было спрятано, и оригинал не восстановить. Срок хранения — 24 часа с момента шифрации, затем сессия становится непригодной для восстановления.</div>
       </div>
       <div id="sess-list" style="margin-top:12px"></div>
     </div>
-    <div class="card" style="max-width:820px;margin:0 auto">
+    <div class="res-main">
+    <div class="card">
       <h2>Восстановление оригинала</h2>
       <p class="sub">Выберите сессию выше или введите ID сессии вручную, и вставьте обезличенный текст (или загрузите скачанный <code>{ID}.txt</code>). Система вернёт исходные значения на место замен.</p>
       <div class="field">
@@ -336,7 +912,7 @@
         <div style="margin-top:8px"><button class="ghost" onclick="document.getElementById('r-file').click()">📂 Загрузить .txt в это поле</button>
           <input id="r-file" type="file" class="hidden"></div>
       </div>
-      <button class="primary" onclick="doDecrypt()">Восстановить оригинал</button>
+      <button class="primary cta" onclick="doDecrypt()"><span class="cta-ico"></span>Восстановить оригинал</button>
 
       <div id="res-status" class="status"><span id="res-spin" class="spinner"></span><span id="res-msg"></span></div>
 
@@ -355,7 +931,7 @@
          decrypt-file) существовало ТОЛЬКО в командной строке: ни маршрута на
          сервере, ни кнопки. Для юриста это половина смысла продукта — он несёт
          в нейросеть договор и хочет получить обратно договор. -->
-    <div class="card" style="max-width:820px;margin:16px auto 0">
+    <div class="card" style="margin-top:14px">
       <h2>Вернуть договор файлом (с оформлением)</h2>
       <p class="sub">Если нейросеть вернула вам <b>файл</b>, а не текст — загрузите его здесь. Программа поставит исходные значения на место меток и отдаст файл обратно: шрифты, таблицы, колонтитулы и нумерация останутся как были. Форматы: <b id="cap-rfile-list">…</b>.</p>
       <div class="field">
@@ -368,13 +944,15 @@
           <span id="rf-name" class="note" style="margin-left:8px"></span>
           <input id="rf-file" type="file" class="hidden"></div>
       </div>
-      <button class="primary" onclick="doDecryptFile()">Вернуть файл с оформлением</button>
+      <button class="primary cta" onclick="doDecryptFile()"><span class="cta-ico"></span>Вернуть файл с оформлением</button>
       <div id="rfile-status" class="status"><span id="rfile-spin" class="spinner"></span><span id="rfile-msg"></span></div>
       <div id="rf-out" class="hidden" style="margin-top:12px">
         <a id="rf-link" class="ghost" style="display:inline-block;text-decoration:none" download>⬇ Скачать восстановленный файл</a>
         <div id="rf-note" class="note" style="margin-top:8px"></div>
       </div>
     </div>
+    </div><!-- /.res-main -->
+    </div><!-- /.res-grid -->
   </section>
 
   <!-- ===================== SCREEN 4: ANALYTICS (U4) ===================== -->
@@ -444,6 +1022,10 @@
       <div id="sto-body" class="hidden">
         <div id="sto-purged" class="warn hidden" style="margin-bottom:12px"></div>
 
+        <!-- макет: от 1280 px — две колонки. Слева «Где» и «Что именно»,
+             справа «Ключ», «Сколько времени» и «Удалить сейчас». -->
+        <div class="sto-grid">
+        <div class="sto-col">
         <div class="ana-sec">
           <h3>Где</h3>
           <pre class="preview" id="sto-path" style="max-height:none"></pre>
@@ -453,7 +1035,9 @@
           <h3>Что именно</h3>
           <div id="sto-items"></div>
         </div>
+        </div>
 
+        <div class="sto-col">
         <div class="ana-sec">
           <h3>Ключ</h3>
           <p class="note" id="sto-key"></p>
@@ -479,32 +1063,42 @@
           <button class="primary" onclick="deleteEverything()">Удалить всё</button>
           <span class="note" id="sto-del-msg"></span>
         </div>
+        </div><!-- /.sto-col -->
+        </div><!-- /.sto-grid -->
       </div>
     </div>
   </section>
 
   <!-- ===================== SCREEN 5: SETTINGS (T1-UI) ===================== -->
-  <section id="scr-set" class="screen">
+  <!-- ДИЗАЙН: модальное окно поверх текущего экрана. Состав не урезан —
+       внутри те же профили, те же 26 типов и тот же путь к файлу настроек. -->
+  <section id="scr-set" class="screen" onclick="if(event.target===this) closeSettings()">
     <div class="card">
-      <h2>Что маскировать</h2>
-      <p class="sub">Выберите набор данных, которые программа будет прятать. <b>Поиск всегда идёт по всем типам</b> — набор решает только, что заменять на маску. Настройка применяется к следующему обезличиванию; уже готовые документы не меняются.</p>
+      <div class="set-head">
+        <h2>Что маскировать</h2>
+        <p class="sub">Выберите набор данных, которые программа будет прятать. <b>Поиск всегда идёт по всем типам</b> — набор решает только, что заменять на маску. Настройка применяется к следующему обезличиванию; уже готовые документы не меняются.</p>
+      </div>
 
-      <div id="set-status" class="status"><span id="set-spin" class="spinner"></span><span id="set-msg"></span></div>
+      <div class="set-pad">
+        <div id="set-status" class="status"><span id="set-spin" class="spinner"></span><span id="set-msg"></span></div>
 
-      <div id="set-body" class="hidden">
-        <div id="set-profiles"></div>
+        <div id="set-body" class="hidden">
+          <div id="set-profiles"></div>
 
-        <div class="ana-sec">
-          <h3>Отдельные типы</h3>
-          <p class="sub" style="margin:2px 0 10px">Галочки показывают состав выбранного набора. Можно включить или выключить любой тип отдельно — это переопределит набор.</p>
-          <div id="set-types" class="set-types"></div>
+          <div class="ana-sec">
+            <h3>Отдельные типы</h3>
+            <p class="sub" style="margin:2px 0 10px">Галочки показывают состав выбранного набора. Можно включить или выключить любой тип отдельно — это переопределит набор.</p>
+            <div id="set-types" class="set-types"></div>
+          </div>
+
+          <div class="note" style="margin-top:10px">Настройка хранится на этом компьютере: <code id="set-path"></code></div>
         </div>
+      </div>
 
-        <div class="row" style="margin-top:14px;display:flex;gap:10px;flex-wrap:wrap;align-items:center">
-          <button class="primary" onclick="saveSettings()">Сохранить</button>
-          <span class="note" id="set-saved"></span>
-        </div>
-        <div class="note" style="margin-top:10px">Настройка хранится на этом компьютере: <code id="set-path"></code></div>
+      <div class="set-foot">
+        <span class="note" id="set-saved" style="margin-right:auto"></span>
+        <button class="ghost" onclick="closeSettings()">Закрыть</button>
+        <button class="primary" onclick="saveSettings()">Сохранить</button>
       </div>
     </div>
   </section>
@@ -545,20 +1139,67 @@ async function loadCapabilities(){
 loadCapabilities();
 let CUR = null;             // текущий результат шифрации
 let PENDING_FILE = null;    // файл, ждущий решения по зонам
-const TYPE_LABELS = {PERSON:"ФИО",ORG:"Организация",ADDRESS:"Адрес",INN:"ИНН организации (10 цифр)",INN_PERSON:"ИНН человека (12 цифр)",OGRN:"ОГРН/ОГРНИП",KPP:"КПП",BANK_ACCOUNT:"Банковский счёт",BIK:"БИК",PASSPORT:"Паспорт",PHONE:"Телефон",EMAIL:"E-mail",SNILS:"СНИЛС",BIRTHDATE:"Дата рождения",SUM:"Сумма",PERCENT:"Процент (ставка, неустойка)",TERM:"Срок исполнения",DATE:"Дата"};
+const TYPE_LABELS = {PERSON:"ФИО",ORG:"Организация",ADDRESS:"Адрес",INN:"ИНН организации (10 цифр)",INN_PERSON:"ИНН человека (12 цифр)",OGRN:"ОГРН/ОГРНИП",KPP:"КПП",BANK_ACCOUNT:"Банковский счёт",BIK:"БИК",PASSPORT:"Паспорт",PHONE:"Телефон",EMAIL:"E-mail",SNILS:"СНИЛС",BIRTHDATE:"Дата рождения",SUM:"Сумма",PERCENT:"Процент (ставка, неустойка)",TERM:"Срок исполнения",DATE:"Дата",CLAUSE_REF:"Ссылка на пункт",ROLE_TERM:"Роль стороны",COLLECTIVE:"Собирательное имя",CONTRACT_KIND:"Вид договора",CONTRACT_NO:"Номер договора",PASSPORT_ISSUER:"Кем выдан паспорт",REGISTRY_NAME:"Название реестра",REG_ID:"Регистрационный номер",REG_NUMBER:"Номер записи",SHARE_PCT:"Доля, %",TRANCHE:"Транш"};
+
+// UI-VISION: три смысловых пучка из макета «Шифратор» — pdn (данные
+// человека), txt (организации и термины), num (числа/коды/сроки). Только для
+// группировки правой панели и подсветки; на состав детекции не влияет.
+const TYPE_BUCKET = {
+  PERSON:'pdn',ADDRESS:'pdn',PHONE:'pdn',EMAIL:'pdn',PASSPORT:'pdn',PASSPORT_ISSUER:'pdn',SNILS:'pdn',BIRTHDATE:'pdn',INN_PERSON:'pdn',
+  ORG:'txt',ROLE_TERM:'txt',COLLECTIVE:'txt',CONTRACT_KIND:'txt',REGISTRY_NAME:'txt',CLAUSE_REF:'txt',
+  INN:'num',OGRN:'num',KPP:'num',BANK_ACCOUNT:'num',BIK:'num',SUM:'num',PERCENT:'num',TERM:'num',DATE:'num',
+  CONTRACT_NO:'num',REG_ID:'num',REG_NUMBER:'num',SHARE_PCT:'num',TRANCHE:'num',
+};
+const BUCKET_META = {
+  pdn:{chip:'Персональные',title:'Данные человека',hint:'ФИО, адреса, телефоны, почта, паспорта. Самое дорогое в документе.'},
+  txt:{chip:'Текст',title:'Организации и термины',hint:'Названия компаний, роли сторон, вид договора — раскрывают, кто и о чём.'},
+  num:{chip:'Числа',title:'Числа и суммы',hint:'Суммы, проценты, даты, счета, ИНН. Раскрывают условия сделки.'},
+};
+const BUCKET_ORDER=['pdn','txt','num'];
 
 function show(which){
-  for(const s of ['enc','ver','res','ana','set','sto']){
+  /* 'set' в списке экранов больше НЕТ: по дизайну «Что прятать» — модальное
+     окно поверх текущего экрана (openSettings/closeSettings), поэтому оно не
+     должно прятать то, что под ним. */
+  for(const s of ['enc','ver','res','ana','sto']){
     document.getElementById('scr-'+s).classList.toggle('active', s===which);
     document.getElementById('nav-'+s).classList.toggle('active', s===which);
   }
+  // «1 · Обезличить» в шапке — один сегмент на два реальных экрана (загрузка
+  // и проверка), как в макете; nav-ver сам остаётся скрытым служебным узлом.
+  document.getElementById('nav-enc').classList.toggle('active', which==='enc'||which==='ver');
   if(which==='res') loadSessions();
   if(which==='ver' && CUR) loadMarkupPanel();
   if(which==='ana') loadAnalytics();
-  if(which==='set') loadSettings();
   if(which==='sto') loadStorageInfo();
   closeMarkupMenu();
   BOUNDARY_EDIT=null;
+}
+
+/* «Что прятать»: модальное окно поверх текущего экрана (дизайн). Экран под ним
+   остаётся видимым и активным — поэтому это НЕ show('set'). */
+function openSettings(){
+  document.getElementById('scr-set').classList.add('active');
+  document.getElementById('nav-set').classList.add('active');
+  loadSettings();
+  closeMarkupMenu();
+}
+function closeSettings(){
+  document.getElementById('scr-set').classList.remove('active');
+  document.getElementById('nav-set').classList.remove('active');
+}
+document.addEventListener('keydown', e=>{
+  if(e.key==='Escape' && document.getElementById('scr-set').classList.contains('active')) closeSettings();
+});
+
+/* выдвижной ящик «Ваши правки» (в окне фиксированной высоты он не помещается
+   под панелями, см. CSS .markup-panel) */
+function toggleMarkupPanel(){
+  const p=document.getElementById('markup-overlay');
+  if(!p) return;
+  const on=p.classList.toggle('open');
+  document.getElementById('markup-toggle').classList.toggle('active', on);
+  if(on && CUR) loadMarkupPanel();
 }
 
 /* ---------- upload wiring ---------- */
@@ -581,6 +1222,9 @@ function resetEnc(){
   hideStatus('enc');
   document.getElementById('zones-box').classList.add('hidden');
   PENDING_FILE=null;
+  CUR=null;
+  const hint=document.getElementById('hdr-doc-hint'); if(hint) hint.textContent='';
+  document.getElementById('nav-ver').disabled=true;
 }
 
 // Точного прогресса по стадиям детекции от бэкенда нет и в этой сессии не
@@ -638,6 +1282,7 @@ async function startEncrypt(file, allowLossy){
     if(data.status==='refused'){ PENDING_FILE=file; showZones(data); status('enc','Требуется ваше решение по непрочитанным зонам ниже.','err'); _encProgressUI(false); return; }
     if(data.status==='error'){ status('enc',data.message,'err'); _encProgressUI(false); return; }
     CUR=data;
+    CUR.filename=file.name;
     renderVerify(data);
     hideStatus('enc'); _encProgressUI(false);
     document.getElementById('nav-ver').disabled=false;
@@ -734,13 +1379,23 @@ function esc(s){ return (s||'').replace(/&/g,'&amp;').replace(/</g,'&lt;').repla
 
 function renderVerify(d){
   markupLogClear();   // другой документ — прошлые правки к нему не относятся
-  document.getElementById('v-sid').textContent=d.session_id;
+  // новый договор — напоминание о неполноте снова в исходном виде
+  document.documentElement.classList.remove('eyes-open');
+  // Полный ID живёт в data-full: на узком окне на экране остаётся огрызок
+  // (АДАПТИВ, макет:978), а копируется всё равно целое значение.
+  const sidEl=document.getElementById('v-sid');
+  sidEl.dataset.full=d.session_id;
+  sidEl.textContent=d.session_id;
   document.getElementById('v-count').textContent='спрятано '+d.values_hidden+' знач. · '+d.entities_total+' замен';
-  const po=document.getElementById('pane-orig'), pa=document.getElementById('pane-anon');
-  po.classList.remove('numbered'); pa.classList.remove('numbered');
-  po.innerHTML=d.original_html||'<span class="note">(пусто)</span>';
+  /* Панели исходного текста больше нет (дизайн): сравнение даёт полоса
+     AI vision — вне полосы в этой же панели стоят настоящие значения. */
+  const pa=document.getElementById('pane-anon');
+  pa.classList.remove('numbered');
   pa.innerHTML=d.anon_html||'<span class="note">(пусто)</span>';
+  SCAN.prepared=null;                  // другой документ — замеры ширин заново
   wireLineNumbers();
+  const hint=document.getElementById('hdr-doc-hint');
+  if(hint) hint.textContent = (CUR.filename||'документ')+' · '+(pa.textContent||'').length+' знака';
 
   // lossy banner
   /* ЭТАП UI-REBUILD-2, задача 2: предупреждение о непрочитанном.
@@ -796,23 +1451,55 @@ function renderVerify(d){
         'это ваша настройка, а не пропуск программы. Изменить — вкладка «5 · Что маскировать».</div>';
   } else pe.innerHTML='';
 
-  // sidebar grouped by type
+  // sidebar: легенда — по точным типам; список — по трём пучкам (UI-VISION)
   const byType={};
   d.replacements.forEach(r=>{ (byType[r.entity_type]=byType[r.entity_type]||[]).push(r); });
   const types=Object.keys(byType).sort((a,b)=>(TYPE_LABELS[a]||a).localeCompare(TYPE_LABELS[b]||b));
-  let html='', legend='';
-  types.forEach(t=>{
-    const label=TYPE_LABELS[t]||t;
-    legend+='<span><span class="swatch t-'+t+'"></span>'+esc(label)+'</span>';
-    html+='<div class="grp"><div class="grp-h"><span><span class="swatch t-'+t+'"></span>'+esc(label)+'</span><span>'+byType[t].length+'</span></div>';
-    byType[t].forEach(r=>{
-      html+='<div class="rep" data-ri="'+r.ri+'" onmouseenter="hi('+r.ri+',1)" onmouseleave="hi('+r.ri+',0)" onclick="jump('+r.ri+')">'+
+  let legend='';
+  types.forEach(t=>{ legend+='<span><span class="swatch t-'+t+'"></span>'+esc(TYPE_LABELS[t]||t)+'</span>'; });
+
+  const byBucket={pdn:[],txt:[],num:[]};
+  d.replacements.forEach(r=>{ (byBucket[TYPE_BUCKET[r.entity_type]||'txt']).push(r); });
+  const GROUP_SHOW=6;
+  let html='';
+  BUCKET_ORDER.forEach(b=>{
+    const items=byBucket[b]; if(!items.length) return;
+    const meta=BUCKET_META[b];
+    html+='<div class="grp buck-'+b+'"><div class="grp-h"><span class="grp-chip">'+esc(meta.chip)+'</span>'+
+      '<span class="grp-title">'+esc(meta.title)+'</span><span class="grp-cnt">'+items.length+'</span></div>'+
+      '<div class="grp-hint">'+esc(meta.hint)+'</div>';
+    items.forEach((r,i)=>{
+      html+='<div class="rep'+(i>=GROUP_SHOW?' rep-more hidden':'')+'" data-ri="'+r.ri+'" onmouseenter="hi('+r.ri+',1)" onmouseleave="hi('+r.ri+',0)" onclick="jump('+r.ri+')">'+
+        '<span class="tok">'+esc(r.token)+'</span>'+
         '<span class="orig" title="'+esc(r.original_text)+'">'+esc(r.original_text)+'</span>'+
-        '<span><span class="tok">'+esc(r.token)+'</span>'+(r.count>1?' <span class="cnt">×'+r.count+'</span>':'')+'</span></div>';
+        (r.count>1?'<span class="cnt">×'+r.count+'</span>':'')+'</div>';
     });
+    if(items.length>GROUP_SHOW){
+      html+='<div class="rep-showmore" onclick="this.parentElement.querySelectorAll(\'.rep-more\').forEach(x=>x.classList.remove(\'hidden\'));this.remove()">'+
+        'ещё '+(items.length-GROUP_SHOW)+' в этой группе</div>';
+    }
     html+='</div>';
   });
   document.getElementById('v-list').innerHTML=html||'<div class="rep note">Ничего не найдено — проверьте документ вручную.</div>';
+  // трёхсегментная полоса долей пучков — как в макете (barA/B/C)
+  const bar=document.getElementById('v-bucket-bar');
+  if(bar){
+    const total=d.replacements.length||1;
+    bar.innerHTML=BUCKET_ORDER.map(b=>'<div class="bar-seg bar-'+b+'" style="width:'+(byBucket[b].length/total*100)+'%" title="'+esc(BUCKET_META[b].title)+': '+byBucket[b].length+'"></div>').join('');
+  }
+  // Свёрнутая опись (АДАПТИВ, w < 1360) питается ТЕМИ ЖЕ byBucket, что и
+  // полная панель: второго места, где считаются пучки, заводить нельзя —
+  // разошедшиеся счётчики читаются как «часть данных потерялась».
+  const railTotal=document.getElementById('rail-total');
+  if(railTotal){
+    railTotal.textContent=d.replacements.length;
+    document.getElementById('rail-open').title='Развернуть опись — спрятано '+d.replacements.length;
+    BUCKET_ORDER.forEach(b=>{
+      const tile=document.getElementById('rail-t-'+b); if(!tile) return;
+      tile.querySelector('.rail-n').textContent=byBucket[b].length;
+      tile.title=BUCKET_META[b].title+' — '+byBucket[b].length;
+    });
+  }
   document.getElementById('v-legend').innerHTML=legend;
   document.getElementById('v-side-count').textContent='('+d.replacements.length+')';
   // Поиск по полю ri, НЕ по позиции в массиве: d.replacements отсортирован для
@@ -821,6 +1508,8 @@ function renderVerify(d){
   CUR.byRi={};
   d.replacements.forEach(r=>{ CUR.byRi[r.ri]=r; });
   wireMarks();
+  if(!document.getElementById('v-riskmap').classList.contains('hidden')) renderRiskMap();
+  shfLayout();   // заголовок панели и вид ID сессии зависят от ширины окна
 }
 
 /* hover highlight cross-reference between panes + sidebar */
@@ -830,6 +1519,311 @@ function hi(ri,on){
 function jump(ri){
   const m=document.querySelector('.pane .body mark[data-ri="'+ri+'"]');
   if(m) m.scrollIntoView({behavior:'smooth',block:'center'});
+}
+
+/* --- UI-VISION: элементы управления панели «Проверка» из макета «Шифратор».
+   Только представление — состав детекции и хранимые данные не меняют. --- */
+function toggleValues(){
+  const side=document.getElementById('v-side');
+  const on=side.classList.toggle('show-values');
+  document.getElementById('ctl-values').textContent = on ? 'Скрыть значения' : 'Показать значения';
+}
+
+/* ======================= АДАПТИВ =======================================
+   Пороги — из макета (Shifrator.dc.html:857-863), там они переменные
+   состояния компонента. Здесь всё, что можно, отдано @media; сюда вынесено
+   ровно то, чего CSS не умеет: смена ТЕКСТА при смене ширины и состояние
+   свёрнутой описи, которое человек может перебить руками.
+
+   sideOpen НЕ сбрасывается при ресайзе: юрист развернул опись сам, и
+   сдвинутое на пиксель окно не должно отменять его решение.  */
+var SIDE_OPEN=false;
+function setSideOpen(v){ SIDE_OPEN=!!v; shfLayout(); }
+
+/* Напоминание «Проверьте глазами»: развёрнуто <-> строкой. Состояние живёт
+   только в текущем сеансе и НЕ запоминается между документами — предупреждение
+   о неполноте поиска ПДн должно встречать юриста заново на каждом договоре. */
+function toggleEyesBanner(){ document.documentElement.classList.toggle('eyes-open'); }
+
+function shfLayout(){
+  const w=window.innerWidth, h=window.innerHeight, r=document.documentElement.classList;
+  r.toggle('w-stub',   w<900);
+  r.toggle('w-narrow', w<1360);
+  r.toggle('w-tight',  w<1200);
+  r.toggle('side-open', SIDE_OPEN);
+
+  const stubW=document.getElementById('stub-w');
+  if(stubW) stubW.textContent=w+' px';
+
+  // Заголовок панели: полный / короткий / пусто — макет:977
+  const pt=document.getElementById('pane-anon-title');
+  if(pt) pt.textContent = w<1040 ? '' :
+    (w<1200 ? 'Обезличенный текст' : 'Обезличенный текст — выделяйте пропуски здесь');
+
+  // ID сессии: на узком окне середина сворачивается — макет:978.
+  // Текст в DOM укорачивается, поэтому полное значение уехало бы и в буфер;
+  // копирование чинится обработчиком copy ниже, а не отказом от сокращения:
+  // без ID сессии оригинал не восстановить вообще.
+  const sid=document.getElementById('v-sid');
+  if(sid && sid.dataset.full){
+    const f=sid.dataset.full;
+    sid.textContent = (w<1200 && f.length>17) ? f.slice(0,8)+'…'+f.slice(-4) : f;
+  }
+  if(!document.getElementById('v-riskmap').classList.contains('hidden')) renderRiskMap();
+}
+/* Сокращённый ID копируется целиком: выделение внутри .sid подменяется
+   полным значением. Иначе юрист скопировал бы «3f2a1c9e…d3aa» и потерял
+   доступ к собственной сессии. */
+document.addEventListener('copy',e=>{
+  const sel=document.getSelection(); if(!sel || sel.isCollapsed) return;
+  const node=sel.anchorNode, el=node && (node.nodeType===1?node:node.parentElement);
+  const sid=el && el.closest && el.closest('.sid');
+  if(!sid || !sid.dataset.full || sid.textContent===sid.dataset.full) return;
+  e.clipboardData.setData('text/plain', sid.dataset.full);
+  e.preventDefault();
+});
+/* Слушателей два, как в макете (Shifrator.dc.html:783-787): событий resize
+   одних мало — размер содержимого меняется и без них (появилась полоса
+   прокрутки, сменился масштаб, окно переехало на монитор с другим DPI).
+   Пропущенный пересчёт здесь означает опись поверх текста договора.
+
+   Сторож на «размер не изменился» — оттуда же (макет:778-780) и он не
+   косметический: shfLayout переставляет классы на <html>, то есть меняет
+   раскладку, а изменение раскладки будит ResizeObserver заново. Сравнение с
+   прошлыми числами разрывает эту петлю в первом же витке — иначе браузер
+   гасит её сам, тихо переставая доставлять уведомления, и адаптив застревает
+   на прошлой ширине. Проверить срабатывание петли в этой сессии не удалось:
+   в headless-окне без композитинга ни resize, ни ResizeObserver, ни
+   requestAnimationFrame не вызываются вовсе (замерено счётчиками), поэтому
+   сторож взят по образцу макета, а не по воспроизведённому отказу. */
+var SHF_LAST_W=-1, SHF_LAST_H=-1;
+function shfOnResize(){
+  if(window.innerWidth===SHF_LAST_W && window.innerHeight===SHF_LAST_H) return;
+  SHF_LAST_W=window.innerWidth; SHF_LAST_H=window.innerHeight;
+  shfLayout();
+}
+/* Адрес в подвале — живой, не зашитый номер порта. Через DOMContentLoaded:
+   сам подвал стоит в разметке ПОСЛЕ этого скрипта, к этой строке его ещё нет. */
+document.addEventListener('DOMContentLoaded',()=>{
+  const h=document.getElementById('build-host'); if(h) h.textContent=location.host;
+});
+window.addEventListener('resize', shfOnResize);
+if(typeof ResizeObserver!=='undefined') new ResizeObserver(shfOnResize).observe(document.documentElement);
+shfOnResize();
+function toggleRiskMap(){
+  const box=document.getElementById('v-riskmap'), ctl=document.getElementById('ctl-riskmap');
+  const on = box.classList.toggle('hidden')===false;
+  ctl.classList.toggle('active',on);
+  if(on) renderRiskMap();
+}
+/* ---- AI vision: постоянная полоса сканирования (дизайн) ---------------------
+   ВНЕ полосы метка показывает НАСТОЯЩЕЕ значение и выглядит обычным текстом
+   договора, ВНУТРИ — метку [ТИП_N]. Подмена живёт ТОЛЬКО в DOM: и copyAnon(),
+   и downloadAnon() берут CUR.anon_text — строку с метками, собранную сервером.
+   Настоящее значение поэтому физически не может уйти в буфер или в файл. */
+const SCAN={on:false,prepared:null,settling:false};
+function scanMarks(){ return [...document.querySelectorAll('#pane-anon mark.ent')]; }
+
+function scanPrepare(){
+  const text=document.getElementById('pane-anon');
+  if(!text || SCAN.prepared===text) return;
+  const marks=scanMarks(); if(!marks.length) return;
+  marks.forEach(el=>{
+    const r=(CUR&&CUR.byRi)?CUR.byRi[+el.dataset.ri]:null;
+    if(!r) return;
+    if(!el.dataset.token) el.dataset.token=el.textContent.trim();
+    el.dataset.real=r.original_text;
+  });
+  const blocks=[...new Set(marks.map(el=>el.closest('.ln-row')||el.parentElement))];
+  // меряем обе раскладки: сначала настоящие значения, потом метки
+  marks.forEach(el=>{ if(el.dataset.real!=null){ el.textContent=el.dataset.real; } });
+  const wReal=marks.map(el=>el.getBoundingClientRect().width);
+  const hReal=blocks.map(b=>b.getBoundingClientRect().height);
+  marks.forEach(el=>{ if(el.dataset.token){ el.textContent=el.dataset.token; } });
+  marks.forEach((el,i)=>{
+    if(el.dataset.real==null) return;
+    const wTok=el.getBoundingClientRect().width;
+    // значение шире метки — коробка заполнится, фиксируем щедро; уже метки —
+    // только вплотную, иначе в тексте останется дыра
+    const limit = wReal[i]>=wTok ? 64 : 20;
+    if(Math.abs(wReal[i]-wTok)>limit) return;
+    el.style.minWidth=Math.max(wReal[i],wTok).toFixed(1)+'px';
+  });
+  // высота строки — по «худшему» состоянию: текст ниже не должен прыгать
+  blocks.forEach((b,i)=>{ b.style.minHeight=Math.max(hReal[i],b.getBoundingClientRect().height).toFixed(1)+'px'; });
+  SCAN.prepared=text;
+}
+
+function scanApply(settle){
+  const host=document.querySelector('#pane-anon-box .scan-host');
+  const band=document.getElementById('scan-band');
+  if(!host||!band) return;
+  const marks=scanMarks(); if(!marks.length) return;
+
+  if(!SCAN.on){
+    marks.forEach(el=>{ if(el.dataset.token){ el.textContent=el.dataset.token; } el.removeAttribute('data-scan'); });
+    scanGutter(null);
+    return;
+  }
+  const h=host.clientHeight, k=Math.min(1,h/380);   // на низком окне пропорции сжимаются
+  const TOP=Math.round(128*k), GAP=Math.round(58*k);
+  band.style.top=TOP+'px';
+  band.style.height=Math.max(64,h-TOP-GAP)+'px';
+
+  let touched=false;
+  for(let pass=0;pass<6;pass++){
+    const br=band.getBoundingClientRect();
+    let changed=false;
+    marks.forEach(el=>{
+      if(!el.dataset.token||el.dataset.real==null) return;
+      const r=el.getBoundingClientRect();
+      const inside=(r.top+2>=br.top && r.top+2<br.bottom)?'1':'0';
+      if(el.dataset.scan!==inside){
+        el.dataset.scan=inside;
+        el.textContent = inside==='1' ? el.dataset.token : el.dataset.real;
+        changed=true; touched=true;
+      }
+    });
+    if(!changed) break;
+  }
+  /* финальный пасс только ПОВЫШАЕТ: настоящее значение не имеет права остаться
+     внутри полосы, даже если метка на кромке колеблется между раскладками */
+  for(let pass=0;pass<3;pass++){
+    const br=band.getBoundingClientRect();
+    let promoted=false;
+    marks.forEach(el=>{
+      if(!el.dataset.token||el.dataset.scan==='1') return;
+      const r=el.getBoundingClientRect();
+      if(r.top+2>=br.top && r.top+2<br.bottom){
+        el.dataset.scan='1'; el.textContent=el.dataset.token; promoted=true; touched=true;
+      }
+    });
+    if(!promoted) break;
+  }
+  scanGutter(band.getBoundingClientRect());
+  // ещё один пасс только если раскладка реально менялась, максимум два подряд
+  if(touched && (settle||0)<2 && !SCAN.settling){
+    SCAN.settling=true;
+    requestAnimationFrame(()=>{ SCAN.settling=false; scanApply((settle||0)+1); });
+  }
+}
+
+/* номера строк внутри полосы — двоичные, узким Saira Condensed (дизайн) */
+function scanGutter(bandRect){
+  document.querySelectorAll('#pane-anon .ln-num').forEach(n=>{
+    const line=n.parentElement && n.parentElement.dataset.line;
+    if(!line) return;
+    let inBand=false;
+    if(bandRect){
+      const r=n.getBoundingClientRect(), mid=r.top+r.height/2;
+      inBand = mid>bandRect.top && mid<bandRect.bottom;
+    }
+    n.classList.toggle('ln-inband',inBand);
+    n.textContent = inBand ? (+line).toString(2) : line;
+  });
+}
+
+function toggleAiVision(){
+  const box=document.getElementById('pane-anon-box'), ctl=document.getElementById('ctl-aivision');
+  SCAN.on=!SCAN.on;
+  box.classList.toggle('ai-on',SCAN.on);
+  ctl.classList.toggle('active',SCAN.on);
+  if(SCAN.on) scanPrepare();
+  scanApply(0);
+}
+addEventListener('resize', ()=>{ if(SCAN.on) scanApply(0); });
+function setMarksTheme(theme){
+  document.documentElement.setAttribute('data-marks', theme);
+  document.querySelectorAll('#ctl-marktheme .ms-opt').forEach(o=>o.classList.toggle('active', o.dataset.theme===theme));
+}
+/* ПЛОТНОСТЬ (макет, вход density). Держится в localStorage: это настройка
+   рабочего места, а не свойство документа — переживает и другой договор, и
+   перезапуск программы. Хранится ЛОКАЛЬНО, как и всё остальное. */
+function setDensity(mode){
+  const dense = mode==='compact';
+  document.documentElement.classList.toggle('dense', dense);
+  document.querySelectorAll('#ctl-density .ms-opt').forEach(o=>o.classList.toggle('active', o.dataset.density===mode));
+  try{ localStorage.setItem('shf-density', mode); }catch(e){}
+  // кегль поменялся — ширины меток и полоса сканирования меряются заново
+  SCAN.prepared=null;
+  if(SCAN.on) scanApply(0);
+}
+(function(){
+  let m='comfortable';
+  try{ m = localStorage.getItem('shf-density')||'comfortable'; }catch(e){}
+  setDensity(m==='compact'?'compact':'comfortable');
+})();
+/* Карта риска — плотность спрятанного по документу. В дизайне это не полоска
+   засечек, а график: три кривые (пучки), сетка, кликабельные части документа и
+   легенда. Данные берутся из РЕАЛЬНЫХ позиций меток (.ln-row), не выдумываются:
+   строки раскладываются по 14 частям, в каждой считаются метки каждого пучка. */
+const RISK_PARTS=14;
+const RISK_SERIES=[
+  {key:'pdn',label:'Персональные',  color:'#20302a',w:2,  dash:'0'},
+  {key:'num',label:'Числа и суммы', color:'#2f6152',w:1.7,dash:'5 3'},
+  {key:'txt',label:'Длинные',       color:'#9aa094',w:1.5,dash:'1.5 3'}
+];
+function renderRiskMap(){
+  const track=document.getElementById('v-riskmap-track');
+  const rows=[...document.querySelectorAll('#pane-anon .ln-row')];
+  if(!rows.length || !CUR || !CUR.byRi){ track.innerHTML=''; return; }
+  const data={pdn:new Array(RISK_PARTS).fill(0),num:new Array(RISK_PARTS).fill(0),txt:new Array(RISK_PARTS).fill(0)};
+  rows.forEach((row,idx)=>{
+    const part=Math.min(RISK_PARTS-1, Math.floor(idx/rows.length*RISK_PARTS));
+    row.querySelectorAll('mark.ent').forEach(m=>{
+      const t=m.className.match(/t-([A-Z_]+)/);
+      data[(t&&TYPE_BUCKET[t[1]])||'num'][part]++;
+    });
+  });
+  const max=Math.max(1,...RISK_SERIES.flatMap(s=>data[s.key]));
+  const pts=arr=>arr.map((v,i)=>[9+(v/max)*58, 6+(i*608)/(arr.length-1)]);
+  const smooth=ps=>ps.reduce((d,p,i)=>{
+    if(!i) return 'M'+p[0].toFixed(1)+' '+p[1].toFixed(1);
+    const p0=ps[i-1], pm=ps[i-2]||p0, pn=ps[i+1]||p;
+    const c1=[p0[0]+(p[0]-pm[0])/6, p0[1]+(p[1]-pm[1])/6];
+    const c2=[p[0]-(pn[0]-p0[0])/6, p[1]-(pn[1]-p0[1])/6];
+    return d+' C'+c1.map(n=>n.toFixed(1)).join(' ')+','+c2.map(n=>n.toFixed(1)).join(' ')+
+           ','+p[0].toFixed(1)+' '+p[1].toFixed(1);
+  },'');
+  let svg='<svg viewBox="0 0 74 620" preserveAspectRatio="none">';
+  for(let i=0;i<=6;i++){ const y=(6+(i*608)/6).toFixed(1);
+    svg+='<line x1="4" y1="'+y+'" x2="70" y2="'+y+'" stroke="#e2e1d9" stroke-width="1"/>'; }
+  svg+='<line x1="5" y1="0" x2="5" y2="620" stroke="#d6d5cd" stroke-width="1"/>';
+  const ends=[];
+  RISK_SERIES.forEach(s=>{
+    const ps=pts(data[s.key]); ends.push([ps[ps.length-1],s.color]);
+    const dv = s.dash==='0' ? '0' : s.dash==='5 3' ? '13 8' : '4 8';
+    svg+='<path d="'+smooth(ps)+'" fill="none" stroke="'+s.color+'" stroke-width="'+(s.w*1.5)+
+         '" stroke-dasharray="'+dv+'" stroke-linecap="round" stroke-linejoin="round"/>';
+  });
+  ends.forEach(e=>{ svg+='<circle cx="'+e[0][0].toFixed(1)+'" cy="'+e[0][1].toFixed(1)+'" r="3.4" fill="'+e[1]+'"/>'; });
+  svg+='</svg>';
+  // Подсказки графика идут через ОБЩИЙ тултип (#tip), а не через title=
+  // браузера: спека требует одного компонента подсказки на весь интерфейс.
+  // Текст про «часть N», а не «страницу N», — намеренно: у обычного договора
+  // в .txt страниц нет, документ делится на 14 равных частей по строкам, и
+  // обещать юристу несуществующий номер страницы нельзя.
+  let cols='<div class="riskmap-cols">';
+  for(let i=0;i<RISK_PARTS;i++){
+    const tot=RISK_SERIES.reduce((a,s)=>a+data[s.key][i],0);
+    cols+='<div onclick="riskGoto('+i+')" data-tip="Часть '+(i+1)+' из '+RISK_PARTS+
+          ' · метки: '+tot+'"></div>';
+  }
+  cols+='</div>';
+  let leg='<div class="riskmap-legend">';
+  RISK_SERIES.forEach(s=>{
+    const style = s.dash==='0'?'solid':s.dash==='5 3'?'dashed':'dotted';
+    const tot=data[s.key].reduce((a,b)=>a+b,0);
+    leg+='<div data-tip="'+esc(s.label)+' · '+tot+' в '+RISK_PARTS+' частях" style="border-top:'+
+         s.w+'px '+style+' '+s.color+'"></div>';
+  });
+  leg+='</div>';
+  track.innerHTML=svg+cols+leg;
+  wireTips(track);
+}
+function riskGoto(i){
+  const pane=document.getElementById('pane-anon'); if(!pane) return;
+  pane.scrollTo({top:i*(pane.scrollHeight/RISK_PARTS), behavior:'smooth'});
 }
 const tip=document.getElementById('tip');
 function wireMarks(){
@@ -845,6 +1839,19 @@ function wireMarks(){
     if(m.closest('#pane-anon') && m.dataset.token){
       m.addEventListener('click', e=>{ e.stopPropagation(); tip.style.display='none'; openMarkMenu(e, m); });
     }
+  });
+}
+/* Общий тултип для всего, что помечено data-tip (спека §3): один компонент
+   на интерфейс, а не смесь из системных подсказок браузера. */
+function wireTips(root){
+  (root||document).querySelectorAll('[data-tip]').forEach(el=>{
+    if(el.__tipWired) return; el.__tipWired=true;
+    el.addEventListener('mouseenter',e=>{
+      tip.textContent=el.getAttribute('data-tip');
+      tip.style.display='block'; moveTip(e);
+    });
+    el.addEventListener('mousemove',moveTip);
+    el.addEventListener('mouseleave',()=>{ tip.style.display='none'; });
   });
 }
 function moveTip(e){
@@ -1203,22 +2210,18 @@ function lnRowOf(node){
 }
 
 function wireLineNumbers(){
-  const orig=document.getElementById('pane-orig'), anon=document.getElementById('pane-anon');
-  paginatePane(orig); paginatePane(anon);
+  /* Панель одна (дизайн), поэтому синхронизировать прокрутку не с чем:
+     lnSyncFrom остаётся для возможного возврата второй панели, но здесь
+     не зовётся. Подсветка строки и перемотка по клику на номер сохранены. */
+  const anon=document.getElementById('pane-anon');
+  paginatePane(anon);
   if(LN.wired) return; LN.wired=true;
-  orig.addEventListener('scroll', ()=>lnSyncFrom(orig,anon));
-  anon.addEventListener('scroll', ()=>lnSyncFrom(anon,orig));
-  // подсветка строки, на которую наведена мышь, — в ОБЕИХ панелях
-  [orig,anon].forEach(p=>{
-    p.addEventListener('mousemove', e=>{ const r=lnRowOf(e.target); lnMark(r?r.dataset.line:null); });
-    p.addEventListener('mouseleave', ()=>lnMark(null));
-    // клик по НОМЕРУ строки — перемотать вторую панель на неё же
-    p.addEventListener('click', e=>{
-      if(!e.target.classList || !e.target.classList.contains('ln-num')) return;
-      const line=e.target.parentElement.dataset.line;
-      lnScrollIntoView(p===orig?anon:orig, line, true);
-      lnScrollIntoView(p, line, true);
-    });
+  anon.addEventListener('scroll', ()=>{ scanApply(); });
+  anon.addEventListener('mousemove', e=>{ const r=lnRowOf(e.target); lnMark(r?r.dataset.line:null); });
+  anon.addEventListener('mouseleave', ()=>lnMark(null));
+  anon.addEventListener('click', e=>{
+    if(!e.target.classList || !e.target.classList.contains('ln-num')) return;
+    lnScrollIntoView(anon, e.target.parentElement.dataset.line, true);
   });
 }
 
@@ -1226,12 +2229,10 @@ function wireLineNumbers(){
    обезличенной (задача 6: «соответствующее место второй панели видно на
    экране, а не за его пределами»). */
 function lnRevealPeer(node){
+  /* Второй панели больше нет (дизайн) — показывать нечего, остаётся отметить
+     строку, в которой человек выделил текст. */
   const row=lnRowOf(node); if(!row) return;
-  const orig=document.getElementById('pane-orig');
-  const line=row.dataset.line, r=lnRow(orig,line); if(!r) return;
-  const vis = r.offsetTop>=orig.scrollTop && r.offsetTop+r.offsetHeight<=orig.scrollTop+orig.clientHeight;
-  if(!vis) lnScrollIntoView(orig,line,true);
-  lnMark(line);
+  lnMark(row.dataset.line);
 }
 
 /* ---- выделение мышью -> координаты в ИСХОДНОМ сегменте (без ввода вручную) ---- */
@@ -1604,7 +2605,7 @@ document.addEventListener('touchend', ()=>scheduleSelection(60), {passive:true})
       плашка стоит выше по слою: z-index у #markup-menu максимальный.
    ====================================================================== */
 (function guardBrowserNoise(){
-  ['pane-anon','pane-orig'].forEach(id=>{
+  ['pane-anon'].forEach(id=>{
     const el=document.getElementById(id); if(!el) return;
     el.setAttribute('spellcheck','false');
     el.setAttribute('translate','no');
@@ -1614,11 +2615,27 @@ document.addEventListener('touchend', ()=>scheduleSelection(60), {passive:true})
   });
 })();
 
+/* мятная CTA «стекло» (дизайн): белое пятно под курсором ездит за мышью через
+   --mx/--my, --hov гасит его при уходе */
+(function wireCta(){
+  document.querySelectorAll('button.primary.cta').forEach(b=>{
+    b.addEventListener('pointermove', e=>{
+      const r=b.getBoundingClientRect();
+      b.style.setProperty('--mx',(e.clientX-r.left)+'px');
+      b.style.setProperty('--my',(e.clientY-r.top)+'px');
+    });
+    b.addEventListener('pointerenter', ()=>b.style.setProperty('--hov','1'));
+    b.addEventListener('pointerleave', ()=>b.style.setProperty('--hov','0'));
+  });
+})();
+
 function clearSelection(){ const s=window.getSelection(); if(s) s.removeAllRanges(); }
 function resetAnonView(){ if(CUR && CUR.anon_html!=null){
   const pa=document.getElementById('pane-anon');
   pa.classList.remove('numbered'); pa.innerHTML=CUR.anon_html;
-  paginatePane(pa); wireMarks(); } }
+  SCAN.prepared=null;                  // разметка перерисована — мерить заново
+  paginatePane(pa); wireMarks();
+  if(SCAN.on){ scanPrepare(); scanApply(0); } } }
 
 /* ---- плавающее меню: тип / действия над существующей маской ---- */
 function positionMenu(menu, e){
@@ -2107,12 +3124,14 @@ async function loadAnalytics(){
 function renderAnalytics(r){
   const m=r.metrics, t=r.totals, s=r.sample;
   document.getElementById('ana-metrics').innerHTML=[
-    ['<div class="val">'+num(t.masks_total)+'</div><div class="lbl">масок поставил движок<br>(знаменатель метрик)</div>'],
-    ['<div class="val">'+pct(m.precision_reviewed_pct)+'</div><div class="lbl">precision по просмотренному<br>верхняя оценка</div>'],
-    ['<div class="val">'+pct(m.recall_reviewed_pct)+'</div><div class="lbl">recall по замеченному<br>верхняя оценка</div>'],
-    ['<div class="val">'+t.missed+'</div><div class="lbl">пропущено<br>(вы отметили сами)</div>'],
-    ['<div class="val">'+t.false_mask+'</div><div class="lbl">ложных масок<br>(сняли как не ПДн)</div>'],
-    ['<div class="val">'+(t.boundary+t.type)+'</div><div class="lbl">правок границы и типа<br>('+t.boundary+' + '+t.type+')</div>'],
+    // третья строка плитки — отдельная подпись (макет: m.sub), а не вторая
+    // половина метки через <br>: у неё свой кегль и свой цвет
+    ['<div class="val">'+num(t.masks_total)+'</div><div class="lbl">масок поставил движок</div><div class="sub">знаменатель метрик</div>'],
+    ['<div class="val">'+pct(m.precision_reviewed_pct)+'</div><div class="lbl">precision по просмотренному</div><div class="sub">верхняя оценка</div>'],
+    ['<div class="val">'+pct(m.recall_reviewed_pct)+'</div><div class="lbl">recall по замеченному</div><div class="sub">верхняя оценка</div>'],
+    ['<div class="val">'+t.missed+'</div><div class="lbl">пропущено</div><div class="sub">вы отметили сами</div>'],
+    ['<div class="val">'+t.false_mask+'</div><div class="lbl">ложных масок</div><div class="sub">сняли как не ПДн</div>'],
+    ['<div class="val">'+(t.boundary+t.type)+'</div><div class="lbl">правок границы и типа</div><div class="sub">'+t.boundary+' + '+t.type+'</div>'],
   ].map(x=>'<div class="metric">'+x+'</div>').join('');
 
   document.getElementById('ana-sample').innerHTML=
@@ -2191,6 +3210,9 @@ async function applyMarkup(){
   finally{ btn.disabled=false; btn.textContent=oldLabel; }
 }
 </script>
-<footer class="build-mark">сборка: {{BUILD_MARK}}</footer>
+<!-- макет: «SHIFRATOR · локальная сборка {BUILD} · 127.0.0.1:8765». Адрес
+     подставляется живой (location.host), а не строкой «8765»: порт задаётся
+     переменной SHIFRATOR_UI_PORT, и зашитый номер врал бы при любом другом. -->
+<footer class="build-mark">SHIFRATOR · локальная сборка {{BUILD_MARK}} · <span id="build-host">—</span></footer>
 </body>
 </html>

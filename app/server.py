@@ -10,6 +10,7 @@
 
 import json
 import os
+import re
 import socket
 import sys
 import tempfile
@@ -29,6 +30,18 @@ print(f"[BUILD_MARK={core.BUILD_MARK}]", file=sys.stderr)
 HOST = "127.0.0.1"
 DEFAULT_PORT = int(os.environ.get("SHIFRATOR_UI_PORT", "8765"))
 _INDEX = os.path.join(app_root(), "app", "index.html")
+
+# ЭТАП DESIGN-1: шрифты макета (Golos Text / JetBrains Mono / PT Serif /
+# Saira Condensed) лежат отдельными .woff2 в app/fonts, а не base64-строками
+# внутри index.html: вшитыми они раздували разметку с 162 КБ до 572 КБ и делали
+# любой diff интерфейса нечитаемым. Продукт обязан работать ОФЛАЙН, поэтому
+# fonts.googleapis.com не вариант — файлы едут в комплекте (packaging/
+# shifrator.spec, datas).
+_FONTS_DIR = os.path.join(app_root(), "app", "fonts")
+# Имя файла — только строчные латиница/цифры/дефис и расширение .woff2. Точки
+# и разделители пути в шаблон не проходят, поэтому «../» здесь невыразимо:
+# защита от обхода каталога стоит на разборе имени, а не на нормализации пути.
+_FONT_NAME_RE = re.compile(r"^[a-z0-9-]+\.woff2$")
 
 # ЭТАП CIRCLE-UI, задача 3. Своего списка форматов у сервера БОЛЬШЕ НЕТ: он
 # берётся из app/capabilities.py — единственного места, где список объявлен.
@@ -258,6 +271,28 @@ class Handler(BaseHTTPRequestHandler):
         self.end_headers()
         self.wfile.write(body)
 
+    def _handle_font(self):
+        """Отдать один .woff2 из app/fonts. Единственный статический маршрут
+        сервера помимо самой разметки — заводился ради шрифтов макета."""
+        name = self.path[len("/fonts/"):].split("?", 1)[0]
+        if not _FONT_NAME_RE.match(name):
+            self.send_error(404)
+            return
+        try:
+            with open(os.path.join(_FONTS_DIR, name), "rb") as f:
+                body = f.read()
+        except OSError:
+            self.send_error(404)
+            return
+        self.send_response(200)
+        self.send_header("Content-Type", "font/woff2")
+        self.send_header("Content-Length", str(len(body)))
+        # Файл меняется только вместе со сборкой, а имя у него постоянное:
+        # без этого браузер перезапрашивает все 12 начертаний на каждый F5.
+        self.send_header("Cache-Control", "public, max-age=31536000, immutable")
+        self.end_headers()
+        self.wfile.write(body)
+
     def _read_body(self):
         length = int(self.headers.get("Content-Length", "0"))
         if length > _MAX_UPLOAD:
@@ -299,6 +334,9 @@ class Handler(BaseHTTPRequestHandler):
             return
         if self.path.startswith("/api/report"):
             self._handle_report()
+            return
+        if self.path.startswith("/fonts/"):
+            self._handle_font()
             return
         if self.path in ("/", "/index.html"):
             try:
