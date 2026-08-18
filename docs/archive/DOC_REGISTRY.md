@@ -113,6 +113,7 @@
 | `stage_t2_inn/` | 10 | `compare_split.py` | `dump_before_after.txt`, `gate_*.log`, прочие дампы |
 | `stage_tarb/` | 2 | `diff_masks.py`, `dump_masks.py` | — |
 | `per_spread/` | 17 | `RECON.md` (разведка с адресами ДО правки), `surn_slot_survey.py` (проверка правила СЛОТА ФАМИЛИИ до кода), `keys_diff.py` (сличение реестров якорей до/после — поймал два дефекта), `compare.py` (таблица ДО/ПОСЛЕ), `mc_b.py` (линия «г» в абсолютных числах), `diag_per.py`, `probe_doc.py`, `probe2.py`, `probe_orig.py`, `segdump.py`, `leakctx.py`, `patch1..5.py` + `patch_docs/journal/state.py` (правки текстом; `patch4.py` — ИЗМЕРЕННЫЙ ТУПИК, откачен) | `gate_per_spread.log`, `accept_circle.log`, `compare.txt`, `mc_b.txt` |
+| `markup_spread/` | 10 | `measure_spread.py` (ЦЕНА распространения ручной разметки числом: симуляция пометки на каждой эталонной сущности корпуса v1, суд по эталону, отдельный замер ЦЕНЫ GUARD-ОВ подменой процедур точности), `probe_guard.py` (разбор конкретных отказов guard-а — назвал две поправки: год «2025 г.» и предлог «с»), `demo_traps.py` (ловушки задачи 3 дословным выводом), `demo_real_doc.py` (проба на настоящем документе корпуса), `find_open_surname.py` (поиск документа, где движок оставил фамилию открытой — не нашёл ни одного) | `measure_final.log`, `traps.log`, `demo_real_doc.log`, `pytest_full_markup_spread.log`, `accept_circle_markup_spread.log` |
 | (корень) | 1 | нет | `stage_t1_ui_gate.log` |
 
 ## 5. Что НЕ трогалось этой сессией
