@@ -1248,6 +1248,12 @@ function fireSelection(anchorEvent){
        ctx, живое выделение плашке больше не нужно. */
     const m=document.getElementById('markup-menu');
     if(markupMenuOpen() && m.contains(document.activeElement)) return;
+    /* Плашку, открытую ТЕКУЩИМ жестом, не гасим. Щелчок по существующей маске
+       (меню «снять / изменить тип / исправить границу») схлопывает выделение,
+       и без этой проверки отложенный разбор того же самого mouseup закрывал бы
+       меню сразу после того, как обработчик маски его открыл. Тот же класс
+       дефекта, что и Д-1, только с другой стороны. */
+    if(markupMenuOpen() && MENU_GESTURE===GESTURE) return;
     closeMarkupMenu();
     return;
   }
