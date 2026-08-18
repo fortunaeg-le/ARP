@@ -48,15 +48,17 @@
      "s": "     "
     },
     {
-     "n": {
+     "e": {
       "axes": {
-       "запись": "24.07.2007 г."
+       "запись": "«24» июля 2007 г."
       },
-      "form": "date|запись=24.07.2007 г.",
-      "type": "DATE",
-      "why": "дата документа — не ПДн"
+      "cat": "canonical",
+      "form": "date|запись=«24» июля 2007 г.",
+      "id": "lease_0012-e2",
+      "note": "переклассифицирована из типизированного негатива (этап DATE-ON, 2026-08-18): решение владельца — дата маскируется во всех наборах",
+      "type": "DATE"
      },
-     "s": "07.04.2024 г."
+     "s": "«07» апреля 2024 г."
     }
    ],
    "style": "normal",
@@ -72,7 +74,7 @@
     {
      "e": {
       "cat": "canonical",
-      "id": "lease_0012-e2",
+      "id": "lease_0012-e3",
       "type": "PER"
      },
      "s": "Соколова Светлана Андреевна"
@@ -86,7 +88,7 @@
     {
      "e": {
       "cat": "ugly",
-      "id": "lease_0012-e3",
+      "id": "lease_0012-e4",
       "note": "серия+номер, стиль записи из PASSPORT_STYLES",
       "type": "PASSPORT"
      },
@@ -113,7 +115,7 @@
     {
      "e": {
       "cat": "ugly",
-      "id": "lease_0012-e4",
+      "id": "lease_0012-e5",
       "note": "код подразделения, стиль записи из DEPTCODE_STYLES",
       "type": "PASSPORT"
      },
@@ -128,7 +130,7 @@
     {
      "e": {
       "cat": "canonical",
-      "id": "lease_0012-e5",
+      "id": "lease_0012-e6",
       "type": "PER"
      },
      "s": "Смирнова Ирина Петровна"
@@ -142,7 +144,7 @@
     {
      "e": {
       "cat": "ugly",
-      "id": "lease_0012-e6",
+      "id": "lease_0012-e7",
       "note": "серия+номер, стиль записи из PASSPORT_STYLES",
       "type": "PASSPORT"
      },
@@ -169,7 +171,7 @@
     {
      "e": {
       "cat": "ugly",
-      "id": "lease_0012-e7",
+      "id": "lease_0012-e8",
       "note": "код подразделения, стиль записи из DEPTCODE_STYLES",
       "type": "PASSPORT"
      },
@@ -188,7 +190,7 @@
       },
       "cat": "canonical",
       "form": "docnum|формат=2/2025-П",
-      "id": "lease_0012-e8",
+      "id": "lease_0012-e9",
       "note": "переклассифицирован из негатива (этап MARKUP-V2): номер договора маскируется",
       "type": "DOCNUM"
      },
@@ -214,7 +216,7 @@
     {
      "e": {
       "cat": "adversarial",
-      "id": "lease_0012-e60",
+      "id": "lease_0012-e61",
       "note": "адрес в сноске",
       "trick": "in_footnote",
       "type": "ADDRESS"
@@ -227,7 +229,7 @@
     {
      "e": {
       "cat": "adversarial",
-      "id": "lease_0012-e61",
+      "id": "lease_0012-e62",
       "note": "ИНН в сноске",
       "trick": "in_footnote",
       "type": "INN"
@@ -240,7 +242,7 @@
     {
      "e": {
       "cat": "adversarial",
-      "id": "lease_0012-e62",
+      "id": "lease_0012-e63",
       "note": "ФИО в сноске",
       "trick": "in_footnote",
       "type": "PER"
@@ -295,7 +297,7 @@
       },
       "cat": "canonical",
       "form": "term|запись числа=10|вид дней=рабочих|отправная точка=с момента заключения контракта|вместо срока — дата=нет",
-      "id": "lease_0012-e9",
+      "id": "lease_0012-e10",
       "note": "срок длительностью",
       "type": "TERM"
      },
@@ -328,7 +330,7 @@
       },
       "cat": "canonical",
       "form": "money|разделитель разрядов=слитно|копейки=нет|валюта=руб.|пропись=(Десять тысяч)|НДС=включая НДС N% в размере N|заполненность=значение",
-      "id": "lease_0012-e10",
+      "id": "lease_0012-e11",
       "note": "сумма",
       "type": "MONEY"
      },
@@ -344,7 +346,7 @@
       },
       "cat": "canonical",
       "form": "percent|запись=15%",
-      "id": "lease_0012-e11",
+      "id": "lease_0012-e12",
       "note": "ставка НДС",
       "type": "PERCENT"
      },
@@ -365,7 +367,7 @@
       },
       "cat": "canonical",
       "form": "money|разделитель разрядов=неразрывный пробел|копейки=,0|валюта=рублей|пропись=(десять тысяч)|НДС=нет|заполненность=значение",
-      "id": "lease_0012-e12",
+      "id": "lease_0012-e13",
       "note": "сумма НДС",
       "type": "MONEY"
      },
@@ -592,7 +594,7 @@
       },
       "cat": "canonical",
       "form": "money|разделитель разрядов=слитно|копейки=0 коп.|валюта=рублей|пропись=нет|НДС=нет|заполненность=значение",
-      "id": "lease_0012-e13",
+      "id": "lease_0012-e14",
       "note": "сумма",
       "type": "MONEY"
      },
@@ -619,7 +621,7 @@
       },
       "cat": "canonical",
       "form": "percent|привязка=от общей суммы счета|ограничение=нет|дробь ставки=1/130",
-      "id": "lease_0012-e14",
+      "id": "lease_0012-e15",
       "note": "процент",
       "type": "PERCENT"
      },
@@ -647,7 +649,7 @@
       },
       "cat": "canonical",
       "form": "term|запись числа=10|вид дней=месяцев|отправная точка=с момента заключения контракта|вместо срока — дата=нет",
-      "id": "lease_0012-e15",
+      "id": "lease_0012-e16",
       "note": "срок длительностью",
       "type": "TERM"
      },
@@ -1248,7 +1250,7 @@
     {
      "e": {
       "cat": "canonical",
-      "id": "lease_0012-e16",
+      "id": "lease_0012-e17",
       "note": "стиль адреса: canonical",
       "type": "ADDRESS"
      },
@@ -1269,7 +1271,7 @@
     {
      "e": {
       "cat": "canonical",
-      "id": "lease_0012-e17",
+      "id": "lease_0012-e18",
       "note": "ФИО в дательном падеже",
       "type": "PER"
      },
@@ -1281,7 +1283,7 @@
     {
      "e": {
       "cat": "ugly",
-      "id": "lease_0012-e18",
+      "id": "lease_0012-e19",
       "note": "формат: plain",
       "type": "PHONE"
      },
@@ -1309,7 +1311,7 @@
       },
       "cat": "canonical",
       "form": "term|запись числа=трех|вид дней=банковских|отправная точка=с момента выставления счета|вместо срока — дата=нет",
-      "id": "lease_0012-e19",
+      "id": "lease_0012-e20",
       "note": "срок длительностью",
       "type": "TERM"
      },
@@ -1557,7 +1559,7 @@
       },
       "cat": "canonical",
       "form": "percent|привязка=годовых|ограничение=нет|дробь ставки=1/150",
-      "id": "lease_0012-e20",
+      "id": "lease_0012-e21",
       "note": "процент",
       "type": "PERCENT"
      },
@@ -1576,7 +1578,7 @@
       },
       "cat": "canonical",
       "form": "percent|запись=10 (десять) процентов|привязка=от цены Договора|ограничение=нет|дробь ставки=нет",
-      "id": "lease_0012-e21",
+      "id": "lease_0012-e22",
       "note": "процент",
       "type": "PERCENT"
      },
@@ -1619,7 +1621,7 @@
       },
       "cat": "canonical",
       "form": "term|запись числа=30 (Тридцати)|вид дней=календарных|отправная точка=нет|вместо срока — дата=нет",
-      "id": "lease_0012-e22",
+      "id": "lease_0012-e23",
       "note": "срок длительностью",
       "type": "TERM"
      },
@@ -1647,7 +1649,7 @@
       },
       "cat": "canonical",
       "form": "term|вместо срока — дата=не позднее 01.11.2025",
-      "id": "lease_0012-e23",
+      "id": "lease_0012-e24",
       "note": "срок задан КОНКРЕТНОЙ ДАТОЙ, а не длительностью",
       "type": "TERM"
      },
@@ -1903,7 +1905,7 @@
     {
      "e": {
       "cat": "adversarial",
-      "id": "lease_0012-e24",
+      "id": "lease_0012-e25",
       "note": "счёт разбит на группы по 4",
       "trick": "digit_grouping",
       "type": "ACCOUNT"
@@ -1922,7 +1924,7 @@
     {
      "e": {
       "cat": "adversarial",
-      "id": "lease_0012-e25",
+      "id": "lease_0012-e26",
       "note": "ИНН через дефисы",
       "trick": "digit_grouping_dashes",
       "type": "INN"
@@ -1941,7 +1943,7 @@
     {
      "e": {
       "cat": "adversarial",
-      "id": "lease_0012-e26",
+      "id": "lease_0012-e27",
       "note": "кириллическая буква внутри латинского домена/логина",
       "trick": "homoglyph_in_email",
       "type": "EMAIL"
@@ -1986,7 +1988,7 @@
       },
       "cat": "adversarial",
       "form": "percent|привязка=годовых|ограничение=но не более 20% от цены договора|дробь ставки=1/300",
-      "id": "lease_0012-e27",
+      "id": "lease_0012-e28",
       "note": "число разорвано форматированием: половина цифр в одном ране, половина в другом",
       "trick": "format_split",
       "type": "PERCENT"
@@ -2016,7 +2018,7 @@
       },
       "cat": "adversarial",
       "form": "term|запись числа=10|вид дней=календарных|отправная точка=с даты подписания Сторонами акта сдачи-приемки оказанных услуг|вместо срока — дата=нет",
-      "id": "lease_0012-e28",
+      "id": "lease_0012-e29",
       "note": "число разорвано форматированием: половина цифр в одном ране, половина в другом",
       "trick": "format_split",
       "type": "TERM"
@@ -2043,7 +2045,7 @@
       },
       "cat": "adversarial",
       "form": "docnum|формат=чисто числовой (2/17, 27/16)",
-      "id": "lease_0012-e29",
+      "id": "lease_0012-e30",
       "note": "число разорвано форматированием: половина цифр в одном ране, половина в другом",
       "trick": "format_split",
       "type": "DOCNUM"
@@ -2074,7 +2076,7 @@
       },
       "cat": "adversarial",
       "form": "money|разделитель разрядов=неразрывный пробел|копейки=,0|валюта=рублей|пропись=(десять тысяч)|НДС=нет|заполненность=значение",
-      "id": "lease_0012-e30",
+      "id": "lease_0012-e31",
       "note": "NBSP/ZWSP/SHY внутри величины",
       "trick": "invisible",
       "type": "MONEY"
@@ -2110,7 +2112,7 @@
     {
      "e": {
       "cat": "canonical",
-      "id": "lease_0012-e31",
+      "id": "lease_0012-e32",
       "note": "фабричный тип: пример из файла-описания владельца",
       "type": "CONTRACT_KIND"
      },
@@ -2151,7 +2153,7 @@
     {
      "e": {
       "cat": "canonical",
-      "id": "lease_0012-e32",
+      "id": "lease_0012-e33",
       "note": "фабричный тип: пример из файла-описания владельца",
       "type": "CONTRACT_NO"
      },
@@ -2192,7 +2194,7 @@
     {
      "e": {
       "cat": "canonical",
-      "id": "lease_0012-e33",
+      "id": "lease_0012-e34",
       "note": "фабричный тип: пример из файла-описания владельца",
       "type": "PASSPORT_ISSUER"
      },
@@ -2233,7 +2235,7 @@
     {
      "e": {
       "cat": "canonical",
-      "id": "lease_0012-e34",
+      "id": "lease_0012-e35",
       "note": "фабричный тип: пример из файла-описания владельца",
       "type": "REGISTRY_NAME"
      },
@@ -2274,7 +2276,7 @@
     {
      "e": {
       "cat": "canonical",
-      "id": "lease_0012-e35",
+      "id": "lease_0012-e36",
       "note": "фабричный тип: пример из файла-описания владельца",
       "type": "REG_ID"
      },
@@ -2315,7 +2317,7 @@
     {
      "e": {
       "cat": "canonical",
-      "id": "lease_0012-e36",
+      "id": "lease_0012-e37",
       "note": "фабричный тип: пример из файла-описания владельца",
       "type": "REG_NUMBER"
      },
@@ -2356,7 +2358,7 @@
     {
      "e": {
       "cat": "canonical",
-      "id": "lease_0012-e37",
+      "id": "lease_0012-e38",
       "note": "фабричный тип: пример из файла-описания владельца",
       "type": "SHARE_PCT"
      },
@@ -2427,7 +2429,7 @@
          {
           "e": {
            "cat": "canonical",
-           "id": "lease_0012-e38",
+           "id": "lease_0012-e39",
            "type": "PER"
           },
           "s": "Соколова Светлана Андреевна"
@@ -2444,7 +2446,7 @@
          {
           "e": {
            "cat": "canonical",
-           "id": "lease_0012-e39",
+           "id": "lease_0012-e40",
            "note": "стиль записи из BIRTHDATE_STYLES",
            "type": "BIRTHDATE"
           },
@@ -2462,7 +2464,7 @@
          {
           "e": {
            "cat": "canonical",
-           "id": "lease_0012-e40",
+           "id": "lease_0012-e41",
            "note": "стиль адреса: canonical",
            "type": "ADDRESS"
           },
@@ -2480,7 +2482,7 @@
          {
           "e": {
            "cat": "canonical",
-           "id": "lease_0012-e41",
+           "id": "lease_0012-e42",
            "note": "серия+номер, стиль записи из PASSPORT_STYLES",
            "type": "PASSPORT"
           },
@@ -2495,7 +2497,7 @@
          {
           "e": {
            "cat": "ugly",
-           "id": "lease_0012-e42",
+           "id": "lease_0012-e43",
            "note": "код подразделения, стиль записи из DEPTCODE_STYLES",
            "type": "PASSPORT"
           },
@@ -2514,7 +2516,7 @@
           "e": {
            "cat": "canonical",
            "checksum": "valid",
-           "id": "lease_0012-e43",
+           "id": "lease_0012-e44",
            "note": "стиль записи из SNILS_STYLES",
            "type": "SNILS"
           },
@@ -2527,7 +2529,7 @@
           "e": {
            "cat": "ugly",
            "checksum": "valid",
-           "id": "lease_0012-e44",
+           "id": "lease_0012-e45",
            "note": "ИНН физлица (12 знаков)",
            "type": "INN"
           },
@@ -2545,7 +2547,7 @@
          {
           "e": {
            "cat": "ugly",
-           "id": "lease_0012-e45",
+           "id": "lease_0012-e46",
            "note": "формат: tight8",
            "type": "PHONE"
           },
@@ -2563,7 +2565,7 @@
          {
           "e": {
            "cat": "canonical",
-           "id": "lease_0012-e46",
+           "id": "lease_0012-e47",
            "type": "EMAIL"
           },
           "s": "sokolova@list.ru"
@@ -2585,7 +2587,7 @@
          {
           "e": {
            "cat": "ugly",
-           "id": "lease_0012-e47",
+           "id": "lease_0012-e48",
            "note": "фамилия + инициалы",
            "type": "PER"
           },
@@ -2613,7 +2615,7 @@
          {
           "e": {
            "cat": "canonical",
-           "id": "lease_0012-e48",
+           "id": "lease_0012-e49",
            "type": "PER"
           },
           "s": "Смирнова Ирина Петровна"
@@ -2630,7 +2632,7 @@
          {
           "e": {
            "cat": "canonical",
-           "id": "lease_0012-e49",
+           "id": "lease_0012-e50",
            "note": "стиль записи из BIRTHDATE_STYLES",
            "type": "BIRTHDATE"
           },
@@ -2648,7 +2650,7 @@
          {
           "e": {
            "cat": "canonical",
-           "id": "lease_0012-e50",
+           "id": "lease_0012-e51",
            "note": "стиль адреса: canonical",
            "type": "ADDRESS"
           },
@@ -2666,7 +2668,7 @@
          {
           "e": {
            "cat": "canonical",
-           "id": "lease_0012-e51",
+           "id": "lease_0012-e52",
            "note": "серия+номер, стиль записи из PASSPORT_STYLES",
            "type": "PASSPORT"
           },
@@ -2681,7 +2683,7 @@
          {
           "e": {
            "cat": "ugly",
-           "id": "lease_0012-e52",
+           "id": "lease_0012-e53",
            "note": "код подразделения, стиль записи из DEPTCODE_STYLES",
            "type": "PASSPORT"
           },
@@ -2700,7 +2702,7 @@
           "e": {
            "cat": "canonical",
            "checksum": "valid",
-           "id": "lease_0012-e53",
+           "id": "lease_0012-e54",
            "note": "стиль записи из SNILS_STYLES",
            "type": "SNILS"
           },
@@ -2713,7 +2715,7 @@
           "e": {
            "cat": "ugly",
            "checksum": "valid",
-           "id": "lease_0012-e54",
+           "id": "lease_0012-e55",
            "note": "ИНН физлица (12 знаков)",
            "type": "INN"
           },
@@ -2731,7 +2733,7 @@
          {
           "e": {
            "cat": "ugly",
-           "id": "lease_0012-e55",
+           "id": "lease_0012-e56",
            "note": "формат: tight8",
            "type": "PHONE"
           },
@@ -2749,7 +2751,7 @@
          {
           "e": {
            "cat": "canonical",
-           "id": "lease_0012-e56",
+           "id": "lease_0012-e57",
            "type": "EMAIL"
           },
           "s": "smirnova@yandex.ru"
@@ -2771,7 +2773,7 @@
          {
           "e": {
            "cat": "ugly",
-           "id": "lease_0012-e57",
+           "id": "lease_0012-e58",
            "note": "фамилия + инициалы",
            "type": "PER"
           },
@@ -2805,7 +2807,7 @@
          {
           "e": {
            "cat": "adversarial",
-           "id": "lease_0012-e58",
+           "id": "lease_0012-e59",
            "note": "первые цифры ИНН в одной ячейке, остальные — в соседней",
            "trick": "cell_boundary_split",
            "type": "INN"
@@ -2825,7 +2827,7 @@
          {
           "e": {
            "cat": "adversarial",
-           "id": "lease_0012-e58",
+           "id": "lease_0012-e59",
            "trick": "cell_boundary_split",
            "type": "INN"
           },
@@ -2846,7 +2848,7 @@
          {
           "e": {
            "cat": "adversarial",
-           "id": "lease_0012-e59",
+           "id": "lease_0012-e60",
            "note": "ФИО разорвано границей ячейки",
            "trick": "cell_boundary_split",
            "type": "PER"
@@ -2866,7 +2868,7 @@
          {
           "e": {
            "cat": "adversarial",
-           "id": "lease_0012-e59",
+           "id": "lease_0012-e60",
            "trick": "cell_boundary_split",
            "type": "PER"
           },
@@ -2904,7 +2906,7 @@
     {
      "e": {
       "cat": "ugly",
-      "id": "lease_0012-e63",
+      "id": "lease_0012-e64",
       "note": "подпись: фамилия+инициалы",
       "type": "PER"
      },
@@ -2925,7 +2927,7 @@
     {
      "e": {
       "cat": "ugly",
-      "id": "lease_0012-e64",
+      "id": "lease_0012-e65",
       "note": "подпись: фамилия+инициалы",
       "type": "PER"
      },

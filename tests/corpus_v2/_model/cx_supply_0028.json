@@ -48,13 +48,15 @@
      "s": "     "
     },
     {
-     "n": {
+     "e": {
       "axes": {
        "запись": "24.07.2007 г."
       },
+      "cat": "canonical",
       "form": "date|запись=24.07.2007 г.",
-      "type": "DATE",
-      "why": "дата документа — не ПДн"
+      "id": "cx_supply_0028-e2",
+      "note": "переклассифицирована из типизированного негатива (этап DATE-ON, 2026-08-18): решение владельца — дата маскируется во всех наборах",
+      "type": "DATE"
      },
      "s": "20.09.2023 г."
     }
@@ -72,7 +74,7 @@
     {
      "e": {
       "cat": "canonical",
-      "id": "cx_supply_0028-e2",
+      "id": "cx_supply_0028-e3",
       "type": "ORG"
      },
      "s": "ООО «ТехноПром»"
@@ -83,7 +85,7 @@
     {
      "e": {
       "cat": "canonical",
-      "id": "cx_supply_0028-e3",
+      "id": "cx_supply_0028-e4",
       "note": "ФИО в родительном падеже",
       "type": "PER"
      },
@@ -101,7 +103,7 @@
     {
      "e": {
       "cat": "canonical",
-      "id": "cx_supply_0028-e4",
+      "id": "cx_supply_0028-e5",
       "type": "PER"
      },
      "s": "Орлов Сергей Павлович"
@@ -115,7 +117,7 @@
     {
      "e": {
       "cat": "ugly",
-      "id": "cx_supply_0028-e5",
+      "id": "cx_supply_0028-e6",
       "note": "серия+номер, стиль записи из PASSPORT_STYLES",
       "type": "PASSPORT"
      },
@@ -142,7 +144,7 @@
     {
      "e": {
       "cat": "ugly",
-      "id": "cx_supply_0028-e6",
+      "id": "cx_supply_0028-e7",
       "note": "код подразделения, стиль записи из DEPTCODE_STYLES",
       "type": "PASSPORT"
      },
@@ -161,7 +163,7 @@
       },
       "cat": "canonical",
       "form": "docnum|формат=2/2025-П",
-      "id": "cx_supply_0028-e7",
+      "id": "cx_supply_0028-e8",
       "note": "переклассифицирован из негатива (этап MARKUP-V2): номер договора маскируется",
       "type": "DOCNUM"
      },
@@ -227,7 +229,7 @@
       },
       "cat": "canonical",
       "form": "term|вместо срока — дата=не позднее 01.11.2025",
-      "id": "cx_supply_0028-e8",
+      "id": "cx_supply_0028-e9",
       "note": "срок задан КОНКРЕТНОЙ ДАТОЙ, а не длительностью",
       "type": "TERM"
      },
@@ -486,7 +488,7 @@
       },
       "cat": "canonical",
       "form": "percent|привязка=за каждый день просрочки|ограничение=нет|дробь ставки=1/150",
-      "id": "cx_supply_0028-e9",
+      "id": "cx_supply_0028-e10",
       "note": "процент",
       "type": "PERCENT"
      },
@@ -514,7 +516,7 @@
       },
       "cat": "canonical",
       "form": "term|запись числа=10|вид дней=рабочих|отправная точка=с момента заключения контракта|вместо срока — дата=нет",
-      "id": "cx_supply_0028-e10",
+      "id": "cx_supply_0028-e11",
       "note": "срок длительностью",
       "type": "TERM"
      },
@@ -716,7 +718,7 @@
       },
       "cat": "canonical",
       "form": "money|разделитель разрядов=пробел|копейки=нет|валюта=рублей|пропись=(Двух миллионов) род.|НДС=в т.ч. НДС 18%|заполненность=значение",
-      "id": "cx_supply_0028-e11",
+      "id": "cx_supply_0028-e12",
       "note": "сумма",
       "type": "MONEY"
      },
@@ -732,7 +734,7 @@
       },
       "cat": "canonical",
       "form": "percent|запись=15%",
-      "id": "cx_supply_0028-e12",
+      "id": "cx_supply_0028-e13",
       "note": "ставка НДС",
       "type": "PERCENT"
      },
@@ -1138,7 +1140,7 @@
     {
      "e": {
       "cat": "canonical",
-      "id": "cx_supply_0028-e13",
+      "id": "cx_supply_0028-e14",
       "note": "стиль адреса: canonical",
       "type": "ADDRESS"
      },
@@ -1159,7 +1161,7 @@
     {
      "e": {
       "cat": "canonical",
-      "id": "cx_supply_0028-e14",
+      "id": "cx_supply_0028-e15",
       "note": "ФИО в дательном падеже",
       "type": "PER"
      },
@@ -1171,7 +1173,7 @@
     {
      "e": {
       "cat": "canonical",
-      "id": "cx_supply_0028-e15",
+      "id": "cx_supply_0028-e16",
       "note": "формат: canonical",
       "type": "PHONE"
      },
@@ -1199,7 +1201,7 @@
       },
       "cat": "canonical",
       "form": "term|запись числа=30 (Тридцати)|вид дней=не указан|отправная точка=с момента выставления счета|вместо срока — дата=нет",
-      "id": "cx_supply_0028-e16",
+      "id": "cx_supply_0028-e17",
       "note": "срок длительностью",
       "type": "TERM"
      },
@@ -1447,7 +1449,7 @@
       },
       "cat": "canonical",
       "form": "percent|привязка=годовых|ограничение=но не более 20% от цены договора|дробь ставки=1/130",
-      "id": "cx_supply_0028-e17",
+      "id": "cx_supply_0028-e18",
       "note": "процент",
       "type": "PERCENT"
      },
@@ -1467,7 +1469,7 @@
       },
       "cat": "canonical",
       "form": "percent|запись=15%|пропись=нет|привязка=от цены Договора|ограничение=нет|дробь ставки=нет",
-      "id": "cx_supply_0028-e18",
+      "id": "cx_supply_0028-e19",
       "note": "потолок ответственности",
       "type": "PERCENT"
      },
@@ -1485,7 +1487,7 @@
       },
       "cat": "canonical",
       "form": "percent|привязка=от общей суммы счета|ограничение=нет|дробь ставки=1/300",
-      "id": "cx_supply_0028-e19",
+      "id": "cx_supply_0028-e20",
       "note": "процент",
       "type": "PERCENT"
      },
@@ -1525,7 +1527,7 @@
       },
       "cat": "canonical",
       "form": "term|вместо срока — дата=не позднее 01.11.2025",
-      "id": "cx_supply_0028-e20",
+      "id": "cx_supply_0028-e21",
       "note": "срок задан КОНКРЕТНОЙ ДАТОЙ, а не длительностью",
       "type": "TERM"
      },
@@ -1556,7 +1558,7 @@
       },
       "cat": "canonical",
       "form": "term|запись числа=10|вид дней=календарных|отправная точка=с момента поступления денежных средств на расчетный счет|вместо срока — дата=нет",
-      "id": "cx_supply_0028-e21",
+      "id": "cx_supply_0028-e22",
       "note": "срок длительностью",
       "type": "TERM"
      },
@@ -1822,7 +1824,7 @@
       },
       "cat": "adversarial",
       "form": "docnum|формат=17595/001-сс",
-      "id": "cx_supply_0028-e22",
+      "id": "cx_supply_0028-e23",
       "note": "число разорвано форматированием: половина цифр в одном ране, половина в другом",
       "trick": "format_split",
       "type": "DOCNUM"
@@ -1854,7 +1856,7 @@
       },
       "cat": "adversarial",
       "form": "money|разделитель разрядов=неразрывный пробел|копейки=,0|валюта=руб.|пропись=(Десять тысяч)|НДС=нет|заполненность=значение",
-      "id": "cx_supply_0028-e23",
+      "id": "cx_supply_0028-e24",
       "note": "число разорвано форматированием: половина цифр в одном ране, половина в другом",
       "trick": "format_split",
       "type": "MONEY"
@@ -1883,7 +1885,7 @@
       },
       "cat": "adversarial",
       "form": "percent|привязка=годовых|ограничение=нет|дробь ставки=1/150",
-      "id": "cx_supply_0028-e24",
+      "id": "cx_supply_0028-e25",
       "note": "число разорвано форматированием: половина цифр в одном ране, половина в другом",
       "trick": "format_split",
       "type": "PERCENT"
@@ -1912,7 +1914,7 @@
       },
       "cat": "adversarial",
       "form": "term|запись числа=30 (Тридцати)|вид дней=банковских|отправная точка=с даты подписания Сторонами акта сдачи-приемки оказанных услуг|вместо срока — дата=нет",
-      "id": "cx_supply_0028-e25",
+      "id": "cx_supply_0028-e26",
       "note": "пробелы внутри цифр",
       "trick": "digit_spaces",
       "type": "TERM"
@@ -1957,7 +1959,7 @@
       },
       "cat": "canonical",
       "form": "term|вместо срока — дата=не позднее 01.11.2025",
-      "id": "cx_supply_0028-e26",
+      "id": "cx_supply_0028-e27",
       "note": "срок задан КОНКРЕТНОЙ ДАТОЙ, а не длительностью",
       "type": "TERM"
      },
@@ -1988,7 +1990,7 @@
     {
      "e": {
       "cat": "canonical",
-      "id": "cx_supply_0028-e27",
+      "id": "cx_supply_0028-e28",
       "note": "фабричный тип: пример из файла-описания владельца",
       "type": "CONTRACT_KIND"
      },
@@ -2029,7 +2031,7 @@
     {
      "e": {
       "cat": "canonical",
-      "id": "cx_supply_0028-e28",
+      "id": "cx_supply_0028-e29",
       "note": "фабричный тип: пример из файла-описания владельца",
       "type": "CONTRACT_NO"
      },
@@ -2070,7 +2072,7 @@
     {
      "e": {
       "cat": "canonical",
-      "id": "cx_supply_0028-e29",
+      "id": "cx_supply_0028-e30",
       "note": "фабричный тип: пример из файла-описания владельца",
       "type": "PASSPORT_ISSUER"
      },
@@ -2111,7 +2113,7 @@
     {
      "e": {
       "cat": "canonical",
-      "id": "cx_supply_0028-e30",
+      "id": "cx_supply_0028-e31",
       "note": "фабричный тип: пример из файла-описания владельца",
       "type": "REGISTRY_NAME"
      },
@@ -2152,7 +2154,7 @@
     {
      "e": {
       "cat": "canonical",
-      "id": "cx_supply_0028-e31",
+      "id": "cx_supply_0028-e32",
       "note": "фабричный тип: пример из файла-описания владельца",
       "type": "REG_ID"
      },
@@ -2193,7 +2195,7 @@
     {
      "e": {
       "cat": "canonical",
-      "id": "cx_supply_0028-e32",
+      "id": "cx_supply_0028-e33",
       "note": "фабричный тип: пример из файла-описания владельца",
       "type": "REG_NUMBER"
      },
@@ -2234,7 +2236,7 @@
     {
      "e": {
       "cat": "canonical",
-      "id": "cx_supply_0028-e33",
+      "id": "cx_supply_0028-e34",
       "note": "фабричный тип: пример из файла-описания владельца",
       "type": "SHARE_PCT"
      },
@@ -2305,7 +2307,7 @@
          {
           "e": {
            "cat": "canonical",
-           "id": "cx_supply_0028-e34",
+           "id": "cx_supply_0028-e35",
            "type": "ORG"
           },
           "s": "ООО «ТехноПром»"
@@ -2322,7 +2324,7 @@
          {
           "e": {
            "cat": "canonical",
-           "id": "cx_supply_0028-e35",
+           "id": "cx_supply_0028-e36",
            "note": "стиль адреса: canonical",
            "type": "ADDRESS"
           },
@@ -2341,7 +2343,7 @@
           "e": {
            "cat": "canonical",
            "checksum": "valid",
-           "id": "cx_supply_0028-e36",
+           "id": "cx_supply_0028-e37",
            "type": "INN"
           },
           "s": "6808809940"
@@ -2352,7 +2354,7 @@
          {
           "e": {
            "cat": "canonical",
-           "id": "cx_supply_0028-e37",
+           "id": "cx_supply_0028-e38",
            "type": "KPP"
           },
           "s": "694895282"
@@ -2370,7 +2372,7 @@
           "e": {
            "cat": "canonical",
            "checksum": "valid",
-           "id": "cx_supply_0028-e38",
+           "id": "cx_supply_0028-e39",
            "type": "OGRN"
           },
           "s": "1706191918497"
@@ -2388,7 +2390,7 @@
           "e": {
            "cat": "canonical",
            "checksum": "valid",
-           "id": "cx_supply_0028-e39",
+           "id": "cx_supply_0028-e40",
            "type": "ACCOUNT"
           },
           "s": "40702810294078567367"
@@ -2408,7 +2410,7 @@
          {
           "e": {
            "cat": "canonical",
-           "id": "cx_supply_0028-e40",
+           "id": "cx_supply_0028-e41",
            "note": "корреспондентский счёт банка",
            "type": "ACCOUNT"
           },
@@ -2420,7 +2422,7 @@
          {
           "e": {
            "cat": "canonical",
-           "id": "cx_supply_0028-e41",
+           "id": "cx_supply_0028-e42",
            "type": "BIK"
           },
           "s": "044525187"
@@ -2437,7 +2439,7 @@
          {
           "e": {
            "cat": "canonical",
-           "id": "cx_supply_0028-e42",
+           "id": "cx_supply_0028-e43",
            "note": "формат: canonical",
            "type": "PHONE"
           },
@@ -2455,7 +2457,7 @@
          {
           "e": {
            "cat": "canonical",
-           "id": "cx_supply_0028-e43",
+           "id": "cx_supply_0028-e44",
            "type": "EMAIL"
           },
           "s": "lebedeva@yandex.ru"
@@ -2477,7 +2479,7 @@
          {
           "e": {
            "cat": "ugly",
-           "id": "cx_supply_0028-e44",
+           "id": "cx_supply_0028-e45",
            "note": "инициалы перед фамилией",
            "type": "PER"
           },
@@ -2505,7 +2507,7 @@
          {
           "e": {
            "cat": "canonical",
-           "id": "cx_supply_0028-e45",
+           "id": "cx_supply_0028-e46",
            "type": "PER"
           },
           "s": "Орлов Сергей Павлович"
@@ -2522,7 +2524,7 @@
          {
           "e": {
            "cat": "canonical",
-           "id": "cx_supply_0028-e46",
+           "id": "cx_supply_0028-e47",
            "note": "стиль записи из BIRTHDATE_STYLES",
            "type": "BIRTHDATE"
           },
@@ -2540,7 +2542,7 @@
          {
           "e": {
            "cat": "canonical",
-           "id": "cx_supply_0028-e47",
+           "id": "cx_supply_0028-e48",
            "note": "стиль адреса: canonical",
            "type": "ADDRESS"
           },
@@ -2558,7 +2560,7 @@
          {
           "e": {
            "cat": "canonical",
-           "id": "cx_supply_0028-e48",
+           "id": "cx_supply_0028-e49",
            "note": "серия+номер, стиль записи из PASSPORT_STYLES",
            "type": "PASSPORT"
           },
@@ -2573,7 +2575,7 @@
          {
           "e": {
            "cat": "ugly",
-           "id": "cx_supply_0028-e49",
+           "id": "cx_supply_0028-e50",
            "note": "код подразделения, стиль записи из DEPTCODE_STYLES",
            "type": "PASSPORT"
           },
@@ -2592,7 +2594,7 @@
           "e": {
            "cat": "canonical",
            "checksum": "valid",
-           "id": "cx_supply_0028-e50",
+           "id": "cx_supply_0028-e51",
            "note": "стиль записи из SNILS_STYLES",
            "type": "SNILS"
           },
@@ -2605,7 +2607,7 @@
           "e": {
            "cat": "ugly",
            "checksum": "valid",
-           "id": "cx_supply_0028-e51",
+           "id": "cx_supply_0028-e52",
            "note": "ИНН физлица (12 знаков)",
            "type": "INN"
           },
@@ -2623,7 +2625,7 @@
          {
           "e": {
            "cat": "canonical",
-           "id": "cx_supply_0028-e52",
+           "id": "cx_supply_0028-e53",
            "note": "формат: canonical",
            "type": "PHONE"
           },
@@ -2641,7 +2643,7 @@
          {
           "e": {
            "cat": "canonical",
-           "id": "cx_supply_0028-e53",
+           "id": "cx_supply_0028-e54",
            "type": "EMAIL"
           },
           "s": "orlov@yandex.ru"
@@ -2663,7 +2665,7 @@
          {
           "e": {
            "cat": "ugly",
-           "id": "cx_supply_0028-e54",
+           "id": "cx_supply_0028-e55",
            "note": "фамилия + инициалы",
            "type": "PER"
           },
@@ -2701,7 +2703,7 @@
     {
      "e": {
       "cat": "ugly",
-      "id": "cx_supply_0028-e59",
+      "id": "cx_supply_0028-e60",
       "note": "подпись: фамилия+инициалы",
       "type": "PER"
      },
@@ -2722,7 +2724,7 @@
     {
      "e": {
       "cat": "ugly",
-      "id": "cx_supply_0028-e60",
+      "id": "cx_supply_0028-e61",
       "note": "подпись: фамилия+инициалы",
       "type": "PER"
      },
@@ -2751,7 +2753,7 @@
     {
      "e": {
       "cat": "adversarial",
-      "id": "cx_supply_0028-e57",
+      "id": "cx_supply_0028-e58",
       "note": "ФИО в нижнем колонтитуле",
       "trick": "in_footer",
       "type": "PER"
@@ -2764,7 +2766,7 @@
     {
      "e": {
       "cat": "adversarial",
-      "id": "cx_supply_0028-e58",
+      "id": "cx_supply_0028-e59",
       "note": "телефон в нижнем колонтитуле",
       "trick": "in_footer",
       "type": "PHONE"
@@ -2786,7 +2788,7 @@
     {
      "e": {
       "cat": "adversarial",
-      "id": "cx_supply_0028-e55",
+      "id": "cx_supply_0028-e56",
       "note": "телефон в колонтитуле (верхнем)",
       "trick": "in_header",
       "type": "PHONE"
@@ -2799,7 +2801,7 @@
     {
      "e": {
       "cat": "adversarial",
-      "id": "cx_supply_0028-e56",
+      "id": "cx_supply_0028-e57",
       "note": "e-mail в колонтитуле",
       "trick": "in_header",
       "type": "EMAIL"

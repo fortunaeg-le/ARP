@@ -48,13 +48,15 @@
      "s": "     "
     },
     {
-     "n": {
+     "e": {
       "axes": {
        "запись": "24.07.2007"
       },
+      "cat": "canonical",
       "form": "date|запись=24.07.2007",
-      "type": "DATE",
-      "why": "дата документа — не ПДн"
+      "id": "cx_services_0020-e2",
+      "note": "переклассифицирована из типизированного негатива (этап DATE-ON, 2026-08-18): решение владельца — дата маскируется во всех наборах",
+      "type": "DATE"
      },
      "s": "25.08.2023"
     }
@@ -72,7 +74,7 @@
     {
      "e": {
       "cat": "canonical",
-      "id": "cx_services_0020-e2",
+      "id": "cx_services_0020-e3",
       "type": "PER"
      },
      "s": "Волков Алексей Петрович"
@@ -86,7 +88,7 @@
     {
      "e": {
       "cat": "ugly",
-      "id": "cx_services_0020-e3",
+      "id": "cx_services_0020-e4",
       "note": "серия+номер, стиль записи из PASSPORT_STYLES",
       "type": "PASSPORT"
      },
@@ -113,7 +115,7 @@
     {
      "e": {
       "cat": "ugly",
-      "id": "cx_services_0020-e4",
+      "id": "cx_services_0020-e5",
       "note": "код подразделения, стиль записи из DEPTCODE_STYLES",
       "type": "PASSPORT"
      },
@@ -128,7 +130,7 @@
     {
      "e": {
       "cat": "canonical",
-      "id": "cx_services_0020-e5",
+      "id": "cx_services_0020-e6",
       "type": "PER"
      },
      "s": "Белов Роман Дмитриевич"
@@ -142,7 +144,7 @@
     {
      "e": {
       "cat": "ugly",
-      "id": "cx_services_0020-e6",
+      "id": "cx_services_0020-e7",
       "note": "серия+номер, стиль записи из PASSPORT_STYLES",
       "type": "PASSPORT"
      },
@@ -169,7 +171,7 @@
     {
      "e": {
       "cat": "ugly",
-      "id": "cx_services_0020-e7",
+      "id": "cx_services_0020-e8",
       "note": "код подразделения, стиль записи из DEPTCODE_STYLES",
       "type": "PASSPORT"
      },
@@ -188,7 +190,7 @@
       },
       "cat": "canonical",
       "form": "docnum|формат=2/2025-П",
-      "id": "cx_services_0020-e8",
+      "id": "cx_services_0020-e9",
       "note": "переклассифицирован из негатива (этап MARKUP-V2): номер договора маскируется",
       "type": "DOCNUM"
      },
@@ -257,7 +259,7 @@
       },
       "cat": "canonical",
       "form": "term|запись числа=10|вид дней=не указан|отправная точка=с момента поступления денежных средств на расчетный счет|вместо срока — дата=нет",
-      "id": "cx_services_0020-e9",
+      "id": "cx_services_0020-e10",
       "note": "срок длительностью",
       "type": "TERM"
      },
@@ -484,7 +486,7 @@
       },
       "cat": "canonical",
       "form": "money|разделитель разрядов=пробел|копейки=0 коп.|валюта=рублей|пропись=(Двух миллионов) род.|НДС=НДС не облагается, т.к. применяется УСН|заполненность=значение",
-      "id": "cx_services_0020-e10",
+      "id": "cx_services_0020-e11",
       "note": "сумма",
       "type": "MONEY"
      },
@@ -516,7 +518,7 @@
       },
       "cat": "canonical",
       "form": "percent|запись=0,1 процента|пропись=(одной десятой) род.|привязка=за каждый день просрочки|ограничение=нет|дробь ставки=нет",
-      "id": "cx_services_0020-e11",
+      "id": "cx_services_0020-e12",
       "note": "процент",
       "type": "PERCENT"
      },
@@ -544,7 +546,7 @@
       },
       "cat": "canonical",
       "form": "term|запись числа=трех|вид дней=календарных|отправная точка=с момента заключения контракта|вместо срока — дата=нет",
-      "id": "cx_services_0020-e12",
+      "id": "cx_services_0020-e13",
       "note": "срок длительностью",
       "type": "TERM"
      },
@@ -746,7 +748,7 @@
       },
       "cat": "canonical",
       "form": "money|разделитель разрядов=слитно|копейки=нет|валюта=рубля|пропись=нет|НДС=нет|заполненность=значение",
-      "id": "cx_services_0020-e13",
+      "id": "cx_services_0020-e14",
       "note": "сумма",
       "type": "MONEY"
      },
@@ -1152,7 +1154,7 @@
     {
      "e": {
       "cat": "canonical",
-      "id": "cx_services_0020-e14",
+      "id": "cx_services_0020-e15",
       "note": "стиль адреса: canonical",
       "type": "ADDRESS"
      },
@@ -1173,7 +1175,7 @@
     {
      "e": {
       "cat": "canonical",
-      "id": "cx_services_0020-e15",
+      "id": "cx_services_0020-e16",
       "note": "ФИО в дательном падеже",
       "type": "PER"
      },
@@ -1185,7 +1187,7 @@
     {
      "e": {
       "cat": "canonical",
-      "id": "cx_services_0020-e16",
+      "id": "cx_services_0020-e17",
       "note": "формат: canonical",
       "type": "PHONE"
      },
@@ -1213,7 +1215,7 @@
       },
       "cat": "canonical",
       "form": "term|запись числа=30 (Тридцати)|вид дней=не указан|отправная точка=с момента подписания акта|вместо срока — дата=нет",
-      "id": "cx_services_0020-e17",
+      "id": "cx_services_0020-e18",
       "note": "срок длительностью",
       "type": "TERM"
      },
@@ -1461,7 +1463,7 @@
       },
       "cat": "canonical",
       "form": "percent|привязка=от цены Договора|ограничение=нет|дробь ставки=1/130",
-      "id": "cx_services_0020-e18",
+      "id": "cx_services_0020-e19",
       "note": "процент",
       "type": "PERCENT"
      },
@@ -1479,7 +1481,7 @@
       },
       "cat": "canonical",
       "form": "percent|привязка=от стоимости неоплаченных работ|ограничение=нет|дробь ставки=1/300",
-      "id": "cx_services_0020-e19",
+      "id": "cx_services_0020-e20",
       "note": "процент",
       "type": "PERCENT"
      },
@@ -1519,7 +1521,7 @@
       },
       "cat": "canonical",
       "form": "term|вместо срока — дата=не позднее 01.11.2025",
-      "id": "cx_services_0020-e20",
+      "id": "cx_services_0020-e21",
       "note": "срок задан КОНКРЕТНОЙ ДАТОЙ, а не длительностью",
       "type": "TERM"
      },
@@ -1550,7 +1552,7 @@
       },
       "cat": "canonical",
       "form": "term|запись числа=трех|вид дней=рабочих|отправная точка=с момента поступления денежных средств на расчетный счет|вместо срока — дата=нет",
-      "id": "cx_services_0020-e21",
+      "id": "cx_services_0020-e22",
       "note": "срок длительностью",
       "type": "TERM"
      },
@@ -1816,7 +1818,7 @@
       },
       "cat": "adversarial",
       "form": "docnum|формат=01Ф-00034/16-124Д",
-      "id": "cx_services_0020-e22",
+      "id": "cx_services_0020-e23",
       "note": "число разорвано форматированием: половина цифр в одном ране, половина в другом",
       "trick": "format_split",
       "type": "DOCNUM"
@@ -1848,7 +1850,7 @@
       },
       "cat": "adversarial",
       "form": "money|разделитель разрядов=слитно|копейки=,0|валюта=RUB|пропись=(Двух миллионов) род.|НДС=нет|заполненность=значение",
-      "id": "cx_services_0020-e23",
+      "id": "cx_services_0020-e24",
       "note": "число разорвано форматированием: половина цифр в одном ране, половина в другом",
       "trick": "format_split",
       "type": "MONEY"
@@ -1879,7 +1881,7 @@
       },
       "cat": "adversarial",
       "form": "percent|запись=0,1 процента|пропись=нет|привязка=от общей суммы счета|ограничение=нет|дробь ставки=нет",
-      "id": "cx_services_0020-e24",
+      "id": "cx_services_0020-e25",
       "note": "число разорвано форматированием: половина цифр в одном ране, половина в другом",
       "trick": "format_split",
       "type": "PERCENT"
@@ -1919,7 +1921,7 @@
            },
            "cat": "adversarial",
            "form": "term|запись числа=30 (Тридцати)|вид дней=банковских|отправная точка=нет|вместо срока — дата=нет",
-           "id": "cx_services_0020-e25",
+           "id": "cx_services_0020-e26",
            "note": "число разорвано границей ячейки таблицы",
            "trick": "cell_split",
            "type": "TERM"
@@ -1946,7 +1948,7 @@
            },
            "cat": "adversarial",
            "form": "term|запись числа=30 (Тридцати)|вид дней=банковских|отправная точка=нет|вместо срока — дата=нет",
-           "id": "cx_services_0020-e25",
+           "id": "cx_services_0020-e26",
            "trick": "cell_split",
            "type": "TERM"
           },
@@ -1996,7 +1998,7 @@
       },
       "cat": "canonical",
       "form": "term|запись числа=трех|вид дней=месяцев|отправная точка=с даты подписания Сторонами акта сдачи-приемки оказанных услуг|вместо срока — дата=нет",
-      "id": "cx_services_0020-e26",
+      "id": "cx_services_0020-e27",
       "note": "срок длительностью",
       "type": "TERM"
      },
@@ -2027,7 +2029,7 @@
     {
      "e": {
       "cat": "canonical",
-      "id": "cx_services_0020-e27",
+      "id": "cx_services_0020-e28",
       "note": "фабричный тип: пример из файла-описания владельца",
       "type": "CONTRACT_KIND"
      },
@@ -2068,7 +2070,7 @@
     {
      "e": {
       "cat": "canonical",
-      "id": "cx_services_0020-e28",
+      "id": "cx_services_0020-e29",
       "note": "фабричный тип: пример из файла-описания владельца",
       "type": "CONTRACT_NO"
      },
@@ -2109,7 +2111,7 @@
     {
      "e": {
       "cat": "canonical",
-      "id": "cx_services_0020-e29",
+      "id": "cx_services_0020-e30",
       "note": "фабричный тип: пример из файла-описания владельца",
       "type": "PASSPORT_ISSUER"
      },
@@ -2150,7 +2152,7 @@
     {
      "e": {
       "cat": "canonical",
-      "id": "cx_services_0020-e30",
+      "id": "cx_services_0020-e31",
       "note": "фабричный тип: пример из файла-описания владельца",
       "type": "REGISTRY_NAME"
      },
@@ -2191,7 +2193,7 @@
     {
      "e": {
       "cat": "canonical",
-      "id": "cx_services_0020-e31",
+      "id": "cx_services_0020-e32",
       "note": "фабричный тип: пример из файла-описания владельца",
       "type": "REG_ID"
      },
@@ -2232,7 +2234,7 @@
     {
      "e": {
       "cat": "canonical",
-      "id": "cx_services_0020-e32",
+      "id": "cx_services_0020-e33",
       "note": "фабричный тип: пример из файла-описания владельца",
       "type": "REG_NUMBER"
      },
@@ -2273,7 +2275,7 @@
     {
      "e": {
       "cat": "canonical",
-      "id": "cx_services_0020-e33",
+      "id": "cx_services_0020-e34",
       "note": "фабричный тип: пример из файла-описания владельца",
       "type": "SHARE_PCT"
      },
@@ -2344,7 +2346,7 @@
          {
           "e": {
            "cat": "canonical",
-           "id": "cx_services_0020-e34",
+           "id": "cx_services_0020-e35",
            "type": "PER"
           },
           "s": "Волков Алексей Петрович"
@@ -2361,7 +2363,7 @@
          {
           "e": {
            "cat": "canonical",
-           "id": "cx_services_0020-e35",
+           "id": "cx_services_0020-e36",
            "note": "стиль записи из BIRTHDATE_STYLES",
            "type": "BIRTHDATE"
           },
@@ -2379,7 +2381,7 @@
          {
           "e": {
            "cat": "canonical",
-           "id": "cx_services_0020-e36",
+           "id": "cx_services_0020-e37",
            "note": "стиль адреса: canonical",
            "type": "ADDRESS"
           },
@@ -2397,7 +2399,7 @@
          {
           "e": {
            "cat": "canonical",
-           "id": "cx_services_0020-e37",
+           "id": "cx_services_0020-e38",
            "note": "серия+номер, стиль записи из PASSPORT_STYLES",
            "type": "PASSPORT"
           },
@@ -2412,7 +2414,7 @@
          {
           "e": {
            "cat": "ugly",
-           "id": "cx_services_0020-e38",
+           "id": "cx_services_0020-e39",
            "note": "код подразделения, стиль записи из DEPTCODE_STYLES",
            "type": "PASSPORT"
           },
@@ -2431,7 +2433,7 @@
           "e": {
            "cat": "canonical",
            "checksum": "valid",
-           "id": "cx_services_0020-e39",
+           "id": "cx_services_0020-e40",
            "note": "стиль записи из SNILS_STYLES",
            "type": "SNILS"
           },
@@ -2444,7 +2446,7 @@
           "e": {
            "cat": "ugly",
            "checksum": "valid",
-           "id": "cx_services_0020-e40",
+           "id": "cx_services_0020-e41",
            "note": "ИНН физлица (12 знаков)",
            "type": "INN"
           },
@@ -2462,7 +2464,7 @@
          {
           "e": {
            "cat": "canonical",
-           "id": "cx_services_0020-e41",
+           "id": "cx_services_0020-e42",
            "note": "формат: canonical",
            "type": "PHONE"
           },
@@ -2480,7 +2482,7 @@
          {
           "e": {
            "cat": "canonical",
-           "id": "cx_services_0020-e42",
+           "id": "cx_services_0020-e43",
            "type": "EMAIL"
           },
           "s": "volkov@corp-tehno.ru"
@@ -2502,7 +2504,7 @@
          {
           "e": {
            "cat": "ugly",
-           "id": "cx_services_0020-e43",
+           "id": "cx_services_0020-e44",
            "note": "фамилия + инициалы",
            "type": "PER"
           },
@@ -2530,7 +2532,7 @@
          {
           "e": {
            "cat": "canonical",
-           "id": "cx_services_0020-e44",
+           "id": "cx_services_0020-e45",
            "type": "PER"
           },
           "s": "Белов Роман Дмитриевич"
@@ -2547,7 +2549,7 @@
          {
           "e": {
            "cat": "canonical",
-           "id": "cx_services_0020-e45",
+           "id": "cx_services_0020-e46",
            "note": "стиль записи из BIRTHDATE_STYLES",
            "type": "BIRTHDATE"
           },
@@ -2565,7 +2567,7 @@
          {
           "e": {
            "cat": "canonical",
-           "id": "cx_services_0020-e46",
+           "id": "cx_services_0020-e47",
            "note": "стиль адреса: canonical",
            "type": "ADDRESS"
           },
@@ -2583,7 +2585,7 @@
          {
           "e": {
            "cat": "canonical",
-           "id": "cx_services_0020-e47",
+           "id": "cx_services_0020-e48",
            "note": "серия+номер, стиль записи из PASSPORT_STYLES",
            "type": "PASSPORT"
           },
@@ -2598,7 +2600,7 @@
          {
           "e": {
            "cat": "ugly",
-           "id": "cx_services_0020-e48",
+           "id": "cx_services_0020-e49",
            "note": "код подразделения, стиль записи из DEPTCODE_STYLES",
            "type": "PASSPORT"
           },
@@ -2617,7 +2619,7 @@
           "e": {
            "cat": "canonical",
            "checksum": "valid",
-           "id": "cx_services_0020-e49",
+           "id": "cx_services_0020-e50",
            "note": "стиль записи из SNILS_STYLES",
            "type": "SNILS"
           },
@@ -2630,7 +2632,7 @@
           "e": {
            "cat": "ugly",
            "checksum": "valid",
-           "id": "cx_services_0020-e50",
+           "id": "cx_services_0020-e51",
            "note": "ИНН физлица (12 знаков)",
            "type": "INN"
           },
@@ -2648,7 +2650,7 @@
          {
           "e": {
            "cat": "canonical",
-           "id": "cx_services_0020-e51",
+           "id": "cx_services_0020-e52",
            "note": "формат: canonical",
            "type": "PHONE"
           },
@@ -2666,7 +2668,7 @@
          {
           "e": {
            "cat": "canonical",
-           "id": "cx_services_0020-e52",
+           "id": "cx_services_0020-e53",
            "type": "EMAIL"
           },
           "s": "belov@yandex.ru"
@@ -2688,7 +2690,7 @@
          {
           "e": {
            "cat": "ugly",
-           "id": "cx_services_0020-e53",
+           "id": "cx_services_0020-e54",
            "note": "фамилия + инициалы",
            "type": "PER"
           },
@@ -2726,7 +2728,7 @@
     {
      "e": {
       "cat": "ugly",
-      "id": "cx_services_0020-e58",
+      "id": "cx_services_0020-e59",
       "note": "подпись: фамилия+инициалы",
       "type": "PER"
      },
@@ -2747,7 +2749,7 @@
     {
      "e": {
       "cat": "ugly",
-      "id": "cx_services_0020-e59",
+      "id": "cx_services_0020-e60",
       "note": "подпись: фамилия+инициалы",
       "type": "PER"
      },
@@ -2776,7 +2778,7 @@
     {
      "e": {
       "cat": "adversarial",
-      "id": "cx_services_0020-e56",
+      "id": "cx_services_0020-e57",
       "note": "ФИО в нижнем колонтитуле",
       "trick": "in_footer",
       "type": "PER"
@@ -2789,7 +2791,7 @@
     {
      "e": {
       "cat": "adversarial",
-      "id": "cx_services_0020-e57",
+      "id": "cx_services_0020-e58",
       "note": "телефон в нижнем колонтитуле",
       "trick": "in_footer",
       "type": "PHONE"
@@ -2811,7 +2813,7 @@
     {
      "e": {
       "cat": "adversarial",
-      "id": "cx_services_0020-e54",
+      "id": "cx_services_0020-e55",
       "note": "телефон в колонтитуле (верхнем)",
       "trick": "in_header",
       "type": "PHONE"
@@ -2824,7 +2826,7 @@
     {
      "e": {
       "cat": "adversarial",
-      "id": "cx_services_0020-e55",
+      "id": "cx_services_0020-e56",
       "note": "e-mail в колонтитуле",
       "trick": "in_header",
       "type": "EMAIL"

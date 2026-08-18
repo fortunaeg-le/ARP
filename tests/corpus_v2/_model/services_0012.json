@@ -48,13 +48,15 @@
      "s": "     "
     },
     {
-     "n": {
+     "e": {
       "axes": {
        "запись": "24.07.2007 г."
       },
+      "cat": "canonical",
       "form": "date|запись=24.07.2007 г.",
-      "type": "DATE",
-      "why": "дата документа — не ПДн"
+      "id": "services_0012-e2",
+      "note": "переклассифицирована из типизированного негатива (этап DATE-ON, 2026-08-18): решение владельца — дата маскируется во всех наборах",
+      "type": "DATE"
      },
      "s": "02.08.2024 г."
     }
@@ -75,7 +77,7 @@
     {
      "e": {
       "cat": "ugly",
-      "id": "services_0012-e2",
+      "id": "services_0012-e3",
       "note": "составная форма: Индивидуальный предприниматель+ФИО",
       "type": "PER"
      },
@@ -88,7 +90,7 @@
      "e": {
       "cat": "canonical",
       "checksum": "invalid",
-      "id": "services_0012-e3",
+      "id": "services_0012-e4",
       "note": "ИНН физлица/ИП, 12 знаков",
       "type": "INN"
      },
@@ -106,7 +108,7 @@
     {
      "e": {
       "cat": "ugly",
-      "id": "services_0012-e4",
+      "id": "services_0012-e5",
       "note": "составная форма: Индивидуальный предприниматель+ФИО",
       "type": "PER"
      },
@@ -119,7 +121,7 @@
      "e": {
       "cat": "canonical",
       "checksum": "invalid",
-      "id": "services_0012-e5",
+      "id": "services_0012-e6",
       "note": "ИНН физлица/ИП, 12 знаков",
       "type": "INN"
      },
@@ -138,7 +140,7 @@
       },
       "cat": "canonical",
       "form": "docnum|формат=2/2025-П",
-      "id": "services_0012-e6",
+      "id": "services_0012-e7",
       "note": "переклассифицирован из негатива (этап MARKUP-V2): номер договора маскируется",
       "type": "DOCNUM"
      },
@@ -204,7 +206,7 @@
       },
       "cat": "canonical",
       "form": "term|вместо срока — дата=не позднее 01.11.2025",
-      "id": "services_0012-e7",
+      "id": "services_0012-e8",
       "note": "срок задан КОНКРЕТНОЙ ДАТОЙ, а не длительностью",
       "type": "TERM"
      },
@@ -451,7 +453,7 @@
       },
       "cat": "canonical",
       "form": "percent|привязка=за каждый день просрочки|ограничение=нет|дробь ставки=1/150",
-      "id": "services_0012-e8",
+      "id": "services_0012-e9",
       "note": "процент",
       "type": "PERCENT"
      },
@@ -479,7 +481,7 @@
       },
       "cat": "canonical",
       "form": "term|запись числа=10|вид дней=рабочих|отправная точка=с момента заключения контракта|вместо срока — дата=нет",
-      "id": "services_0012-e9",
+      "id": "services_0012-e10",
       "note": "срок длительностью",
       "type": "TERM"
      },
@@ -681,7 +683,7 @@
       },
       "cat": "canonical",
       "form": "money|разделитель разрядов=пробел|копейки=нет|валюта=рублей|пропись=(Двух миллионов) род.|НДС=в т.ч. НДС 18%|заполненность=значение",
-      "id": "services_0012-e10",
+      "id": "services_0012-e11",
       "note": "сумма",
       "type": "MONEY"
      },
@@ -697,7 +699,7 @@
       },
       "cat": "canonical",
       "form": "percent|запись=15%",
-      "id": "services_0012-e11",
+      "id": "services_0012-e12",
       "note": "ставка НДС",
       "type": "PERCENT"
      },
@@ -1103,7 +1105,7 @@
     {
      "e": {
       "cat": "canonical",
-      "id": "services_0012-e12",
+      "id": "services_0012-e13",
       "note": "стиль адреса: canonical",
       "type": "ADDRESS"
      },
@@ -1124,7 +1126,7 @@
     {
      "e": {
       "cat": "canonical",
-      "id": "services_0012-e13",
+      "id": "services_0012-e14",
       "note": "ФИО в дательном падеже",
       "type": "PER"
      },
@@ -1136,7 +1138,7 @@
     {
      "e": {
       "cat": "canonical",
-      "id": "services_0012-e14",
+      "id": "services_0012-e15",
       "note": "формат: canonical",
       "type": "PHONE"
      },
@@ -1164,7 +1166,7 @@
       },
       "cat": "canonical",
       "form": "term|запись числа=30 (Тридцати)|вид дней=не указан|отправная точка=с момента выставления счета|вместо срока — дата=нет",
-      "id": "services_0012-e15",
+      "id": "services_0012-e16",
       "note": "срок длительностью",
       "type": "TERM"
      },
@@ -1412,7 +1414,7 @@
       },
       "cat": "canonical",
       "form": "percent|привязка=годовых|ограничение=но не более 20% от цены договора|дробь ставки=1/130",
-      "id": "services_0012-e16",
+      "id": "services_0012-e17",
       "note": "процент",
       "type": "PERCENT"
      },
@@ -1432,7 +1434,7 @@
       },
       "cat": "canonical",
       "form": "percent|запись=15%|пропись=нет|привязка=от цены Договора|ограничение=нет|дробь ставки=нет",
-      "id": "services_0012-e17",
+      "id": "services_0012-e18",
       "note": "потолок ответственности",
       "type": "PERCENT"
      },
@@ -1450,7 +1452,7 @@
       },
       "cat": "canonical",
       "form": "percent|привязка=от общей суммы счета|ограничение=нет|дробь ставки=1/300",
-      "id": "services_0012-e18",
+      "id": "services_0012-e19",
       "note": "процент",
       "type": "PERCENT"
      },
@@ -1490,7 +1492,7 @@
       },
       "cat": "canonical",
       "form": "term|вместо срока — дата=не позднее 01.11.2025",
-      "id": "services_0012-e19",
+      "id": "services_0012-e20",
       "note": "срок задан КОНКРЕТНОЙ ДАТОЙ, а не длительностью",
       "type": "TERM"
      },
@@ -1521,7 +1523,7 @@
       },
       "cat": "canonical",
       "form": "term|запись числа=10|вид дней=календарных|отправная точка=с момента поступления денежных средств на расчетный счет|вместо срока — дата=нет",
-      "id": "services_0012-e20",
+      "id": "services_0012-e21",
       "note": "срок длительностью",
       "type": "TERM"
      },
@@ -1787,7 +1789,7 @@
       },
       "cat": "adversarial",
       "form": "docnum|формат=17595/001-сс",
-      "id": "services_0012-e21",
+      "id": "services_0012-e22",
       "note": "число разорвано форматированием: половина цифр в одном ране, половина в другом",
       "trick": "format_split",
       "type": "DOCNUM"
@@ -1819,7 +1821,7 @@
       },
       "cat": "adversarial",
       "form": "money|разделитель разрядов=неразрывный пробел|копейки=,0|валюта=руб.|пропись=(Десять тысяч)|НДС=нет|заполненность=значение",
-      "id": "services_0012-e22",
+      "id": "services_0012-e23",
       "note": "число разорвано форматированием: половина цифр в одном ране, половина в другом",
       "trick": "format_split",
       "type": "MONEY"
@@ -1848,7 +1850,7 @@
       },
       "cat": "adversarial",
       "form": "percent|привязка=годовых|ограничение=нет|дробь ставки=1/150",
-      "id": "services_0012-e23",
+      "id": "services_0012-e24",
       "note": "число разорвано форматированием: половина цифр в одном ране, половина в другом",
       "trick": "format_split",
       "type": "PERCENT"
@@ -1874,7 +1876,7 @@
       },
       "cat": "adversarial",
       "form": "term|вместо срока — дата=не позднее 01.11.2025",
-      "id": "services_0012-e24",
+      "id": "services_0012-e25",
       "note": "пробелы внутри цифр",
       "trick": "digit_spaces",
       "type": "TERM"
@@ -1910,7 +1912,7 @@
     {
      "e": {
       "cat": "canonical",
-      "id": "services_0012-e25",
+      "id": "services_0012-e26",
       "note": "фабричный тип: пример из файла-описания владельца",
       "type": "CONTRACT_KIND"
      },
@@ -1951,7 +1953,7 @@
     {
      "e": {
       "cat": "canonical",
-      "id": "services_0012-e26",
+      "id": "services_0012-e27",
       "note": "фабричный тип: пример из файла-описания владельца",
       "type": "CONTRACT_NO"
      },
@@ -1992,7 +1994,7 @@
     {
      "e": {
       "cat": "canonical",
-      "id": "services_0012-e27",
+      "id": "services_0012-e28",
       "note": "фабричный тип: пример из файла-описания владельца",
       "type": "PASSPORT_ISSUER"
      },
@@ -2033,7 +2035,7 @@
     {
      "e": {
       "cat": "canonical",
-      "id": "services_0012-e28",
+      "id": "services_0012-e29",
       "note": "фабричный тип: пример из файла-описания владельца",
       "type": "REGISTRY_NAME"
      },
@@ -2074,7 +2076,7 @@
     {
      "e": {
       "cat": "canonical",
-      "id": "services_0012-e29",
+      "id": "services_0012-e30",
       "note": "фабричный тип: пример из файла-описания владельца",
       "type": "REG_ID"
      },
@@ -2115,7 +2117,7 @@
     {
      "e": {
       "cat": "canonical",
-      "id": "services_0012-e30",
+      "id": "services_0012-e31",
       "note": "фабричный тип: пример из файла-описания владельца",
       "type": "REG_NUMBER"
      },
@@ -2156,7 +2158,7 @@
     {
      "e": {
       "cat": "canonical",
-      "id": "services_0012-e31",
+      "id": "services_0012-e32",
       "note": "фабричный тип: пример из файла-описания владельца",
       "type": "SHARE_PCT"
      },
@@ -2227,7 +2229,7 @@
          {
           "e": {
            "cat": "adversarial",
-           "id": "services_0012-e50",
+           "id": "services_0012-e51",
            "note": "голая строка ПДн в ячейке, без предложения вокруг",
            "trick": "bare_cell_no_sentence",
            "type": "PER"
@@ -2246,7 +2248,7 @@
          {
           "e": {
            "cat": "canonical",
-           "id": "services_0012-e32",
+           "id": "services_0012-e33",
            "type": "PER"
           },
           "s": "Смирнов Юрий Петрович"
@@ -2263,7 +2265,7 @@
          {
           "e": {
            "cat": "canonical",
-           "id": "services_0012-e33",
+           "id": "services_0012-e34",
            "note": "стиль адреса: canonical",
            "type": "ADDRESS"
           },
@@ -2282,7 +2284,7 @@
           "e": {
            "cat": "canonical",
            "checksum": "invalid",
-           "id": "services_0012-e34",
+           "id": "services_0012-e35",
            "note": "12-значный ИНН",
            "type": "INN"
           },
@@ -2295,7 +2297,7 @@
           "e": {
            "cat": "ugly",
            "checksum": "invalid",
-           "id": "services_0012-e35",
+           "id": "services_0012-e36",
            "note": "ОГРНИП, 15 знаков",
            "type": "OGRN"
           },
@@ -2314,7 +2316,7 @@
           "e": {
            "cat": "canonical",
            "checksum": "invalid",
-           "id": "services_0012-e36",
+           "id": "services_0012-e37",
            "type": "ACCOUNT"
           },
           "s": "40802810784994078567"
@@ -2328,7 +2330,7 @@
          {
           "e": {
            "cat": "canonical",
-           "id": "services_0012-e37",
+           "id": "services_0012-e38",
            "type": "BIK"
           },
           "s": "044525974"
@@ -2345,7 +2347,7 @@
          {
           "e": {
            "cat": "canonical",
-           "id": "services_0012-e38",
+           "id": "services_0012-e39",
            "note": "формат: canonical",
            "type": "PHONE"
           },
@@ -2363,7 +2365,7 @@
          {
           "e": {
            "cat": "canonical",
-           "id": "services_0012-e39",
+           "id": "services_0012-e40",
            "type": "EMAIL"
           },
           "s": "smirnov@gmail.com"
@@ -2385,7 +2387,7 @@
          {
           "e": {
            "cat": "ugly",
-           "id": "services_0012-e40",
+           "id": "services_0012-e41",
            "note": "фамилия + инициалы",
            "type": "PER"
           },
@@ -2413,7 +2415,7 @@
          {
           "e": {
            "cat": "adversarial",
-           "id": "services_0012-e51",
+           "id": "services_0012-e52",
            "note": "голый адрес в ячейке",
            "trick": "bare_cell_no_sentence",
            "type": "ADDRESS"
@@ -2432,7 +2434,7 @@
          {
           "e": {
            "cat": "canonical",
-           "id": "services_0012-e41",
+           "id": "services_0012-e42",
            "type": "PER"
           },
           "s": "Семёнов Михаил Олегович"
@@ -2449,7 +2451,7 @@
          {
           "e": {
            "cat": "canonical",
-           "id": "services_0012-e42",
+           "id": "services_0012-e43",
            "note": "стиль адреса: canonical",
            "type": "ADDRESS"
           },
@@ -2468,7 +2470,7 @@
           "e": {
            "cat": "canonical",
            "checksum": "invalid",
-           "id": "services_0012-e43",
+           "id": "services_0012-e44",
            "note": "12-значный ИНН",
            "type": "INN"
           },
@@ -2481,7 +2483,7 @@
           "e": {
            "cat": "ugly",
            "checksum": "invalid",
-           "id": "services_0012-e44",
+           "id": "services_0012-e45",
            "note": "ОГРНИП, 15 знаков",
            "type": "OGRN"
           },
@@ -2500,7 +2502,7 @@
           "e": {
            "cat": "canonical",
            "checksum": "invalid",
-           "id": "services_0012-e45",
+           "id": "services_0012-e46",
            "type": "ACCOUNT"
           },
           "s": "40802810617983701081"
@@ -2514,7 +2516,7 @@
          {
           "e": {
            "cat": "canonical",
-           "id": "services_0012-e46",
+           "id": "services_0012-e47",
            "type": "BIK"
           },
           "s": "044525225"
@@ -2531,7 +2533,7 @@
          {
           "e": {
            "cat": "canonical",
-           "id": "services_0012-e47",
+           "id": "services_0012-e48",
            "note": "формат: canonical",
            "type": "PHONE"
           },
@@ -2549,7 +2551,7 @@
          {
           "e": {
            "cat": "canonical",
-           "id": "services_0012-e48",
+           "id": "services_0012-e49",
            "type": "EMAIL"
           },
           "s": "semenov@yandex.ru"
@@ -2571,7 +2573,7 @@
          {
           "e": {
            "cat": "ugly",
-           "id": "services_0012-e49",
+           "id": "services_0012-e50",
            "note": "фамилия + инициалы",
            "type": "PER"
           },
@@ -2632,7 +2634,7 @@
               {
                "e": {
                 "cat": "adversarial",
-                "id": "services_0012-e52",
+                "id": "services_0012-e53",
                 "note": "счёт во вложенной таблице",
                 "trick": "nested_table",
                 "type": "ACCOUNT"
@@ -2667,7 +2669,7 @@
               {
                "e": {
                 "cat": "adversarial",
-                "id": "services_0012-e53",
+                "id": "services_0012-e54",
                 "note": "ФИО во вложенной таблице",
                 "trick": "nested_table",
                 "type": "PER"
@@ -2717,7 +2719,7 @@
     {
      "e": {
       "cat": "ugly",
-      "id": "services_0012-e54",
+      "id": "services_0012-e55",
       "note": "подпись: фамилия+инициалы",
       "type": "PER"
      },
@@ -2738,7 +2740,7 @@
     {
      "e": {
       "cat": "ugly",
-      "id": "services_0012-e55",
+      "id": "services_0012-e56",
       "note": "подпись: фамилия+инициалы",
       "type": "PER"
      },

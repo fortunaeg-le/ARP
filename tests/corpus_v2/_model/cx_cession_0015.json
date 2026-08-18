@@ -48,15 +48,17 @@
      "s": "     "
     },
     {
-     "n": {
+     "e": {
       "axes": {
-       "запись": "«24» июля 2007 г."
+       "запись": "двадцать четвёртого июля 2007 года"
       },
-      "form": "date|запись=«24» июля 2007 г.",
-      "type": "DATE",
-      "why": "дата документа — не ПДн"
+      "cat": "canonical",
+      "form": "date|запись=двадцать четвёртого июля 2007 года",
+      "id": "cx_cession_0015-e2",
+      "note": "переклассифицирована из типизированного негатива (этап DATE-ON, 2026-08-18): решение владельца — дата маскируется во всех наборах",
+      "type": "DATE"
      },
-     "s": "«08» февраля 2023 г."
+     "s": "восьмого февраля 2023 года"
     }
    ],
    "style": "normal",
@@ -72,7 +74,7 @@
     {
      "e": {
       "cat": "canonical",
-      "id": "cx_cession_0015-e2",
+      "id": "cx_cession_0015-e3",
       "type": "PER"
      },
      "s": "Лебедев Дмитрий Иванович"
@@ -86,7 +88,7 @@
     {
      "e": {
       "cat": "ugly",
-      "id": "cx_cession_0015-e3",
+      "id": "cx_cession_0015-e4",
       "note": "серия+номер, стиль записи из PASSPORT_STYLES",
       "type": "PASSPORT"
      },
@@ -113,7 +115,7 @@
     {
      "e": {
       "cat": "ugly",
-      "id": "cx_cession_0015-e4",
+      "id": "cx_cession_0015-e5",
       "note": "код подразделения, стиль записи из DEPTCODE_STYLES",
       "type": "PASSPORT"
      },
@@ -128,7 +130,7 @@
     {
      "e": {
       "cat": "canonical",
-      "id": "cx_cession_0015-e5",
+      "id": "cx_cession_0015-e6",
       "type": "PER"
      },
      "s": "Смирнова Вера Алексеевна"
@@ -142,7 +144,7 @@
     {
      "e": {
       "cat": "ugly",
-      "id": "cx_cession_0015-e6",
+      "id": "cx_cession_0015-e7",
       "note": "серия+номер, стиль записи из PASSPORT_STYLES",
       "type": "PASSPORT"
      },
@@ -169,7 +171,7 @@
     {
      "e": {
       "cat": "ugly",
-      "id": "cx_cession_0015-e7",
+      "id": "cx_cession_0015-e8",
       "note": "код подразделения, стиль записи из DEPTCODE_STYLES",
       "type": "PASSPORT"
      },
@@ -188,7 +190,7 @@
       },
       "cat": "canonical",
       "form": "docnum|формат=2/2025-П",
-      "id": "cx_cession_0015-e8",
+      "id": "cx_cession_0015-e9",
       "note": "переклассифицирован из негатива (этап MARKUP-V2): номер договора маскируется",
       "type": "DOCNUM"
      },
@@ -479,7 +481,7 @@
       },
       "cat": "canonical",
       "form": "money|разделитель разрядов=неразрывный пробел|копейки=,00|валюта=₽|пропись=(Десять тысяч)|НДС=Без НДС|заполненность=значение",
-      "id": "cx_cession_0015-e9",
+      "id": "cx_cession_0015-e10",
       "note": "сумма с оговоркой «Без НДС»",
       "type": "MONEY"
      },
@@ -520,7 +522,7 @@
       },
       "cat": "canonical",
       "form": "percent|привязка=годовых|ограничение=нет|дробь ставки=1/130",
-      "id": "cx_cession_0015-e10",
+      "id": "cx_cession_0015-e11",
       "note": "процент",
       "type": "PERCENT"
      },
@@ -548,7 +550,7 @@
       },
       "cat": "canonical",
       "form": "term|запись числа=10|вид дней=месяцев|отправная точка=со дня предъявления требования|вместо срока — дата=нет",
-      "id": "cx_cession_0015-e11",
+      "id": "cx_cession_0015-e12",
       "note": "срок длительностью",
       "type": "TERM"
      },
@@ -1173,7 +1175,7 @@
     {
      "e": {
       "cat": "canonical",
-      "id": "cx_cession_0015-e12",
+      "id": "cx_cession_0015-e13",
       "note": "стиль адреса: canonical",
       "type": "ADDRESS"
      },
@@ -1194,7 +1196,7 @@
     {
      "e": {
       "cat": "canonical",
-      "id": "cx_cession_0015-e13",
+      "id": "cx_cession_0015-e14",
       "note": "ФИО в дательном падеже",
       "type": "PER"
      },
@@ -1206,7 +1208,7 @@
     {
      "e": {
       "cat": "canonical",
-      "id": "cx_cession_0015-e14",
+      "id": "cx_cession_0015-e15",
       "note": "формат: canonical",
       "type": "PHONE"
      },
@@ -1234,7 +1236,7 @@
       },
       "cat": "canonical",
       "form": "term|запись числа=трех|вид дней=рабочих|отправная точка=с даты подписания Сторонами акта сдачи-приемки оказанных услуг|вместо срока — дата=нет",
-      "id": "cx_cession_0015-e15",
+      "id": "cx_cession_0015-e16",
       "note": "срок длительностью",
       "type": "TERM"
      },
@@ -1484,7 +1486,7 @@
       },
       "cat": "canonical",
       "form": "percent|запись=0,1 процента|пропись=нет|привязка=годовых|ограничение=нет|дробь ставки=нет",
-      "id": "cx_cession_0015-e16",
+      "id": "cx_cession_0015-e17",
       "note": "процент",
       "type": "PERCENT"
      },
@@ -1502,7 +1504,7 @@
       },
       "cat": "canonical",
       "form": "percent|привязка=от цены Договора|ограничение=нет|дробь ставки=1/300",
-      "id": "cx_cession_0015-e17",
+      "id": "cx_cession_0015-e18",
       "note": "процент",
       "type": "PERCENT"
      },
@@ -1545,7 +1547,7 @@
       },
       "cat": "canonical",
       "form": "term|запись числа=30 (Тридцати)|вид дней=банковских|отправная точка=с момента выставления счета|вместо срока — дата=нет",
-      "id": "cx_cession_0015-e18",
+      "id": "cx_cession_0015-e19",
       "note": "срок длительностью",
       "type": "TERM"
      },
@@ -1573,7 +1575,7 @@
       },
       "cat": "canonical",
       "form": "term|вместо срока — дата=не позднее 01.11.2025",
-      "id": "cx_cession_0015-e19",
+      "id": "cx_cession_0015-e20",
       "note": "срок задан КОНКРЕТНОЙ ДАТОЙ, а не длительностью",
       "type": "TERM"
      },
@@ -1842,7 +1844,7 @@
       },
       "cat": "adversarial",
       "form": "term|запись числа=10|вид дней=не указан|отправная точка=с момента поступления денежных средств на расчетный счет|вместо срока — дата=нет",
-      "id": "cx_cession_0015-e20",
+      "id": "cx_cession_0015-e21",
       "note": "число разорвано форматированием: половина цифр в одном ране, половина в другом",
       "trick": "format_split",
       "type": "TERM"
@@ -1869,7 +1871,7 @@
       },
       "cat": "adversarial",
       "form": "docnum|формат=01Ф-00034/16-124Д",
-      "id": "cx_cession_0015-e21",
+      "id": "cx_cession_0015-e22",
       "note": "число разорвано форматированием: половина цифр в одном ране, половина в другом",
       "trick": "format_split",
       "type": "DOCNUM"
@@ -1901,7 +1903,7 @@
       },
       "cat": "adversarial",
       "form": "money|разделитель разрядов=неразрывный пробел|копейки=00 копеек|валюта=руб.|пропись=нет|НДС=нет|заполненность=значение",
-      "id": "cx_cession_0015-e22",
+      "id": "cx_cession_0015-e23",
       "note": "число разорвано форматированием: половина цифр в одном ране, половина в другом",
       "trick": "format_split",
       "type": "MONEY"
@@ -1940,7 +1942,7 @@
            },
            "cat": "adversarial",
            "form": "percent|привязка=от стоимости неоплаченных работ|ограничение=нет|дробь ставки=1/150",
-           "id": "cx_cession_0015-e23",
+           "id": "cx_cession_0015-e24",
            "note": "число разорвано границей ячейки таблицы",
            "trick": "cell_split",
            "type": "PERCENT"
@@ -1966,7 +1968,7 @@
            },
            "cat": "adversarial",
            "form": "percent|привязка=от стоимости неоплаченных работ|ограничение=нет|дробь ставки=1/150",
-           "id": "cx_cession_0015-e23",
+           "id": "cx_cession_0015-e24",
            "trick": "cell_split",
            "type": "PERCENT"
           },
@@ -2034,7 +2036,7 @@
     {
      "e": {
       "cat": "canonical",
-      "id": "cx_cession_0015-e24",
+      "id": "cx_cession_0015-e25",
       "note": "фабричный тип: пример из файла-описания владельца",
       "type": "CONTRACT_KIND"
      },
@@ -2075,7 +2077,7 @@
     {
      "e": {
       "cat": "canonical",
-      "id": "cx_cession_0015-e25",
+      "id": "cx_cession_0015-e26",
       "note": "фабричный тип: пример из файла-описания владельца",
       "type": "CONTRACT_NO"
      },
@@ -2116,7 +2118,7 @@
     {
      "e": {
       "cat": "canonical",
-      "id": "cx_cession_0015-e26",
+      "id": "cx_cession_0015-e27",
       "note": "фабричный тип: пример из файла-описания владельца",
       "type": "PASSPORT_ISSUER"
      },
@@ -2157,7 +2159,7 @@
     {
      "e": {
       "cat": "canonical",
-      "id": "cx_cession_0015-e27",
+      "id": "cx_cession_0015-e28",
       "note": "фабричный тип: пример из файла-описания владельца",
       "type": "REGISTRY_NAME"
      },
@@ -2198,7 +2200,7 @@
     {
      "e": {
       "cat": "canonical",
-      "id": "cx_cession_0015-e28",
+      "id": "cx_cession_0015-e29",
       "note": "фабричный тип: пример из файла-описания владельца",
       "type": "REG_ID"
      },
@@ -2239,7 +2241,7 @@
     {
      "e": {
       "cat": "canonical",
-      "id": "cx_cession_0015-e29",
+      "id": "cx_cession_0015-e30",
       "note": "фабричный тип: пример из файла-описания владельца",
       "type": "REG_NUMBER"
      },
@@ -2280,7 +2282,7 @@
     {
      "e": {
       "cat": "canonical",
-      "id": "cx_cession_0015-e30",
+      "id": "cx_cession_0015-e31",
       "note": "фабричный тип: пример из файла-описания владельца",
       "type": "SHARE_PCT"
      },
@@ -2325,7 +2327,7 @@
       },
       "cat": "canonical",
       "form": "TRANCHE|оборот=именной: транш «Имя»",
-      "id": "cx_cession_0015-e31",
+      "id": "cx_cession_0015-e32",
       "note": "фабричный тип: пример из файла-описания владельца",
       "type": "TRANCHE"
      },
@@ -2400,7 +2402,7 @@
          {
           "e": {
            "cat": "canonical",
-           "id": "cx_cession_0015-e32",
+           "id": "cx_cession_0015-e33",
            "type": "PER"
           },
           "s": "Лебедев Дмитрий Иванович"
@@ -2417,7 +2419,7 @@
          {
           "e": {
            "cat": "canonical",
-           "id": "cx_cession_0015-e33",
+           "id": "cx_cession_0015-e34",
            "note": "стиль записи из BIRTHDATE_STYLES",
            "type": "BIRTHDATE"
           },
@@ -2435,7 +2437,7 @@
          {
           "e": {
            "cat": "canonical",
-           "id": "cx_cession_0015-e34",
+           "id": "cx_cession_0015-e35",
            "note": "стиль адреса: canonical",
            "type": "ADDRESS"
           },
@@ -2453,7 +2455,7 @@
          {
           "e": {
            "cat": "canonical",
-           "id": "cx_cession_0015-e35",
+           "id": "cx_cession_0015-e36",
            "note": "серия+номер, стиль записи из PASSPORT_STYLES",
            "type": "PASSPORT"
           },
@@ -2468,7 +2470,7 @@
          {
           "e": {
            "cat": "ugly",
-           "id": "cx_cession_0015-e36",
+           "id": "cx_cession_0015-e37",
            "note": "код подразделения, стиль записи из DEPTCODE_STYLES",
            "type": "PASSPORT"
           },
@@ -2487,7 +2489,7 @@
           "e": {
            "cat": "canonical",
            "checksum": "valid",
-           "id": "cx_cession_0015-e37",
+           "id": "cx_cession_0015-e38",
            "note": "стиль записи из SNILS_STYLES",
            "type": "SNILS"
           },
@@ -2500,7 +2502,7 @@
           "e": {
            "cat": "ugly",
            "checksum": "valid",
-           "id": "cx_cession_0015-e38",
+           "id": "cx_cession_0015-e39",
            "note": "ИНН физлица (12 знаков)",
            "type": "INN"
           },
@@ -2518,7 +2520,7 @@
          {
           "e": {
            "cat": "canonical",
-           "id": "cx_cession_0015-e39",
+           "id": "cx_cession_0015-e40",
            "note": "формат: canonical",
            "type": "PHONE"
           },
@@ -2536,7 +2538,7 @@
          {
           "e": {
            "cat": "canonical",
-           "id": "cx_cession_0015-e40",
+           "id": "cx_cession_0015-e41",
            "type": "EMAIL"
           },
           "s": "lebedev@corp-tehno.ru"
@@ -2558,7 +2560,7 @@
          {
           "e": {
            "cat": "ugly",
-           "id": "cx_cession_0015-e41",
+           "id": "cx_cession_0015-e42",
            "note": "фамилия + инициалы",
            "type": "PER"
           },
@@ -2586,7 +2588,7 @@
          {
           "e": {
            "cat": "canonical",
-           "id": "cx_cession_0015-e42",
+           "id": "cx_cession_0015-e43",
            "type": "PER"
           },
           "s": "Смирнова Вера Алексеевна"
@@ -2603,7 +2605,7 @@
          {
           "e": {
            "cat": "canonical",
-           "id": "cx_cession_0015-e43",
+           "id": "cx_cession_0015-e44",
            "note": "стиль записи из BIRTHDATE_STYLES",
            "type": "BIRTHDATE"
           },
@@ -2621,7 +2623,7 @@
          {
           "e": {
            "cat": "canonical",
-           "id": "cx_cession_0015-e44",
+           "id": "cx_cession_0015-e45",
            "note": "стиль адреса: canonical",
            "type": "ADDRESS"
           },
@@ -2639,7 +2641,7 @@
          {
           "e": {
            "cat": "canonical",
-           "id": "cx_cession_0015-e45",
+           "id": "cx_cession_0015-e46",
            "note": "серия+номер, стиль записи из PASSPORT_STYLES",
            "type": "PASSPORT"
           },
@@ -2654,7 +2656,7 @@
          {
           "e": {
            "cat": "ugly",
-           "id": "cx_cession_0015-e46",
+           "id": "cx_cession_0015-e47",
            "note": "код подразделения, стиль записи из DEPTCODE_STYLES",
            "type": "PASSPORT"
           },
@@ -2673,7 +2675,7 @@
           "e": {
            "cat": "canonical",
            "checksum": "valid",
-           "id": "cx_cession_0015-e47",
+           "id": "cx_cession_0015-e48",
            "note": "стиль записи из SNILS_STYLES",
            "type": "SNILS"
           },
@@ -2686,7 +2688,7 @@
           "e": {
            "cat": "ugly",
            "checksum": "valid",
-           "id": "cx_cession_0015-e48",
+           "id": "cx_cession_0015-e49",
            "note": "ИНН физлица (12 знаков)",
            "type": "INN"
           },
@@ -2704,7 +2706,7 @@
          {
           "e": {
            "cat": "canonical",
-           "id": "cx_cession_0015-e49",
+           "id": "cx_cession_0015-e50",
            "note": "формат: canonical",
            "type": "PHONE"
           },
@@ -2722,7 +2724,7 @@
          {
           "e": {
            "cat": "canonical",
-           "id": "cx_cession_0015-e50",
+           "id": "cx_cession_0015-e51",
            "type": "EMAIL"
           },
           "s": "smirnova@gmail.com"
@@ -2744,7 +2746,7 @@
          {
           "e": {
            "cat": "ugly",
-           "id": "cx_cession_0015-e51",
+           "id": "cx_cession_0015-e52",
            "note": "фамилия + инициалы",
            "type": "PER"
           },
@@ -2782,7 +2784,7 @@
     {
      "e": {
       "cat": "ugly",
-      "id": "cx_cession_0015-e56",
+      "id": "cx_cession_0015-e57",
       "note": "подпись: фамилия+инициалы",
       "type": "PER"
      },
@@ -2803,7 +2805,7 @@
     {
      "e": {
       "cat": "ugly",
-      "id": "cx_cession_0015-e57",
+      "id": "cx_cession_0015-e58",
       "note": "подпись: фамилия+инициалы",
       "type": "PER"
      },
@@ -2832,7 +2834,7 @@
     {
      "e": {
       "cat": "adversarial",
-      "id": "cx_cession_0015-e54",
+      "id": "cx_cession_0015-e55",
       "note": "ФИО в нижнем колонтитуле",
       "trick": "in_footer",
       "type": "PER"
@@ -2845,7 +2847,7 @@
     {
      "e": {
       "cat": "adversarial",
-      "id": "cx_cession_0015-e55",
+      "id": "cx_cession_0015-e56",
       "note": "телефон в нижнем колонтитуле",
       "trick": "in_footer",
       "type": "PHONE"
@@ -2867,7 +2869,7 @@
     {
      "e": {
       "cat": "adversarial",
-      "id": "cx_cession_0015-e52",
+      "id": "cx_cession_0015-e53",
       "note": "телефон в колонтитуле (верхнем)",
       "trick": "in_header",
       "type": "PHONE"
@@ -2880,7 +2882,7 @@
     {
      "e": {
       "cat": "adversarial",
-      "id": "cx_cession_0015-e53",
+      "id": "cx_cession_0015-e54",
       "note": "e-mail в колонтитуле",
       "trick": "in_header",
       "type": "EMAIL"
