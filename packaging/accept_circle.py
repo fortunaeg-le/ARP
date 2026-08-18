@@ -24,6 +24,12 @@ import urllib.error
 import urllib.request
 from pathlib import Path
 
+sys.path.insert(0, os.path.dirname(os.path.abspath(__file__)))
+# src/ на пути: круг читает сессию, созданную СОБРАННОЙ программой, чтобы собрать
+# «ответ нейросети» — исходный .docx с метками на местах значений (задача 2).
+sys.path.insert(1, os.path.join(os.path.dirname(os.path.dirname(os.path.abspath(__file__))), "src"))
+import ui_circle  # noqa: E402
+
 ROOT = Path(__file__).resolve().parent.parent
 DIST_EXE = ROOT / "dist" / "SHIFRATOR" / "SHIFRATOR.exe"
 PYTHON = ROOT / "venv" / "Scripts" / "python.exe"
@@ -135,6 +141,89 @@ def _make_synthetic_pdf_bytes(text: str) -> bytes:
     return buf.getvalue()
 
 
+def _make_pdf_with_unreadable_page(text: str) -> bytes:
+    """PDF из ДВУХ страниц: первая с текстовым слоем, вторая — без него.
+
+    Ради этой второй страницы всё и затевалось. Договор, у которого одна
+    страница — скан, обрабатывается молча: её текст не читается, значит не
+    обезличивается, а человек об этом не узнаёт и отдаёт документ в LLM. Ровно
+    этот случай вчера прошёл мимо круга — предупреждение лежало в ответе
+    сервера, но на ЭКРАНЕ его не было никогда.
+    """
+    from pypdf import PdfWriter
+    from pypdf.generic import DecodedStreamObject, DictionaryObject, NameObject
+
+    writer = PdfWriter()
+    page = writer.add_blank_page(width=612, height=792)
+    font = DictionaryObject()
+    font.update({
+        NameObject("/Type"): NameObject("/Font"),
+        NameObject("/Subtype"): NameObject("/Type1"),
+        NameObject("/BaseFont"): NameObject("/Helvetica"),
+    })
+    font_ref = writer._add_object(font)
+    resources = DictionaryObject()
+    resources[NameObject("/Font")] = DictionaryObject({NameObject("/F1"): font_ref})
+    page[NameObject("/Resources")] = resources
+    content = DecodedStreamObject()
+    content.set_data(f"BT /F1 12 Tf 72 720 Td ({text}) Tj ET".encode("latin-1"))
+    page[NameObject("/Contents")] = writer._add_object(content)
+
+    writer.add_blank_page(width=612, height=792)   # <- страница без текстового слоя
+    import io as _io
+    buf = _io.BytesIO()
+    writer.write(buf)
+    return buf.getvalue()
+
+
+def _docx_with_tokens(src_bytes: bytes, mapping: dict, tmp_dir: str) -> bytes:
+    """Собирает «ответ нейросети»: ИСХОДНЫЙ .docx, где значения заменены метками.
+
+    Именно это приносит юрист на восстановление в файл: не голый текст, а свой
+    договор с авторским оформлением, в котором стоят метки. Замена идёт по
+    ранам через python-docx — оформление, таблицы и колонтитулы не трогаются.
+    """
+    from docx import Document
+
+    src = os.path.join(tmp_dir, "answer_src.docx")
+    with open(src, "wb") as f:
+        f.write(src_bytes)
+    doc = Document(src)
+
+    def runs_of(container):
+        for para in container.paragraphs:
+            yield from para.runs
+        for table in container.tables:
+            for row in table.rows:
+                for cell in row.cells:
+                    yield from runs_of(cell)
+
+    def all_runs():
+        yield from runs_of(doc)
+        for section in doc.sections:
+            for part in (section.header, section.footer):
+                yield from runs_of(part)
+
+    replaced = 0
+    # Длинные значения первыми: иначе короткое подстрокой съест часть длинного.
+    pairs = sorted(mapping.items(), key=lambda kv: -len(kv[1]))
+    for run in all_runs():
+        text = run.text
+        if not text:
+            continue
+        for token, original in pairs:
+            if original and original in text:
+                text = text.replace(original, token)
+                replaced += 1
+        if text != run.text:
+            run.text = text
+
+    out = os.path.join(tmp_dir, "answer.docx")
+    doc.save(out)
+    with open(out, "rb") as f:
+        return f.read()
+
+
 STEP = 0
 
 
@@ -192,9 +281,78 @@ def http(method, url, payload=None, headers=None, timeout=15):
         return json.loads(r.read().decode("utf-8"))
 
 
+def _check_restored_docx(path: str, source_bytes: bytes, tmp_dir: str):
+    """Файл, полученный ЧЕРЕЗ ЭКРАН, открывается — и оформление в нём целое.
+
+    «Скачалось» — не результат. Юрист несёт этот файл дальше, поэтому спрашиваем
+    ровно то, ради чего восстановление в файл вообще существует: документ
+    открывается, таблицы на месте, начертания не потеряны, значения вернулись,
+    меток не осталось.
+    """
+    from docx import Document
+
+    src_path = os.path.join(tmp_dir, "source_for_compare.docx")
+    with open(src_path, "wb") as f:
+        f.write(source_bytes)
+
+    try:
+        doc = Document(path)
+    except Exception as e:  # noqa: BLE001
+        report(False, "восстановленный файл ОТКРЫВАЕТСЯ", f"не открылся: {e}")
+        return
+    src = Document(src_path)
+    report(True, "восстановленный файл ОТКРЫВАЕТСЯ как документ Word",
+           f"{len(doc.paragraphs)} абзацев")
+
+    report(len(doc.tables) == len(src.tables) and len(doc.tables) > 0,
+           "ТАБЛИЦЫ на месте и их столько же, сколько в исходном документе",
+           f"{len(doc.tables)} шт., в исходном {len(src.tables)}")
+
+    def cells(d):
+        return sum(len(r.cells) for t in d.tables for r in t.rows)
+
+    report(cells(doc) == cells(src), "структура таблиц не поехала: ячеек столько же",
+           f"{cells(doc)} ячеек, в исходном {cells(src)}")
+
+    def styled(d):
+        bold = italic = named = 0
+        for p in d.paragraphs:
+            if p.style is not None and p.style.name:
+                named += 1
+            for r in p.runs:
+                bold += 1 if r.bold else 0
+                italic += 1 if r.italic else 0
+        return bold, italic, named
+
+    got, want = styled(doc), styled(src)
+    report(got == want, "ОФОРМЛЕНИЕ целое: жирное/курсив/стили абзацев не потеряны",
+           f"жирных/курсивных/со стилем — {got}, в исходном {want}")
+
+    text = "\n".join(p.text for p in doc.paragraphs)
+    for t in doc.tables:
+        for row in t.rows:
+            for c in row.cells:
+                text += "\n" + c.text
+    for section in doc.sections:
+        for part in (section.header, section.footer):
+            text += "\n" + "\n".join(p.text for p in part.paragraphs)
+
+    left = re.findall(r"\[[A-Z_]+_\d+\]", text)
+    report(not left, "в восстановленном файле НЕ ОСТАЛОСЬ нераскрытых меток",
+           f"осталось: {left[:5]}" if left else "ни одной")
+
+    lost = [v for v in BYTE_EXACT_DOCX if v not in text]
+    report(not lost, "ЗНАЧЕНИЯ ВЕРНУЛИСЬ в файл БАЙТ-В-БАЙТ",
+           f"не вернулось: {lost}" if lost else f"{len(BYTE_EXACT_DOCX)} значений")
+
+
 def main():
     ap = argparse.ArgumentParser()
     ap.add_argument("--skip-build", action="store_true")
+    ap.add_argument("--skip-ui", action="store_true",
+                    help="не гонять круг через интерфейс (только для отладки самого круга — "
+                         "в приёмку этапа так НЕЛЬЗЯ: именно этот путь ловит класс "
+                         "«движок умеет, интерфейс не пускает»)")
     args = ap.parse_args()
 
     if not args.skip_build:
@@ -347,6 +505,49 @@ def main():
         n_pdf = len(re.findall(r"\[[A-Z_]+_\d+\]", anon_pdf))
         report(n_pdf > 0, "PDF: хотя бы одна маска в анонимном тексте", f"{n_pdf} шт.")
         report("123-45-67" not in anon_pdf, "PDF: телефон (ПДн) исчез из анонимного текста")
+
+        # =================================================================== #
+        # ПУТЬ ВТОРОЙ: ЧЕРЕЗ ИНТЕРФЕЙС, ШАГАМИ ЧЕЛОВЕКА (этап CIRCLE-UI).
+        #
+        # Всё, что выше, — тот же путь, что у командной строки: HTTP API. Экран
+        # он не открывает, и поэтому пропустил ДВА дефекта подряд: PDF, который
+        # интерфейс не пускал вовсе, и предупреждение о непрочитанной странице
+        # PDF, которого на экране не было НИКОГДА. Ниже проверяется то, что
+        # ВИДИТ ЧЕЛОВЕК, в настоящем браузере, на собранной программе.
+        # =================================================================== #
+        if not args.skip_ui:
+            print("--- круг через ИНТЕРФЕЙС (браузер, шагами человека) ---")
+            sample_docx_bytes = SAMPLE_DOCX.read_bytes()
+
+            def docx_with_tokens(sid):
+                from session_store import load_session
+                sess = load_session(sid, storage_dir=str(profile_dir / ".shifrator" / "sessions"))
+                mapping = {e["token"]: e["original_text"] for e in sess["entities"]}
+                return _docx_with_tokens(sample_docx_bytes, mapping, str(profile_dir))
+
+            samples = {
+                "txt": body,
+                "docx": sample_docx_bytes,
+                "docx_with_tokens": docx_with_tokens,
+                "pdf_ok": pdf_bytes,
+                "pdf_scan": _make_pdf_with_unreadable_page(
+                    "Contract page one, phone +7 495 123-45-67"),
+            }
+            br = None
+            try:
+                br, ui_sid = ui_circle.run_ui_circle(port, report, note, samples)
+                _, _, restored_path = ui_circle.run_ui_circle_files(
+                    br, report, note, samples, str(profile_dir))
+                _check_restored_docx(restored_path, sample_docx_bytes, str(profile_dir))
+                pdf_sid = ui_circle.run_ui_circle_pdf(br, report, note, samples)
+                ui_circle.check_pdf_refused_as_file(br, report, samples, pdf_sid)
+            finally:
+                if br is not None:
+                    br.close()
+        else:
+            note(False, "круг через интерфейс ПРОПУЩЕН (--skip-ui)",
+                 "в приёмку этапа так нельзя: непроверенным остаётся весь класс "
+                 "«движок умеет, интерфейс не пускает»")
 
         print("КРУГ ПРОЙДЕН")
     finally:
