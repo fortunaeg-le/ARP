@@ -780,3 +780,144 @@ def test_z_registry_matches_the_live_dump():
     assert live == registry, (
         "реестр линии «з» разошёлся с дампом; только в дампе: %s; только в реестре: %s"
         % (sorted(live - registry), sorted(registry - live)))
+
+
+# --------------------------------------------------------------------------- #
+#  ЛИНИЯ «и» — ЗНАЧЕНИЕ ПОД ЧУЖОЙ МАСКОЙ (этап SINGLE-GUARD)                   #
+# --------------------------------------------------------------------------- #
+# Класс, ради которого линия заведена, невидим ДАЖЕ линии «з»: та меряет
+# РАЗНИЦУ двух раскладок масок, а у значения, спрятанного на максимуме чужим
+# именем и по умолчанию своим, разница нулевая. Хуже того, выход из класса ВНИЗ
+# (маску потеряли совсем) уменьшает все счётчики сразу и выглядит улучшением.
+# Поэтому подложка нужна под оба перехода, и каждый тест ниже дополнительно
+# проверяет, что прежние линии на нём МОЛЧАТ — иначе линия «и» не нужна.
+
+
+def _sg(doc_id, cases, entities=None, masks=None):
+    """Документ с полем single_guard. cases: (тип, start, end, [типы масок],
+    uncovered_max, uncovered_default)."""
+    d = _doc(doc_id, entities=entities, masks=masks)
+    d["single_guard"] = [
+        {"type": t, "start": s_, "end": e_, "len": e_ - s_,
+         "mask_types": mt, "uncovered_max": umax, "uncovered_default": udef}
+        for (t, s_, e_, mt, umax, udef) in cases
+    ]
+    return d
+
+
+#: Один и тот же случай в трёх состояниях: спрятан чужим именем (сегодняшний
+#: долг), открыт по умолчанию, открыт вообще.
+_HID = ("PER", 100, 120, ["ORG"], 0, 0)
+_OPEN_DEFAULT = ("PER", 100, 120, ["ORG"], 0, 20)
+_OPEN_MAX = ("PER", 100, 120, [], 20, 20)
+_KEY = frozenset({("doc_c", "PER", 100, 120)})
+
+
+def test_i_documented_foreign_mask_does_not_redden_but_is_always_visible():
+    """СЕГОДНЯШНЕЕ СОСТОЯНИЕ. Значение спрятано под чужим именем — это не
+    утечка, гейт ронять нечем. Но число обязано быть в отчёте ВСЕГДА, иначе
+    долг снова уедет в разовый скрипт (ровно так он и прожил незамеченным)."""
+    baseline, current = _green_pair()
+    baseline.append(_sg("doc_c", [_HID]))
+    current.append(_sg("doc_c", [_HID]))
+
+    v = G.evaluate(baseline, current, set(), single_guard_ids=_KEY)
+
+    assert not v["red"], _reasons(v)
+    assert any(w.startswith("(и) МАСКА ЧУЖОГО ТИПА") for w in v["warnings"]), \
+        "число «под чужой маской» не попало в отчёт: %s" % v["warnings"]
+
+
+def test_i_value_opened_in_default_profile_reddens_line_i():
+    """ПЕРЕХОД ВНИЗ, вариант 1: маска чужого типа на месте, но по умолчанию
+    значение уже ничем не прикрыто. Это утечка ПДн у пользователя, который
+    ничего не настраивал."""
+    baseline, current = _green_pair()
+    baseline.append(_sg("doc_c", [_HID]))
+    current.append(_sg("doc_c", [_OPEN_DEFAULT]))
+
+    v = G.evaluate(baseline, current, set(), single_guard_ids=_KEY)
+
+    assert v["red"], "Снятая одиночная защита не покрасила гейт"
+    assert any(r.startswith("(и) ОДИНОЧНАЯ ЗАЩИТА СНЯТА") for r in v["regressions"]), \
+        "Красный не по линии «и»: %s" % _reasons(v)
+
+
+def test_i_value_opened_everywhere_reddens_where_every_counter_improves():
+    """ПЕРЕХОД ВНИЗ, вариант 2 — тот самый тихий. Значение потеряло маску
+    ВООБЩЕ: оно выпало из класса «под чужой маской» (счёт стал меньше) и из
+    поля зрения линии «з» (разница раскладок снова нулевая — обе дырявы).
+    Все счётчики стали лучше или не дрогнули; красным обязана быть только
+    поимённая сверка реестра."""
+    baseline, current = _green_pair()
+    baseline.append(_sg("doc_c", [_HID]))
+    current.append(_sg("doc_c", [_OPEN_MAX]))
+
+    v = G.evaluate(baseline, current, set(), single_guard_ids=_KEY)
+
+    assert v["red"], "Потеря маски целиком не покрасила гейт"
+    assert any(r.startswith("(и) ОДИНОЧНАЯ ЗАЩИТА СНЯТА") for r in v["regressions"]), \
+        "Красный не по линии «и»: %s" % _reasons(v)
+    # доказательство, что линия не дублирует соседей: без неё было бы зелено
+    assert not any(r.startswith("(з)") for r in v["regressions"]), \
+        "линия «з» этот переход видит — тогда линия «и» лишняя: %s" % _reasons(v)
+    v_without = G.evaluate(baseline, current, set())     # реестр пуст
+    assert not v_without["red"], (
+        "без реестра линии «и» гейт и так красный — подложка не доказывает "
+        "тихости перехода: %s" % _reasons(v_without))
+
+
+def test_i_new_undocumented_case_warns_but_does_not_redden():
+    """Состав класса изменился, но НЕ в сторону утечки: значение спрятано, лишь
+    случай новый. Красить нечем — предупреждаем и просим пересобрать реестр."""
+    baseline, current = _green_pair()
+    baseline.append(_sg("doc_c", []))
+    current.append(_sg("doc_c", [_HID]))
+
+    v = G.evaluate(baseline, current, set())     # реестр пуст
+
+    assert not v["red"], _reasons(v)
+    assert any("НЕТ в реестре" in w for w in v["warnings"]), v["warnings"]
+
+
+def test_i_case_left_the_class_upwards_is_not_a_regression():
+    """ПЕРЕХОД ВВЕРХ — починка типизации: значение теперь закрыто маской СВОЕГО
+    типа, и в класс не попадает вовсе. Линия обязана молчать, иначе она
+    штрафует ровно то лечение, ради которого заведена."""
+    baseline, current = _green_pair()
+    baseline.append(_sg("doc_c", [_HID]))
+    current.append(_sg("doc_c", []))
+
+    v = G.evaluate(baseline, current, set(), single_guard_ids=_KEY)
+
+    assert not v["red"], _reasons(v)
+
+
+def test_i_dump_without_the_field_neither_crashes_nor_lies():
+    """Дамп старше линии (поля single_guard нет вовсе) — не креш и не красное:
+    «не мерили» и «случаев нет» — разные вещи, и второе не выдаётся за первое."""
+    baseline, current = _green_pair()            # ни один _doc() поля не несёт
+    v = G.evaluate(baseline, current, set(), single_guard_ids=_KEY)
+    assert not v["red"], _reasons(v)
+    assert not any(w.startswith("(и) МАСКА ЧУЖОГО ТИПА") for w in v["warnings"]), \
+        "линия отчиталась числом по дампу, где поля нет: %s" % v["warnings"]
+
+
+def test_i_registry_matches_the_live_dump():
+    """Реестр — не бумажка: его ключи обязаны совпадать с классом на текущем
+    дампе. Разъехались — сторож охраняет вчерашний день."""
+    import json
+    dump_path = os.path.join(HERE, "results_gate_current.json")
+    if not os.path.isfile(dump_path):
+        import pytest
+        pytest.skip("нет свежего дампа гейта")
+    results = json.load(open(dump_path, encoding="utf-8"))
+    sg = ML.single_guard_summary(results)
+    if not sg["present"]:
+        import pytest
+        pytest.skip("дамп снят до появления линии «и» (нет поля single_guard)")
+    live = set(sg["covered"])
+    registry = G._known_single_guard()
+    assert live == registry, (
+        "реестр линии «и» разошёлся с дампом; только в дампе: %d, только в "
+        "реестре: %d" % (len(live - registry), len(registry - live)))

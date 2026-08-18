@@ -1,0 +1,3770 @@
+{
+ "why": "ЭТАП SINGLE-GUARD, линия «и» (долг DEFGATE-CROSSTYPE-LATENT). Поимённый список эталонных значений, которые на МАКСИМУМЕ закрыты маской ЧУЖОГО типа: тип из набора по умолчанию (пользователь ждёт маску) спрятан под именем типа вне набора. Сегодня это НЕ утечка — значение закрыто, и при настройках по умолчанию его подхватывает другая раскладка масок. Но защита у него ОДИНОЧНАЯ, и потеря её не видна ни одному счётчику: выпав из класса, случай УМЕНЬШАЕТ и число «под чужой маской», и разницу раскладок линии «з», то есть выглядит улучшением. Поэтому линия «и» судит поимённо: реестровый случай, ставший открытым, красит гейт безусловно. Пересборка реестра — только через tests/corpus/build_single_guard_registry.py и с записью в JOURNAL.",
+ "source_dump": "results_gate_current.json",
+ "n": 375,
+ "per_type": {
+  "PER": 342,
+  "SNILS": 1,
+  "PASSPORT": 32
+ },
+ "pairs": {
+  "PASSPORT->ADDRESS": 1,
+  "PASSPORT->INN": 29,
+  "PASSPORT->PHONE": 2,
+  "PER->ADDRESS": 3,
+  "PER->ORG": 339,
+  "SNILS->PHONE": 1
+ },
+ "cases": [
+  {
+   "doc_id": "agency_0002",
+   "type": "PER",
+   "start": 259,
+   "end": 279,
+   "len": 20,
+   "mask_types": [
+    "ORG"
+   ]
+  },
+  {
+   "doc_id": "agency_0002",
+   "type": "PER",
+   "start": 3026,
+   "end": 3046,
+   "len": 20,
+   "mask_types": [
+    "ORG"
+   ]
+  },
+  {
+   "doc_id": "agency_0002__m1337_invisible",
+   "type": "PER",
+   "start": 270,
+   "end": 293,
+   "len": 23,
+   "mask_types": [
+    "ORG"
+   ]
+  },
+  {
+   "doc_id": "agency_0002__m1337_invisible",
+   "type": "PER",
+   "start": 3107,
+   "end": 3130,
+   "len": 23,
+   "mask_types": [
+    "ORG"
+   ]
+  },
+  {
+   "doc_id": "agency_0002__m2718_digit_spaces",
+   "type": "PER",
+   "start": 261,
+   "end": 281,
+   "len": 20,
+   "mask_types": [
+    "ORG"
+   ]
+  },
+  {
+   "doc_id": "agency_0002__m2718_digit_spaces",
+   "type": "PER",
+   "start": 3063,
+   "end": 3083,
+   "len": 20,
+   "mask_types": [
+    "ORG"
+   ]
+  },
+  {
+   "doc_id": "agency_0004",
+   "type": "PER",
+   "start": 66,
+   "end": 88,
+   "len": 22,
+   "mask_types": [
+    "ORG"
+   ]
+  },
+  {
+   "doc_id": "agency_0004",
+   "type": "PER",
+   "start": 232,
+   "end": 246,
+   "len": 14,
+   "mask_types": [
+    "ORG"
+   ]
+  },
+  {
+   "doc_id": "agency_0004",
+   "type": "PER",
+   "start": 2650,
+   "end": 2672,
+   "len": 22,
+   "mask_types": [
+    "ORG"
+   ]
+  },
+  {
+   "doc_id": "agency_0004",
+   "type": "PER",
+   "start": 3013,
+   "end": 3038,
+   "len": 25,
+   "mask_types": [
+    "ORG"
+   ]
+  },
+  {
+   "doc_id": "agency_0004__m1337_digit_spaces",
+   "type": "PER",
+   "start": 66,
+   "end": 88,
+   "len": 22,
+   "mask_types": [
+    "ORG"
+   ]
+  },
+  {
+   "doc_id": "agency_0004__m1337_digit_spaces",
+   "type": "PER",
+   "start": 236,
+   "end": 250,
+   "len": 14,
+   "mask_types": [
+    "ORG"
+   ]
+  },
+  {
+   "doc_id": "agency_0004__m1337_digit_spaces",
+   "type": "PER",
+   "start": 2661,
+   "end": 2683,
+   "len": 22,
+   "mask_types": [
+    "ORG"
+   ]
+  },
+  {
+   "doc_id": "agency_0004__m1337_digit_spaces",
+   "type": "PER",
+   "start": 3041,
+   "end": 3066,
+   "len": 25,
+   "mask_types": [
+    "ORG"
+   ]
+  },
+  {
+   "doc_id": "agency_0004__m2718_combo",
+   "type": "PER",
+   "start": 69,
+   "end": 94,
+   "len": 25,
+   "mask_types": [
+    "ORG"
+   ]
+  },
+  {
+   "doc_id": "agency_0004__m2718_combo",
+   "type": "PER",
+   "start": 3083,
+   "end": 3111,
+   "len": 28,
+   "mask_types": [
+    "ORG"
+   ]
+  },
+  {
+   "doc_id": "agency_0005",
+   "type": "PER",
+   "start": 101,
+   "end": 116,
+   "len": 15,
+   "mask_types": [
+    "ORG"
+   ]
+  },
+  {
+   "doc_id": "agency_0005",
+   "type": "PER",
+   "start": 2838,
+   "end": 2863,
+   "len": 25,
+   "mask_types": [
+    "ORG"
+   ]
+  },
+  {
+   "doc_id": "agency_0005__m1337_digit_spaces",
+   "type": "PER",
+   "start": 102,
+   "end": 117,
+   "len": 15,
+   "mask_types": [
+    "ORG"
+   ]
+  },
+  {
+   "doc_id": "agency_0005__m1337_digit_spaces",
+   "type": "PER",
+   "start": 2845,
+   "end": 2870,
+   "len": 25,
+   "mask_types": [
+    "ORG"
+   ]
+  },
+  {
+   "doc_id": "agency_0008",
+   "type": "PER",
+   "start": 223,
+   "end": 246,
+   "len": 23,
+   "mask_types": [
+    "ORG"
+   ]
+  },
+  {
+   "doc_id": "agency_0008",
+   "type": "PER",
+   "start": 3008,
+   "end": 3031,
+   "len": 23,
+   "mask_types": [
+    "ORG"
+   ]
+  },
+  {
+   "doc_id": "agency_0008__m1337_homoglyph",
+   "type": "PER",
+   "start": 223,
+   "end": 246,
+   "len": 23,
+   "mask_types": [
+    "ORG"
+   ]
+  },
+  {
+   "doc_id": "agency_0008__m1337_homoglyph",
+   "type": "PER",
+   "start": 3008,
+   "end": 3031,
+   "len": 23,
+   "mask_types": [
+    "ORG"
+   ]
+  },
+  {
+   "doc_id": "agency_0008__m2718_case",
+   "type": "PER",
+   "start": 223,
+   "end": 246,
+   "len": 23,
+   "mask_types": [
+    "ORG"
+   ]
+  },
+  {
+   "doc_id": "agency_0008__m2718_case",
+   "type": "PER",
+   "start": 3008,
+   "end": 3031,
+   "len": 23,
+   "mask_types": [
+    "ORG"
+   ]
+  },
+  {
+   "doc_id": "agency_0010",
+   "type": "PER",
+   "start": 99,
+   "end": 113,
+   "len": 14,
+   "mask_types": [
+    "ORG"
+   ]
+  },
+  {
+   "doc_id": "agency_0010",
+   "type": "PER",
+   "start": 257,
+   "end": 268,
+   "len": 11,
+   "mask_types": [
+    "ORG"
+   ]
+  },
+  {
+   "doc_id": "agency_0010",
+   "type": "PER",
+   "start": 2766,
+   "end": 2793,
+   "len": 27,
+   "mask_types": [
+    "ORG"
+   ]
+  },
+  {
+   "doc_id": "agency_0010",
+   "type": "PER",
+   "start": 2825,
+   "end": 2852,
+   "len": 27,
+   "mask_types": [
+    "ORG"
+   ]
+  },
+  {
+   "doc_id": "agency_0010",
+   "type": "PER",
+   "start": 3205,
+   "end": 3224,
+   "len": 19,
+   "mask_types": [
+    "ORG"
+   ]
+  },
+  {
+   "doc_id": "agency_0010__m1337_case",
+   "type": "PER",
+   "start": 257,
+   "end": 268,
+   "len": 11,
+   "mask_types": [
+    "ORG"
+   ]
+  },
+  {
+   "doc_id": "agency_0010__m1337_case",
+   "type": "PER",
+   "start": 2766,
+   "end": 2793,
+   "len": 27,
+   "mask_types": [
+    "ORG"
+   ]
+  },
+  {
+   "doc_id": "agency_0010__m1337_case",
+   "type": "PER",
+   "start": 2825,
+   "end": 2852,
+   "len": 27,
+   "mask_types": [
+    "ORG"
+   ]
+  },
+  {
+   "doc_id": "agency_0010__m1337_case",
+   "type": "PER",
+   "start": 3205,
+   "end": 3224,
+   "len": 19,
+   "mask_types": [
+    "ORG"
+   ]
+  },
+  {
+   "doc_id": "agency_0010__m2718_linebreak",
+   "type": "PER",
+   "start": 260,
+   "end": 272,
+   "len": 12,
+   "mask_types": [
+    "ORG"
+   ]
+  },
+  {
+   "doc_id": "agency_0010__m2718_linebreak",
+   "type": "PER",
+   "start": 2852,
+   "end": 2880,
+   "len": 28,
+   "mask_types": [
+    "ORG"
+   ]
+  },
+  {
+   "doc_id": "agency_0010__m2718_linebreak",
+   "type": "PER",
+   "start": 3245,
+   "end": 3265,
+   "len": 20,
+   "mask_types": [
+    "ORG"
+   ]
+  },
+  {
+   "doc_id": "cession_0004",
+   "type": "PER",
+   "start": 287,
+   "end": 300,
+   "len": 13,
+   "mask_types": [
+    "ORG"
+   ]
+  },
+  {
+   "doc_id": "cession_0004",
+   "type": "PER",
+   "start": 3060,
+   "end": 3081,
+   "len": 21,
+   "mask_types": [
+    "ORG"
+   ]
+  },
+  {
+   "doc_id": "cession_0004__m1337_cell_split",
+   "type": "PER",
+   "start": 287,
+   "end": 300,
+   "len": 13,
+   "mask_types": [
+    "ORG"
+   ]
+  },
+  {
+   "doc_id": "cession_0004__m1337_cell_split",
+   "type": "PER",
+   "start": 3060,
+   "end": 3081,
+   "len": 21,
+   "mask_types": [
+    "ORG"
+   ]
+  },
+  {
+   "doc_id": "cession_0004__m2718_invisible",
+   "type": "PER",
+   "start": 3161,
+   "end": 3185,
+   "len": 24,
+   "mask_types": [
+    "ORG"
+   ]
+  },
+  {
+   "doc_id": "cession_0006",
+   "type": "PER",
+   "start": 100,
+   "end": 127,
+   "len": 27,
+   "mask_types": [
+    "ORG"
+   ]
+  },
+  {
+   "doc_id": "cession_0006",
+   "type": "PER",
+   "start": 272,
+   "end": 296,
+   "len": 24,
+   "mask_types": [
+    "ORG"
+   ]
+  },
+  {
+   "doc_id": "cession_0006",
+   "type": "PER",
+   "start": 2836,
+   "end": 2863,
+   "len": 27,
+   "mask_types": [
+    "ORG"
+   ]
+  },
+  {
+   "doc_id": "cession_0006",
+   "type": "PER",
+   "start": 3187,
+   "end": 3211,
+   "len": 24,
+   "mask_types": [
+    "ORG"
+   ]
+  },
+  {
+   "doc_id": "cession_0006__m1337_invisible",
+   "type": "PER",
+   "start": 100,
+   "end": 130,
+   "len": 30,
+   "mask_types": [
+    "ORG"
+   ]
+  },
+  {
+   "doc_id": "cession_0006__m1337_invisible",
+   "type": "PER",
+   "start": 277,
+   "end": 304,
+   "len": 27,
+   "mask_types": [
+    "ORG"
+   ]
+  },
+  {
+   "doc_id": "cession_0006__m1337_invisible",
+   "type": "PER",
+   "start": 2891,
+   "end": 2921,
+   "len": 30,
+   "mask_types": [
+    "ORG"
+   ]
+  },
+  {
+   "doc_id": "cession_0006__m1337_invisible",
+   "type": "PER",
+   "start": 3264,
+   "end": 3291,
+   "len": 27,
+   "mask_types": [
+    "ORG"
+   ]
+  },
+  {
+   "doc_id": "cession_0006__m2718_digit_spaces",
+   "type": "PER",
+   "start": 100,
+   "end": 127,
+   "len": 27,
+   "mask_types": [
+    "ORG"
+   ]
+  },
+  {
+   "doc_id": "cession_0006__m2718_digit_spaces",
+   "type": "PER",
+   "start": 274,
+   "end": 298,
+   "len": 24,
+   "mask_types": [
+    "ORG"
+   ]
+  },
+  {
+   "doc_id": "cession_0006__m2718_digit_spaces",
+   "type": "PER",
+   "start": 2840,
+   "end": 2867,
+   "len": 27,
+   "mask_types": [
+    "ORG"
+   ]
+  },
+  {
+   "doc_id": "cession_0006__m2718_digit_spaces",
+   "type": "PER",
+   "start": 3205,
+   "end": 3229,
+   "len": 24,
+   "mask_types": [
+    "ORG"
+   ]
+  },
+  {
+   "doc_id": "cession_0007",
+   "type": "PER",
+   "start": 126,
+   "end": 153,
+   "len": 27,
+   "mask_types": [
+    "ORG"
+   ]
+  },
+  {
+   "doc_id": "cession_0007",
+   "type": "PER",
+   "start": 4708,
+   "end": 4735,
+   "len": 27,
+   "mask_types": [
+    "ORG"
+   ]
+  },
+  {
+   "doc_id": "cession_0007__m1337_digit_spaces",
+   "type": "PER",
+   "start": 128,
+   "end": 155,
+   "len": 27,
+   "mask_types": [
+    "ORG"
+   ]
+  },
+  {
+   "doc_id": "cession_0007__m1337_digit_spaces",
+   "type": "PER",
+   "start": 4716,
+   "end": 4743,
+   "len": 27,
+   "mask_types": [
+    "ORG"
+   ]
+  },
+  {
+   "doc_id": "labor_0001",
+   "type": "PER",
+   "start": 72,
+   "end": 101,
+   "len": 29,
+   "mask_types": [
+    "ORG"
+   ]
+  },
+  {
+   "doc_id": "labor_0001",
+   "type": "PER",
+   "start": 2704,
+   "end": 2733,
+   "len": 29,
+   "mask_types": [
+    "ORG"
+   ]
+  },
+  {
+   "doc_id": "labor_0001__m1337_combo",
+   "type": "PER",
+   "start": 73,
+   "end": 105,
+   "len": 32,
+   "mask_types": [
+    "ORG"
+   ]
+  },
+  {
+   "doc_id": "labor_0001__m1337_combo",
+   "type": "SNILS",
+   "start": 3327,
+   "end": 3343,
+   "len": 16,
+   "mask_types": [
+    "PHONE"
+   ]
+  },
+  {
+   "doc_id": "labor_0001__m2718_homoglyph",
+   "type": "PER",
+   "start": 72,
+   "end": 101,
+   "len": 29,
+   "mask_types": [
+    "ORG"
+   ]
+  },
+  {
+   "doc_id": "labor_0001__m2718_homoglyph",
+   "type": "PER",
+   "start": 2704,
+   "end": 2733,
+   "len": 29,
+   "mask_types": [
+    "ORG"
+   ]
+  },
+  {
+   "doc_id": "labor_0004",
+   "type": "PER",
+   "start": 104,
+   "end": 118,
+   "len": 14,
+   "mask_types": [
+    "ORG"
+   ]
+  },
+  {
+   "doc_id": "labor_0004",
+   "type": "PER",
+   "start": 2826,
+   "end": 2851,
+   "len": 25,
+   "mask_types": [
+    "ORG"
+   ]
+  },
+  {
+   "doc_id": "labor_0004__m1337_homoglyph",
+   "type": "PER",
+   "start": 2826,
+   "end": 2851,
+   "len": 25,
+   "mask_types": [
+    "ORG"
+   ]
+  },
+  {
+   "doc_id": "labor_0004__m2718_case",
+   "type": "PER",
+   "start": 104,
+   "end": 118,
+   "len": 14,
+   "mask_types": [
+    "ORG"
+   ]
+  },
+  {
+   "doc_id": "labor_0004__m2718_case",
+   "type": "PER",
+   "start": 2826,
+   "end": 2851,
+   "len": 25,
+   "mask_types": [
+    "ORG"
+   ]
+  },
+  {
+   "doc_id": "labor_0007",
+   "type": "PER",
+   "start": 73,
+   "end": 86,
+   "len": 13,
+   "mask_types": [
+    "ORG"
+   ]
+  },
+  {
+   "doc_id": "labor_0007",
+   "type": "PER",
+   "start": 2887,
+   "end": 2911,
+   "len": 24,
+   "mask_types": [
+    "ORG"
+   ]
+  },
+  {
+   "doc_id": "labor_0007__m1337_combo",
+   "type": "PER",
+   "start": 2934,
+   "end": 2961,
+   "len": 27,
+   "mask_types": [
+    "ORG"
+   ]
+  },
+  {
+   "doc_id": "labor_0007__m2718_homoglyph",
+   "type": "PER",
+   "start": 73,
+   "end": 86,
+   "len": 13,
+   "mask_types": [
+    "ORG"
+   ]
+  },
+  {
+   "doc_id": "labor_0007__m2718_homoglyph",
+   "type": "PER",
+   "start": 2887,
+   "end": 2911,
+   "len": 24,
+   "mask_types": [
+    "ORG"
+   ]
+  },
+  {
+   "doc_id": "labor_0010",
+   "type": "PER",
+   "start": 4695,
+   "end": 4706,
+   "len": 11,
+   "mask_types": [
+    "ADDRESS"
+   ]
+  },
+  {
+   "doc_id": "labor_0010__m1337_cell_split",
+   "type": "PER",
+   "start": 4695,
+   "end": 4706,
+   "len": 11,
+   "mask_types": [
+    "ADDRESS"
+   ]
+  },
+  {
+   "doc_id": "labor_0010__m2718_invisible",
+   "type": "PER",
+   "start": 4760,
+   "end": 4772,
+   "len": 12,
+   "mask_types": [
+    "ADDRESS"
+   ]
+  },
+  {
+   "doc_id": "lease_0002",
+   "type": "PER",
+   "start": 235,
+   "end": 248,
+   "len": 13,
+   "mask_types": [
+    "ORG"
+   ]
+  },
+  {
+   "doc_id": "lease_0002",
+   "type": "PER",
+   "start": 2812,
+   "end": 2840,
+   "len": 28,
+   "mask_types": [
+    "ORG"
+   ]
+  },
+  {
+   "doc_id": "lease_0002__m1337_digit_spaces",
+   "type": "PER",
+   "start": 236,
+   "end": 249,
+   "len": 13,
+   "mask_types": [
+    "ORG"
+   ]
+  },
+  {
+   "doc_id": "lease_0002__m1337_digit_spaces",
+   "type": "PER",
+   "start": 2844,
+   "end": 2872,
+   "len": 28,
+   "mask_types": [
+    "ORG"
+   ]
+  },
+  {
+   "doc_id": "lease_0002__m2718_combo",
+   "type": "PER",
+   "start": 2874,
+   "end": 2905,
+   "len": 31,
+   "mask_types": [
+    "ORG"
+   ]
+  },
+  {
+   "doc_id": "lease_0003",
+   "type": "PASSPORT",
+   "start": 291,
+   "end": 303,
+   "len": 12,
+   "mask_types": [
+    "INN"
+   ]
+  },
+  {
+   "doc_id": "lease_0003",
+   "type": "PASSPORT",
+   "start": 3024,
+   "end": 3036,
+   "len": 12,
+   "mask_types": [
+    "INN"
+   ]
+  },
+  {
+   "doc_id": "lease_0003__m1337_invisible",
+   "type": "PASSPORT",
+   "start": 303,
+   "end": 317,
+   "len": 14,
+   "mask_types": [
+    "INN"
+   ]
+  },
+  {
+   "doc_id": "lease_0003__m1337_invisible",
+   "type": "PASSPORT",
+   "start": 3098,
+   "end": 3112,
+   "len": 14,
+   "mask_types": [
+    "INN"
+   ]
+  },
+  {
+   "doc_id": "lease_0003__m2718_case",
+   "type": "PASSPORT",
+   "start": 291,
+   "end": 303,
+   "len": 12,
+   "mask_types": [
+    "INN"
+   ]
+  },
+  {
+   "doc_id": "lease_0003__m2718_case",
+   "type": "PASSPORT",
+   "start": 3024,
+   "end": 3036,
+   "len": 12,
+   "mask_types": [
+    "INN"
+   ]
+  },
+  {
+   "doc_id": "lease_0004",
+   "type": "PER",
+   "start": 90,
+   "end": 103,
+   "len": 13,
+   "mask_types": [
+    "ORG"
+   ]
+  },
+  {
+   "doc_id": "lease_0004",
+   "type": "PER",
+   "start": 282,
+   "end": 296,
+   "len": 14,
+   "mask_types": [
+    "ORG"
+   ]
+  },
+  {
+   "doc_id": "lease_0004",
+   "type": "PER",
+   "start": 2538,
+   "end": 2564,
+   "len": 26,
+   "mask_types": [
+    "ORG"
+   ]
+  },
+  {
+   "doc_id": "lease_0004",
+   "type": "PER",
+   "start": 2834,
+   "end": 2858,
+   "len": 24,
+   "mask_types": [
+    "ORG"
+   ]
+  },
+  {
+   "doc_id": "lease_0004__m1337_combo",
+   "type": "PER",
+   "start": 90,
+   "end": 105,
+   "len": 15,
+   "mask_types": [
+    "ORG"
+   ]
+  },
+  {
+   "doc_id": "lease_0004__m1337_combo",
+   "type": "PER",
+   "start": 2578,
+   "end": 2607,
+   "len": 29,
+   "mask_types": [
+    "ORG"
+   ]
+  },
+  {
+   "doc_id": "lease_0004__m1337_combo",
+   "type": "PER",
+   "start": 2896,
+   "end": 2923,
+   "len": 27,
+   "mask_types": [
+    "ORG"
+   ]
+  },
+  {
+   "doc_id": "lease_0004__m2718_homoglyph",
+   "type": "PER",
+   "start": 90,
+   "end": 103,
+   "len": 13,
+   "mask_types": [
+    "ORG"
+   ]
+  },
+  {
+   "doc_id": "lease_0004__m2718_homoglyph",
+   "type": "PER",
+   "start": 282,
+   "end": 296,
+   "len": 14,
+   "mask_types": [
+    "ORG"
+   ]
+  },
+  {
+   "doc_id": "lease_0004__m2718_homoglyph",
+   "type": "PER",
+   "start": 2834,
+   "end": 2858,
+   "len": 24,
+   "mask_types": [
+    "ORG"
+   ]
+  },
+  {
+   "doc_id": "lease_0005",
+   "type": "PER",
+   "start": 82,
+   "end": 94,
+   "len": 12,
+   "mask_types": [
+    "ORG"
+   ]
+  },
+  {
+   "doc_id": "lease_0005",
+   "type": "PER",
+   "start": 2546,
+   "end": 2566,
+   "len": 20,
+   "mask_types": [
+    "ORG"
+   ]
+  },
+  {
+   "doc_id": "lease_0005__m1337_digit_spaces",
+   "type": "PER",
+   "start": 82,
+   "end": 94,
+   "len": 12,
+   "mask_types": [
+    "ORG"
+   ]
+  },
+  {
+   "doc_id": "lease_0005__m1337_digit_spaces",
+   "type": "PER",
+   "start": 2554,
+   "end": 2574,
+   "len": 20,
+   "mask_types": [
+    "ORG"
+   ]
+  },
+  {
+   "doc_id": "lease_0008",
+   "type": "PER",
+   "start": 319,
+   "end": 333,
+   "len": 14,
+   "mask_types": [
+    "ORG"
+   ]
+  },
+  {
+   "doc_id": "lease_0008",
+   "type": "PER",
+   "start": 2862,
+   "end": 2886,
+   "len": 24,
+   "mask_types": [
+    "ORG"
+   ]
+  },
+  {
+   "doc_id": "lease_0008__m1337_case",
+   "type": "PER",
+   "start": 2862,
+   "end": 2886,
+   "len": 24,
+   "mask_types": [
+    "ORG"
+   ]
+  },
+  {
+   "doc_id": "lease_0008__m2718_linebreak",
+   "type": "PER",
+   "start": 323,
+   "end": 338,
+   "len": 15,
+   "mask_types": [
+    "ORG"
+   ]
+  },
+  {
+   "doc_id": "lease_0010",
+   "type": "PER",
+   "start": 94,
+   "end": 114,
+   "len": 20,
+   "mask_types": [
+    "ORG"
+   ]
+  },
+  {
+   "doc_id": "lease_0010",
+   "type": "PER",
+   "start": 293,
+   "end": 306,
+   "len": 13,
+   "mask_types": [
+    "ORG"
+   ]
+  },
+  {
+   "doc_id": "lease_0010",
+   "type": "PER",
+   "start": 2538,
+   "end": 2558,
+   "len": 20,
+   "mask_types": [
+    "ORG"
+   ]
+  },
+  {
+   "doc_id": "lease_0010",
+   "type": "PER",
+   "start": 2874,
+   "end": 2898,
+   "len": 24,
+   "mask_types": [
+    "ORG"
+   ]
+  },
+  {
+   "doc_id": "lease_0010__m1337_linebreak",
+   "type": "PER",
+   "start": 297,
+   "end": 311,
+   "len": 14,
+   "mask_types": [
+    "ORG"
+   ]
+  },
+  {
+   "doc_id": "lease_0010__m2718_cell_split",
+   "type": "PER",
+   "start": 94,
+   "end": 114,
+   "len": 20,
+   "mask_types": [
+    "ORG"
+   ]
+  },
+  {
+   "doc_id": "lease_0010__m2718_cell_split",
+   "type": "PER",
+   "start": 293,
+   "end": 306,
+   "len": 13,
+   "mask_types": [
+    "ORG"
+   ]
+  },
+  {
+   "doc_id": "lease_0010__m2718_cell_split",
+   "type": "PER",
+   "start": 2538,
+   "end": 2558,
+   "len": 20,
+   "mask_types": [
+    "ORG"
+   ]
+  },
+  {
+   "doc_id": "lease_0010__m2718_cell_split",
+   "type": "PER",
+   "start": 2874,
+   "end": 2898,
+   "len": 24,
+   "mask_types": [
+    "ORG"
+   ]
+  },
+  {
+   "doc_id": "lease_0011",
+   "type": "PER",
+   "start": 84,
+   "end": 105,
+   "len": 21,
+   "mask_types": [
+    "ORG"
+   ]
+  },
+  {
+   "doc_id": "lease_0011",
+   "type": "PER",
+   "start": 2782,
+   "end": 2803,
+   "len": 21,
+   "mask_types": [
+    "ORG"
+   ]
+  },
+  {
+   "doc_id": "lease_0011__m1337_digit_spaces",
+   "type": "PER",
+   "start": 84,
+   "end": 105,
+   "len": 21,
+   "mask_types": [
+    "ORG"
+   ]
+  },
+  {
+   "doc_id": "lease_0011__m1337_digit_spaces",
+   "type": "PER",
+   "start": 2789,
+   "end": 2810,
+   "len": 21,
+   "mask_types": [
+    "ORG"
+   ]
+  },
+  {
+   "doc_id": "lease_0012__m2718_invisible",
+   "type": "PASSPORT",
+   "start": 121,
+   "end": 135,
+   "len": 14,
+   "mask_types": [
+    "PHONE"
+   ]
+  },
+  {
+   "doc_id": "loan_0002",
+   "type": "PER",
+   "start": 343,
+   "end": 356,
+   "len": 13,
+   "mask_types": [
+    "ORG"
+   ]
+  },
+  {
+   "doc_id": "loan_0002",
+   "type": "PER",
+   "start": 3178,
+   "end": 3205,
+   "len": 27,
+   "mask_types": [
+    "ORG"
+   ]
+  },
+  {
+   "doc_id": "loan_0002__m1337_invisible",
+   "type": "PER",
+   "start": 3275,
+   "end": 3305,
+   "len": 30,
+   "mask_types": [
+    "ORG"
+   ]
+  },
+  {
+   "doc_id": "loan_0002__m2718_digit_spaces",
+   "type": "PER",
+   "start": 345,
+   "end": 358,
+   "len": 13,
+   "mask_types": [
+    "ORG"
+   ]
+  },
+  {
+   "doc_id": "loan_0002__m2718_digit_spaces",
+   "type": "PER",
+   "start": 3212,
+   "end": 3239,
+   "len": 27,
+   "mask_types": [
+    "ORG"
+   ]
+  },
+  {
+   "doc_id": "loan_0004",
+   "type": "PER",
+   "start": 63,
+   "end": 87,
+   "len": 24,
+   "mask_types": [
+    "ORG"
+   ]
+  },
+  {
+   "doc_id": "loan_0004",
+   "type": "PER",
+   "start": 264,
+   "end": 288,
+   "len": 24,
+   "mask_types": [
+    "ORG"
+   ]
+  },
+  {
+   "doc_id": "loan_0004",
+   "type": "PER",
+   "start": 2814,
+   "end": 2838,
+   "len": 24,
+   "mask_types": [
+    "ORG"
+   ]
+  },
+  {
+   "doc_id": "loan_0004",
+   "type": "PER",
+   "start": 3145,
+   "end": 3169,
+   "len": 24,
+   "mask_types": [
+    "ORG"
+   ]
+  },
+  {
+   "doc_id": "loan_0004__m1337_digit_spaces",
+   "type": "PER",
+   "start": 63,
+   "end": 87,
+   "len": 24,
+   "mask_types": [
+    "ORG"
+   ]
+  },
+  {
+   "doc_id": "loan_0004__m1337_digit_spaces",
+   "type": "PER",
+   "start": 265,
+   "end": 289,
+   "len": 24,
+   "mask_types": [
+    "ORG"
+   ]
+  },
+  {
+   "doc_id": "loan_0004__m1337_digit_spaces",
+   "type": "PER",
+   "start": 2819,
+   "end": 2843,
+   "len": 24,
+   "mask_types": [
+    "ORG"
+   ]
+  },
+  {
+   "doc_id": "loan_0004__m1337_digit_spaces",
+   "type": "PER",
+   "start": 3167,
+   "end": 3191,
+   "len": 24,
+   "mask_types": [
+    "ORG"
+   ]
+  },
+  {
+   "doc_id": "loan_0004__m2718_combo",
+   "type": "PER",
+   "start": 63,
+   "end": 90,
+   "len": 27,
+   "mask_types": [
+    "ORG"
+   ]
+  },
+  {
+   "doc_id": "loan_0004__m2718_combo",
+   "type": "PER",
+   "start": 2866,
+   "end": 2893,
+   "len": 27,
+   "mask_types": [
+    "ORG"
+   ]
+  },
+  {
+   "doc_id": "loan_0004__m2718_combo",
+   "type": "PER",
+   "start": 3224,
+   "end": 3251,
+   "len": 27,
+   "mask_types": [
+    "ORG"
+   ]
+  },
+  {
+   "doc_id": "loan_0005__m1337_digit_spaces",
+   "type": "PASSPORT",
+   "start": 283,
+   "end": 297,
+   "len": 14,
+   "mask_types": [
+    "PHONE"
+   ]
+  },
+  {
+   "doc_id": "loan_0008",
+   "type": "PER",
+   "start": 271,
+   "end": 294,
+   "len": 23,
+   "mask_types": [
+    "ORG"
+   ]
+  },
+  {
+   "doc_id": "loan_0008",
+   "type": "PER",
+   "start": 3162,
+   "end": 3185,
+   "len": 23,
+   "mask_types": [
+    "ORG"
+   ]
+  },
+  {
+   "doc_id": "loan_0008__m1337_homoglyph",
+   "type": "PER",
+   "start": 271,
+   "end": 294,
+   "len": 23,
+   "mask_types": [
+    "ORG"
+   ]
+  },
+  {
+   "doc_id": "loan_0008__m1337_homoglyph",
+   "type": "PER",
+   "start": 3162,
+   "end": 3185,
+   "len": 23,
+   "mask_types": [
+    "ORG"
+   ]
+  },
+  {
+   "doc_id": "loan_0008__m2718_case",
+   "type": "PER",
+   "start": 271,
+   "end": 294,
+   "len": 23,
+   "mask_types": [
+    "ORG"
+   ]
+  },
+  {
+   "doc_id": "loan_0008__m2718_case",
+   "type": "PER",
+   "start": 3162,
+   "end": 3185,
+   "len": 23,
+   "mask_types": [
+    "ORG"
+   ]
+  },
+  {
+   "doc_id": "loan_0009",
+   "type": "PASSPORT",
+   "start": 260,
+   "end": 272,
+   "len": 12,
+   "mask_types": [
+    "INN"
+   ]
+  },
+  {
+   "doc_id": "loan_0009",
+   "type": "PASSPORT",
+   "start": 3183,
+   "end": 3195,
+   "len": 12,
+   "mask_types": [
+    "INN"
+   ]
+  },
+  {
+   "doc_id": "loan_0009__m1337_invisible",
+   "type": "PASSPORT",
+   "start": 272,
+   "end": 286,
+   "len": 14,
+   "mask_types": [
+    "INN"
+   ]
+  },
+  {
+   "doc_id": "loan_0009__m1337_invisible",
+   "type": "PASSPORT",
+   "start": 3267,
+   "end": 3281,
+   "len": 14,
+   "mask_types": [
+    "INN"
+   ]
+  },
+  {
+   "doc_id": "loan_0009__m2718_case",
+   "type": "PASSPORT",
+   "start": 260,
+   "end": 272,
+   "len": 12,
+   "mask_types": [
+    "INN"
+   ]
+  },
+  {
+   "doc_id": "loan_0009__m2718_case",
+   "type": "PASSPORT",
+   "start": 3183,
+   "end": 3195,
+   "len": 12,
+   "mask_types": [
+    "INN"
+   ]
+  },
+  {
+   "doc_id": "loan_0010",
+   "type": "PER",
+   "start": 64,
+   "end": 97,
+   "len": 33,
+   "mask_types": [
+    "ORG"
+   ]
+  },
+  {
+   "doc_id": "loan_0010",
+   "type": "PER",
+   "start": 274,
+   "end": 288,
+   "len": 14,
+   "mask_types": [
+    "ORG"
+   ]
+  },
+  {
+   "doc_id": "loan_0010",
+   "type": "PER",
+   "start": 4767,
+   "end": 4800,
+   "len": 33,
+   "mask_types": [
+    "ORG"
+   ]
+  },
+  {
+   "doc_id": "loan_0010",
+   "type": "PER",
+   "start": 4832,
+   "end": 4865,
+   "len": 33,
+   "mask_types": [
+    "ORG"
+   ]
+  },
+  {
+   "doc_id": "loan_0010",
+   "type": "PER",
+   "start": 5237,
+   "end": 5259,
+   "len": 22,
+   "mask_types": [
+    "ORG"
+   ]
+  },
+  {
+   "doc_id": "loan_0010__m1337_case",
+   "type": "PER",
+   "start": 64,
+   "end": 97,
+   "len": 33,
+   "mask_types": [
+    "ORG"
+   ]
+  },
+  {
+   "doc_id": "loan_0010__m1337_case",
+   "type": "PER",
+   "start": 4767,
+   "end": 4800,
+   "len": 33,
+   "mask_types": [
+    "ORG"
+   ]
+  },
+  {
+   "doc_id": "loan_0010__m1337_case",
+   "type": "PER",
+   "start": 4832,
+   "end": 4865,
+   "len": 33,
+   "mask_types": [
+    "ORG"
+   ]
+  },
+  {
+   "doc_id": "loan_0010__m1337_case",
+   "type": "PER",
+   "start": 5237,
+   "end": 5259,
+   "len": 22,
+   "mask_types": [
+    "ORG"
+   ]
+  },
+  {
+   "doc_id": "loan_0010__m2718_linebreak",
+   "type": "PER",
+   "start": 5278,
+   "end": 5301,
+   "len": 23,
+   "mask_types": [
+    "ORG"
+   ]
+  },
+  {
+   "doc_id": "sale_0001",
+   "type": "PER",
+   "start": 106,
+   "end": 121,
+   "len": 15,
+   "mask_types": [
+    "ORG"
+   ]
+  },
+  {
+   "doc_id": "sale_0001",
+   "type": "PER",
+   "start": 2648,
+   "end": 2673,
+   "len": 25,
+   "mask_types": [
+    "ORG"
+   ]
+  },
+  {
+   "doc_id": "sale_0001__m1337_digit_spaces",
+   "type": "PER",
+   "start": 106,
+   "end": 121,
+   "len": 15,
+   "mask_types": [
+    "ORG"
+   ]
+  },
+  {
+   "doc_id": "sale_0001__m1337_digit_spaces",
+   "type": "PER",
+   "start": 2655,
+   "end": 2680,
+   "len": 25,
+   "mask_types": [
+    "ORG"
+   ]
+  },
+  {
+   "doc_id": "sale_0004",
+   "type": "PER",
+   "start": 258,
+   "end": 279,
+   "len": 21,
+   "mask_types": [
+    "ORG"
+   ]
+  },
+  {
+   "doc_id": "sale_0004",
+   "type": "PER",
+   "start": 2995,
+   "end": 3023,
+   "len": 28,
+   "mask_types": [
+    "ORG"
+   ]
+  },
+  {
+   "doc_id": "sale_0004__m1337_cell_split",
+   "type": "PER",
+   "start": 258,
+   "end": 279,
+   "len": 21,
+   "mask_types": [
+    "ORG"
+   ]
+  },
+  {
+   "doc_id": "sale_0004__m1337_cell_split",
+   "type": "PER",
+   "start": 2995,
+   "end": 3023,
+   "len": 28,
+   "mask_types": [
+    "ORG"
+   ]
+  },
+  {
+   "doc_id": "sale_0004__m2718_invisible",
+   "type": "PER",
+   "start": 273,
+   "end": 297,
+   "len": 24,
+   "mask_types": [
+    "ORG"
+   ]
+  },
+  {
+   "doc_id": "sale_0004__m2718_invisible",
+   "type": "PER",
+   "start": 3078,
+   "end": 3109,
+   "len": 31,
+   "mask_types": [
+    "ORG"
+   ]
+  },
+  {
+   "doc_id": "sale_0006",
+   "type": "PER",
+   "start": 71,
+   "end": 85,
+   "len": 14,
+   "mask_types": [
+    "ORG"
+   ]
+  },
+  {
+   "doc_id": "sale_0006",
+   "type": "PER",
+   "start": 260,
+   "end": 272,
+   "len": 12,
+   "mask_types": [
+    "ORG"
+   ]
+  },
+  {
+   "doc_id": "sale_0006",
+   "type": "PER",
+   "start": 2621,
+   "end": 2644,
+   "len": 23,
+   "mask_types": [
+    "ORG"
+   ]
+  },
+  {
+   "doc_id": "sale_0006",
+   "type": "PER",
+   "start": 2676,
+   "end": 2699,
+   "len": 23,
+   "mask_types": [
+    "ORG"
+   ]
+  },
+  {
+   "doc_id": "sale_0006",
+   "type": "PER",
+   "start": 3025,
+   "end": 3050,
+   "len": 25,
+   "mask_types": [
+    "ORG"
+   ]
+  },
+  {
+   "doc_id": "sale_0006__m1337_invisible",
+   "type": "PER",
+   "start": 75,
+   "end": 91,
+   "len": 16,
+   "mask_types": [
+    "ORG"
+   ]
+  },
+  {
+   "doc_id": "sale_0006__m1337_invisible",
+   "type": "PER",
+   "start": 268,
+   "end": 282,
+   "len": 14,
+   "mask_types": [
+    "ORG"
+   ]
+  },
+  {
+   "doc_id": "sale_0006__m1337_invisible",
+   "type": "PER",
+   "start": 2662,
+   "end": 2688,
+   "len": 26,
+   "mask_types": [
+    "ORG"
+   ]
+  },
+  {
+   "doc_id": "sale_0006__m1337_invisible",
+   "type": "PER",
+   "start": 2720,
+   "end": 2746,
+   "len": 26,
+   "mask_types": [
+    "ORG"
+   ]
+  },
+  {
+   "doc_id": "sale_0006__m1337_invisible",
+   "type": "PER",
+   "start": 3096,
+   "end": 3124,
+   "len": 28,
+   "mask_types": [
+    "ORG"
+   ]
+  },
+  {
+   "doc_id": "sale_0006__m2718_digit_spaces",
+   "type": "PER",
+   "start": 73,
+   "end": 87,
+   "len": 14,
+   "mask_types": [
+    "ORG"
+   ]
+  },
+  {
+   "doc_id": "sale_0006__m2718_digit_spaces",
+   "type": "PER",
+   "start": 265,
+   "end": 277,
+   "len": 12,
+   "mask_types": [
+    "ORG"
+   ]
+  },
+  {
+   "doc_id": "sale_0006__m2718_digit_spaces",
+   "type": "PER",
+   "start": 2636,
+   "end": 2659,
+   "len": 23,
+   "mask_types": [
+    "ORG"
+   ]
+  },
+  {
+   "doc_id": "sale_0006__m2718_digit_spaces",
+   "type": "PER",
+   "start": 2691,
+   "end": 2714,
+   "len": 23,
+   "mask_types": [
+    "ORG"
+   ]
+  },
+  {
+   "doc_id": "sale_0006__m2718_digit_spaces",
+   "type": "PER",
+   "start": 3053,
+   "end": 3078,
+   "len": 25,
+   "mask_types": [
+    "ORG"
+   ]
+  },
+  {
+   "doc_id": "sale_0007",
+   "type": "PER",
+   "start": 78,
+   "end": 89,
+   "len": 11,
+   "mask_types": [
+    "ORG"
+   ]
+  },
+  {
+   "doc_id": "sale_0007",
+   "type": "PER",
+   "start": 2705,
+   "end": 2726,
+   "len": 21,
+   "mask_types": [
+    "ORG"
+   ]
+  },
+  {
+   "doc_id": "sale_0007__m1337_digit_spaces",
+   "type": "PER",
+   "start": 78,
+   "end": 89,
+   "len": 11,
+   "mask_types": [
+    "ORG"
+   ]
+  },
+  {
+   "doc_id": "sale_0007__m1337_digit_spaces",
+   "type": "PER",
+   "start": 2713,
+   "end": 2734,
+   "len": 21,
+   "mask_types": [
+    "ORG"
+   ]
+  },
+  {
+   "doc_id": "sale_0010",
+   "type": "PER",
+   "start": 254,
+   "end": 282,
+   "len": 28,
+   "mask_types": [
+    "ORG"
+   ]
+  },
+  {
+   "doc_id": "sale_0010",
+   "type": "PER",
+   "start": 3130,
+   "end": 3158,
+   "len": 28,
+   "mask_types": [
+    "ORG"
+   ]
+  },
+  {
+   "doc_id": "sale_0010__m1337_combo",
+   "type": "PER",
+   "start": 259,
+   "end": 290,
+   "len": 31,
+   "mask_types": [
+    "ORG"
+   ]
+  },
+  {
+   "doc_id": "sale_0010__m1337_combo",
+   "type": "PER",
+   "start": 3211,
+   "end": 3242,
+   "len": 31,
+   "mask_types": [
+    "ORG"
+   ]
+  },
+  {
+   "doc_id": "sale_0010__m2718_homoglyph",
+   "type": "PER",
+   "start": 254,
+   "end": 282,
+   "len": 28,
+   "mask_types": [
+    "ORG"
+   ]
+  },
+  {
+   "doc_id": "sale_0010__m2718_homoglyph",
+   "type": "PER",
+   "start": 3130,
+   "end": 3158,
+   "len": 28,
+   "mask_types": [
+    "ORG"
+   ]
+  },
+  {
+   "doc_id": "sale_0012",
+   "type": "PER",
+   "start": 102,
+   "end": 115,
+   "len": 13,
+   "mask_types": [
+    "ORG"
+   ]
+  },
+  {
+   "doc_id": "sale_0012",
+   "type": "PER",
+   "start": 290,
+   "end": 303,
+   "len": 13,
+   "mask_types": [
+    "ORG"
+   ]
+  },
+  {
+   "doc_id": "sale_0012",
+   "type": "PER",
+   "start": 4881,
+   "end": 4909,
+   "len": 28,
+   "mask_types": [
+    "ORG"
+   ]
+  },
+  {
+   "doc_id": "sale_0012",
+   "type": "PER",
+   "start": 5189,
+   "end": 5210,
+   "len": 21,
+   "mask_types": [
+    "ORG"
+   ]
+  },
+  {
+   "doc_id": "sale_0012__m1337_homoglyph",
+   "type": "PER",
+   "start": 290,
+   "end": 303,
+   "len": 13,
+   "mask_types": [
+    "ORG"
+   ]
+  },
+  {
+   "doc_id": "sale_0012__m1337_homoglyph",
+   "type": "PER",
+   "start": 4881,
+   "end": 4909,
+   "len": 28,
+   "mask_types": [
+    "ORG"
+   ]
+  },
+  {
+   "doc_id": "sale_0012__m1337_homoglyph",
+   "type": "PER",
+   "start": 5189,
+   "end": 5210,
+   "len": 21,
+   "mask_types": [
+    "ORG"
+   ]
+  },
+  {
+   "doc_id": "sale_0012__m2718_case",
+   "type": "PER",
+   "start": 102,
+   "end": 115,
+   "len": 13,
+   "mask_types": [
+    "ORG"
+   ]
+  },
+  {
+   "doc_id": "sale_0012__m2718_case",
+   "type": "PER",
+   "start": 4881,
+   "end": 4909,
+   "len": 28,
+   "mask_types": [
+    "ORG"
+   ]
+  },
+  {
+   "doc_id": "sale_0012__m2718_case",
+   "type": "PER",
+   "start": 5189,
+   "end": 5210,
+   "len": 21,
+   "mask_types": [
+    "ORG"
+   ]
+  },
+  {
+   "doc_id": "sale_0013",
+   "type": "PER",
+   "start": 80,
+   "end": 92,
+   "len": 12,
+   "mask_types": [
+    "ORG"
+   ]
+  },
+  {
+   "doc_id": "sale_0013",
+   "type": "PER",
+   "start": 2614,
+   "end": 2635,
+   "len": 21,
+   "mask_types": [
+    "ORG"
+   ]
+  },
+  {
+   "doc_id": "sale_0013__m1337_digit_spaces",
+   "type": "PER",
+   "start": 81,
+   "end": 93,
+   "len": 12,
+   "mask_types": [
+    "ORG"
+   ]
+  },
+  {
+   "doc_id": "sale_0013__m1337_digit_spaces",
+   "type": "PER",
+   "start": 2634,
+   "end": 2655,
+   "len": 21,
+   "mask_types": [
+    "ORG"
+   ]
+  },
+  {
+   "doc_id": "sale_0014",
+   "type": "PASSPORT",
+   "start": 115,
+   "end": 127,
+   "len": 12,
+   "mask_types": [
+    "INN"
+   ]
+  },
+  {
+   "doc_id": "sale_0014",
+   "type": "PASSPORT",
+   "start": 2720,
+   "end": 2732,
+   "len": 12,
+   "mask_types": [
+    "INN"
+   ]
+  },
+  {
+   "doc_id": "sale_0014__m1337_case",
+   "type": "PASSPORT",
+   "start": 115,
+   "end": 127,
+   "len": 12,
+   "mask_types": [
+    "INN"
+   ]
+  },
+  {
+   "doc_id": "sale_0014__m1337_case",
+   "type": "PASSPORT",
+   "start": 2720,
+   "end": 2732,
+   "len": 12,
+   "mask_types": [
+    "INN"
+   ]
+  },
+  {
+   "doc_id": "services_0001",
+   "type": "PASSPORT",
+   "start": 304,
+   "end": 316,
+   "len": 12,
+   "mask_types": [
+    "INN"
+   ]
+  },
+  {
+   "doc_id": "services_0001",
+   "type": "PASSPORT",
+   "start": 3009,
+   "end": 3021,
+   "len": 12,
+   "mask_types": [
+    "INN"
+   ]
+  },
+  {
+   "doc_id": "services_0001",
+   "type": "PER",
+   "start": 95,
+   "end": 124,
+   "len": 29,
+   "mask_types": [
+    "ORG"
+   ]
+  },
+  {
+   "doc_id": "services_0001",
+   "type": "PER",
+   "start": 2579,
+   "end": 2608,
+   "len": 29,
+   "mask_types": [
+    "ORG"
+   ]
+  },
+  {
+   "doc_id": "services_0001__m1337_combo",
+   "type": "PASSPORT",
+   "start": 317,
+   "end": 331,
+   "len": 14,
+   "mask_types": [
+    "INN"
+   ]
+  },
+  {
+   "doc_id": "services_0001__m1337_combo",
+   "type": "PASSPORT",
+   "start": 3091,
+   "end": 3105,
+   "len": 14,
+   "mask_types": [
+    "INN"
+   ]
+  },
+  {
+   "doc_id": "services_0001__m1337_combo",
+   "type": "PER",
+   "start": 96,
+   "end": 128,
+   "len": 32,
+   "mask_types": [
+    "ORG"
+   ]
+  },
+  {
+   "doc_id": "services_0001__m1337_combo",
+   "type": "PER",
+   "start": 2626,
+   "end": 2658,
+   "len": 32,
+   "mask_types": [
+    "ORG"
+   ]
+  },
+  {
+   "doc_id": "services_0001__m2718_homoglyph",
+   "type": "PASSPORT",
+   "start": 304,
+   "end": 316,
+   "len": 12,
+   "mask_types": [
+    "INN"
+   ]
+  },
+  {
+   "doc_id": "services_0001__m2718_homoglyph",
+   "type": "PASSPORT",
+   "start": 3009,
+   "end": 3021,
+   "len": 12,
+   "mask_types": [
+    "INN"
+   ]
+  },
+  {
+   "doc_id": "services_0001__m2718_homoglyph",
+   "type": "PER",
+   "start": 95,
+   "end": 124,
+   "len": 29,
+   "mask_types": [
+    "ORG"
+   ]
+  },
+  {
+   "doc_id": "services_0001__m2718_homoglyph",
+   "type": "PER",
+   "start": 2579,
+   "end": 2608,
+   "len": 29,
+   "mask_types": [
+    "ORG"
+   ]
+  },
+  {
+   "doc_id": "services_0004",
+   "type": "PER",
+   "start": 309,
+   "end": 320,
+   "len": 11,
+   "mask_types": [
+    "ORG"
+   ]
+  },
+  {
+   "doc_id": "services_0004",
+   "type": "PER",
+   "start": 2973,
+   "end": 2995,
+   "len": 22,
+   "mask_types": [
+    "ORG"
+   ]
+  },
+  {
+   "doc_id": "services_0004__m1337_cell_split",
+   "type": "PER",
+   "start": 309,
+   "end": 320,
+   "len": 11,
+   "mask_types": [
+    "ORG"
+   ]
+  },
+  {
+   "doc_id": "services_0004__m1337_cell_split",
+   "type": "PER",
+   "start": 2973,
+   "end": 2995,
+   "len": 22,
+   "mask_types": [
+    "ORG"
+   ]
+  },
+  {
+   "doc_id": "services_0004__m2718_invisible",
+   "type": "PER",
+   "start": 3039,
+   "end": 3064,
+   "len": 25,
+   "mask_types": [
+    "ORG"
+   ]
+  },
+  {
+   "doc_id": "services_0006",
+   "type": "PER",
+   "start": 115,
+   "end": 128,
+   "len": 13,
+   "mask_types": [
+    "ORG"
+   ]
+  },
+  {
+   "doc_id": "services_0006",
+   "type": "PER",
+   "start": 278,
+   "end": 304,
+   "len": 26,
+   "mask_types": [
+    "ORG"
+   ]
+  },
+  {
+   "doc_id": "services_0006",
+   "type": "PER",
+   "start": 4658,
+   "end": 4684,
+   "len": 26,
+   "mask_types": [
+    "ORG"
+   ]
+  },
+  {
+   "doc_id": "services_0006",
+   "type": "PER",
+   "start": 5050,
+   "end": 5076,
+   "len": 26,
+   "mask_types": [
+    "ORG"
+   ]
+  },
+  {
+   "doc_id": "services_0006__m1337_invisible",
+   "type": "PER",
+   "start": 115,
+   "end": 130,
+   "len": 15,
+   "mask_types": [
+    "ORG"
+   ]
+  },
+  {
+   "doc_id": "services_0006__m1337_invisible",
+   "type": "PER",
+   "start": 282,
+   "end": 311,
+   "len": 29,
+   "mask_types": [
+    "ORG"
+   ]
+  },
+  {
+   "doc_id": "services_0006__m1337_invisible",
+   "type": "PER",
+   "start": 4720,
+   "end": 4749,
+   "len": 29,
+   "mask_types": [
+    "ORG"
+   ]
+  },
+  {
+   "doc_id": "services_0006__m1337_invisible",
+   "type": "PER",
+   "start": 5143,
+   "end": 5172,
+   "len": 29,
+   "mask_types": [
+    "ORG"
+   ]
+  },
+  {
+   "doc_id": "services_0006__m2718_digit_spaces",
+   "type": "PER",
+   "start": 115,
+   "end": 128,
+   "len": 13,
+   "mask_types": [
+    "ORG"
+   ]
+  },
+  {
+   "doc_id": "services_0006__m2718_digit_spaces",
+   "type": "PER",
+   "start": 282,
+   "end": 308,
+   "len": 26,
+   "mask_types": [
+    "ORG"
+   ]
+  },
+  {
+   "doc_id": "services_0006__m2718_digit_spaces",
+   "type": "PER",
+   "start": 4669,
+   "end": 4695,
+   "len": 26,
+   "mask_types": [
+    "ORG"
+   ]
+  },
+  {
+   "doc_id": "services_0006__m2718_digit_spaces",
+   "type": "PER",
+   "start": 5074,
+   "end": 5100,
+   "len": 26,
+   "mask_types": [
+    "ORG"
+   ]
+  },
+  {
+   "doc_id": "services_0007",
+   "type": "PER",
+   "start": 90,
+   "end": 111,
+   "len": 21,
+   "mask_types": [
+    "ORG"
+   ]
+  },
+  {
+   "doc_id": "services_0007",
+   "type": "PER",
+   "start": 2545,
+   "end": 2566,
+   "len": 21,
+   "mask_types": [
+    "ORG"
+   ]
+  },
+  {
+   "doc_id": "services_0007__m1337_combo",
+   "type": "PER",
+   "start": 90,
+   "end": 114,
+   "len": 24,
+   "mask_types": [
+    "ORG"
+   ]
+  },
+  {
+   "doc_id": "services_0007__m1337_combo",
+   "type": "PER",
+   "start": 2594,
+   "end": 2618,
+   "len": 24,
+   "mask_types": [
+    "ORG"
+   ]
+  },
+  {
+   "doc_id": "services_0007__m2718_homoglyph",
+   "type": "PER",
+   "start": 90,
+   "end": 111,
+   "len": 21,
+   "mask_types": [
+    "ORG"
+   ]
+  },
+  {
+   "doc_id": "services_0007__m2718_homoglyph",
+   "type": "PER",
+   "start": 2545,
+   "end": 2566,
+   "len": 21,
+   "mask_types": [
+    "ORG"
+   ]
+  },
+  {
+   "doc_id": "services_0010",
+   "type": "PER",
+   "start": 283,
+   "end": 306,
+   "len": 23,
+   "mask_types": [
+    "ORG"
+   ]
+  },
+  {
+   "doc_id": "services_0010",
+   "type": "PER",
+   "start": 2863,
+   "end": 2886,
+   "len": 23,
+   "mask_types": [
+    "ORG"
+   ]
+  },
+  {
+   "doc_id": "services_0010__m2718_homoglyph",
+   "type": "PER",
+   "start": 283,
+   "end": 306,
+   "len": 23,
+   "mask_types": [
+    "ORG"
+   ]
+  },
+  {
+   "doc_id": "services_0010__m2718_homoglyph",
+   "type": "PER",
+   "start": 2863,
+   "end": 2886,
+   "len": 23,
+   "mask_types": [
+    "ORG"
+   ]
+  },
+  {
+   "doc_id": "services_0012",
+   "type": "PER",
+   "start": 110,
+   "end": 123,
+   "len": 13,
+   "mask_types": [
+    "ORG"
+   ]
+  },
+  {
+   "doc_id": "services_0012",
+   "type": "PER",
+   "start": 273,
+   "end": 286,
+   "len": 13,
+   "mask_types": [
+    "ORG"
+   ]
+  },
+  {
+   "doc_id": "services_0012",
+   "type": "PER",
+   "start": 2476,
+   "end": 2497,
+   "len": 21,
+   "mask_types": [
+    "ORG"
+   ]
+  },
+  {
+   "doc_id": "services_0012",
+   "type": "PER",
+   "start": 2529,
+   "end": 2550,
+   "len": 21,
+   "mask_types": [
+    "ORG"
+   ]
+  },
+  {
+   "doc_id": "services_0012",
+   "type": "PER",
+   "start": 2834,
+   "end": 2857,
+   "len": 23,
+   "mask_types": [
+    "ORG"
+   ]
+  },
+  {
+   "doc_id": "services_0012__m1337_homoglyph",
+   "type": "PER",
+   "start": 110,
+   "end": 123,
+   "len": 13,
+   "mask_types": [
+    "ORG"
+   ]
+  },
+  {
+   "doc_id": "services_0012__m1337_homoglyph",
+   "type": "PER",
+   "start": 273,
+   "end": 286,
+   "len": 13,
+   "mask_types": [
+    "ORG"
+   ]
+  },
+  {
+   "doc_id": "services_0012__m1337_homoglyph",
+   "type": "PER",
+   "start": 2476,
+   "end": 2497,
+   "len": 21,
+   "mask_types": [
+    "ORG"
+   ]
+  },
+  {
+   "doc_id": "services_0012__m1337_homoglyph",
+   "type": "PER",
+   "start": 2529,
+   "end": 2550,
+   "len": 21,
+   "mask_types": [
+    "ORG"
+   ]
+  },
+  {
+   "doc_id": "services_0012__m1337_homoglyph",
+   "type": "PER",
+   "start": 2834,
+   "end": 2857,
+   "len": 23,
+   "mask_types": [
+    "ORG"
+   ]
+  },
+  {
+   "doc_id": "services_0012__m2718_case",
+   "type": "PER",
+   "start": 110,
+   "end": 123,
+   "len": 13,
+   "mask_types": [
+    "ORG"
+   ]
+  },
+  {
+   "doc_id": "services_0012__m2718_case",
+   "type": "PER",
+   "start": 2476,
+   "end": 2497,
+   "len": 21,
+   "mask_types": [
+    "ORG"
+   ]
+  },
+  {
+   "doc_id": "services_0012__m2718_case",
+   "type": "PER",
+   "start": 2529,
+   "end": 2550,
+   "len": 21,
+   "mask_types": [
+    "ORG"
+   ]
+  },
+  {
+   "doc_id": "services_0012__m2718_case",
+   "type": "PER",
+   "start": 2834,
+   "end": 2857,
+   "len": 23,
+   "mask_types": [
+    "ORG"
+   ]
+  },
+  {
+   "doc_id": "services_0013",
+   "type": "PER",
+   "start": 87,
+   "end": 112,
+   "len": 25,
+   "mask_types": [
+    "ORG"
+   ]
+  },
+  {
+   "doc_id": "services_0013",
+   "type": "PER",
+   "start": 4650,
+   "end": 4675,
+   "len": 25,
+   "mask_types": [
+    "ORG"
+   ]
+  },
+  {
+   "doc_id": "services_0013__m1337_combo",
+   "type": "PER",
+   "start": 90,
+   "end": 118,
+   "len": 28,
+   "mask_types": [
+    "ORG"
+   ]
+  },
+  {
+   "doc_id": "services_0013__m1337_combo",
+   "type": "PER",
+   "start": 4700,
+   "end": 4728,
+   "len": 28,
+   "mask_types": [
+    "ORG"
+   ]
+  },
+  {
+   "doc_id": "services_0013__m2718_homoglyph",
+   "type": "PER",
+   "start": 87,
+   "end": 112,
+   "len": 25,
+   "mask_types": [
+    "ORG"
+   ]
+  },
+  {
+   "doc_id": "services_0013__m2718_homoglyph",
+   "type": "PER",
+   "start": 4650,
+   "end": 4675,
+   "len": 25,
+   "mask_types": [
+    "ORG"
+   ]
+  },
+  {
+   "doc_id": "services_0014__m2718_linebreak",
+   "type": "PASSPORT",
+   "start": 354,
+   "end": 367,
+   "len": 13,
+   "mask_types": [
+    "ADDRESS"
+   ]
+  },
+  {
+   "doc_id": "supply_0002",
+   "type": "PER",
+   "start": 229,
+   "end": 242,
+   "len": 13,
+   "mask_types": [
+    "ORG"
+   ]
+  },
+  {
+   "doc_id": "supply_0002",
+   "type": "PER",
+   "start": 3152,
+   "end": 3173,
+   "len": 21,
+   "mask_types": [
+    "ORG"
+   ]
+  },
+  {
+   "doc_id": "supply_0002__m1337_linebreak",
+   "type": "PER",
+   "start": 235,
+   "end": 249,
+   "len": 14,
+   "mask_types": [
+    "ORG"
+   ]
+  },
+  {
+   "doc_id": "supply_0002__m2718_cell_split",
+   "type": "PER",
+   "start": 229,
+   "end": 242,
+   "len": 13,
+   "mask_types": [
+    "ORG"
+   ]
+  },
+  {
+   "doc_id": "supply_0002__m2718_cell_split",
+   "type": "PER",
+   "start": 3152,
+   "end": 3173,
+   "len": 21,
+   "mask_types": [
+    "ORG"
+   ]
+  },
+  {
+   "doc_id": "supply_0004",
+   "type": "PER",
+   "start": 96,
+   "end": 119,
+   "len": 23,
+   "mask_types": [
+    "ORG"
+   ]
+  },
+  {
+   "doc_id": "supply_0004",
+   "type": "PER",
+   "start": 267,
+   "end": 281,
+   "len": 14,
+   "mask_types": [
+    "ORG"
+   ]
+  },
+  {
+   "doc_id": "supply_0004",
+   "type": "PER",
+   "start": 2815,
+   "end": 2838,
+   "len": 23,
+   "mask_types": [
+    "ORG"
+   ]
+  },
+  {
+   "doc_id": "supply_0004",
+   "type": "PER",
+   "start": 3139,
+   "end": 3164,
+   "len": 25,
+   "mask_types": [
+    "ORG"
+   ]
+  },
+  {
+   "doc_id": "supply_0004__m1337_cell_split",
+   "type": "PER",
+   "start": 96,
+   "end": 119,
+   "len": 23,
+   "mask_types": [
+    "ORG"
+   ]
+  },
+  {
+   "doc_id": "supply_0004__m1337_cell_split",
+   "type": "PER",
+   "start": 267,
+   "end": 281,
+   "len": 14,
+   "mask_types": [
+    "ORG"
+   ]
+  },
+  {
+   "doc_id": "supply_0004__m1337_cell_split",
+   "type": "PER",
+   "start": 2815,
+   "end": 2838,
+   "len": 23,
+   "mask_types": [
+    "ORG"
+   ]
+  },
+  {
+   "doc_id": "supply_0004__m1337_cell_split",
+   "type": "PER",
+   "start": 3139,
+   "end": 3164,
+   "len": 25,
+   "mask_types": [
+    "ORG"
+   ]
+  },
+  {
+   "doc_id": "supply_0004__m2718_invisible",
+   "type": "PER",
+   "start": 98,
+   "end": 124,
+   "len": 26,
+   "mask_types": [
+    "ORG"
+   ]
+  },
+  {
+   "doc_id": "supply_0004__m2718_invisible",
+   "type": "PER",
+   "start": 274,
+   "end": 290,
+   "len": 16,
+   "mask_types": [
+    "ORG"
+   ]
+  },
+  {
+   "doc_id": "supply_0004__m2718_invisible",
+   "type": "PER",
+   "start": 2843,
+   "end": 2869,
+   "len": 26,
+   "mask_types": [
+    "ORG"
+   ]
+  },
+  {
+   "doc_id": "supply_0004__m2718_invisible",
+   "type": "PER",
+   "start": 3192,
+   "end": 3220,
+   "len": 28,
+   "mask_types": [
+    "ORG"
+   ]
+  },
+  {
+   "doc_id": "supply_0005",
+   "type": "PER",
+   "start": 103,
+   "end": 117,
+   "len": 14,
+   "mask_types": [
+    "ORG"
+   ]
+  },
+  {
+   "doc_id": "supply_0005",
+   "type": "PER",
+   "start": 2839,
+   "end": 2864,
+   "len": 25,
+   "mask_types": [
+    "ORG"
+   ]
+  },
+  {
+   "doc_id": "supply_0005__m1337_combo",
+   "type": "PER",
+   "start": 2873,
+   "end": 2901,
+   "len": 28,
+   "mask_types": [
+    "ORG"
+   ]
+  },
+  {
+   "doc_id": "supply_0005__m2718_homoglyph",
+   "type": "PER",
+   "start": 103,
+   "end": 117,
+   "len": 14,
+   "mask_types": [
+    "ORG"
+   ]
+  },
+  {
+   "doc_id": "supply_0005__m2718_homoglyph",
+   "type": "PER",
+   "start": 2839,
+   "end": 2864,
+   "len": 25,
+   "mask_types": [
+    "ORG"
+   ]
+  },
+  {
+   "doc_id": "supply_0008",
+   "type": "PER",
+   "start": 250,
+   "end": 263,
+   "len": 13,
+   "mask_types": [
+    "ORG"
+   ]
+  },
+  {
+   "doc_id": "supply_0008",
+   "type": "PER",
+   "start": 5235,
+   "end": 5261,
+   "len": 26,
+   "mask_types": [
+    "ORG"
+   ]
+  },
+  {
+   "doc_id": "supply_0008__m1337_digit_spaces",
+   "type": "PER",
+   "start": 250,
+   "end": 263,
+   "len": 13,
+   "mask_types": [
+    "ORG"
+   ]
+  },
+  {
+   "doc_id": "supply_0008__m1337_digit_spaces",
+   "type": "PER",
+   "start": 5268,
+   "end": 5294,
+   "len": 26,
+   "mask_types": [
+    "ORG"
+   ]
+  },
+  {
+   "doc_id": "supply_0008__m2718_combo",
+   "type": "PER",
+   "start": 5323,
+   "end": 5352,
+   "len": 29,
+   "mask_types": [
+    "ORG"
+   ]
+  },
+  {
+   "doc_id": "supply_0009",
+   "type": "PASSPORT",
+   "start": 281,
+   "end": 293,
+   "len": 12,
+   "mask_types": [
+    "INN"
+   ]
+  },
+  {
+   "doc_id": "supply_0009",
+   "type": "PASSPORT",
+   "start": 3292,
+   "end": 3304,
+   "len": 12,
+   "mask_types": [
+    "INN"
+   ]
+  },
+  {
+   "doc_id": "supply_0009__m1337_digit_spaces",
+   "type": "PASSPORT",
+   "start": 281,
+   "end": 295,
+   "len": 14,
+   "mask_types": [
+    "INN"
+   ]
+  },
+  {
+   "doc_id": "supply_0009__m1337_digit_spaces",
+   "type": "PASSPORT",
+   "start": 3328,
+   "end": 3340,
+   "len": 12,
+   "mask_types": [
+    "INN"
+   ]
+  },
+  {
+   "doc_id": "supply_0010",
+   "type": "PER",
+   "start": 66,
+   "end": 88,
+   "len": 22,
+   "mask_types": [
+    "ORG"
+   ]
+  },
+  {
+   "doc_id": "supply_0010",
+   "type": "PER",
+   "start": 236,
+   "end": 250,
+   "len": 14,
+   "mask_types": [
+    "ORG"
+   ]
+  },
+  {
+   "doc_id": "supply_0010",
+   "type": "PER",
+   "start": 2778,
+   "end": 2800,
+   "len": 22,
+   "mask_types": [
+    "ORG"
+   ]
+  },
+  {
+   "doc_id": "supply_0010",
+   "type": "PER",
+   "start": 3102,
+   "end": 3126,
+   "len": 24,
+   "mask_types": [
+    "ORG"
+   ]
+  },
+  {
+   "doc_id": "supply_0010__m1337_combo",
+   "type": "PER",
+   "start": 68,
+   "end": 93,
+   "len": 25,
+   "mask_types": [
+    "ORG"
+   ]
+  },
+  {
+   "doc_id": "supply_0010__m1337_combo",
+   "type": "PER",
+   "start": 2809,
+   "end": 2834,
+   "len": 25,
+   "mask_types": [
+    "ORG"
+   ]
+  },
+  {
+   "doc_id": "supply_0010__m2718_homoglyph",
+   "type": "PER",
+   "start": 66,
+   "end": 88,
+   "len": 22,
+   "mask_types": [
+    "ORG"
+   ]
+  },
+  {
+   "doc_id": "supply_0010__m2718_homoglyph",
+   "type": "PER",
+   "start": 236,
+   "end": 250,
+   "len": 14,
+   "mask_types": [
+    "ORG"
+   ]
+  },
+  {
+   "doc_id": "supply_0010__m2718_homoglyph",
+   "type": "PER",
+   "start": 2778,
+   "end": 2800,
+   "len": 22,
+   "mask_types": [
+    "ORG"
+   ]
+  },
+  {
+   "doc_id": "supply_0010__m2718_homoglyph",
+   "type": "PER",
+   "start": 3102,
+   "end": 3126,
+   "len": 24,
+   "mask_types": [
+    "ORG"
+   ]
+  },
+  {
+   "doc_id": "supply_0011",
+   "type": "PER",
+   "start": 96,
+   "end": 110,
+   "len": 14,
+   "mask_types": [
+    "ORG"
+   ]
+  },
+  {
+   "doc_id": "supply_0011",
+   "type": "PER",
+   "start": 2811,
+   "end": 2834,
+   "len": 23,
+   "mask_types": [
+    "ORG"
+   ]
+  },
+  {
+   "doc_id": "supply_0011__m1337_combo",
+   "type": "PER",
+   "start": 2849,
+   "end": 2875,
+   "len": 26,
+   "mask_types": [
+    "ORG"
+   ]
+  },
+  {
+   "doc_id": "supply_0011__m2718_homoglyph",
+   "type": "PER",
+   "start": 96,
+   "end": 110,
+   "len": 14,
+   "mask_types": [
+    "ORG"
+   ]
+  },
+  {
+   "doc_id": "supply_0011__m2718_homoglyph",
+   "type": "PER",
+   "start": 2811,
+   "end": 2834,
+   "len": 23,
+   "mask_types": [
+    "ORG"
+   ]
+  },
+  {
+   "doc_id": "supply_0014",
+   "type": "PER",
+   "start": 281,
+   "end": 294,
+   "len": 13,
+   "mask_types": [
+    "ORG"
+   ]
+  },
+  {
+   "doc_id": "supply_0014",
+   "type": "PER",
+   "start": 3202,
+   "end": 3228,
+   "len": 26,
+   "mask_types": [
+    "ORG"
+   ]
+  },
+  {
+   "doc_id": "supply_0014__m1337_case",
+   "type": "PER",
+   "start": 3202,
+   "end": 3228,
+   "len": 26,
+   "mask_types": [
+    "ORG"
+   ]
+  },
+  {
+   "doc_id": "supply_0016",
+   "type": "PER",
+   "start": 75,
+   "end": 99,
+   "len": 24,
+   "mask_types": [
+    "ORG"
+   ]
+  },
+  {
+   "doc_id": "supply_0016",
+   "type": "PER",
+   "start": 275,
+   "end": 288,
+   "len": 13,
+   "mask_types": [
+    "ORG"
+   ]
+  },
+  {
+   "doc_id": "supply_0016",
+   "type": "PER",
+   "start": 2815,
+   "end": 2839,
+   "len": 24,
+   "mask_types": [
+    "ORG"
+   ]
+  },
+  {
+   "doc_id": "supply_0016",
+   "type": "PER",
+   "start": 3140,
+   "end": 3163,
+   "len": 23,
+   "mask_types": [
+    "ORG"
+   ]
+  },
+  {
+   "doc_id": "supply_0016__m1337_linebreak",
+   "type": "PER",
+   "start": 75,
+   "end": 100,
+   "len": 25,
+   "mask_types": [
+    "ORG"
+   ]
+  },
+  {
+   "doc_id": "supply_0016__m1337_linebreak",
+   "type": "PER",
+   "start": 278,
+   "end": 292,
+   "len": 14,
+   "mask_types": [
+    "ORG"
+   ]
+  },
+  {
+   "doc_id": "supply_0016__m2718_cell_split",
+   "type": "PER",
+   "start": 75,
+   "end": 99,
+   "len": 24,
+   "mask_types": [
+    "ORG"
+   ]
+  },
+  {
+   "doc_id": "supply_0016__m2718_cell_split",
+   "type": "PER",
+   "start": 275,
+   "end": 288,
+   "len": 13,
+   "mask_types": [
+    "ORG"
+   ]
+  },
+  {
+   "doc_id": "supply_0016__m2718_cell_split",
+   "type": "PER",
+   "start": 2815,
+   "end": 2839,
+   "len": 24,
+   "mask_types": [
+    "ORG"
+   ]
+  },
+  {
+   "doc_id": "supply_0016__m2718_cell_split",
+   "type": "PER",
+   "start": 3140,
+   "end": 3163,
+   "len": 23,
+   "mask_types": [
+    "ORG"
+   ]
+  },
+  {
+   "doc_id": "works_0002",
+   "type": "PER",
+   "start": 232,
+   "end": 256,
+   "len": 24,
+   "mask_types": [
+    "ORG"
+   ]
+  },
+  {
+   "doc_id": "works_0002",
+   "type": "PER",
+   "start": 3074,
+   "end": 3098,
+   "len": 24,
+   "mask_types": [
+    "ORG"
+   ]
+  },
+  {
+   "doc_id": "works_0002__m1337_cell_split",
+   "type": "PER",
+   "start": 232,
+   "end": 256,
+   "len": 24,
+   "mask_types": [
+    "ORG"
+   ]
+  },
+  {
+   "doc_id": "works_0002__m1337_cell_split",
+   "type": "PER",
+   "start": 3074,
+   "end": 3098,
+   "len": 24,
+   "mask_types": [
+    "ORG"
+   ]
+  },
+  {
+   "doc_id": "works_0002__m2718_invisible",
+   "type": "PER",
+   "start": 239,
+   "end": 266,
+   "len": 27,
+   "mask_types": [
+    "ORG"
+   ]
+  },
+  {
+   "doc_id": "works_0002__m2718_invisible",
+   "type": "PER",
+   "start": 3145,
+   "end": 3172,
+   "len": 27,
+   "mask_types": [
+    "ORG"
+   ]
+  },
+  {
+   "doc_id": "works_0004",
+   "type": "PER",
+   "start": 76,
+   "end": 87,
+   "len": 11,
+   "mask_types": [
+    "ORG"
+   ]
+  },
+  {
+   "doc_id": "works_0004",
+   "type": "PER",
+   "start": 263,
+   "end": 277,
+   "len": 14,
+   "mask_types": [
+    "ORG"
+   ]
+  },
+  {
+   "doc_id": "works_0004",
+   "type": "PER",
+   "start": 2765,
+   "end": 2785,
+   "len": 20,
+   "mask_types": [
+    "ORG"
+   ]
+  },
+  {
+   "doc_id": "works_0004",
+   "type": "PER",
+   "start": 2817,
+   "end": 2837,
+   "len": 20,
+   "mask_types": [
+    "ORG"
+   ]
+  },
+  {
+   "doc_id": "works_0004",
+   "type": "PER",
+   "start": 3174,
+   "end": 3197,
+   "len": 23,
+   "mask_types": [
+    "ORG"
+   ]
+  },
+  {
+   "doc_id": "works_0004__m1337_invisible",
+   "type": "PER",
+   "start": 78,
+   "end": 90,
+   "len": 12,
+   "mask_types": [
+    "ORG"
+   ]
+  },
+  {
+   "doc_id": "works_0004__m1337_invisible",
+   "type": "PER",
+   "start": 269,
+   "end": 285,
+   "len": 16,
+   "mask_types": [
+    "ORG"
+   ]
+  },
+  {
+   "doc_id": "works_0004__m1337_invisible",
+   "type": "PER",
+   "start": 2813,
+   "end": 2836,
+   "len": 23,
+   "mask_types": [
+    "ORG"
+   ]
+  },
+  {
+   "doc_id": "works_0004__m1337_invisible",
+   "type": "PER",
+   "start": 2868,
+   "end": 2891,
+   "len": 23,
+   "mask_types": [
+    "ORG"
+   ]
+  },
+  {
+   "doc_id": "works_0004__m1337_invisible",
+   "type": "PER",
+   "start": 3248,
+   "end": 3274,
+   "len": 26,
+   "mask_types": [
+    "ORG"
+   ]
+  },
+  {
+   "doc_id": "works_0004__m2718_digit_spaces",
+   "type": "PER",
+   "start": 76,
+   "end": 87,
+   "len": 11,
+   "mask_types": [
+    "ORG"
+   ]
+  },
+  {
+   "doc_id": "works_0004__m2718_digit_spaces",
+   "type": "PER",
+   "start": 267,
+   "end": 281,
+   "len": 14,
+   "mask_types": [
+    "ORG"
+   ]
+  },
+  {
+   "doc_id": "works_0004__m2718_digit_spaces",
+   "type": "PER",
+   "start": 2780,
+   "end": 2800,
+   "len": 20,
+   "mask_types": [
+    "ORG"
+   ]
+  },
+  {
+   "doc_id": "works_0004__m2718_digit_spaces",
+   "type": "PER",
+   "start": 2832,
+   "end": 2852,
+   "len": 20,
+   "mask_types": [
+    "ORG"
+   ]
+  },
+  {
+   "doc_id": "works_0004__m2718_digit_spaces",
+   "type": "PER",
+   "start": 3206,
+   "end": 3229,
+   "len": 23,
+   "mask_types": [
+    "ORG"
+   ]
+  },
+  {
+   "doc_id": "works_0005",
+   "type": "PER",
+   "start": 92,
+   "end": 107,
+   "len": 15,
+   "mask_types": [
+    "ORG"
+   ]
+  },
+  {
+   "doc_id": "works_0005",
+   "type": "PER",
+   "start": 2651,
+   "end": 2677,
+   "len": 26,
+   "mask_types": [
+    "ORG"
+   ]
+  },
+  {
+   "doc_id": "works_0005__m1337_digit_spaces",
+   "type": "PER",
+   "start": 93,
+   "end": 108,
+   "len": 15,
+   "mask_types": [
+    "ORG"
+   ]
+  },
+  {
+   "doc_id": "works_0005__m1337_digit_spaces",
+   "type": "PER",
+   "start": 2658,
+   "end": 2684,
+   "len": 26,
+   "mask_types": [
+    "ORG"
+   ]
+  },
+  {
+   "doc_id": "works_0008",
+   "type": "PER",
+   "start": 250,
+   "end": 271,
+   "len": 21,
+   "mask_types": [
+    "ORG"
+   ]
+  },
+  {
+   "doc_id": "works_0008",
+   "type": "PER",
+   "start": 5165,
+   "end": 5186,
+   "len": 21,
+   "mask_types": [
+    "ORG"
+   ]
+  },
+  {
+   "doc_id": "works_0008__m1337_combo",
+   "type": "PER",
+   "start": 255,
+   "end": 279,
+   "len": 24,
+   "mask_types": [
+    "ORG"
+   ]
+  },
+  {
+   "doc_id": "works_0008__m2718_homoglyph",
+   "type": "PER",
+   "start": 250,
+   "end": 271,
+   "len": 21,
+   "mask_types": [
+    "ORG"
+   ]
+  },
+  {
+   "doc_id": "works_0008__m2718_homoglyph",
+   "type": "PER",
+   "start": 5165,
+   "end": 5186,
+   "len": 21,
+   "mask_types": [
+    "ORG"
+   ]
+  },
+  {
+   "doc_id": "works_0010",
+   "type": "PER",
+   "start": 260,
+   "end": 285,
+   "len": 25,
+   "mask_types": [
+    "ORG"
+   ]
+  },
+  {
+   "doc_id": "works_0010",
+   "type": "PER",
+   "start": 2992,
+   "end": 3017,
+   "len": 25,
+   "mask_types": [
+    "ORG"
+   ]
+  },
+  {
+   "doc_id": "works_0010__m1337_homoglyph",
+   "type": "PER",
+   "start": 260,
+   "end": 285,
+   "len": 25,
+   "mask_types": [
+    "ORG"
+   ]
+  },
+  {
+   "doc_id": "works_0010__m1337_homoglyph",
+   "type": "PER",
+   "start": 2992,
+   "end": 3017,
+   "len": 25,
+   "mask_types": [
+    "ORG"
+   ]
+  },
+  {
+   "doc_id": "works_0010__m2718_case",
+   "type": "PER",
+   "start": 260,
+   "end": 285,
+   "len": 25,
+   "mask_types": [
+    "ORG"
+   ]
+  },
+  {
+   "doc_id": "works_0010__m2718_case",
+   "type": "PER",
+   "start": 2992,
+   "end": 3017,
+   "len": 25,
+   "mask_types": [
+    "ORG"
+   ]
+  },
+  {
+   "doc_id": "works_0011",
+   "type": "PASSPORT",
+   "start": 263,
+   "end": 275,
+   "len": 12,
+   "mask_types": [
+    "INN"
+   ]
+  },
+  {
+   "doc_id": "works_0011",
+   "type": "PASSPORT",
+   "start": 3217,
+   "end": 3229,
+   "len": 12,
+   "mask_types": [
+    "INN"
+   ]
+  },
+  {
+   "doc_id": "works_0011",
+   "type": "PER",
+   "start": 65,
+   "end": 86,
+   "len": 21,
+   "mask_types": [
+    "ORG"
+   ]
+  },
+  {
+   "doc_id": "works_0011",
+   "type": "PER",
+   "start": 2793,
+   "end": 2814,
+   "len": 21,
+   "mask_types": [
+    "ORG"
+   ]
+  },
+  {
+   "doc_id": "works_0011__m1337_digit_spaces",
+   "type": "PASSPORT",
+   "start": 3244,
+   "end": 3256,
+   "len": 12,
+   "mask_types": [
+    "INN"
+   ]
+  },
+  {
+   "doc_id": "works_0011__m1337_digit_spaces",
+   "type": "PER",
+   "start": 65,
+   "end": 86,
+   "len": 21,
+   "mask_types": [
+    "ORG"
+   ]
+  },
+  {
+   "doc_id": "works_0011__m1337_digit_spaces",
+   "type": "PER",
+   "start": 2802,
+   "end": 2823,
+   "len": 21,
+   "mask_types": [
+    "ORG"
+   ]
+  }
+ ]
+}

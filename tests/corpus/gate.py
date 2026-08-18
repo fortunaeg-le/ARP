@@ -121,6 +121,9 @@ KNOWN_LEAKS = os.path.join(ROOT, "docs", "known_leaks_stage_c.json")
 # ЭТАП DEFAULT-GATE, линия «з». Реестр лежит В ЗОНЕ ГЕЙТА, а не в docs/:
 # это данные приёмки, а не документ (правило рождения документов).
 KNOWN_DEFAULT_LEAKS = os.path.join(HERE, "known_default_leaks.json")
+# ЭТАП SINGLE-GUARD, линия «и». Реестр значений под ЧУЖОЙ маской — там же и по
+# той же причине, что реестр линии «з»: это данные приёмки, а не документ.
+KNOWN_SINGLE_GUARD = os.path.join(HERE, "known_single_guard.json")
 
 EMPTY_STATS = {"n": 0, "found": 0, "leak_v1": 0, "leak_v2_6": 0, "leak_v2_8": 0}
 
@@ -671,8 +674,102 @@ def print_default_profile(base_def, cur_def, registry_ids):
         print("     %s %s [%d:%d]" % c)
 
 
+def compare_single_guard(cur_sg, cur_x, base_x, registry_ids):
+    """ЛИНИЯ «и» — ЗНАЧЕНИЕ ПОД ЧУЖОЙ МАСКОЙ (долг DEFGATE-CROSSTYPE-LATENT).
+
+    Зачем линия существует и чего не видят линии «з»/полноты — measure_lib,
+    блок линии «и». Здесь только приговор, и он устроен НЕ как счётчик:
+
+      КРАСНОЕ (допуск 0) — реестровый случай ПЕРЕСТАЛ БЫТЬ ПРИКРЫТЫМ:
+        значение, которое пряталось под чужим именем, теперь открыто по
+        умолчанию либо открыто и на максимуме. Это переход «спрятано» ->
+        «видно», то есть настоящая утечка, и он обязан краснеть даже тогда,
+        когда ВСЕ счётчики стали меньше: выпав из класса, случай уменьшает
+        и число «под чужой маской», и разницу раскладок линии «з».
+
+      ПРЕДУПРЕЖДЕНИЕ (гейт не роняет) — сам факт, что класс непуст, и любое
+        изменение его состава/размера. Сегодня это не утечка (значение
+        спрятано), поэтому уровень мягкий; но число обязано быть на виду в
+        каждом отчёте, иначе долг снова уйдёт в разовый скрипт."""
+    regressions, warnings = [], []
+    state = cur_sg["state"]
+
+    opened = []
+    for key in sorted(registry_ids):
+        rec = state.get(key)
+        if rec is None:
+            continue                    # случая в классе больше нет — см. печать
+        if rec.get("uncovered_max"):
+            opened.append((key, "открыто и на МАКСИМУМЕ (%d симв. из %d)"
+                           % (rec["uncovered_max"], rec.get("len", 0))))
+        elif rec.get("uncovered_default"):
+            opened.append((key, "открыто ПО УМОЛЧАНИЮ (%d симв. из %d)"
+                           % (rec["uncovered_default"], rec.get("len", 0))))
+    if opened:
+        regressions.append(
+            "(и) ОДИНОЧНАЯ ЗАЩИТА СНЯТА: %d значений, прежде спрятанных маской "
+            "ЧУЖОГО типа, больше ничем не прикрыты (допуск 0): %s%s"
+            % (len(opened),
+               "; ".join("%s %s [%d:%d] — %s" % (k + (why,)) for k, why in opened[:10]),
+               " …" if len(opened) > 10 else ""))
+
+    if cur_sg["present"] and cur_sg["n"]:
+        warnings.append(
+            "(и) МАСКА ЧУЖОГО ТИПА: %d значений спрятаны под именем ДРУГОГО типа "
+            "(%d масок неверного типа). Сегодня это не утечка — значение закрыто; "
+            "МЯГКИЙ уровень (долг DEFGATE-CROSSTYPE-LATENT). По типам эталона: %s"
+            % (cur_sg["n"], cur_x["n"], cur_sg["per_type"]))
+
+    new = sorted(set(cur_sg["covered"]) - registry_ids)
+    if new:
+        warnings.append(
+            "(и) состав класса «под чужой маской» изменился: %d случаев НЕТ в "
+            "реестре known_single_guard.json (реестр пора пересобрать): %s%s"
+            % (len(new), "; ".join("%s %s [%d:%d]" % c for c in new[:10]),
+               " …" if len(new) > 10 else ""))
+
+    if base_x.get("present") and cur_x["n"] != base_x["n"]:
+        warnings.append(
+            "(и) масок неверного типа: %d -> %d" % (base_x["n"], cur_x["n"]))
+    return regressions, warnings
+
+
+def print_single_guard(base_x, cur_x, cur_sg, registry_ids):
+    print("")
+    print("(и) МАСКА ЧУЖОГО ТИПА — значение СПРЯТАНО, но под именем другого типа")
+    print("  (единица счёта разная нарочно: «масок» — поштучно по маскам, как считала "
+          "разведка; «значений» — по эталонным сущностям, у которых СВОЕЙ маски нет вовсе)")
+    print("  масок неверного типа (эталон в наборе по умолчанию, маска — вне набора): "
+          "%s -> %d"
+          % (base_x["n"] if base_x.get("present") else "нет данных", cur_x["n"]))
+    if cur_x["pairs"]:
+        print("  %-14s %-14s %8s %8s" % ("A эталон", "B маска", "масок", "док."))
+        for (a, b), n in sorted(cur_x["pairs"].items(), key=lambda kv: -kv[1]):
+            print("  %-14s %-14s %8d %8d" % (a, b, n, cur_x["docs"].get((a, b), 0)))
+    if not cur_sg["present"]:
+        print("  значений под одиночной защитой: поля single_guard в дампе нет — НЕ МЕРИЛИ")
+        return
+    print("  значений под одиночной защитой: %d   по типам: %s"
+          % (cur_sg["n"], cur_sg["per_type"] or "{}"))
+    print("  из них ОТКРЫТО (защита снята): по умолчанию %d, на максимуме %d "
+          "— допуск 0, реестр tests/corpus/known_single_guard.json (%d случаев)"
+          % (sum(1 for k in registry_ids
+                 if cur_sg["state"].get(k, {}).get("uncovered_default")),
+             sum(1 for k in registry_ids
+                 if cur_sg["state"].get(k, {}).get("uncovered_max")),
+             len(registry_ids)))
+    gone = sorted(registry_ids - set(cur_sg["covered"]))
+    if gone:
+        print("  из реестра больше НЕ под чужой маской: %d (проверь причину: "
+              "починка типизации — хорошо, потеря маски — красное выше)" % len(gone))
+    for c in cur_sg["covered"][:10]:
+        rec = cur_sg["state"][c]
+        print("     %s %s [%d:%d] <- %s" % (c + (",".join(rec["mask_types"]),)))
+
+
 def evaluate(baseline_results, current_results, known_leaks_ids, cfg=GC,
-             check_ledger=False, ledger_latest=None, default_leaks_ids=frozenset()):
+             check_ledger=False, ledger_latest=None, default_leaks_ids=frozenset(),
+             single_guard_ids=frozenset()):
     """ПОЛНАЯ оценка четырёх линий — чистая функция над двумя списками results.
     Ничего не печатает и не гоняет корпус: ровно эту функцию дёргает само-тест
     гейта (tests/corpus/test_gate_regression_detection.py), подкладывая
@@ -749,6 +846,14 @@ def evaluate(baseline_results, current_results, known_leaks_ids, cfg=GC,
     regressions += z_reg
     warnings += z_warn
 
+    # --- линия «и»: значение под ЧУЖОЙ маской (одиночная защита) ---
+    cur_sg = ML.single_guard_summary(current_results)
+    base_x = ML.crosstype_mask_pairs(baseline_results)
+    cur_x = ML.crosstype_mask_pairs(current_results)
+    i_reg, i_warn = compare_single_guard(cur_sg, cur_x, base_x, single_guard_ids)
+    regressions += i_reg
+    warnings += i_warn
+
     # masking C — мягкий уровень (решение владельца, STATE §6): предупреждение
     mb = base_agg.get("masking_correctness", {}).get("total")
     mc = cur_agg.get("masking_correctness", {}).get("total")
@@ -770,6 +875,7 @@ def evaluate(baseline_results, current_results, known_leaks_ids, cfg=GC,
         "base_bnd": base_bnd, "cur_bnd": cur_bnd,
         "suppressed_gold_all": suppressed_gold_all,
         "base_def": base_def, "cur_def": cur_def,
+        "cur_sg": cur_sg, "base_x": base_x, "cur_x": cur_x,
     }
 
 
@@ -1022,6 +1128,18 @@ def _known_leaks():
     return set((r["doc_id"], r["value"]) for r in kl["leaks"]), len(kl["leaks"])
 
 
+def _known_single_guard():
+    """Реестр линии «и»: множество ключей (doc_id, тип, start, end) значений,
+    спрятанных под ЧУЖИМ именем. Ключ тот же, что у
+    measure_lib.single_guard_summary()["covered"]. Пересобирается скриптом
+    tests/corpus/build_single_guard_registry.py по свежему дампу гейта."""
+    if not os.path.isfile(KNOWN_SINGLE_GUARD):
+        return frozenset()
+    reg = json.load(open(KNOWN_SINGLE_GUARD, encoding="utf-8"))
+    return frozenset((c["doc_id"], c["type"], c["start"], c["end"])
+                     for c in reg["cases"])
+
+
 def _known_default_leaks():
     """Реестр линии «з»: множество ключей (doc_id, тип, start, end). Ключ — тот
     же, что у measure_lib.default_profile_summary()["cases"], иначе сверка
@@ -1096,7 +1214,8 @@ def main(argv=None):
     # check_ledger=True — только здесь: это настоящий прогон против настоящей
     # точки отсчёта, и уровень линии «д» обязан совпадать с журналом обоснований.
     v = evaluate(baseline_results, current_results, kl_ids, check_ledger=True,
-                 default_leaks_ids=_known_default_leaks())
+                 default_leaks_ids=_known_default_leaks(),
+                 single_guard_ids=_known_single_guard())
 
     # ЭТАП INSTR, ЧАСТЬ 2 — счётчики ВСЕГДА на виду, а не только при росте
     # относительно baseline (регресс/warning выше срабатывают лишь на дельте).
@@ -1115,6 +1234,7 @@ def main(argv=None):
     print_debt(v["composition"], kl_count)
     print_suppression(current_results, v["suppressed_gold_all"])
     print_default_profile(v["base_def"], v["cur_def"], _known_default_leaks())
+    print_single_guard(v["base_x"], v["cur_x"], v["cur_sg"], _known_single_guard())
 
     regressions = list(v["regressions"])
     if not (ok_before and ok_after):
