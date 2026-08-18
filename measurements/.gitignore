@@ -1,0 +1,11 @@
+# Дампы прогонов этой сессии — 17 МБ, производные КОНКРЕТНОГО прогона.
+# В репозитории такие дампы не держат по правилу, заведённому этапом S2 для
+# tests/corpus/results_gate_current.json (см. корневой .gitignore): точка
+# отсчёта живёт в results_baseline.json, а отладочный дамп перезаписывается
+# каждым прогоном. Здесь то же самое: оба файла воспроизводятся командами
+#   venv/Scripts/python.exe measurements/run_full_resumable.py
+#   venv/Scripts/python.exe measurements/run_default_profile.py
+# и на этой машине лежат рядом. Всё, что из них ПРОЧИТАНО, — в .txt/.md/.log,
+# и они закоммичены.
+results_measure2.json
+results_default_profile.json

@@ -1,0 +1,72 @@
+
+################ lease_0003  (значение …174310) ################
+
+--- БЫЛО (results_baseline) ---
+  МАСКИ, накрывшие это значение:
+    маска PASSPORT   token=[PASSPORT_1]   scored=True c_ok=True эталон=PASSPORT  text='паспорт 31 21 174310'
+    маска PASSPORT   token=[PASSPORT_3]   scored=True c_ok=True эталон=PASSPORT  text='Паспорт 31 21 174310'
+  ЭТАЛОННЫЕ СУЩНОСТИ с этим значением:
+    gold PASSPORT   found=True exact=False bnd={'under': 0, 'over': 8, 'direction': 'longer'} leak_v2=none text='31 21 174310'
+    gold PASSPORT   found=True exact=False bnd={'under': 0, 'over': 8, 'direction': 'longer'} leak_v2=none text='31 21 174310'
+
+--- СТАЛО (results_gate_current) ---
+  МАСКИ, накрывшие это значение:
+    маска INN        token=[INN_1]        scored=True c_ok=False эталон=PASSPORT  text='31 21 174310'
+    маска INN        token=[INN_1]        scored=True c_ok=False эталон=PASSPORT  text='31 21 174310'
+  ЭТАЛОННЫЕ СУЩНОСТИ с этим значением:
+    gold PASSPORT   found=False exact=False bnd={'under': 0, 'over': 0, 'direction': 'not_found'} leak_v2=none text='31 21 174310'
+    gold PASSPORT   found=False exact=False bnd={'under': 0, 'over': 0, 'direction': 'not_found'} leak_v2=none text='31 21 174310'
+
+################ loan_0009  (значение …537618) ################
+
+--- БЫЛО (results_baseline) ---
+  МАСКИ, накрывшие это значение:
+    маска PASSPORT   token=[PASSPORT_1]   scored=True c_ok=True эталон=PASSPORT  text='паспорт 88 04 537618'
+    маска PASSPORT   token=[PASSPORT_3]   scored=True c_ok=True эталон=PASSPORT  text='Паспорт 88 04 537618'
+  ЭТАЛОННЫЕ СУЩНОСТИ с этим значением:
+    gold PASSPORT   found=True exact=False bnd={'under': 0, 'over': 8, 'direction': 'longer'} leak_v2=none text='88 04 537618'
+    gold PASSPORT   found=True exact=False bnd={'under': 0, 'over': 8, 'direction': 'longer'} leak_v2=none text='88 04 537618'
+
+--- СТАЛО (results_gate_current) ---
+  МАСКИ, накрывшие это значение:
+    маска INN        token=[INN_1]        scored=True c_ok=False эталон=PASSPORT  text='88 04 537618'
+    маска INN        token=[INN_1]        scored=True c_ok=False эталон=PASSPORT  text='88 04 537618'
+  ЭТАЛОННЫЕ СУЩНОСТИ с этим значением:
+    gold PASSPORT   found=False exact=False bnd={'under': 0, 'over': 0, 'direction': 'not_found'} leak_v2=none text='88 04 537618'
+    gold PASSPORT   found=False exact=False bnd={'under': 0, 'over': 0, 'direction': 'not_found'} leak_v2=none text='88 04 537618'
+
+################ works_0011  (значение …088328) ################
+
+--- БЫЛО (results_baseline) ---
+  МАСКИ, накрывшие это значение:
+    маска PASSPORT   token=[PASSPORT_1]   scored=True c_ok=True эталон=PASSPORT  text='паспорт 20 17 088328'
+    маска PASSPORT   token=[PASSPORT_3]   scored=True c_ok=True эталон=PASSPORT  text='Паспорт 20 17 088328'
+  ЭТАЛОННЫЕ СУЩНОСТИ с этим значением:
+    gold PASSPORT   found=True exact=False bnd={'under': 0, 'over': 8, 'direction': 'longer'} leak_v2=none text='20 17 088328'
+    gold PASSPORT   found=True exact=False bnd={'under': 0, 'over': 8, 'direction': 'longer'} leak_v2=none text='20 17 088328'
+
+--- СТАЛО (results_gate_current) ---
+  МАСКИ, накрывшие это значение:
+    маска INN        token=[INN_1]        scored=True c_ok=False эталон=PASSPORT  text='20 17 088328'
+    маска INN        token=[INN_1]        scored=True c_ok=False эталон=PASSPORT  text='20 17 088328'
+  ЭТАЛОННЫЕ СУЩНОСТИ с этим значением:
+    gold PASSPORT   found=False exact=False bnd={'under': 0, 'over': 0, 'direction': 'not_found'} leak_v2=none text='20 17 088328'
+    gold PASSPORT   found=False exact=False bnd={'under': 0, 'over': 0, 'direction': 'not_found'} leak_v2=none text='20 17 088328'
+
+################ services_0001  (значение …995117) ################
+
+--- БЫЛО (results_baseline) ---
+  МАСКИ, накрывшие это значение:
+    маска PASSPORT   token=[PASSPORT_1]   scored=True c_ok=True эталон=PASSPORT  text='паспорт 10 10 995117'
+    маска PASSPORT   token=[PASSPORT_3]   scored=True c_ok=True эталон=PASSPORT  text='Паспорт 10 10 995117'
+  ЭТАЛОННЫЕ СУЩНОСТИ с этим значением:
+    gold PASSPORT   found=True exact=False bnd={'under': 0, 'over': 8, 'direction': 'longer'} leak_v2=none text='10 10 995117'
+    gold PASSPORT   found=True exact=False bnd={'under': 0, 'over': 8, 'direction': 'longer'} leak_v2=none text='10 10 995117'
+
+--- СТАЛО (results_gate_current) ---
+  МАСКИ, накрывшие это значение:
+    маска INN        token=[INN_1]        scored=True c_ok=False эталон=PASSPORT  text='10 10 995117'
+    маска INN        token=[INN_1]        scored=True c_ok=False эталон=PASSPORT  text='10 10 995117'
+  ЭТАЛОННЫЕ СУЩНОСТИ с этим значением:
+    gold PASSPORT   found=False exact=False bnd={'under': 0, 'over': 0, 'direction': 'not_found'} leak_v2=none text='10 10 995117'
+    gold PASSPORT   found=False exact=False bnd={'under': 0, 'over': 0, 'direction': 'not_found'} leak_v2=none text='10 10 995117'
