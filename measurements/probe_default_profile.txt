@@ -1,0 +1,6 @@
+lease_0003  default_profile_open=[]  n_masks_default=25  n_masks_max=43
+loan_0009  default_profile_open=[]  n_masks_default=29  n_masks_max=50
+works_0011  default_profile_open=[]  n_masks_default=34  n_masks_max=46
+services_0001  default_profile_open=[]  n_masks_default=28  n_masks_max=40
+sale_0014  default_profile_open=[]  n_masks_default=38  n_masks_max=46
+supply_0009  default_profile_open=[]  n_masks_default=26  n_masks_max=42
