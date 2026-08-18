@@ -511,6 +511,28 @@ def process_doc(d, allow_lossy=ALLOW_LOSSY):
                 "len": e["end"] - e["start"],
             })
 
+    # ---- ЛИНИЯ «и»: ЗНАЧЕНИЕ ПОД ЧУЖОЙ МАСКОЙ (этап SINGLE-GUARD) ----
+    # Эталонная сущность типа ИЗ НАБОРА ПО УМОЛЧАНИЮ, которую на МАКСИМУМЕ не
+    # закрывает ни одна маска ЕЁ СОБСТВЕННОГО типа. Класс шире искомого нарочно
+    # (сюда идут и «прикрыта чужим именем», и «не прикрыта ничем») — почему
+    # именно так, см. measure_lib, блок линии «и». Дорогого здесь ничего нет:
+    # обе раскладки масок уже посчитаны выше, для линии «з».
+    single_guard = []
+    for e in d["entities"]:
+        if e["type"] not in ML.DEFAULT_PROFILE_GOLD_TYPES:
+            continue
+        over = [x for x in det_located
+                if _overlap(x["start"], x["end"], e["start"], e["end"])]
+        if any(x["gtype"] == e["type"] for x in over):
+            continue                    # прикрыто СВОИМ именем — не наш класс
+        single_guard.append({
+            "type": e["type"], "start": e["start"], "end": e["end"],
+            "len": e["end"] - e["start"],
+            "mask_types": sorted({x["gtype"] for x in over}),
+            "uncovered_max": ML.uncovered_chars(e["start"], e["end"], max_spans),
+            "uncovered_default": ML.uncovered_chars(e["start"], e["end"], def_spans),
+        })
+
     doc_leaked = any(r["leaked"] for r in ent_records)
     doc_leaked_v2 = any(r["leak_v2"]["status"] != "none" for r in ent_records)
     return {
@@ -547,6 +569,10 @@ def process_doc(d, allow_lossy=ALLOW_LOSSY):
         # МАКСИМУМЕ и открытые при настройках ПО УМОЛЧАНИЮ (см. выше).
         "default_profile_open": default_open,
         "n_masks_default": len(kept_default),
+        # ЭТАП SINGLE-GUARD, линия «и»: эталонные сущности набора по умолчанию,
+        # не закрытые маской СВОЕГО типа (спрятаны под чужим именем либо не
+        # спрятаны вовсе). Реестр и сверка — tests/corpus/known_single_guard.json.
+        "single_guard": single_guard,
     }
 
 

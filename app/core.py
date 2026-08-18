@@ -632,7 +632,11 @@ def run_encrypt(path: str, allow_lossy: bool = False, config_path: str = DEFAULT
         doc, entities, config_path, enabled_types=policy["enabled"],
     )
 
-    session_id = save_session(final_entities, session_id=None, ttl_hours=24)
+    # Срок жизни сессии — настройка пользователя (storage.retention_settings()),
+    # не зашитое число: раньше здесь стоял ttl_hours=24, который перекрывал
+    # действующий срок (объявленные 7 дней) явным аргументом на каждой сессии,
+    # созданной через десктоп-интерфейс (см. сессию TTL-FIX).
+    session_id = save_session(final_entities, session_id=None)
     save_session_meta(session_id, display_name, policy={
         "profile": policy["profile"],
         "enabled_types": policy["enabled_types"],

@@ -1,0 +1,124 @@
+=== 0. АРИФМЕТИКА ПРОСАДКИ ===
+было:  масок 14435  знаменатель C (scored) 11505  верный тип 11111  C=96.5754%   неверный тип 394
+стало: масок 14433  знаменатель C (scored) 11563  верный тип 11140  C=96.3418%   неверный тип 423
+дельта: масок -2  знаменатель +58  верный тип +29  неверный тип +29
+
+КОНТРФАКТ (разделение эффекта состава и эффекта качества):
+  если бы прибавка знаменателя (+58) была ТАКОГО ЖЕ качества, как старый знаменатель, C была бы 96.5754% (не меняется).
+  фактический прирост верных +29 из +58 новых мест знаменателя -> качество ПРИБАВКИ 50.00% против 96.58% у старого.
+
+=== 1. ЧТО ИМЕННО ИЗМЕНИЛОСЬ, ПО МАСКАМ ===
+
+ВОШЛИ в знаменатель C (маски, ставшие scored): 486 масок
+     397  маска PASSPORT     на эталоне PASSPORT     тип ВЕРЕН
+      30  маска PHONE        на эталоне PHONE        тип ВЕРЕН
+      30  маска EMAIL        на эталоне EMAIL        тип ВЕРЕН
+      29  маска INN          на эталоне PASSPORT     тип НЕВЕРЕН (портит C)
+
+ВЫШЛИ из знаменателя C: 428 масок
+     428  маска PASSPORT     на эталоне PASSPORT     тип ВЕРЕН
+
+=== 2. ПРИМЕРЫ: НОВЫЕ МАСКИ НЕВЕРНОГО ТИПА (тянут C вниз) ===
+документ | тип маски | тип эталона | текст под маской | шт
+  lease_0003                         INN          PASSPORT     '31 21 174310'                                     x2
+  lease_0003__m2718_case             INN          PASSPORT     '31 21 174310'                                     x2
+  loan_0009                          INN          PASSPORT     '88 04 537618'                                     x2
+  loan_0009__m2718_case              INN          PASSPORT     '88 04 537618'                                     x2
+  sale_0014                          INN          PASSPORT     '07 23 184021'                                     x2
+  sale_0014__m1337_case              INN          PASSPORT     '07 23 184021'                                     x2
+  services_0001                      INN          PASSPORT     '10 10 995117'                                     x2
+  supply_0009                        INN          PASSPORT     '84 02 932671'                                     x2
+  works_0011                         INN          PASSPORT     '20 17 088328'                                     x2
+  lease_0003__m1337_invisible        INN          PASSPORT     '31\u2060 2\xad1 174310'                           x1
+  lease_0003__m1337_invisible        INN          PASSPORT     '31 21 \xad174\xa0310'                             x1
+  loan_0009__m1337_invisible         INN          PASSPORT     '8\xa08 04 53761\u20608'                           x1
+  loan_0009__m1337_invisible         INN          PASSPORT     '8\xad8 0\u200b4 537618'                           x1
+  services_0001__m1337_combo         INN          PASSPORT     'І0 10 \u202f995І\u200d17'                         x1
+  services_0001__m1337_combo         INN          PASSPORT     '10 І0 99\u202f5І1\u202f7'                         x1
+  services_0001__m2718_homoglyph     INN          PASSPORT     '1О 10 9951І7'                                     x1
+  services_0001__m2718_homoglyph     INN          PASSPORT     'ІО 10 995ІІ7'                                     x1
+  supply_0009__m1337_digit_spaces    INN          PASSPORT     '84 02 932671'                                     x1
+  works_0011__m1337_digit_spaces     INN          PASSPORT     '20 17 0883-28'                                    x1
+  works_0011__m1337_digit_spaces     INN          PASSPORT     '20 17 088328'                                     x1
+
+=== 3. ПРИМЕРЫ: МАСКИ ВЕРНОГО ТИПА, ВЫПАВШИЕ ИЗ ЗНАМЕНАТЕЛЯ ===
+  agency_0003                        PASSPORT     PASSPORT     'паспорт 13 10 006794'                             x1
+  agency_0003                        PASSPORT     PASSPORT     'Паспорт 13 10 006794'                             x1
+  agency_0003__m1337_invisible       PASSPORT     PASSPORT     'паспорт 13 10 \u202f0\u206006794'                 x1
+  agency_0003__m1337_invisible       PASSPORT     PASSPORT     'Паспорт 13\xad 10 \xad006794'                     x1
+  agency_0003__m2718_case            PASSPORT     PASSPORT     'паспорт 13 10 006794'                             x1
+  agency_0003__m2718_case            PASSPORT     PASSPORT     'Паспорт 13 10 006794'                             x1
+  agency_0005                        PASSPORT     PASSPORT     'паспорт 62 11 029696'                             x1
+  agency_0005                        PASSPORT     PASSPORT     'Паспорт 62 11 029696'                             x1
+  agency_0005__m1337_digit_spaces    PASSPORT     PASSPORT     'паспорт 62 11 029696'                             x1
+  agency_0005__m1337_digit_spaces    PASSPORT     PASSPORT     'Паспорт 62 11 029-696'                            x1
+  agency_0005__m2718_linebreak       PASSPORT     PASSPORT     'паспорт 62 11 029'                                x1
+  agency_0005__m2718_linebreak       PASSPORT     PASSPORT     'Паспорт 62 11 0296'                               x1
+  agency_0006                        PASSPORT     PASSPORT     'паспорт 08 09 954502'                             x1
+  agency_0006                        PASSPORT     PASSPORT     'паспорт 50 24 581644'                             x1
+  agency_0006                        PASSPORT     PASSPORT     'Паспорт 08 09 954502'                             x1
+  agency_0006                        PASSPORT     PASSPORT     'Паспорт 50 24 581644'                             x1
+  agency_0006__m1337_combo           PASSPORT     PASSPORT     'паспорт О8\u200d 09\u200d 954502'                 x1
+  agency_0006__m1337_combo           PASSPORT     PASSPORT     'паспоpт\xad 5\u202fО 24 581\u202f6ЧЧ'             x1
+  agency_0006__m1337_combo           PASSPORT     PASSPORT     'Паспорт О\u200d8 09 9545\u200b02'                 x1
+  agency_0006__m1337_combo           PASSPORT     PASSPORT     'Паспорт 5О\xad 2Ч 5816\xa044'                     x1
+  agency_0006__m2718_homoglyph       PASSPORT     PASSPORT     'паспорт О8 09 954502'                             x1
+  agency_0006__m2718_homoglyph       PASSPORT     PASSPORT     'паспорт 50 24 5816ЧЧ'                             x1
+  agency_0006__m2718_homoglyph       PASSPORT     PASSPORT     'Паспорт 08 О9 9545О2'                             x1
+  agency_0006__m2718_homoglyph       PASSPORT     PASSPORT     'Паспорт 5О 2Ч 58Іб44'                             x1
+  agency_0009                        PASSPORT     PASSPORT     'паспорт 38 10 549252'                             x1
+  agency_0009                        PASSPORT     PASSPORT     'Паспорт 38 10 549252'                             x1
+  agency_0009__m1337_invisible       PASSPORT     PASSPORT     'паспорт 38 \u200d10\u200d 549252'                 x1
+  agency_0009__m1337_invisible       PASSPORT     PASSPORT     'Паспорт 38 10 5492\u202f5\xa02'                   x1
+  agency_0009__m2718_case            PASSPORT     PASSPORT     'паспорт 38 10 549252'                             x1
+  agency_0009__m2718_case            PASSPORT     PASSPORT     'Паспорт 38 10 549252'                             x1
+
+=== 4. ПРИМЕРЫ: НОВЫЕ МАСКИ ВЕРНОГО ТИПА (тянут C вверх) ===
+  agency_0003                        PASSPORT     PASSPORT     '13 10 006794'                                     x2
+  agency_0003__m2718_case            PASSPORT     PASSPORT     '13 10 006794'                                     x2
+  agency_0005                        PASSPORT     PASSPORT     '62 11 029696'                                     x2
+  agency_0006                        PASSPORT     PASSPORT     '08 09 954502'                                     x2
+  agency_0006                        PASSPORT     PASSPORT     '50 24 581644'                                     x2
+  agency_0009                        PASSPORT     PASSPORT     '38 10 549252'                                     x2
+  agency_0009__m2718_case            PASSPORT     PASSPORT     '38 10 549252'                                     x2
+  cession_0001                       PASSPORT     PASSPORT     '90 14 617085'                                     x2
+  cession_0002                       PASSPORT     PASSPORT     '08 19 096084'                                     x2
+  cession_0002                       PASSPORT     PASSPORT     '92 03 412957'                                     x2
+  cession_0002__m2718_cell_split     PASSPORT     PASSPORT     '08 19 096084'                                     x2
+  cession_0002__m2718_cell_split     PASSPORT     PASSPORT     '92 03 412957'                                     x2
+  cession_0005                       PASSPORT     PASSPORT     '32 24 111336'                                     x2
+  cession_0005__m2718_case           PASSPORT     PASSPORT     '32 24 111336'                                     x2
+  cession_0007                       PASSPORT     PASSPORT     '33 21 492546'                                     x2
+  cession_0007__m1337_digit_spaces   PASSPORT     PASSPORT     '33 21 492546'                                     x2
+  cession_0008                       PASSPORT     PASSPORT     '36 09 098181'                                     x2
+  cession_0008                       PASSPORT     PASSPORT     '19 04 949312'                                     x2
+  cession_0008__m1337_digit_spaces   PASSPORT     PASSPORT     '36 09 098181'                                     x2
+  labor_0001                         PASSPORT     PASSPORT     '28 21 212825'                                     x2
+
+=== 5. C ПО ТИПУ МАСКИ: было -> стало ===
+тип маски              scored б->т       верных б->т               C% б->т
+ACCOUNT              732 ->    732      732 ->    732    100.00 ->  100.00
+ADDRESS             1287 ->   1287     1282 ->   1282     99.61 ->   99.61
+BIK                  447 ->    447      447 ->    447    100.00 ->  100.00
+BIRTHDATE            231 ->    231      231 ->    231    100.00 ->  100.00
+EMAIL                709 ->    739      709 ->    739    100.00 ->  100.00  <-- ИЗМЕНИЛСЯ
+INN                  318 ->    347      304 ->    304     95.60 ->   87.61  <-- ИЗМЕНИЛСЯ
+INN_PER              681 ->    681      681 ->    681    100.00 ->  100.00
+KPP                  227 ->    227      227 ->    227    100.00 ->  100.00
+OGRN                 417 ->    417      417 ->    417    100.00 ->  100.00
+ORG                  824 ->    824      458 ->    458     55.58 ->   55.58
+PASSPORT             831 ->    800      831 ->    800    100.00 ->  100.00  <-- ИЗМЕНИЛСЯ
+PER                 2753 ->   2753     2751 ->   2751     99.93 ->   99.93
+PHONE               1166 ->   1196     1159 ->   1189     99.40 ->   99.41  <-- ИЗМЕНИЛСЯ
+SNILS                238 ->    238      238 ->    238    100.00 ->  100.00
+SUM                  644 ->    644      644 ->    644    100.00 ->  100.00
+
+=== 6. РАЗЛОЖЕНИЕ ДЕЛЬТЫ C ПО ТИПУ МАСКИ ===
+вклад типа = (верных_т - верных_б) - C_старая_общая * (scored_т - scored_б)
+положительный вклад тянет C вверх, отрицательный — вниз
+  INN            Δscored   +29  Δверных    +0   вклад в числитель   -28.01  -> -0.2422 пп
+  PASSPORT       Δscored   -31  Δверных   -31   вклад в числитель    -1.06  -> -0.0092 пп
+  EMAIL          Δscored   +30  Δверных   +30   вклад в числитель    +1.03  -> +0.0089 пп
+  PHONE          Δscored   +30  Δверных   +30   вклад в числитель    +1.03  -> +0.0089 пп
+
+  сумма вкладов -27.01 шт  = -0.2336 пп (сверка: фактическая дельта C -0.2336 пп)

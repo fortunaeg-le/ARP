@@ -16,7 +16,9 @@
 (см. HANDOFF_U1_PACKAGING.md).
 
 Публичные функции:
-  - save_session(entities, session_id=None, ttl_hours=24) -> session_id
+  - save_session(entities, session_id=None, ttl_hours=None) -> session_id
+    (ttl_hours=None — берёт срок из retention_settings()["session_days"] * 24,
+    умолчание 7 дней; явный ttl_hours по-прежнему сильнее настройки)
   - load_session(session_id) -> dict
   - list_sessions() -> list[dict] (обогащён source_name/expired — см. ниже)
   - delete_session(session_id) -> bool

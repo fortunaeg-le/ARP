@@ -112,6 +112,7 @@
 | `stage_t1/` | 7 | `compare.py`, `sweep.py` | `ACCEPTANCE.txt`, `after.json`, `before.json`, `gate.log`, `pytest_full.log` |
 | `stage_t2_inn/` | 10 | `compare_split.py` | `dump_before_after.txt`, `gate_*.log`, прочие дампы |
 | `stage_tarb/` | 2 | `diff_masks.py`, `dump_masks.py` | — |
+| `per_spread/` | 17 | `RECON.md` (разведка с адресами ДО правки), `surn_slot_survey.py` (проверка правила СЛОТА ФАМИЛИИ до кода), `keys_diff.py` (сличение реестров якорей до/после — поймал два дефекта), `compare.py` (таблица ДО/ПОСЛЕ), `mc_b.py` (линия «г» в абсолютных числах), `diag_per.py`, `probe_doc.py`, `probe2.py`, `probe_orig.py`, `segdump.py`, `leakctx.py`, `patch1..5.py` + `patch_docs/journal/state.py` (правки текстом; `patch4.py` — ИЗМЕРЕННЫЙ ТУПИК, откачен) | `gate_per_spread.log`, `accept_circle.log`, `compare.txt`, `mc_b.txt` |
 | (корень) | 1 | нет | `stage_t1_ui_gate.log` |
 
 ## 5. Что НЕ трогалось этой сессией

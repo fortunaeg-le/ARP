@@ -1,0 +1,13 @@
+дамп: results_gate_current.json
+набор по умолчанию: ['ADDRESS', 'BIRTHDATE', 'EMAIL', 'INN_PER', 'PASSPORT', 'PASSPORT_ISSUER', 'PER', 'PHONE', 'SNILS']
+
+ПАРЫ «эталон A (в наборе) назван типом B (вне набора)»
+A эталон     B маска           масок     док.
+PER          ORG                 365      143
+PASSPORT     INN                  30       15
+INN_PER      INN                  12       10
+ADDRESS      ORG                   1        1
+PHONE        INN                   1        1
+
+ВСЕГО масок неверного типа с потерей в наборе по умолчанию: 409
+
