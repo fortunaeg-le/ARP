@@ -131,6 +131,8 @@
   #markup-menu .mm-none{font-size:12px;color:var(--muted);padding:6px 2px}
   #markup-menu button.mm-type.mm-cur{border-color:var(--accent);background:#eef3ff;color:var(--accent-d)}
   #markup-menu .mm-hint{font-size:11px;color:var(--muted);margin-top:7px}
+  #markup-menu .mm-torn{font-size:11.5px;color:#8a5a00;background:#fff6da;border:1px solid #f0dca8;
+    border-radius:7px;padding:5px 8px;margin-bottom:7px;max-width:320px}
   #markup-menu button.mm-type{border:1px solid var(--line);background:#fafbfd;border-radius:7px;padding:5px 9px;font-size:12.5px;cursor:pointer;text-align:left;width:100%}
   #markup-menu button.mm-type:hover{border-color:var(--accent);color:var(--accent-d)}
   #markup-menu .mm-actions{display:flex;flex-direction:column;gap:6px}
@@ -1056,6 +1058,59 @@ function litOffset(litEl, node, offset){
    снэпается к ЕЁ ПОЛНОЙ границе; сузить маску можно только через явную
    «Исправить границу» (enterBoundaryEdit), которая раскрывает настоящий
    текст. */
+/* ======================================================================
+   ЭТАП UI-REBUILD-2, задача 1 — РАЗОРВАННОЕ ЗНАЧЕНИЕ.
+
+   Значение, разорванное переносом строки или вёрсткой, лежит в ДВУХ РАЗНЫХ
+   сегментах документа («Иванова Ивана» в одном, «Ивановича» в следующем).
+   Автоматическое распространение такие вхождения не закрывает — из этапа
+   MARKUP-SPREAD их осталось ровно 12, и все двенадцать этого класса. А
+   выделение через границу сегмента интерфейс ОТКЛОНЯЛ. Получалось худшее из
+   возможного: программа не находит сама И не даёт исправить человеку.
+
+   ПОЧЕМУ НЕ ОДНА МАСКА НА ДВА СЕГМЕНТА. Entity в src/models.py несёт РОВНО
+   ОДИН segment_id; поле spans — это несколько кусков ВНУТРИ одного сегмента,
+   а не мост между сегментами. Одна маска на два сегмента потребовала бы
+   переделки модели и всех её потребителей (токенизация, восстановление,
+   хранилище, запись в OOXML, распространение) — то есть правки src/ в самом
+   ядре утечки. Здесь этого не делается.
+
+   ЧТО ДЕЛАЕТСЯ ВМЕСТО. Выделение режется по границам сегментов, и КАЖДЫЙ
+   кусок закрывается СВОЕЙ маской того же типа. Значение уходит в LLM как
+   «[PERSON_1]\n[PERSON_2]» вместо «[PERSON_1]» — хуже по красоте, но утечки
+   нет, а восстановление точное: каждый кусок хранит свой original_text
+   байт-в-байт, разделитель между сегментами вообще не принадлежит ни одному
+   из них и не трогается. Возможность помечать куски по отдельности сервер
+   давал и раньше (проверено: mark-missed на «Ивановича» отдельно -> status ok);
+   не хватало ровно того, чтобы ОДИН жест человека делал это сам.
+
+   Куски из одних пробелов отбрасываются: разрыв обычно даёт пустой хвост. */
+function crossSegmentInfo(touched, range){
+  const parts=[];
+  for(const el of touched){
+    const segId=el.dataset.seg;
+    let ps, pe;
+    if(el.classList.contains('ent')){ ps=+el.dataset.start; pe=+el.dataset.end; }
+    else {
+      const base=+el.dataset.s;
+      ps = (el===range.startContainer || el.contains(range.startContainer))
+           ? base + litOffset(el, range.startContainer, range.startOffset) : base;
+      pe = (el===range.endContainer || el.contains(range.endContainer))
+           ? base + litOffset(el, range.endContainer, range.endOffset) : +el.dataset.e;
+    }
+    if(pe<=ps) continue;
+    const txt = el.classList.contains('ent') ? (el.dataset.orig||'')
+              : el.textContent.slice(ps-(+el.dataset.s), pe-(+el.dataset.s));
+    const prev=parts.length?parts[parts.length-1]:null;
+    if(prev && prev.seg===segId && prev.end===ps){ prev.end=pe; prev.text+=txt; prev.isMask=prev.isMask||el.classList.contains('ent'); continue; }
+    parts.push({seg:segId, start:ps, end:pe, text:txt, isMask:el.classList.contains('ent'),
+                token:el.dataset.token, type:el.dataset.etype});
+  }
+  const masks=parts.filter(p=>p.isMask);
+  const fresh=parts.filter(p=>!p.isMask && p.text.trim());
+  return {crossSegment:true, parts, masks, fresh};
+}
+
 function computeSelectionInfo(range){
   const pane=document.getElementById('pane-anon');
   const touched=[];
@@ -1071,7 +1126,7 @@ function computeSelectionInfo(range){
   }
   if(!touched.length) return null;
   const seg=touched[0].dataset.seg;
-  if(touched.some(el=>el.dataset.seg!==seg)) return {crossSegment:true};
+  if(touched.some(el=>el.dataset.seg!==seg)) return crossSegmentInfo(touched, range);
 
   const first=touched[0], last=touched[touched.length-1];
   let srcStart, srcEnd;
@@ -1146,8 +1201,27 @@ function onAnonSelectionUp(e, rangeIn){
   const info=computeSelectionInfo(range);
   if(!info){ sel.removeAllRanges(); return; }
   if(info.crossSegment){
-    markupToast('Нельзя выделить фрагмент, уходящий за пределы одного куска текста.','err');
-    sel.removeAllRanges();
+    /* ЭТАП UI-REBUILD-2, задача 1: разорванное значение. Раньше здесь стоял
+       отказ «Нельзя выделить фрагмент, уходящий за пределы одного куска
+       текста» — и значение, разорванное переносом строки, пометить было
+       НЕЧЕМ. Теперь выделение режется по границам сегментов и каждый кусок
+       закрывается своей маской того же типа (см. crossSegmentInfo). */
+    if(info.masks.length){
+      markupToast('Выделение задело уже закрытые данные ('+
+        info.masks.map(m=>(TYPE_LABELS[m.type]||m.type)+' '+m.token).join(', ')+
+        ') и перешло на другую строку. Выделите только незакрытый текст.','err');
+      sel.removeAllRanges();
+      return;
+    }
+    if(!info.fresh.length){ sel.removeAllRanges(); return; }
+    if(info.fresh.length===1){
+      const f=info.fresh[0];
+      lnRevealPeer(info.parts[0] && document.querySelector('#pane-anon .lit[data-seg="'+f.seg+'"]'));
+      openTypeMenu(e, {mode:'missed', seg:f.seg, start:f.start, end:f.end, text:f.text, range});
+      return;
+    }
+    openTypeMenu(e, {mode:'missedTorn', fresh:info.fresh,
+                     text:info.fresh.map(p=>p.text).join(' ').replace(/\s+/g,' ').trim(), range});
     return;
   }
 
@@ -1415,8 +1489,12 @@ async function openTypeMenu(e, ctx){
   await ensureMarkupTypes();
   const menu=document.getElementById('markup-menu');
   const title = ctx.mode==='replace' ? 'Исправленный фрагмент — какой тип?' : 'Что это за данные?';
-  menu.innerHTML='<div class="mm-title">'+title+'<br>«'+esc(ctx.text)+'»</div>'+typeButtonsHtml()+'<div class="mm-cancel">Отмена</div>';
-  wireTypeButtons(menu, type => ctx.mode==='replace' ? submitReplace(ctx,type) : submitMissed(ctx,type));
+  const torn = ctx.mode==='missedTorn'
+    ? '<div class="mm-torn">Значение разорвано переносом строки — закроем ' +
+      ctx.fresh.length + ' частями, в тексте это одно и то же значение.</div>' : '';
+  menu.innerHTML='<div class="mm-title">'+title+'<br>«'+esc(ctx.text)+'»</div>'+torn+typeButtonsHtml()+'<div class="mm-cancel">Отмена</div>';
+  wireTypeButtons(menu, type => ctx.mode==='replace' ? submitReplace(ctx,type)
+                              : (ctx.mode==='missedTorn' ? submitMissedTorn(ctx,type) : submitMissed(ctx,type)));
   menu.querySelector('.mm-cancel').onclick=()=>{ closeMarkupMenu(); clearSelection(); if(ctx.mode==='replace') resetAnonView(); };
   positionMenu(menu, e);
 }
@@ -1485,6 +1563,38 @@ async function submitMissed(ctx, type){
     markupToast('Помечено: «'+ctx.text+'» → '+(TYPE_LABELS[type]||type)+'. Не забудьте «Применить правки».','ok');
     loadMarkupPanel();
   }catch(err){ markupToast('Ошибка связи с сервером: '+err,'err'); }
+}
+
+/* ЭТАП UI-REBUILD-2, задача 1: разорванное значение закрывается по маске на
+   каждый кусок. Куски идут ПОСЛЕДОВАТЕЛЬНО, а не параллельно: каждая пометка
+   меняет состояние сессии на сервере, и одновременные записи в неё — гонка.
+   Частичный успех НЕ замалчивается: если часть кусков закрылась, а часть нет,
+   человек обязан узнать, что дыра осталась, и какая именно. */
+async function submitMissedTorn(ctx, type){
+  const done=[], failed=[];
+  for(const part of ctx.fresh){
+    try{
+      const resp=await fetch('/api/markup/mark-missed',{method:'POST',headers:{'Content-Type':'application/json'},
+        body:JSON.stringify({session_id:CUR.session_id, segment_id:part.seg,
+                             start:part.start, end:part.end, entity_type:type})});
+      const d=await resp.json();
+      if(d.status==='error') failed.push({t:part.text, why:d.message}); else done.push(part.text);
+    }catch(err){ failed.push({t:part.text, why:'нет связи с программой'}); }
+  }
+  clearSelection();
+  const label=TYPE_LABELS[type]||type;
+  if(done.length && !failed.length){
+    markupToast('Помечено как «'+label+'»: '+done.map(t=>'«'+t.trim()+'»').join(' + ')+
+      '. Значение было разорвано переносом строки — закрыто '+done.length+
+      ' частями. Не забудьте «Применить правки».','ok');
+  } else if(done.length && failed.length){
+    markupToast('Закрыто частично: '+done.map(t=>'«'+t.trim()+'»').join(' + ')+
+      '. НЕ закрыто: '+failed.map(f=>'«'+f.t.trim()+'» ('+f.why+')').join('; ')+
+      ' — оставшийся кусок пометьте отдельно, иначе он уйдёт в нейросеть открытым.','err');
+  } else {
+    markupToast('Не удалось пометить: '+failed.map(f=>f.why).join('; '),'err');
+  }
+  loadMarkupPanel();
 }
 
 async function submitReplace(ctx, type, opts){
