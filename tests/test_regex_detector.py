@@ -261,13 +261,58 @@ class TestDetectRegexSum:
 
 
 class TestDetectRegexDisabledType:
-    """HANDOFF_2, Пример 5 — выключенный тип (enabled: false)."""
+    """HANDOFF_2, Пример 5 — выключенный тип (enabled: false).
 
-    def test_disabled_date_type_produces_no_entity(self, config_path):
-        """HANDOFF_2, Пример 5: 'дата 12.07.2026' -> ничего (DATE имеет enabled: false в конфиге)."""
+    ЭТАП DATE-ON. Примером выключенного типа здесь служил боевой DATE — с
+    первого коммита проекта и до 2026-08-18. Владелец дату ВКЛЮЧИЛ, и проверка
+    механизма переехала на СВОЙ временный конфиг (как у соседнего теста про
+    незнакомый validate): механизм «enabled: false» никуда не делся и обязан
+    охраняться независимо от того, пользуется ли им сегодня хоть один боевой
+    тип. Рядом — зеркало на боевом конфиге, доказывающее, что дата теперь
+    находится: без него зелёный тест на временном конфиге не отличал бы
+    «механизм работает» от «дата снова замолчала».
+    """
+
+    def test_disabled_type_produces_no_entity(self, tmp_path):
+        """HANDOFF_2, Пример 5: тип с enabled: false не даёт ни одной сущности."""
+        cfg = tmp_path / "cfg.yaml"
+        cfg.write_text(
+            "entity_types:\n"
+            "  DATE:\n"
+            "    method: regex\n"
+            "    pattern: '\\d{1,2}[.\\/]\\d{1,2}[.\\/]\\d{2,4}'\n"
+            "    enabled: false\n"
+            "    token_prefix: DATE\n",
+            encoding="utf-8",
+        )
         doc = _doc("дата 12.07.2026")
-        entities = detect_regex(doc, config_path)
-        assert [e for e in entities if e.entity_type == "DATE"] == []
+        assert detect_regex(doc, str(cfg)) == []
+
+    def test_same_type_enabled_in_the_same_config_does_produce_it(self, tmp_path):
+        """Красное состояние проверки выше: тот же тип, тот же текст, тот же
+        код — без `enabled: false` сущность появляется. Иначе зелёный тест
+        нельзя отличить от «паттерн просто не совпал»."""
+        cfg = tmp_path / "cfg.yaml"
+        cfg.write_text(
+            "entity_types:\n"
+            "  DATE:\n"
+            "    method: regex\n"
+            "    pattern: '\\d{1,2}[.\\/]\\d{1,2}[.\\/]\\d{2,4}'\n"
+            "    token_prefix: DATE\n",
+            encoding="utf-8",
+        )
+        doc = _doc("дата 12.07.2026")
+        assert [e.original_text for e in detect_regex(doc, str(cfg))] == ["12.07.2026"]
+
+    def test_date_is_no_longer_disabled_in_the_shipping_config(self, config_path):
+        """ЭТАП DATE-ON, решение владельца «дату включить во всех наборах»:
+        на БОЕВОМ конфиге дата обязана находиться — и цифрой, и словом."""
+        doc = _doc("Договор от 12.07.2026 г.", "Составлен «12» июля 2026 года",
+                   "подписан двенадцатого июля 2026 года")
+        found = sorted(e.original_text for e in detect_regex(doc, config_path)
+                       if e.entity_type == "DATE")
+        assert found == ["12.07.2026 г.", "«12» июля 2026 года",
+                         "двенадцатого июля 2026 года"]
 
 
 class TestDetectRegexUnknownValidate:
