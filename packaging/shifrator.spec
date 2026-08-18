@@ -145,6 +145,8 @@ hiddenimports = [
     # молча (он ловит Exception) перестал бы писать слепок знаменателя — то
     # есть метрика деградировала бы БЕЗ ошибки, что хуже падения.
     "core", "report", "selfcheck", "procutil", "server", "paths",
+    # CIRCLE-UI: единый источник форматов/полей предупреждений (см. app/capabilities.py).
+    "capabilities",
     "pymorphy2_dicts_ru",
 ]
 

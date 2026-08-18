@@ -20,6 +20,7 @@ import webbrowser
 from http.server import BaseHTTPRequestHandler, ThreadingHTTPServer
 
 sys.path.insert(0, os.path.dirname(os.path.abspath(__file__)))
+import capabilities  # noqa: E402
 import core  # noqa: E402
 from paths import app_root  # noqa: E402
 
@@ -29,7 +30,11 @@ HOST = "127.0.0.1"
 DEFAULT_PORT = int(os.environ.get("SHIFRATOR_UI_PORT", "8765"))
 _INDEX = os.path.join(app_root(), "app", "index.html")
 
-_ALLOWED_EXT = (".docx", ".txt", ".pdf")  # PDF-ARCH: ветка А, текстовый слой
+# ЭТАП CIRCLE-UI, задача 3. Своего списка форматов у сервера БОЛЬШЕ НЕТ: он
+# берётся из app/capabilities.py — единственного места, где список объявлен.
+# Прежняя копия здесь и была причиной того, что PDF, который движок читает с
+# этапа PDF-ARCH, интерфейс не пускал вовсе.
+_ALLOWED_EXT = capabilities.input_extensions()
 _MAX_UPLOAD = 50 * 1024 * 1024   # 50 МБ — договор столько не весит; защита от случайностей
 
 
@@ -92,6 +97,40 @@ def _friendly_encrypt_error(exc: Exception) -> str:
             "открывается в Word (или в просмотрщике PDF) и не защищён паролем; "
             "если открывается — пересохраните его и загрузите снова. "
             f"Техническая причина, если понадобится: {exc}")
+
+
+def _unsupported_input_message(ext: str) -> str:
+    """Отказ по расширению — с ЖИВЫМ списком форматов, а не с переписанным от руки.
+
+    Прежний текст был константой «Поддерживаются только файлы .docx, .txt и
+    .pdf.» в двух местах; ровно так список и отстаёт от движка."""
+    names = ", ".join(f["label"] for f in capabilities.INPUT_FORMATS)
+    return (f"Этот файл программа не читает: «{ext or 'без расширения'}». "
+            f"Подойдёт: {names}. Если у вас .doc старого образца — откройте его "
+            f"в Word и сохраните как .docx.")
+
+
+def _friendly_restore_file_error(exc: Exception) -> str:
+    """CIRCLE-UI, задача 2: ошибки восстановления В ФАЙЛ -> человеческий текст."""
+    from storage import SessionNotFoundError, SessionExpiredError
+    from ooxml_core import OoxmlError
+
+    if isinstance(exc, SessionExpiredError):
+        return ("Сессия истекла: исходные значения хранятся 24 часа с момента "
+                "шифрации и уже удалены. Вернуть договор по ней нельзя — "
+                "обработайте документ заново.")
+    if isinstance(exc, SessionNotFoundError):
+        return ("Такая сессия не найдена. Проверьте, что скопировали ID целиком — "
+                "его выдала программа при шифрации.")
+    if isinstance(exc, OoxmlError):
+        return (str(exc) + "\n\nЧто делать: откройте файл в Word (Excel, "
+                "PowerPoint) и сохраните заново — иногда нейросеть отдаёт файл "
+                "повреждённым.")
+    if isinstance(exc, ValueError):
+        return str(exc)
+    return ("Не удалось вернуть значения в файл. Проверьте, что вы загрузили тот "
+            "самый файл, который вернула нейросеть, и что метки вида [ФИО_1] в "
+            f"нём не изменены. Техническая причина, если понадобится: {exc}")
 
 
 def _friendly_decrypt_error(exc: Exception) -> str:
@@ -235,6 +274,11 @@ class Handler(BaseHTTPRequestHandler):
         if self.path == "/api/sessions":
             self._handle_list_sessions()
             return
+        if self.path == "/api/capabilities":
+            # ЭТАП CIRCLE-UI, задача 3: экран НЕ хранит своего списка форматов и
+            # своего списка полей «прочитано не всё» — он спрашивает их здесь.
+            self._send_json({"status": "ok", **capabilities.view()})
+            return
         if self.path == "/api/settings":
             self._handle_settings_get()
             return
@@ -281,6 +325,8 @@ class Handler(BaseHTTPRequestHandler):
             self._handle_settings_post()
         elif self.path == "/api/decrypt":
             self._handle_decrypt()
+        elif self.path == "/api/decrypt-file":
+            self._handle_decrypt_file()
         elif self.path == "/api/session-delete":
             self._handle_session_delete()
         elif self.path == "/api/markup/mark-missed":
@@ -342,7 +388,7 @@ class Handler(BaseHTTPRequestHandler):
         ext = os.path.splitext(filename)[1].lower()
         if ext not in _ALLOWED_EXT:
             self._send_json({"status": "error",
-                             "message": "Поддерживаются только файлы .docx, .txt и .pdf."})
+                             "message": _unsupported_input_message(ext)})
             return
 
         data = self._read_body()
@@ -391,7 +437,7 @@ class Handler(BaseHTTPRequestHandler):
         ext = os.path.splitext(filename)[1].lower()
         if ext not in _ALLOWED_EXT:
             self._send_json({"status": "error",
-                             "message": "Поддерживаются только файлы .docx, .txt и .pdf."})
+                             "message": _unsupported_input_message(ext)})
             return
 
         data = self._read_body()
@@ -470,6 +516,87 @@ class Handler(BaseHTTPRequestHandler):
             return
         result["status"] = "ok"
         self._send_json(result)
+
+    def _handle_decrypt_file(self):
+        """ЭТАП CIRCLE-UI, задача 2: вернуть человеку ДОГОВОР, а не текст.
+
+        Восстановление в файл с сохранённым оформлением жило ТОЛЬКО в командной
+        строке (`shifrator.py decrypt-file`): ни маршрута, ни кнопки — для юриста
+        это половина смысла продукта, и он до неё не доставал. Своей логики здесь
+        нет: тот же `file_detokenizer.detokenize_file`, что зовёт CLI.
+
+        Вход:  тело — байты файла, вернувшегося от нейросети;
+               X-Session-Id — сессия; X-Filename — имя файла (для расширения).
+        Выход: САМ ФАЙЛ телом ответа (Content-Disposition), диагностика — в
+               заголовках X-Replaced / X-Unresolved, потому что тело занято
+               файлом. Ошибка — обычный JSON, как у всех маршрутов.
+        """
+        from urllib.parse import quote, unquote
+
+        filename = unquote(self.headers.get("X-Filename", "document.docx"))
+        session_id = unquote(self.headers.get("X-Session-Id", "")).strip()
+        ext = os.path.splitext(filename)[1].lower()
+
+        if not session_id:
+            self._send_json({"status": "error", "message": "Укажите ID сессии."})
+            return
+
+        # ЧЕСТНЫЙ ОТКАЗ С ДОРОГОЙ, а не пустая кнопка: для .pdf восстановление
+        # возвращается текстом (решение владельца). Текст — из capabilities,
+        # второй копии нет.
+        refusal = capabilities.unsupported_restore_message(ext)
+        if refusal is not None:
+            self._send_json({"status": "unsupported", "message": refusal})
+            return
+        if ext not in capabilities.restore_file_extensions():
+            names = ", ".join(f["label"] for f in capabilities.view()["restore_file_formats"])
+            self._send_json({"status": "error", "message": (
+                f"Вернуть файлом такой формат нельзя: «{ext or 'без расширения'}». "
+                f"Файлом с сохранённым оформлением возвращаются: {names}.")})
+            return
+
+        data = self._read_body()
+        if data is None:
+            self._send_json({"status": "error",
+                             "message": "Файл слишком большой (ограничение 50 МБ)."})
+            return
+        if not data:
+            self._send_json({"status": "error", "message": (
+                "Файл пустой. Проверьте, что вы сохранили ответ нейросети целиком.")})
+            return
+
+        from file_detokenizer import detokenize_file
+
+        tmp_dir = tempfile.mkdtemp(prefix="shifrator_restore_")
+        src = os.path.join(tmp_dir, "in" + ext)
+        dst = os.path.join(tmp_dir, "out" + ext)
+        try:
+            with open(src, "wb") as f:
+                f.write(data)
+            try:
+                _, replaced, unresolved = detokenize_file(src, session_id, dst_path=dst)
+            except Exception as e:  # noqa: BLE001 — переводим в человеческий текст
+                msg = _friendly_restore_file_error(e).replace(src, filename).replace(dst, filename)
+                self._send_json({"status": "error", "message": msg})
+                return
+
+            body = open(dst, "rb").read()
+            root, _ = os.path.splitext(os.path.basename(filename))
+            out_name = f"{root}_restored{ext}"
+            self.send_response(200)
+            self.send_header("Content-Type", "application/octet-stream")
+            self.send_header("Content-Length", str(len(body)))
+            # Имя может быть кириллическим — только RFC 5987, ASCII-копия отдельно.
+            self.send_header("Content-Disposition",
+                             "attachment; filename=\"restored%s\"; filename*=UTF-8''%s"
+                             % (ext, quote(out_name)))
+            self.send_header("X-Replaced", str(replaced))
+            self.send_header("X-Unresolved", quote(json.dumps(unresolved, ensure_ascii=False)))
+            self.end_headers()
+            self.wfile.write(body)
+        finally:
+            import shutil
+            shutil.rmtree(tmp_dir, ignore_errors=True)
 
     def _handle_list_sessions(self):
         # Список сессий пользователя (Задача U2-3) — только storage.py, файлы напрямую не трогаем.

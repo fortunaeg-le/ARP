@@ -211,13 +211,19 @@
   <section id="scr-enc" class="screen active">
     <div class="card">
       <h2>Загрузите договор</h2>
-      <p class="sub">Поддерживаются <b>.docx</b> и <b>.txt</b>. Система спрячет персональные данные, а вы проверите результат перед выдачей. Обработка идёт на этом компьютере — файл никуда не отправляется.</p>
+      <!-- ЭТАП CIRCLE-UI, задача 3: списка форматов на этом экране БОЛЬШЕ НЕТ.
+           Он приезжает из /api/capabilities (app/capabilities.py) и заполняет
+           разом подпись, плашку и accept=. Раньше здесь стояли ТРИ копии
+           списка, и одна из них («Поддерживаются .docx и .txt») отстала от
+           движка на целый формат — PDF читался, но человеку об этом не
+           говорили и файл не пускали. -->
+      <p class="sub">Поддерживаются <b id="cap-input-inline">…</b>. Система спрячет персональные данные, а вы проверите результат перед выдачей. Обработка идёт на этом компьютере — файл никуда не отправляется.</p>
       <div id="drop" class="drop">
         <div class="big">📄</div>
         <div><b>Перетащите файл сюда</b> или нажмите, чтобы выбрать</div>
-        <div style="margin-top:6px;font-size:13px">Word (.docx) · PDF (.pdf) · текст (.txt)</div>
+        <div id="cap-input-list" style="margin-top:6px;font-size:13px">…</div>
       </div>
-      <input id="file" type="file" accept=".docx,.txt,.pdf" class="hidden">
+      <input id="file" type="file" class="hidden">
 
       <div id="enc-status" class="status">
         <span id="enc-spin" class="spinner"></span>
@@ -328,7 +334,7 @@
         <label>Обезличенный текст (ответ, где стоят токены вида [PERSON_1])</label>
         <textarea id="r-text" placeholder="Вставьте текст сюда…"></textarea>
         <div style="margin-top:8px"><button class="ghost" onclick="document.getElementById('r-file').click()">📂 Загрузить .txt в это поле</button>
-          <input id="r-file" type="file" accept=".txt" class="hidden"></div>
+          <input id="r-file" type="file" class="hidden"></div>
       </div>
       <button class="primary" onclick="doDecrypt()">Восстановить оригинал</button>
 
@@ -341,6 +347,32 @@
         </div>
         <div id="r-unresolved" class="warn hidden" style="margin-top:8px"></div>
         <div class="restored" id="r-restored"></div>
+      </div>
+    </div>
+
+    <!-- ЭТАП CIRCLE-UI, задача 2: ВЕРНУТЬ ДОГОВОР, А НЕ ТЕКСТ.
+         Восстановление в файл с сохранённым оформлением (shifrator.py
+         decrypt-file) существовало ТОЛЬКО в командной строке: ни маршрута на
+         сервере, ни кнопки. Для юриста это половина смысла продукта — он несёт
+         в нейросеть договор и хочет получить обратно договор. -->
+    <div class="card" style="max-width:820px;margin:16px auto 0">
+      <h2>Вернуть договор файлом (с оформлением)</h2>
+      <p class="sub">Если нейросеть вернула вам <b>файл</b>, а не текст — загрузите его здесь. Программа поставит исходные значения на место меток и отдаст файл обратно: шрифты, таблицы, колонтитулы и нумерация останутся как были. Форматы: <b id="cap-rfile-list">…</b>.</p>
+      <div class="field">
+        <label>ID сессии</label>
+        <input id="rf-sid" placeholder="напр. 3f2a1c9e-...-...-...-............" spellcheck="false">
+      </div>
+      <div class="field">
+        <label>Файл, который вернула нейросеть</label>
+        <div><button class="ghost" onclick="document.getElementById('rf-file').click()">📂 Выбрать файл</button>
+          <span id="rf-name" class="note" style="margin-left:8px"></span>
+          <input id="rf-file" type="file" class="hidden"></div>
+      </div>
+      <button class="primary" onclick="doDecryptFile()">Вернуть файл с оформлением</button>
+      <div id="rfile-status" class="status"><span id="rfile-spin" class="spinner"></span><span id="rfile-msg"></span></div>
+      <div id="rf-out" class="hidden" style="margin-top:12px">
+        <a id="rf-link" class="ghost" style="display:inline-block;text-decoration:none" download>⬇ Скачать восстановленный файл</a>
+        <div id="rf-note" class="note" style="margin-top:8px"></div>
       </div>
     </div>
   </section>
@@ -483,6 +515,34 @@
 <div id="markup-toast"></div>
 
 <script>
+/* ================= CIRCLE-UI, задача 3: ВОЗМОЖНОСТИ ИЗ ОДНОГО МЕСТА =========
+   Экран НЕ хранит своего списка форматов и своего списка полей «прочитано не
+   всё». Он спрашивает их у сервера (/api/capabilities -> app/capabilities.py),
+   и из ответа строит accept=, подписи и проверки. Причина жёсткая: обе тихие
+   потери этого проекта (PDF не пускался в интерфейс; предупреждение о
+   непрочитанных страницах PDF не показывалось НИКОГДА) — это разошедшиеся
+   копии одного и того же списка. Сторож — tests/test_ui_capability_parity.py. */
+let CAPS=null;
+function capInputExts(){ return CAPS ? CAPS.input_formats.map(f=>f.ext) : []; }
+function capInputSentence(){ return CAPS ? CAPS.input_sentence : ''; }
+function capIncompletenessFields(){ return CAPS ? CAPS.incompleteness_fields.map(f=>f.field) : []; }
+async function loadCapabilities(){
+  try{
+    const r=await fetch('/api/capabilities');
+    CAPS=await r.json();
+  }catch(err){ return; }
+  const set=(id,txt)=>{ const el=document.getElementById(id); if(el) el.textContent=txt; };
+  set('cap-input-inline', capInputExts().join(', '));
+  set('cap-input-list', CAPS.input_sentence);
+  set('cap-rfile-list', CAPS.restore_file_sentence);
+  const fi=document.getElementById('file');
+  if(fi) fi.setAttribute('accept', CAPS.input_accept);
+  const rf=document.getElementById('rf-file');
+  if(rf) rf.setAttribute('accept', CAPS.restore_file_accept);
+  const at=document.getElementById('r-file');
+  if(at) at.setAttribute('accept', CAPS.anon_text_accept);
+}
+loadCapabilities();
 let CUR = null;             // текущий результат шифрации
 let PENDING_FILE = null;    // файл, ждущий решения по зонам
 const TYPE_LABELS = {PERSON:"ФИО",ORG:"Организация",ADDRESS:"Адрес",INN:"ИНН организации (10 цифр)",INN_PERSON:"ИНН человека (12 цифр)",OGRN:"ОГРН/ОГРНИП",KPP:"КПП",BANK_ACCOUNT:"Банковский счёт",BIK:"БИК",PASSPORT:"Паспорт",PHONE:"Телефон",EMAIL:"E-mail",SNILS:"СНИЛС",BIRTHDATE:"Дата рождения",SUM:"Сумма",PERCENT:"Процент (ставка, неустойка)",TERM:"Срок исполнения",DATE:"Дата"};
@@ -539,12 +599,13 @@ function _encProgressUI(show){
 
 async function startEncrypt(file, allowLossy){
   const ext=(file.name.match(/\.[^.]+$/)||[''])[0].toLowerCase();
-  /* ЭТАП UI-REBUILD-2: PDF движок читает с этапа PDF-ARCH (app/server.py,
-     _ALLOWED_EXT), но интерфейс его НЕ ПУСКАЛ — ни этой проверкой, ни через
-     accept у поля выбора файла. Работающая возможность была недоступна с
-     экрана; это не косметика, а неполученный результат. */
-  if(ext!=='.docx' && ext!=='.txt' && ext!=='.pdf'){
-    status('enc','Этот файл программа не читает: «'+ext+'». Подойдёт договор в формате Word (.docx), PDF (.pdf) или обычный текст (.txt). '+
+  /* ЭТАП CIRCLE-UI, задача 3: список форматов НЕ переписан здесь руками —
+     он взят из CAPS (/api/capabilities). Прежняя копия и была дефектом:
+     PDF движок читает с этапа PDF-ARCH, а эта строка про него не знала,
+     и работающая возможность была недоступна с экрана. */
+  const allowed=capInputExts();
+  if(allowed.length && allowed.indexOf(ext)<0){
+    status('enc','Этот файл программа не читает: «'+ext+'». Подойдёт: '+capInputSentence()+'. '+
       'Если у вас .doc старого образца — откройте его в Word и сохраните как .docx.','err'); return; }
   document.getElementById('zones-box').classList.add('hidden');
   const fillEl=document.getElementById('enc-progress-fill'), noteEl=document.getElementById('enc-progress-note');
@@ -918,6 +979,65 @@ async function doDecrypt(){
     document.getElementById('res-out').classList.remove('hidden');
   }catch(err){ status('res','Программа не ответила. Проверьте, не закрыто ли её окно, и нажмите «Восстановить оригинал» ещё раз.','err'); }
 }
+/* ---------- CIRCLE-UI, задача 2: восстановление В ФАЙЛ ---------- */
+let RFILE=null;
+document.getElementById('rf-file').onchange=e=>{
+  RFILE=e.target.files[0]||null;
+  document.getElementById('rf-name').textContent=RFILE?RFILE.name:'';
+  /* ID сессии обычно уже введён выше — не заставляем вводить дважды. */
+  const up=document.getElementById('r-sid').value.trim();
+  const cur=document.getElementById('rf-sid');
+  if(up && !cur.value.trim()) cur.value=up;
+};
+async function doDecryptFile(){
+  const sid=document.getElementById('rf-sid').value.trim();
+  const out=document.getElementById('rf-out');
+  out.classList.add('hidden');
+  if(!sid){ status('rfile','Укажите ID сессии — без неё программе неоткуда узнать, что было спрятано.','err'); return; }
+  if(!RFILE){ status('rfile','Выберите файл, который вернула нейросеть.','err'); return; }
+  status('rfile','Возвращаю значения в файл…','busy');
+  try{
+    const buf=await RFILE.arrayBuffer();
+    const resp=await fetch('/api/decrypt-file',{method:'POST',
+      headers:{'Content-Type':'application/octet-stream',
+               'X-Filename':encodeURIComponent(RFILE.name),
+               'X-Session-Id':encodeURIComponent(sid)},
+      body:buf});
+    const ctype=resp.headers.get('Content-Type')||'';
+    if(ctype.indexOf('application/json')>=0){
+      const d=await resp.json();
+      /* «unsupported» — это НЕ поломка, а честный отказ с названной дорогой
+         (PDF возвращается текстом, решение владельца). Красным его красить
+         нельзя: человек решит, что что-то сломалось. */
+      status('rfile',d.message,d.status==='unsupported'?'ok':'err');
+      return;
+    }
+    const blob=await resp.blob();
+    const replaced=+(resp.headers.get('X-Replaced')||0);
+    let unresolved=[];
+    try{ unresolved=JSON.parse(decodeURIComponent(resp.headers.get('X-Unresolved')||'[]')); }catch(e){}
+    const name=RFILE.name.replace(/(\.[^.]+)$/, '_restored$1');
+    const a=document.getElementById('rf-link');
+    if(a.href && a.href.indexOf('blob:')===0) URL.revokeObjectURL(a.href);
+    a.href=URL.createObjectURL(blob); a.download=name;
+    a.textContent='⬇ Скачать «'+name+'»';
+    let note='Значений возвращено на место: <b>'+replaced+'</b>. Оформление файла не менялось — программа заменила только текст меток.';
+    if(unresolved.length){
+      note+='<br><b>⚠️ Не раскрыто меток: '+unresolved.length+'</b> ('+unresolved.map(t=>'<code>'+esc(t)+'</code>').join(', ')+
+        '). Обычно это значит, что ID сессии от другого документа либо нейросеть изменила метку. Остальное восстановлено верно.';
+    }
+    if(replaced===0){
+      note+='<br><b>⚠️ В файле не нашлось ни одной метки.</b> Раскрывать было нечего — проверьте, что это именно тот файл, который вернула нейросеть.';
+    }
+    document.getElementById('rf-note').innerHTML=note;
+    out.classList.remove('hidden');
+    status('rfile',unresolved.length||replaced===0
+      ? 'Файл готов, но есть замечания — смотрите пояснение ниже.'
+      : 'Готово: файл собран, исходные значения на месте, оформление сохранено.',
+      (unresolved.length||replaced===0)?'err':'ok');
+  }catch(err){ status('rfile','Программа не ответила. Проверьте, не закрыто ли её окно, и повторите.','err'); }
+}
+
 function downloadRestored(){ const sid=document.getElementById('r-sid').value.trim()||'restored'; saveText(sid+'_restored.txt',RESTORED); }
 
 /* ================= U3/U5b: разметка экрана проверки ================= */
