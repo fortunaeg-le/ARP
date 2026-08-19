@@ -369,6 +369,12 @@ def process_doc(d, allow_lossy=ALLOW_LOSSY):
     # прибор считал недобором — то есть утечкой, которой нет. Условия узости и
     # что правка НЕ трогает — measure_lib, блок «немаскируемый шов».
     _seam = ML.seam_spans(doc.segments, offs, G, body_start, body_end)
+    # ЭТАП INSTR-SEAM — тот же шов для линии «г» (masking B), но по ВСЕМУ пакету,
+    # а не только по телу: маски и эталон линии «г» живут и в колонтитулах (их
+    # система читает с этапа NODES, а прибор локализует с этапа METRIC-FIX), и
+    # шов между блоками там ровно тот же. Условия узости не меняются — они
+    # внутри seam_spans (не принадлежит сегменту И символ из SEAM_CHARS).
+    _seam_doc = ML.seam_spans(doc.segments, offs, G, 0, len(G))
     _all_mask_spans = [(x["start"], x["end"]) for x in det_located]
     _bnd_by_pos = {}
     for _t in sorted({e["type"] for e in d["entities"]}):
@@ -476,7 +482,7 @@ def process_doc(d, allow_lossy=ALLOW_LOSSY):
         else:
             bc = ML.mc_check_bc(
                 {"start": x["start"], "end": x["end"], "gtype": x["gtype"]},
-                d["entities"], masks_pt1,
+                d["entities"], masks_pt1, seam=_seam_doc,
             )
         mask_records.append({
             "gtype": x["gtype"], "raw_type": x["raw_type"], "token": e.token,
