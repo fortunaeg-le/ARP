@@ -454,9 +454,10 @@ class TestCharNormDigitSpaces:
         ("07 19 053 4 98", "0719053498"),
         ("57 02 639 201", "5702639201"),
         ("69 03 645 450", "6903645450"),
-        ("90 14 617-0-85", "9014617085"),   # смесь с дефисами — та же запись
+        # смесь с дефисами: дефисы схлопывает проход 3, после него групп
+        # остаётся три — порог 4 не набран, и запись остаётся канонической
+        # формой паспорта, которую паттерн берёт как есть.
         ("8 800 555 35 35", "88005553535"),
-        ("7707 083 893", "7707083893"),     # ведущая группа 4 знака — не разряды
     ])
     def test_non_thousands_grouping_collapsed(self, base, expected):
         norm, omap = normalize_for_detection(base)
@@ -479,9 +480,26 @@ class TestCharNormDigitSpaces:
         "5 000",
         "7707 083893",       # две группы — могут быть два разных значения
         "2023 2024",
+        "7707 083 893",      # три группы — порог 4 (см. _SPLIT_MIN_GROUPS)
         "д. 25, кв. 162",
     ])
     def test_thousands_and_pairs_kept(self, base):
         norm, _ = normalize_for_detection(base)
         assert norm == base
+
+    def test_hyphen_mix_stays_canonical_passport_form(self):
+        # Дефисы схлопывает проход 3; после него групп три, порог 4 не набран —
+        # получается КАНОНИЧЕСКАЯ форма паспорта, её паттерн берёт как есть.
+        norm, omap = normalize_for_detection("90 14 617-0-85")
+        _assert_map_invariant("90 14 617-0-85", norm, omap)
+        assert norm == "90 14 617085"
+
+    def test_multispan_phone_grouping_survives(self):
+        """РЕГРЕСС (пойман tests/test_stage_e_spans.py). Телефон, собираемый
+        МУЛЬТИСПАНОМ из группировки, обязан сохранить группы: непрерывный номер
+        мультиспан пропускает осознанно, а штатный паттерн требует 11 цифр —
+        склейка трёх групп убивала находку целиком."""
+        norm, _ = normalize_for_detection("84б 82б85 1Ч")
+        assert norm == "846 82685 14"
+        assert norm.count(" ") == 2
 
