@@ -875,8 +875,21 @@ def _detect_boundary_entities(
     # обратимость доказана round-trip-тестами).
     import layout_repair as _LR
     if _LR.ENABLED:
+        # ЭТАП SEAM-JOIN: ОТРИЦАТЕЛЬНЫЕ КЛАССЫ В СТРАЖ НЕ ВХОДЯТ. Страж ниже
+        # заведён против ДУБЛЯ и ЗАХВАТА: половина, пересёкшая уже найденное
+        # значение, не сшивается. Класс без token_prefix (CLAUSE_REF/ROLE_TERM/
+        # COLLECTIVE) — не найденное значение, а барьер: маской он не станет
+        # никогда. Пока он лежал в этом списке, он ОТМЕНЯЛ ремонт: «Дата ро |
+        # ждения: 05.06.19 | 86» — на хвосте стоит CLAUSE_REF «05.06.19»
+        # (номер пункта по форме), и дата рождения человека оставалась
+        # открытой. Так же терялись 7 дат рождения корпуса. Разрешение
+        # пересечений с барьером никуда не делось — оно делается ниже, общим
+        # шагом _resolve_overlaps, где отрицательный класс и должен решать.
+        _lr_barriers = _barrier_types(config_path)
         seg_spans_all: dict[str, list[tuple[int, int, str]]] = {}
         for e in (segment_entities or ()):
+            if e.entity_type in _lr_barriers:
+                continue
             seg_spans_all.setdefault(e.segment_id, []).append(
                 (e.start, e.end, e.entity_type))
 
