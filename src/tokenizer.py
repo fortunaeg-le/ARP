@@ -611,6 +611,7 @@ def _detect_boundary_entities(
         sep = _boundary_sep(seg_a, seg_b)
         window = tail + sep + head
         wins.append({
+            "seg_i": i,                          # индекс seg_a в doc.segments
             "seg_a": seg_a, "seg_b": seg_b,
             "text_a": text_a, "text_b": text_b,
             "tail_off": tail_off,
@@ -905,6 +906,7 @@ def _detect_boundary_entities(
 
         rep_idx: list[int] = []
         rep_texts: list[str] = []
+        rep_ctx: list[int] = []      # длина приклеенного слева контекста
         person_rows: list[int] = []
         regex_rows: set[int] = set()
         for k, w in enumerate(wins):
@@ -926,8 +928,28 @@ def _detect_boundary_entities(
             # лечится (принятый владельцем остаток класса).
             if cell_seam and not person_ok:
                 continue
+            # ЭТАП SEAM-JOIN — ЛЕВЫЙ КОНТЕКСТ СТЫКА. Вёрстка рвёт не только
+            # значение, но и ЯКОРЬ рядом с ним, причём ДРУГИМ стыком:
+            # «…900000000790 БИ | К 0440307 | 90» — три сегмента, два разрыва.
+            # Окно видит один стык, поэтому при сборке «044030790» слева
+            # оказывается «К », слова «БИК» в окне нет вовсе, и паттерн (у него
+            # якорь обязателен) молчит. Приклеиваем к окну хвост ПРЕДЫДУЩЕГО
+            # сегмента, если ТОТ стык рвёт СЛОВО (см. layout_repair.seam_joins_word —
+            # через разрыв ЧИСЛА не приклеиваем никогда, иначе две цифровые цепи
+            # слились бы в значение, которого в документе нет).
+            #
+            # Контекст даёт только УЛИКУ, не территорию: спан, начавшийся в нём,
+            # отбрасывается ниже (ls < c), геометрия эмита пары половин
+            # прежняя — приклеенный текст в маску не попадает никогда.
+            ctx = ""
+            si = w["seg_i"]
+            if si > 0:
+                prev = segs[si - 1]
+                if prev.text and _LR.seam_joins_word(prev.text, w["text_a"]):
+                    ctx = prev.text[-_BOUNDARY_WINDOW:]
             rep_idx.append(k)
-            rep_texts.append(w["window"][:w["tail_end"]]
+            rep_ctx.append(len(ctx))
+            rep_texts.append(ctx + w["window"][:w["tail_end"]]
                              + w["window"][w["head_start"]:])
             if person_ok:
                 person_rows.append(len(rep_texts) - 1)
@@ -953,17 +975,22 @@ def _detect_boundary_entities(
                     continue   # спан пересёк разделитель блоба — не бывает
                 if m not in regex_rows:
                     continue   # окно ячейки: regex по нему уже прошёл на шаге 3a
+                # строгий страж сборки (правило A6) судит по ВСЕМУ тексту строки
+                # блоба (включая приклеенный левый контекст — он и заведён ради
+                # якоря), поэтому берётся ДО пересчёта в координаты окна
+                if not _LR._strict_seam_ok(rep_texts[m][ls:le], e.entity_type,
+                                           rep_texts[m], ls, config_path):
+                    continue
+                c = rep_ctx[m]
+                if ls < c:
+                    continue   # спан начался в приклеенном контексте — не наш стык
+                ls, le = ls - c, le - c
                 k = rep_idx[m]
                 w = wins[k]
                 j = w["tail_end"]
                 if not (ls < j and le > j):
                     continue   # стык не пересечён — дубль посегментной детекции
                 le_w = le + (w["head_start"] - w["tail_end"])
-                # строгий страж сборки (правило A6): КС сходится всегда,
-                # голая цифровая цепь — только под якорем типа
-                if not _LR._strict_seam_ok(rep_texts[m][ls:le], e.entity_type,
-                                           rep_texts[m], ls, config_path):
-                    continue
                 if _lr_guard_ok(w, ls, le_w, e.entity_type):
                     per_win[k].append((ls, le_w, e.entity_type, "regex", 1.0))
 
@@ -984,14 +1011,18 @@ def _detect_boundary_entities(
                 if e.entity_type != "PERSON":
                     continue
                 m = row_by_id[e.segment_id]
+                c = rep_ctx[m]
+                if e.start < c:
+                    continue   # спан начался в приклеенном контексте — не наш стык
+                es, ee = e.start - c, e.end - c
                 k = rep_idx[m]
                 w = wins[k]
                 j = w["tail_end"]
-                if not (e.start < j and e.end > j):
+                if not (es < j and ee > j):
                     continue
-                le_w = e.end + (w["head_start"] - w["tail_end"])
-                if _lr_guard_ok(w, e.start, le_w, "PERSON"):
-                    per_win[k].append((e.start, le_w, "PERSON", "ner", 1.0))
+                le_w = ee + (w["head_start"] - w["tail_end"])
+                if _lr_guard_ok(w, es, le_w, "PERSON"):
+                    per_win[k].append((es, le_w, "PERSON", "ner", 1.0))
 
     # 4. Пересекающие стык спаны -> пары Entity_A/Entity_B (та же логика, что и раньше).
     extra: list[Entity] = []

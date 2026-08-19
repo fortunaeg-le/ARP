@@ -327,3 +327,37 @@ class TestScanRuns:
     def test_address_abbreviations_are_not_spread(self):
         assert layout_repair._scan_runs(
             "г. Пермь, ш. Ленинградская, д. 82, кв. 54") == []
+
+
+# --------------------------------------------------------------------------- #
+#     ЭТАП SEAM-JOIN: ЯКОРЬ, ОТОРВАННЫЙ ОТ ЗНАЧЕНИЯ ДРУГИМ СТЫКОМ              #
+# --------------------------------------------------------------------------- #
+
+class TestSeamLeftContext:
+    """Вёрстка рвёт и значение, и якорь рядом с ним — РАЗНЫМИ стыками.
+    Окно B3 видит один стык, поэтому к нему приклеивается хвост предыдущего
+    сегмента, если ТОТ стык рвёт слово. Контекст даёт улику, не территорию."""
+
+    def test_anchor_torn_into_previous_segment(self):
+        doc = _doc(["к/с 30101810900000000790 БИ", "К 0440307", "90",
+                    "Тел.: +7 (846) 326-11-02"])
+        _prim, extra = _detect_all(doc)
+        got = {(e.segment_id, e.original_text)
+               for e in extra if e.entity_type == "BIK"}
+        assert ("l1", "0440307") in got and ("l2", "90") in got, got
+
+    def test_context_is_not_glued_through_a_number_break(self):
+        """Через разрыв ЧИСЛА контекст не приклеивается никогда: иначе две
+        цифровые цепи слились бы в значение, которого в документе нет."""
+        assert not layout_repair.seam_joins_word("сумма 790", "044030")
+        assert layout_repair.seam_joins_word("к/с 3010181090 БИ", "К 0440307")
+
+    def test_context_stays_out_of_the_mask(self):
+        """Приклеенный контекст в маску не попадает: половины — только свои
+        сегменты, спан, начавшийся в контексте, отбрасывается."""
+        doc = _doc(["к/с 30101810900000000790 БИ", "К 0440307", "90"])
+        _prim, extra = _detect_all(doc)
+        for e in extra:
+            seg = next(s for s in doc.segments if s.id == e.segment_id)
+            assert e.original_text == seg.text[e.start:e.end]
+            assert "БИ" not in e.original_text

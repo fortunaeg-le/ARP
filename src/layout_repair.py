@@ -593,3 +593,29 @@ def seam_eligibility(window: str, tail_end: int, head_start: int) -> tuple[bool,
     person = _person_ok("strict", left, right) if (
         left.isalnum() and right.isalnum()) else False
     return True, person
+
+
+def seam_joins_word(left_text: str, right_text: str) -> bool:
+    """Рвёт ли стык двух соседних сегментов ОДНО СЛОВО (не значение).
+
+    ЭТАП SEAM-JOIN, левый контекст стыка. Вёрстка рвёт не только значение, но и
+    ЯКОРЬ рядом с ним, причём другим стыком: «…900000000790 БИ | К 0440307 | 90»
+    — три сегмента, два разрыва. Окно B3 видит ОДИН стык, поэтому при сборке
+    «044030790» слева от значения оказывается «К », слова «БИК» в окне нет
+    вовсе, и штатный паттерн BIK (у него якорь обязателен) не срабатывает.
+    Тот же случай у «р/ | с 40802810205 | 101445449» и «…Паспо | рт 90 14 617 |
+    085».
+
+    Признак ровно тот же, что у внутрисегментного разрыва (_same_token), и
+    сознательно УЖЕ него: только СЛОВО, не число. Приклеивать левый контекст
+    через разрыв ЧИСЛА нельзя — «…790 | 044030790» слились бы в одну цепь и
+    дали бы значение, которого в документе нет."""
+    if not left_text or not right_text:
+        return False
+    base = left_text + "\n" + right_text
+    i = len(left_text)
+    if not (base[i - 1].isalnum() and base[i + 1].isalnum()):
+        return False
+    if _is_numeric_token(_side_token(base, i, i + 1)[0]):
+        return False
+    return _same_token(base, i, i + 1)
