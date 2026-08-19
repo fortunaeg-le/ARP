@@ -173,12 +173,50 @@
   .warn .actions{display:flex;gap:10px;margin-top:6px;flex-wrap:wrap}
 
   /* --- verify layout --- */
+  /* ЭТАП DESKTOP-FIT. Карточка экрана проверки — КОЛОНКА ВО ВСЮ ВЫСОТУ.
+     Все её дети размечены под это с самого макета (`flex:none` у шапки,
+     напоминаний и кнопок, `flex:1 1 0` у тела договора), а сама карточка
+     колонкой объявлена не была: `flex:0 1 auto` + `min-height:auto` = высота
+     ПО СОДЕРЖИМОМУ. На договоре из сорока строк она вырастала до 1427 px в
+     окне высотой 643 px, `body{overflow-y:hidden}` молча срезал разницу, и
+     низ обоих текстов вместе с кнопками «Скачать» человеку был недоступен —
+     полосы прокрутки, чтобы туда добраться, тоже не было. Замер до и после:
+     experiments/desktop_fit_layout.log. */
+  #scr-ver>.card{display:flex;flex-direction:column;flex:1 1 0;min-height:0}
+  /* Хвост той же задачи: ниже ~500 px высоты полы раскладки (тело договора
+     не ужимается меньше 160 px) в окно уже не помещаются. Тогда экран
+     ПРОКРУЧИВАЕТСЯ — как остальные четыре экрана (правило выше), а не режется.
+     Молча срезанное содержимое — это потерянная кнопка, о которой человек не
+     узнает; полоса прокрутки об этом честно сообщает. В рабочем диапазоне
+     высот (замер: 563, 643, 731, 1043 px) содержимое помещается ровно, и
+     полоса не появляется. */
+  #scr-ver.screen.active{overflow-y:auto}
   .verify-top{display:flex;flex-wrap:wrap;gap:14px;align-items:center;margin-bottom:10px;flex:none}
   /* Предупреждения и пояснения дизайн на экране проверки не рисует, но по
      SHIFRATOR_UX_paths.md (путь 3) они обязаны стоять рядом с обезличенным
      текстом и не прятаться. В окне фиксированной высоты держим их полосой
      с собственной прокруткой — текст сохранён целиком, панели не съедены. */
-  .v-banners{flex:none;max-height:23vh;overflow-y:auto;margin-bottom:10px}
+  /* ЭТАП UI-FIT-2, правка 1. Полоса напоминаний — ЖЁСТКО по содержимому.
+     `flex:0 0 auto` записан числами, а не словом `none`: карточка экрана стала
+     flex-колонкой этапом DESKTOP-FIT, и в колонке любое `1` или `auto` у этого
+     ребёнка означало бы, что свободная высота окна уходит ПОДСКАЗКЕ, а не
+     тексту договора. Расти вправо ей тоже нечем: ширину строки чтения держит
+     правило ниже. Вся свободная высота достаётся `.verify-grid` (`flex:1 1 0`). */
+  .v-banners{flex:0 0 auto;max-height:23vh;overflow-y:auto;margin-bottom:10px}
+  .v-banners>*{flex:0 0 auto}
+  /* Ширина СТРОКИ ЧТЕНИЯ, а не коробки: на мониторе 1920 текст напоминания
+     растягивался в одну строку на 1812 px (замер ДО, experiments/ui_fit2.log) —
+     глазами такая строка не читается, взгляд теряет начало следующей. Коробка
+     остаётся во всю ширину: в её правом углу стоит ✕, он должен быть у края.
+     1100 px — это ~110 знаков кегля 13 px, верх читаемого диапазона. */
+  .v-banners .note,.v-banners .policy-line{max-width:1100px}
+  /* Кегль напоминания от ширины окна НЕ зависит — ни vw, ни clamp() по ширине.
+     Записано явно, чтобы правка «сделаем на широком экране покрупнее» не
+     прошла молча: подсказка о НЕПОЛНОТЕ поиска ПДн обязана выглядеть одинаково
+     на всех рабочих местах, иначе на одном экране она читается как заголовок,
+     а на другом — как сноска. */
+  #v-eyes h3{font-size:15px}
+  #v-eyes .note{font-size:13px}
   .badge{background:var(--ink);color:#eef1eb;border-radius:20px;padding:6px 14px;font-weight:600;font-size:14px;font-family:var(--f-mono)}
   .sid{font:13px var(--f-mono);background:var(--panel-2);border:1px solid var(--line);padding:5px 10px;border-radius:6px;user-select:all}
   /* макет: panesRowStyle — flex:1 1 0, overflow:hidden, пол по высоте окна
@@ -300,7 +338,11 @@
   .rep:first-of-type{border-top:none}
   .rep:hover,.rep.active{background:var(--panel-2)}
   .rep.hidden{display:none}
-  .rep .tok{flex:none;font:11.5px var(--f-mono);color:var(--muted);background:var(--panel-2);border:1px solid var(--line-soft);border-radius:3px;padding:1px 5px}
+  /* ЭТАП UI-FIT-2: сама плашка описи рисуется правилами mark.ent.t-<ТИП> выше
+     — и в теме «Глубина», и в теме «Стекло». Здесь остаётся ТОЛЬКО раскладка
+     строки описи. Объявления ниже — запасной вид для типа, которого нет ни в
+     одном пучке: он проиграет по весу селектора любому mark.ent.t-<ТИП>. */
+  .rep .tok{flex:none;white-space:nowrap;font:11.5px var(--f-mono);color:var(--muted);background:var(--panel-2);border:1px solid var(--line-soft);border-radius:3px;padding:1px 5px}
   .rep .orig{flex:1;min-width:0;overflow:hidden;text-overflow:ellipsis;white-space:nowrap;font-size:13px;color:var(--ink-2);
     -webkit-text-security:disc}
   #v-side.show-values .rep .orig{-webkit-text-security:none}
@@ -329,6 +371,21 @@
      copyAnon()/downloadAnon() берут CUR.anon_text (строку с метками), а не DOM,
      поэтому настоящее значение физически не может уйти в буфер или в файл. --- */
   .scan-host{flex:1;min-height:0;position:relative;overflow:hidden;display:flex}
+  /* ЭТАП UI-FIT-2, правка 2. ЗАПАС ПРОКРУТКИ под полосу.
+     Полоса стоит на фиксированной высоте внутри панели, а документ упирался в
+     край панели раньше, чем крайние строки до неё доезжали: замер ДО — первая
+     строка застревала на 61-120 px ВЫШЕ полосы, последняя на 96-385 px НИЖЕ.
+     То есть начало и конец договора в режиме AI vision прочитать было нельзя
+     ВООБЩЕ, а это ровно те места, где стоят стороны, паспорта и подписи.
+     Запас = отступ, и ТОЛЬКО отступ. Пустых узлов, строк и пробельных
+     текстовых узлов в тело документа не добавляется ни одного: ручная разметка
+     сопоставляет выделение мышью со смещениями в ИСХОДНОМ тексте (data-s у
+     span.lit), и лишний текстовый узел сбил бы и разметку, и восстановление.
+     Числа приходят из scanApply() — там же, где вычисляется само положение
+     полосы, и пересчитываются на каждом resize. 40vh — аварийный пол на случай,
+     если положение полосы вычислить не удалось (см. там же). */
+  .pane.ai-on .body{padding-top:var(--scan-pad-top,40vh);
+                    padding-bottom:var(--scan-pad-bot,40vh)}
   .scan-band{position:absolute;left:0;right:0;z-index:5;pointer-events:none;display:none}
   .pane.ai-on .scan-band{display:block}
   .scan-band .sb-fill{position:absolute;inset:0;mix-blend-mode:multiply;
@@ -788,7 +845,7 @@
             <h4>
               <span id="pane-anon-title">Обезличенный текст — выделяйте пропуски здесь</span>
               <span style="flex:1"></span>
-              <span class="pane-ctl" id="ctl-riskmap" onclick="toggleRiskMap()" title="Плотность спрятанных данных по документу">📊 Карта риска</span>
+              <span class="pane-ctl active" id="ctl-riskmap" onclick="toggleRiskMap()" title="Плотность спрятанных данных по документу">📊 Карта риска</span>
               <span class="pane-ctl" id="ctl-aivision" onclick="toggleAiVision()" title="Полоса сканирования: вне полосы видно настоящее значение, внутри — метка"><span class="ctl-dot"></span>AI vision</span>
               <span class="marks-switch" id="ctl-density" title="Кегль текста договора">
                 <span class="ms-opt active" data-density="comfortable" onclick="setDensity('comfortable')">Свободно</span>
@@ -808,7 +865,12 @@
             </div>
           </div>
         </div>
-        <div class="riskmap hidden" id="v-riskmap">
+        <!-- ЭТАП UI-FIT-2: карта риска включена ПО УМОЛЧАНИЮ (решение владельца).
+             Это обзор плотности спрятанных данных по всему документу — он говорит
+             юристу, КУДА смотреть, ещё до того, как тот начал листать; спрятанный
+             за кнопкой, он большинством просто не открывался. Выключатель на
+             месте: щелчок по «📊 Карта риска» её убирает. -->
+        <div class="riskmap" id="v-riskmap">
           <div class="riskmap-lbl">РИСК</div>
           <div class="riskmap-track" id="v-riskmap-track"></div>
         </div>
@@ -1470,7 +1532,11 @@ function renderVerify(d){
       '<div class="grp-hint">'+esc(meta.hint)+'</div>';
     items.forEach((r,i)=>{
       html+='<div class="rep'+(i>=GROUP_SHOW?' rep-more hidden':'')+'" data-ri="'+r.ri+'" onmouseenter="hi('+r.ri+',1)" onmouseleave="hi('+r.ri+',0)" onclick="jump('+r.ri+')">'+
-        '<span class="tok">'+esc(r.token)+'</span>'+
+        /* ЭТАП UI-FIT-2: плашка в описи — ТОТ ЖЕ элемент, что и в тексте
+           (mark.ent.t-<ТИП>), а не своя коробочка. Тогда обе темы меток,
+           «Глубина» и «Стекло», применяются к ней ТЕМИ ЖЕ правилами, и опись
+           нельзя рассинхронизировать с текстом правкой одной из них. */
+        '<mark class="ent tok t-'+esc(r.entity_type)+'">'+esc(r.token)+'</mark>'+
         '<span class="orig" title="'+esc(r.original_text)+'">'+esc(r.original_text)+'</span>'+
         (r.count>1?'<span class="cnt">×'+r.count+'</span>':'')+'</div>';
     });
@@ -1669,6 +1735,30 @@ function scanApply(settle){
   const TOP=Math.round(128*k), GAP=Math.round(58*k);
   band.style.top=TOP+'px';
   band.style.height=Math.max(64,h-TOP-GAP)+'px';
+
+  /* ЭТАП UI-FIT-2, правка 2: ЗАПАС ПРОКРУТКИ, чтобы под полосу доезжали и
+     первая строка договора, и последняя. Считается ОТ ФАКТИЧЕСКОГО положения
+     полосы, тем же TOP, что только что поставлен выше, и пересчитывается на
+     каждом resize (слушатель ниже зовёт scanApply).
+       сверху = TOP — расстояние от верха панели до полосы. При прокрутке в
+         самый верх первая строка встаёт ровно на верхнюю кромку полосы.
+       снизу  = h - TOP — расстояние от той же кромки полосы до низа панели.
+         Меряется от ВЕРХНЕЙ кромки, а не от нижней, потому что «строка на
+         полосе» решается по верху строки (см. проверку r.top>=br.top ниже):
+         запаса «до нижней кромки» (h-TOP-GAP-height, это 31-58 px) хватило бы
+         только чтобы последняя строка коснулась низа полосы, а до её верха она
+         бы не дошла — то есть последнюю строку по-прежнему нельзя было бы
+         поставить туда же, куда встаёт любая другая.
+     Отступ — единственный механизм: пустые узлы в тело документа не идут
+     (сбили бы смещения ручной разметки). Аварийный пол 40 % высоты панели —
+     на случай, если положение полосы вычислить не удалось. */
+  const doc=document.getElementById('pane-anon');
+  if(doc){
+    const known = h>0 && isFinite(TOP);
+    const floor = Math.round(h*0.4);
+    doc.style.setProperty('--scan-pad-top', (known?TOP:floor)+'px');
+    doc.style.setProperty('--scan-pad-bot', (known?(h-TOP):floor)+'px');
+  }
 
   let touched=false;
   for(let pass=0;pass<6;pass++){
@@ -2651,7 +2741,10 @@ function closeMarkupMenu(){ const m=document.getElementById('markup-menu'); if(m
 document.addEventListener('click', e=>{
   const menu=document.getElementById('markup-menu');
   if(MENU_GESTURE===GESTURE) return;     // это click ТОГО ЖЕ нажатия, что открыло плашку
-  if(menu && menu.style.display==='block' && !menu.contains(e.target) && !e.target.closest('mark.ent')) closeMarkupMenu();
+  /* «Щелчок по маске» — только маска В ТЕКСТЕ ДОГОВОРА: с этапа UI-FIT-2 такой
+     же mark.ent стоит и в описи справа, а щелчок по описи — это переход к
+     значению (jump), плашку он гасить обязан. */
+  if(menu && menu.style.display==='block' && !menu.contains(e.target) && !e.target.closest('#pane-anon mark.ent')) closeMarkupMenu();
 });
 
 /* ЭТАП UI-REBUILD, задача 3: типов стало 26 (было 14 — см. app/core.py,
