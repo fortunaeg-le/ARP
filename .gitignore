@@ -75,3 +75,9 @@ experiments/stage_o2/*.pstats
 # Отладочный дамп замера корпуса v2: перезаписывается каждым прогоном (5 МБ),
 # производная конкретного прогона, как results_gate_current.json выше (этап A3).
 tests/corpus_v2/results_v2_current.json
+
+# ЭТАП DESKTOP-FIT: профиль браузера и черновые логи прогонов разведки.
+# Профиль — сотни файлов кэша Chromium, в репозитории им делать нечего.
+experiments/.layout-profile/
+experiments/.*.log
+experiments/.*.tmp
