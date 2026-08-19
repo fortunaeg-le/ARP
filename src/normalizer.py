@@ -92,6 +92,32 @@ _CHAIN_REAL_MIN = 2
 # дома не бывает, и порог разделяет эти два класса по самому тексту.
 _EDGE_TOKEN_MIN = 6
 
+# ЭТАП CHAR-NORM — ОБЫЧНЫЙ пробел ВНУТРИ цифровой группы (класс
+# mut:digit_spaces). Одиночный U+0020 между цифрами нормализатор не трогал
+# осознанно: его допускают паттерны со свободным разделителем (ИНН/ОГРН/счёт
+# «\d(?:[ NBSP]?\d){N}»). Но паттерны с ФИКСИРОВАННОЙ группой его не допускают —
+# у паспорта «\d{6}», и «90 14 6170 85» не находился ВООБЩЕ (26 значений в
+# дампе гейта). Схлопывать все одиночные пробелы нельзя: «12 000 000» — это
+# разряды суммы, и их склейка сломала бы SUM.
+#
+# Различение берётся из САМОЙ ЗАПИСИ, а не из типа: разрядная группировка
+# имеет ровно одну форму — первая группа 1-3 знака, ВСЕ последующие ровно по 3.
+# Всё, что этой форме не отвечает, разрядами не является. Три условия сразу:
+#   * >= _SPLIT_MIN_GROUPS групп (пара чисел «2023 2024», «7707 083893» —
+#     не трогается: две группы могут быть двумя разными значениями);
+#   * >= _SPLIT_MIN_DIGITS знаков цифрового вида суммарно (короткие номера
+#     дома/квартиры/индекса не задеваются);
+#   * форма НЕ разрядная.
+_SPLIT_MIN_GROUPS = 3
+_SPLIT_MIN_DIGITS = 8
+
+
+def _is_thousands_grouping(groups: list[int]) -> bool:
+    """Список длин групп — это разрядная группировка числа («12 000 000»)."""
+    return (len(groups) >= 2 and 1 <= groups[0] <= 3
+            and all(g == 3 for g in groups[1:]))
+
+
 # Слабая связка цепи: запятая и точка МЕЖДУ цифровыми токенами. Цепь через них
 # продолжается (копейки суммы «73Ч 525,0О» — одно значение, а не два числа), но
 # сами эти знаки НИКОГДА не выбрасываются: они несут разряд.
@@ -214,9 +240,30 @@ _FAST_TRIGGER_RE = re.compile(
 _DEL_LINE_WS = {ord(c): None for c in "\n\r\t"}
 
 
+#: прогон ASCII-цифр, разбитый ОДИНОЧНЫМИ обычными пробелами. Проверка формы
+#: точная (а не грубый триггер): иначе на быстрый путь перестал бы попадать
+#: любой текст с суммой в разрядах, а это почти каждый договор.
+_SPLIT_RUN_RE = re.compile(r"[0-9]+(?: [0-9]+)+")
+
+
+def _has_split_digit_group(base: str) -> bool:
+    """Есть ли в тексте цифровая группа, разбитая пробелами НЕ по разрядам.
+    Считается по ASCII-цифрам: любой двойник/дефис/типографский пробел уже
+    уводит текст на полный путь через _FAST_TRIGGER_RE, поэтому расхождение
+    этой оценки с фактической группировкой невозможно в опасную сторону."""
+    for m in _SPLIT_RUN_RE.finditer(base):
+        groups = [len(g) for g in m.group(0).split(" ")]
+        if (len(groups) >= _SPLIT_MIN_GROUPS
+                and sum(groups) >= _SPLIT_MIN_DIGITS
+                and not _is_thousands_grouping(groups)):
+            return True
+    return False
+
+
 def _is_identity(base: str) -> bool:
     """Гарантированно ли normalize_for_detection вернёт вход без изменений."""
     return (_FAST_TRIGGER_RE.search(base) is None
+            and not _has_split_digit_group(base)
             and base.translate(_DEL_LINE_WS).isprintable())
 
 
@@ -527,6 +574,67 @@ def normalize_for_detection(base: str) -> tuple[str, list[int]]:
                     if soft[t]:
                         keep[t] = False
         k = j
+
+    # --- Проход 3.5 (CHAR-NORM): обычный пробел ВНУТРИ цифровой группы.
+    # Смотрим на текст ПОСЛЕ прохода 3 — дефисы и типографские пробелы уже
+    # выброшены, поэтому «90 14 617-0-85» и «90 14 617085» разбираются как одна
+    # и та же запись. Группа — прогон знаков цифрового вида, разделитель —
+    # РОВНО один оставшийся обычный пробел. Условие приёма — в комментарии к
+    # _SPLIT_MIN_GROUPS.
+    #
+    # ГРУППОЙ СЧИТАЕТСЯ НЕ ЛЮБОЙ ПРОГОН ЗНАКОВ ЦИФРОВОГО ВИДА. Требуется хотя бы
+    # одна НАСТОЯЩАЯ цифра и отсутствие приклеенной буквы по краям — иначе
+    # хвост слова становится «группой»: в «число 7707083893 без» и 'о', и 'б'
+    # — знаки цифрового вида, запись читалась бы как три группы, и пробелы
+    # вокруг числа были бы выброшены (слово склеилось бы с реквизитом).
+    def _split_group_ok(a: int, b: int) -> bool:
+        if not any(_is_ascii_digit(chars[t]) for t in range(a, b)):
+            return False
+        return not ((a > 0 and chars[a - 1].isalpha())
+                    or (b < m and chars[b].isalpha()))
+
+    alive = [k for k in range(m) if keep[k]]
+    na = len(alive)
+    # границы групп знаков цифрового вида в «живой» последовательности
+    spans: list[tuple[int, int]] = []
+    q = 0
+    while q < na:
+        if not is_dl[alive[q]]:
+            q += 1
+            continue
+        r = q
+        while r < na and is_dl[alive[r]]:
+            r += 1
+        spans.append((q, r))
+        q = r
+
+    gi = 0
+    while gi < len(spans):
+        if not _split_group_ok(alive[spans[gi][0]], alive[spans[gi][1] - 1] + 1):
+            gi += 1
+            continue
+        groups = [spans[gi][1] - spans[gi][0]]
+        seps: list[int] = []
+        gj = gi
+        while gj + 1 < len(spans):
+            gap_a, gap_b = spans[gj][1], spans[gj + 1][0]
+            if gap_b - gap_a != 1:
+                break
+            sep = alive[gap_a]
+            if chars[sep] != " " or soft[sep]:
+                break
+            nx = spans[gj + 1]
+            if not _split_group_ok(alive[nx[0]], alive[nx[1] - 1] + 1):
+                break
+            seps.append(sep)
+            groups.append(nx[1] - nx[0])
+            gj += 1
+        if (len(groups) >= _SPLIT_MIN_GROUPS
+                and sum(groups) >= _SPLIT_MIN_DIGITS
+                and not _is_thousands_grouping(groups)):
+            for t in seps:
+                keep[t] = False
+        gi = gj + 1
 
     out2_chars: list[str] = []
     offset_map: list[int] = []
