@@ -40,12 +40,17 @@ const box = (s) => { const el = pick(s); if(!el) return null;
   return {h: Math.round(r.height), w: Math.round(r.width), flex: st.flex,
           maxW: st.maxWidth}; };
 const note = pick('#v-eyes .note');
+const vis = s => { const el = pick(s); if(!el) return false;
+  const st = getComputedStyle(el);
+  return st.display !== 'none' && st.visibility !== 'hidden'; };
 return JSON.stringify({
   eyes: box('#v-eyes'), banners: box('.v-banners'),
   grid: box('.verify-grid'), body: box('#pane-anon'),
   noteFs: note ? getComputedStyle(note).fontSize : '-',
   noteW: note ? Math.round(note.getBoundingClientRect().width) : 0,
-  h3Fs: pick('#v-eyes h3') ? getComputedStyle(pick('#v-eyes h3')).fontSize : '-'
+  h3Fs: pick('#v-eyes h3') ? getComputedStyle(pick('#v-eyes h3')).fontSize : '-',
+  свёрнут: !vis('#v-eyes'), строкаВидна: vis('.banner-slim'),
+  крестикВиден: vis('.eyes-x'), строкаПроНабор: vis('#v-policy')
 });
 """
 
@@ -201,18 +206,33 @@ def main():
                    {"width": w, "height": h, "deviceScaleFactor": 1, "mobile": False})
             time.sleep(0.7)
             d = json.loads(br.js(HINT_JS))
-            e, b, g, bd = d["eyes"], d["banners"], d["grid"], d["body"]
+            b, g, bd = d["banners"], d["grid"], d["body"]
             print(f"\n=== {name} ===")
-            if e is None:
-                print("  #v-eyes скрыт (низкое окно — свёрнут в строку)")
-            else:
-                print(f"  #v-eyes      высота {e['h']:>5} px  ширина {e['w']:>5} px"
-                      f"  flex={e['flex']}  max-width={e['maxW']}")
-                print(f"  текст: кегль {d['noteFs']}, заголовок {d['h3Fs']},"
-                      f" ширина строки чтения {d['noteW']} px")
+            print(f"  ПО УМОЛЧАНИЮ: свёрнут={d['свёрнут']},"
+                  f" строка-напоминание видна={d['строкаВидна']},"
+                  f" строка про набор типов видна={d['строкаПроНабор']}")
             print(f"  .v-banners   высота {b['h']:>5} px  flex={b['flex']}")
             print(f"  .verify-grid высота {g['h']:>5} px  <- место текста договора")
             print(f"  #pane-anon   высота {bd['h']:>5} px")
+            # развернуть -> измерить -> свернуть обратно крестиком
+            br.js("if(!document.documentElement.classList.contains('eyes-open'))"
+                  " toggleEyesBanner();")
+            time.sleep(0.5)
+            o = json.loads(br.js(HINT_JS))
+            e = o["eyes"]
+            print(f"  РАЗВЁРНУТ: #v-eyes высота {e['h']:>5} px  ширина {e['w']:>5} px"
+                  f"  flex={e['flex']}")
+            print(f"    текст: кегль {o['noteFs']}, заголовок {o['h3Fs']},"
+                  f" ширина строки чтения {o['noteW']} px;"
+                  f" ✕ виден={o['крестикВиден']}")
+            print(f"    .v-banners {o['banners']['h']} px,"
+                  f" .verify-grid {o['grid']['h']} px"
+                  f"  (у текста отнято {g['h']-o['grid']['h']} px)")
+            br.js("document.querySelector('.eyes-x').click();")
+            time.sleep(0.5)
+            c = json.loads(br.js(HINT_JS))
+            print(f"  ПОСЛЕ ЩЕЛЧКА ПО ✕: свёрнут={c['свёрнут']},"
+                  f" .verify-grid {c['grid']['h']} px")
 
         print("\n##### ПРАВКА 2 — запас прокрутки под полосу AI vision #####")
         br.js("if(!SCAN.on) toggleAiVision();")

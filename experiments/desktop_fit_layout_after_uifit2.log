@@ -1,5 +1,5 @@
 [BUILD_MARK=build-20260729]
-сервер: http://127.0.0.1:8766/
+сервер: http://127.0.0.1:8765/
 
 === окно владельца (рабочая область 1280x680): видимая область 1266x643 ===
   1 · Обезличить       — помещается
@@ -44,28 +44,28 @@
   Что прятать          — помещается
 
 === ЭКРАН ПРОВЕРКИ · окно владельца (рабочая область 1280x680): 1266x643 ===
-  ЦЕПОЧКА: body h=643 scrollH=643 flex=0 1 auto minH=0px ovY=hidden | main h=515 scrollH=515 flex=1 1 0% minH=0px ovY=visible | #scr-ver h=515 scrollH=515 flex=1 1 0% minH=0px ovY=auto | #scr-ver > .card h=515 scrollH=513 flex=1 1 0px minH=0px ovY=visible | .verify-grid h=300 scrollH=300 flex=1 1 0px minH=160px ovY=hidden | .panes h=300 scrollH=300 flex=1 1 0% minH=0px ovY=visible | .panes .pane h=300 scrollH=298 flex=1 1 0% minH=0px ovY=hidden | .pane .body h=247 scrollH=1169 flex=1 1 0% minH=0px ovY=auto | .v-banners h=22 scrollH=22 flex=0 0 auto minH=auto ovY=auto | #v-eyes h=0 scrollH=0 flex=0 0 auto minH=0px ovY=visible
+  ЦЕПОЧКА: body h=643 scrollH=643 flex=0 1 auto minH=0px ovY=hidden | main h=515 scrollH=515 flex=1 1 0% minH=0px ovY=visible | #scr-ver h=515 scrollH=515 flex=1 1 0% minH=0px ovY=auto | #scr-ver > .card h=515 scrollH=513 flex=1 1 0px minH=0px ovY=visible | .verify-grid h=271 scrollH=271 flex=1 1 0px minH=160px ovY=hidden | .panes h=271 scrollH=271 flex=1 1 0% minH=0px ovY=visible | .panes .pane h=271 scrollH=269 flex=1 1 0% minH=0px ovY=hidden | .pane .body h=217 scrollH=1169 flex=1 1 0% minH=0px ovY=auto | .v-banners h=52 scrollH=52 flex=0 0 auto minH=auto ovY=auto | #v-eyes h=0 scrollH=0 flex=0 0 auto minH=0px ovY=visible
   помещается
-  счётчик найденного: видно целиком (высота 33); обезличенный текст: видно целиком (высота 247); список замен: видно целиком (высота 0); два текста рядом: видно целиком (высота 300); кнопки под текстами: НЕТ В DOM
+  счётчик найденного: видно целиком (высота 33); обезличенный текст: видно целиком (высота 217); список замен: видно целиком (высота 0); два текста рядом: видно целиком (высота 271); кнопки под текстами: НЕТ В DOM
 
 === ЭКРАН ПРОВЕРКИ · ноутбук 1366x768: 1349x731 ===
   помещается
-  счётчик найденного: видно целиком (высота 33); обезличенный текст: видно целиком (высота 318); список замен: видно целиком (высота 0); два текста рядом: видно целиком (высота 372); кнопки под текстами: НЕТ В DOM
+  счётчик найденного: видно целиком (высота 33); обезличенный текст: видно целиком (высота 289); список замен: видно целиком (высота 0); два текста рядом: видно целиком (высота 342); кнопки под текстами: НЕТ В DOM
 
 === ЭКРАН ПРОВЕРКИ · маленький ноутбук 1024x600: 1004x563 ===
   помещается
-  счётчик найденного: видно целиком (высота 33); обезличенный текст: видно целиком (высота 124); список замен: видно целиком (высота 0); два текста рядом: видно целиком (высота 177); кнопки под текстами: НЕТ В DOM
+  счётчик найденного: видно целиком (высота 33); обезличенный текст: видно целиком (высота 107); список замен: видно целиком (высота 0); два текста рядом: видно целиком (высота 160); кнопки под текстами: НЕТ В DOM
 
 === ЭКРАН ПРОВЕРКИ · монитор 1920x1080: 1906x1043 ===
   помещается
-  счётчик найденного: видно целиком (высота 33); обезличенный текст: видно целиком (высота 495); список замен: видно целиком (высота 413); два текста рядом: видно целиком (высота 549); кнопки под текстами: НЕТ В DOM
+  счётчик найденного: видно целиком (высота 33); обезличенный текст: видно целиком (высота 628); список замен: видно целиком (высота 546); два текста рядом: видно целиком (высота 682); кнопки под текстами: НЕТ В DOM
 
 === ЭКРАН ПРОВЕРКИ · низкое окно 500 px — предел раскладки: 1266x500 ===
-  ЦЕПОЧКА: body h=500 scrollH=500 flex=0 1 auto minH=0px ovY=hidden | main h=372 scrollH=372 flex=1 1 0% minH=0px ovY=visible | #scr-ver h=372 scrollH=374 flex=1 1 0% minH=0px ovY=auto | #scr-ver > .card h=372 scrollH=373 flex=1 1 0px minH=0px ovY=visible | .verify-grid h=160 scrollH=160 flex=1 1 0px minH=160px ovY=hidden | .panes h=160 scrollH=160 flex=1 1 0% minH=0px ovY=visible | .panes .pane h=160 scrollH=158 flex=1 1 0% minH=0px ovY=hidden | .pane .body h=107 scrollH=1169 flex=1 1 0% minH=0px ovY=auto | .v-banners h=22 scrollH=22 flex=0 0 auto minH=auto ovY=auto | #v-eyes h=0 scrollH=0 flex=0 0 auto minH=0px ovY=visible
+  ЦЕПОЧКА: body h=500 scrollH=500 flex=0 1 auto minH=0px ovY=hidden | main h=372 scrollH=372 flex=1 1 0% minH=0px ovY=visible | #scr-ver h=372 scrollH=403 flex=1 1 0% minH=0px ovY=auto | #scr-ver > .card h=372 scrollH=402 flex=1 1 0px minH=0px ovY=visible | .verify-grid h=160 scrollH=160 flex=1 1 0px minH=160px ovY=hidden | .panes h=160 scrollH=160 flex=1 1 0% minH=0px ovY=visible | .panes .pane h=160 scrollH=158 flex=1 1 0% minH=0px ovY=hidden | .pane .body h=107 scrollH=1169 flex=1 1 0% minH=0px ovY=auto | .v-banners h=52 scrollH=52 flex=0 0 auto minH=auto ovY=auto | #v-eyes h=0 scrollH=0 flex=0 0 auto minH=0px ovY=visible
   помещается
   счётчик найденного: видно целиком (высота 33); обезличенный текст: видно целиком (высота 107); список замен: видно целиком (высота 0); два текста рядом: видно целиком (высота 160); кнопки под текстами: НЕТ В DOM
 
 === ЭКРАН ПРОВЕРКИ · очень низкое окно 400 px: 1266x400 ===
-  ЦЕПОЧКА: body h=400 scrollH=400 flex=0 1 auto minH=0px ovY=hidden | main h=272 scrollH=272 flex=1 1 0% minH=0px ovY=visible | #scr-ver h=272 scrollH=374 flex=1 1 0% minH=0px ovY=auto | #scr-ver > .card h=272 scrollH=373 flex=1 1 0px minH=0px ovY=visible | .verify-grid h=160 scrollH=160 flex=1 1 0px minH=160px ovY=hidden | .panes h=160 scrollH=160 flex=1 1 0% minH=0px ovY=visible | .panes .pane h=160 scrollH=158 flex=1 1 0% minH=0px ovY=hidden | .pane .body h=107 scrollH=1169 flex=1 1 0% minH=0px ovY=auto | .v-banners h=22 scrollH=22 flex=0 0 auto minH=auto ovY=auto | #v-eyes h=0 scrollH=0 flex=0 0 auto minH=0px ovY=visible
+  ЦЕПОЧКА: body h=400 scrollH=400 flex=0 1 auto minH=0px ovY=hidden | main h=272 scrollH=272 flex=1 1 0% minH=0px ovY=visible | #scr-ver h=272 scrollH=403 flex=1 1 0% minH=0px ovY=auto | #scr-ver > .card h=272 scrollH=402 flex=1 1 0px minH=0px ovY=visible | .verify-grid h=160 scrollH=160 flex=1 1 0px minH=160px ovY=hidden | .panes h=160 scrollH=160 flex=1 1 0% minH=0px ovY=visible | .panes .pane h=160 scrollH=158 flex=1 1 0% minH=0px ovY=hidden | .pane .body h=107 scrollH=1169 flex=1 1 0% minH=0px ovY=auto | .v-banners h=52 scrollH=52 flex=0 0 auto minH=auto ovY=auto | #v-eyes h=0 scrollH=0 flex=0 0 auto minH=0px ovY=visible
   помещается
   счётчик найденного: видно целиком (высота 33); обезличенный текст: видно целиком (высота 107); список замен: видно целиком (высота 0); два текста рядом: видно целиком (высота 160); кнопки под текстами: НЕТ В DOM
