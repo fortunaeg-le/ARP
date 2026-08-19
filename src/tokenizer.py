@@ -906,16 +906,33 @@ def _detect_boundary_entities(
         rep_idx: list[int] = []
         rep_texts: list[str] = []
         person_rows: list[int] = []
+        regex_rows: set[int] = set()
         for k, w in enumerate(wins):
-            if w["tail_end"] == w["head_start"]:
-                continue   # соседние ячейки одной строки: шва в тексте окна нет
+            # Соседние ячейки одной строки: шва в тексте окна НЕТ, текст уже
+            # склеен сам собой — regex-проход по такому окну сделан выше (шаг
+            # 3a) и повторять его нечем.
+            cell_seam = w["tail_end"] == w["head_start"]
             _rx_ok, person_ok = _LR.seam_eligibility(
                 w["window"], w["tail_end"], w["head_start"])
+            # ЭТАП SEAM-JOIN. Для PERSON окно ячейки пропускать НЕЛЬЗЯ, и это
+            # была дыра, а не экономия: структурный движок ходит ПОСЕГМЕНТНО
+            # (половина имени в своей ячейке — не имя), Natasha-PER в конфиге
+            # выключена и шаг 3b PERSON не эмитит вовсе, а сюда окно ячейки не
+            # доходило. Имя, разорванное ГРАНИЦЕЙ ЯЧЕЙКИ («…ИП ____ Тит|ова
+            # И. А.Покупатель:»), не находил НИКТО — весь класс `mut:cell_split`
+            # корпуса, 10 из 14 вхождений с утечкой. Признак «рвано слово»
+            # (строчная справа от стыка) тот же самый, что на переносе строки:
+            # «Смирнова|Ирина Петровна» — заглавная справа — по-прежнему не
+            # лечится (принятый владельцем остаток класса).
+            if cell_seam and not person_ok:
+                continue
             rep_idx.append(k)
             rep_texts.append(w["window"][:w["tail_end"]]
                              + w["window"][w["head_start"]:])
             if person_ok:
                 person_rows.append(len(rep_texts) - 1)
+            if not cell_seam:
+                regex_rows.add(len(rep_texts) - 1)
 
         if rep_texts:
             starts2: list[int] = []
@@ -934,6 +951,8 @@ def _detect_boundary_entities(
                 ls, le = e.start - starts2[m], e.end - starts2[m]
                 if le > len(rep_texts[m]):
                     continue   # спан пересёк разделитель блоба — не бывает
+                if m not in regex_rows:
+                    continue   # окно ячейки: regex по нему уже прошёл на шаге 3a
                 k = rep_idx[m]
                 w = wins[k]
                 j = w["tail_end"]

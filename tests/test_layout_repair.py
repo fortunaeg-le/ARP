@@ -254,3 +254,46 @@ class TestScanRuns:
         runs = layout_repair._scan_runs("Кузнецо\nва А. М.")
         (_drops, klass, left, right) = runs[0]
         assert layout_repair._person_ok(klass, left, right)
+
+    # ------------------------------------------------------------------ #
+    #   ЭТАП SEAM-JOIN: разрыв лечится ТОЛЬКО внутри одного токена         #
+    # ------------------------------------------------------------------ #
+
+    def test_newline_between_number_and_word_is_a_boundary(self):
+        """«…525187\nТел.:» — значение кончилось, началась метка. Склейка
+        ломала `\b` паттерна и ОТНИМАЛА находку (16 БИК корпуса)."""
+        runs = layout_repair._scan_runs("БИК 044\n525187\nТел.: +7")
+        assert [d for d, _k, _l, _r in runs] == [[7]]
+
+    def test_newline_lower_to_upper_is_a_boundary(self):
+        """Строчная слева, ЗАГЛАВНАЯ справа — начало нового блока."""
+        assert layout_repair._scan_runs("Олеговна\nАдрес регистрации") == []
+
+    def test_newline_inside_number_is_healed(self):
+        assert len(layout_repair._scan_runs("044\n525187")) == 1
+
+    def test_homoglyph_digits_stay_one_number(self):
+        """Омоглиф цифры считается цифрой: испорченный реквизит остаётся
+        числом по обе стороны разрыва и лечится."""
+        assert len(layout_repair._scan_runs("149З\nІ1О09843б")) == 1
+
+    def test_surviving_plain_space_is_not_a_glue(self):
+        """Прогон с ВЫЖИВШИМ пробелом ничего не склеивает — правило
+        однородности сторон к нему не применяется («199 898,00\n руб.»)."""
+        assert len(layout_repair._scan_runs("199 898,00\n руб.")) == 1
+
+    def test_tab_inside_word_is_healed(self):
+        """Табуляция внутри абзаца (w:tab) — такой же разрыв, как перенос."""
+        runs = layout_repair._scan_runs("Макаро\tв Юрий Николаевич")
+        assert len(runs) == 1
+        (_drops, klass, left, right) = runs[0]
+        assert layout_repair._person_ok(klass, left, right)
+
+    def test_tab_between_columns_is_not_healed(self):
+        """Та же табуляция как разделитель КОЛОНОК: слово слева, число
+        справа — два разных токена, склейки нет."""
+        assert layout_repair._scan_runs("ИНН\t7707083893") == []
+
+    def test_two_tabs_are_structural(self):
+        """Две табуляции подряд — пропуск ячейки, граница по разметке."""
+        assert layout_repair._scan_runs("кол.\t\tцена") == []
