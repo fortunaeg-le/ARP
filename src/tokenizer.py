@@ -981,7 +981,20 @@ def _detect_boundary_entities(
                                       source_type="txt_line", metadata={})],
                 source_format=doc.source_format, source_path=doc.source_path,
             )
+            _lr_maskable = _LR._maskable_types(config_path)
             for e in detect_regex(blob2_doc, config_path):
+                # ЭТАП SEAM-JOIN: ремонт эмитит ТОЛЬКО МАСКИРУЕМЫЕ типы — то же
+                # правило, что у внутрисегментного прохода (приём 4 докстринга
+                # layout_repair). Класс без token_prefix (CLAUSE_REF/ROLE_TERM/
+                # COLLECTIVE) маской не станет никогда, зато в разрешении
+                # пересечений он ПОДАВЛЯЕТ соседей — и ремонт, родив такой
+                # барьер там, где его не было, гасил эталонное значение:
+                # «3.1. Место исполнения обязательств: 141300, г. Сергиев
+                # Посад, ш. Лесна | я, д. 22, кв. 188.» — рождённый на шве
+                # CLAUSE_REF «188.» съедал адрес целиком (линия «ж» гейта,
+                # допуск 0 безусловно, 4 адреса корпуса).
+                if e.entity_type not in _lr_maskable:
+                    continue
                 m = bisect.bisect_right(starts2, e.start) - 1
                 ls, le = e.start - starts2[m], e.end - starts2[m]
                 if le > len(rep_texts[m]):
