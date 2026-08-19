@@ -254,3 +254,110 @@ class TestScanRuns:
         runs = layout_repair._scan_runs("Кузнецо\nва А. М.")
         (_drops, klass, left, right) = runs[0]
         assert layout_repair._person_ok(klass, left, right)
+
+    # ------------------------------------------------------------------ #
+    #   ЭТАП SEAM-JOIN: разрыв лечится ТОЛЬКО внутри одного токена         #
+    # ------------------------------------------------------------------ #
+
+    def test_newline_between_number_and_word_is_a_boundary(self):
+        """«…525187\nТел.:» — значение кончилось, началась метка. Склейка
+        ломала `\b` паттерна и ОТНИМАЛА находку (16 БИК корпуса)."""
+        runs = layout_repair._scan_runs("БИК 044\n525187\nТел.: +7")
+        assert [d for d, _k, _l, _r in runs] == [[7]]
+
+    def test_newline_lower_to_upper_is_a_boundary(self):
+        """Строчная слева, ЗАГЛАВНАЯ справа — начало нового блока."""
+        assert layout_repair._scan_runs("Олеговна\nАдрес регистрации") == []
+
+    def test_newline_inside_number_is_healed(self):
+        assert len(layout_repair._scan_runs("044\n525187")) == 1
+
+    def test_homoglyph_digits_stay_one_number(self):
+        """Омоглиф цифры считается цифрой: испорченный реквизит остаётся
+        числом по обе стороны разрыва и лечится."""
+        assert len(layout_repair._scan_runs("149З\nІ1О09843б")) == 1
+
+    def test_surviving_plain_space_is_not_a_glue(self):
+        """Прогон с ВЫЖИВШИМ пробелом ничего не склеивает — правило
+        однородности сторон к нему не применяется («199 898,00\n руб.»)."""
+        assert len(layout_repair._scan_runs("199 898,00\n руб.")) == 1
+
+    def test_tab_inside_word_is_healed(self):
+        """Табуляция внутри абзаца (w:tab) — такой же разрыв, как перенос."""
+        runs = layout_repair._scan_runs("Макаро\tв Юрий Николаевич")
+        assert len(runs) == 1
+        (_drops, klass, left, right) = runs[0]
+        assert layout_repair._person_ok(klass, left, right)
+
+    def test_tab_between_columns_is_not_healed(self):
+        """Та же табуляция как разделитель КОЛОНОК: слово слева, число
+        справа — два разных токена, склейки нет."""
+        assert layout_repair._scan_runs("ИНН\t7707083893") == []
+
+    def test_two_tabs_are_structural(self):
+        """Две табуляции подряд — пропуск ячейки, граница по разметке."""
+        assert layout_repair._scan_runs("кол.\t\tцена") == []
+
+    # ------------------------------------------------------------------ #
+    #        ЭТАП SEAM-JOIN: РАЗРЯДКА («И в а н о в») — третий вид         #
+    # ------------------------------------------------------------------ #
+
+    def test_spread_word_is_joined(self):
+        runs = layout_repair._scan_runs("Подписал: И в а н о в И. И.")
+        assert [d[0] for d, _k, _l, _r in runs] == [11, 13, 15, 17, 19]
+        assert all(k == "spread" for _d, k, _l, _r in runs)
+
+    def test_spread_allows_person_in_upper_case(self):
+        """У разрядки форма сама доказывает, что это одно слово, поэтому
+        правило «строчная справа» к ней не применяется."""
+        runs = layout_repair._scan_runs("П Е Т Р О В А Мария")
+        assert runs and all(
+            layout_repair._person_ok(k, l, r) for _d, k, l, r in runs)
+
+    def test_three_single_letters_are_speech_not_spread(self):
+        """Три односимвольных токена подряд — ещё обычная речь."""
+        assert layout_repair._scan_runs("срок и в порядке, установленном") == []
+        assert layout_repair._scan_runs("а б в") == []
+
+    def test_spread_of_digits_is_not_this_rule(self):
+        """Разрядка цифр — форма записи числа, её разбирает normalizer
+        (этап CHAR-NORM). Здесь «1 2 3 4» соседних колонок не склеивается."""
+        assert layout_repair._scan_runs("1 2 3 4 5") == []
+
+    def test_address_abbreviations_are_not_spread(self):
+        assert layout_repair._scan_runs(
+            "г. Пермь, ш. Ленинградская, д. 82, кв. 54") == []
+
+
+# --------------------------------------------------------------------------- #
+#     ЭТАП SEAM-JOIN: ЯКОРЬ, ОТОРВАННЫЙ ОТ ЗНАЧЕНИЯ ДРУГИМ СТЫКОМ              #
+# --------------------------------------------------------------------------- #
+
+class TestSeamLeftContext:
+    """Вёрстка рвёт и значение, и якорь рядом с ним — РАЗНЫМИ стыками.
+    Окно B3 видит один стык, поэтому к нему приклеивается хвост предыдущего
+    сегмента, если ТОТ стык рвёт слово. Контекст даёт улику, не территорию."""
+
+    def test_anchor_torn_into_previous_segment(self):
+        doc = _doc(["к/с 30101810900000000790 БИ", "К 0440307", "90",
+                    "Тел.: +7 (846) 326-11-02"])
+        _prim, extra = _detect_all(doc)
+        got = {(e.segment_id, e.original_text)
+               for e in extra if e.entity_type == "BIK"}
+        assert ("l1", "0440307") in got and ("l2", "90") in got, got
+
+    def test_context_is_not_glued_through_a_number_break(self):
+        """Через разрыв ЧИСЛА контекст не приклеивается никогда: иначе две
+        цифровые цепи слились бы в значение, которого в документе нет."""
+        assert not layout_repair.seam_joins_word("сумма 790", "044030")
+        assert layout_repair.seam_joins_word("к/с 3010181090 БИ", "К 0440307")
+
+    def test_context_stays_out_of_the_mask(self):
+        """Приклеенный контекст в маску не попадает: половины — только свои
+        сегменты, спан, начавшийся в контексте, отбрасывается."""
+        doc = _doc(["к/с 30101810900000000790 БИ", "К 0440307", "90"])
+        _prim, extra = _detect_all(doc)
+        for e in extra:
+            seg = next(s for s in doc.segments if s.id == e.segment_id)
+            assert e.original_text == seg.text[e.start:e.end]
+            assert "БИ" not in e.original_text

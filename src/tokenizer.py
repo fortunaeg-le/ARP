@@ -611,6 +611,7 @@ def _detect_boundary_entities(
         sep = _boundary_sep(seg_a, seg_b)
         window = tail + sep + head
         wins.append({
+            "seg_i": i,                          # индекс seg_a в doc.segments
             "seg_a": seg_a, "seg_b": seg_b,
             "text_a": text_a, "text_b": text_b,
             "tail_off": tail_off,
@@ -874,8 +875,21 @@ def _detect_boundary_entities(
     # обратимость доказана round-trip-тестами).
     import layout_repair as _LR
     if _LR.ENABLED:
+        # ЭТАП SEAM-JOIN: ОТРИЦАТЕЛЬНЫЕ КЛАССЫ В СТРАЖ НЕ ВХОДЯТ. Страж ниже
+        # заведён против ДУБЛЯ и ЗАХВАТА: половина, пересёкшая уже найденное
+        # значение, не сшивается. Класс без token_prefix (CLAUSE_REF/ROLE_TERM/
+        # COLLECTIVE) — не найденное значение, а барьер: маской он не станет
+        # никогда. Пока он лежал в этом списке, он ОТМЕНЯЛ ремонт: «Дата ро |
+        # ждения: 05.06.19 | 86» — на хвосте стоит CLAUSE_REF «05.06.19»
+        # (номер пункта по форме), и дата рождения человека оставалась
+        # открытой. Так же терялись 7 дат рождения корпуса. Разрешение
+        # пересечений с барьером никуда не делось — оно делается ниже, общим
+        # шагом _resolve_overlaps, где отрицательный класс и должен решать.
+        _lr_barriers = _barrier_types(config_path)
         seg_spans_all: dict[str, list[tuple[int, int, str]]] = {}
         for e in (segment_entities or ()):
+            if e.entity_type in _lr_barriers:
+                continue
             seg_spans_all.setdefault(e.segment_id, []).append(
                 (e.start, e.end, e.entity_type))
 
@@ -905,17 +919,55 @@ def _detect_boundary_entities(
 
         rep_idx: list[int] = []
         rep_texts: list[str] = []
+        rep_ctx: list[int] = []      # длина приклеенного слева контекста
         person_rows: list[int] = []
+        regex_rows: set[int] = set()
         for k, w in enumerate(wins):
-            if w["tail_end"] == w["head_start"]:
-                continue   # соседние ячейки одной строки: шва в тексте окна нет
+            # Соседние ячейки одной строки: шва в тексте окна НЕТ, текст уже
+            # склеен сам собой — regex-проход по такому окну сделан выше (шаг
+            # 3a) и повторять его нечем.
+            cell_seam = w["tail_end"] == w["head_start"]
             _rx_ok, person_ok = _LR.seam_eligibility(
                 w["window"], w["tail_end"], w["head_start"])
+            # ЭТАП SEAM-JOIN. Для PERSON окно ячейки пропускать НЕЛЬЗЯ, и это
+            # была дыра, а не экономия: структурный движок ходит ПОСЕГМЕНТНО
+            # (половина имени в своей ячейке — не имя), Natasha-PER в конфиге
+            # выключена и шаг 3b PERSON не эмитит вовсе, а сюда окно ячейки не
+            # доходило. Имя, разорванное ГРАНИЦЕЙ ЯЧЕЙКИ («…ИП ____ Тит|ова
+            # И. А.Покупатель:»), не находил НИКТО — весь класс `mut:cell_split`
+            # корпуса, 10 из 14 вхождений с утечкой. Признак «рвано слово»
+            # (строчная справа от стыка) тот же самый, что на переносе строки:
+            # «Смирнова|Ирина Петровна» — заглавная справа — по-прежнему не
+            # лечится (принятый владельцем остаток класса).
+            if cell_seam and not person_ok:
+                continue
+            # ЭТАП SEAM-JOIN — ЛЕВЫЙ КОНТЕКСТ СТЫКА. Вёрстка рвёт не только
+            # значение, но и ЯКОРЬ рядом с ним, причём ДРУГИМ стыком:
+            # «…900000000790 БИ | К 0440307 | 90» — три сегмента, два разрыва.
+            # Окно видит один стык, поэтому при сборке «044030790» слева
+            # оказывается «К », слова «БИК» в окне нет вовсе, и паттерн (у него
+            # якорь обязателен) молчит. Приклеиваем к окну хвост ПРЕДЫДУЩЕГО
+            # сегмента, если ТОТ стык рвёт СЛОВО (см. layout_repair.seam_joins_word —
+            # через разрыв ЧИСЛА не приклеиваем никогда, иначе две цифровые цепи
+            # слились бы в значение, которого в документе нет).
+            #
+            # Контекст даёт только УЛИКУ, не территорию: спан, начавшийся в нём,
+            # отбрасывается ниже (ls < c), геометрия эмита пары половин
+            # прежняя — приклеенный текст в маску не попадает никогда.
+            ctx = ""
+            si = w["seg_i"]
+            if si > 0:
+                prev = segs[si - 1]
+                if prev.text and _LR.seam_joins_word(prev.text, w["text_a"]):
+                    ctx = prev.text[-_BOUNDARY_WINDOW:]
             rep_idx.append(k)
-            rep_texts.append(w["window"][:w["tail_end"]]
+            rep_ctx.append(len(ctx))
+            rep_texts.append(ctx + w["window"][:w["tail_end"]]
                              + w["window"][w["head_start"]:])
             if person_ok:
                 person_rows.append(len(rep_texts) - 1)
+            if not cell_seam:
+                regex_rows.add(len(rep_texts) - 1)
 
         if rep_texts:
             starts2: list[int] = []
@@ -929,22 +981,42 @@ def _detect_boundary_entities(
                                       source_type="txt_line", metadata={})],
                 source_format=doc.source_format, source_path=doc.source_path,
             )
+            _lr_maskable = _LR._maskable_types(config_path)
             for e in detect_regex(blob2_doc, config_path):
+                # ЭТАП SEAM-JOIN: ремонт эмитит ТОЛЬКО МАСКИРУЕМЫЕ типы — то же
+                # правило, что у внутрисегментного прохода (приём 4 докстринга
+                # layout_repair). Класс без token_prefix (CLAUSE_REF/ROLE_TERM/
+                # COLLECTIVE) маской не станет никогда, зато в разрешении
+                # пересечений он ПОДАВЛЯЕТ соседей — и ремонт, родив такой
+                # барьер там, где его не было, гасил эталонное значение:
+                # «3.1. Место исполнения обязательств: 141300, г. Сергиев
+                # Посад, ш. Лесна | я, д. 22, кв. 188.» — рождённый на шве
+                # CLAUSE_REF «188.» съедал адрес целиком (линия «ж» гейта,
+                # допуск 0 безусловно, 4 адреса корпуса).
+                if e.entity_type not in _lr_maskable:
+                    continue
                 m = bisect.bisect_right(starts2, e.start) - 1
                 ls, le = e.start - starts2[m], e.end - starts2[m]
                 if le > len(rep_texts[m]):
                     continue   # спан пересёк разделитель блоба — не бывает
+                if m not in regex_rows:
+                    continue   # окно ячейки: regex по нему уже прошёл на шаге 3a
+                # строгий страж сборки (правило A6) судит по ВСЕМУ тексту строки
+                # блоба (включая приклеенный левый контекст — он и заведён ради
+                # якоря), поэтому берётся ДО пересчёта в координаты окна
+                if not _LR._strict_seam_ok(rep_texts[m][ls:le], e.entity_type,
+                                           rep_texts[m], ls, config_path):
+                    continue
+                c = rep_ctx[m]
+                if ls < c:
+                    continue   # спан начался в приклеенном контексте — не наш стык
+                ls, le = ls - c, le - c
                 k = rep_idx[m]
                 w = wins[k]
                 j = w["tail_end"]
                 if not (ls < j and le > j):
                     continue   # стык не пересечён — дубль посегментной детекции
                 le_w = le + (w["head_start"] - w["tail_end"])
-                # строгий страж сборки (правило A6): КС сходится всегда,
-                # голая цифровая цепь — только под якорем типа
-                if not _LR._strict_seam_ok(rep_texts[m][ls:le], e.entity_type,
-                                           rep_texts[m], ls, config_path):
-                    continue
                 if _lr_guard_ok(w, ls, le_w, e.entity_type):
                     per_win[k].append((ls, le_w, e.entity_type, "regex", 1.0))
 
@@ -965,14 +1037,18 @@ def _detect_boundary_entities(
                 if e.entity_type != "PERSON":
                     continue
                 m = row_by_id[e.segment_id]
+                c = rep_ctx[m]
+                if e.start < c:
+                    continue   # спан начался в приклеенном контексте — не наш стык
+                es, ee = e.start - c, e.end - c
                 k = rep_idx[m]
                 w = wins[k]
                 j = w["tail_end"]
-                if not (e.start < j and e.end > j):
+                if not (es < j and ee > j):
                     continue
-                le_w = e.end + (w["head_start"] - w["tail_end"])
-                if _lr_guard_ok(w, e.start, le_w, "PERSON"):
-                    per_win[k].append((e.start, le_w, "PERSON", "ner", 1.0))
+                le_w = ee + (w["head_start"] - w["tail_end"])
+                if _lr_guard_ok(w, es, le_w, "PERSON"):
+                    per_win[k].append((es, le_w, "PERSON", "ner", 1.0))
 
     # 4. Пересекающие стык спаны -> пары Entity_A/Entity_B (та же логика, что и раньше).
     extra: list[Entity] = []
