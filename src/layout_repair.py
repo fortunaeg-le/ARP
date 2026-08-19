@@ -595,6 +595,12 @@ def seam_eligibility(window: str, tail_end: int, head_start: int) -> tuple[bool,
     return True, person
 
 
+#: края ЛЕВОГО КОНТЕКСТА стыка — свод краёв значения плюс косая черта: якорь
+#: счёта «р/с» рвётся ровно по ней. В _WORDLIKE_EXT косую не вносим — там она
+#: дала бы право на спан, а здесь речь только об улике для якоря.
+_CTX_EDGE = _WORDLIKE_EXT | frozenset("/")
+
+
 def seam_joins_word(left_text: str, right_text: str) -> bool:
     """Рвёт ли стык двух соседних сегментов ОДНО СЛОВО (не значение).
 
@@ -614,8 +620,16 @@ def seam_joins_word(left_text: str, right_text: str) -> bool:
         return False
     base = left_text + "\n" + right_text
     i = len(left_text)
-    if not (base[i - 1].isalnum() and base[i + 1].isalnum()):
+    left, right = base[i - 1], base[i + 1]
+    if not right.isalnum():
         return False
     if _is_numeric_token(_side_token(base, i, i + 1)[0]):
         return False
-    return _same_token(base, i, i + 1)
+    if left.isalnum():
+        return _same_token(base, i, i + 1)
+    # Служебный символ на краю: «р/ | с 40802810205» — якорь счёта «р/с» рвётся
+    # ровно по косой черте. Косая в свод краёв ЗНАЧЕНИЯ (_WORDLIKE_EXT) не
+    # входит и не должна: там она дала бы право на СПАН. Здесь речь только о
+    # приклеенном контексте, то есть об улике для якоря, — территорию он не
+    # получает ни при каком краю.
+    return left in _CTX_EDGE
