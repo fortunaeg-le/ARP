@@ -10,9 +10,9 @@
  },
  "pairs": {
   "BIRTHDATE->DATE": 1,
-  "PASSPORT->ADDRESS": 1,
+  "PASSPORT->ADDRESS": 2,
   "PASSPORT->INN": 29,
-  "PASSPORT->PHONE": 2,
+  "PASSPORT->PHONE": 1,
   "PER->ORG": 361,
   "SNILS->PHONE": 1
  },
@@ -1509,16 +1509,6 @@
   },
   {
    "doc_id": "loan_0005__m1337_digit_spaces",
-   "type": "PASSPORT",
-   "start": 283,
-   "end": 297,
-   "len": 14,
-   "mask_types": [
-    "PHONE"
-   ]
-  },
-  {
-   "doc_id": "loan_0005__m1337_digit_spaces",
    "type": "PER",
    "start": 91,
    "end": 103,
@@ -1535,6 +1525,16 @@
    "len": 20,
    "mask_types": [
     "ORG"
+   ]
+  },
+  {
+   "doc_id": "loan_0006__m1337_combo",
+   "type": "PASSPORT",
+   "start": 192,
+   "end": 200,
+   "len": 8,
+   "mask_types": [
+    "ADDRESS"
    ]
   },
   {
