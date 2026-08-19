@@ -292,3 +292,154 @@ class TestOffsetMap:
         i = norm.index("7707")
         s, e = norm_to_src(omap, i, i + 4)
         assert base[s:e] == "7707"
+
+# --------------------------------------------------------------------------- #
+# ЭТАП CHAR-NORM — символьная порча, оставшаяся после этапов 2/A5/A7.
+# Каждый случай ниже взят из ДАМПА ГЕЙТА (tests/corpus/results_gate_current.json)
+# как значение, ушедшее в LLM ОТКРЫТЫМ: класс mut:homoglyph / mut:invisible.
+# --------------------------------------------------------------------------- #
+class TestCharNormEdgeB:
+    """'б' на краю ДЛИННОГО цифрового токена — искажённая шестёрка, не литера."""
+
+    @pytest.mark.parametrize("base,expected", [
+        ("б597769253", "6597769253"),        # ИНН, 'б' в начале
+        ("б475Ч972б5", "6475497265"),        # ИНН, 'б' в начале и внутри
+        ("55Ч97624870б", "554976248706"),    # ИНН-12, 'б' в конце
+        ("4Ч170335б", "441703356"),          # КПП, 'б' в конце
+        ("149ЗІ1О09843б", "1493110098436"),  # ОГРН
+        ("408028І057753526867б", "40802810577535268676"),  # счёт
+    ])
+    def test_long_token_edge_b_folded(self, base, expected):
+        norm, omap = normalize_for_detection(base)
+        _assert_map_invariant(base, norm, omap)
+        assert norm == expected
+
+    @pytest.mark.parametrize("base", [
+        "630099 12б",      # индекс + номер дома с литерой
+        "д. 12б, кв. 2б",  # литера дома и квартиры
+        "кв. 2б",
+    ])
+    def test_house_letter_still_intact(self, base):
+        """РЕГРЕСС A5: литера дома/квартиры остаётся буквой. Различение — по
+        ДЛИНЕ собственного токена: литеру пишут при коротком номере."""
+        norm, _ = normalize_for_detection(base)
+        assert norm == base
+
+
+class TestCharNormChainLength:
+    """Цепь признаётся реквизитной по ДЛИНЕ в знаках, а не только по числу
+    настоящих цифр: код подразделения паспорта и хвост телефона состоят из
+    двойников больше чем наполовину и прежний порог не набирали."""
+
+    @pytest.mark.parametrize("base,expected", [
+        ("б22-513", "622513"),   # код подразделения, 5 настоящих цифр из 6
+        ("30б-273", "306273"),
+        ("ЗО6-27З", "306273"),
+        ("812-Ч0О", "812400"),
+        ("9ЧО-2І9", "940219"),   # настоящих цифр всего 3
+    ])
+    def test_division_code_folded(self, base, expected):
+        norm, omap = normalize_for_detection(base)
+        _assert_map_invariant(base, norm, omap)
+        assert norm == expected
+
+    def test_phone_tail_group_folded(self):
+        # «-бО» — хвостовая группа телефона без единой настоящей цифры.
+        base = "+7 (812) 79Ч-58-бО"
+        norm, omap = normalize_for_detection(base)
+        _assert_map_invariant(base, norm, omap)
+        assert norm == "+7 (812) 7945860"
+
+    def test_ooo_beside_requisite_still_intact(self):
+        """РЕГРЕСС A5, главный: «ООО» рядом с длинным реквизитом НЕ становится
+        «000». Порог длины цепи расширен, ограничитель группы без цифр (не
+        длиннее двух знаков и не приклеена к букве) — на месте."""
+        base = "ИНН 7707083893 ООО «Ромашка»"
+        norm, _ = normalize_for_detection(base)
+        assert norm == base
+
+    def test_zao_beside_account_still_intact(self):
+        base = "счёт 40702810 ЗАО «Банк»"
+        norm, _ = normalize_for_detection(base)
+        assert norm == base
+
+
+class TestCharNormWeakJoin:
+    """Запятая/точка между цифровыми токенами продолжают цепь — копейки суммы
+    перестали быть отдельным двузнаковым числом («525,0О» -> «525,00»)."""
+
+    @pytest.mark.parametrize("base,expected", [
+        ("73Ч 525,0О руб.", "734 525,00 руб."),
+        ("б2З 624,0О руб.", "623 624,00 руб."),
+    ])
+    def test_kopecks_folded(self, base, expected):
+        norm, omap = normalize_for_detection(base)
+        _assert_map_invariant(base, norm, omap)
+        assert norm == expected
+
+    def test_clause_ref_not_touched(self):
+        norm, _ = normalize_for_detection("п. 3.2")
+        assert norm == "п. 3.2"
+
+
+class TestCharNormSoftSpaceAtValueEdge:
+    """Типографский пробел У ЗНАКА ПУНКТУАЦИИ внутри значения выбрасывается;
+    обычный пробел и любое соседство с БУКВОЙ — нет."""
+
+    def test_nbsp_before_dot_in_birthdate(self):
+        base = "19.11" + NBSP + ".1962"
+        norm, omap = normalize_for_detection(base)
+        _assert_map_invariant(base, norm, omap)
+        assert norm == "19.11.1962"
+
+    def test_soft_space_inside_phone_parens(self):
+        base = "+7" + NBSP + " (" + NNBSP + "495) 190-95" + NNBSP + "-63"
+        norm, omap = normalize_for_detection(base)
+        _assert_map_invariant(base, norm, omap)
+        assert norm == "+7 (495) 1909563"
+
+    @pytest.mark.parametrize("base,expected", [
+        ("Иван" + NBSP + "Иванов", "Иван Иванов"),   # буква справа — не трогаем
+        ("2023" + NBSP + "г.", "2023 г."),           # буква справа — не трогаем
+        ("кв" + NBSP + " " + ZWSP + "50", "кв  50"),  # буква слева — не трогаем
+    ])
+    def test_letter_neighbour_blocks_drop(self, base, expected):
+        norm, _ = normalize_for_detection(base)
+        assert norm == expected
+
+
+class TestBackProjectionHasNoTail:
+    """ТРЕБОВАНИЕ ЭТАПА CHAR-NORM. Обратная проекция спана обязана покрывать
+    ИСХОДНУЮ искажённую последовательность ЦЕЛИКОМ. Граница маски, легшая
+    ВНУТРЬ значения, оставляет открытый хвост — это утечка того же класса, что
+    недобор masking B, и на корпусе она видна лишь линией «е»; здесь тот же
+    класс закрыт исполняемым тестом на самом нормализаторе."""
+
+    @pytest.mark.parametrize("base", [
+        "б597769253",
+        "55Ч97624870б",
+        "б22-513",
+        "408028І057753526867б",
+        "770-123-45-67",
+        "7707" + NBSP + "083893",
+        "661944828" + WJ + "б",
+        "19.11" + NBSP + ".1962",
+    ])
+    def test_span_covers_whole_source_value(self, base):
+        """Спан всего норм-текста, отображённый назад, покрывает base целиком:
+        ни одного исходного символа значения не остаётся вне маски."""
+        norm, omap = normalize_for_detection(base)
+        _assert_map_invariant(base, norm, omap)
+        s, e = norm_to_src(omap, 0, len(norm))
+        assert s == 0, f"хвост СЛЕВА: {base[:s]!r} остался открытым"
+        assert e == len(base), f"хвост СПРАВА: {base[e:]!r} остался открытым"
+
+    def test_dropped_char_inside_span_is_covered(self):
+        """Выброшенный символ ВНУТРИ значения попадает в исходный спан
+        естественно — проверяется посимвольно, а не на глаз."""
+        base = "+7 (812) 79Ч-58-бО"
+        norm, omap = normalize_for_detection(base)
+        ns = norm.index("7945860")
+        s, e = norm_to_src(omap, ns, ns + len("7945860"))
+        assert base[s:e] == "79Ч-58-бО"
+
