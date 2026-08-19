@@ -1,0 +1,16 @@
+v2, БЕЗ патча: 138 документов
+  [20/138] 22s
+  [40/138] 114s
+  [60/138] 141s
+  [80/138] 141s
+  [100/138] 141s
+  [120/138] 145s
+  ГОТОВО за 163 с -> C:\Users\user\ARP\experiments\crosstype_recon\results_v2_base.json
+v2, С патчем «составная = PERSON»: 138 документов
+  [20/138] 28s
+  [40/138] 129s
+  [60/138] 155s
+  [80/138] 155s
+  [100/138] 155s
+  [120/138] 158s
+  ГОТОВО за 177 с -> C:\Users\user\ARP\experiments\crosstype_recon\results_v2_pertype.json

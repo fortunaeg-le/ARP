@@ -1,0 +1,8973 @@
+[
+ {
+  "doc_id": "agency_0001",
+  "n_org": 6,
+  "compounds": []
+ },
+ {
+  "doc_id": "agency_0001__m1337_combo",
+  "n_org": 5,
+  "compounds": []
+ },
+ {
+  "doc_id": "agency_0001__m2718_homoglyph",
+  "n_org": 6,
+  "compounds": []
+ },
+ {
+  "doc_id": "agency_0002",
+  "n_org": 7,
+  "compounds": [
+   {
+    "doc_id": "agency_0002",
+    "type": "ORG",
+    "text": "ИП Беляев Олег Олегович",
+    "span": [
+     256,
+     279
+    ],
+    "shape": "ип_аббревиатура",
+    "n_shadowed": 1,
+    "shadowed_types": [
+     "PERSON"
+    ],
+    "gold_types": [
+     "PER"
+    ],
+    "gold_n": 1
+   },
+   {
+    "doc_id": "agency_0002",
+    "type": "ORG",
+    "text": "Индивидуальный предприниматель Беляев Олег Олегович",
+    "span": [
+     2995,
+     3046
+    ],
+    "shape": "ип_прописью",
+    "n_shadowed": 1,
+    "shadowed_types": [
+     "PERSON"
+    ],
+    "gold_types": [
+     "PER"
+    ],
+    "gold_n": 1
+   }
+  ]
+ },
+ {
+  "doc_id": "agency_0002__m1337_invisible",
+  "n_org": 7,
+  "compounds": [
+   {
+    "doc_id": "agency_0002__m1337_invisible",
+    "type": "ORG",
+    "text": "ИП Беляев  Оле­г Олего вич",
+    "span": [
+     267,
+     293
+    ],
+    "shape": "ип_аббревиатура",
+    "n_shadowed": 1,
+    "shadowed_types": [
+     "PERSON"
+    ],
+    "gold_types": [
+     "PER"
+    ],
+    "gold_n": 1
+   },
+   {
+    "doc_id": "agency_0002__m1337_invisible",
+    "type": "ORG",
+    "text": "Индивидуальный предприниматель Беляев Олег‍ ‍Олегов ич",
+    "span": [
+     3076,
+     3130
+    ],
+    "shape": "ип_прописью",
+    "n_shadowed": 1,
+    "shadowed_types": [
+     "PERSON"
+    ],
+    "gold_types": [
+     "PER"
+    ],
+    "gold_n": 1
+   }
+  ]
+ },
+ {
+  "doc_id": "agency_0002__m2718_digit_spaces",
+  "n_org": 7,
+  "compounds": [
+   {
+    "doc_id": "agency_0002__m2718_digit_spaces",
+    "type": "ORG",
+    "text": "ИП Беляев Олег Олегович",
+    "span": [
+     258,
+     281
+    ],
+    "shape": "ип_аббревиатура",
+    "n_shadowed": 1,
+    "shadowed_types": [
+     "PERSON"
+    ],
+    "gold_types": [
+     "PER"
+    ],
+    "gold_n": 1
+   },
+   {
+    "doc_id": "agency_0002__m2718_digit_spaces",
+    "type": "ORG",
+    "text": "Индивидуальный предприниматель Беляев Олег Олегович",
+    "span": [
+     3032,
+     3083
+    ],
+    "shape": "ип_прописью",
+    "n_shadowed": 1,
+    "shadowed_types": [
+     "PERSON"
+    ],
+    "gold_types": [
+     "PER"
+    ],
+    "gold_n": 1
+   }
+  ]
+ },
+ {
+  "doc_id": "agency_0003",
+  "n_org": 4,
+  "compounds": []
+ },
+ {
+  "doc_id": "agency_0003__m1337_invisible",
+  "n_org": 4,
+  "compounds": []
+ },
+ {
+  "doc_id": "agency_0003__m2718_case",
+  "n_org": 4,
+  "compounds": []
+ },
+ {
+  "doc_id": "agency_0004",
+  "n_org": 6,
+  "compounds": [
+   {
+    "doc_id": "agency_0004",
+    "type": "ORG",
+    "text": "ИП Петрова Ольга Ивановна",
+    "span": [
+     63,
+     88
+    ],
+    "shape": "ип_аббревиатура",
+    "n_shadowed": 1,
+    "shadowed_types": [
+     "PERSON"
+    ],
+    "gold_types": [
+     "PER"
+    ],
+    "gold_n": 1
+   },
+   {
+    "doc_id": "agency_0004",
+    "type": "ORG",
+    "text": "ИП Соколова О. М.",
+    "span": [
+     229,
+     246
+    ],
+    "shape": "ип_аббревиатура",
+    "n_shadowed": 1,
+    "shadowed_types": [
+     "PERSON"
+    ],
+    "gold_types": [
+     "PER"
+    ],
+    "gold_n": 1
+   },
+   {
+    "doc_id": "agency_0004",
+    "type": "ORG",
+    "text": "Индивидуальный предприниматель Петрова Ольга Ивановна",
+    "span": [
+     2619,
+     2672
+    ],
+    "shape": "ип_прописью",
+    "n_shadowed": 1,
+    "shadowed_types": [
+     "PERSON"
+    ],
+    "gold_types": [
+     "PER"
+    ],
+    "gold_n": 1
+   },
+   {
+    "doc_id": "agency_0004",
+    "type": "ORG",
+    "text": "Индивидуальный предприниматель Соколова Ольга Михайловна",
+    "span": [
+     2982,
+     3038
+    ],
+    "shape": "ип_прописью",
+    "n_shadowed": 1,
+    "shadowed_types": [
+     "PERSON"
+    ],
+    "gold_types": [
+     "PER"
+    ],
+    "gold_n": 1
+   }
+  ]
+ },
+ {
+  "doc_id": "agency_0004__m1337_digit_spaces",
+  "n_org": 6,
+  "compounds": [
+   {
+    "doc_id": "agency_0004__m1337_digit_spaces",
+    "type": "ORG",
+    "text": "ИП Петрова Ольга Ивановна",
+    "span": [
+     63,
+     88
+    ],
+    "shape": "ип_аббревиатура",
+    "n_shadowed": 1,
+    "shadowed_types": [
+     "PERSON"
+    ],
+    "gold_types": [
+     "PER"
+    ],
+    "gold_n": 1
+   },
+   {
+    "doc_id": "agency_0004__m1337_digit_spaces",
+    "type": "ORG",
+    "text": "ИП Соколова О. М.",
+    "span": [
+     233,
+     250
+    ],
+    "shape": "ип_аббревиатура",
+    "n_shadowed": 1,
+    "shadowed_types": [
+     "PERSON"
+    ],
+    "gold_types": [
+     "PER"
+    ],
+    "gold_n": 1
+   },
+   {
+    "doc_id": "agency_0004__m1337_digit_spaces",
+    "type": "ORG",
+    "text": "Индивидуальный предприниматель Петрова Ольга Ивановна",
+    "span": [
+     2630,
+     2683
+    ],
+    "shape": "ип_прописью",
+    "n_shadowed": 1,
+    "shadowed_types": [
+     "PERSON"
+    ],
+    "gold_types": [
+     "PER"
+    ],
+    "gold_n": 1
+   },
+   {
+    "doc_id": "agency_0004__m1337_digit_spaces",
+    "type": "ORG",
+    "text": "Индивидуальный предприниматель Соколова Ольга Михайловна",
+    "span": [
+     3010,
+     3066
+    ],
+    "shape": "ип_прописью",
+    "n_shadowed": 1,
+    "shadowed_types": [
+     "PERSON"
+    ],
+    "gold_types": [
+     "PER"
+    ],
+    "gold_n": 1
+   }
+  ]
+ },
+ {
+  "doc_id": "agency_0004__m2718_combo",
+  "n_org": 5,
+  "compounds": [
+   {
+    "doc_id": "agency_0004__m2718_combo",
+    "type": "ORG",
+    "text": "ИП пЕтРоВа оЛьГa и⁠в‍аНоВ­На",
+    "span": [
+     66,
+     94
+    ],
+    "shape": "ип_аббревиатура",
+    "n_shadowed": 1,
+    "shadowed_types": [
+     "PERSON"
+    ],
+    "gold_types": [
+     "PER"
+    ],
+    "gold_n": 1
+   },
+   {
+    "doc_id": "agency_0004__m2718_combo",
+    "type": "ORG",
+    "text": "ИП coколова",
+    "span": [
+     237,
+     248
+    ],
+    "shape": "ип_аббревиатура",
+    "n_shadowed": 1,
+    "shadowed_types": [
+     "PERSON"
+    ],
+    "gold_types": [
+     "PER"
+    ],
+    "gold_n": 1
+   },
+   {
+    "doc_id": "agency_0004__m2718_combo",
+    "type": "ORG",
+    "text": "Индивидуальный предприниматель СОКOЛОВА O­ЛЬ ГА MИ⁠ХAЙЛОВНА",
+    "span": [
+     3052,
+     3111
+    ],
+    "shape": "ип_прописью",
+    "n_shadowed": 1,
+    "shadowed_types": [
+     "PERSON"
+    ],
+    "gold_types": [
+     "PER"
+    ],
+    "gold_n": 1
+   }
+  ]
+ },
+ {
+  "doc_id": "agency_0005",
+  "n_org": 3,
+  "compounds": [
+   {
+    "doc_id": "agency_0005",
+    "type": "ORG",
+    "text": "Индивидуальный предприниматель Кузнецова А. М.",
+    "span": [
+     70,
+     116
+    ],
+    "shape": "ип_прописью",
+    "n_shadowed": 1,
+    "shadowed_types": [
+     "PERSON"
+    ],
+    "gold_types": [
+     "PER"
+    ],
+    "gold_n": 1
+   },
+   {
+    "doc_id": "agency_0005",
+    "type": "ORG",
+    "text": "Индивидуальный предприниматель Кузнецова Анна Михайловна",
+    "span": [
+     2807,
+     2863
+    ],
+    "shape": "ип_прописью",
+    "n_shadowed": 1,
+    "shadowed_types": [
+     "PERSON"
+    ],
+    "gold_types": [
+     "PER"
+    ],
+    "gold_n": 1
+   }
+  ]
+ },
+ {
+  "doc_id": "agency_0005__m1337_digit_spaces",
+  "n_org": 3,
+  "compounds": [
+   {
+    "doc_id": "agency_0005__m1337_digit_spaces",
+    "type": "ORG",
+    "text": "Индивидуальный предприниматель Кузнецова А. М.",
+    "span": [
+     71,
+     117
+    ],
+    "shape": "ип_прописью",
+    "n_shadowed": 1,
+    "shadowed_types": [
+     "PERSON"
+    ],
+    "gold_types": [
+     "PER"
+    ],
+    "gold_n": 1
+   },
+   {
+    "doc_id": "agency_0005__m1337_digit_spaces",
+    "type": "ORG",
+    "text": "Индивидуальный предприниматель Кузнецова Анна Михайловна",
+    "span": [
+     2814,
+     2870
+    ],
+    "shape": "ип_прописью",
+    "n_shadowed": 1,
+    "shadowed_types": [
+     "PERSON"
+    ],
+    "gold_types": [
+     "PER"
+    ],
+    "gold_n": 1
+   }
+  ]
+ },
+ {
+  "doc_id": "agency_0005__m2718_linebreak",
+  "n_org": 1,
+  "compounds": []
+ },
+ {
+  "doc_id": "agency_0006",
+  "n_org": 0,
+  "compounds": []
+ },
+ {
+  "doc_id": "agency_0006__m1337_combo",
+  "n_org": 0,
+  "compounds": []
+ },
+ {
+  "doc_id": "agency_0006__m2718_homoglyph",
+  "n_org": 0,
+  "compounds": []
+ },
+ {
+  "doc_id": "agency_0007",
+  "n_org": 4,
+  "compounds": []
+ },
+ {
+  "doc_id": "agency_0007__m1337_combo",
+  "n_org": 4,
+  "compounds": []
+ },
+ {
+  "doc_id": "agency_0007__m2718_homoglyph",
+  "n_org": 4,
+  "compounds": []
+ },
+ {
+  "doc_id": "agency_0008",
+  "n_org": 7,
+  "compounds": [
+   {
+    "doc_id": "agency_0008",
+    "type": "ORG",
+    "text": "ИП Лебедев Егор Алексеевич",
+    "span": [
+     220,
+     246
+    ],
+    "shape": "ип_аббревиатура",
+    "n_shadowed": 1,
+    "shadowed_types": [
+     "PERSON"
+    ],
+    "gold_types": [
+     "PER"
+    ],
+    "gold_n": 1
+   },
+   {
+    "doc_id": "agency_0008",
+    "type": "ORG",
+    "text": "Индивидуальный предприниматель Лебедев Егор Алексеевич",
+    "span": [
+     2977,
+     3031
+    ],
+    "shape": "ип_прописью",
+    "n_shadowed": 1,
+    "shadowed_types": [
+     "PERSON"
+    ],
+    "gold_types": [
+     "PER"
+    ],
+    "gold_n": 1
+   }
+  ]
+ },
+ {
+  "doc_id": "agency_0008__m1337_homoglyph",
+  "n_org": 7,
+  "compounds": [
+   {
+    "doc_id": "agency_0008__m1337_homoglyph",
+    "type": "ORG",
+    "text": "ИП Лебедев Егоp Алeкcеевич",
+    "span": [
+     220,
+     246
+    ],
+    "shape": "ип_аббревиатура",
+    "n_shadowed": 1,
+    "shadowed_types": [
+     "PERSON"
+    ],
+    "gold_types": [
+     "PER"
+    ],
+    "gold_n": 1
+   },
+   {
+    "doc_id": "agency_0008__m1337_homoglyph",
+    "type": "ORG",
+    "text": "Индивидуальный предприниматель Лебедев Егоp Алексеевич",
+    "span": [
+     2977,
+     3031
+    ],
+    "shape": "ип_прописью",
+    "n_shadowed": 1,
+    "shadowed_types": [
+     "PERSON"
+    ],
+    "gold_types": [
+     "PER"
+    ],
+    "gold_n": 1
+   }
+  ]
+ },
+ {
+  "doc_id": "agency_0008__m2718_case",
+  "n_org": 7,
+  "compounds": [
+   {
+    "doc_id": "agency_0008__m2718_case",
+    "type": "ORG",
+    "text": "ИП лЕбЕдЕв еГоР АлЕкСеЕвИч",
+    "span": [
+     220,
+     246
+    ],
+    "shape": "ип_аббревиатура",
+    "n_shadowed": 1,
+    "shadowed_types": [
+     "PERSON"
+    ],
+    "gold_types": [
+     "PER"
+    ],
+    "gold_n": 1
+   },
+   {
+    "doc_id": "agency_0008__m2718_case",
+    "type": "ORG",
+    "text": "Индивидуальный предприниматель лЕбЕдЕв еГоР АлЕкСеЕвИч",
+    "span": [
+     2977,
+     3031
+    ],
+    "shape": "ип_прописью",
+    "n_shadowed": 1,
+    "shadowed_types": [
+     "PERSON"
+    ],
+    "gold_types": [
+     "PER"
+    ],
+    "gold_n": 1
+   }
+  ]
+ },
+ {
+  "doc_id": "agency_0009",
+  "n_org": 3,
+  "compounds": []
+ },
+ {
+  "doc_id": "agency_0009__m1337_invisible",
+  "n_org": 3,
+  "compounds": []
+ },
+ {
+  "doc_id": "agency_0009__m2718_case",
+  "n_org": 3,
+  "compounds": []
+ },
+ {
+  "doc_id": "agency_0010",
+  "n_org": 6,
+  "compounds": [
+   {
+    "doc_id": "agency_0010",
+    "type": "ORG",
+    "text": "Индивидуальный предприниматель Морозова Е. О.",
+    "span": [
+     68,
+     113
+    ],
+    "shape": "ип_прописью",
+    "n_shadowed": 1,
+    "shadowed_types": [
+     "PERSON"
+    ],
+    "gold_types": [
+     "PER"
+    ],
+    "gold_n": 1
+   },
+   {
+    "doc_id": "agency_0010",
+    "type": "ORG",
+    "text": "ИП Попов О. О.",
+    "span": [
+     254,
+     268
+    ],
+    "shape": "ип_аббревиатура",
+    "n_shadowed": 1,
+    "shadowed_types": [
+     "PERSON"
+    ],
+    "gold_types": [
+     "PER"
+    ],
+    "gold_n": 1
+   },
+   {
+    "doc_id": "agency_0010",
+    "type": "ORG",
+    "text": "Индивидуальный предприниматель Морозова Екатерина Олеговна",
+    "span": [
+     2794,
+     2852
+    ],
+    "shape": "ип_прописью",
+    "n_shadowed": 1,
+    "shadowed_types": [
+     "PERSON"
+    ],
+    "gold_types": [
+     "PER"
+    ],
+    "gold_n": 1
+   },
+   {
+    "doc_id": "agency_0010",
+    "type": "ORG",
+    "text": "Морозова Екатерина Олеговна\nИндивидуальный предприниматель",
+    "span": [
+     2766,
+     2824
+    ],
+    "shape": "иное",
+    "n_shadowed": 1,
+    "shadowed_types": [
+     "PERSON"
+    ],
+    "gold_types": [
+     "PER"
+    ],
+    "gold_n": 1
+   },
+   {
+    "doc_id": "agency_0010",
+    "type": "ORG",
+    "text": "Индивидуальный предприниматель Попов Олег Олегович",
+    "span": [
+     3174,
+     3224
+    ],
+    "shape": "ип_прописью",
+    "n_shadowed": 1,
+    "shadowed_types": [
+     "PERSON"
+    ],
+    "gold_types": [
+     "PER"
+    ],
+    "gold_n": 1
+   }
+  ]
+ },
+ {
+  "doc_id": "agency_0010__m1337_case",
+  "n_org": 6,
+  "compounds": [
+   {
+    "doc_id": "agency_0010__m1337_case",
+    "type": "ORG",
+    "text": "индивидуальный предприниматель морозова",
+    "span": [
+     68,
+     107
+    ],
+    "shape": "ип_прописью",
+    "n_shadowed": 1,
+    "shadowed_types": [
+     "PERSON"
+    ],
+    "gold_types": [
+     "PER"
+    ],
+    "gold_n": 1
+   },
+   {
+    "doc_id": "agency_0010__m1337_case",
+    "type": "ORG",
+    "text": "ИП ПОПОВ О. О.",
+    "span": [
+     254,
+     268
+    ],
+    "shape": "ип_аббревиатура",
+    "n_shadowed": 1,
+    "shadowed_types": [
+     "PERSON"
+    ],
+    "gold_types": [
+     "PER"
+    ],
+    "gold_n": 1
+   },
+   {
+    "doc_id": "agency_0010__m1337_case",
+    "type": "ORG",
+    "text": "Индивидуальный предприниматель МОРОЗОВА ЕКАТЕРИНА ОЛЕГОВНА",
+    "span": [
+     2794,
+     2852
+    ],
+    "shape": "ип_прописью",
+    "n_shadowed": 1,
+    "shadowed_types": [
+     "PERSON"
+    ],
+    "gold_types": [
+     "PER"
+    ],
+    "gold_n": 1
+   },
+   {
+    "doc_id": "agency_0010__m1337_case",
+    "type": "ORG",
+    "text": "МОРОЗОВА ЕКАТЕРИНА ОЛЕГОВНА\nИндивидуальный предприниматель",
+    "span": [
+     2766,
+     2824
+    ],
+    "shape": "иное",
+    "n_shadowed": 1,
+    "shadowed_types": [
+     "PERSON"
+    ],
+    "gold_types": [
+     "PER"
+    ],
+    "gold_n": 1
+   },
+   {
+    "doc_id": "agency_0010__m1337_case",
+    "type": "ORG",
+    "text": "Индивидуальный предприниматель пОпОв оЛеГ ОлЕгОвИч",
+    "span": [
+     3174,
+     3224
+    ],
+    "shape": "ип_прописью",
+    "n_shadowed": 1,
+    "shadowed_types": [
+     "PERSON"
+    ],
+    "gold_types": [
+     "PER"
+    ],
+    "gold_n": 1
+   }
+  ]
+ },
+ {
+  "doc_id": "agency_0010__m2718_linebreak",
+  "n_org": 5,
+  "compounds": [
+   {
+    "doc_id": "agency_0010__m2718_linebreak",
+    "type": "ORG",
+    "text": "Индивидуальный предприниматель Морозо",
+    "span": [
+     69,
+     106
+    ],
+    "shape": "ип_прописью",
+    "n_shadowed": 1,
+    "shadowed_types": [
+     "PERSON"
+    ],
+    "gold_types": [
+     "PER"
+    ],
+    "gold_n": 1
+   },
+   {
+    "doc_id": "agency_0010__m2718_linebreak",
+    "type": "ORG",
+    "text": "ИП Попов О.\n О.",
+    "span": [
+     257,
+     272
+    ],
+    "shape": "ип_аббревиатура",
+    "n_shadowed": 1,
+    "shadowed_types": [
+     "PERSON"
+    ],
+    "gold_types": [
+     "PER"
+    ],
+    "gold_n": 1
+   },
+   {
+    "doc_id": "agency_0010__m2718_linebreak",
+    "type": "ORG",
+    "text": "Индивидуальный предприниматель Морозова Екатерина О\nлеговна",
+    "span": [
+     2821,
+     2880
+    ],
+    "shape": "ип_прописью",
+    "n_shadowed": 1,
+    "shadowed_types": [
+     "PERSON"
+    ],
+    "gold_types": [
+     "PER"
+    ],
+    "gold_n": 1
+   },
+   {
+    "doc_id": "agency_0010__m2718_linebreak",
+    "type": "ORG",
+    "text": "Индивидуальный предприниматель Попов\n Олег Олегович",
+    "span": [
+     3214,
+     3265
+    ],
+    "shape": "ип_прописью",
+    "n_shadowed": 1,
+    "shadowed_types": [
+     "PERSON"
+    ],
+    "gold_types": [
+     "PER"
+    ],
+    "gold_n": 1
+   }
+  ]
+ },
+ {
+  "doc_id": "cession_0001",
+  "n_org": 2,
+  "compounds": [
+   {
+    "doc_id": "cession_0001",
+    "type": "ORG",
+    "text": "ИП Коваль Владимир Алексеевич",
+    "span": [
+     91,
+     120
+    ],
+    "shape": "ип_аббревиатура",
+    "n_shadowed": 1,
+    "shadowed_types": [
+     "PERSON"
+    ],
+    "gold_types": [
+     "PER"
+    ],
+    "gold_n": 1
+   },
+   {
+    "doc_id": "cession_0001",
+    "type": "ORG",
+    "text": "Индивидуальный предприниматель Коваль Владимир Алексеевич",
+    "span": [
+     2681,
+     2738
+    ],
+    "shape": "ип_прописью",
+    "n_shadowed": 1,
+    "shadowed_types": [
+     "PERSON"
+    ],
+    "gold_types": [
+     "PER"
+    ],
+    "gold_n": 1
+   }
+  ]
+ },
+ {
+  "doc_id": "cession_0001__m1337_digit_spaces",
+  "n_org": 2,
+  "compounds": [
+   {
+    "doc_id": "cession_0001__m1337_digit_spaces",
+    "type": "ORG",
+    "text": "ИП Коваль Владимир Алексеевич",
+    "span": [
+     92,
+     121
+    ],
+    "shape": "ип_аббревиатура",
+    "n_shadowed": 1,
+    "shadowed_types": [
+     "PERSON"
+    ],
+    "gold_types": [
+     "PER"
+    ],
+    "gold_n": 1
+   },
+   {
+    "doc_id": "cession_0001__m1337_digit_spaces",
+    "type": "ORG",
+    "text": "Индивидуальный предприниматель Коваль Владимир Алексеевич",
+    "span": [
+     2688,
+     2745
+    ],
+    "shape": "ип_прописью",
+    "n_shadowed": 1,
+    "shadowed_types": [
+     "PERSON"
+    ],
+    "gold_types": [
+     "PER"
+    ],
+    "gold_n": 1
+   }
+  ]
+ },
+ {
+  "doc_id": "cession_0001__m2718_linebreak",
+  "n_org": 0,
+  "compounds": []
+ },
+ {
+  "doc_id": "cession_0002",
+  "n_org": 1,
+  "compounds": [
+   {
+    "doc_id": "cession_0002",
+    "type": "ORG",
+    "text": "ИП Макаров Ю. Н.",
+    "span": [
+     0,
+     16
+    ],
+    "shape": "ип_аббревиатура",
+    "n_shadowed": 1,
+    "shadowed_types": [
+     "PERSON"
+    ],
+    "gold_types": [],
+    "gold_n": 0
+   }
+  ]
+ },
+ {
+  "doc_id": "cession_0002__m1337_linebreak",
+  "n_org": 0,
+  "compounds": []
+ },
+ {
+  "doc_id": "cession_0002__m2718_cell_split",
+  "n_org": 1,
+  "compounds": [
+   {
+    "doc_id": "cession_0002__m2718_cell_split",
+    "type": "ORG",
+    "text": "ИП Макаров Ю. Н.",
+    "span": [
+     0,
+     16
+    ],
+    "shape": "ип_аббревиатура",
+    "n_shadowed": 1,
+    "shadowed_types": [
+     "PERSON"
+    ],
+    "gold_types": [],
+    "gold_n": 0
+   }
+  ]
+ },
+ {
+  "doc_id": "cession_0003",
+  "n_org": 5,
+  "compounds": []
+ },
+ {
+  "doc_id": "cession_0003__m1337_combo",
+  "n_org": 5,
+  "compounds": []
+ },
+ {
+  "doc_id": "cession_0003__m2718_homoglyph",
+  "n_org": 5,
+  "compounds": []
+ },
+ {
+  "doc_id": "cession_0004",
+  "n_org": 5,
+  "compounds": [
+   {
+    "doc_id": "cession_0004",
+    "type": "ORG",
+    "text": "ИП Волкова М. Ю.",
+    "span": [
+     284,
+     300
+    ],
+    "shape": "ип_аббревиатура",
+    "n_shadowed": 1,
+    "shadowed_types": [
+     "PERSON"
+    ],
+    "gold_types": [
+     "PER"
+    ],
+    "gold_n": 1
+   },
+   {
+    "doc_id": "cession_0004",
+    "type": "ORG",
+    "text": "Индивидуальный предприниматель Волкова Мария Юрьевна",
+    "span": [
+     3029,
+     3081
+    ],
+    "shape": "ип_прописью",
+    "n_shadowed": 1,
+    "shadowed_types": [
+     "PERSON"
+    ],
+    "gold_types": [
+     "PER"
+    ],
+    "gold_n": 1
+   }
+  ]
+ },
+ {
+  "doc_id": "cession_0004__m1337_cell_split",
+  "n_org": 5,
+  "compounds": [
+   {
+    "doc_id": "cession_0004__m1337_cell_split",
+    "type": "ORG",
+    "text": "ИП Волкова М. Ю.",
+    "span": [
+     284,
+     300
+    ],
+    "shape": "ип_аббревиатура",
+    "n_shadowed": 1,
+    "shadowed_types": [
+     "PERSON"
+    ],
+    "gold_types": [
+     "PER"
+    ],
+    "gold_n": 1
+   },
+   {
+    "doc_id": "cession_0004__m1337_cell_split",
+    "type": "ORG",
+    "text": "Индивидуальный предприниматель Волкова Мария Юрьевна",
+    "span": [
+     3029,
+     3081
+    ],
+    "shape": "ип_прописью",
+    "n_shadowed": 1,
+    "shadowed_types": [
+     "PERSON"
+    ],
+    "gold_types": [
+     "PER"
+    ],
+    "gold_n": 1
+   }
+  ]
+ },
+ {
+  "doc_id": "cession_0004__m2718_invisible",
+  "n_org": 4,
+  "compounds": [
+   {
+    "doc_id": "cession_0004__m2718_invisible",
+    "type": "ORG",
+    "text": "Индивидуальный предприниматель В­ол⁠кова М ария Юрьевна",
+    "span": [
+     3130,
+     3185
+    ],
+    "shape": "ип_прописью",
+    "n_shadowed": 1,
+    "shadowed_types": [
+     "PERSON"
+    ],
+    "gold_types": [
+     "PER"
+    ],
+    "gold_n": 1
+   }
+  ]
+ },
+ {
+  "doc_id": "cession_0005",
+  "n_org": 2,
+  "compounds": []
+ },
+ {
+  "doc_id": "cession_0005__m1337_invisible",
+  "n_org": 2,
+  "compounds": []
+ },
+ {
+  "doc_id": "cession_0005__m2718_case",
+  "n_org": 2,
+  "compounds": []
+ },
+ {
+  "doc_id": "cession_0006",
+  "n_org": 5,
+  "compounds": [
+   {
+    "doc_id": "cession_0006",
+    "type": "ORG",
+    "text": "ИП Кузнецова Юлия Владимировна",
+    "span": [
+     97,
+     127
+    ],
+    "shape": "ип_аббревиатура",
+    "n_shadowed": 1,
+    "shadowed_types": [
+     "PERSON"
+    ],
+    "gold_types": [
+     "PER"
+    ],
+    "gold_n": 1
+   },
+   {
+    "doc_id": "cession_0006",
+    "type": "ORG",
+    "text": "ИП Павлов Владимир Егорович",
+    "span": [
+     269,
+     296
+    ],
+    "shape": "ип_аббревиатура",
+    "n_shadowed": 1,
+    "shadowed_types": [
+     "PERSON"
+    ],
+    "gold_types": [
+     "PER"
+    ],
+    "gold_n": 1
+   },
+   {
+    "doc_id": "cession_0006",
+    "type": "ORG",
+    "text": "Индивидуальный предприниматель Кузнецова Юлия Владимировна",
+    "span": [
+     2805,
+     2863
+    ],
+    "shape": "ип_прописью",
+    "n_shadowed": 1,
+    "shadowed_types": [
+     "PERSON"
+    ],
+    "gold_types": [
+     "PER"
+    ],
+    "gold_n": 1
+   },
+   {
+    "doc_id": "cession_0006",
+    "type": "ORG",
+    "text": "Индивидуальный предприниматель Павлов Владимир Егорович",
+    "span": [
+     3156,
+     3211
+    ],
+    "shape": "ип_прописью",
+    "n_shadowed": 1,
+    "shadowed_types": [
+     "PERSON"
+    ],
+    "gold_types": [
+     "PER"
+    ],
+    "gold_n": 1
+   }
+  ]
+ },
+ {
+  "doc_id": "cession_0006__m1337_invisible",
+  "n_org": 5,
+  "compounds": [
+   {
+    "doc_id": "cession_0006__m1337_invisible",
+    "type": "ORG",
+    "text": "ИП Кузнецова Юлия В ладимиро вн‍а",
+    "span": [
+     97,
+     130
+    ],
+    "shape": "ип_аббревиатура",
+    "n_shadowed": 1,
+    "shadowed_types": [
+     "PERSON"
+    ],
+    "gold_types": [
+     "PER"
+    ],
+    "gold_n": 1
+   },
+   {
+    "doc_id": "cession_0006__m1337_invisible",
+    "type": "ORG",
+    "text": "ИП Павлов‍ Владимир Егор ов⁠ич",
+    "span": [
+     274,
+     304
+    ],
+    "shape": "ип_аббревиатура",
+    "n_shadowed": 1,
+    "shadowed_types": [
+     "PERSON"
+    ],
+    "gold_types": [
+     "PER"
+    ],
+    "gold_n": 1
+   },
+   {
+    "doc_id": "cession_0006__m1337_invisible",
+    "type": "ORG",
+    "text": "Индивидуальный предприниматель Кузнецова Юл⁠ия Вл адимир⁠овна",
+    "span": [
+     2860,
+     2921
+    ],
+    "shape": "ип_прописью",
+    "n_shadowed": 1,
+    "shadowed_types": [
+     "PERSON"
+    ],
+    "gold_types": [
+     "PER"
+    ],
+    "gold_n": 1
+   },
+   {
+    "doc_id": "cession_0006__m1337_invisible",
+    "type": "ORG",
+    "text": "Индивидуальный предприниматель Павлов Владим⁠ир­ Егоров​ич",
+    "span": [
+     3233,
+     3291
+    ],
+    "shape": "ип_прописью",
+    "n_shadowed": 1,
+    "shadowed_types": [
+     "PERSON"
+    ],
+    "gold_types": [
+     "PER"
+    ],
+    "gold_n": 1
+   }
+  ]
+ },
+ {
+  "doc_id": "cession_0006__m2718_digit_spaces",
+  "n_org": 5,
+  "compounds": [
+   {
+    "doc_id": "cession_0006__m2718_digit_spaces",
+    "type": "ORG",
+    "text": "ИП Кузнецова Юлия Владимировна",
+    "span": [
+     97,
+     127
+    ],
+    "shape": "ип_аббревиатура",
+    "n_shadowed": 1,
+    "shadowed_types": [
+     "PERSON"
+    ],
+    "gold_types": [
+     "PER"
+    ],
+    "gold_n": 1
+   },
+   {
+    "doc_id": "cession_0006__m2718_digit_spaces",
+    "type": "ORG",
+    "text": "ИП Павлов Владимир Егорович",
+    "span": [
+     271,
+     298
+    ],
+    "shape": "ип_аббревиатура",
+    "n_shadowed": 1,
+    "shadowed_types": [
+     "PERSON"
+    ],
+    "gold_types": [
+     "PER"
+    ],
+    "gold_n": 1
+   },
+   {
+    "doc_id": "cession_0006__m2718_digit_spaces",
+    "type": "ORG",
+    "text": "Индивидуальный предприниматель Кузнецова Юлия Владимировна",
+    "span": [
+     2809,
+     2867
+    ],
+    "shape": "ип_прописью",
+    "n_shadowed": 1,
+    "shadowed_types": [
+     "PERSON"
+    ],
+    "gold_types": [
+     "PER"
+    ],
+    "gold_n": 1
+   },
+   {
+    "doc_id": "cession_0006__m2718_digit_spaces",
+    "type": "ORG",
+    "text": "Индивидуальный предприниматель Павлов Владимир Егорович",
+    "span": [
+     3174,
+     3229
+    ],
+    "shape": "ип_прописью",
+    "n_shadowed": 1,
+    "shadowed_types": [
+     "PERSON"
+    ],
+    "gold_types": [
+     "PER"
+    ],
+    "gold_n": 1
+   }
+  ]
+ },
+ {
+  "doc_id": "cession_0007",
+  "n_org": 2,
+  "compounds": [
+   {
+    "doc_id": "cession_0007",
+    "type": "ORG",
+    "text": "Индивидуальный предприниматель Тер-Петросян Артур Ашотович",
+    "span": [
+     95,
+     153
+    ],
+    "shape": "ип_прописью",
+    "n_shadowed": 1,
+    "shadowed_types": [
+     "PERSON"
+    ],
+    "gold_types": [
+     "PER"
+    ],
+    "gold_n": 1
+   },
+   {
+    "doc_id": "cession_0007",
+    "type": "ORG",
+    "text": "Индивидуальный предприниматель Тер-Петросян Артур Ашотович",
+    "span": [
+     4677,
+     4735
+    ],
+    "shape": "ип_прописью",
+    "n_shadowed": 1,
+    "shadowed_types": [
+     "PERSON"
+    ],
+    "gold_types": [
+     "PER"
+    ],
+    "gold_n": 1
+   }
+  ]
+ },
+ {
+  "doc_id": "cession_0007__m1337_digit_spaces",
+  "n_org": 2,
+  "compounds": [
+   {
+    "doc_id": "cession_0007__m1337_digit_spaces",
+    "type": "ORG",
+    "text": "Индивидуальный предприниматель Тер-Петросян Артур Ашотович",
+    "span": [
+     97,
+     155
+    ],
+    "shape": "ип_прописью",
+    "n_shadowed": 1,
+    "shadowed_types": [
+     "PERSON"
+    ],
+    "gold_types": [
+     "PER"
+    ],
+    "gold_n": 1
+   },
+   {
+    "doc_id": "cession_0007__m1337_digit_spaces",
+    "type": "ORG",
+    "text": "Индивидуальный предприниматель Тер-Петросян Артур Ашотович",
+    "span": [
+     4685,
+     4743
+    ],
+    "shape": "ип_прописью",
+    "n_shadowed": 1,
+    "shadowed_types": [
+     "PERSON"
+    ],
+    "gold_types": [
+     "PER"
+    ],
+    "gold_n": 1
+   }
+  ]
+ },
+ {
+  "doc_id": "cession_0007__m2718_linebreak",
+  "n_org": 0,
+  "compounds": []
+ },
+ {
+  "doc_id": "cession_0008",
+  "n_org": 0,
+  "compounds": []
+ },
+ {
+  "doc_id": "cession_0008__m1337_digit_spaces",
+  "n_org": 0,
+  "compounds": []
+ },
+ {
+  "doc_id": "cession_0008__m2718_combo",
+  "n_org": 0,
+  "compounds": []
+ },
+ {
+  "doc_id": "labor_0001",
+  "n_org": 3,
+  "compounds": [
+   {
+    "doc_id": "labor_0001",
+    "type": "ORG",
+    "text": "ИП Макаров Владимир Владимирович",
+    "span": [
+     69,
+     101
+    ],
+    "shape": "ип_аббревиатура",
+    "n_shadowed": 1,
+    "shadowed_types": [
+     "PERSON"
+    ],
+    "gold_types": [
+     "PER"
+    ],
+    "gold_n": 1
+   },
+   {
+    "doc_id": "labor_0001",
+    "type": "ORG",
+    "text": "Индивидуальный предприниматель Макаров Владимир Владимирович",
+    "span": [
+     2673,
+     2733
+    ],
+    "shape": "ип_прописью",
+    "n_shadowed": 1,
+    "shadowed_types": [
+     "PERSON"
+    ],
+    "gold_types": [
+     "PER"
+    ],
+    "gold_n": 1
+   }
+  ]
+ },
+ {
+  "doc_id": "labor_0001__m1337_combo",
+  "n_org": 1,
+  "compounds": [
+   {
+    "doc_id": "labor_0001__m1337_combo",
+    "type": "ORG",
+    "text": "ИП мАкAрОв ­Bл­аДиMиР ВлАдИм­иРоВиЧ",
+    "span": [
+     70,
+     105
+    ],
+    "shape": "ип_аббревиатура",
+    "n_shadowed": 1,
+    "shadowed_types": [
+     "PERSON"
+    ],
+    "gold_types": [
+     "PER"
+    ],
+    "gold_n": 1
+   }
+  ]
+ },
+ {
+  "doc_id": "labor_0001__m2718_homoglyph",
+  "n_org": 3,
+  "compounds": [
+   {
+    "doc_id": "labor_0001__m2718_homoglyph",
+    "type": "ORG",
+    "text": "ИП Makaров Владимир Владимирович",
+    "span": [
+     69,
+     101
+    ],
+    "shape": "ип_аббревиатура",
+    "n_shadowed": 1,
+    "shadowed_types": [
+     "PERSON"
+    ],
+    "gold_types": [
+     "PER"
+    ],
+    "gold_n": 1
+   },
+   {
+    "doc_id": "labor_0001__m2718_homoglyph",
+    "type": "ORG",
+    "text": "Индивидуальный предприниматель Мakaров Владимиp Владимирович",
+    "span": [
+     2673,
+     2733
+    ],
+    "shape": "ип_прописью",
+    "n_shadowed": 1,
+    "shadowed_types": [
+     "PERSON"
+    ],
+    "gold_types": [
+     "PER"
+    ],
+    "gold_n": 1
+   }
+  ]
+ },
+ {
+  "doc_id": "labor_0002",
+  "n_org": 3,
+  "compounds": []
+ },
+ {
+  "doc_id": "labor_0002__m1337_combo",
+  "n_org": 3,
+  "compounds": []
+ },
+ {
+  "doc_id": "labor_0002__m2718_homoglyph",
+  "n_org": 3,
+  "compounds": []
+ },
+ {
+  "doc_id": "labor_0003",
+  "n_org": 3,
+  "compounds": []
+ },
+ {
+  "doc_id": "labor_0003__m1337_invisible",
+  "n_org": 3,
+  "compounds": []
+ },
+ {
+  "doc_id": "labor_0003__m2718_case",
+  "n_org": 3,
+  "compounds": []
+ },
+ {
+  "doc_id": "labor_0004",
+  "n_org": 3,
+  "compounds": [
+   {
+    "doc_id": "labor_0004",
+    "type": "ORG",
+    "text": "Индивидуальный предприниматель Смирнова М. Н.",
+    "span": [
+     73,
+     118
+    ],
+    "shape": "ип_прописью",
+    "n_shadowed": 1,
+    "shadowed_types": [
+     "PERSON"
+    ],
+    "gold_types": [
+     "PER"
+    ],
+    "gold_n": 1
+   },
+   {
+    "doc_id": "labor_0004",
+    "type": "ORG",
+    "text": "Индивидуальный предприниматель Смирнова Мария Николаевна",
+    "span": [
+     2795,
+     2851
+    ],
+    "shape": "ип_прописью",
+    "n_shadowed": 1,
+    "shadowed_types": [
+     "PERSON"
+    ],
+    "gold_types": [
+     "PER"
+    ],
+    "gold_n": 1
+   }
+  ]
+ },
+ {
+  "doc_id": "labor_0004__m1337_homoglyph",
+  "n_org": 2,
+  "compounds": [
+   {
+    "doc_id": "labor_0004__m1337_homoglyph",
+    "type": "ORG",
+    "text": "Индивидуальный предприниматель Смирнoва Мaрия Никoлаевна",
+    "span": [
+     2795,
+     2851
+    ],
+    "shape": "ип_прописью",
+    "n_shadowed": 1,
+    "shadowed_types": [
+     "PERSON"
+    ],
+    "gold_types": [
+     "PER"
+    ],
+    "gold_n": 1
+   }
+  ]
+ },
+ {
+  "doc_id": "labor_0004__m2718_case",
+  "n_org": 3,
+  "compounds": [
+   {
+    "doc_id": "labor_0004__m2718_case",
+    "type": "ORG",
+    "text": "Индивидуальный предприниматель СМИРНОВА М. Н.",
+    "span": [
+     73,
+     118
+    ],
+    "shape": "ип_прописью",
+    "n_shadowed": 1,
+    "shadowed_types": [
+     "PERSON"
+    ],
+    "gold_types": [
+     "PER"
+    ],
+    "gold_n": 1
+   },
+   {
+    "doc_id": "labor_0004__m2718_case",
+    "type": "ORG",
+    "text": "Индивидуальный предприниматель сМиРнОвА МаРиЯ НиКоЛаЕвНа",
+    "span": [
+     2795,
+     2851
+    ],
+    "shape": "ип_прописью",
+    "n_shadowed": 1,
+    "shadowed_types": [
+     "PERSON"
+    ],
+    "gold_types": [
+     "PER"
+    ],
+    "gold_n": 1
+   }
+  ]
+ },
+ {
+  "doc_id": "labor_0005",
+  "n_org": 3,
+  "compounds": []
+ },
+ {
+  "doc_id": "labor_0005__m1337_digit_spaces",
+  "n_org": 3,
+  "compounds": []
+ },
+ {
+  "doc_id": "labor_0005__m2718_linebreak",
+  "n_org": 1,
+  "compounds": []
+ },
+ {
+  "doc_id": "labor_0006",
+  "n_org": 4,
+  "compounds": []
+ },
+ {
+  "doc_id": "labor_0006__m1337_case",
+  "n_org": 3,
+  "compounds": []
+ },
+ {
+  "doc_id": "labor_0006__m2718_linebreak",
+  "n_org": 3,
+  "compounds": []
+ },
+ {
+  "doc_id": "labor_0007",
+  "n_org": 3,
+  "compounds": [
+   {
+    "doc_id": "labor_0007",
+    "type": "ORG",
+    "text": "ИП Волкова Н. Е.",
+    "span": [
+     70,
+     86
+    ],
+    "shape": "ип_аббревиатура",
+    "n_shadowed": 1,
+    "shadowed_types": [
+     "PERSON"
+    ],
+    "gold_types": [
+     "PER"
+    ],
+    "gold_n": 1
+   },
+   {
+    "doc_id": "labor_0007",
+    "type": "ORG",
+    "text": "Индивидуальный предприниматель Волкова Наталья Егоровна",
+    "span": [
+     2856,
+     2911
+    ],
+    "shape": "ип_прописью",
+    "n_shadowed": 1,
+    "shadowed_types": [
+     "PERSON"
+    ],
+    "gold_types": [
+     "PER"
+    ],
+    "gold_n": 1
+   }
+  ]
+ },
+ {
+  "doc_id": "labor_0007__m1337_combo",
+  "n_org": 3,
+  "compounds": [
+   {
+    "doc_id": "labor_0007__m1337_combo",
+    "type": "ORG",
+    "text": "ИП b oлк​oва",
+    "span": [
+     71,
+     83
+    ],
+    "shape": "ип_аббревиатура",
+    "n_shadowed": 1,
+    "shadowed_types": [
+     "PERSON"
+    ],
+    "gold_types": [
+     "PER"
+    ],
+    "gold_n": 1
+   },
+   {
+    "doc_id": "labor_0007__m1337_combo",
+    "type": "ORG",
+    "text": "Индивидуальный предприниматель волков­а нaта⁠лья егоровн‍а",
+    "span": [
+     2903,
+     2961
+    ],
+    "shape": "ип_прописью",
+    "n_shadowed": 1,
+    "shadowed_types": [
+     "PERSON"
+    ],
+    "gold_types": [
+     "PER"
+    ],
+    "gold_n": 1
+   }
+  ]
+ },
+ {
+  "doc_id": "labor_0007__m2718_homoglyph",
+  "n_org": 3,
+  "compounds": [
+   {
+    "doc_id": "labor_0007__m2718_homoglyph",
+    "type": "ORG",
+    "text": "ИП Волкова H. Е.",
+    "span": [
+     70,
+     86
+    ],
+    "shape": "ип_аббревиатура",
+    "n_shadowed": 1,
+    "shadowed_types": [
+     "PERSON"
+    ],
+    "gold_types": [
+     "PER"
+    ],
+    "gold_n": 1
+   },
+   {
+    "doc_id": "labor_0007__m2718_homoglyph",
+    "type": "ORG",
+    "text": "Индивидуальный предприниматель Вoлкова Наталья Егopовна",
+    "span": [
+     2856,
+     2911
+    ],
+    "shape": "ип_прописью",
+    "n_shadowed": 1,
+    "shadowed_types": [
+     "PERSON"
+    ],
+    "gold_types": [
+     "PER"
+    ],
+    "gold_n": 1
+   }
+  ]
+ },
+ {
+  "doc_id": "labor_0008",
+  "n_org": 3,
+  "compounds": []
+ },
+ {
+  "doc_id": "labor_0008__m1337_linebreak",
+  "n_org": 3,
+  "compounds": []
+ },
+ {
+  "doc_id": "labor_0008__m2718_cell_split",
+  "n_org": 3,
+  "compounds": []
+ },
+ {
+  "doc_id": "labor_0009",
+  "n_org": 3,
+  "compounds": []
+ },
+ {
+  "doc_id": "labor_0009__m1337_invisible",
+  "n_org": 3,
+  "compounds": []
+ },
+ {
+  "doc_id": "labor_0009__m2718_case",
+  "n_org": 3,
+  "compounds": []
+ },
+ {
+  "doc_id": "labor_0010",
+  "n_org": 5,
+  "compounds": [
+   {
+    "doc_id": "labor_0010",
+    "type": "ORG",
+    "text": "Индивидуальный предприниматель Мельник Дмитрий Юрьевич",
+    "span": [
+     122,
+     176
+    ],
+    "shape": "ип_прописью",
+    "n_shadowed": 1,
+    "shadowed_types": [
+     "PERSON"
+    ],
+    "gold_types": [
+     "PER"
+    ],
+    "gold_n": 1
+   },
+   {
+    "doc_id": "labor_0010",
+    "type": "ORG",
+    "text": "ИП Д.Ю.Мельник ИНН",
+    "span": [
+     4692,
+     4710
+    ],
+    "shape": "ип_аббревиатура",
+    "n_shadowed": 1,
+    "shadowed_types": [
+     "PERSON"
+    ],
+    "gold_types": [
+     "PER"
+    ],
+    "gold_n": 1
+   },
+   {
+    "doc_id": "labor_0010",
+    "type": "ORG",
+    "text": "Индивидуальный предприниматель Мельник Дмитрий Юрьевич",
+    "span": [
+     4802,
+     4856
+    ],
+    "shape": "ип_прописью",
+    "n_shadowed": 1,
+    "shadowed_types": [
+     "PERSON"
+    ],
+    "gold_types": [
+     "PER"
+    ],
+    "gold_n": 1
+   },
+   {
+    "doc_id": "labor_0010",
+    "type": "ORG",
+    "text": "ИП Мельник Д. Ю.",
+    "span": [
+     0,
+     16
+    ],
+    "shape": "ип_аббревиатура",
+    "n_shadowed": 1,
+    "shadowed_types": [
+     "PERSON"
+    ],
+    "gold_types": [],
+    "gold_n": 0
+   }
+  ]
+ },
+ {
+  "doc_id": "labor_0010__m1337_cell_split",
+  "n_org": 5,
+  "compounds": [
+   {
+    "doc_id": "labor_0010__m1337_cell_split",
+    "type": "ORG",
+    "text": "Индивидуальный предприниматель Мельник Дмитрий Юрьевич",
+    "span": [
+     122,
+     176
+    ],
+    "shape": "ип_прописью",
+    "n_shadowed": 1,
+    "shadowed_types": [
+     "PERSON"
+    ],
+    "gold_types": [
+     "PER"
+    ],
+    "gold_n": 1
+   },
+   {
+    "doc_id": "labor_0010__m1337_cell_split",
+    "type": "ORG",
+    "text": "ИП Д.Ю.Мельник ИНН",
+    "span": [
+     4692,
+     4710
+    ],
+    "shape": "ип_аббревиатура",
+    "n_shadowed": 1,
+    "shadowed_types": [
+     "PERSON"
+    ],
+    "gold_types": [
+     "PER"
+    ],
+    "gold_n": 1
+   },
+   {
+    "doc_id": "labor_0010__m1337_cell_split",
+    "type": "ORG",
+    "text": "Индивидуальный предприниматель Мельник Дмитрий Юрьевич",
+    "span": [
+     4802,
+     4856
+    ],
+    "shape": "ип_прописью",
+    "n_shadowed": 1,
+    "shadowed_types": [
+     "PERSON"
+    ],
+    "gold_types": [
+     "PER"
+    ],
+    "gold_n": 1
+   },
+   {
+    "doc_id": "labor_0010__m1337_cell_split",
+    "type": "ORG",
+    "text": "ИП Мельник Д. Ю.",
+    "span": [
+     0,
+     16
+    ],
+    "shape": "ип_аббревиатура",
+    "n_shadowed": 1,
+    "shadowed_types": [
+     "PERSON"
+    ],
+    "gold_types": [],
+    "gold_n": 0
+   }
+  ]
+ },
+ {
+  "doc_id": "labor_0010__m2718_invisible",
+  "n_org": 5,
+  "compounds": [
+   {
+    "doc_id": "labor_0010__m2718_invisible",
+    "type": "ORG",
+    "text": "Индивидуальный предприниматель М​ельн​ик Дмитрий Юрьеви­ч",
+    "span": [
+     132,
+     189
+    ],
+    "shape": "ип_прописью",
+    "n_shadowed": 1,
+    "shadowed_types": [
+     "PERSON"
+    ],
+    "gold_types": [
+     "PER"
+    ],
+    "gold_n": 1
+   },
+   {
+    "doc_id": "labor_0010__m2718_invisible",
+    "type": "ORG",
+    "text": "ИП Д.Ю.Мельни​к ИНН",
+    "span": [
+     4757,
+     4776
+    ],
+    "shape": "ип_аббревиатура",
+    "n_shadowed": 1,
+    "shadowed_types": [
+     "PERSON"
+    ],
+    "gold_types": [
+     "PER"
+    ],
+    "gold_n": 1
+   },
+   {
+    "doc_id": "labor_0010__m2718_invisible",
+    "type": "ORG",
+    "text": "Индивидуальный предприниматель Мель н ик Дмитри­й Юрьевич",
+    "span": [
+     4877,
+     4934
+    ],
+    "shape": "ип_прописью",
+    "n_shadowed": 1,
+    "shadowed_types": [
+     "PERSON"
+    ],
+    "gold_types": [
+     "PER"
+    ],
+    "gold_n": 1
+   },
+   {
+    "doc_id": "labor_0010__m2718_invisible",
+    "type": "ORG",
+    "text": "ИП Мельник Д. Ю.",
+    "span": [
+     0,
+     16
+    ],
+    "shape": "ип_аббревиатура",
+    "n_shadowed": 1,
+    "shadowed_types": [
+     "PERSON"
+    ],
+    "gold_types": [],
+    "gold_n": 0
+   }
+  ]
+ },
+ {
+  "doc_id": "labor_0011",
+  "n_org": 3,
+  "compounds": []
+ },
+ {
+  "doc_id": "labor_0011__m1337_digit_spaces",
+  "n_org": 3,
+  "compounds": []
+ },
+ {
+  "doc_id": "labor_0011__m2718_linebreak",
+  "n_org": 1,
+  "compounds": []
+ },
+ {
+  "doc_id": "labor_0012",
+  "n_org": 3,
+  "compounds": []
+ },
+ {
+  "doc_id": "labor_0012__m1337_invisible",
+  "n_org": 3,
+  "compounds": []
+ },
+ {
+  "doc_id": "labor_0012__m2718_digit_spaces",
+  "n_org": 3,
+  "compounds": []
+ },
+ {
+  "doc_id": "lease_0001",
+  "n_org": 6,
+  "compounds": []
+ },
+ {
+  "doc_id": "lease_0001__m1337_combo",
+  "n_org": 6,
+  "compounds": []
+ },
+ {
+  "doc_id": "lease_0001__m2718_homoglyph",
+  "n_org": 6,
+  "compounds": []
+ },
+ {
+  "doc_id": "lease_0002",
+  "n_org": 7,
+  "compounds": [
+   {
+    "doc_id": "lease_0002",
+    "type": "ORG",
+    "text": "ИП Зайцева Е. А.",
+    "span": [
+     232,
+     248
+    ],
+    "shape": "ип_аббревиатура",
+    "n_shadowed": 1,
+    "shadowed_types": [
+     "PERSON"
+    ],
+    "gold_types": [
+     "PER"
+    ],
+    "gold_n": 1
+   },
+   {
+    "doc_id": "lease_0002",
+    "type": "ORG",
+    "text": "Индивидуальный предприниматель Зайцева Екатерина Алексеевна",
+    "span": [
+     2781,
+     2840
+    ],
+    "shape": "ип_прописью",
+    "n_shadowed": 1,
+    "shadowed_types": [
+     "PERSON"
+    ],
+    "gold_types": [
+     "PER"
+    ],
+    "gold_n": 1
+   }
+  ]
+ },
+ {
+  "doc_id": "lease_0002__m1337_digit_spaces",
+  "n_org": 7,
+  "compounds": [
+   {
+    "doc_id": "lease_0002__m1337_digit_spaces",
+    "type": "ORG",
+    "text": "ИП Зайцева Е. А.",
+    "span": [
+     233,
+     249
+    ],
+    "shape": "ип_аббревиатура",
+    "n_shadowed": 1,
+    "shadowed_types": [
+     "PERSON"
+    ],
+    "gold_types": [
+     "PER"
+    ],
+    "gold_n": 1
+   },
+   {
+    "doc_id": "lease_0002__m1337_digit_spaces",
+    "type": "ORG",
+    "text": "Индивидуальный предприниматель Зайцева Екатерина Алексеевна",
+    "span": [
+     2813,
+     2872
+    ],
+    "shape": "ип_прописью",
+    "n_shadowed": 1,
+    "shadowed_types": [
+     "PERSON"
+    ],
+    "gold_types": [
+     "PER"
+    ],
+    "gold_n": 1
+   }
+  ]
+ },
+ {
+  "doc_id": "lease_0002__m2718_combo",
+  "n_org": 5,
+  "compounds": [
+   {
+    "doc_id": "lease_0002__m2718_combo",
+    "type": "ORG",
+    "text": "Индивидуальный предприниматель З AЙЦEВА EKАТЕ​РИ НА АЛЕКСЕЕВНА",
+    "span": [
+     2843,
+     2905
+    ],
+    "shape": "ип_прописью",
+    "n_shadowed": 1,
+    "shadowed_types": [
+     "PERSON"
+    ],
+    "gold_types": [
+     "PER"
+    ],
+    "gold_n": 1
+   }
+  ]
+ },
+ {
+  "doc_id": "lease_0003",
+  "n_org": 3,
+  "compounds": []
+ },
+ {
+  "doc_id": "lease_0003__m1337_invisible",
+  "n_org": 3,
+  "compounds": []
+ },
+ {
+  "doc_id": "lease_0003__m2718_case",
+  "n_org": 3,
+  "compounds": []
+ },
+ {
+  "doc_id": "lease_0004",
+  "n_org": 5,
+  "compounds": [
+   {
+    "doc_id": "lease_0004",
+    "type": "ORG",
+    "text": "ИП Комаров Д. М.",
+    "span": [
+     87,
+     103
+    ],
+    "shape": "ип_аббревиатура",
+    "n_shadowed": 1,
+    "shadowed_types": [
+     "PERSON"
+    ],
+    "gold_types": [
+     "PER"
+    ],
+    "gold_n": 1
+   },
+   {
+    "doc_id": "lease_0004",
+    "type": "ORG",
+    "text": "Индивидуальный предприниматель Воробьёв Н. Ю.",
+    "span": [
+     251,
+     296
+    ],
+    "shape": "ип_прописью",
+    "n_shadowed": 1,
+    "shadowed_types": [
+     "PERSON"
+    ],
+    "gold_types": [
+     "PER"
+    ],
+    "gold_n": 1
+   },
+   {
+    "doc_id": "lease_0004",
+    "type": "ORG",
+    "text": "Индивидуальный предприниматель Комаров Дмитрий Михайлович",
+    "span": [
+     2507,
+     2564
+    ],
+    "shape": "ип_прописью",
+    "n_shadowed": 1,
+    "shadowed_types": [
+     "PERSON"
+    ],
+    "gold_types": [
+     "PER"
+    ],
+    "gold_n": 1
+   },
+   {
+    "doc_id": "lease_0004",
+    "type": "ORG",
+    "text": "Индивидуальный предприниматель Воробьёв Николай Юрьевич",
+    "span": [
+     2803,
+     2858
+    ],
+    "shape": "ип_прописью",
+    "n_shadowed": 1,
+    "shadowed_types": [
+     "PERSON"
+    ],
+    "gold_types": [
+     "PER"
+    ],
+    "gold_n": 1
+   }
+  ]
+ },
+ {
+  "doc_id": "lease_0004__m1337_combo",
+  "n_org": 5,
+  "compounds": [
+   {
+    "doc_id": "lease_0004__m1337_combo",
+    "type": "ORG",
+    "text": "ИП КОМАPО‍В ‍Д. М.",
+    "span": [
+     87,
+     105
+    ],
+    "shape": "ип_аббревиатура",
+    "n_shadowed": 1,
+    "shadowed_types": [
+     "PERSON"
+    ],
+    "gold_types": [
+     "PER"
+    ],
+    "gold_n": 1
+   },
+   {
+    "doc_id": "lease_0004__m1337_combo",
+    "type": "ORG",
+    "text": "Индивидуальный предприниматель воpо­бьёв",
+    "span": [
+     255,
+     295
+    ],
+    "shape": "ип_прописью",
+    "n_shadowed": 1,
+    "shadowed_types": [
+     "PERSON"
+    ],
+    "gold_types": [
+     "PER"
+    ],
+    "gold_n": 1
+   },
+   {
+    "doc_id": "lease_0004__m1337_combo",
+    "type": "ORG",
+    "text": "Индивидуальный предприниматель кOмApOв дМиТ​РиЙ  мИх⁠аЙлОвИч",
+    "span": [
+     2547,
+     2607
+    ],
+    "shape": "ип_прописью",
+    "n_shadowed": 1,
+    "shadowed_types": [
+     "PERSON"
+    ],
+    "gold_types": [
+     "PER"
+    ],
+    "gold_n": 1
+   },
+   {
+    "doc_id": "lease_0004__m1337_combo",
+    "type": "ORG",
+    "text": "Индивидуальный предприниматель ВОP⁠ОБЬЁВ  HИКOЛАЙ ЮР‍ЬЕВИЧ",
+    "span": [
+     2865,
+     2923
+    ],
+    "shape": "ип_прописью",
+    "n_shadowed": 1,
+    "shadowed_types": [
+     "PERSON"
+    ],
+    "gold_types": [
+     "PER"
+    ],
+    "gold_n": 1
+   }
+  ]
+ },
+ {
+  "doc_id": "lease_0004__m2718_homoglyph",
+  "n_org": 4,
+  "compounds": [
+   {
+    "doc_id": "lease_0004__m2718_homoglyph",
+    "type": "ORG",
+    "text": "ИП Kомaрoв Д. М.",
+    "span": [
+     87,
+     103
+    ],
+    "shape": "ип_аббревиатура",
+    "n_shadowed": 1,
+    "shadowed_types": [
+     "PERSON"
+    ],
+    "gold_types": [
+     "PER"
+    ],
+    "gold_n": 1
+   },
+   {
+    "doc_id": "lease_0004__m2718_homoglyph",
+    "type": "ORG",
+    "text": "Индивидуальный предприниматель Воpобьёв Н. Ю.",
+    "span": [
+     251,
+     296
+    ],
+    "shape": "ип_прописью",
+    "n_shadowed": 1,
+    "shadowed_types": [
+     "PERSON"
+    ],
+    "gold_types": [
+     "PER"
+    ],
+    "gold_n": 1
+   },
+   {
+    "doc_id": "lease_0004__m2718_homoglyph",
+    "type": "ORG",
+    "text": "Индивидуальный предприниматель Вoрoбьёв Hиколай Юpьевич",
+    "span": [
+     2803,
+     2858
+    ],
+    "shape": "ип_прописью",
+    "n_shadowed": 1,
+    "shadowed_types": [
+     "PERSON"
+    ],
+    "gold_types": [
+     "PER"
+    ],
+    "gold_n": 1
+   }
+  ]
+ },
+ {
+  "doc_id": "lease_0005",
+  "n_org": 2,
+  "compounds": [
+   {
+    "doc_id": "lease_0005",
+    "type": "ORG",
+    "text": "ИП Беляев П. П.",
+    "span": [
+     79,
+     94
+    ],
+    "shape": "ип_аббревиатура",
+    "n_shadowed": 1,
+    "shadowed_types": [
+     "PERSON"
+    ],
+    "gold_types": [
+     "PER"
+    ],
+    "gold_n": 1
+   },
+   {
+    "doc_id": "lease_0005",
+    "type": "ORG",
+    "text": "Индивидуальный предприниматель Беляев Пётр Петрович",
+    "span": [
+     2515,
+     2566
+    ],
+    "shape": "ип_прописью",
+    "n_shadowed": 1,
+    "shadowed_types": [
+     "PERSON"
+    ],
+    "gold_types": [
+     "PER"
+    ],
+    "gold_n": 1
+   }
+  ]
+ },
+ {
+  "doc_id": "lease_0005__m1337_digit_spaces",
+  "n_org": 2,
+  "compounds": [
+   {
+    "doc_id": "lease_0005__m1337_digit_spaces",
+    "type": "ORG",
+    "text": "ИП Беляев П. П.",
+    "span": [
+     79,
+     94
+    ],
+    "shape": "ип_аббревиатура",
+    "n_shadowed": 1,
+    "shadowed_types": [
+     "PERSON"
+    ],
+    "gold_types": [
+     "PER"
+    ],
+    "gold_n": 1
+   },
+   {
+    "doc_id": "lease_0005__m1337_digit_spaces",
+    "type": "ORG",
+    "text": "Индивидуальный предприниматель Беляев Пётр Петрович",
+    "span": [
+     2523,
+     2574
+    ],
+    "shape": "ип_прописью",
+    "n_shadowed": 1,
+    "shadowed_types": [
+     "PERSON"
+    ],
+    "gold_types": [
+     "PER"
+    ],
+    "gold_n": 1
+   }
+  ]
+ },
+ {
+  "doc_id": "lease_0005__m2718_linebreak",
+  "n_org": 1,
+  "compounds": [
+   {
+    "doc_id": "lease_0005__m2718_linebreak",
+    "type": "ORG",
+    "text": "Индивидуальный предприниматель Беляев Пётр Петр",
+    "span": [
+     2531,
+     2578
+    ],
+    "shape": "ип_прописью",
+    "n_shadowed": 1,
+    "shadowed_types": [
+     "PERSON"
+    ],
+    "gold_types": [
+     "PER"
+    ],
+    "gold_n": 1
+   }
+  ]
+ },
+ {
+  "doc_id": "lease_0006",
+  "n_org": 0,
+  "compounds": []
+ },
+ {
+  "doc_id": "lease_0006__m1337_homoglyph",
+  "n_org": 0,
+  "compounds": []
+ },
+ {
+  "doc_id": "lease_0006__m2718_case",
+  "n_org": 0,
+  "compounds": []
+ },
+ {
+  "doc_id": "lease_0007",
+  "n_org": 5,
+  "compounds": []
+ },
+ {
+  "doc_id": "lease_0007__m1337_combo",
+  "n_org": 5,
+  "compounds": []
+ },
+ {
+  "doc_id": "lease_0007__m2718_homoglyph",
+  "n_org": 5,
+  "compounds": []
+ },
+ {
+  "doc_id": "lease_0008",
+  "n_org": 6,
+  "compounds": [
+   {
+    "doc_id": "lease_0008",
+    "type": "ORG",
+    "text": "Индивидуальный предприниматель Оганесян Г. А.",
+    "span": [
+     288,
+     333
+    ],
+    "shape": "ип_прописью",
+    "n_shadowed": 1,
+    "shadowed_types": [
+     "PERSON"
+    ],
+    "gold_types": [
+     "PER"
+    ],
+    "gold_n": 1
+   },
+   {
+    "doc_id": "lease_0008",
+    "type": "ORG",
+    "text": "Индивидуальный предприниматель Оганесян Гурген Ашотович",
+    "span": [
+     2831,
+     2886
+    ],
+    "shape": "ип_прописью",
+    "n_shadowed": 1,
+    "shadowed_types": [
+     "PERSON"
+    ],
+    "gold_types": [
+     "PER"
+    ],
+    "gold_n": 1
+   }
+  ]
+ },
+ {
+  "doc_id": "lease_0008__m1337_case",
+  "n_org": 5,
+  "compounds": [
+   {
+    "doc_id": "lease_0008__m1337_case",
+    "type": "ORG",
+    "text": "Индивидуальный предприниматель оганесян",
+    "span": [
+     288,
+     327
+    ],
+    "shape": "ип_прописью",
+    "n_shadowed": 1,
+    "shadowed_types": [
+     "PERSON"
+    ],
+    "gold_types": [
+     "PER"
+    ],
+    "gold_n": 1
+   },
+   {
+    "doc_id": "lease_0008__m1337_case",
+    "type": "ORG",
+    "text": "Индивидуальный предприниматель оГаНеСяН ГуРгЕн аШоТоВиЧ",
+    "span": [
+     2831,
+     2886
+    ],
+    "shape": "ип_прописью",
+    "n_shadowed": 1,
+    "shadowed_types": [
+     "PERSON"
+    ],
+    "gold_types": [
+     "PER"
+    ],
+    "gold_n": 1
+   }
+  ]
+ },
+ {
+  "doc_id": "lease_0008__m2718_linebreak",
+  "n_org": 5,
+  "compounds": [
+   {
+    "doc_id": "lease_0008__m2718_linebreak",
+    "type": "ORG",
+    "text": "Индивидуальный предприниматель Оганесян Г. \nА.",
+    "span": [
+     292,
+     338
+    ],
+    "shape": "ип_прописью",
+    "n_shadowed": 1,
+    "shadowed_types": [
+     "PERSON"
+    ],
+    "gold_types": [
+     "PER"
+    ],
+    "gold_n": 1
+   },
+   {
+    "doc_id": "lease_0008__m2718_linebreak",
+    "type": "ORG",
+    "text": "Индивидуальный предприниматель Оганесян Гурген",
+    "span": [
+     2859,
+     2905
+    ],
+    "shape": "ип_прописью",
+    "n_shadowed": 1,
+    "shadowed_types": [
+     "PERSON"
+    ],
+    "gold_types": [
+     "PER"
+    ],
+    "gold_n": 1
+   }
+  ]
+ },
+ {
+  "doc_id": "lease_0009",
+  "n_org": 3,
+  "compounds": []
+ },
+ {
+  "doc_id": "lease_0009__m1337_invisible",
+  "n_org": 3,
+  "compounds": []
+ },
+ {
+  "doc_id": "lease_0009__m2718_case",
+  "n_org": 3,
+  "compounds": []
+ },
+ {
+  "doc_id": "lease_0010",
+  "n_org": 6,
+  "compounds": [
+   {
+    "doc_id": "lease_0010",
+    "type": "ORG",
+    "text": "ИП Попов Павел Петрович",
+    "span": [
+     91,
+     114
+    ],
+    "shape": "ип_аббревиатура",
+    "n_shadowed": 1,
+    "shadowed_types": [
+     "PERSON"
+    ],
+    "gold_types": [
+     "PER"
+    ],
+    "gold_n": 1
+   },
+   {
+    "doc_id": "lease_0010",
+    "type": "ORG",
+    "text": "Индивидуальный предприниматель Лебедев А. Д.",
+    "span": [
+     262,
+     306
+    ],
+    "shape": "ип_прописью",
+    "n_shadowed": 1,
+    "shadowed_types": [
+     "PERSON"
+    ],
+    "gold_types": [
+     "PER"
+    ],
+    "gold_n": 1
+   },
+   {
+    "doc_id": "lease_0010",
+    "type": "ORG",
+    "text": "Индивидуальный предприниматель Попов Павел Петрович",
+    "span": [
+     2507,
+     2558
+    ],
+    "shape": "ип_прописью",
+    "n_shadowed": 1,
+    "shadowed_types": [
+     "PERSON"
+    ],
+    "gold_types": [
+     "PER"
+    ],
+    "gold_n": 1
+   },
+   {
+    "doc_id": "lease_0010",
+    "type": "ORG",
+    "text": "Индивидуальный предприниматель Лебедев Артём Дмитриевич",
+    "span": [
+     2843,
+     2898
+    ],
+    "shape": "ип_прописью",
+    "n_shadowed": 1,
+    "shadowed_types": [
+     "PERSON"
+    ],
+    "gold_types": [
+     "PER"
+    ],
+    "gold_n": 1
+   }
+  ]
+ },
+ {
+  "doc_id": "lease_0010__m1337_linebreak",
+  "n_org": 4,
+  "compounds": [
+   {
+    "doc_id": "lease_0010__m1337_linebreak",
+    "type": "ORG",
+    "text": "Индивидуальный предприниматель Лебедев А\n. Д.",
+    "span": [
+     266,
+     311
+    ],
+    "shape": "ип_прописью",
+    "n_shadowed": 1,
+    "shadowed_types": [
+     "PERSON"
+    ],
+    "gold_types": [
+     "PER"
+    ],
+    "gold_n": 1
+   },
+   {
+    "doc_id": "lease_0010__m1337_linebreak",
+    "type": "ORG",
+    "text": "Индивидуальный предприниматель Лебедев Артём",
+    "span": [
+     2869,
+     2913
+    ],
+    "shape": "ип_прописью",
+    "n_shadowed": 1,
+    "shadowed_types": [
+     "PERSON"
+    ],
+    "gold_types": [
+     "PER"
+    ],
+    "gold_n": 1
+   }
+  ]
+ },
+ {
+  "doc_id": "lease_0010__m2718_cell_split",
+  "n_org": 6,
+  "compounds": [
+   {
+    "doc_id": "lease_0010__m2718_cell_split",
+    "type": "ORG",
+    "text": "ИП Попов Павел Петрович",
+    "span": [
+     91,
+     114
+    ],
+    "shape": "ип_аббревиатура",
+    "n_shadowed": 1,
+    "shadowed_types": [
+     "PERSON"
+    ],
+    "gold_types": [
+     "PER"
+    ],
+    "gold_n": 1
+   },
+   {
+    "doc_id": "lease_0010__m2718_cell_split",
+    "type": "ORG",
+    "text": "Индивидуальный предприниматель Лебедев А. Д.",
+    "span": [
+     262,
+     306
+    ],
+    "shape": "ип_прописью",
+    "n_shadowed": 1,
+    "shadowed_types": [
+     "PERSON"
+    ],
+    "gold_types": [
+     "PER"
+    ],
+    "gold_n": 1
+   },
+   {
+    "doc_id": "lease_0010__m2718_cell_split",
+    "type": "ORG",
+    "text": "Индивидуальный предприниматель Попов Павел Петрович",
+    "span": [
+     2507,
+     2558
+    ],
+    "shape": "ип_прописью",
+    "n_shadowed": 1,
+    "shadowed_types": [
+     "PERSON"
+    ],
+    "gold_types": [
+     "PER"
+    ],
+    "gold_n": 1
+   },
+   {
+    "doc_id": "lease_0010__m2718_cell_split",
+    "type": "ORG",
+    "text": "Индивидуальный предприниматель Лебедев Артём Дмитриевич",
+    "span": [
+     2843,
+     2898
+    ],
+    "shape": "ип_прописью",
+    "n_shadowed": 1,
+    "shadowed_types": [
+     "PERSON"
+    ],
+    "gold_types": [
+     "PER"
+    ],
+    "gold_n": 1
+   }
+  ]
+ },
+ {
+  "doc_id": "lease_0011",
+  "n_org": 3,
+  "compounds": [
+   {
+    "doc_id": "lease_0011",
+    "type": "ORG",
+    "text": "ИП Соколова Юлия Юрьевна",
+    "span": [
+     81,
+     105
+    ],
+    "shape": "ип_аббревиатура",
+    "n_shadowed": 1,
+    "shadowed_types": [
+     "PERSON"
+    ],
+    "gold_types": [
+     "PER"
+    ],
+    "gold_n": 1
+   },
+   {
+    "doc_id": "lease_0011",
+    "type": "ORG",
+    "text": "Индивидуальный предприниматель Соколова Юлия Юрьевна",
+    "span": [
+     2751,
+     2803
+    ],
+    "shape": "ип_прописью",
+    "n_shadowed": 1,
+    "shadowed_types": [
+     "PERSON"
+    ],
+    "gold_types": [
+     "PER"
+    ],
+    "gold_n": 1
+   }
+  ]
+ },
+ {
+  "doc_id": "lease_0011__m1337_digit_spaces",
+  "n_org": 3,
+  "compounds": [
+   {
+    "doc_id": "lease_0011__m1337_digit_spaces",
+    "type": "ORG",
+    "text": "ИП Соколова Юлия Юрьевна",
+    "span": [
+     81,
+     105
+    ],
+    "shape": "ип_аббревиатура",
+    "n_shadowed": 1,
+    "shadowed_types": [
+     "PERSON"
+    ],
+    "gold_types": [
+     "PER"
+    ],
+    "gold_n": 1
+   },
+   {
+    "doc_id": "lease_0011__m1337_digit_spaces",
+    "type": "ORG",
+    "text": "Индивидуальный предприниматель Соколова Юлия Юрьевна",
+    "span": [
+     2758,
+     2810
+    ],
+    "shape": "ип_прописью",
+    "n_shadowed": 1,
+    "shadowed_types": [
+     "PERSON"
+    ],
+    "gold_types": [
+     "PER"
+    ],
+    "gold_n": 1
+   }
+  ]
+ },
+ {
+  "doc_id": "lease_0011__m2718_linebreak",
+  "n_org": 3,
+  "compounds": [
+   {
+    "doc_id": "lease_0011__m2718_linebreak",
+    "type": "ORG",
+    "text": "Индивидуальный предприниматель Соколова Юли",
+    "span": [
+     2776,
+     2819
+    ],
+    "shape": "ип_прописью",
+    "n_shadowed": 1,
+    "shadowed_types": [
+     "PERSON"
+    ],
+    "gold_types": [
+     "PER"
+    ],
+    "gold_n": 1
+   },
+   {
+    "doc_id": "lease_0011__m2718_linebreak",
+    "type": "ORG",
+    "text": "ИП Соколова",
+    "span": [
+     84,
+     95
+    ],
+    "shape": "ип_аббревиатура",
+    "n_shadowed": 1,
+    "shadowed_types": [
+     "PERSON"
+    ],
+    "gold_types": [
+     "PER"
+    ],
+    "gold_n": 1
+   }
+  ]
+ },
+ {
+  "doc_id": "lease_0012",
+  "n_org": 0,
+  "compounds": []
+ },
+ {
+  "doc_id": "lease_0012__m1337_cell_split",
+  "n_org": 0,
+  "compounds": []
+ },
+ {
+  "doc_id": "lease_0012__m2718_invisible",
+  "n_org": 0,
+  "compounds": []
+ },
+ {
+  "doc_id": "loan_0001",
+  "n_org": 4,
+  "compounds": []
+ },
+ {
+  "doc_id": "loan_0001__m1337_combo",
+  "n_org": 4,
+  "compounds": []
+ },
+ {
+  "doc_id": "loan_0001__m2718_homoglyph",
+  "n_org": 4,
+  "compounds": []
+ },
+ {
+  "doc_id": "loan_0002",
+  "n_org": 8,
+  "compounds": [
+   {
+    "doc_id": "loan_0002",
+    "type": "ORG",
+    "text": "Индивидуальный предприниматель Смирнов В. А.",
+    "span": [
+     312,
+     356
+    ],
+    "shape": "ип_прописью",
+    "n_shadowed": 1,
+    "shadowed_types": [
+     "PERSON"
+    ],
+    "gold_types": [
+     "PER"
+    ],
+    "gold_n": 1
+   },
+   {
+    "doc_id": "loan_0002",
+    "type": "ORG",
+    "text": "Индивидуальный предприниматель Смирнов Владимир Алексеевич",
+    "span": [
+     3147,
+     3205
+    ],
+    "shape": "ип_прописью",
+    "n_shadowed": 1,
+    "shadowed_types": [
+     "PERSON"
+    ],
+    "gold_types": [
+     "PER"
+    ],
+    "gold_n": 1
+   }
+  ]
+ },
+ {
+  "doc_id": "loan_0002__m1337_invisible",
+  "n_org": 7,
+  "compounds": [
+   {
+    "doc_id": "loan_0002__m1337_invisible",
+    "type": "ORG",
+    "text": "Индивидуальный предприниматель Смирнов  Владим⁠ир Алексеев‍ич",
+    "span": [
+     3244,
+     3305
+    ],
+    "shape": "ип_прописью",
+    "n_shadowed": 1,
+    "shadowed_types": [
+     "PERSON"
+    ],
+    "gold_types": [
+     "PER"
+    ],
+    "gold_n": 1
+   }
+  ]
+ },
+ {
+  "doc_id": "loan_0002__m2718_digit_spaces",
+  "n_org": 8,
+  "compounds": [
+   {
+    "doc_id": "loan_0002__m2718_digit_spaces",
+    "type": "ORG",
+    "text": "Индивидуальный предприниматель Смирнов В. А.",
+    "span": [
+     314,
+     358
+    ],
+    "shape": "ип_прописью",
+    "n_shadowed": 1,
+    "shadowed_types": [
+     "PERSON"
+    ],
+    "gold_types": [
+     "PER"
+    ],
+    "gold_n": 1
+   },
+   {
+    "doc_id": "loan_0002__m2718_digit_spaces",
+    "type": "ORG",
+    "text": "Индивидуальный предприниматель Смирнов Владимир Алексеевич",
+    "span": [
+     3181,
+     3239
+    ],
+    "shape": "ип_прописью",
+    "n_shadowed": 1,
+    "shadowed_types": [
+     "PERSON"
+    ],
+    "gold_types": [
+     "PER"
+    ],
+    "gold_n": 1
+   }
+  ]
+ },
+ {
+  "doc_id": "loan_0003",
+  "n_org": 3,
+  "compounds": []
+ },
+ {
+  "doc_id": "loan_0003__m1337_invisible",
+  "n_org": 3,
+  "compounds": []
+ },
+ {
+  "doc_id": "loan_0003__m2718_case",
+  "n_org": 3,
+  "compounds": []
+ },
+ {
+  "doc_id": "loan_0004",
+  "n_org": 5,
+  "compounds": [
+   {
+    "doc_id": "loan_0004",
+    "type": "ORG",
+    "text": "ИП Семёнов Николай Егорович",
+    "span": [
+     60,
+     87
+    ],
+    "shape": "ип_аббревиатура",
+    "n_shadowed": 1,
+    "shadowed_types": [
+     "PERSON"
+    ],
+    "gold_types": [
+     "PER"
+    ],
+    "gold_n": 1
+   },
+   {
+    "doc_id": "loan_0004",
+    "type": "ORG",
+    "text": "Индивидуальный предприниматель Оганесян Гурген Ашотович",
+    "span": [
+     233,
+     288
+    ],
+    "shape": "ип_прописью",
+    "n_shadowed": 1,
+    "shadowed_types": [
+     "PERSON"
+    ],
+    "gold_types": [
+     "PER"
+    ],
+    "gold_n": 1
+   },
+   {
+    "doc_id": "loan_0004",
+    "type": "ORG",
+    "text": "Индивидуальный предприниматель Семёнов Николай Егорович",
+    "span": [
+     2783,
+     2838
+    ],
+    "shape": "ип_прописью",
+    "n_shadowed": 1,
+    "shadowed_types": [
+     "PERSON"
+    ],
+    "gold_types": [
+     "PER"
+    ],
+    "gold_n": 1
+   },
+   {
+    "doc_id": "loan_0004",
+    "type": "ORG",
+    "text": "Индивидуальный предприниматель Оганесян Гурген Ашотович",
+    "span": [
+     3114,
+     3169
+    ],
+    "shape": "ип_прописью",
+    "n_shadowed": 1,
+    "shadowed_types": [
+     "PERSON"
+    ],
+    "gold_types": [
+     "PER"
+    ],
+    "gold_n": 1
+   }
+  ]
+ },
+ {
+  "doc_id": "loan_0004__m1337_digit_spaces",
+  "n_org": 5,
+  "compounds": [
+   {
+    "doc_id": "loan_0004__m1337_digit_spaces",
+    "type": "ORG",
+    "text": "ИП Семёнов Николай Егорович",
+    "span": [
+     60,
+     87
+    ],
+    "shape": "ип_аббревиатура",
+    "n_shadowed": 1,
+    "shadowed_types": [
+     "PERSON"
+    ],
+    "gold_types": [
+     "PER"
+    ],
+    "gold_n": 1
+   },
+   {
+    "doc_id": "loan_0004__m1337_digit_spaces",
+    "type": "ORG",
+    "text": "Индивидуальный предприниматель Оганесян Гурген Ашотович",
+    "span": [
+     234,
+     289
+    ],
+    "shape": "ип_прописью",
+    "n_shadowed": 1,
+    "shadowed_types": [
+     "PERSON"
+    ],
+    "gold_types": [
+     "PER"
+    ],
+    "gold_n": 1
+   },
+   {
+    "doc_id": "loan_0004__m1337_digit_spaces",
+    "type": "ORG",
+    "text": "Индивидуальный предприниматель Семёнов Николай Егорович",
+    "span": [
+     2788,
+     2843
+    ],
+    "shape": "ип_прописью",
+    "n_shadowed": 1,
+    "shadowed_types": [
+     "PERSON"
+    ],
+    "gold_types": [
+     "PER"
+    ],
+    "gold_n": 1
+   },
+   {
+    "doc_id": "loan_0004__m1337_digit_spaces",
+    "type": "ORG",
+    "text": "Индивидуальный предприниматель Оганесян Гурген Ашотович",
+    "span": [
+     3136,
+     3191
+    ],
+    "shape": "ип_прописью",
+    "n_shadowed": 1,
+    "shadowed_types": [
+     "PERSON"
+    ],
+    "gold_types": [
+     "PER"
+    ],
+    "gold_n": 1
+   }
+  ]
+ },
+ {
+  "doc_id": "loan_0004__m2718_combo",
+  "n_org": 4,
+  "compounds": [
+   {
+    "doc_id": "loan_0004__m2718_combo",
+    "type": "ORG",
+    "text": "ИП СЕ⁠МЁНOВ НИK­OЛАЙ ‍ЕГОРОВИЧ",
+    "span": [
+     60,
+     90
+    ],
+    "shape": "ип_аббревиатура",
+    "n_shadowed": 1,
+    "shadowed_types": [
+     "PERSON"
+    ],
+    "gold_types": [
+     "PER"
+    ],
+    "gold_n": 1
+   },
+   {
+    "doc_id": "loan_0004__m2718_combo",
+    "type": "ORG",
+    "text": "Индивидуальный предприниматель сЕmЁнО В HиKоЛаЙ Е​ГоРo⁠вИч",
+    "span": [
+     2835,
+     2893
+    ],
+    "shape": "ип_прописью",
+    "n_shadowed": 1,
+    "shadowed_types": [
+     "PERSON"
+    ],
+    "gold_types": [
+     "PER"
+    ],
+    "gold_n": 1
+   },
+   {
+    "doc_id": "loan_0004__m2718_combo",
+    "type": "ORG",
+    "text": "Индивидуальный предприниматель оГаНеСя­н гУрГeН  aШоТo вИч",
+    "span": [
+     3193,
+     3251
+    ],
+    "shape": "ип_прописью",
+    "n_shadowed": 1,
+    "shadowed_types": [
+     "PERSON"
+    ],
+    "gold_types": [
+     "PER"
+    ],
+    "gold_n": 1
+   }
+  ]
+ },
+ {
+  "doc_id": "loan_0005",
+  "n_org": 3,
+  "compounds": [
+   {
+    "doc_id": "loan_0005",
+    "type": "ORG",
+    "text": "Индивидуальный предприниматель Кисель Е. П.",
+    "span": [
+     60,
+     103
+    ],
+    "shape": "ип_прописью",
+    "n_shadowed": 1,
+    "shadowed_types": [
+     "PERSON"
+    ],
+    "gold_types": [
+     "PER"
+    ],
+    "gold_n": 1
+   },
+   {
+    "doc_id": "loan_0005",
+    "type": "ORG",
+    "text": "Индивидуальный предприниматель Кисель Егор Петрович",
+    "span": [
+     2631,
+     2682
+    ],
+    "shape": "ип_прописью",
+    "n_shadowed": 1,
+    "shadowed_types": [
+     "PERSON"
+    ],
+    "gold_types": [
+     "PER"
+    ],
+    "gold_n": 1
+   }
+  ]
+ },
+ {
+  "doc_id": "loan_0005__m1337_digit_spaces",
+  "n_org": 3,
+  "compounds": [
+   {
+    "doc_id": "loan_0005__m1337_digit_spaces",
+    "type": "ORG",
+    "text": "Индивидуальный предприниматель Кисель Е. П.",
+    "span": [
+     60,
+     103
+    ],
+    "shape": "ип_прописью",
+    "n_shadowed": 1,
+    "shadowed_types": [
+     "PERSON"
+    ],
+    "gold_types": [
+     "PER"
+    ],
+    "gold_n": 1
+   },
+   {
+    "doc_id": "loan_0005__m1337_digit_spaces",
+    "type": "ORG",
+    "text": "Индивидуальный предприниматель Кисель Егор Петрович",
+    "span": [
+     2638,
+     2689
+    ],
+    "shape": "ип_прописью",
+    "n_shadowed": 1,
+    "shadowed_types": [
+     "PERSON"
+    ],
+    "gold_types": [
+     "PER"
+    ],
+    "gold_n": 1
+   }
+  ]
+ },
+ {
+  "doc_id": "loan_0005__m2718_linebreak",
+  "n_org": 1,
+  "compounds": []
+ },
+ {
+  "doc_id": "loan_0006",
+  "n_org": 0,
+  "compounds": []
+ },
+ {
+  "doc_id": "loan_0006__m1337_combo",
+  "n_org": 0,
+  "compounds": []
+ },
+ {
+  "doc_id": "loan_0006__m2718_homoglyph",
+  "n_org": 0,
+  "compounds": []
+ },
+ {
+  "doc_id": "loan_0007",
+  "n_org": 6,
+  "compounds": []
+ },
+ {
+  "doc_id": "loan_0007__m1337_combo",
+  "n_org": 6,
+  "compounds": []
+ },
+ {
+  "doc_id": "loan_0007__m2718_homoglyph",
+  "n_org": 6,
+  "compounds": []
+ },
+ {
+  "doc_id": "loan_0008",
+  "n_org": 6,
+  "compounds": [
+   {
+    "doc_id": "loan_0008",
+    "type": "ORG",
+    "text": "ИП Воробьёв Роман Павлович",
+    "span": [
+     268,
+     294
+    ],
+    "shape": "ип_аббревиатура",
+    "n_shadowed": 1,
+    "shadowed_types": [
+     "PERSON"
+    ],
+    "gold_types": [
+     "PER"
+    ],
+    "gold_n": 1
+   },
+   {
+    "doc_id": "loan_0008",
+    "type": "ORG",
+    "text": "Индивидуальный предприниматель Воробьёв Роман Павлович",
+    "span": [
+     3131,
+     3185
+    ],
+    "shape": "ип_прописью",
+    "n_shadowed": 1,
+    "shadowed_types": [
+     "PERSON"
+    ],
+    "gold_types": [
+     "PER"
+    ],
+    "gold_n": 1
+   }
+  ]
+ },
+ {
+  "doc_id": "loan_0008__m1337_homoglyph",
+  "n_org": 6,
+  "compounds": [
+   {
+    "doc_id": "loan_0008__m1337_homoglyph",
+    "type": "ORG",
+    "text": "ИП Воpобьёв Pоман Павлoвич",
+    "span": [
+     268,
+     294
+    ],
+    "shape": "ип_аббревиатура",
+    "n_shadowed": 1,
+    "shadowed_types": [
+     "PERSON"
+    ],
+    "gold_types": [
+     "PER"
+    ],
+    "gold_n": 1
+   },
+   {
+    "doc_id": "loan_0008__m1337_homoglyph",
+    "type": "ORG",
+    "text": "Индивидуальный предприниматель Воpобьёв Рomaн Павлович",
+    "span": [
+     3131,
+     3185
+    ],
+    "shape": "ип_прописью",
+    "n_shadowed": 1,
+    "shadowed_types": [
+     "PERSON"
+    ],
+    "gold_types": [
+     "PER"
+    ],
+    "gold_n": 1
+   }
+  ]
+ },
+ {
+  "doc_id": "loan_0008__m2718_case",
+  "n_org": 7,
+  "compounds": [
+   {
+    "doc_id": "loan_0008__m2718_case",
+    "type": "ORG",
+    "text": "ИП ВОРОБЬЁВ РОМАН ПАВЛОВИЧ",
+    "span": [
+     268,
+     294
+    ],
+    "shape": "ип_аббревиатура",
+    "n_shadowed": 1,
+    "shadowed_types": [
+     "PERSON"
+    ],
+    "gold_types": [
+     "PER"
+    ],
+    "gold_n": 1
+   },
+   {
+    "doc_id": "loan_0008__m2718_case",
+    "type": "ORG",
+    "text": "ИНДИВИДУАЛЬНЫЙ ПРЕДПРИНИМАТЕЛЬ ВОРОБЬЁВ РОМАН ПАВЛОВИЧ",
+    "span": [
+     3131,
+     3185
+    ],
+    "shape": "ип_прописью",
+    "n_shadowed": 1,
+    "shadowed_types": [
+     "PERSON"
+    ],
+    "gold_types": [
+     "PER"
+    ],
+    "gold_n": 1
+   }
+  ]
+ },
+ {
+  "doc_id": "loan_0009",
+  "n_org": 4,
+  "compounds": []
+ },
+ {
+  "doc_id": "loan_0009__m1337_invisible",
+  "n_org": 4,
+  "compounds": []
+ },
+ {
+  "doc_id": "loan_0009__m2718_case",
+  "n_org": 4,
+  "compounds": []
+ },
+ {
+  "doc_id": "loan_0010",
+  "n_org": 6,
+  "compounds": [
+   {
+    "doc_id": "loan_0010",
+    "type": "ORG",
+    "text": "ИП Нурмагомедова Хадижат Магомедовна",
+    "span": [
+     61,
+     97
+    ],
+    "shape": "ип_аббревиатура",
+    "n_shadowed": 1,
+    "shadowed_types": [
+     "PERSON"
+    ],
+    "gold_types": [
+     "PER"
+    ],
+    "gold_n": 1
+   },
+   {
+    "doc_id": "loan_0010",
+    "type": "ORG",
+    "text": "Индивидуальный предприниматель Воробьёв И. Е.",
+    "span": [
+     243,
+     288
+    ],
+    "shape": "ип_прописью",
+    "n_shadowed": 1,
+    "shadowed_types": [
+     "PERSON"
+    ],
+    "gold_types": [
+     "PER"
+    ],
+    "gold_n": 1
+   },
+   {
+    "doc_id": "loan_0010",
+    "type": "ORG",
+    "text": "Индивидуальный предприниматель Нурмагомедова Хадижат Магомедовна",
+    "span": [
+     4801,
+     4865
+    ],
+    "shape": "ип_прописью",
+    "n_shadowed": 1,
+    "shadowed_types": [
+     "PERSON"
+    ],
+    "gold_types": [
+     "PER"
+    ],
+    "gold_n": 1
+   },
+   {
+    "doc_id": "loan_0010",
+    "type": "ORG",
+    "text": "Нурмагомедова Хадижат Магомедовна\nИндивидуальный предприниматель",
+    "span": [
+     4767,
+     4831
+    ],
+    "shape": "иное",
+    "n_shadowed": 1,
+    "shadowed_types": [
+     "PERSON"
+    ],
+    "gold_types": [
+     "PER"
+    ],
+    "gold_n": 1
+   },
+   {
+    "doc_id": "loan_0010",
+    "type": "ORG",
+    "text": "Индивидуальный предприниматель Воробьёв Иван Егорович",
+    "span": [
+     5206,
+     5259
+    ],
+    "shape": "ип_прописью",
+    "n_shadowed": 1,
+    "shadowed_types": [
+     "PERSON"
+    ],
+    "gold_types": [
+     "PER"
+    ],
+    "gold_n": 1
+   }
+  ]
+ },
+ {
+  "doc_id": "loan_0010__m1337_case",
+  "n_org": 6,
+  "compounds": [
+   {
+    "doc_id": "loan_0010__m1337_case",
+    "type": "ORG",
+    "text": "ИП нУрМаГоМеДоВа хАдИжАт мАгОмЕдОвНа",
+    "span": [
+     61,
+     97
+    ],
+    "shape": "ип_аббревиатура",
+    "n_shadowed": 1,
+    "shadowed_types": [
+     "PERSON"
+    ],
+    "gold_types": [
+     "PER"
+    ],
+    "gold_n": 1
+   },
+   {
+    "doc_id": "loan_0010__m1337_case",
+    "type": "ORG",
+    "text": "Индивидуальный предприниматель вОрОбЬёВ И.",
+    "span": [
+     243,
+     285
+    ],
+    "shape": "ип_прописью",
+    "n_shadowed": 1,
+    "shadowed_types": [
+     "PERSON"
+    ],
+    "gold_types": [
+     "PER"
+    ],
+    "gold_n": 1
+   },
+   {
+    "doc_id": "loan_0010__m1337_case",
+    "type": "ORG",
+    "text": "Индивидуальный предприниматель НУРМАГОМЕДОВА ХАДИЖАТ МАГОМЕДОВНА",
+    "span": [
+     4801,
+     4865
+    ],
+    "shape": "ип_прописью",
+    "n_shadowed": 1,
+    "shadowed_types": [
+     "PERSON"
+    ],
+    "gold_types": [
+     "PER"
+    ],
+    "gold_n": 1
+   },
+   {
+    "doc_id": "loan_0010__m1337_case",
+    "type": "ORG",
+    "text": "нурмагомедова хадижат магомедовна\nИндивидуальный предприниматель",
+    "span": [
+     4767,
+     4831
+    ],
+    "shape": "иное",
+    "n_shadowed": 1,
+    "shadowed_types": [
+     "PERSON"
+    ],
+    "gold_types": [
+     "PER"
+    ],
+    "gold_n": 1
+   },
+   {
+    "doc_id": "loan_0010__m1337_case",
+    "type": "ORG",
+    "text": "Индивидуальный предприниматель ВОРОБЬЁВ ИВАН ЕГОРОВИЧ",
+    "span": [
+     5206,
+     5259
+    ],
+    "shape": "ип_прописью",
+    "n_shadowed": 1,
+    "shadowed_types": [
+     "PERSON"
+    ],
+    "gold_types": [
+     "PER"
+    ],
+    "gold_n": 1
+   }
+  ]
+ },
+ {
+  "doc_id": "loan_0010__m2718_linebreak",
+  "n_org": 2,
+  "compounds": [
+   {
+    "doc_id": "loan_0010__m2718_linebreak",
+    "type": "ORG",
+    "text": "Индивидуальный предприниматель Воробьёв \nИван Егорович",
+    "span": [
+     5247,
+     5301
+    ],
+    "shape": "ип_прописью",
+    "n_shadowed": 1,
+    "shadowed_types": [
+     "PERSON"
+    ],
+    "gold_types": [
+     "PER"
+    ],
+    "gold_n": 1
+   }
+  ]
+ },
+ {
+  "doc_id": "sale_0001",
+  "n_org": 3,
+  "compounds": [
+   {
+    "doc_id": "sale_0001",
+    "type": "ORG",
+    "text": "Индивидуальный предприниматель Максимова А. М.",
+    "span": [
+     75,
+     121
+    ],
+    "shape": "ип_прописью",
+    "n_shadowed": 1,
+    "shadowed_types": [
+     "PERSON"
+    ],
+    "gold_types": [
+     "PER"
+    ],
+    "gold_n": 1
+   },
+   {
+    "doc_id": "sale_0001",
+    "type": "ORG",
+    "text": "Индивидуальный предприниматель Максимова Анна Михайловна",
+    "span": [
+     2617,
+     2673
+    ],
+    "shape": "ип_прописью",
+    "n_shadowed": 1,
+    "shadowed_types": [
+     "PERSON"
+    ],
+    "gold_types": [
+     "PER"
+    ],
+    "gold_n": 1
+   }
+  ]
+ },
+ {
+  "doc_id": "sale_0001__m1337_digit_spaces",
+  "n_org": 3,
+  "compounds": [
+   {
+    "doc_id": "sale_0001__m1337_digit_spaces",
+    "type": "ORG",
+    "text": "Индивидуальный предприниматель Максимова А. М.",
+    "span": [
+     75,
+     121
+    ],
+    "shape": "ип_прописью",
+    "n_shadowed": 1,
+    "shadowed_types": [
+     "PERSON"
+    ],
+    "gold_types": [
+     "PER"
+    ],
+    "gold_n": 1
+   },
+   {
+    "doc_id": "sale_0001__m1337_digit_spaces",
+    "type": "ORG",
+    "text": "Индивидуальный предприниматель Максимова Анна Михайловна",
+    "span": [
+     2624,
+     2680
+    ],
+    "shape": "ип_прописью",
+    "n_shadowed": 1,
+    "shadowed_types": [
+     "PERSON"
+    ],
+    "gold_types": [
+     "PER"
+    ],
+    "gold_n": 1
+   }
+  ]
+ },
+ {
+  "doc_id": "sale_0001__m2718_linebreak",
+  "n_org": 2,
+  "compounds": [
+   {
+    "doc_id": "sale_0001__m2718_linebreak",
+    "type": "ORG",
+    "text": "Индивидуальный предприниматель Максимова Анна",
+    "span": [
+     2631,
+     2676
+    ],
+    "shape": "ип_прописью",
+    "n_shadowed": 1,
+    "shadowed_types": [
+     "PERSON"
+    ],
+    "gold_types": [
+     "PER"
+    ],
+    "gold_n": 1
+   }
+  ]
+ },
+ {
+  "doc_id": "sale_0002",
+  "n_org": 0,
+  "compounds": []
+ },
+ {
+  "doc_id": "sale_0002__m1337_linebreak",
+  "n_org": 0,
+  "compounds": []
+ },
+ {
+  "doc_id": "sale_0002__m2718_cell_split",
+  "n_org": 0,
+  "compounds": []
+ },
+ {
+  "doc_id": "sale_0003",
+  "n_org": 5,
+  "compounds": []
+ },
+ {
+  "doc_id": "sale_0003__m1337_combo",
+  "n_org": 5,
+  "compounds": []
+ },
+ {
+  "doc_id": "sale_0003__m2718_homoglyph",
+  "n_org": 5,
+  "compounds": []
+ },
+ {
+  "doc_id": "sale_0004",
+  "n_org": 6,
+  "compounds": [
+   {
+    "doc_id": "sale_0004",
+    "type": "ORG",
+    "text": "ИП Иванова-Петрова А. Ю.",
+    "span": [
+     255,
+     279
+    ],
+    "shape": "ип_аббревиатура",
+    "n_shadowed": 1,
+    "shadowed_types": [
+     "PERSON"
+    ],
+    "gold_types": [
+     "PER"
+    ],
+    "gold_n": 1
+   },
+   {
+    "doc_id": "sale_0004",
+    "type": "ORG",
+    "text": "Индивидуальный предприниматель Иванова-Петрова Алла Юрьевна",
+    "span": [
+     2964,
+     3023
+    ],
+    "shape": "ип_прописью",
+    "n_shadowed": 1,
+    "shadowed_types": [
+     "PERSON"
+    ],
+    "gold_types": [
+     "PER"
+    ],
+    "gold_n": 1
+   }
+  ]
+ },
+ {
+  "doc_id": "sale_0004__m1337_cell_split",
+  "n_org": 6,
+  "compounds": [
+   {
+    "doc_id": "sale_0004__m1337_cell_split",
+    "type": "ORG",
+    "text": "ИП Иванова-Петрова А. Ю.",
+    "span": [
+     255,
+     279
+    ],
+    "shape": "ип_аббревиатура",
+    "n_shadowed": 1,
+    "shadowed_types": [
+     "PERSON"
+    ],
+    "gold_types": [
+     "PER"
+    ],
+    "gold_n": 1
+   },
+   {
+    "doc_id": "sale_0004__m1337_cell_split",
+    "type": "ORG",
+    "text": "Индивидуальный предприниматель Иванова-Петрова Алла Юрьевна",
+    "span": [
+     2964,
+     3023
+    ],
+    "shape": "ип_прописью",
+    "n_shadowed": 1,
+    "shadowed_types": [
+     "PERSON"
+    ],
+    "gold_types": [
+     "PER"
+    ],
+    "gold_n": 1
+   }
+  ]
+ },
+ {
+  "doc_id": "sale_0004__m2718_invisible",
+  "n_org": 6,
+  "compounds": [
+   {
+    "doc_id": "sale_0004__m2718_invisible",
+    "type": "ORG",
+    "text": "ИП И ванова-Пе­трова А. Ю­.",
+    "span": [
+     270,
+     297
+    ],
+    "shape": "ип_аббревиатура",
+    "n_shadowed": 1,
+    "shadowed_types": [
+     "PERSON"
+    ],
+    "gold_types": [
+     "PER"
+    ],
+    "gold_n": 1
+   },
+   {
+    "doc_id": "sale_0004__m2718_invisible",
+    "type": "ORG",
+    "text": "Индивидуальный предприниматель Иванова-Петрова Алла​  Юрь​евна",
+    "span": [
+     3047,
+     3109
+    ],
+    "shape": "ип_прописью",
+    "n_shadowed": 1,
+    "shadowed_types": [
+     "PERSON"
+    ],
+    "gold_types": [
+     "PER"
+    ],
+    "gold_n": 1
+   }
+  ]
+ },
+ {
+  "doc_id": "sale_0005",
+  "n_org": 4,
+  "compounds": []
+ },
+ {
+  "doc_id": "sale_0005__m1337_invisible",
+  "n_org": 4,
+  "compounds": []
+ },
+ {
+  "doc_id": "sale_0005__m2718_case",
+  "n_org": 4,
+  "compounds": []
+ },
+ {
+  "doc_id": "sale_0006",
+  "n_org": 7,
+  "compounds": [
+   {
+    "doc_id": "sale_0006",
+    "type": "ORG",
+    "text": "ИП Лебедева О. П.",
+    "span": [
+     68,
+     85
+    ],
+    "shape": "ип_аббревиатура",
+    "n_shadowed": 1,
+    "shadowed_types": [
+     "PERSON"
+    ],
+    "gold_types": [
+     "PER"
+    ],
+    "gold_n": 1
+   },
+   {
+    "doc_id": "sale_0006",
+    "type": "ORG",
+    "text": "Индивидуальный предприниматель Волков В. С.",
+    "span": [
+     229,
+     272
+    ],
+    "shape": "ип_прописью",
+    "n_shadowed": 1,
+    "shadowed_types": [
+     "PERSON"
+    ],
+    "gold_types": [
+     "PER"
+    ],
+    "gold_n": 1
+   },
+   {
+    "doc_id": "sale_0006",
+    "type": "ORG",
+    "text": "Индивидуальный предприниматель Лебедева Ольга Павловна",
+    "span": [
+     2645,
+     2699
+    ],
+    "shape": "ип_прописью",
+    "n_shadowed": 1,
+    "shadowed_types": [
+     "PERSON"
+    ],
+    "gold_types": [
+     "PER"
+    ],
+    "gold_n": 1
+   },
+   {
+    "doc_id": "sale_0006",
+    "type": "ORG",
+    "text": "Лебедева Ольга Павловна\nИндивидуальный предприниматель",
+    "span": [
+     2621,
+     2675
+    ],
+    "shape": "иное",
+    "n_shadowed": 1,
+    "shadowed_types": [
+     "PERSON"
+    ],
+    "gold_types": [
+     "PER"
+    ],
+    "gold_n": 1
+   },
+   {
+    "doc_id": "sale_0006",
+    "type": "ORG",
+    "text": "Индивидуальный предприниматель Волков Владимир Сергеевич",
+    "span": [
+     2994,
+     3050
+    ],
+    "shape": "ип_прописью",
+    "n_shadowed": 1,
+    "shadowed_types": [
+     "PERSON"
+    ],
+    "gold_types": [
+     "PER"
+    ],
+    "gold_n": 1
+   }
+  ]
+ },
+ {
+  "doc_id": "sale_0006__m1337_invisible",
+  "n_org": 7,
+  "compounds": [
+   {
+    "doc_id": "sale_0006__m1337_invisible",
+    "type": "ORG",
+    "text": "ИП Ле​беде ва О. П.",
+    "span": [
+     72,
+     91
+    ],
+    "shape": "ип_аббревиатура",
+    "n_shadowed": 1,
+    "shadowed_types": [
+     "PERSON"
+    ],
+    "gold_types": [
+     "PER"
+    ],
+    "gold_n": 1
+   },
+   {
+    "doc_id": "sale_0006__m1337_invisible",
+    "type": "ORG",
+    "text": "Индивидуальный предприниматель Волко‍в В­. С.",
+    "span": [
+     237,
+     282
+    ],
+    "shape": "ип_прописью",
+    "n_shadowed": 1,
+    "shadowed_types": [
+     "PERSON"
+    ],
+    "gold_types": [
+     "PER"
+    ],
+    "gold_n": 1
+   },
+   {
+    "doc_id": "sale_0006__m1337_invisible",
+    "type": "ORG",
+    "text": "Индивидуальный предприниматель Лебедева ‍Оль га Павл​овна",
+    "span": [
+     2689,
+     2746
+    ],
+    "shape": "ип_прописью",
+    "n_shadowed": 1,
+    "shadowed_types": [
+     "PERSON"
+    ],
+    "gold_types": [
+     "PER"
+    ],
+    "gold_n": 1
+   },
+   {
+    "doc_id": "sale_0006__m1337_invisible",
+    "type": "ORG",
+    "text": "Ле‍б ед ева Ольга Павловна\nИндивидуальный предприниматель",
+    "span": [
+     2662,
+     2719
+    ],
+    "shape": "иное",
+    "n_shadowed": 1,
+    "shadowed_types": [
+     "PERSON"
+    ],
+    "gold_types": [
+     "PER"
+    ],
+    "gold_n": 1
+   },
+   {
+    "doc_id": "sale_0006__m1337_invisible",
+    "type": "ORG",
+    "text": "Индивидуальный предприниматель Волков Вла­димир Се­ргее‍вич",
+    "span": [
+     3065,
+     3124
+    ],
+    "shape": "ип_прописью",
+    "n_shadowed": 1,
+    "shadowed_types": [
+     "PERSON"
+    ],
+    "gold_types": [
+     "PER"
+    ],
+    "gold_n": 1
+   }
+  ]
+ },
+ {
+  "doc_id": "sale_0006__m2718_digit_spaces",
+  "n_org": 7,
+  "compounds": [
+   {
+    "doc_id": "sale_0006__m2718_digit_spaces",
+    "type": "ORG",
+    "text": "ИП Лебедева О. П.",
+    "span": [
+     70,
+     87
+    ],
+    "shape": "ип_аббревиатура",
+    "n_shadowed": 1,
+    "shadowed_types": [
+     "PERSON"
+    ],
+    "gold_types": [
+     "PER"
+    ],
+    "gold_n": 1
+   },
+   {
+    "doc_id": "sale_0006__m2718_digit_spaces",
+    "type": "ORG",
+    "text": "Индивидуальный предприниматель Волков В. С.",
+    "span": [
+     234,
+     277
+    ],
+    "shape": "ип_прописью",
+    "n_shadowed": 1,
+    "shadowed_types": [
+     "PERSON"
+    ],
+    "gold_types": [
+     "PER"
+    ],
+    "gold_n": 1
+   },
+   {
+    "doc_id": "sale_0006__m2718_digit_spaces",
+    "type": "ORG",
+    "text": "Индивидуальный предприниматель Лебедева Ольга Павловна",
+    "span": [
+     2660,
+     2714
+    ],
+    "shape": "ип_прописью",
+    "n_shadowed": 1,
+    "shadowed_types": [
+     "PERSON"
+    ],
+    "gold_types": [
+     "PER"
+    ],
+    "gold_n": 1
+   },
+   {
+    "doc_id": "sale_0006__m2718_digit_spaces",
+    "type": "ORG",
+    "text": "Лебедева Ольга Павловна\nИндивидуальный предприниматель",
+    "span": [
+     2636,
+     2690
+    ],
+    "shape": "иное",
+    "n_shadowed": 1,
+    "shadowed_types": [
+     "PERSON"
+    ],
+    "gold_types": [
+     "PER"
+    ],
+    "gold_n": 1
+   },
+   {
+    "doc_id": "sale_0006__m2718_digit_spaces",
+    "type": "ORG",
+    "text": "Индивидуальный предприниматель Волков Владимир Сергеевич",
+    "span": [
+     3022,
+     3078
+    ],
+    "shape": "ип_прописью",
+    "n_shadowed": 1,
+    "shadowed_types": [
+     "PERSON"
+    ],
+    "gold_types": [
+     "PER"
+    ],
+    "gold_n": 1
+   }
+  ]
+ },
+ {
+  "doc_id": "sale_0007",
+  "n_org": 3,
+  "compounds": [
+   {
+    "doc_id": "sale_0007",
+    "type": "ORG",
+    "text": "ИП Белов Ю. А.",
+    "span": [
+     75,
+     89
+    ],
+    "shape": "ип_аббревиатура",
+    "n_shadowed": 1,
+    "shadowed_types": [
+     "PERSON"
+    ],
+    "gold_types": [
+     "PER"
+    ],
+    "gold_n": 1
+   },
+   {
+    "doc_id": "sale_0007",
+    "type": "ORG",
+    "text": "Индивидуальный предприниматель Белов Юрий Алексеевич",
+    "span": [
+     2674,
+     2726
+    ],
+    "shape": "ип_прописью",
+    "n_shadowed": 1,
+    "shadowed_types": [
+     "PERSON"
+    ],
+    "gold_types": [
+     "PER"
+    ],
+    "gold_n": 1
+   }
+  ]
+ },
+ {
+  "doc_id": "sale_0007__m1337_digit_spaces",
+  "n_org": 3,
+  "compounds": [
+   {
+    "doc_id": "sale_0007__m1337_digit_spaces",
+    "type": "ORG",
+    "text": "ИП Белов Ю. А.",
+    "span": [
+     75,
+     89
+    ],
+    "shape": "ип_аббревиатура",
+    "n_shadowed": 1,
+    "shadowed_types": [
+     "PERSON"
+    ],
+    "gold_types": [
+     "PER"
+    ],
+    "gold_n": 1
+   },
+   {
+    "doc_id": "sale_0007__m1337_digit_spaces",
+    "type": "ORG",
+    "text": "Индивидуальный предприниматель Белов Юрий Алексеевич",
+    "span": [
+     2682,
+     2734
+    ],
+    "shape": "ип_прописью",
+    "n_shadowed": 1,
+    "shadowed_types": [
+     "PERSON"
+    ],
+    "gold_types": [
+     "PER"
+    ],
+    "gold_n": 1
+   }
+  ]
+ },
+ {
+  "doc_id": "sale_0007__m2718_linebreak",
+  "n_org": 2,
+  "compounds": [
+   {
+    "doc_id": "sale_0007__m2718_linebreak",
+    "type": "ORG",
+    "text": "Индивидуальный предприниматель Белов Юрий Але",
+    "span": [
+     2695,
+     2740
+    ],
+    "shape": "ип_прописью",
+    "n_shadowed": 1,
+    "shadowed_types": [
+     "PERSON"
+    ],
+    "gold_types": [
+     "PER"
+    ],
+    "gold_n": 1
+   }
+  ]
+ },
+ {
+  "doc_id": "sale_0008",
+  "n_org": 1,
+  "compounds": [
+   {
+    "doc_id": "sale_0008",
+    "type": "ORG",
+    "text": "ИП Ершова И. А.",
+    "span": [
+     0,
+     15
+    ],
+    "shape": "ип_аббревиатура",
+    "n_shadowed": 1,
+    "shadowed_types": [
+     "PERSON"
+    ],
+    "gold_types": [],
+    "gold_n": 0
+   }
+  ]
+ },
+ {
+  "doc_id": "sale_0008__m1337_digit_spaces",
+  "n_org": 1,
+  "compounds": [
+   {
+    "doc_id": "sale_0008__m1337_digit_spaces",
+    "type": "ORG",
+    "text": "ИП Ершова И. А.",
+    "span": [
+     0,
+     15
+    ],
+    "shape": "ип_аббревиатура",
+    "n_shadowed": 1,
+    "shadowed_types": [
+     "PERSON"
+    ],
+    "gold_types": [],
+    "gold_n": 0
+   }
+  ]
+ },
+ {
+  "doc_id": "sale_0008__m2718_combo",
+  "n_org": 1,
+  "compounds": [
+   {
+    "doc_id": "sale_0008__m2718_combo",
+    "type": "ORG",
+    "text": "ИП Ершова И. А.",
+    "span": [
+     0,
+     15
+    ],
+    "shape": "ип_аббревиатура",
+    "n_shadowed": 1,
+    "shadowed_types": [
+     "PERSON"
+    ],
+    "gold_types": [],
+    "gold_n": 0
+   }
+  ]
+ },
+ {
+  "doc_id": "sale_0009",
+  "n_org": 6,
+  "compounds": []
+ },
+ {
+  "doc_id": "sale_0009__m1337_combo",
+  "n_org": 6,
+  "compounds": []
+ },
+ {
+  "doc_id": "sale_0009__m2718_homoglyph",
+  "n_org": 6,
+  "compounds": []
+ },
+ {
+  "doc_id": "sale_0010",
+  "n_org": 6,
+  "compounds": [
+   {
+    "doc_id": "sale_0010",
+    "type": "ORG",
+    "text": "Индивидуальный предприниматель Иванова-Петрова Алла Юрьевна",
+    "span": [
+     223,
+     282
+    ],
+    "shape": "ип_прописью",
+    "n_shadowed": 1,
+    "shadowed_types": [
+     "PERSON"
+    ],
+    "gold_types": [
+     "PER"
+    ],
+    "gold_n": 1
+   },
+   {
+    "doc_id": "sale_0010",
+    "type": "ORG",
+    "text": "Индивидуальный предприниматель Иванова-Петрова Алла Юрьевна",
+    "span": [
+     3099,
+     3158
+    ],
+    "shape": "ип_прописью",
+    "n_shadowed": 1,
+    "shadowed_types": [
+     "PERSON"
+    ],
+    "gold_types": [
+     "PER"
+    ],
+    "gold_n": 1
+   }
+  ]
+ },
+ {
+  "doc_id": "sale_0010__m1337_combo",
+  "n_org": 6,
+  "compounds": [
+   {
+    "doc_id": "sale_0010__m1337_combo",
+    "type": "ORG",
+    "text": "Индивидуальный предприниматель иВаНоВа-пЕтРoВа а лЛа юР​ЬеВ⁠Нa",
+    "span": [
+     228,
+     290
+    ],
+    "shape": "ип_прописью",
+    "n_shadowed": 1,
+    "shadowed_types": [
+     "PERSON"
+    ],
+    "gold_types": [
+     "PER"
+    ],
+    "gold_n": 1
+   },
+   {
+    "doc_id": "sale_0010__m1337_combo",
+    "type": "ORG",
+    "text": "Индивидуальный предприниматель иванoва-пeтровa   аллa юрь­евна",
+    "span": [
+     3180,
+     3242
+    ],
+    "shape": "ип_прописью",
+    "n_shadowed": 1,
+    "shadowed_types": [
+     "PERSON"
+    ],
+    "gold_types": [
+     "PER"
+    ],
+    "gold_n": 1
+   }
+  ]
+ },
+ {
+  "doc_id": "sale_0010__m2718_homoglyph",
+  "n_org": 6,
+  "compounds": [
+   {
+    "doc_id": "sale_0010__m2718_homoglyph",
+    "type": "ORG",
+    "text": "Индивидуальный предприниматель Ивановa-Пeтрова Aллa Юрьевна",
+    "span": [
+     223,
+     282
+    ],
+    "shape": "ип_прописью",
+    "n_shadowed": 1,
+    "shadowed_types": [
+     "PERSON"
+    ],
+    "gold_types": [
+     "PER"
+    ],
+    "gold_n": 1
+   },
+   {
+    "doc_id": "sale_0010__m2718_homoglyph",
+    "type": "ORG",
+    "text": "Индивидуальный предприниматель Ивaнoва-Петpoва Алла Юрьевна",
+    "span": [
+     3099,
+     3158
+    ],
+    "shape": "ип_прописью",
+    "n_shadowed": 1,
+    "shadowed_types": [
+     "PERSON"
+    ],
+    "gold_types": [
+     "PER"
+    ],
+    "gold_n": 1
+   }
+  ]
+ },
+ {
+  "doc_id": "sale_0011",
+  "n_org": 3,
+  "compounds": []
+ },
+ {
+  "doc_id": "sale_0011__m1337_invisible",
+  "n_org": 3,
+  "compounds": []
+ },
+ {
+  "doc_id": "sale_0011__m2718_case",
+  "n_org": 3,
+  "compounds": []
+ },
+ {
+  "doc_id": "sale_0012",
+  "n_org": 4,
+  "compounds": [
+   {
+    "doc_id": "sale_0012",
+    "type": "ORG",
+    "text": "Индивидуальный предприниматель Сидоров Д. В.",
+    "span": [
+     71,
+     115
+    ],
+    "shape": "ип_прописью",
+    "n_shadowed": 1,
+    "shadowed_types": [
+     "PERSON"
+    ],
+    "gold_types": [
+     "PER"
+    ],
+    "gold_n": 1
+   },
+   {
+    "doc_id": "sale_0012",
+    "type": "ORG",
+    "text": "Индивидуальный предприниматель Смирнов И. П.",
+    "span": [
+     259,
+     303
+    ],
+    "shape": "ип_прописью",
+    "n_shadowed": 1,
+    "shadowed_types": [
+     "PERSON"
+    ],
+    "gold_types": [
+     "PER"
+    ],
+    "gold_n": 1
+   },
+   {
+    "doc_id": "sale_0012",
+    "type": "ORG",
+    "text": "Индивидуальный предприниматель Сидоров Дмитрий Владимирович",
+    "span": [
+     4850,
+     4909
+    ],
+    "shape": "ип_прописью",
+    "n_shadowed": 1,
+    "shadowed_types": [
+     "PERSON"
+    ],
+    "gold_types": [
+     "PER"
+    ],
+    "gold_n": 1
+   },
+   {
+    "doc_id": "sale_0012",
+    "type": "ORG",
+    "text": "Индивидуальный предприниматель Смирнов Иван Павлович",
+    "span": [
+     5158,
+     5210
+    ],
+    "shape": "ип_прописью",
+    "n_shadowed": 1,
+    "shadowed_types": [
+     "PERSON"
+    ],
+    "gold_types": [
+     "PER"
+    ],
+    "gold_n": 1
+   }
+  ]
+ },
+ {
+  "doc_id": "sale_0012__m1337_homoglyph",
+  "n_org": 3,
+  "compounds": [
+   {
+    "doc_id": "sale_0012__m1337_homoglyph",
+    "type": "ORG",
+    "text": "Индивидуальный предприниматель Сmирнов И. П.",
+    "span": [
+     259,
+     303
+    ],
+    "shape": "ип_прописью",
+    "n_shadowed": 1,
+    "shadowed_types": [
+     "PERSON"
+    ],
+    "gold_types": [
+     "PER"
+    ],
+    "gold_n": 1
+   },
+   {
+    "doc_id": "sale_0012__m1337_homoglyph",
+    "type": "ORG",
+    "text": "Индивидуальный предприниматель Cидоpoв Дmитрий Владимирович",
+    "span": [
+     4850,
+     4909
+    ],
+    "shape": "ип_прописью",
+    "n_shadowed": 1,
+    "shadowed_types": [
+     "PERSON"
+    ],
+    "gold_types": [
+     "PER"
+    ],
+    "gold_n": 1
+   },
+   {
+    "doc_id": "sale_0012__m1337_homoglyph",
+    "type": "ORG",
+    "text": "Индивидуальный предприниматель Cmиpнoв Иван Павлович",
+    "span": [
+     5158,
+     5210
+    ],
+    "shape": "ип_прописью",
+    "n_shadowed": 1,
+    "shadowed_types": [
+     "PERSON"
+    ],
+    "gold_types": [
+     "PER"
+    ],
+    "gold_n": 1
+   }
+  ]
+ },
+ {
+  "doc_id": "sale_0012__m2718_case",
+  "n_org": 4,
+  "compounds": [
+   {
+    "doc_id": "sale_0012__m2718_case",
+    "type": "ORG",
+    "text": "Индивидуальный предприниматель СИДОРОВ Д. В.",
+    "span": [
+     71,
+     115
+    ],
+    "shape": "ип_прописью",
+    "n_shadowed": 1,
+    "shadowed_types": [
+     "PERSON"
+    ],
+    "gold_types": [
+     "PER"
+    ],
+    "gold_n": 1
+   },
+   {
+    "doc_id": "sale_0012__m2718_case",
+    "type": "ORG",
+    "text": "иНдИвИдУаЛьНыЙ ПрЕдПрИнИмАтЕлЬ сМиРнОв",
+    "span": [
+     259,
+     297
+    ],
+    "shape": "ип_прописью",
+    "n_shadowed": 1,
+    "shadowed_types": [
+     "PERSON"
+    ],
+    "gold_types": [
+     "PER"
+    ],
+    "gold_n": 1
+   },
+   {
+    "doc_id": "sale_0012__m2718_case",
+    "type": "ORG",
+    "text": "Индивидуальный предприниматель сИдОрОв дМиТрИй вЛаДиМиРоВиЧ",
+    "span": [
+     4850,
+     4909
+    ],
+    "shape": "ип_прописью",
+    "n_shadowed": 1,
+    "shadowed_types": [
+     "PERSON"
+    ],
+    "gold_types": [
+     "PER"
+    ],
+    "gold_n": 1
+   },
+   {
+    "doc_id": "sale_0012__m2718_case",
+    "type": "ORG",
+    "text": "Индивидуальный предприниматель СМИРНОВ ИВАН ПАВЛОВИЧ",
+    "span": [
+     5158,
+     5210
+    ],
+    "shape": "ип_прописью",
+    "n_shadowed": 1,
+    "shadowed_types": [
+     "PERSON"
+    ],
+    "gold_types": [
+     "PER"
+    ],
+    "gold_n": 1
+   }
+  ]
+ },
+ {
+  "doc_id": "sale_0013",
+  "n_org": 2,
+  "compounds": [
+   {
+    "doc_id": "sale_0013",
+    "type": "ORG",
+    "text": "ИП Ершова И. И.",
+    "span": [
+     77,
+     92
+    ],
+    "shape": "ип_аббревиатура",
+    "n_shadowed": 1,
+    "shadowed_types": [
+     "PERSON"
+    ],
+    "gold_types": [
+     "PER"
+    ],
+    "gold_n": 1
+   },
+   {
+    "doc_id": "sale_0013",
+    "type": "ORG",
+    "text": "Индивидуальный предприниматель Ершова Ирина Ивановна",
+    "span": [
+     2583,
+     2635
+    ],
+    "shape": "ип_прописью",
+    "n_shadowed": 1,
+    "shadowed_types": [
+     "PERSON"
+    ],
+    "gold_types": [
+     "PER"
+    ],
+    "gold_n": 1
+   }
+  ]
+ },
+ {
+  "doc_id": "sale_0013__m1337_digit_spaces",
+  "n_org": 2,
+  "compounds": [
+   {
+    "doc_id": "sale_0013__m1337_digit_spaces",
+    "type": "ORG",
+    "text": "ИП Ершова И. И.",
+    "span": [
+     78,
+     93
+    ],
+    "shape": "ип_аббревиатура",
+    "n_shadowed": 1,
+    "shadowed_types": [
+     "PERSON"
+    ],
+    "gold_types": [
+     "PER"
+    ],
+    "gold_n": 1
+   },
+   {
+    "doc_id": "sale_0013__m1337_digit_spaces",
+    "type": "ORG",
+    "text": "Индивидуальный предприниматель Ершова Ирина Ивановна",
+    "span": [
+     2603,
+     2655
+    ],
+    "shape": "ип_прописью",
+    "n_shadowed": 1,
+    "shadowed_types": [
+     "PERSON"
+    ],
+    "gold_types": [
+     "PER"
+    ],
+    "gold_n": 1
+   }
+  ]
+ },
+ {
+  "doc_id": "sale_0013__m2718_linebreak",
+  "n_org": 0,
+  "compounds": []
+ },
+ {
+  "doc_id": "sale_0014",
+  "n_org": 0,
+  "compounds": []
+ },
+ {
+  "doc_id": "sale_0014__m1337_case",
+  "n_org": 0,
+  "compounds": []
+ },
+ {
+  "doc_id": "sale_0014__m2718_linebreak",
+  "n_org": 0,
+  "compounds": []
+ },
+ {
+  "doc_id": "services_0001",
+  "n_org": 3,
+  "compounds": [
+   {
+    "doc_id": "services_0001",
+    "type": "ORG",
+    "text": "ИП Никитина Екатерина Николаевна",
+    "span": [
+     92,
+     124
+    ],
+    "shape": "ип_аббревиатура",
+    "n_shadowed": 1,
+    "shadowed_types": [
+     "PERSON"
+    ],
+    "gold_types": [
+     "PER"
+    ],
+    "gold_n": 1
+   },
+   {
+    "doc_id": "services_0001",
+    "type": "ORG",
+    "text": "Индивидуальный предприниматель Никитина Екатерина Николаевна",
+    "span": [
+     2548,
+     2608
+    ],
+    "shape": "ип_прописью",
+    "n_shadowed": 1,
+    "shadowed_types": [
+     "PERSON"
+    ],
+    "gold_types": [
+     "PER"
+    ],
+    "gold_n": 1
+   }
+  ]
+ },
+ {
+  "doc_id": "services_0001__m1337_combo",
+  "n_org": 3,
+  "compounds": [
+   {
+    "doc_id": "services_0001__m1337_combo",
+    "type": "ORG",
+    "text": "ИП hиkитинa  е­kатерина нико‍лаевна",
+    "span": [
+     93,
+     128
+    ],
+    "shape": "ип_аббревиатура",
+    "n_shadowed": 1,
+    "shadowed_types": [
+     "PERSON"
+    ],
+    "gold_types": [
+     "PER"
+    ],
+    "gold_n": 1
+   },
+   {
+    "doc_id": "services_0001__m1337_combo",
+    "type": "ORG",
+    "text": "Индивидуальный предприниматель h‍иkи‍тинa еkатерина ​николаевна",
+    "span": [
+     2595,
+     2658
+    ],
+    "shape": "ип_прописью",
+    "n_shadowed": 1,
+    "shadowed_types": [
+     "PERSON"
+    ],
+    "gold_types": [
+     "PER"
+    ],
+    "gold_n": 1
+   }
+  ]
+ },
+ {
+  "doc_id": "services_0001__m2718_homoglyph",
+  "n_org": 3,
+  "compounds": [
+   {
+    "doc_id": "services_0001__m2718_homoglyph",
+    "type": "ORG",
+    "text": "ИП Hикитина Еkaтеринa Николаевна",
+    "span": [
+     92,
+     124
+    ],
+    "shape": "ип_аббревиатура",
+    "n_shadowed": 1,
+    "shadowed_types": [
+     "PERSON"
+    ],
+    "gold_types": [
+     "PER"
+    ],
+    "gold_n": 1
+   },
+   {
+    "doc_id": "services_0001__m2718_homoglyph",
+    "type": "ORG",
+    "text": "Индивидуальный предприниматель Никитинa Екaтеpина Ниkолаевна",
+    "span": [
+     2548,
+     2608
+    ],
+    "shape": "ип_прописью",
+    "n_shadowed": 1,
+    "shadowed_types": [
+     "PERSON"
+    ],
+    "gold_types": [
+     "PER"
+    ],
+    "gold_n": 1
+   }
+  ]
+ },
+ {
+  "doc_id": "services_0002",
+  "n_org": 0,
+  "compounds": []
+ },
+ {
+  "doc_id": "services_0002__m1337_linebreak",
+  "n_org": 0,
+  "compounds": []
+ },
+ {
+  "doc_id": "services_0002__m2718_cell_split",
+  "n_org": 0,
+  "compounds": []
+ },
+ {
+  "doc_id": "services_0003",
+  "n_org": 6,
+  "compounds": []
+ },
+ {
+  "doc_id": "services_0003__m1337_invisible",
+  "n_org": 6,
+  "compounds": []
+ },
+ {
+  "doc_id": "services_0003__m2718_case",
+  "n_org": 6,
+  "compounds": []
+ },
+ {
+  "doc_id": "services_0004",
+  "n_org": 7,
+  "compounds": [
+   {
+    "doc_id": "services_0004",
+    "type": "ORG",
+    "text": "ИП Белов Р. Д.",
+    "span": [
+     306,
+     320
+    ],
+    "shape": "ип_аббревиатура",
+    "n_shadowed": 1,
+    "shadowed_types": [
+     "PERSON"
+    ],
+    "gold_types": [
+     "PER"
+    ],
+    "gold_n": 1
+   },
+   {
+    "doc_id": "services_0004",
+    "type": "ORG",
+    "text": "Индивидуальный предприниматель Белов Роман Дмитриевич",
+    "span": [
+     2942,
+     2995
+    ],
+    "shape": "ип_прописью",
+    "n_shadowed": 1,
+    "shadowed_types": [
+     "PERSON"
+    ],
+    "gold_types": [
+     "PER"
+    ],
+    "gold_n": 1
+   }
+  ]
+ },
+ {
+  "doc_id": "services_0004__m1337_cell_split",
+  "n_org": 7,
+  "compounds": [
+   {
+    "doc_id": "services_0004__m1337_cell_split",
+    "type": "ORG",
+    "text": "ИП Белов Р. Д.",
+    "span": [
+     306,
+     320
+    ],
+    "shape": "ип_аббревиатура",
+    "n_shadowed": 1,
+    "shadowed_types": [
+     "PERSON"
+    ],
+    "gold_types": [
+     "PER"
+    ],
+    "gold_n": 1
+   },
+   {
+    "doc_id": "services_0004__m1337_cell_split",
+    "type": "ORG",
+    "text": "Индивидуальный предприниматель Белов Роман Дмитриевич",
+    "span": [
+     2942,
+     2995
+    ],
+    "shape": "ип_прописью",
+    "n_shadowed": 1,
+    "shadowed_types": [
+     "PERSON"
+    ],
+    "gold_types": [
+     "PER"
+    ],
+    "gold_n": 1
+   }
+  ]
+ },
+ {
+  "doc_id": "services_0004__m2718_invisible",
+  "n_org": 6,
+  "compounds": [
+   {
+    "doc_id": "services_0004__m2718_invisible",
+    "type": "ORG",
+    "text": "Индивидуальный предприниматель Белов Роман​ Дми​т риевич",
+    "span": [
+     3008,
+     3064
+    ],
+    "shape": "ип_прописью",
+    "n_shadowed": 1,
+    "shadowed_types": [
+     "PERSON"
+    ],
+    "gold_types": [
+     "PER"
+    ],
+    "gold_n": 1
+   }
+  ]
+ },
+ {
+  "doc_id": "services_0005",
+  "n_org": 3,
+  "compounds": []
+ },
+ {
+  "doc_id": "services_0005__m1337_digit_spaces",
+  "n_org": 3,
+  "compounds": []
+ },
+ {
+  "doc_id": "services_0005__m2718_linebreak",
+  "n_org": 1,
+  "compounds": []
+ },
+ {
+  "doc_id": "services_0006",
+  "n_org": 6,
+  "compounds": [
+   {
+    "doc_id": "services_0006",
+    "type": "ORG",
+    "text": "Индивидуальный предприниматель Фёдоров А. Д.",
+    "span": [
+     84,
+     128
+    ],
+    "shape": "ип_прописью",
+    "n_shadowed": 1,
+    "shadowed_types": [
+     "PERSON"
+    ],
+    "gold_types": [
+     "PER"
+    ],
+    "gold_n": 1
+   },
+   {
+    "doc_id": "services_0006",
+    "type": "ORG",
+    "text": "ИП Петров Владимир Дмитриевич",
+    "span": [
+     275,
+     304
+    ],
+    "shape": "ип_аббревиатура",
+    "n_shadowed": 1,
+    "shadowed_types": [
+     "PERSON"
+    ],
+    "gold_types": [
+     "PER"
+    ],
+    "gold_n": 1
+   },
+   {
+    "doc_id": "services_0006",
+    "type": "ORG",
+    "text": "Индивидуальный предприниматель Фёдоров Алексей Дмитриевич",
+    "span": [
+     4627,
+     4684
+    ],
+    "shape": "ип_прописью",
+    "n_shadowed": 1,
+    "shadowed_types": [
+     "PERSON"
+    ],
+    "gold_types": [
+     "PER"
+    ],
+    "gold_n": 1
+   },
+   {
+    "doc_id": "services_0006",
+    "type": "ORG",
+    "text": "Индивидуальный предприниматель Петров Владимир Дмитриевич",
+    "span": [
+     5019,
+     5076
+    ],
+    "shape": "ип_прописью",
+    "n_shadowed": 1,
+    "shadowed_types": [
+     "PERSON"
+    ],
+    "gold_types": [
+     "PER"
+    ],
+    "gold_n": 1
+   }
+  ]
+ },
+ {
+  "doc_id": "services_0006__m1337_invisible",
+  "n_org": 6,
+  "compounds": [
+   {
+    "doc_id": "services_0006__m1337_invisible",
+    "type": "ORG",
+    "text": "Индивидуальный предприниматель Фёдоро‍в ​А. Д.",
+    "span": [
+     84,
+     130
+    ],
+    "shape": "ип_прописью",
+    "n_shadowed": 1,
+    "shadowed_types": [
+     "PERSON"
+    ],
+    "gold_types": [
+     "PER"
+    ],
+    "gold_n": 1
+   },
+   {
+    "doc_id": "services_0006__m1337_invisible",
+    "type": "ORG",
+    "text": "ИП Петров Влади мир Д‍м­итриевич",
+    "span": [
+     279,
+     311
+    ],
+    "shape": "ип_аббревиатура",
+    "n_shadowed": 1,
+    "shadowed_types": [
+     "PERSON"
+    ],
+    "gold_types": [
+     "PER"
+    ],
+    "gold_n": 1
+   },
+   {
+    "doc_id": "services_0006__m1337_invisible",
+    "type": "ORG",
+    "text": "Индивидуальный предприниматель Фёдо ров Алексей Д мит⁠риевич",
+    "span": [
+     4689,
+     4749
+    ],
+    "shape": "ип_прописью",
+    "n_shadowed": 1,
+    "shadowed_types": [
+     "PERSON"
+    ],
+    "gold_types": [
+     "PER"
+    ],
+    "gold_n": 1
+   },
+   {
+    "doc_id": "services_0006__m1337_invisible",
+    "type": "ORG",
+    "text": "Индивидуальный предприниматель Петров Вл‍адим​ир Дмитриев ич",
+    "span": [
+     5112,
+     5172
+    ],
+    "shape": "ип_прописью",
+    "n_shadowed": 1,
+    "shadowed_types": [
+     "PERSON"
+    ],
+    "gold_types": [
+     "PER"
+    ],
+    "gold_n": 1
+   }
+  ]
+ },
+ {
+  "doc_id": "services_0006__m2718_digit_spaces",
+  "n_org": 6,
+  "compounds": [
+   {
+    "doc_id": "services_0006__m2718_digit_spaces",
+    "type": "ORG",
+    "text": "Индивидуальный предприниматель Фёдоров А. Д.",
+    "span": [
+     84,
+     128
+    ],
+    "shape": "ип_прописью",
+    "n_shadowed": 1,
+    "shadowed_types": [
+     "PERSON"
+    ],
+    "gold_types": [
+     "PER"
+    ],
+    "gold_n": 1
+   },
+   {
+    "doc_id": "services_0006__m2718_digit_spaces",
+    "type": "ORG",
+    "text": "ИП Петров Владимир Дмитриевич",
+    "span": [
+     279,
+     308
+    ],
+    "shape": "ип_аббревиатура",
+    "n_shadowed": 1,
+    "shadowed_types": [
+     "PERSON"
+    ],
+    "gold_types": [
+     "PER"
+    ],
+    "gold_n": 1
+   },
+   {
+    "doc_id": "services_0006__m2718_digit_spaces",
+    "type": "ORG",
+    "text": "Индивидуальный предприниматель Фёдоров Алексей Дмитриевич",
+    "span": [
+     4638,
+     4695
+    ],
+    "shape": "ип_прописью",
+    "n_shadowed": 1,
+    "shadowed_types": [
+     "PERSON"
+    ],
+    "gold_types": [
+     "PER"
+    ],
+    "gold_n": 1
+   },
+   {
+    "doc_id": "services_0006__m2718_digit_spaces",
+    "type": "ORG",
+    "text": "Индивидуальный предприниматель Петров Владимир Дмитриевич",
+    "span": [
+     5043,
+     5100
+    ],
+    "shape": "ип_прописью",
+    "n_shadowed": 1,
+    "shadowed_types": [
+     "PERSON"
+    ],
+    "gold_types": [
+     "PER"
+    ],
+    "gold_n": 1
+   }
+  ]
+ },
+ {
+  "doc_id": "services_0007",
+  "n_org": 3,
+  "compounds": [
+   {
+    "doc_id": "services_0007",
+    "type": "ORG",
+    "text": "ИП Семёнов Юрий Олегович",
+    "span": [
+     87,
+     111
+    ],
+    "shape": "ип_аббревиатура",
+    "n_shadowed": 1,
+    "shadowed_types": [
+     "PERSON"
+    ],
+    "gold_types": [
+     "PER"
+    ],
+    "gold_n": 1
+   },
+   {
+    "doc_id": "services_0007",
+    "type": "ORG",
+    "text": "Индивидуальный предприниматель Семёнов Юрий Олегович",
+    "span": [
+     2514,
+     2566
+    ],
+    "shape": "ип_прописью",
+    "n_shadowed": 1,
+    "shadowed_types": [
+     "PERSON"
+    ],
+    "gold_types": [
+     "PER"
+    ],
+    "gold_n": 1
+   }
+  ]
+ },
+ {
+  "doc_id": "services_0007__m1337_combo",
+  "n_org": 3,
+  "compounds": [
+   {
+    "doc_id": "services_0007__m1337_combo",
+    "type": "ORG",
+    "text": "ИП СЕМЁНO​В ЮРИЙ O­ЛЕ­ГОВИЧ",
+    "span": [
+     87,
+     114
+    ],
+    "shape": "ип_аббревиатура",
+    "n_shadowed": 1,
+    "shadowed_types": [
+     "PERSON"
+    ],
+    "gold_types": [
+     "PER"
+    ],
+    "gold_n": 1
+   },
+   {
+    "doc_id": "services_0007__m1337_combo",
+    "type": "ORG",
+    "text": "Индивидуальный предприниматель CЕМ ЁН OВ ЮРИЙ OЛЕГОВ ИЧ",
+    "span": [
+     2563,
+     2618
+    ],
+    "shape": "ип_прописью",
+    "n_shadowed": 1,
+    "shadowed_types": [
+     "PERSON"
+    ],
+    "gold_types": [
+     "PER"
+    ],
+    "gold_n": 1
+   }
+  ]
+ },
+ {
+  "doc_id": "services_0007__m2718_homoglyph",
+  "n_org": 3,
+  "compounds": [
+   {
+    "doc_id": "services_0007__m2718_homoglyph",
+    "type": "ORG",
+    "text": "ИП Сemёнов Юрий Олегoвич",
+    "span": [
+     87,
+     111
+    ],
+    "shape": "ип_аббревиатура",
+    "n_shadowed": 1,
+    "shadowed_types": [
+     "PERSON"
+    ],
+    "gold_types": [
+     "PER"
+    ],
+    "gold_n": 1
+   },
+   {
+    "doc_id": "services_0007__m2718_homoglyph",
+    "type": "ORG",
+    "text": "Индивидуальный предприниматель Ceмёнoв Юрий Олeгович",
+    "span": [
+     2514,
+     2566
+    ],
+    "shape": "ип_прописью",
+    "n_shadowed": 1,
+    "shadowed_types": [
+     "PERSON"
+    ],
+    "gold_types": [
+     "PER"
+    ],
+    "gold_n": 1
+   }
+  ]
+ },
+ {
+  "doc_id": "services_0008",
+  "n_org": 0,
+  "compounds": []
+ },
+ {
+  "doc_id": "services_0008__m1337_digit_spaces",
+  "n_org": 0,
+  "compounds": []
+ },
+ {
+  "doc_id": "services_0008__m2718_combo",
+  "n_org": 0,
+  "compounds": []
+ },
+ {
+  "doc_id": "services_0009",
+  "n_org": 5,
+  "compounds": []
+ },
+ {
+  "doc_id": "services_0009__m1337_invisible",
+  "n_org": 5,
+  "compounds": []
+ },
+ {
+  "doc_id": "services_0009__m2718_case",
+  "n_org": 5,
+  "compounds": []
+ },
+ {
+  "doc_id": "services_0010",
+  "n_org": 6,
+  "compounds": [
+   {
+    "doc_id": "services_0010",
+    "type": "ORG",
+    "text": "ИП Иванов Роман Алексеевич",
+    "span": [
+     280,
+     306
+    ],
+    "shape": "ип_аббревиатура",
+    "n_shadowed": 1,
+    "shadowed_types": [
+     "PERSON"
+    ],
+    "gold_types": [
+     "PER"
+    ],
+    "gold_n": 1
+   },
+   {
+    "doc_id": "services_0010",
+    "type": "ORG",
+    "text": "Индивидуальный предприниматель Иванов Роман Алексеевич",
+    "span": [
+     2832,
+     2886
+    ],
+    "shape": "ип_прописью",
+    "n_shadowed": 1,
+    "shadowed_types": [
+     "PERSON"
+    ],
+    "gold_types": [
+     "PER"
+    ],
+    "gold_n": 1
+   }
+  ]
+ },
+ {
+  "doc_id": "services_0010__m1337_combo",
+  "n_org": 4,
+  "compounds": []
+ },
+ {
+  "doc_id": "services_0010__m2718_homoglyph",
+  "n_org": 6,
+  "compounds": [
+   {
+    "doc_id": "services_0010__m2718_homoglyph",
+    "type": "ORG",
+    "text": "ИП Ивaнов Рomан Aлексеевич",
+    "span": [
+     280,
+     306
+    ],
+    "shape": "ип_аббревиатура",
+    "n_shadowed": 1,
+    "shadowed_types": [
+     "PERSON"
+    ],
+    "gold_types": [
+     "PER"
+    ],
+    "gold_n": 1
+   },
+   {
+    "doc_id": "services_0010__m2718_homoglyph",
+    "type": "ORG",
+    "text": "Индивидуальный предприниматель Иванов Роман Алeксеевич",
+    "span": [
+     2832,
+     2886
+    ],
+    "shape": "ип_прописью",
+    "n_shadowed": 1,
+    "shadowed_types": [
+     "PERSON"
+    ],
+    "gold_types": [
+     "PER"
+    ],
+    "gold_n": 1
+   }
+  ]
+ },
+ {
+  "doc_id": "services_0011",
+  "n_org": 3,
+  "compounds": []
+ },
+ {
+  "doc_id": "services_0011__m1337_digit_spaces",
+  "n_org": 3,
+  "compounds": []
+ },
+ {
+  "doc_id": "services_0011__m2718_linebreak",
+  "n_org": 1,
+  "compounds": []
+ },
+ {
+  "doc_id": "services_0012",
+  "n_org": 7,
+  "compounds": [
+   {
+    "doc_id": "services_0012",
+    "type": "ORG",
+    "text": "Индивидуальный предприниматель Смирнов Ю. П.",
+    "span": [
+     79,
+     123
+    ],
+    "shape": "ип_прописью",
+    "n_shadowed": 1,
+    "shadowed_types": [
+     "PERSON"
+    ],
+    "gold_types": [
+     "PER"
+    ],
+    "gold_n": 1
+   },
+   {
+    "doc_id": "services_0012",
+    "type": "ORG",
+    "text": "ИП Семёнов М. О.",
+    "span": [
+     270,
+     286
+    ],
+    "shape": "ип_аббревиатура",
+    "n_shadowed": 1,
+    "shadowed_types": [
+     "PERSON"
+    ],
+    "gold_types": [
+     "PER"
+    ],
+    "gold_n": 1
+   },
+   {
+    "doc_id": "services_0012",
+    "type": "ORG",
+    "text": "Индивидуальный предприниматель Смирнов Юрий Петрович",
+    "span": [
+     2498,
+     2550
+    ],
+    "shape": "ип_прописью",
+    "n_shadowed": 1,
+    "shadowed_types": [
+     "PERSON"
+    ],
+    "gold_types": [
+     "PER"
+    ],
+    "gold_n": 1
+   },
+   {
+    "doc_id": "services_0012",
+    "type": "ORG",
+    "text": "Смирнов Юрий Петрович\nИндивидуальный предприниматель",
+    "span": [
+     2476,
+     2528
+    ],
+    "shape": "иное",
+    "n_shadowed": 1,
+    "shadowed_types": [
+     "PERSON"
+    ],
+    "gold_types": [
+     "PER"
+    ],
+    "gold_n": 1
+   },
+   {
+    "doc_id": "services_0012",
+    "type": "ORG",
+    "text": "Индивидуальный предприниматель Семёнов Михаил Олегович",
+    "span": [
+     2803,
+     2857
+    ],
+    "shape": "ип_прописью",
+    "n_shadowed": 1,
+    "shadowed_types": [
+     "PERSON"
+    ],
+    "gold_types": [
+     "PER"
+    ],
+    "gold_n": 1
+   }
+  ]
+ },
+ {
+  "doc_id": "services_0012__m1337_homoglyph",
+  "n_org": 7,
+  "compounds": [
+   {
+    "doc_id": "services_0012__m1337_homoglyph",
+    "type": "ORG",
+    "text": "Индивидуальный предприниматель Cмирнoв Ю. П.",
+    "span": [
+     79,
+     123
+    ],
+    "shape": "ип_прописью",
+    "n_shadowed": 1,
+    "shadowed_types": [
+     "PERSON"
+    ],
+    "gold_types": [
+     "PER"
+    ],
+    "gold_n": 1
+   },
+   {
+    "doc_id": "services_0012__m1337_homoglyph",
+    "type": "ORG",
+    "text": "ИП Сеmёнoв М. О.",
+    "span": [
+     270,
+     286
+    ],
+    "shape": "ип_аббревиатура",
+    "n_shadowed": 1,
+    "shadowed_types": [
+     "PERSON"
+    ],
+    "gold_types": [
+     "PER"
+    ],
+    "gold_n": 1
+   },
+   {
+    "doc_id": "services_0012__m1337_homoglyph",
+    "type": "ORG",
+    "text": "Индивидуальный предприниматель Смиpнoв Юрий Пeтpович",
+    "span": [
+     2498,
+     2550
+    ],
+    "shape": "ип_прописью",
+    "n_shadowed": 1,
+    "shadowed_types": [
+     "PERSON"
+    ],
+    "gold_types": [
+     "PER"
+    ],
+    "gold_n": 1
+   },
+   {
+    "doc_id": "services_0012__m1337_homoglyph",
+    "type": "ORG",
+    "text": "Сmиpнов Юрий Петрович\nИндивидуальный предприниматель",
+    "span": [
+     2476,
+     2528
+    ],
+    "shape": "иное",
+    "n_shadowed": 1,
+    "shadowed_types": [
+     "PERSON"
+    ],
+    "gold_types": [
+     "PER"
+    ],
+    "gold_n": 1
+   },
+   {
+    "doc_id": "services_0012__m1337_homoglyph",
+    "type": "ORG",
+    "text": "Индивидуальный предприниматель Cеmёнoв Михаил Олегович",
+    "span": [
+     2803,
+     2857
+    ],
+    "shape": "ип_прописью",
+    "n_shadowed": 1,
+    "shadowed_types": [
+     "PERSON"
+    ],
+    "gold_types": [
+     "PER"
+    ],
+    "gold_n": 1
+   }
+  ]
+ },
+ {
+  "doc_id": "services_0012__m2718_case",
+  "n_org": 7,
+  "compounds": [
+   {
+    "doc_id": "services_0012__m2718_case",
+    "type": "ORG",
+    "text": "Индивидуальный предприниматель СМИРНОВ Ю. П.",
+    "span": [
+     79,
+     123
+    ],
+    "shape": "ип_прописью",
+    "n_shadowed": 1,
+    "shadowed_types": [
+     "PERSON"
+    ],
+    "gold_types": [
+     "PER"
+    ],
+    "gold_n": 1
+   },
+   {
+    "doc_id": "services_0012__m2718_case",
+    "type": "ORG",
+    "text": "ИП сЕмЁнОв",
+    "span": [
+     270,
+     280
+    ],
+    "shape": "ип_аббревиатура",
+    "n_shadowed": 1,
+    "shadowed_types": [
+     "PERSON"
+    ],
+    "gold_types": [
+     "PER"
+    ],
+    "gold_n": 1
+   },
+   {
+    "doc_id": "services_0012__m2718_case",
+    "type": "ORG",
+    "text": "индивидуальный предприниматель смирнов юрий петрович",
+    "span": [
+     2498,
+     2550
+    ],
+    "shape": "ип_прописью",
+    "n_shadowed": 1,
+    "shadowed_types": [
+     "PERSON"
+    ],
+    "gold_types": [
+     "PER"
+    ],
+    "gold_n": 1
+   },
+   {
+    "doc_id": "services_0012__m2718_case",
+    "type": "ORG",
+    "text": "СМИРНОВ ЮРИЙ ПЕТРОВИЧ\nиндивидуальный предприниматель",
+    "span": [
+     2476,
+     2528
+    ],
+    "shape": "иное",
+    "n_shadowed": 1,
+    "shadowed_types": [
+     "PERSON"
+    ],
+    "gold_types": [
+     "PER"
+    ],
+    "gold_n": 1
+   },
+   {
+    "doc_id": "services_0012__m2718_case",
+    "type": "ORG",
+    "text": "Индивидуальный предприниматель СЕМЁНОВ МИХАИЛ ОЛЕГОВИЧ",
+    "span": [
+     2803,
+     2857
+    ],
+    "shape": "ип_прописью",
+    "n_shadowed": 1,
+    "shadowed_types": [
+     "PERSON"
+    ],
+    "gold_types": [
+     "PER"
+    ],
+    "gold_n": 1
+   }
+  ]
+ },
+ {
+  "doc_id": "services_0013",
+  "n_org": 3,
+  "compounds": [
+   {
+    "doc_id": "services_0013",
+    "type": "ORG",
+    "text": "ИП Никитина Дарья Дмитриевна",
+    "span": [
+     84,
+     112
+    ],
+    "shape": "ип_аббревиатура",
+    "n_shadowed": 1,
+    "shadowed_types": [
+     "PERSON"
+    ],
+    "gold_types": [
+     "PER"
+    ],
+    "gold_n": 1
+   },
+   {
+    "doc_id": "services_0013",
+    "type": "ORG",
+    "text": "Индивидуальный предприниматель Никитина Дарья Дмитриевна",
+    "span": [
+     4619,
+     4675
+    ],
+    "shape": "ип_прописью",
+    "n_shadowed": 1,
+    "shadowed_types": [
+     "PERSON"
+    ],
+    "gold_types": [
+     "PER"
+    ],
+    "gold_n": 1
+   }
+  ]
+ },
+ {
+  "doc_id": "services_0013__m1337_combo",
+  "n_org": 3,
+  "compounds": [
+   {
+    "doc_id": "services_0013__m1337_combo",
+    "type": "ORG",
+    "text": "ИП никитин‍a д­аpья дмитри​евнa",
+    "span": [
+     87,
+     118
+    ],
+    "shape": "ип_аббревиатура",
+    "n_shadowed": 1,
+    "shadowed_types": [
+     "PERSON"
+    ],
+    "gold_types": [
+     "PER"
+    ],
+    "gold_n": 1
+   },
+   {
+    "doc_id": "services_0013__m1337_combo",
+    "type": "ORG",
+    "text": "Индивидуальный предприниматель h⁠иКиТ⁠ИнА ⁠дАpЬя дМиТpИеВнA",
+    "span": [
+     4669,
+     4728
+    ],
+    "shape": "ип_прописью",
+    "n_shadowed": 1,
+    "shadowed_types": [
+     "PERSON"
+    ],
+    "gold_types": [
+     "PER"
+    ],
+    "gold_n": 1
+   }
+  ]
+ },
+ {
+  "doc_id": "services_0013__m2718_homoglyph",
+  "n_org": 3,
+  "compounds": [
+   {
+    "doc_id": "services_0013__m2718_homoglyph",
+    "type": "ORG",
+    "text": "ИП Hикитина Дарья Дмитриевна",
+    "span": [
+     84,
+     112
+    ],
+    "shape": "ип_аббревиатура",
+    "n_shadowed": 1,
+    "shadowed_types": [
+     "PERSON"
+    ],
+    "gold_types": [
+     "PER"
+    ],
+    "gold_n": 1
+   },
+   {
+    "doc_id": "services_0013__m2718_homoglyph",
+    "type": "ORG",
+    "text": "Индивидуальный предприниматель Hикитина Даpья Дmитриевнa",
+    "span": [
+     4619,
+     4675
+    ],
+    "shape": "ип_прописью",
+    "n_shadowed": 1,
+    "shadowed_types": [
+     "PERSON"
+    ],
+    "gold_types": [
+     "PER"
+    ],
+    "gold_n": 1
+   }
+  ]
+ },
+ {
+  "doc_id": "services_0014",
+  "n_org": 1,
+  "compounds": [
+   {
+    "doc_id": "services_0014",
+    "type": "ORG",
+    "text": "ИП Гусева Е. Ю.",
+    "span": [
+     0,
+     15
+    ],
+    "shape": "ип_аббревиатура",
+    "n_shadowed": 1,
+    "shadowed_types": [
+     "PERSON"
+    ],
+    "gold_types": [],
+    "gold_n": 0
+   }
+  ]
+ },
+ {
+  "doc_id": "services_0014__m1337_case",
+  "n_org": 1,
+  "compounds": [
+   {
+    "doc_id": "services_0014__m1337_case",
+    "type": "ORG",
+    "text": "ИП Гусева Е. Ю.",
+    "span": [
+     0,
+     15
+    ],
+    "shape": "ип_аббревиатура",
+    "n_shadowed": 1,
+    "shadowed_types": [
+     "PERSON"
+    ],
+    "gold_types": [],
+    "gold_n": 0
+   }
+  ]
+ },
+ {
+  "doc_id": "services_0014__m2718_linebreak",
+  "n_org": 1,
+  "compounds": [
+   {
+    "doc_id": "services_0014__m2718_linebreak",
+    "type": "ORG",
+    "text": "ИП Гус\nева Е. Ю.",
+    "span": [
+     0,
+     16
+    ],
+    "shape": "ип_аббревиатура",
+    "n_shadowed": 1,
+    "shadowed_types": [
+     "PERSON"
+    ],
+    "gold_types": [],
+    "gold_n": 0
+   }
+  ]
+ },
+ {
+  "doc_id": "supply_0001",
+  "n_org": 5,
+  "compounds": []
+ },
+ {
+  "doc_id": "supply_0001__m1337_invisible",
+  "n_org": 5,
+  "compounds": []
+ },
+ {
+  "doc_id": "supply_0001__m2718_case",
+  "n_org": 5,
+  "compounds": []
+ },
+ {
+  "doc_id": "supply_0002",
+  "n_org": 5,
+  "compounds": [
+   {
+    "doc_id": "supply_0002",
+    "type": "ORG",
+    "text": "ИП Семёнов О. Е.",
+    "span": [
+     226,
+     242
+    ],
+    "shape": "ип_аббревиатура",
+    "n_shadowed": 1,
+    "shadowed_types": [
+     "PERSON"
+    ],
+    "gold_types": [
+     "PER"
+    ],
+    "gold_n": 1
+   },
+   {
+    "doc_id": "supply_0002",
+    "type": "ORG",
+    "text": "Индивидуальный предприниматель Семёнов Олег Егорович",
+    "span": [
+     3121,
+     3173
+    ],
+    "shape": "ип_прописью",
+    "n_shadowed": 1,
+    "shadowed_types": [
+     "PERSON"
+    ],
+    "gold_types": [
+     "PER"
+    ],
+    "gold_n": 1
+   }
+  ]
+ },
+ {
+  "doc_id": "supply_0002__m1337_linebreak",
+  "n_org": 5,
+  "compounds": [
+   {
+    "doc_id": "supply_0002__m1337_linebreak",
+    "type": "ORG",
+    "text": "ИП Семёнов О.\n Е.",
+    "span": [
+     232,
+     249
+    ],
+    "shape": "ип_аббревиатура",
+    "n_shadowed": 1,
+    "shadowed_types": [
+     "PERSON"
+    ],
+    "gold_types": [
+     "PER"
+    ],
+    "gold_n": 1
+   },
+   {
+    "doc_id": "supply_0002__m1337_linebreak",
+    "type": "ORG",
+    "text": "Индивидуальный предприниматель Семёнов Олег Егоров",
+    "span": [
+     3152,
+     3202
+    ],
+    "shape": "ип_прописью",
+    "n_shadowed": 1,
+    "shadowed_types": [
+     "PERSON"
+    ],
+    "gold_types": [
+     "PER"
+    ],
+    "gold_n": 1
+   }
+  ]
+ },
+ {
+  "doc_id": "supply_0002__m2718_cell_split",
+  "n_org": 5,
+  "compounds": [
+   {
+    "doc_id": "supply_0002__m2718_cell_split",
+    "type": "ORG",
+    "text": "ИП Семёнов О. Е.",
+    "span": [
+     226,
+     242
+    ],
+    "shape": "ип_аббревиатура",
+    "n_shadowed": 1,
+    "shadowed_types": [
+     "PERSON"
+    ],
+    "gold_types": [
+     "PER"
+    ],
+    "gold_n": 1
+   },
+   {
+    "doc_id": "supply_0002__m2718_cell_split",
+    "type": "ORG",
+    "text": "Индивидуальный предприниматель Семёнов Олег Егорович",
+    "span": [
+     3121,
+     3173
+    ],
+    "shape": "ип_прописью",
+    "n_shadowed": 1,
+    "shadowed_types": [
+     "PERSON"
+    ],
+    "gold_types": [
+     "PER"
+    ],
+    "gold_n": 1
+   }
+  ]
+ },
+ {
+  "doc_id": "supply_0003",
+  "n_org": 3,
+  "compounds": []
+ },
+ {
+  "doc_id": "supply_0003__m1337_digit_spaces",
+  "n_org": 3,
+  "compounds": []
+ },
+ {
+  "doc_id": "supply_0003__m2718_linebreak",
+  "n_org": 1,
+  "compounds": []
+ },
+ {
+  "doc_id": "supply_0004",
+  "n_org": 5,
+  "compounds": [
+   {
+    "doc_id": "supply_0004",
+    "type": "ORG",
+    "text": "Индивидуальный предприниматель Титова Ирина Алексеевна",
+    "span": [
+     65,
+     119
+    ],
+    "shape": "ип_прописью",
+    "n_shadowed": 1,
+    "shadowed_types": [
+     "PERSON"
+    ],
+    "gold_types": [
+     "PER"
+    ],
+    "gold_n": 1
+   },
+   {
+    "doc_id": "supply_0004",
+    "type": "ORG",
+    "text": "ИП Никитина Е. Д.",
+    "span": [
+     264,
+     281
+    ],
+    "shape": "ип_аббревиатура",
+    "n_shadowed": 1,
+    "shadowed_types": [
+     "PERSON"
+    ],
+    "gold_types": [
+     "PER"
+    ],
+    "gold_n": 1
+   },
+   {
+    "doc_id": "supply_0004",
+    "type": "ORG",
+    "text": "Индивидуальный предприниматель Титова Ирина Алексеевна",
+    "span": [
+     2784,
+     2838
+    ],
+    "shape": "ип_прописью",
+    "n_shadowed": 1,
+    "shadowed_types": [
+     "PERSON"
+    ],
+    "gold_types": [
+     "PER"
+    ],
+    "gold_n": 1
+   },
+   {
+    "doc_id": "supply_0004",
+    "type": "ORG",
+    "text": "Индивидуальный предприниматель Никитина Елена Дмитриевна",
+    "span": [
+     3108,
+     3164
+    ],
+    "shape": "ип_прописью",
+    "n_shadowed": 1,
+    "shadowed_types": [
+     "PERSON"
+    ],
+    "gold_types": [
+     "PER"
+    ],
+    "gold_n": 1
+   }
+  ]
+ },
+ {
+  "doc_id": "supply_0004__m1337_cell_split",
+  "n_org": 5,
+  "compounds": [
+   {
+    "doc_id": "supply_0004__m1337_cell_split",
+    "type": "ORG",
+    "text": "Индивидуальный предприниматель Титова Ирина Алексеевна",
+    "span": [
+     65,
+     119
+    ],
+    "shape": "ип_прописью",
+    "n_shadowed": 1,
+    "shadowed_types": [
+     "PERSON"
+    ],
+    "gold_types": [
+     "PER"
+    ],
+    "gold_n": 1
+   },
+   {
+    "doc_id": "supply_0004__m1337_cell_split",
+    "type": "ORG",
+    "text": "ИП Никитина Е. Д.",
+    "span": [
+     264,
+     281
+    ],
+    "shape": "ип_аббревиатура",
+    "n_shadowed": 1,
+    "shadowed_types": [
+     "PERSON"
+    ],
+    "gold_types": [
+     "PER"
+    ],
+    "gold_n": 1
+   },
+   {
+    "doc_id": "supply_0004__m1337_cell_split",
+    "type": "ORG",
+    "text": "Индивидуальный предприниматель Титова Ирина Алексеевна",
+    "span": [
+     2784,
+     2838
+    ],
+    "shape": "ип_прописью",
+    "n_shadowed": 1,
+    "shadowed_types": [
+     "PERSON"
+    ],
+    "gold_types": [
+     "PER"
+    ],
+    "gold_n": 1
+   },
+   {
+    "doc_id": "supply_0004__m1337_cell_split",
+    "type": "ORG",
+    "text": "Индивидуальный предприниматель Никитина Елена Дмитриевна",
+    "span": [
+     3108,
+     3164
+    ],
+    "shape": "ип_прописью",
+    "n_shadowed": 1,
+    "shadowed_types": [
+     "PERSON"
+    ],
+    "gold_types": [
+     "PER"
+    ],
+    "gold_n": 1
+   }
+  ]
+ },
+ {
+  "doc_id": "supply_0004__m2718_invisible",
+  "n_org": 5,
+  "compounds": [
+   {
+    "doc_id": "supply_0004__m2718_invisible",
+    "type": "ORG",
+    "text": "Индивидуальный предприниматель Т‍итова Ирина ­Ал­ексеевна",
+    "span": [
+     67,
+     124
+    ],
+    "shape": "ип_прописью",
+    "n_shadowed": 1,
+    "shadowed_types": [
+     "PERSON"
+    ],
+    "gold_types": [
+     "PER"
+    ],
+    "gold_n": 1
+   },
+   {
+    "doc_id": "supply_0004__m2718_invisible",
+    "type": "ORG",
+    "text": "ИП Никитин­а  Е. Д.",
+    "span": [
+     271,
+     290
+    ],
+    "shape": "ип_аббревиатура",
+    "n_shadowed": 1,
+    "shadowed_types": [
+     "PERSON"
+    ],
+    "gold_types": [
+     "PER"
+    ],
+    "gold_n": 1
+   },
+   {
+    "doc_id": "supply_0004__m2718_invisible",
+    "type": "ORG",
+    "text": "Индивидуальный предприниматель Титова Ирина  Ал⁠ексеев​на",
+    "span": [
+     2812,
+     2869
+    ],
+    "shape": "ип_прописью",
+    "n_shadowed": 1,
+    "shadowed_types": [
+     "PERSON"
+    ],
+    "gold_types": [
+     "PER"
+    ],
+    "gold_n": 1
+   },
+   {
+    "doc_id": "supply_0004__m2718_invisible",
+    "type": "ORG",
+    "text": "Индивидуальный предприниматель Никитина Елена Дми‍тр иевн⁠а",
+    "span": [
+     3161,
+     3220
+    ],
+    "shape": "ип_прописью",
+    "n_shadowed": 1,
+    "shadowed_types": [
+     "PERSON"
+    ],
+    "gold_types": [
+     "PER"
+    ],
+    "gold_n": 1
+   }
+  ]
+ },
+ {
+  "doc_id": "supply_0005",
+  "n_org": 3,
+  "compounds": [
+   {
+    "doc_id": "supply_0005",
+    "type": "ORG",
+    "text": "Индивидуальный предприниматель Смирнова Л. О.",
+    "span": [
+     72,
+     117
+    ],
+    "shape": "ип_прописью",
+    "n_shadowed": 1,
+    "shadowed_types": [
+     "PERSON"
+    ],
+    "gold_types": [
+     "PER"
+    ],
+    "gold_n": 1
+   },
+   {
+    "doc_id": "supply_0005",
+    "type": "ORG",
+    "text": "Индивидуальный предприниматель Смирнова Людмила Олеговна",
+    "span": [
+     2808,
+     2864
+    ],
+    "shape": "ип_прописью",
+    "n_shadowed": 1,
+    "shadowed_types": [
+     "PERSON"
+    ],
+    "gold_types": [
+     "PER"
+    ],
+    "gold_n": 1
+   }
+  ]
+ },
+ {
+  "doc_id": "supply_0005__m1337_combo",
+  "n_org": 3,
+  "compounds": [
+   {
+    "doc_id": "supply_0005__m1337_combo",
+    "type": "ORG",
+    "text": "Индивидуальный предприниматель сМиРнО Вa ⁠Л.",
+    "span": [
+     74,
+     118
+    ],
+    "shape": "ип_прописью",
+    "n_shadowed": 1,
+    "shadowed_types": [
+     "PERSON"
+    ],
+    "gold_types": [
+     "PER"
+    ],
+    "gold_n": 1
+   },
+   {
+    "doc_id": "supply_0005__m1337_combo",
+    "type": "ORG",
+    "text": "Индивидуальный предприниматель cmирновa‍ ⁠людmила олегов на",
+    "span": [
+     2842,
+     2901
+    ],
+    "shape": "ип_прописью",
+    "n_shadowed": 1,
+    "shadowed_types": [
+     "PERSON"
+    ],
+    "gold_types": [
+     "PER"
+    ],
+    "gold_n": 1
+   }
+  ]
+ },
+ {
+  "doc_id": "supply_0005__m2718_homoglyph",
+  "n_org": 3,
+  "compounds": [
+   {
+    "doc_id": "supply_0005__m2718_homoglyph",
+    "type": "ORG",
+    "text": "Индивидуальный предприниматель Cмирнова Л. О.",
+    "span": [
+     72,
+     117
+    ],
+    "shape": "ип_прописью",
+    "n_shadowed": 1,
+    "shadowed_types": [
+     "PERSON"
+    ],
+    "gold_types": [
+     "PER"
+    ],
+    "gold_n": 1
+   },
+   {
+    "doc_id": "supply_0005__m2718_homoglyph",
+    "type": "ORG",
+    "text": "Индивидуальный предприниматель Сmиpнoва Людмилa Олеговна",
+    "span": [
+     2808,
+     2864
+    ],
+    "shape": "ип_прописью",
+    "n_shadowed": 1,
+    "shadowed_types": [
+     "PERSON"
+    ],
+    "gold_types": [
+     "PER"
+    ],
+    "gold_n": 1
+   }
+  ]
+ },
+ {
+  "doc_id": "supply_0006",
+  "n_org": 0,
+  "compounds": []
+ },
+ {
+  "doc_id": "supply_0006__m1337_invisible",
+  "n_org": 0,
+  "compounds": []
+ },
+ {
+  "doc_id": "supply_0006__m2718_digit_spaces",
+  "n_org": 0,
+  "compounds": []
+ },
+ {
+  "doc_id": "supply_0007",
+  "n_org": 6,
+  "compounds": []
+ },
+ {
+  "doc_id": "supply_0007__m1337_invisible",
+  "n_org": 6,
+  "compounds": []
+ },
+ {
+  "doc_id": "supply_0007__m2718_case",
+  "n_org": 6,
+  "compounds": []
+ },
+ {
+  "doc_id": "supply_0008",
+  "n_org": 6,
+  "compounds": [
+   {
+    "doc_id": "supply_0008",
+    "type": "ORG",
+    "text": "ИП Петрова Н. Д.",
+    "span": [
+     247,
+     263
+    ],
+    "shape": "ип_аббревиатура",
+    "n_shadowed": 1,
+    "shadowed_types": [
+     "PERSON"
+    ],
+    "gold_types": [
+     "PER"
+    ],
+    "gold_n": 1
+   },
+   {
+    "doc_id": "supply_0008",
+    "type": "ORG",
+    "text": "Индивидуальный предприниматель Петрова Наталья Дмитриевна",
+    "span": [
+     5204,
+     5261
+    ],
+    "shape": "ип_прописью",
+    "n_shadowed": 1,
+    "shadowed_types": [
+     "PERSON"
+    ],
+    "gold_types": [
+     "PER"
+    ],
+    "gold_n": 1
+   }
+  ]
+ },
+ {
+  "doc_id": "supply_0008__m1337_digit_spaces",
+  "n_org": 6,
+  "compounds": [
+   {
+    "doc_id": "supply_0008__m1337_digit_spaces",
+    "type": "ORG",
+    "text": "ИП Петрова Н. Д.",
+    "span": [
+     247,
+     263
+    ],
+    "shape": "ип_аббревиатура",
+    "n_shadowed": 1,
+    "shadowed_types": [
+     "PERSON"
+    ],
+    "gold_types": [
+     "PER"
+    ],
+    "gold_n": 1
+   },
+   {
+    "doc_id": "supply_0008__m1337_digit_spaces",
+    "type": "ORG",
+    "text": "Индивидуальный предприниматель Петрова Наталья Дмитриевна",
+    "span": [
+     5237,
+     5294
+    ],
+    "shape": "ип_прописью",
+    "n_shadowed": 1,
+    "shadowed_types": [
+     "PERSON"
+    ],
+    "gold_types": [
+     "PER"
+    ],
+    "gold_n": 1
+   }
+  ]
+ },
+ {
+  "doc_id": "supply_0008__m2718_combo",
+  "n_org": 6,
+  "compounds": [
+   {
+    "doc_id": "supply_0008__m2718_combo",
+    "type": "ORG",
+    "text": "ИП пe‍трова",
+    "span": [
+     255,
+     266
+    ],
+    "shape": "ип_аббревиатура",
+    "n_shadowed": 1,
+    "shadowed_types": [
+     "PERSON"
+    ],
+    "gold_types": [
+     "PER"
+    ],
+    "gold_n": 1
+   },
+   {
+    "doc_id": "supply_0008__m2718_combo",
+    "type": "ORG",
+    "text": "Индивидуальный предприниматель петpов⁠a нaталья дмитpиев‍н­а",
+    "span": [
+     5292,
+     5352
+    ],
+    "shape": "ип_прописью",
+    "n_shadowed": 1,
+    "shadowed_types": [
+     "PERSON"
+    ],
+    "gold_types": [
+     "PER"
+    ],
+    "gold_n": 1
+   }
+  ]
+ },
+ {
+  "doc_id": "supply_0009",
+  "n_org": 2,
+  "compounds": []
+ },
+ {
+  "doc_id": "supply_0009__m1337_digit_spaces",
+  "n_org": 2,
+  "compounds": []
+ },
+ {
+  "doc_id": "supply_0009__m2718_linebreak",
+  "n_org": 0,
+  "compounds": []
+ },
+ {
+  "doc_id": "supply_0010",
+  "n_org": 6,
+  "compounds": [
+   {
+    "doc_id": "supply_0010",
+    "type": "ORG",
+    "text": "ИП Иванов Михаил Петрович",
+    "span": [
+     63,
+     88
+    ],
+    "shape": "ип_аббревиатура",
+    "n_shadowed": 1,
+    "shadowed_types": [
+     "PERSON"
+    ],
+    "gold_types": [
+     "PER"
+    ],
+    "gold_n": 1
+   },
+   {
+    "doc_id": "supply_0010",
+    "type": "ORG",
+    "text": "ИП Новикова О. А.",
+    "span": [
+     233,
+     250
+    ],
+    "shape": "ип_аббревиатура",
+    "n_shadowed": 1,
+    "shadowed_types": [
+     "PERSON"
+    ],
+    "gold_types": [
+     "PER"
+    ],
+    "gold_n": 1
+   },
+   {
+    "doc_id": "supply_0010",
+    "type": "ORG",
+    "text": "Индивидуальный предприниматель Иванов Михаил Петрович",
+    "span": [
+     2747,
+     2800
+    ],
+    "shape": "ип_прописью",
+    "n_shadowed": 1,
+    "shadowed_types": [
+     "PERSON"
+    ],
+    "gold_types": [
+     "PER"
+    ],
+    "gold_n": 1
+   },
+   {
+    "doc_id": "supply_0010",
+    "type": "ORG",
+    "text": "Индивидуальный предприниматель Новикова Ольга Андреевна",
+    "span": [
+     3071,
+     3126
+    ],
+    "shape": "ип_прописью",
+    "n_shadowed": 1,
+    "shadowed_types": [
+     "PERSON"
+    ],
+    "gold_types": [
+     "PER"
+    ],
+    "gold_n": 1
+   }
+  ]
+ },
+ {
+  "doc_id": "supply_0010__m1337_combo",
+  "n_org": 5,
+  "compounds": [
+   {
+    "doc_id": "supply_0010__m1337_combo",
+    "type": "ORG",
+    "text": "ИП  иВаН­Ов m‍и‍xAиЛ ПeТрОвИч",
+    "span": [
+     64,
+     93
+    ],
+    "shape": "ип_аббревиатура",
+    "n_shadowed": 1,
+    "shadowed_types": [
+     "PERSON"
+    ],
+    "gold_types": [
+     "PER"
+    ],
+    "gold_n": 1
+   },
+   {
+    "doc_id": "supply_0010__m1337_combo",
+    "type": "ORG",
+    "text": "ИП нOв‍иКоВ⁠А О.",
+    "span": [
+     240,
+     256
+    ],
+    "shape": "ип_аббревиатура",
+    "n_shadowed": 1,
+    "shadowed_types": [
+     "PERSON"
+    ],
+    "gold_types": [
+     "PER"
+    ],
+    "gold_n": 1
+   },
+   {
+    "doc_id": "supply_0010__m1337_combo",
+    "type": "ORG",
+    "text": "Индивидуальный предприниматель ИВАНО В MИXАИ Л  ПЕТPОВИЧ",
+    "span": [
+     2778,
+     2834
+    ],
+    "shape": "ип_прописью",
+    "n_shadowed": 1,
+    "shadowed_types": [
+     "PERSON"
+    ],
+    "gold_types": [
+     "PER"
+    ],
+    "gold_n": 1
+   }
+  ]
+ },
+ {
+  "doc_id": "supply_0010__m2718_homoglyph",
+  "n_org": 6,
+  "compounds": [
+   {
+    "doc_id": "supply_0010__m2718_homoglyph",
+    "type": "ORG",
+    "text": "ИП Ивaнов Миxаил Петрович",
+    "span": [
+     63,
+     88
+    ],
+    "shape": "ип_аббревиатура",
+    "n_shadowed": 1,
+    "shadowed_types": [
+     "PERSON"
+    ],
+    "gold_types": [
+     "PER"
+    ],
+    "gold_n": 1
+   },
+   {
+    "doc_id": "supply_0010__m2718_homoglyph",
+    "type": "ORG",
+    "text": "ИП Новиkoвa O. А.",
+    "span": [
+     233,
+     250
+    ],
+    "shape": "ип_аббревиатура",
+    "n_shadowed": 1,
+    "shadowed_types": [
+     "PERSON"
+    ],
+    "gold_types": [
+     "PER"
+    ],
+    "gold_n": 1
+   },
+   {
+    "doc_id": "supply_0010__m2718_homoglyph",
+    "type": "ORG",
+    "text": "Индивидуальный предприниматель Иванов Миxaил Пeтрoвич",
+    "span": [
+     2747,
+     2800
+    ],
+    "shape": "ип_прописью",
+    "n_shadowed": 1,
+    "shadowed_types": [
+     "PERSON"
+    ],
+    "gold_types": [
+     "PER"
+    ],
+    "gold_n": 1
+   },
+   {
+    "doc_id": "supply_0010__m2718_homoglyph",
+    "type": "ORG",
+    "text": "Индивидуальный предприниматель Hовикова Oльгa Андpеевна",
+    "span": [
+     3071,
+     3126
+    ],
+    "shape": "ип_прописью",
+    "n_shadowed": 1,
+    "shadowed_types": [
+     "PERSON"
+    ],
+    "gold_types": [
+     "PER"
+    ],
+    "gold_n": 1
+   }
+  ]
+ },
+ {
+  "doc_id": "supply_0011",
+  "n_org": 3,
+  "compounds": [
+   {
+    "doc_id": "supply_0011",
+    "type": "ORG",
+    "text": "Индивидуальный предприниматель Воробьёв П. А.",
+    "span": [
+     65,
+     110
+    ],
+    "shape": "ип_прописью",
+    "n_shadowed": 1,
+    "shadowed_types": [
+     "PERSON"
+    ],
+    "gold_types": [
+     "PER"
+    ],
+    "gold_n": 1
+   },
+   {
+    "doc_id": "supply_0011",
+    "type": "ORG",
+    "text": "Индивидуальный предприниматель Воробьёв Пётр Андреевич",
+    "span": [
+     2780,
+     2834
+    ],
+    "shape": "ип_прописью",
+    "n_shadowed": 1,
+    "shadowed_types": [
+     "PERSON"
+    ],
+    "gold_types": [
+     "PER"
+    ],
+    "gold_n": 1
+   }
+  ]
+ },
+ {
+  "doc_id": "supply_0011__m1337_combo",
+  "n_org": 3,
+  "compounds": [
+   {
+    "doc_id": "supply_0011__m1337_combo",
+    "type": "ORG",
+    "text": "Индивидуальный предприниматель b⁠oРоБьЁв",
+    "span": [
+     65,
+     105
+    ],
+    "shape": "ип_прописью",
+    "n_shadowed": 1,
+    "shadowed_types": [
+     "PERSON"
+    ],
+    "gold_types": [
+     "PER"
+    ],
+    "gold_n": 1
+   },
+   {
+    "doc_id": "supply_0011__m1337_combo",
+    "type": "ORG",
+    "text": "Индивидуальный предприниматель вороб⁠ьёв пёт‍p андpе⁠евич",
+    "span": [
+     2818,
+     2875
+    ],
+    "shape": "ип_прописью",
+    "n_shadowed": 1,
+    "shadowed_types": [
+     "PERSON"
+    ],
+    "gold_types": [
+     "PER"
+    ],
+    "gold_n": 1
+   }
+  ]
+ },
+ {
+  "doc_id": "supply_0011__m2718_homoglyph",
+  "n_org": 3,
+  "compounds": [
+   {
+    "doc_id": "supply_0011__m2718_homoglyph",
+    "type": "ORG",
+    "text": "Индивидуальный предприниматель Bоробьёв П. А.",
+    "span": [
+     65,
+     110
+    ],
+    "shape": "ип_прописью",
+    "n_shadowed": 1,
+    "shadowed_types": [
+     "PERSON"
+    ],
+    "gold_types": [
+     "PER"
+    ],
+    "gold_n": 1
+   },
+   {
+    "doc_id": "supply_0011__m2718_homoglyph",
+    "type": "ORG",
+    "text": "Индивидуальный предприниматель Bоpoбьёв Пётp Андреевич",
+    "span": [
+     2780,
+     2834
+    ],
+    "shape": "ип_прописью",
+    "n_shadowed": 1,
+    "shadowed_types": [
+     "PERSON"
+    ],
+    "gold_types": [
+     "PER"
+    ],
+    "gold_n": 1
+   }
+  ]
+ },
+ {
+  "doc_id": "supply_0012",
+  "n_org": 0,
+  "compounds": []
+ },
+ {
+  "doc_id": "supply_0012__m1337_homoglyph",
+  "n_org": 0,
+  "compounds": []
+ },
+ {
+  "doc_id": "supply_0012__m2718_case",
+  "n_org": 0,
+  "compounds": []
+ },
+ {
+  "doc_id": "supply_0013",
+  "n_org": 6,
+  "compounds": []
+ },
+ {
+  "doc_id": "supply_0013__m1337_invisible",
+  "n_org": 6,
+  "compounds": []
+ },
+ {
+  "doc_id": "supply_0013__m2718_case",
+  "n_org": 6,
+  "compounds": []
+ },
+ {
+  "doc_id": "supply_0014",
+  "n_org": 6,
+  "compounds": [
+   {
+    "doc_id": "supply_0014",
+    "type": "ORG",
+    "text": "Индивидуальный предприниматель Крылова Е. П.",
+    "span": [
+     250,
+     294
+    ],
+    "shape": "ип_прописью",
+    "n_shadowed": 1,
+    "shadowed_types": [
+     "PERSON"
+    ],
+    "gold_types": [
+     "PER"
+    ],
+    "gold_n": 1
+   },
+   {
+    "doc_id": "supply_0014",
+    "type": "ORG",
+    "text": "Индивидуальный предприниматель Крылова Екатерина Петровна",
+    "span": [
+     3171,
+     3228
+    ],
+    "shape": "ип_прописью",
+    "n_shadowed": 1,
+    "shadowed_types": [
+     "PERSON"
+    ],
+    "gold_types": [
+     "PER"
+    ],
+    "gold_n": 1
+   }
+  ]
+ },
+ {
+  "doc_id": "supply_0014__m1337_case",
+  "n_org": 10,
+  "compounds": [
+   {
+    "doc_id": "supply_0014__m1337_case",
+    "type": "ORG",
+    "text": "Индивидуальный предприниматель кРыЛоВа",
+    "span": [
+     250,
+     288
+    ],
+    "shape": "ип_прописью",
+    "n_shadowed": 1,
+    "shadowed_types": [
+     "PERSON"
+    ],
+    "gold_types": [
+     "PER"
+    ],
+    "gold_n": 1
+   },
+   {
+    "doc_id": "supply_0014__m1337_case",
+    "type": "ORG",
+    "text": "иНдИвИдУаЛьНыЙ ПрЕдПрИнИмАтЕлЬ крылова екатерина петровна",
+    "span": [
+     3171,
+     3228
+    ],
+    "shape": "ип_прописью",
+    "n_shadowed": 1,
+    "shadowed_types": [
+     "PERSON"
+    ],
+    "gold_types": [
+     "PER"
+    ],
+    "gold_n": 1
+   }
+  ]
+ },
+ {
+  "doc_id": "supply_0014__m2718_linebreak",
+  "n_org": 5,
+  "compounds": [
+   {
+    "doc_id": "supply_0014__m2718_linebreak",
+    "type": "ORG",
+    "text": "Индивидуальный предприниматель Крылов",
+    "span": [
+     252,
+     289
+    ],
+    "shape": "ип_прописью",
+    "n_shadowed": 1,
+    "shadowed_types": [
+     "PERSON"
+    ],
+    "gold_types": [
+     "PER"
+    ],
+    "gold_n": 1
+   }
+  ]
+ },
+ {
+  "doc_id": "supply_0015",
+  "n_org": 3,
+  "compounds": []
+ },
+ {
+  "doc_id": "supply_0015__m1337_digit_spaces",
+  "n_org": 3,
+  "compounds": []
+ },
+ {
+  "doc_id": "supply_0015__m2718_linebreak",
+  "n_org": 1,
+  "compounds": []
+ },
+ {
+  "doc_id": "supply_0016",
+  "n_org": 6,
+  "compounds": [
+   {
+    "doc_id": "supply_0016",
+    "type": "ORG",
+    "text": "ИП Орлов Дмитрий Михайлович",
+    "span": [
+     72,
+     99
+    ],
+    "shape": "ип_аббревиатура",
+    "n_shadowed": 1,
+    "shadowed_types": [
+     "PERSON"
+    ],
+    "gold_types": [
+     "PER"
+    ],
+    "gold_n": 1
+   },
+   {
+    "doc_id": "supply_0016",
+    "type": "ORG",
+    "text": "Индивидуальный предприниматель Семёнов С. П.",
+    "span": [
+     244,
+     288
+    ],
+    "shape": "ип_прописью",
+    "n_shadowed": 1,
+    "shadowed_types": [
+     "PERSON"
+    ],
+    "gold_types": [
+     "PER"
+    ],
+    "gold_n": 1
+   },
+   {
+    "doc_id": "supply_0016",
+    "type": "ORG",
+    "text": "Индивидуальный предприниматель Орлов Дмитрий Михайлович",
+    "span": [
+     2784,
+     2839
+    ],
+    "shape": "ип_прописью",
+    "n_shadowed": 1,
+    "shadowed_types": [
+     "PERSON"
+    ],
+    "gold_types": [
+     "PER"
+    ],
+    "gold_n": 1
+   },
+   {
+    "doc_id": "supply_0016",
+    "type": "ORG",
+    "text": "Индивидуальный предприниматель Семёнов Сергей Петрович",
+    "span": [
+     3109,
+     3163
+    ],
+    "shape": "ип_прописью",
+    "n_shadowed": 1,
+    "shadowed_types": [
+     "PERSON"
+    ],
+    "gold_types": [
+     "PER"
+    ],
+    "gold_n": 1
+   }
+  ]
+ },
+ {
+  "doc_id": "supply_0016__m1337_linebreak",
+  "n_org": 5,
+  "compounds": [
+   {
+    "doc_id": "supply_0016__m1337_linebreak",
+    "type": "ORG",
+    "text": "ИП Орлов Дмитрий Михай\nлович",
+    "span": [
+     72,
+     100
+    ],
+    "shape": "ип_аббревиатура",
+    "n_shadowed": 1,
+    "shadowed_types": [
+     "PERSON"
+    ],
+    "gold_types": [
+     "PER"
+    ],
+    "gold_n": 1
+   },
+   {
+    "doc_id": "supply_0016__m1337_linebreak",
+    "type": "ORG",
+    "text": "Индивидуальный предприниматель Семёнов\n С. П.",
+    "span": [
+     247,
+     292
+    ],
+    "shape": "ип_прописью",
+    "n_shadowed": 1,
+    "shadowed_types": [
+     "PERSON"
+    ],
+    "gold_types": [
+     "PER"
+    ],
+    "gold_n": 1
+   },
+   {
+    "doc_id": "supply_0016__m1337_linebreak",
+    "type": "ORG",
+    "text": "Индивидуальный предприниматель Семёнов",
+    "span": [
+     3137,
+     3175
+    ],
+    "shape": "ип_прописью",
+    "n_shadowed": 1,
+    "shadowed_types": [
+     "PERSON"
+    ],
+    "gold_types": [
+     "PER"
+    ],
+    "gold_n": 1
+   }
+  ]
+ },
+ {
+  "doc_id": "supply_0016__m2718_cell_split",
+  "n_org": 6,
+  "compounds": [
+   {
+    "doc_id": "supply_0016__m2718_cell_split",
+    "type": "ORG",
+    "text": "ИП Орлов Дмитрий Михайлович",
+    "span": [
+     72,
+     99
+    ],
+    "shape": "ип_аббревиатура",
+    "n_shadowed": 1,
+    "shadowed_types": [
+     "PERSON"
+    ],
+    "gold_types": [
+     "PER"
+    ],
+    "gold_n": 1
+   },
+   {
+    "doc_id": "supply_0016__m2718_cell_split",
+    "type": "ORG",
+    "text": "Индивидуальный предприниматель Семёнов С. П.",
+    "span": [
+     244,
+     288
+    ],
+    "shape": "ип_прописью",
+    "n_shadowed": 1,
+    "shadowed_types": [
+     "PERSON"
+    ],
+    "gold_types": [
+     "PER"
+    ],
+    "gold_n": 1
+   },
+   {
+    "doc_id": "supply_0016__m2718_cell_split",
+    "type": "ORG",
+    "text": "Индивидуальный предприниматель Орлов Дмитрий Михайлович",
+    "span": [
+     2784,
+     2839
+    ],
+    "shape": "ип_прописью",
+    "n_shadowed": 1,
+    "shadowed_types": [
+     "PERSON"
+    ],
+    "gold_types": [
+     "PER"
+    ],
+    "gold_n": 1
+   },
+   {
+    "doc_id": "supply_0016__m2718_cell_split",
+    "type": "ORG",
+    "text": "Индивидуальный предприниматель Семёнов Сергей Петрович",
+    "span": [
+     3109,
+     3163
+    ],
+    "shape": "ип_прописью",
+    "n_shadowed": 1,
+    "shadowed_types": [
+     "PERSON"
+    ],
+    "gold_types": [
+     "PER"
+    ],
+    "gold_n": 1
+   }
+  ]
+ },
+ {
+  "doc_id": "works_0001",
+  "n_org": 6,
+  "compounds": []
+ },
+ {
+  "doc_id": "works_0001__m1337_combo",
+  "n_org": 6,
+  "compounds": []
+ },
+ {
+  "doc_id": "works_0001__m2718_homoglyph",
+  "n_org": 6,
+  "compounds": []
+ },
+ {
+  "doc_id": "works_0002",
+  "n_org": 5,
+  "compounds": [
+   {
+    "doc_id": "works_0002",
+    "type": "ORG",
+    "text": "ИП Смирнова Ирина Сергеевна",
+    "span": [
+     229,
+     256
+    ],
+    "shape": "ип_аббревиатура",
+    "n_shadowed": 1,
+    "shadowed_types": [
+     "PERSON"
+    ],
+    "gold_types": [
+     "PER"
+    ],
+    "gold_n": 1
+   },
+   {
+    "doc_id": "works_0002",
+    "type": "ORG",
+    "text": "Индивидуальный предприниматель Смирнова Ирина Сергеевна",
+    "span": [
+     3043,
+     3098
+    ],
+    "shape": "ип_прописью",
+    "n_shadowed": 1,
+    "shadowed_types": [
+     "PERSON"
+    ],
+    "gold_types": [
+     "PER"
+    ],
+    "gold_n": 1
+   }
+  ]
+ },
+ {
+  "doc_id": "works_0002__m1337_cell_split",
+  "n_org": 5,
+  "compounds": [
+   {
+    "doc_id": "works_0002__m1337_cell_split",
+    "type": "ORG",
+    "text": "ИП Смирнова Ирина Сергеевна",
+    "span": [
+     229,
+     256
+    ],
+    "shape": "ип_аббревиатура",
+    "n_shadowed": 1,
+    "shadowed_types": [
+     "PERSON"
+    ],
+    "gold_types": [
+     "PER"
+    ],
+    "gold_n": 1
+   },
+   {
+    "doc_id": "works_0002__m1337_cell_split",
+    "type": "ORG",
+    "text": "Индивидуальный предприниматель Смирнова Ирина Сергеевна",
+    "span": [
+     3043,
+     3098
+    ],
+    "shape": "ип_прописью",
+    "n_shadowed": 1,
+    "shadowed_types": [
+     "PERSON"
+    ],
+    "gold_types": [
+     "PER"
+    ],
+    "gold_n": 1
+   }
+  ]
+ },
+ {
+  "doc_id": "works_0002__m2718_invisible",
+  "n_org": 5,
+  "compounds": [
+   {
+    "doc_id": "works_0002__m2718_invisible",
+    "type": "ORG",
+    "text": "ИП Смир‍нов а Ирина С⁠ергеевна",
+    "span": [
+     236,
+     266
+    ],
+    "shape": "ип_аббревиатура",
+    "n_shadowed": 1,
+    "shadowed_types": [
+     "PERSON"
+    ],
+    "gold_types": [
+     "PER"
+    ],
+    "gold_n": 1
+   },
+   {
+    "doc_id": "works_0002__m2718_invisible",
+    "type": "ORG",
+    "text": "Индивидуальный предприниматель Смирнов­а И⁠рина­ Сергеевна",
+    "span": [
+     3114,
+     3172
+    ],
+    "shape": "ип_прописью",
+    "n_shadowed": 1,
+    "shadowed_types": [
+     "PERSON"
+    ],
+    "gold_types": [
+     "PER"
+    ],
+    "gold_n": 1
+   }
+  ]
+ },
+ {
+  "doc_id": "works_0003",
+  "n_org": 3,
+  "compounds": []
+ },
+ {
+  "doc_id": "works_0003__m1337_invisible",
+  "n_org": 3,
+  "compounds": []
+ },
+ {
+  "doc_id": "works_0003__m2718_case",
+  "n_org": 3,
+  "compounds": []
+ },
+ {
+  "doc_id": "works_0004",
+  "n_org": 7,
+  "compounds": [
+   {
+    "doc_id": "works_0004",
+    "type": "ORG",
+    "text": "ИП Белов П. П.",
+    "span": [
+     73,
+     87
+    ],
+    "shape": "ип_аббревиатура",
+    "n_shadowed": 1,
+    "shadowed_types": [
+     "PERSON"
+    ],
+    "gold_types": [
+     "PER"
+    ],
+    "gold_n": 1
+   },
+   {
+    "doc_id": "works_0004",
+    "type": "ORG",
+    "text": "Индивидуальный предприниматель Михайлов П. С.",
+    "span": [
+     232,
+     277
+    ],
+    "shape": "ип_прописью",
+    "n_shadowed": 1,
+    "shadowed_types": [
+     "PERSON"
+    ],
+    "gold_types": [
+     "PER"
+    ],
+    "gold_n": 1
+   },
+   {
+    "doc_id": "works_0004",
+    "type": "ORG",
+    "text": "Индивидуальный предприниматель Белов Павел Павлович",
+    "span": [
+     2786,
+     2837
+    ],
+    "shape": "ип_прописью",
+    "n_shadowed": 1,
+    "shadowed_types": [
+     "PERSON"
+    ],
+    "gold_types": [
+     "PER"
+    ],
+    "gold_n": 1
+   },
+   {
+    "doc_id": "works_0004",
+    "type": "ORG",
+    "text": "Белов Павел Павлович\nИндивидуальный предприниматель",
+    "span": [
+     2765,
+     2816
+    ],
+    "shape": "иное",
+    "n_shadowed": 1,
+    "shadowed_types": [
+     "PERSON"
+    ],
+    "gold_types": [
+     "PER"
+    ],
+    "gold_n": 1
+   },
+   {
+    "doc_id": "works_0004",
+    "type": "ORG",
+    "text": "Индивидуальный предприниматель Михайлов Пётр Сергеевич",
+    "span": [
+     3143,
+     3197
+    ],
+    "shape": "ип_прописью",
+    "n_shadowed": 1,
+    "shadowed_types": [
+     "PERSON"
+    ],
+    "gold_types": [
+     "PER"
+    ],
+    "gold_n": 1
+   }
+  ]
+ },
+ {
+  "doc_id": "works_0004__m1337_invisible",
+  "n_org": 7,
+  "compounds": [
+   {
+    "doc_id": "works_0004__m1337_invisible",
+    "type": "ORG",
+    "text": "ИП Белов П. П .",
+    "span": [
+     75,
+     90
+    ],
+    "shape": "ип_аббревиатура",
+    "n_shadowed": 1,
+    "shadowed_types": [
+     "PERSON"
+    ],
+    "gold_types": [
+     "PER"
+    ],
+    "gold_n": 1
+   },
+   {
+    "doc_id": "works_0004__m1337_invisible",
+    "type": "ORG",
+    "text": "Индивидуальный предприниматель М и хайлов П. С.",
+    "span": [
+     238,
+     285
+    ],
+    "shape": "ип_прописью",
+    "n_shadowed": 1,
+    "shadowed_types": [
+     "PERSON"
+    ],
+    "gold_types": [
+     "PER"
+    ],
+    "gold_n": 1
+   },
+   {
+    "doc_id": "works_0004__m1337_invisible",
+    "type": "ORG",
+    "text": "Индивидуальный предприниматель Белов П​авел⁠ Павл​ович",
+    "span": [
+     2837,
+     2891
+    ],
+    "shape": "ип_прописью",
+    "n_shadowed": 1,
+    "shadowed_types": [
+     "PERSON"
+    ],
+    "gold_types": [
+     "PER"
+    ],
+    "gold_n": 1
+   },
+   {
+    "doc_id": "works_0004__m1337_invisible",
+    "type": "ORG",
+    "text": "Белов  Павел Па⁠в лович\nИндивидуальный предприниматель",
+    "span": [
+     2813,
+     2867
+    ],
+    "shape": "иное",
+    "n_shadowed": 1,
+    "shadowed_types": [
+     "PERSON"
+    ],
+    "gold_types": [
+     "PER"
+    ],
+    "gold_n": 1
+   },
+   {
+    "doc_id": "works_0004__m1337_invisible",
+    "type": "ORG",
+    "text": "Индивидуальный предприниматель Мих​айлов Пётр Сергее в​ич",
+    "span": [
+     3217,
+     3274
+    ],
+    "shape": "ип_прописью",
+    "n_shadowed": 1,
+    "shadowed_types": [
+     "PERSON"
+    ],
+    "gold_types": [
+     "PER"
+    ],
+    "gold_n": 1
+   }
+  ]
+ },
+ {
+  "doc_id": "works_0004__m2718_digit_spaces",
+  "n_org": 7,
+  "compounds": [
+   {
+    "doc_id": "works_0004__m2718_digit_spaces",
+    "type": "ORG",
+    "text": "ИП Белов П. П.",
+    "span": [
+     73,
+     87
+    ],
+    "shape": "ип_аббревиатура",
+    "n_shadowed": 1,
+    "shadowed_types": [
+     "PERSON"
+    ],
+    "gold_types": [
+     "PER"
+    ],
+    "gold_n": 1
+   },
+   {
+    "doc_id": "works_0004__m2718_digit_spaces",
+    "type": "ORG",
+    "text": "Индивидуальный предприниматель Михайлов П. С.",
+    "span": [
+     236,
+     281
+    ],
+    "shape": "ип_прописью",
+    "n_shadowed": 1,
+    "shadowed_types": [
+     "PERSON"
+    ],
+    "gold_types": [
+     "PER"
+    ],
+    "gold_n": 1
+   },
+   {
+    "doc_id": "works_0004__m2718_digit_spaces",
+    "type": "ORG",
+    "text": "Индивидуальный предприниматель Белов Павел Павлович",
+    "span": [
+     2801,
+     2852
+    ],
+    "shape": "ип_прописью",
+    "n_shadowed": 1,
+    "shadowed_types": [
+     "PERSON"
+    ],
+    "gold_types": [
+     "PER"
+    ],
+    "gold_n": 1
+   },
+   {
+    "doc_id": "works_0004__m2718_digit_spaces",
+    "type": "ORG",
+    "text": "Белов Павел Павлович\nИндивидуальный предприниматель",
+    "span": [
+     2780,
+     2831
+    ],
+    "shape": "иное",
+    "n_shadowed": 1,
+    "shadowed_types": [
+     "PERSON"
+    ],
+    "gold_types": [
+     "PER"
+    ],
+    "gold_n": 1
+   },
+   {
+    "doc_id": "works_0004__m2718_digit_spaces",
+    "type": "ORG",
+    "text": "Индивидуальный предприниматель Михайлов Пётр Сергеевич",
+    "span": [
+     3175,
+     3229
+    ],
+    "shape": "ип_прописью",
+    "n_shadowed": 1,
+    "shadowed_types": [
+     "PERSON"
+    ],
+    "gold_types": [
+     "PER"
+    ],
+    "gold_n": 1
+   }
+  ]
+ },
+ {
+  "doc_id": "works_0005",
+  "n_org": 3,
+  "compounds": [
+   {
+    "doc_id": "works_0005",
+    "type": "ORG",
+    "text": "Индивидуальный предприниматель Максимова М. Н.",
+    "span": [
+     61,
+     107
+    ],
+    "shape": "ип_прописью",
+    "n_shadowed": 1,
+    "shadowed_types": [
+     "PERSON"
+    ],
+    "gold_types": [
+     "PER"
+    ],
+    "gold_n": 1
+   },
+   {
+    "doc_id": "works_0005",
+    "type": "ORG",
+    "text": "Индивидуальный предприниматель Максимова Мария Николаевна",
+    "span": [
+     2620,
+     2677
+    ],
+    "shape": "ип_прописью",
+    "n_shadowed": 1,
+    "shadowed_types": [
+     "PERSON"
+    ],
+    "gold_types": [
+     "PER"
+    ],
+    "gold_n": 1
+   }
+  ]
+ },
+ {
+  "doc_id": "works_0005__m1337_digit_spaces",
+  "n_org": 3,
+  "compounds": [
+   {
+    "doc_id": "works_0005__m1337_digit_spaces",
+    "type": "ORG",
+    "text": "Индивидуальный предприниматель Максимова М. Н.",
+    "span": [
+     62,
+     108
+    ],
+    "shape": "ип_прописью",
+    "n_shadowed": 1,
+    "shadowed_types": [
+     "PERSON"
+    ],
+    "gold_types": [
+     "PER"
+    ],
+    "gold_n": 1
+   },
+   {
+    "doc_id": "works_0005__m1337_digit_spaces",
+    "type": "ORG",
+    "text": "Индивидуальный предприниматель Максимова Мария Николаевна",
+    "span": [
+     2627,
+     2684
+    ],
+    "shape": "ип_прописью",
+    "n_shadowed": 1,
+    "shadowed_types": [
+     "PERSON"
+    ],
+    "gold_types": [
+     "PER"
+    ],
+    "gold_n": 1
+   }
+  ]
+ },
+ {
+  "doc_id": "works_0005__m2718_linebreak",
+  "n_org": 2,
+  "compounds": [
+   {
+    "doc_id": "works_0005__m2718_linebreak",
+    "type": "ORG",
+    "text": "Индивидуальный предприниматель Максимова Мария Николае",
+    "span": [
+     2644,
+     2698
+    ],
+    "shape": "ип_прописью",
+    "n_shadowed": 1,
+    "shadowed_types": [
+     "PERSON"
+    ],
+    "gold_types": [
+     "PER"
+    ],
+    "gold_n": 1
+   }
+  ]
+ },
+ {
+  "doc_id": "works_0006",
+  "n_org": 1,
+  "compounds": [
+   {
+    "doc_id": "works_0006",
+    "type": "ORG",
+    "text": "ИП Новиков А. Д.",
+    "span": [
+     0,
+     16
+    ],
+    "shape": "ип_аббревиатура",
+    "n_shadowed": 1,
+    "shadowed_types": [
+     "PERSON"
+    ],
+    "gold_types": [],
+    "gold_n": 0
+   }
+  ]
+ },
+ {
+  "doc_id": "works_0006__m1337_digit_spaces",
+  "n_org": 1,
+  "compounds": [
+   {
+    "doc_id": "works_0006__m1337_digit_spaces",
+    "type": "ORG",
+    "text": "ИП Новиков А. Д.",
+    "span": [
+     0,
+     16
+    ],
+    "shape": "ип_аббревиатура",
+    "n_shadowed": 1,
+    "shadowed_types": [
+     "PERSON"
+    ],
+    "gold_types": [],
+    "gold_n": 0
+   }
+  ]
+ },
+ {
+  "doc_id": "works_0006__m2718_combo",
+  "n_org": 1,
+  "compounds": [
+   {
+    "doc_id": "works_0006__m2718_combo",
+    "type": "ORG",
+    "text": "ип hовиков",
+    "span": [
+     0,
+     10
+    ],
+    "shape": "ип_аббревиатура",
+    "n_shadowed": 1,
+    "shadowed_types": [
+     "PERSON"
+    ],
+    "gold_types": [],
+    "gold_n": 0
+   }
+  ]
+ },
+ {
+  "doc_id": "works_0007",
+  "n_org": 5,
+  "compounds": []
+ },
+ {
+  "doc_id": "works_0007__m1337_combo",
+  "n_org": 5,
+  "compounds": []
+ },
+ {
+  "doc_id": "works_0007__m2718_homoglyph",
+  "n_org": 5,
+  "compounds": []
+ },
+ {
+  "doc_id": "works_0008",
+  "n_org": 6,
+  "compounds": [
+   {
+    "doc_id": "works_0008",
+    "type": "ORG",
+    "text": "ИП Гусева Ирина Олеговна",
+    "span": [
+     247,
+     271
+    ],
+    "shape": "ип_аббревиатура",
+    "n_shadowed": 1,
+    "shadowed_types": [
+     "PERSON"
+    ],
+    "gold_types": [
+     "PER"
+    ],
+    "gold_n": 1
+   },
+   {
+    "doc_id": "works_0008",
+    "type": "ORG",
+    "text": "Индивидуальный предприниматель Гусева Ирина Олеговна",
+    "span": [
+     5134,
+     5186
+    ],
+    "shape": "ип_прописью",
+    "n_shadowed": 1,
+    "shadowed_types": [
+     "PERSON"
+    ],
+    "gold_types": [
+     "PER"
+    ],
+    "gold_n": 1
+   }
+  ]
+ },
+ {
+  "doc_id": "works_0008__m1337_combo",
+  "n_org": 5,
+  "compounds": [
+   {
+    "doc_id": "works_0008__m1337_combo",
+    "type": "ORG",
+    "text": "ИП ГУCЕВA И РИНA OЛ ЕГ​ОВНА",
+    "span": [
+     252,
+     279
+    ],
+    "shape": "ип_аббревиатура",
+    "n_shadowed": 1,
+    "shadowed_types": [
+     "PERSON"
+    ],
+    "gold_types": [
+     "PER"
+    ],
+    "gold_n": 1
+   }
+  ]
+ },
+ {
+  "doc_id": "works_0008__m2718_homoglyph",
+  "n_org": 6,
+  "compounds": [
+   {
+    "doc_id": "works_0008__m2718_homoglyph",
+    "type": "ORG",
+    "text": "ИП Гyсeва Иpинa Олеговна",
+    "span": [
+     247,
+     271
+    ],
+    "shape": "ип_аббревиатура",
+    "n_shadowed": 1,
+    "shadowed_types": [
+     "PERSON"
+    ],
+    "gold_types": [
+     "PER"
+    ],
+    "gold_n": 1
+   },
+   {
+    "doc_id": "works_0008__m2718_homoglyph",
+    "type": "ORG",
+    "text": "Индивидуальный предприниматель Гyсевa Иринa Олеговна",
+    "span": [
+     5134,
+     5186
+    ],
+    "shape": "ип_прописью",
+    "n_shadowed": 1,
+    "shadowed_types": [
+     "PERSON"
+    ],
+    "gold_types": [
+     "PER"
+    ],
+    "gold_n": 1
+   }
+  ]
+ },
+ {
+  "doc_id": "works_0009",
+  "n_org": 4,
+  "compounds": []
+ },
+ {
+  "doc_id": "works_0009__m1337_invisible",
+  "n_org": 4,
+  "compounds": []
+ },
+ {
+  "doc_id": "works_0009__m2718_case",
+  "n_org": 4,
+  "compounds": []
+ },
+ {
+  "doc_id": "works_0010",
+  "n_org": 6,
+  "compounds": [
+   {
+    "doc_id": "works_0010",
+    "type": "ORG",
+    "text": "ИП Коваль М. Е.",
+    "span": [
+     69,
+     84
+    ],
+    "shape": "ип_аббревиатура",
+    "n_shadowed": 1,
+    "shadowed_types": [
+     "PERSON"
+    ],
+    "gold_types": [
+     "PER"
+    ],
+    "gold_n": 1
+   },
+   {
+    "doc_id": "works_0010",
+    "type": "ORG",
+    "text": "Индивидуальный предприниматель Новиков Михаил Дмитриевич",
+    "span": [
+     229,
+     285
+    ],
+    "shape": "ип_прописью",
+    "n_shadowed": 1,
+    "shadowed_types": [
+     "PERSON"
+    ],
+    "gold_types": [
+     "PER"
+    ],
+    "gold_n": 1
+   },
+   {
+    "doc_id": "works_0010",
+    "type": "ORG",
+    "text": "Индивидуальный предприниматель Коваль Михаил Егорович",
+    "span": [
+     2674,
+     2727
+    ],
+    "shape": "ип_прописью",
+    "n_shadowed": 1,
+    "shadowed_types": [
+     "PERSON"
+    ],
+    "gold_types": [
+     "PER"
+    ],
+    "gold_n": 1
+   },
+   {
+    "doc_id": "works_0010",
+    "type": "ORG",
+    "text": "Индивидуальный предприниматель Новиков Михаил Дмитриевич",
+    "span": [
+     2961,
+     3017
+    ],
+    "shape": "ип_прописью",
+    "n_shadowed": 1,
+    "shadowed_types": [
+     "PERSON"
+    ],
+    "gold_types": [
+     "PER"
+    ],
+    "gold_n": 1
+   }
+  ]
+ },
+ {
+  "doc_id": "works_0010__m1337_homoglyph",
+  "n_org": 6,
+  "compounds": [
+   {
+    "doc_id": "works_0010__m1337_homoglyph",
+    "type": "ORG",
+    "text": "ИП Kовaль М. E.",
+    "span": [
+     69,
+     84
+    ],
+    "shape": "ип_аббревиатура",
+    "n_shadowed": 1,
+    "shadowed_types": [
+     "PERSON"
+    ],
+    "gold_types": [
+     "PER"
+    ],
+    "gold_n": 1
+   },
+   {
+    "doc_id": "works_0010__m1337_homoglyph",
+    "type": "ORG",
+    "text": "Индивидуальный предприниматель Нoвиkoв Mихаил Дмитриевич",
+    "span": [
+     229,
+     285
+    ],
+    "shape": "ип_прописью",
+    "n_shadowed": 1,
+    "shadowed_types": [
+     "PERSON"
+    ],
+    "gold_types": [
+     "PER"
+    ],
+    "gold_n": 1
+   },
+   {
+    "doc_id": "works_0010__m1337_homoglyph",
+    "type": "ORG",
+    "text": "Индивидуальный предприниматель Кoваль Михaил Егорoвич",
+    "span": [
+     2674,
+     2727
+    ],
+    "shape": "ип_прописью",
+    "n_shadowed": 1,
+    "shadowed_types": [
+     "PERSON"
+    ],
+    "gold_types": [
+     "PER"
+    ],
+    "gold_n": 1
+   },
+   {
+    "doc_id": "works_0010__m1337_homoglyph",
+    "type": "ORG",
+    "text": "Индивидуальный предприниматель Новиков Mиxаил Дмитриевич",
+    "span": [
+     2961,
+     3017
+    ],
+    "shape": "ип_прописью",
+    "n_shadowed": 1,
+    "shadowed_types": [
+     "PERSON"
+    ],
+    "gold_types": [
+     "PER"
+    ],
+    "gold_n": 1
+   }
+  ]
+ },
+ {
+  "doc_id": "works_0010__m2718_case",
+  "n_org": 5,
+  "compounds": [
+   {
+    "doc_id": "works_0010__m2718_case",
+    "type": "ORG",
+    "text": "ИП КОВАЛЬ М. Е.",
+    "span": [
+     69,
+     84
+    ],
+    "shape": "ип_аббревиатура",
+    "n_shadowed": 1,
+    "shadowed_types": [
+     "PERSON"
+    ],
+    "gold_types": [
+     "PER"
+    ],
+    "gold_n": 1
+   },
+   {
+    "doc_id": "works_0010__m2718_case",
+    "type": "ORG",
+    "text": "Индивидуальный предприниматель новиков михаил дмитриевич",
+    "span": [
+     229,
+     285
+    ],
+    "shape": "ип_прописью",
+    "n_shadowed": 1,
+    "shadowed_types": [
+     "PERSON"
+    ],
+    "gold_types": [
+     "PER"
+    ],
+    "gold_n": 1
+   },
+   {
+    "doc_id": "works_0010__m2718_case",
+    "type": "ORG",
+    "text": "Индивидуальный предприниматель НОВИКОВ МИХАИЛ ДМИТРИЕВИЧ",
+    "span": [
+     2961,
+     3017
+    ],
+    "shape": "ип_прописью",
+    "n_shadowed": 1,
+    "shadowed_types": [
+     "PERSON"
+    ],
+    "gold_types": [
+     "PER"
+    ],
+    "gold_n": 1
+   }
+  ]
+ },
+ {
+  "doc_id": "works_0011",
+  "n_org": 3,
+  "compounds": [
+   {
+    "doc_id": "works_0011",
+    "type": "ORG",
+    "text": "ИП Беляев Артём Петрович",
+    "span": [
+     62,
+     86
+    ],
+    "shape": "ип_аббревиатура",
+    "n_shadowed": 1,
+    "shadowed_types": [
+     "PERSON"
+    ],
+    "gold_types": [
+     "PER"
+    ],
+    "gold_n": 1
+   },
+   {
+    "doc_id": "works_0011",
+    "type": "ORG",
+    "text": "Индивидуальный предприниматель Беляев Артём Петрович",
+    "span": [
+     2762,
+     2814
+    ],
+    "shape": "ип_прописью",
+    "n_shadowed": 1,
+    "shadowed_types": [
+     "PERSON"
+    ],
+    "gold_types": [
+     "PER"
+    ],
+    "gold_n": 1
+   }
+  ]
+ },
+ {
+  "doc_id": "works_0011__m1337_digit_spaces",
+  "n_org": 3,
+  "compounds": [
+   {
+    "doc_id": "works_0011__m1337_digit_spaces",
+    "type": "ORG",
+    "text": "ИП Беляев Артём Петрович",
+    "span": [
+     62,
+     86
+    ],
+    "shape": "ип_аббревиатура",
+    "n_shadowed": 1,
+    "shadowed_types": [
+     "PERSON"
+    ],
+    "gold_types": [
+     "PER"
+    ],
+    "gold_n": 1
+   },
+   {
+    "doc_id": "works_0011__m1337_digit_spaces",
+    "type": "ORG",
+    "text": "Индивидуальный предприниматель Беляев Артём Петрович",
+    "span": [
+     2771,
+     2823
+    ],
+    "shape": "ип_прописью",
+    "n_shadowed": 1,
+    "shadowed_types": [
+     "PERSON"
+    ],
+    "gold_types": [
+     "PER"
+    ],
+    "gold_n": 1
+   }
+  ]
+ },
+ {
+  "doc_id": "works_0011__m2718_linebreak",
+  "n_org": 2,
+  "compounds": [
+   {
+    "doc_id": "works_0011__m2718_linebreak",
+    "type": "ORG",
+    "text": "ИП Беляев Артём Петров",
+    "span": [
+     63,
+     85
+    ],
+    "shape": "ип_аббревиатура",
+    "n_shadowed": 1,
+    "shadowed_types": [
+     "PERSON"
+    ],
+    "gold_types": [
+     "PER"
+    ],
+    "gold_n": 1
+   }
+  ]
+ },
+ {
+  "doc_id": "works_0012",
+  "n_org": 0,
+  "compounds": []
+ },
+ {
+  "doc_id": "works_0012__m1337_case",
+  "n_org": 0,
+  "compounds": []
+ },
+ {
+  "doc_id": "works_0012__m2718_linebreak",
+  "n_org": 0,
+  "compounds": []
+ }
+]
