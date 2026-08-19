@@ -1,43 +1,43 @@
-/home/user/ARP/venv-lin/lib/python3.11/site-packages/pymorphy2/analyzer.py:114: UserWarning: pkg_resources is deprecated as an API. See https://setuptools.pypa.io/en/latest/pkg_resources.html. The pkg_resources package is slated for removal as early as 2025-11-30. Refrain from using this package or pin to Setuptools<81.
+/home/user/venv-arp/lib/python3.11/site-packages/pymorphy2/analyzer.py:114: UserWarning: pkg_resources is deprecated as an API. See https://setuptools.pypa.io/en/latest/pkg_resources.html. The pkg_resources package is slated for removal as early as 2025-11-30. Refrain from using this package or pin to Setuptools<81.
   import pkg_resources
 === gate.py — ЕДИНЫЙ регресс-гейт (7 линий: precision / leak_v2 / masking A / masking B / over-mask прозы / границы по направлению / зеркало подавления) ===
 
 MANIFEST.sha256 (до прогона): 659 файлов — OK
 
 Прогон измерения: 324 документов (encrypt+decrypt, изолированное хранилище)…
-[1/324] agency_0001  3s  (0.3 doc/s)
-[10/324] agency_0004  8s  (1.2 doc/s)
-[20/324] agency_0007__m1337_combo  15s  (1.4 doc/s)
-[30/324] agency_0010__m2718_linebreak  18s  (1.7 doc/s)
-[40/324] cession_0004  23s  (1.7 doc/s)
-[50/324] cession_0007__m1337_digit_spaces  28s  (1.8 doc/s)
-[60/324] labor_0002__m2718_homoglyph  32s  (1.9 doc/s)
-[70/324] labor_0006  37s  (1.9 doc/s)
-[80/324] labor_0009__m1337_invisible  43s  (1.9 doc/s)
-[90/324] labor_0012__m2718_digit_spaces  48s  (1.9 doc/s)
-[100/324] lease_0004  53s  (1.9 doc/s)
-[110/324] lease_0007__m1337_combo  59s  (1.9 doc/s)
-[120/324] lease_0010__m2718_cell_split  64s  (1.9 doc/s)
-[130/324] loan_0002  68s  (1.9 doc/s)
-[140/324] loan_0005__m1337_digit_spaces  74s  (1.9 doc/s)
-[150/324] loan_0008__m2718_case  78s  (1.9 doc/s)
-[160/324] sale_0002  83s  (1.9 doc/s)
-[170/324] sale_0005__m1337_invisible  90s  (1.9 doc/s)
-[180/324] sale_0008__m2718_combo  94s  (1.9 doc/s)
-[190/324] sale_0012  99s  (1.9 doc/s)
+[1/324] agency_0001  1s  (0.8 doc/s)
+[10/324] agency_0004  5s  (1.9 doc/s)
+[20/324] agency_0007__m1337_combo  12s  (1.7 doc/s)
+[30/324] agency_0010__m2718_linebreak  16s  (1.9 doc/s)
+[40/324] cession_0004  20s  (2.0 doc/s)
+[50/324] cession_0007__m1337_digit_spaces  25s  (2.0 doc/s)
+[60/324] labor_0002__m2718_homoglyph  30s  (2.0 doc/s)
+[70/324] labor_0006  35s  (2.0 doc/s)
+[80/324] labor_0009__m1337_invisible  41s  (2.0 doc/s)
+[90/324] labor_0012__m2718_digit_spaces  46s  (2.0 doc/s)
+[100/324] lease_0004  50s  (2.0 doc/s)
+[110/324] lease_0007__m1337_combo  57s  (1.9 doc/s)
+[120/324] lease_0010__m2718_cell_split  60s  (2.0 doc/s)
+[130/324] loan_0002  65s  (2.0 doc/s)
+[140/324] loan_0005__m1337_digit_spaces  72s  (1.9 doc/s)
+[150/324] loan_0008__m2718_case  76s  (2.0 doc/s)
+[160/324] sale_0002  82s  (2.0 doc/s)
+[170/324] sale_0005__m1337_invisible  88s  (1.9 doc/s)
+[180/324] sale_0008__m2718_combo  93s  (1.9 doc/s)
+[190/324] sale_0012  98s  (1.9 doc/s)
 [200/324] services_0001__m1337_combo  105s  (1.9 doc/s)
 [210/324] services_0004__m2718_invisible  108s  (1.9 doc/s)
 [220/324] services_0008  113s  (1.9 doc/s)
-[230/324] services_0011__m1337_digit_spaces  118s  (1.9 doc/s)
+[230/324] services_0011__m1337_digit_spaces  119s  (1.9 doc/s)
 [240/324] services_0014__m2718_linebreak  124s  (1.9 doc/s)
 [250/324] supply_0004  128s  (2.0 doc/s)
-[260/324] supply_0007__m1337_invisible  133s  (2.0 doc/s)
-[270/324] supply_0010__m2718_homoglyph  138s  (2.0 doc/s)
-[280/324] supply_0014  143s  (2.0 doc/s)
-[290/324] works_0001__m1337_combo  150s  (1.9 doc/s)
-[300/324] works_0004__m2718_digit_spaces  154s  (1.9 doc/s)
-[310/324] works_0008  158s  (2.0 doc/s)
-[320/324] works_0011__m1337_digit_spaces  163s  (2.0 doc/s)
+[260/324] supply_0007__m1337_invisible  134s  (1.9 doc/s)
+[270/324] supply_0010__m2718_homoglyph  139s  (1.9 doc/s)
+[280/324] supply_0014  144s  (1.9 doc/s)
+[290/324] works_0001__m1337_combo  151s  (1.9 doc/s)
+[300/324] works_0004__m2718_digit_spaces  155s  (1.9 doc/s)
+[310/324] works_0008  161s  (1.9 doc/s)
+[320/324] works_0011__m1337_digit_spaces  165s  (1.9 doc/s)
 
 MANIFEST.sha256 (после прогона): OK
 
@@ -269,6 +269,6 @@ TOTAL*      11580 |   88.5%->  91.7% | +  12.7%->   8.0% | +  12.1%->   7.9% | -
   - (е) границы[EMAIL / недобор, сущностей]: 60 -> 61 (+1) — часть эталона осталась ОТКРЫТЫМ текстом (утечка)
   - (е) границы[EMAIL / недобор, символов]: 307 -> 313 (+6) — часть эталона осталась ОТКРЫТЫМ текстом (утечка)
 
-real	2m50.993s
-user	8m8.105s
-sys	0m12.179s
+real	2m50.519s
+user	8m22.241s
+sys	0m1.386s

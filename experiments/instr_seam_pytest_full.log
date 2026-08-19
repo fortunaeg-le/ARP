@@ -1,14 +1,14 @@
 bringing up nodes...
 bringing up nodes...
 
-...............................................................x........ [  3%]
+..................................................................x..... [  3%]
 ....................................x................................... [  7%]
 ........................................................................ [ 10%]
 ........................................................................ [ 14%]
 ........................................................................ [ 18%]
 ........................................................................ [ 21%]
 ........................................................................ [ 25%]
-........x............................................................... [ 29%]
+.......x................................................................ [ 29%]
 ........................................................................ [ 32%]
 ........................................................................ [ 36%]
 ........................................................................ [ 40%]
@@ -17,10 +17,10 @@ bringing up nodes...
 ........................................................................ [ 50%]
 ........................................................................ [ 54%]
 ........................................................................ [ 58%]
-........................................................................ [ 61%]
-..............................ss....s................................... [ 65%]
-..............................................FFFFF....F...F..F......... [ 69%]
-...F.................................................................... [ 72%]
+..................ss....s............................................... [ 61%]
+........................................................................ [ 65%]
+...............................................FFFFF....F...F...F....... [ 69%]
+.F...................................................................... [ 72%]
 ........................................................................ [ 76%]
 ........................................................................ [ 80%]
 ........................................................................ [ 83%]
@@ -42,7 +42,7 @@ ____________ test_procutil_is_pid_alive_for_self_and_for_bogus_pid _____________
 tests/test_u1_packaging.py:72: 
 _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ 
 
-pid = 1160
+pid = 19082
 
     def is_pid_alive(pid: int) -> bool:
         """True, если процесс с данным PID существует и ещё выполняется."""
@@ -67,7 +67,7 @@ __________________ test_procutil_kill_pid_terminates_process ___________________
 tests/test_u1_packaging.py:82: 
 _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ 
 
-pid = 1463
+pid = 19383
 
     def is_pid_alive(pid: int) -> bool:
         """True, если процесс с данным PID существует и ещё выполняется."""
@@ -81,7 +81,7 @@ app/procutil.py:18: AttributeError
 ______________ test_stale_lock_with_dead_pid_is_cleaned_silently _______________
 [gw1] linux -- Python 3.11.15 /home/user/venv-arp/bin/python
 
-isolated_home = PosixPath('/tmp/pytest-of-root/pytest-14/popen-gw1/test_stale_lock_with_dead_pid_0/home')
+isolated_home = PosixPath('/tmp/pytest-of-root/pytest-22/popen-gw1/test_stale_lock_with_dead_pid_0/home')
 
     def test_stale_lock_with_dead_pid_is_cleaned_silently(isolated_home):
         import importlib
@@ -116,7 +116,7 @@ app/procutil.py:18: AttributeError
 __________ test_stale_lock_with_alive_but_unresponsive_pid_is_killed ___________
 [gw1] linux -- Python 3.11.15 /home/user/venv-arp/bin/python
 
-isolated_home = PosixPath('/tmp/pytest-of-root/pytest-14/popen-gw1/test_stale_lock_with_alive_but0/home')
+isolated_home = PosixPath('/tmp/pytest-of-root/pytest-22/popen-gw1/test_stale_lock_with_alive_but0/home')
 
     def test_stale_lock_with_alive_but_unresponsive_pid_is_killed(isolated_home):
         """Была история с зомби-процессом сервера (старый код молча слушал вместо
@@ -150,7 +150,7 @@ app/launcher.py:69: in _handle_stale_instance
            ^^^^^^^^^^^^^^^^^^^^^^^^^^
 _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ 
 
-pid = 1464
+pid = 19384
 
     def is_pid_alive(pid: int) -> bool:
         """True, если процесс с данным PID существует и ещё выполняется."""
@@ -164,8 +164,8 @@ app/procutil.py:18: AttributeError
 __________ test_stale_lock_with_live_responding_process_is_left_alone __________
 [gw1] linux -- Python 3.11.15 /home/user/venv-arp/bin/python
 
-isolated_home = PosixPath('/tmp/pytest-of-root/pytest-14/popen-gw1/test_stale_lock_with_live_resp0/home')
-monkeypatch = <_pytest.monkeypatch.MonkeyPatch object at 0x7f6c1d9738d0>
+isolated_home = PosixPath('/tmp/pytest-of-root/pytest-22/popen-gw1/test_stale_lock_with_live_resp0/home')
+monkeypatch = <_pytest.monkeypatch.MonkeyPatch object at 0x7f4c291134d0>
 
     def test_stale_lock_with_live_responding_process_is_left_alone(isolated_home, monkeypatch):
         """Живой процесс, отвечающий на /api/ping, — легитимный второй запуск
@@ -224,7 +224,7 @@ app/launcher.py:69: in _handle_stale_instance
            ^^^^^^^^^^^^^^^^^^^^^^^^^^
 _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ 
 
-pid = 1465
+pid = 19385
 
     def is_pid_alive(pid: int) -> bool:
         """True, если процесс с данным PID существует и ещё выполняется."""
@@ -263,8 +263,8 @@ tests/test_u1_packaging.py:348: AssertionError
 _________________ test_browser_search_prefers_edge_then_chrome _________________
 [gw1] linux -- Python 3.11.15 /home/user/venv-arp/bin/python
 
-tmp_path = PosixPath('/tmp/pytest-of-root/pytest-14/popen-gw1/test_browser_search_prefers_ed0')
-monkeypatch = <_pytest.monkeypatch.MonkeyPatch object at 0x7f6c1777a4d0>
+tmp_path = PosixPath('/tmp/pytest-of-root/pytest-22/popen-gw1/test_browser_search_prefers_ed0')
+monkeypatch = <_pytest.monkeypatch.MonkeyPatch object at 0x7f4c2cca1850>
 
     def test_browser_search_prefers_edge_then_chrome(tmp_path, monkeypatch):
         """Порядок поиска: Edge (есть на любой Windows 10/11 из коробки) — первым."""
@@ -283,16 +283,16 @@ monkeypatch = <_pytest.monkeypatch.MonkeyPatch object at 0x7f6c1777a4d0>
         chrome.write_bytes(b"")
 >       assert appwindow.find_browser() == str(chrome), "Chrome не найден в одиночку"
 E       AssertionError: Chrome не найден в одиночку
-E       assert None == '/tmp/pytest-of-root/pytest-14/popen-gw1/test_browser_search_prefers_ed0/Program Files/Google/Chrome/Application/chrome.exe'
-E        +  where None = <function find_browser at 0x7f6c1d079800>()
-E        +    where <function find_browser at 0x7f6c1d079800> = <module 'appwindow' from '/home/user/ARP/app/appwindow.py'>.find_browser
-E        +  and   '/tmp/pytest-of-root/pytest-14/popen-gw1/test_browser_search_prefers_ed0/Program Files/Google/Chrome/Application/chrome.exe' = str(PosixPath('/tmp/pytest-of-root/pytest-14/popen-gw1/test_browser_search_prefers_ed0/Program Files/Google/Chrome/Application/chrome.exe'))
+E       assert None == '/tmp/pytest-of-root/pytest-22/popen-gw1/test_browser_search_prefers_ed0/Program Files/Google/Chrome/Application/chrome.exe'
+E        +  where None = <function find_browser at 0x7f4c2bfa5800>()
+E        +    where <function find_browser at 0x7f4c2bfa5800> = <module 'appwindow' from '/home/user/ARP/app/appwindow.py'>.find_browser
+E        +  and   '/tmp/pytest-of-root/pytest-22/popen-gw1/test_browser_search_prefers_ed0/Program Files/Google/Chrome/Application/chrome.exe' = str(PosixPath('/tmp/pytest-of-root/pytest-22/popen-gw1/test_browser_search_prefers_ed0/Program Files/Google/Chrome/Application/chrome.exe'))
 
 tests/test_u1_packaging.py:482: AssertionError
 ___________________ test_close_all_leaves_no_zombie_process ____________________
 [gw1] linux -- Python 3.11.15 /home/user/venv-arp/bin/python
 
-monkeypatch = <_pytest.monkeypatch.MonkeyPatch object at 0x7f6c1d380550>
+monkeypatch = <_pytest.monkeypatch.MonkeyPatch object at 0x7f4c2be447d0>
 
     def test_close_all_leaves_no_zombie_process(monkeypatch):
         """Выход из программы обязан унести окно с собой: живой браузер с мёртвым
@@ -317,14 +317,14 @@ app/appwindow.py:293: in _kill_tree
          ^^^^^^^^^^^^^^^^^^^^^^^^^^^
 _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ 
 
-self = <[AttributeError("'Popen' object has no attribute 'returncode'") raised in repr()] Popen object at 0x7f6c1d382550>
-args = ['taskkill', '/PID', '1468', '/T', '/F'], bufsize = -1, executable = None
-stdin = None, stdout = -3, stderr = -3, preexec_fn = None, close_fds = True
-shell = False, cwd = None, env = None, universal_newlines = None
-startupinfo = None, creationflags = 134217728, restore_signals = True
-start_new_session = False, pass_fds = (), user = None, group = None
-extra_groups = None, encoding = None, errors = None, text = None, umask = -1
-pipesize = -1, process_group = None
+self = <[AttributeError("'Popen' object has no attribute 'returncode'") raised in repr()] Popen object at 0x7f4c2be46410>
+args = ['taskkill', '/PID', '19388', '/T', '/F'], bufsize = -1
+executable = None, stdin = None, stdout = -3, stderr = -3, preexec_fn = None
+close_fds = True, shell = False, cwd = None, env = None
+universal_newlines = None, startupinfo = None, creationflags = 134217728
+restore_signals = True, start_new_session = False, pass_fds = (), user = None
+group = None, extra_groups = None, encoding = None, errors = None, text = None
+umask = -1, pipesize = -1, process_group = None
 
     def __init__(self, args, bufsize=-1, executable=None,
                  stdin=None, stdout=None, stderr=None,
@@ -382,7 +382,7 @@ E               ValueError: creationflags is only supported on Windows platforms
 __________________ test_rebuild_matches_the_committed_corpus ___________________
 [gw3] linux -- Python 3.11.15 /home/user/venv-arp/bin/python
 
-tmp_path = PosixPath('/tmp/pytest-of-root/pytest-14/popen-gw3/test_rebuild_matches_the_commi0')
+tmp_path = PosixPath('/tmp/pytest-of-root/pytest-22/popen-gw3/test_rebuild_matches_the_commi0')
 
     def test_rebuild_matches_the_committed_corpus(tmp_path):
         """Собранное заново совпадает с тем, что лежит в репозитории.
@@ -495,8 +495,8 @@ ________________ test_existing_block1_7_suite_still_fully_green ________________
         )
 E       AssertionError: Регресс в существующем наборе блоков 1-7 (не трогать эти тесты, чинить причину в коде):
 E         --- stdout ---
-E         ncoding = None, errors = None, text = None, umask = -1
-E         pipesize = -1, process_group = None
+E         ncoding = None, errors = None, text = None
+E         umask = -1, pipesize = -1, process_group = None
 E         
 E             def __init__(self, args, bufsize=-1, executable=None,
 E                          stdin=None, stdout=None, stderr=None,
@@ -567,12 +567,12 @@ E         FAILED tests/test_u1_packaging.py::test_stale_lock_with_live_respondin
 E         FAILED tests/test_u1_packaging.py::test_build_lock_matches_installed_environment
 E         FAILED tests/test_u1_packaging.py::test_browser_search_prefers_edge_then_chrome
 E         FAILED tests/test_u1_packaging.py::test_close_all_leaves_no_zombie_process - ...
-E         9 failed, 1898 passed, 3 skipped, 3 deselected, 6 xfailed, 1 warning in 385.21s (0:06:25)
+E         9 failed, 1898 passed, 3 skipped, 3 deselected, 6 xfailed, 1 warning in 404.05s (0:06:44)
 E         
 E         --- stderr ---
 E         
 E       assert 1 == 0
-E        +  where 1 = CompletedProcess(args=['/home/user/venv-arp/bin/python', '-m', 'pytest', 'tests', '--ignore=tests/component2', '-m', '...process - ...\n9 failed, 1898 passed, 3 skipped, 3 deselected, 6 xfailed, 1 warning in 385.21s (0:06:25)\n', stderr='').returncode
+E        +  where 1 = CompletedProcess(args=['/home/user/venv-arp/bin/python', '-m', 'pytest', 'tests', '--ignore=tests/component2', '-m', '...process - ...\n9 failed, 1898 passed, 3 skipped, 3 deselected, 6 xfailed, 1 warning in 404.05s (0:06:44)\n', stderr='').returncode
 
 tests/component2/test_g_regression.py:76: AssertionError
 =============================== warnings summary ===============================
@@ -595,8 +595,8 @@ FAILED tests/test_u1_packaging.py::test_browser_search_prefers_edge_then_chrome
 FAILED tests/test_u1_packaging.py::test_close_all_leaves_no_zombie_process - ...
 FAILED tests/test_corpus_v2_reproducible.py::test_rebuild_matches_the_committed_corpus
 FAILED tests/component2/test_g_regression.py::test_existing_block1_7_suite_still_fully_green
-10 failed, 1959 passed, 3 skipped, 6 xfailed, 4 warnings in 427.66s (0:07:07)
+10 failed, 1959 passed, 3 skipped, 6 xfailed, 4 warnings in 447.54s (0:07:27)
 
-real	7m8.005s
-user	11m37.275s
-sys	1m30.687s
+real	7m27.935s
+user	11m42.008s
+sys	1m39.484s
