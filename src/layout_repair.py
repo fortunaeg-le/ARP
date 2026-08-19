@@ -302,12 +302,57 @@ _DIGIT_FOLD = {"О": "0", "о": "0", "O": "0", "o": "0", "З": "3", "з": "3",
 _BARE_EXTRA = frozenset(" \t\n\r-–—‑‒−")
 
 
+#: кэш скомпилированных якорей типа для стража сборки (страж зовётся на каждое
+#: граничное окно документа — компилировать заново нельзя).
+_SEAM_ANCHOR_CACHE: dict[tuple[str, str], tuple] = {}
+
+
+def _seam_anchors(etype: str, spec: dict, config_path: str) -> tuple:
+    """ВСЕ якоря типа для стража сборки, взятые ИЗ КОНФИГА.
+
+    ЭТАП SEAM-JOIN. Раньше страж смотрел ровно в одно место — ключ `anchor:`
+    типа, а при его отсутствии в рукописное зеркало
+    `multispan._LOCAL_SEAM_ANCHORS`. Тип с НЕСКОЛЬКИМИ формами значения держит
+    якорь ВНУТРИ элемента `patterns[]` (свой на каждую форму), и до этого якоря
+    страж не доставал вовсе:
+
+      * `KPP` — якорь `(?i)кпп` лежит в `patterns[0].anchor`, ключа `anchor:` у
+        типа нет; голая девятизначная цепь, собранная через стык, не
+        принималась НИКОГДА (5 отказов на документах класса вёрстки);
+      * `PASSPORT` — вторая форма («код подразделения 704-068») несёт якорь
+        внутри самого паттерна, а зеркало знало голову только ПЕРВОЙ формы
+        («паспорт|серия»). 57 отказов на 47 документах класса — крупнейший
+        единичный блокиратор класса вёрстки (разведка
+        `experiments/seam_join_seamlog.py`).
+
+    Порядок: ключ `anchor:` типа -> якоря элементов `patterns[]` -> рукописное
+    зеркало голов паттернов (там, где якорь вплавлен в regex и отдельным ключом
+    не выражен). Годится ЛЮБОЙ — это то же требование «якорь типа слева»,
+    просто перечисленное полностью, а не одной случайной веткой."""
+    import re as _re
+    key = (config_path, etype)
+    cached = _SEAM_ANCHOR_CACHE.get(key)
+    if cached is not None:
+        return cached
+    from multispan import _LOCAL_SEAM_ANCHORS
+    out = []
+    if spec.get("anchor"):
+        out.append(_re.compile(spec["anchor"]))
+    for p in spec.get("patterns") or ():
+        if isinstance(p, dict) and p.get("anchor"):
+            out.append(_re.compile(p["anchor"]))
+    mirror = _LOCAL_SEAM_ANCHORS.get(etype)
+    if mirror is not None:
+        out.append(mirror)
+    res = tuple(out)
+    _SEAM_ANCHOR_CACHE[key] = res
+    return res
+
+
 def _strict_seam_ok(matched: str, etype: str, ctx: str, start: int,
                     config_path: str) -> bool:
-    """Пропускает regex-находку, СОБРАННУЮ через '\\n', по правилу A6."""
+    """Пропускает regex-находку, СОБРАННУЮ через разрыв, по правилу A6."""
     from regex_detector import VALIDATORS, _has_anchor, _fold_anchor_context
-    from multispan import _LOCAL_SEAM_ANCHORS
-    import re as _re
     spec = load_yaml_cached(config_path)["entity_types"].get(etype) or {}
     validator = VALIDATORS.get(spec.get("validate") or "")
     if validator is not None:
@@ -318,13 +363,11 @@ def _strict_seam_ok(matched: str, etype: str, ctx: str, start: int,
     bare = all(ch.isdigit() or ch in _DIGIT_FOLD or ch in _BARE_EXTRA
                for ch in matched)
     if bare:
-        anchor = spec.get("anchor")
-        anchor_re = (_re.compile(anchor) if anchor
-                     else _LOCAL_SEAM_ANCHORS.get(etype))
-        if anchor_re is None:
+        anchors = _seam_anchors(etype, spec, config_path)
+        if not anchors:
             return False
         folded = _fold_anchor_context(ctx)
-        if not _has_anchor(folded, start, anchor_re):
+        if not any(_has_anchor(folded, start, a) for a in anchors):
             return False
     return True
 
