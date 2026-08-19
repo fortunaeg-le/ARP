@@ -143,6 +143,87 @@ class TestMirrorB:
         assert r["scored"] is False and r["b_ok"] is None
 
 
+class TestMirrorBSeam:
+    """B и НЕМАСКИРУЕМЫЙ ШОВ (этап INSTR-SEAM) — пара зеркал В ОБЕ СТОРОНЫ.
+
+    Значение, разорванное вёрсткой, закрывается ПАРОЙ масок; разделитель сборки
+    PT-1 между половинами не принадлежит ни одному сегменту, который читает
+    система, — маску туда поставить нечем НИ ПРИ КАКОМ качестве детекции. Прежний
+    прибор браковал ОБЕ маски пары и тем наказывал за закрытую утечку
+    (`CHARNORM-MASKB-B3-SEPARATOR`, `SEAMJOIN-MASKB-PAIR-SEAM`).
+
+    Правило УЗКОЕ, и этот класс существует, чтобы оно узким и осталось: на один
+    положительный случай здесь ПЯТЬ отрицательных. Ослабление правила в любую
+    сторону (простить не-шов, простить край эталона, простить зазор шире шва,
+    простить прибор без знания о шве) красит один из них."""
+
+    GOLD = [{"start": 10, "end": 30, "type": "ACCOUNT"}]
+    #: значение закрыто ПАРОЙ масок, между ними ровно один символ (позиция 20)
+    PAIR = [{"start": 10, "end": 20, "gtype": "ACCOUNT"},
+            {"start": 21, "end": 30, "gtype": "ACCOUNT"}]
+    SEAM = [(20, 21)]
+
+    def _bc(self, masks, seam, i=0):
+        return ML.mc_check_bc(masks[i], self.GOLD, masks, seam=seam)
+
+    def test_positive_seam_between_pair_is_not_a_violation(self):
+        """ПОЛОЖИТЕЛЬНОЕ зеркало: зазор между половинами пары — шов. Значение
+        спрятано целиком, браком не считается НИ ОДНА из двух масок."""
+        for i in (0, 1):
+            assert self._bc(self.PAIR, self.SEAM, i)["b_ok"] is True
+
+    def test_negative_without_seam_knowledge_behaviour_is_unchanged(self):
+        """ОТРИЦАТЕЛЬНОЕ №1: без знания о шве прибор обязан вести себя ровно как
+        прежде. Это же условие держит все прочие вызовы mc_check_bc (юнит-зеркала
+        выше, разведочные харнессы) на прежнем поведении слово в слово."""
+        for i in (0, 1):
+            assert self._bc(self.PAIR, None, i)["b_ok"] is False
+            assert self._bc(self.PAIR, [], i)["b_ok"] is False
+
+    def test_negative_gap_outside_seam_is_violation(self):
+        """ОТРИЦАТЕЛЬНОЕ №2: шов в документе есть, но НЕ на этом зазоре —
+        открытый символ настоящий, и это недобор (утечка)."""
+        for i in (0, 1):
+            assert self._bc(self.PAIR, [(40, 41)], i)["b_ok"] is False
+
+    def test_negative_gap_wider_than_seam_is_violation(self):
+        """ОТРИЦАТЕЛЬНОЕ №3: зазор шире шва — прощается ТОЛЬКО зазор, КАЖДЫЙ
+        символ которого шов. Один лишний открытый символ — снова нарушение."""
+        masks = [{"start": 10, "end": 20, "gtype": "ACCOUNT"},
+                 {"start": 22, "end": 30, "gtype": "ACCOUNT"}]
+        assert ML.mc_check_bc(masks[0], self.GOLD, masks,
+                              seam=self.SEAM)["b_ok"] is False
+
+    def test_negative_open_seam_before_first_mask_is_violation(self):
+        """ОТРИЦАТЕЛЬНОЕ №4: шов на КРАЮ эталона, перед первой маской, — это не
+        «между двумя масками». Прощать край нельзя: там открыт кусок значения, а
+        не разделитель между двумя его половинами."""
+        masks = [{"start": 11, "end": 30, "gtype": "ACCOUNT"}]
+        assert ML.mc_check_bc(masks[0], self.GOLD, masks,
+                              seam=[(10, 11)])["b_ok"] is False
+
+    def test_negative_open_seam_after_last_mask_is_violation(self):
+        """ОТРИЦАТЕЛЬНОЕ №5: то же с другого края."""
+        masks = [{"start": 10, "end": 29, "gtype": "ACCOUNT"}]
+        assert ML.mc_check_bc(masks[0], self.GOLD, masks,
+                              seam=[(29, 30)])["b_ok"] is False
+
+    def test_seam_does_not_touch_scored_or_C(self):
+        """Шов отвечает на вопрос «закрыто ли значение», а не «как оно названо»:
+        ни знаменатель (scored), ни тип (C) он двигать не имеет права."""
+        old = self._bc(self.PAIR, None)
+        new = self._bc(self.PAIR, self.SEAM)
+        assert (old["scored"], old["c_ok"], old["gold_type"]) == \
+               (new["scored"], new["c_ok"], new["gold_type"])
+
+    def test_false_positive_mask_stays_unscored_with_seam(self):
+        """Маска, не легшая ни на один эталон, шва не касается вовсе: в
+        знаменатель B/C она не идёт ни со швом, ни без него."""
+        masks = [{"start": 100, "end": 110, "gtype": "ACCOUNT"}]
+        r = ML.mc_check_bc(masks[0], self.GOLD, masks, seam=[(100, 110)])
+        assert r["scored"] is False and r["b_ok"] is None
+
+
 class TestMirrorC:
     """C — тип: сущность спрятана под СВОИМ типом (мягкий уровень)."""
 
@@ -449,3 +530,28 @@ def test_contract_C_every_mask_uses_the_right_type(contract_masks):
     bad = [(d, m["gold_type"], m["gtype"]) for d, m in contract_masks
            if m["scored"] and not m["c_ok"]]
     assert not bad, f"маска под чужим типом: {bad[:5]}"
+
+
+def test_e2e_seam_split_value_is_not_a_B_violation():
+    """СКВОЗНОЕ зеркало этапа INSTR-SEAM и одновременно СТРАЖ ПРОВОДКИ: если
+    run_measurement перестанет передавать шов в mc_check_bc, этот тест краснеет.
+
+    Носитель — именной случай долга `CHARNORM-MASKB-B3-SEPARATOR`: ИНН
+    `lease_0002__m2718_combo`, разорванный ГРАНИЦЕЙ ЯЧЕЙКИ ('\t' сборки PT-1).
+    Значение закрыто ПАРОЙ масок с обеих сторон разделителя, то есть спрятано
+    целиком; запись сущности в том же прогоне говорит `under=0` (линия «е» шов
+    исключает с этапа REG). Линия «г» обязана отвечать так же."""
+    doc_id = "lease_0002__m2718_combo"
+    gold = {d["doc_id"]: d for d in RM.load_gold()}
+    assert doc_id in gold, f"{doc_id} исчез из корпуса — тест обязан умереть громко"
+    inn_gold = [e for e in gold[doc_id]["entities"] if e["type"] == "INN"]
+    assert any("\t" in e["text"] for e in inn_gold), \
+        "эталонный ИНН больше не рвётся границей ячейки — зеркало едет не на шве"
+    rec = RM.process_doc(gold[doc_id])
+    inn = [m for m in rec["masks"] if m["scored"] and m["gold_type"] == "INN"]
+    assert len(inn) >= 2, "ИНН закрыт не парой масок — зеркало слепо: {}".format(inn)
+    assert all(m["b_ok"] for m in inn), \
+        "значение спрятано целиком, а линия «г» считает это браком границ"
+    ent = [e for e in rec["entities"] if e["type"] == "INN"]
+    assert ent and all(e["bnd"]["under"] == 0 for e in ent), \
+        "линия «е» и линия «г» обязаны отвечать на один вопрос одинаково"
