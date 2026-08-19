@@ -1,0 +1,16 @@
+class                total    leak      pct notfound
+clean                 4011      91     2.3%     257
+mut:case              1287     225    17.5%     154
+mut:invisible         1266      47     3.7%      91
+mut:homoglyph         1260      97     7.7%     115
+mut:combo             1256     338    26.9%     199
+mut:digit_spaces      1248      56     4.5%      99
+mut:linebreak         1181     367    31.1%     227
+mut:cell_split         524      33     6.3%      55
+TOTAL 12033 1254
+
+mut:homoglyph {'ADDRESS': 29, 'ORG': 15, 'PASSPORT': 14, 'PHONE': 12, 'INN_PER': 8, 'SUM': 7, 'INN': 4, 'PER': 3, 'KPP': 3, 'OGRN': 1, 'ACCOUNT': 1}
+mut:invisible {'PER': 18, 'ADDRESS': 6, 'PASSPORT': 6, 'ORG': 5, 'PHONE': 4, 'SUM': 4, 'INN': 3, 'BIRTHDATE': 1}
+mut:digit_spaces {'PASSPORT': 26, 'ADDRESS': 11, 'PER': 9, 'ORG': 5, 'INN': 3, 'SUM': 1, 'PHONE': 1}
+clean {'ADDRESS': 33, 'PER': 28, 'ORG': 21, 'INN': 6, 'PHONE': 3}
+mut:combo {'PER': 214, 'ADDRESS': 56, 'PASSPORT': 18, 'ORG': 17, 'PHONE': 8, 'INN_PER': 7, 'SUM': 5, 'INN': 4, 'KPP': 3, 'ACCOUNT': 3, 'OGRN': 2, 'SNILS': 1}
