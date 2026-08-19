@@ -1,0 +1,602 @@
+bringing up nodes...
+bringing up nodes...
+
+...............................................................x........ [  3%]
+....................................x................................... [  7%]
+........................................................................ [ 10%]
+........................................................................ [ 14%]
+........................................................................ [ 18%]
+........................................................................ [ 21%]
+........................................................................ [ 25%]
+........x............................................................... [ 29%]
+........................................................................ [ 32%]
+........................................................................ [ 36%]
+........................................................................ [ 40%]
+........................................................................ [ 43%]
+........................................................................ [ 47%]
+........................................................................ [ 50%]
+........................................................................ [ 54%]
+........................................................................ [ 58%]
+........................................................................ [ 61%]
+..............................ss....s................................... [ 65%]
+..............................................FFFFF....F...F..F......... [ 69%]
+...F.................................................................... [ 72%]
+........................................................................ [ 76%]
+........................................................................ [ 80%]
+........................................................................ [ 83%]
+........................................................................ [ 87%]
+........................................................................ [ 91%]
+....F................................................................... [ 94%]
+........................................................................ [ 98%]
+...xxx............................                                       [100%]
+=================================== FAILURES ===================================
+____________ test_procutil_is_pid_alive_for_self_and_for_bogus_pid _____________
+[gw1] linux -- Python 3.11.15 /home/user/venv-arp/bin/python
+
+    def test_procutil_is_pid_alive_for_self_and_for_bogus_pid():
+        import procutil
+    
+>       assert procutil.is_pid_alive(os.getpid()) is True
+               ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+
+tests/test_u1_packaging.py:72: 
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ 
+
+pid = 1160
+
+    def is_pid_alive(pid: int) -> bool:
+        """True, если процесс с данным PID существует и ещё выполняется."""
+        if pid <= 0:
+            return False
+>       kernel32 = ctypes.windll.kernel32
+                   ^^^^^^^^^^^^^
+E       AttributeError: module 'ctypes' has no attribute 'windll'
+
+app/procutil.py:18: AttributeError
+__________________ test_procutil_kill_pid_terminates_process ___________________
+[gw1] linux -- Python 3.11.15 /home/user/venv-arp/bin/python
+
+    def test_procutil_kill_pid_terminates_process():
+        import procutil
+    
+        proc = subprocess.Popen([sys.executable, "-c", "import time; time.sleep(30)"])
+        try:
+>           assert procutil.is_pid_alive(proc.pid) is True
+                   ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+
+tests/test_u1_packaging.py:82: 
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ 
+
+pid = 1463
+
+    def is_pid_alive(pid: int) -> bool:
+        """True, если процесс с данным PID существует и ещё выполняется."""
+        if pid <= 0:
+            return False
+>       kernel32 = ctypes.windll.kernel32
+                   ^^^^^^^^^^^^^
+E       AttributeError: module 'ctypes' has no attribute 'windll'
+
+app/procutil.py:18: AttributeError
+______________ test_stale_lock_with_dead_pid_is_cleaned_silently _______________
+[gw1] linux -- Python 3.11.15 /home/user/venv-arp/bin/python
+
+isolated_home = PosixPath('/tmp/pytest-of-root/pytest-14/popen-gw1/test_stale_lock_with_dead_pid_0/home')
+
+    def test_stale_lock_with_dead_pid_is_cleaned_silently(isolated_home):
+        import importlib
+        import launcher
+        importlib.reload(launcher)
+    
+        lock = launcher._lock_path()
+        lock.parent.mkdir(parents=True, exist_ok=True)
+        lock.write_text(json.dumps({"pid": 10**7, "port": 8765, "build_mark": "x"}), encoding="utf-8")
+    
+>       assert launcher._handle_stale_instance() is False
+               ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+
+tests/test_u1_packaging.py:104: 
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ 
+app/launcher.py:69: in _handle_stale_instance
+    if not procutil.is_pid_alive(pid):
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ 
+
+pid = 10000000
+
+    def is_pid_alive(pid: int) -> bool:
+        """True, если процесс с данным PID существует и ещё выполняется."""
+        if pid <= 0:
+            return False
+>       kernel32 = ctypes.windll.kernel32
+                   ^^^^^^^^^^^^^
+E       AttributeError: module 'ctypes' has no attribute 'windll'
+
+app/procutil.py:18: AttributeError
+__________ test_stale_lock_with_alive_but_unresponsive_pid_is_killed ___________
+[gw1] linux -- Python 3.11.15 /home/user/venv-arp/bin/python
+
+isolated_home = PosixPath('/tmp/pytest-of-root/pytest-14/popen-gw1/test_stale_lock_with_alive_but0/home')
+
+    def test_stale_lock_with_alive_but_unresponsive_pid_is_killed(isolated_home):
+        """Была история с зомби-процессом сервера (старый код молча слушал вместо
+        нового). Живой PID, чей порт никто не слушает, — тот же класс дефекта:
+        лаунчер обязан завершить его, а не считать сервер работающим."""
+        import importlib
+        import launcher
+        importlib.reload(launcher)
+    
+        proc = subprocess.Popen([sys.executable, "-c", "import time; time.sleep(30)"])
+        try:
+            s = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
+            s.bind(("127.0.0.1", 0))
+            dead_port = s.getsockname()[1]
+            s.close()  # порт свободен и точно никто на нём не слушает
+    
+            lock = launcher._lock_path()
+            lock.parent.mkdir(parents=True, exist_ok=True)
+            lock.write_text(
+                json.dumps({"pid": proc.pid, "port": dead_port, "build_mark": "x"}),
+                encoding="utf-8",
+            )
+    
+>           assert launcher._handle_stale_instance() is False
+                   ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+
+tests/test_u1_packaging.py:130: 
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ 
+app/launcher.py:69: in _handle_stale_instance
+    if not procutil.is_pid_alive(pid):
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ 
+
+pid = 1464
+
+    def is_pid_alive(pid: int) -> bool:
+        """True, если процесс с данным PID существует и ещё выполняется."""
+        if pid <= 0:
+            return False
+>       kernel32 = ctypes.windll.kernel32
+                   ^^^^^^^^^^^^^
+E       AttributeError: module 'ctypes' has no attribute 'windll'
+
+app/procutil.py:18: AttributeError
+__________ test_stale_lock_with_live_responding_process_is_left_alone __________
+[gw1] linux -- Python 3.11.15 /home/user/venv-arp/bin/python
+
+isolated_home = PosixPath('/tmp/pytest-of-root/pytest-14/popen-gw1/test_stale_lock_with_live_resp0/home')
+monkeypatch = <_pytest.monkeypatch.MonkeyPatch object at 0x7f6c1d9738d0>
+
+    def test_stale_lock_with_live_responding_process_is_left_alone(isolated_home, monkeypatch):
+        """Живой процесс, отвечающий на /api/ping, — легитимный второй запуск
+        (двойной клик по ярлыку, пока приложение уже открыто): лаунчер не должен
+        поднимать второй сервер и не должен убивать первый."""
+        import importlib
+        import launcher
+        import procutil
+        importlib.reload(launcher)
+        monkeypatch.setattr(launcher.appwindow, "open", lambda url, **kw: None)
+    
+        server_script = os.path.join(_APP, "server.py")
+        env = dict(os.environ, USERPROFILE=str(isolated_home), HOME=str(isolated_home),
+                   SHIFRATOR_UI_PORT="0")
+        # Порт 0 без реального free-port подбора недостаточен для server.py напрямую
+        # (main() уже делает find_free_port сам) — найдём свободный порт и укажем его.
+        s = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
+        s.bind(("127.0.0.1", 0))
+        port = s.getsockname()[1]
+        s.close()
+        env["SHIFRATOR_UI_PORT"] = str(port)
+    
+        proc = subprocess.Popen(
+            [sys.executable, server_script], env=env, cwd=_ROOT,
+            stdout=subprocess.DEVNULL, stderr=subprocess.DEVNULL,
+        )
+        try:
+            import time
+            import urllib.request
+    
+            ok = False
+            for _ in range(50):
+                try:
+                    with urllib.request.urlopen(f"http://127.0.0.1:{port}/api/ping", timeout=0.5) as r:
+                        json.loads(r.read().decode("utf-8"))
+                        ok = True
+                        break
+                except Exception:
+                    time.sleep(0.1)
+            assert ok, "сервер не поднялся вовремя"
+    
+            lock = launcher._lock_path()
+            lock.parent.mkdir(parents=True, exist_ok=True)
+            lock.write_text(
+                json.dumps({"pid": proc.pid, "port": port, "build_mark": "x"}),
+                encoding="utf-8",
+            )
+    
+>           assert launcher._handle_stale_instance() is True
+                   ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+
+tests/test_u1_packaging.py:186: 
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ 
+app/launcher.py:69: in _handle_stale_instance
+    if not procutil.is_pid_alive(pid):
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ 
+
+pid = 1465
+
+    def is_pid_alive(pid: int) -> bool:
+        """True, если процесс с данным PID существует и ещё выполняется."""
+        if pid <= 0:
+            return False
+>       kernel32 = ctypes.windll.kernel32
+                   ^^^^^^^^^^^^^
+E       AttributeError: module 'ctypes' has no attribute 'windll'
+
+app/procutil.py:18: AttributeError
+________________ test_build_lock_matches_installed_environment _________________
+[gw1] linux -- Python 3.11.15 /home/user/venv-arp/bin/python
+
+    def test_build_lock_matches_installed_environment():
+        """Lock, разошедшийся с окружением, — документ, а не пин."""
+        from importlib.metadata import PackageNotFoundError, version
+    
+        pins = _read_lock()
+        mismatched = []
+        for name in _LOCK_CRITICAL:
+            try:
+                have = version(name)
+            except PackageNotFoundError:
+                mismatched.append(f"{name}: не установлен")
+                continue
+            if have != pins[name]:
+                mismatched.append(f"{name}: установлено {have}, в lock {pins[name]}")
+>       assert not mismatched, (
+            "окружение разошлось с packaging/requirements-build.lock.txt: "
+            + "; ".join(mismatched)
+        )
+E       AssertionError: окружение разошлось с packaging/requirements-build.lock.txt: lxml: установлено 6.1.2, в lock 6.1.1; cryptography: установлено 50.0.0, в lock 49.0.0
+E       assert not ['lxml: установлено 6.1.2, в lock 6.1.1', 'cryptography: установлено 50.0.0, в lock 49.0.0']
+
+tests/test_u1_packaging.py:348: AssertionError
+_________________ test_browser_search_prefers_edge_then_chrome _________________
+[gw1] linux -- Python 3.11.15 /home/user/venv-arp/bin/python
+
+tmp_path = PosixPath('/tmp/pytest-of-root/pytest-14/popen-gw1/test_browser_search_prefers_ed0')
+monkeypatch = <_pytest.monkeypatch.MonkeyPatch object at 0x7f6c1777a4d0>
+
+    def test_browser_search_prefers_edge_then_chrome(tmp_path, monkeypatch):
+        """Порядок поиска: Edge (есть на любой Windows 10/11 из коробки) — первым."""
+        import appwindow
+    
+        monkeypatch.delenv("SHIFRATOR_APP_BROWSER", raising=False)
+        pf = tmp_path / "Program Files"
+        pf86 = tmp_path / "Program Files (x86)"
+        local = tmp_path / "Local"
+        monkeypatch.setenv("ProgramFiles", str(pf))
+        monkeypatch.setenv("ProgramFiles(x86)", str(pf86))
+        monkeypatch.setenv("LOCALAPPDATA", str(local))
+    
+        chrome = pf / "Google" / "Chrome" / "Application" / "chrome.exe"
+        chrome.parent.mkdir(parents=True)
+        chrome.write_bytes(b"")
+>       assert appwindow.find_browser() == str(chrome), "Chrome не найден в одиночку"
+E       AssertionError: Chrome не найден в одиночку
+E       assert None == '/tmp/pytest-of-root/pytest-14/popen-gw1/test_browser_search_prefers_ed0/Program Files/Google/Chrome/Application/chrome.exe'
+E        +  where None = <function find_browser at 0x7f6c1d079800>()
+E        +    where <function find_browser at 0x7f6c1d079800> = <module 'appwindow' from '/home/user/ARP/app/appwindow.py'>.find_browser
+E        +  and   '/tmp/pytest-of-root/pytest-14/popen-gw1/test_browser_search_prefers_ed0/Program Files/Google/Chrome/Application/chrome.exe' = str(PosixPath('/tmp/pytest-of-root/pytest-14/popen-gw1/test_browser_search_prefers_ed0/Program Files/Google/Chrome/Application/chrome.exe'))
+
+tests/test_u1_packaging.py:482: AssertionError
+___________________ test_close_all_leaves_no_zombie_process ____________________
+[gw1] linux -- Python 3.11.15 /home/user/venv-arp/bin/python
+
+monkeypatch = <_pytest.monkeypatch.MonkeyPatch object at 0x7f6c1d380550>
+
+    def test_close_all_leaves_no_zombie_process(monkeypatch):
+        """Выход из программы обязан унести окно с собой: живой браузер с мёртвым
+        сервером за спиной — тот же класс, что зомби-сервер в launcher.lock."""
+        import appwindow
+        import procutil
+    
+        monkeypatch.setattr(appwindow, "_WINDOWS", [])
+        proc = subprocess.Popen([sys.executable, "-c", "import time; time.sleep(30)"])
+        try:
+            appwindow._WINDOWS.append(proc)
+>           appwindow.close_all()
+
+tests/test_u1_packaging.py:529: 
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ 
+app/appwindow.py:282: in close_all
+    _kill_tree(proc.pid)
+app/appwindow.py:293: in _kill_tree
+    subprocess.run(
+/usr/lib/python3.11/subprocess.py:548: in run
+    with Popen(*popenargs, **kwargs) as process:
+         ^^^^^^^^^^^^^^^^^^^^^^^^^^^
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ 
+
+self = <[AttributeError("'Popen' object has no attribute 'returncode'") raised in repr()] Popen object at 0x7f6c1d382550>
+args = ['taskkill', '/PID', '1468', '/T', '/F'], bufsize = -1, executable = None
+stdin = None, stdout = -3, stderr = -3, preexec_fn = None, close_fds = True
+shell = False, cwd = None, env = None, universal_newlines = None
+startupinfo = None, creationflags = 134217728, restore_signals = True
+start_new_session = False, pass_fds = (), user = None, group = None
+extra_groups = None, encoding = None, errors = None, text = None, umask = -1
+pipesize = -1, process_group = None
+
+    def __init__(self, args, bufsize=-1, executable=None,
+                 stdin=None, stdout=None, stderr=None,
+                 preexec_fn=None, close_fds=True,
+                 shell=False, cwd=None, env=None, universal_newlines=None,
+                 startupinfo=None, creationflags=0,
+                 restore_signals=True, start_new_session=False,
+                 pass_fds=(), *, user=None, group=None, extra_groups=None,
+                 encoding=None, errors=None, text=None, umask=-1, pipesize=-1,
+                 process_group=None):
+        """Create new Popen instance."""
+        if not _can_fork_exec:
+            raise OSError(
+                errno.ENOTSUP, f"{sys.platform} does not support processes."
+            )
+    
+        _cleanup()
+        # Held while anything is calling waitpid before returncode has been
+        # updated to prevent clobbering returncode if wait() or poll() are
+        # called from multiple threads at once.  After acquiring the lock,
+        # code must re-check self.returncode to see if another thread just
+        # finished a waitpid() call.
+        self._waitpid_lock = threading.Lock()
+    
+        self._input = None
+        self._communication_started = False
+        if bufsize is None:
+            bufsize = -1  # Restore default
+        if not isinstance(bufsize, int):
+            raise TypeError("bufsize must be an integer")
+    
+        if pipesize is None:
+            pipesize = -1  # Restore default
+        if not isinstance(pipesize, int):
+            raise TypeError("pipesize must be an integer")
+    
+        if _mswindows:
+            if preexec_fn is not None:
+                raise ValueError("preexec_fn is not supported on Windows "
+                                 "platforms")
+        else:
+            # POSIX
+            if pass_fds and not close_fds:
+                warnings.warn("pass_fds overriding close_fds.", RuntimeWarning)
+                close_fds = True
+            if startupinfo is not None:
+                raise ValueError("startupinfo is only supported on Windows "
+                                 "platforms")
+            if creationflags != 0:
+>               raise ValueError("creationflags is only supported on Windows "
+                                 "platforms")
+E               ValueError: creationflags is only supported on Windows platforms
+
+/usr/lib/python3.11/subprocess.py:855: ValueError
+__________________ test_rebuild_matches_the_committed_corpus ___________________
+[gw3] linux -- Python 3.11.15 /home/user/venv-arp/bin/python
+
+tmp_path = PosixPath('/tmp/pytest-of-root/pytest-14/popen-gw3/test_rebuild_matches_the_commi0')
+
+    def test_rebuild_matches_the_committed_corpus(tmp_path):
+        """Собранное заново совпадает с тем, что лежит в репозитории.
+    
+        Иначе воспроизводимость была бы «сама с собой»: две одинаковые сборки, обе
+        расходящиеся с зафиксированным корпусом. Именно так выглядела бы
+        незамеченная правка генератора без пересборки — и `MANIFEST.sha256`
+        рассказывал бы про корпус, которого генератор больше не порождает.
+        """
+        fresh = _build(str(tmp_path), SEEDS[0])
+        committed = _sha_tree(CORPUS_V2)
+        # MANIFEST.sha256 и README сборкой не порождаются — сравнивать нечего.
+        committed = {k: v for k, v in committed.items() if k in fresh}
+    
+        missing = sorted(set(fresh) - set(committed))
+        differing = sorted(k for k in committed if committed[k] != fresh[k])
+        assert not missing, (
+            "Генератор порождает файлы, которых нет в репозитории: %s.\n"
+            "Корпус не пересобран после правки генератора." % missing[:10])
+>       assert not differing, (
+            "%d файлов в репозитории отличаются от того, что порождает генератор "
+            "СЕЙЧАС:\n%s\n"
+            "Либо генератор правили без пересборки корпуса, либо корпус правили "
+            "мимо генератора. И то и другое обесценивает MANIFEST.sha256."
+            % (len(differing), "\n".join("    " + f for f in differing[:20])))
+E       AssertionError: 223 файлов в репозитории отличаются от того, что порождает генератор СЕЙЧАС:
+E             _model/agency_0001.json
+E             _model/agency_0002.json
+E             _model/agency_0003.json
+E             _model/agency_0004.json
+E             _model/agency_0005.json
+E             _model/agency_0006.json
+E             _model/agency_0007.json
+E             _model/agency_0008.json
+E             _model/agency_0009.json
+E             _model/agency_0010.json
+E             _model/cession_0001.json
+E             _model/cession_0002.json
+E             _model/cession_0003.json
+E             _model/cession_0004.json
+E             _model/cession_0005.json
+E             _model/cession_0006.json
+E             _model/cession_0007.json
+E             _model/cession_0008.json
+E             _model/cx_agency_0007.json
+E             _model/cx_agency_0016.json
+E         Либо генератор правили без пересборки корпуса, либо корпус правили мимо генератора. И то и другое обесценивает MANIFEST.sha256.
+E       assert not ['_model/agency_0001.json', '_model/agency_0002.json', '_model/agency_0003.json', '_model/agency_0004.json', '_model/agency_0005.json', '_model/agency_0006.json', ...]
+
+tests/test_corpus_v2_reproducible.py:139: AssertionError
+________________ test_existing_block1_7_suite_still_fully_green ________________
+[gw0] linux -- Python 3.11.15 /home/user/venv-arp/bin/python
+
+    def test_existing_block1_7_suite_still_fully_green():
+        """Прогоняет tests/ (без component2/) отдельным процессом pytest.
+    
+        Если тут появится хоть один упавший тест — это регресс, вызванный
+        Компонентом 2 (новые модули этой сессии тестов ничего в блоках 1-7 не
+        меняли), а не повод редактировать существующие тесты.
+    
+        Дочерний pytest получает тот же фильтр -m "not slow", что и родительский
+        прогон (см. pytest.ini): без него дочерний процесс сам пытается собрать и
+        прогнать медленные тесты (полный корпус) и упирается в timeout этого
+        subprocess.run — тест НЕ падал явно, а просто выпадал из дефолтного
+        прогона молча (см. HANDOFF_STAGE_0D.md). Фильтр обязателен именно здесь,
+        а не только в pytest.ini родителя, потому что дочерний pytest запускается
+        как отдельный процесс и addopts родителя на него не наследуются.
+    
+        БЮДЖЕТ ВРЕМЕНИ (этап O2, находка U4-G-TIMEOUT закрыта). Было жёстко 300 c —
+        и это перестало быть бюджетом: вложенный прогон дорос до 488 c, тест падал
+        по SubprocessTimeout на ЧИСТОМ HEAD, на простаивающей машине. Оптимизация
+        пайплайна (этап O2) вернула вложенный прогон к 295 c, то есть в старый
+        лимит он снова укладывается — но с запасом в 5 секунд, что запасом не
+        является: чуть более медленная машина, фоновая нагрузка или один новый тест
+        снова красят набор без единого дефекта в продукте.
+    
+        Лимит 900 c (тройной запас к измеренным этапом O2 295 c) продержался до
+        2026-08-05 и снова перестал быть бюджетом: замер на рабочей машине под
+        ОБЫЧНОЙ фоновой нагрузкой дал **1995 c** при зелёном дочернем прогоне
+        (1272 passed) — тест падал по SubprocessTimeout без единого дефекта в
+        продукте. Разгрузить машину принципиально нельзя, поэтому калибровка идёт
+        по фактическому замеру, а не по идеальным условиям.
+    
+        Текущий лимит — 4000 c: двойной запас к измеренным 1995 c. Он остаётся
+        КОНЕЧНЫМ и ловит то, ради чего таймаут и стоит, — зависший дочерний pytest.
+        Лимит здесь НЕ сторож производительности: за неё отвечает замер O2, а не
+        этот тест.
+    
+        `-n 0` ЗАКРЕПЛЯЕТ дочерний прогон за ОДНИМ процессом (этап TESTOPT добавил
+        `-n auto` в addopts верхнего pytest.ini — дочерний pytest читает тот же
+        файл и без явного `-n 0` попытался бы САМ разъехаться на воркеры). Бюджет
+        калиброван по ОДНОПРОЦЕССНОМУ прогону (2026-08-05, 1995 c) — распараллелив
+        дочерний прогон, мы обесценили бы эту калибровку без нового замера, а сам
+        вложенный запуск ужe исполняется ВНУТРИ одного воркера верхнего прогона:
+        заставлять его плодить ещё 10+ своих воркеров — риск исчерпания памяти
+        (natasha на процесс, см. JOURNAL TESTOPT часть 1) без измеренной выгоды.
+        """
+        result = subprocess.run(
+            [sys.executable, "-m", "pytest", "tests", "--ignore=tests/component2",
+             "-m", "not slow", "-q", "-n", "0"],
+            cwd=_project_root(),
+            capture_output=True,
+            text=True,
+            timeout=4000,
+        )
+>       assert result.returncode == 0, (
+            "Регресс в существующем наборе блоков 1-7 (не трогать эти тесты, "
+            "чинить причину в коде):\n"
+            f"--- stdout ---\n{result.stdout[-4000:]}\n--- stderr ---\n{result.stderr[-2000:]}"
+        )
+E       AssertionError: Регресс в существующем наборе блоков 1-7 (не трогать эти тесты, чинить причину в коде):
+E         --- stdout ---
+E         ncoding = None, errors = None, text = None, umask = -1
+E         pipesize = -1, process_group = None
+E         
+E             def __init__(self, args, bufsize=-1, executable=None,
+E                          stdin=None, stdout=None, stderr=None,
+E                          preexec_fn=None, close_fds=True,
+E                          shell=False, cwd=None, env=None, universal_newlines=None,
+E                          startupinfo=None, creationflags=0,
+E                          restore_signals=True, start_new_session=False,
+E                          pass_fds=(), *, user=None, group=None, extra_groups=None,
+E                          encoding=None, errors=None, text=None, umask=-1, pipesize=-1,
+E                          process_group=None):
+E                 """Create new Popen instance."""
+E                 if not _can_fork_exec:
+E                     raise OSError(
+E                         errno.ENOTSUP, f"{sys.platform} does not support processes."
+E                     )
+E             
+E                 _cleanup()
+E                 # Held while anything is calling waitpid before returncode has been
+E                 # updated to prevent clobbering returncode if wait() or poll() are
+E                 # called from multiple threads at once.  After acquiring the lock,
+E                 # code must re-check self.returncode to see if another thread just
+E                 # finished a waitpid() call.
+E                 self._waitpid_lock = threading.Lock()
+E             
+E                 self._input = None
+E                 self._communication_started = False
+E                 if bufsize is None:
+E                     bufsize = -1  # Restore default
+E                 if not isinstance(bufsize, int):
+E                     raise TypeError("bufsize must be an integer")
+E             
+E                 if pipesize is None:
+E                     pipesize = -1  # Restore default
+E                 if not isinstance(pipesize, int):
+E                     raise TypeError("pipesize must be an integer")
+E             
+E                 if _mswindows:
+E                     if preexec_fn is not None:
+E                         raise ValueError("preexec_fn is not supported on Windows "
+E                                          "platforms")
+E                 else:
+E                     # POSIX
+E                     if pass_fds and not close_fds:
+E                         warnings.warn("pass_fds overriding close_fds.", RuntimeWarning)
+E                         close_fds = True
+E                     if startupinfo is not None:
+E                         raise ValueError("startupinfo is only supported on Windows "
+E                                          "platforms")
+E                     if creationflags != 0:
+E         >               raise ValueError("creationflags is only supported on Windows "
+E                                          "platforms")
+E         E               ValueError: creationflags is only supported on Windows platforms
+E         
+E         /usr/lib/python3.11/subprocess.py:855: ValueError
+E         =============================== warnings summary ===============================
+E         ../venv-arp/lib/python3.11/site-packages/pymorphy2/analyzer.py:114
+E           /home/user/venv-arp/lib/python3.11/site-packages/pymorphy2/analyzer.py:114: UserWarning: pkg_resources is deprecated as an API. See https://setuptools.pypa.io/en/latest/pkg_resources.html. The pkg_resources package is slated for removal as early as 2025-11-30. Refrain from using this package or pin to Setuptools<81.
+E             import pkg_resources
+E         
+E         -- Docs: https://docs.pytest.org/en/stable/how-to/capture-warnings.html
+E         =========================== short test summary info ============================
+E         FAILED tests/test_corpus_v2_reproducible.py::test_rebuild_matches_the_committed_corpus
+E         FAILED tests/test_u1_packaging.py::test_procutil_is_pid_alive_for_self_and_for_bogus_pid
+E         FAILED tests/test_u1_packaging.py::test_procutil_kill_pid_terminates_process
+E         FAILED tests/test_u1_packaging.py::test_stale_lock_with_dead_pid_is_cleaned_silently
+E         FAILED tests/test_u1_packaging.py::test_stale_lock_with_alive_but_unresponsive_pid_is_killed
+E         FAILED tests/test_u1_packaging.py::test_stale_lock_with_live_responding_process_is_left_alone
+E         FAILED tests/test_u1_packaging.py::test_build_lock_matches_installed_environment
+E         FAILED tests/test_u1_packaging.py::test_browser_search_prefers_edge_then_chrome
+E         FAILED tests/test_u1_packaging.py::test_close_all_leaves_no_zombie_process - ...
+E         9 failed, 1898 passed, 3 skipped, 3 deselected, 6 xfailed, 1 warning in 385.21s (0:06:25)
+E         
+E         --- stderr ---
+E         
+E       assert 1 == 0
+E        +  where 1 = CompletedProcess(args=['/home/user/venv-arp/bin/python', '-m', 'pytest', 'tests', '--ignore=tests/component2', '-m', '...process - ...\n9 failed, 1898 passed, 3 skipped, 3 deselected, 6 xfailed, 1 warning in 385.21s (0:06:25)\n', stderr='').returncode
+
+tests/component2/test_g_regression.py:76: AssertionError
+=============================== warnings summary ===============================
+../venv-arp/lib/python3.11/site-packages/pymorphy2/analyzer.py:114
+../venv-arp/lib/python3.11/site-packages/pymorphy2/analyzer.py:114
+../venv-arp/lib/python3.11/site-packages/pymorphy2/analyzer.py:114
+../venv-arp/lib/python3.11/site-packages/pymorphy2/analyzer.py:114
+  /home/user/venv-arp/lib/python3.11/site-packages/pymorphy2/analyzer.py:114: UserWarning: pkg_resources is deprecated as an API. See https://setuptools.pypa.io/en/latest/pkg_resources.html. The pkg_resources package is slated for removal as early as 2025-11-30. Refrain from using this package or pin to Setuptools<81.
+    import pkg_resources
+
+-- Docs: https://docs.pytest.org/en/stable/how-to/capture-warnings.html
+=========================== short test summary info ============================
+FAILED tests/test_u1_packaging.py::test_procutil_is_pid_alive_for_self_and_for_bogus_pid
+FAILED tests/test_u1_packaging.py::test_procutil_kill_pid_terminates_process
+FAILED tests/test_u1_packaging.py::test_stale_lock_with_dead_pid_is_cleaned_silently
+FAILED tests/test_u1_packaging.py::test_stale_lock_with_alive_but_unresponsive_pid_is_killed
+FAILED tests/test_u1_packaging.py::test_stale_lock_with_live_responding_process_is_left_alone
+FAILED tests/test_u1_packaging.py::test_build_lock_matches_installed_environment
+FAILED tests/test_u1_packaging.py::test_browser_search_prefers_edge_then_chrome
+FAILED tests/test_u1_packaging.py::test_close_all_leaves_no_zombie_process - ...
+FAILED tests/test_corpus_v2_reproducible.py::test_rebuild_matches_the_committed_corpus
+FAILED tests/component2/test_g_regression.py::test_existing_block1_7_suite_still_fully_green
+10 failed, 1959 passed, 3 skipped, 6 xfailed, 4 warnings in 427.66s (0:07:07)
+
+real	7m8.005s
+user	11m37.275s
+sys	1m30.687s

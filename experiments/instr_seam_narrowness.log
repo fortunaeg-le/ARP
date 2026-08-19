@@ -1,0 +1,74 @@
+/home/user/ARP/venv-lin/lib/python3.11/site-packages/pymorphy2/analyzer.py:114: UserWarning: pkg_resources is deprecated as an API. See https://setuptools.pypa.io/en/latest/pkg_resources.html. The pkg_resources package is slated for removal as early as 2025-11-30. Refrain from using this package or pin to Setuptools<81.
+  import pkg_resources
+документов: 324 (однопоточно, двойной счёт каждой маски)
+[1/324] agency_0001  2s  (0.6 doc/s)
+[10/324] agency_0004  14s  (0.7 doc/s)
+[20/324] agency_0007__m1337_combo  28s  (0.7 doc/s)
+[30/324] agency_0010__m2718_linebreak  40s  (0.8 doc/s)
+[40/324] cession_0004  53s  (0.8 doc/s)
+[50/324] cession_0007__m1337_digit_spaces  67s  (0.8 doc/s)
+[60/324] labor_0002__m2718_homoglyph  82s  (0.7 doc/s)
+[70/324] labor_0006  96s  (0.7 doc/s)
+[80/324] labor_0009__m1337_invisible  109s  (0.7 doc/s)
+[90/324] labor_0012__m2718_digit_spaces  124s  (0.7 doc/s)
+[100/324] lease_0004  141s  (0.7 doc/s)
+[110/324] lease_0007__m1337_combo  158s  (0.7 doc/s)
+[120/324] lease_0010__m2718_cell_split  175s  (0.7 doc/s)
+[130/324] loan_0002  189s  (0.7 doc/s)
+[140/324] loan_0005__m1337_digit_spaces  209s  (0.7 doc/s)
+[150/324] loan_0008__m2718_case  225s  (0.7 doc/s)
+[160/324] sale_0002  244s  (0.7 doc/s)
+[170/324] sale_0005__m1337_invisible  262s  (0.6 doc/s)
+[180/324] sale_0008__m2718_combo  280s  (0.6 doc/s)
+[190/324] sale_0012  298s  (0.6 doc/s)
+[200/324] services_0001__m1337_combo  316s  (0.6 doc/s)
+[210/324] services_0004__m2718_invisible  332s  (0.6 doc/s)
+[220/324] services_0008  349s  (0.6 doc/s)
+[230/324] services_0011__m1337_digit_spaces  365s  (0.6 doc/s)
+[240/324] services_0014__m2718_linebreak  381s  (0.6 doc/s)
+[250/324] supply_0004  398s  (0.6 doc/s)
+[260/324] supply_0007__m1337_invisible  416s  (0.6 doc/s)
+[270/324] supply_0010__m2718_homoglyph  434s  (0.6 doc/s)
+[280/324] supply_0014  450s  (0.6 doc/s)
+[290/324] works_0001__m1337_combo  471s  (0.6 doc/s)
+[300/324] works_0004__m2718_digit_spaces  488s  (0.6 doc/s)
+[310/324] works_0008  505s  (0.6 doc/s)
+[320/324] works_0011__m1337_digit_spaces  524s  (0.6 doc/s)
+
+=== СЧЁТ ===
+  масок всего:              16158
+  оценено (scored) старым:  12049
+  оценено (scored) новым:   12049
+  b_ok старым:              10523  (87.34%)
+  b_ok новым:               11572  (96.04%)
+  расхождений записей:      1049  (в «верно» 1049, в «брак» 0)
+
+=== УЗОСТЬ ===
+  прощённых зазоров:        1049
+  из них ВНЕ тела:          0  (цена выбора «шов по всему пакету»)
+  нарушений узости:         0
+
+=== РАСХОЖДЕНИЯ ПО ТИПУ ЭТАЛОНА ===
+  PER              330
+  PASSPORT         144
+  PHONE            94
+  INN_PER          90
+  ACCOUNT          86
+  ADDRESS          57
+  EMAIL            50
+  BIK              36
+  BIRTHDATE        36
+  SNILS            36
+  INN              32
+  OGRN             24
+  KPP              16
+  ORG              12
+  SUM              6
+
+=== СОДЕРЖИМОЕ ПРОЩЁННЫХ ЗАЗОРОВ (дословно) ===
+  '\n'       939
+  '\t'       110
+
+real	8m55.133s
+user	8m51.847s
+sys	0m3.176s
