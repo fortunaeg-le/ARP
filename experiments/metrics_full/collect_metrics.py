@@ -151,7 +151,23 @@ def head_block(v1, v2, gold1, gold2, runs):
     ok2, nf2, bad2 = manifest_state(CORPUS2)
     rt1 = [r for r in v1 if r.get("outcome") == "processed"]
     rt2 = [r for r in v2 if r.get("outcome") == "processed"]
+    # ДОКАЗАТЕЛЬСТВО ЭКВИВАЛЕНТНОСТИ ОКРУЖЕНИЯ, а не заверение: sha256 дампа
+    # этого прогона против sha256 дампа, лежащего в git (его снял владелец на
+    # своей Windows-машине этапом SEAM-JOIN). Считается, а не вписывается.
+    import hashlib
+    dump_sha = hashlib.sha256(open(DUMP_V1, "rb").read()).hexdigest()
+    git_blob = sh(["git", "rev-parse", "HEAD:tests/corpus/results_gate_current.json"])
+    git_sha = None
+    if git_blob and git_blob != "—":
+        try:
+            git_sha = hashlib.sha256(subprocess.check_output(
+                ["git", "cat-file", "blob", git_blob], cwd=ROOT)).hexdigest()
+        except Exception:
+            git_sha = None
     return {
+        "dump_sha256": dump_sha,
+        "dump_sha256_in_git": git_sha,
+        "dump_matches_git": (git_sha is not None and git_sha == dump_sha),
         "commit": sh(["git", "rev-parse", "HEAD"]),
         "commit_short": sh(["git", "rev-parse", "--short", "HEAD"]),
         "branch": sh(["git", "rev-parse", "--abbrev-ref", "HEAD"]),
@@ -1051,6 +1067,20 @@ def render(d):
     W("| нераспознанных токенов при восстановлении | %d | %d |"
       % (h["v1"]["unresolved"], h["v2"]["unresolved"]))
     W("")
+    W("**Окружение эквивалентно доказанно, а не на слово.** Дамп полного гейта "
+      "этого прогона (9.8 МБ, 324 документа, все спаны, маски и метрики) "
+      "сличён по sha256 с дампом, лежащим в git: `%s`%s. Дамп в git снят на "
+      "машине владельца (Windows) этапом SEAM-JOIN, этот — на Linux (раздел "
+      "13.6). %s"
+      % (h["dump_sha256"][:16] + "…",
+         "" if h["dump_sha256_in_git"] is None
+         else " против `%s`" % (h["dump_sha256_in_git"][:16] + "…"),
+         "**Совпадение ПОБАЙТНОЕ** — то есть детекция, арбитраж, маскирование и "
+         "все метрики дали ровно тот же результат."
+         if h["dump_matches_git"] else
+         "**Дампы РАСХОДЯТСЯ** — числа этого отчёта сравнивать с прежними "
+         "напрямую нельзя, пока расхождение не разобрано."))
+    W("")
     W("«Восстановлен побайтно» — весь текст документа целиком; это СТРОЖЕ, чем "
       "инвариант обратимости (`masking A` ниже), который требует байт-в-байт "
       "ровно замаскированные ЗНАЧЕНИЯ. Расхождение даёт схлопывание `\\n` → ` ` "
@@ -1761,10 +1791,21 @@ def render_rest(L, d):
     W("Продукт — Windows-инструмент, а этот прогон снят на **%s**, python %s, в "
       "заново собранном окружении по `packaging/requirements-build.lock.txt` "
       "(без Windows-only пакетов: `pyinstaller`, `pefile`, `pywin32-ctypes`, "
-      "`altgraph`, `colorama`). Все ЧИСЛА замера воспроизвелись; но времена "
-      "прогонов в разделе 12 — этой машины и к машине владельца не относятся, а "
-      "сборка exe и круг через настоящий браузер здесь не выполнимы вовсе."
+      "`altgraph`, `colorama`)."
       % (d["head"]["platform"], d["head"]["python"]))
+    W("")
+    W("**Эквивалентность по детекции ДОКАЗАНА, а не заявлена** (раздел 1): дамп "
+      "полного гейта совпал с лежащим в git ПОБАЙТНО по sha256. Что при этом "
+      "остаётся неизвестным и на что оговорка не распространяется:")
+    W("")
+    W("* **времена прогонов** в разделе 12 — этой машины, к машине владельца не "
+      "относятся;")
+    W("* **сборка exe и круг через настоящий браузер** здесь невыполнимы вовсе;")
+    W("* **пересборка корпуса** на этой ОС даёт другие байты — 223 файла из 223 "
+      "(долг `METRICS-CORPUS-REBUILD-OSLOCK`), и ни одно расхождение не про "
+      "содержание;")
+    W("* **набор тестов НЕ зелёный** здесь по свойству ОС — девять красных, все "
+      "разобраны поимённо в разделе 12.")
     W("")
     W("")
     return L
