@@ -297,3 +297,33 @@ class TestScanRuns:
     def test_two_tabs_are_structural(self):
         """Две табуляции подряд — пропуск ячейки, граница по разметке."""
         assert layout_repair._scan_runs("кол.\t\tцена") == []
+
+    # ------------------------------------------------------------------ #
+    #        ЭТАП SEAM-JOIN: РАЗРЯДКА («И в а н о в») — третий вид         #
+    # ------------------------------------------------------------------ #
+
+    def test_spread_word_is_joined(self):
+        runs = layout_repair._scan_runs("Подписал: И в а н о в И. И.")
+        assert [d[0] for d, _k, _l, _r in runs] == [11, 13, 15, 17, 19]
+        assert all(k == "spread" for _d, k, _l, _r in runs)
+
+    def test_spread_allows_person_in_upper_case(self):
+        """У разрядки форма сама доказывает, что это одно слово, поэтому
+        правило «строчная справа» к ней не применяется."""
+        runs = layout_repair._scan_runs("П Е Т Р О В А Мария")
+        assert runs and all(
+            layout_repair._person_ok(k, l, r) for _d, k, l, r in runs)
+
+    def test_three_single_letters_are_speech_not_spread(self):
+        """Три односимвольных токена подряд — ещё обычная речь."""
+        assert layout_repair._scan_runs("срок и в порядке, установленном") == []
+        assert layout_repair._scan_runs("а б в") == []
+
+    def test_spread_of_digits_is_not_this_rule(self):
+        """Разрядка цифр — форма записи числа, её разбирает normalizer
+        (этап CHAR-NORM). Здесь «1 2 3 4» соседних колонок не склеивается."""
+        assert layout_repair._scan_runs("1 2 3 4 5") == []
+
+    def test_address_abbreviations_are_not_spread(self):
+        assert layout_repair._scan_runs(
+            "г. Пермь, ш. Ленинградская, д. 82, кв. 54") == []
