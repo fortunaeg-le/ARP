@@ -1,0 +1,9040 @@
+[
+ {
+  "doc_id": "agency_0002",
+  "start": 259,
+  "end": 279,
+  "value": "Беляев Олег Олегович",
+  "mask_types_max": [
+   "ORG"
+  ],
+  "mask_types_default": [
+   "PER"
+  ],
+  "uncovered_default": 0,
+  "org_text": "ИП Беляев Олег Олегович",
+  "org_span": [
+   256,
+   279
+  ],
+  "org_group": null,
+  "org_detector": "ner",
+  "org_canonical": null,
+  "org_shadowed": [
+   "Беляев Олег Олегович"
+  ],
+  "mech": "compound_ip_fio"
+ },
+ {
+  "doc_id": "agency_0002",
+  "start": 3026,
+  "end": 3046,
+  "value": "Беляев Олег Олегович",
+  "mask_types_max": [
+   "ORG"
+  ],
+  "mask_types_default": [
+   "PER"
+  ],
+  "uncovered_default": 0,
+  "org_text": "Индивидуальный предприниматель Беляев Олег Олегович",
+  "org_span": [
+   2995,
+   3046
+  ],
+  "org_group": null,
+  "org_detector": "ner",
+  "org_canonical": null,
+  "org_shadowed": [
+   "Беляев Олег Олегович"
+  ],
+  "mech": "compound_ip_fio"
+ },
+ {
+  "doc_id": "agency_0002__m1337_invisible",
+  "start": 270,
+  "end": 293,
+  "value": "Беляев  Оле­г Олего вич",
+  "mask_types_max": [
+   "ORG"
+  ],
+  "mask_types_default": [
+   "PER"
+  ],
+  "uncovered_default": 0,
+  "org_text": "ИП Беляев  Оле­г Олего вич",
+  "org_span": [
+   267,
+   293
+  ],
+  "org_group": null,
+  "org_detector": "ner",
+  "org_canonical": null,
+  "org_shadowed": [
+   "Беляев  Оле­г Олего вич"
+  ],
+  "mech": "compound_ip_fio"
+ },
+ {
+  "doc_id": "agency_0002__m1337_invisible",
+  "start": 3107,
+  "end": 3130,
+  "value": "Беляев Олег‍ ‍Олегов ич",
+  "mask_types_max": [
+   "ORG"
+  ],
+  "mask_types_default": [
+   "PER"
+  ],
+  "uncovered_default": 0,
+  "org_text": "Индивидуальный предприниматель Беляев Олег‍ ‍Олегов ич",
+  "org_span": [
+   3076,
+   3130
+  ],
+  "org_group": null,
+  "org_detector": "ner",
+  "org_canonical": null,
+  "org_shadowed": [
+   "Беляев Олег‍ ‍Олегов ич"
+  ],
+  "mech": "compound_ip_fio"
+ },
+ {
+  "doc_id": "agency_0002__m2718_digit_spaces",
+  "start": 261,
+  "end": 281,
+  "value": "Беляев Олег Олегович",
+  "mask_types_max": [
+   "ORG"
+  ],
+  "mask_types_default": [
+   "PER"
+  ],
+  "uncovered_default": 0,
+  "org_text": "ИП Беляев Олег Олегович",
+  "org_span": [
+   258,
+   281
+  ],
+  "org_group": null,
+  "org_detector": "ner",
+  "org_canonical": null,
+  "org_shadowed": [
+   "Беляев Олег Олегович"
+  ],
+  "mech": "compound_ip_fio"
+ },
+ {
+  "doc_id": "agency_0002__m2718_digit_spaces",
+  "start": 3063,
+  "end": 3083,
+  "value": "Беляев Олег Олегович",
+  "mask_types_max": [
+   "ORG"
+  ],
+  "mask_types_default": [
+   "PER"
+  ],
+  "uncovered_default": 0,
+  "org_text": "Индивидуальный предприниматель Беляев Олег Олегович",
+  "org_span": [
+   3032,
+   3083
+  ],
+  "org_group": null,
+  "org_detector": "ner",
+  "org_canonical": null,
+  "org_shadowed": [
+   "Беляев Олег Олегович"
+  ],
+  "mech": "compound_ip_fio"
+ },
+ {
+  "doc_id": "agency_0004",
+  "start": 66,
+  "end": 88,
+  "value": "Петрова Ольга Ивановна",
+  "mask_types_max": [
+   "ORG"
+  ],
+  "mask_types_default": [
+   "PER"
+  ],
+  "uncovered_default": 0,
+  "org_text": "ИП Петрова Ольга Ивановна",
+  "org_span": [
+   63,
+   88
+  ],
+  "org_group": null,
+  "org_detector": "ner",
+  "org_canonical": null,
+  "org_shadowed": [
+   "Петрова Ольга Ивановна"
+  ],
+  "mech": "compound_ip_fio"
+ },
+ {
+  "doc_id": "agency_0004",
+  "start": 232,
+  "end": 246,
+  "value": "Соколова О. М.",
+  "mask_types_max": [
+   "ORG"
+  ],
+  "mask_types_default": [
+   "PER"
+  ],
+  "uncovered_default": 0,
+  "org_text": "ИП Соколова О. М.",
+  "org_span": [
+   229,
+   246
+  ],
+  "org_group": null,
+  "org_detector": "ner",
+  "org_canonical": null,
+  "org_shadowed": [
+   "Соколова О. М."
+  ],
+  "mech": "compound_ip_fio"
+ },
+ {
+  "doc_id": "agency_0004",
+  "start": 2650,
+  "end": 2672,
+  "value": "Петрова Ольга Ивановна",
+  "mask_types_max": [
+   "ORG"
+  ],
+  "mask_types_default": [
+   "PER"
+  ],
+  "uncovered_default": 0,
+  "org_text": "Индивидуальный предприниматель Петрова Ольга Ивановна",
+  "org_span": [
+   2619,
+   2672
+  ],
+  "org_group": null,
+  "org_detector": "ner",
+  "org_canonical": null,
+  "org_shadowed": [
+   "Петрова Ольга Ивановна"
+  ],
+  "mech": "compound_ip_fio"
+ },
+ {
+  "doc_id": "agency_0004",
+  "start": 3013,
+  "end": 3038,
+  "value": "Соколова Ольга Михайловна",
+  "mask_types_max": [
+   "ORG"
+  ],
+  "mask_types_default": [
+   "PER"
+  ],
+  "uncovered_default": 0,
+  "org_text": "Индивидуальный предприниматель Соколова Ольга Михайловна",
+  "org_span": [
+   2982,
+   3038
+  ],
+  "org_group": null,
+  "org_detector": "ner",
+  "org_canonical": null,
+  "org_shadowed": [
+   "Соколова Ольга Михайловна"
+  ],
+  "mech": "compound_ip_fio"
+ },
+ {
+  "doc_id": "agency_0004__m1337_digit_spaces",
+  "start": 66,
+  "end": 88,
+  "value": "Петрова Ольга Ивановна",
+  "mask_types_max": [
+   "ORG"
+  ],
+  "mask_types_default": [
+   "PER"
+  ],
+  "uncovered_default": 0,
+  "org_text": "ИП Петрова Ольга Ивановна",
+  "org_span": [
+   63,
+   88
+  ],
+  "org_group": null,
+  "org_detector": "ner",
+  "org_canonical": null,
+  "org_shadowed": [
+   "Петрова Ольга Ивановна"
+  ],
+  "mech": "compound_ip_fio"
+ },
+ {
+  "doc_id": "agency_0004__m1337_digit_spaces",
+  "start": 236,
+  "end": 250,
+  "value": "Соколова О. М.",
+  "mask_types_max": [
+   "ORG"
+  ],
+  "mask_types_default": [
+   "PER"
+  ],
+  "uncovered_default": 0,
+  "org_text": "ИП Соколова О. М.",
+  "org_span": [
+   233,
+   250
+  ],
+  "org_group": null,
+  "org_detector": "ner",
+  "org_canonical": null,
+  "org_shadowed": [
+   "Соколова О. М."
+  ],
+  "mech": "compound_ip_fio"
+ },
+ {
+  "doc_id": "agency_0004__m1337_digit_spaces",
+  "start": 2661,
+  "end": 2683,
+  "value": "Петрова Ольга Ивановна",
+  "mask_types_max": [
+   "ORG"
+  ],
+  "mask_types_default": [
+   "PER"
+  ],
+  "uncovered_default": 0,
+  "org_text": "Индивидуальный предприниматель Петрова Ольга Ивановна",
+  "org_span": [
+   2630,
+   2683
+  ],
+  "org_group": null,
+  "org_detector": "ner",
+  "org_canonical": null,
+  "org_shadowed": [
+   "Петрова Ольга Ивановна"
+  ],
+  "mech": "compound_ip_fio"
+ },
+ {
+  "doc_id": "agency_0004__m1337_digit_spaces",
+  "start": 3041,
+  "end": 3066,
+  "value": "Соколова Ольга Михайловна",
+  "mask_types_max": [
+   "ORG"
+  ],
+  "mask_types_default": [
+   "PER"
+  ],
+  "uncovered_default": 0,
+  "org_text": "Индивидуальный предприниматель Соколова Ольга Михайловна",
+  "org_span": [
+   3010,
+   3066
+  ],
+  "org_group": null,
+  "org_detector": "ner",
+  "org_canonical": null,
+  "org_shadowed": [
+   "Соколова Ольга Михайловна"
+  ],
+  "mech": "compound_ip_fio"
+ },
+ {
+  "doc_id": "agency_0004__m2718_combo",
+  "start": 69,
+  "end": 94,
+  "value": "пЕтРоВа оЛьГa и⁠в‍аНоВ­На",
+  "mask_types_max": [
+   "ORG"
+  ],
+  "mask_types_default": [
+   "PER"
+  ],
+  "uncovered_default": 0,
+  "org_text": "ИП пЕтРоВа оЛьГa и⁠в‍аНоВ­На",
+  "org_span": [
+   66,
+   94
+  ],
+  "org_group": null,
+  "org_detector": "ner",
+  "org_canonical": null,
+  "org_shadowed": [
+   "пЕтРоВа оЛьГa и⁠в‍аНоВ­На"
+  ],
+  "mech": "compound_ip_fio"
+ },
+ {
+  "doc_id": "agency_0004__m2718_combo",
+  "start": 3083,
+  "end": 3111,
+  "value": "СОКOЛОВА O­ЛЬ ГА MИ⁠ХAЙЛОВНА",
+  "mask_types_max": [
+   "ORG"
+  ],
+  "mask_types_default": [
+   "PER"
+  ],
+  "uncovered_default": 0,
+  "org_text": "Индивидуальный предприниматель СОКOЛОВА O­ЛЬ ГА MИ⁠ХAЙЛОВНА",
+  "org_span": [
+   3052,
+   3111
+  ],
+  "org_group": null,
+  "org_detector": "ner",
+  "org_canonical": null,
+  "org_shadowed": [
+   "СОКOЛОВА O­ЛЬ ГА MИ⁠ХAЙЛОВНА"
+  ],
+  "mech": "compound_ip_fio"
+ },
+ {
+  "doc_id": "agency_0005",
+  "start": 101,
+  "end": 116,
+  "value": "Кузнецова А. М.",
+  "mask_types_max": [
+   "ORG"
+  ],
+  "mask_types_default": [
+   "PER"
+  ],
+  "uncovered_default": 0,
+  "org_text": "Индивидуальный предприниматель Кузнецова А. М.",
+  "org_span": [
+   70,
+   116
+  ],
+  "org_group": null,
+  "org_detector": "ner",
+  "org_canonical": null,
+  "org_shadowed": [
+   "Кузнецова А. М."
+  ],
+  "mech": "compound_ip_fio"
+ },
+ {
+  "doc_id": "agency_0005",
+  "start": 2838,
+  "end": 2863,
+  "value": "Кузнецова Анна Михайловна",
+  "mask_types_max": [
+   "ORG"
+  ],
+  "mask_types_default": [
+   "PER"
+  ],
+  "uncovered_default": 0,
+  "org_text": "Индивидуальный предприниматель Кузнецова Анна Михайловна",
+  "org_span": [
+   2807,
+   2863
+  ],
+  "org_group": null,
+  "org_detector": "ner",
+  "org_canonical": null,
+  "org_shadowed": [
+   "Кузнецова Анна Михайловна"
+  ],
+  "mech": "compound_ip_fio"
+ },
+ {
+  "doc_id": "agency_0005__m1337_digit_spaces",
+  "start": 102,
+  "end": 117,
+  "value": "Кузнецова А. М.",
+  "mask_types_max": [
+   "ORG"
+  ],
+  "mask_types_default": [
+   "PER"
+  ],
+  "uncovered_default": 0,
+  "org_text": "Индивидуальный предприниматель Кузнецова А. М.",
+  "org_span": [
+   71,
+   117
+  ],
+  "org_group": null,
+  "org_detector": "ner",
+  "org_canonical": null,
+  "org_shadowed": [
+   "Кузнецова А. М."
+  ],
+  "mech": "compound_ip_fio"
+ },
+ {
+  "doc_id": "agency_0005__m1337_digit_spaces",
+  "start": 2845,
+  "end": 2870,
+  "value": "Кузнецова Анна Михайловна",
+  "mask_types_max": [
+   "ORG"
+  ],
+  "mask_types_default": [
+   "PER"
+  ],
+  "uncovered_default": 0,
+  "org_text": "Индивидуальный предприниматель Кузнецова Анна Михайловна",
+  "org_span": [
+   2814,
+   2870
+  ],
+  "org_group": null,
+  "org_detector": "ner",
+  "org_canonical": null,
+  "org_shadowed": [
+   "Кузнецова Анна Михайловна"
+  ],
+  "mech": "compound_ip_fio"
+ },
+ {
+  "doc_id": "agency_0008",
+  "start": 223,
+  "end": 246,
+  "value": "Лебедев Егор Алексеевич",
+  "mask_types_max": [
+   "ORG"
+  ],
+  "mask_types_default": [
+   "PER"
+  ],
+  "uncovered_default": 0,
+  "org_text": "ИП Лебедев Егор Алексеевич",
+  "org_span": [
+   220,
+   246
+  ],
+  "org_group": null,
+  "org_detector": "ner",
+  "org_canonical": null,
+  "org_shadowed": [
+   "Лебедев Егор Алексеевич"
+  ],
+  "mech": "compound_ip_fio"
+ },
+ {
+  "doc_id": "agency_0008",
+  "start": 3008,
+  "end": 3031,
+  "value": "Лебедев Егор Алексеевич",
+  "mask_types_max": [
+   "ORG"
+  ],
+  "mask_types_default": [
+   "PER"
+  ],
+  "uncovered_default": 0,
+  "org_text": "Индивидуальный предприниматель Лебедев Егор Алексеевич",
+  "org_span": [
+   2977,
+   3031
+  ],
+  "org_group": null,
+  "org_detector": "ner",
+  "org_canonical": null,
+  "org_shadowed": [
+   "Лебедев Егор Алексеевич"
+  ],
+  "mech": "compound_ip_fio"
+ },
+ {
+  "doc_id": "agency_0008__m1337_homoglyph",
+  "start": 223,
+  "end": 246,
+  "value": "Лебедев Егоp Алeкcеевич",
+  "mask_types_max": [
+   "ORG"
+  ],
+  "mask_types_default": [
+   "PER"
+  ],
+  "uncovered_default": 0,
+  "org_text": "ИП Лебедев Егоp Алeкcеевич",
+  "org_span": [
+   220,
+   246
+  ],
+  "org_group": null,
+  "org_detector": "ner",
+  "org_canonical": null,
+  "org_shadowed": [
+   "Лебедев Егоp Алeкcеевич"
+  ],
+  "mech": "compound_ip_fio"
+ },
+ {
+  "doc_id": "agency_0008__m1337_homoglyph",
+  "start": 3008,
+  "end": 3031,
+  "value": "Лебедев Егоp Алексеевич",
+  "mask_types_max": [
+   "ORG"
+  ],
+  "mask_types_default": [
+   "PER"
+  ],
+  "uncovered_default": 0,
+  "org_text": "Индивидуальный предприниматель Лебедев Егоp Алексеевич",
+  "org_span": [
+   2977,
+   3031
+  ],
+  "org_group": null,
+  "org_detector": "ner",
+  "org_canonical": null,
+  "org_shadowed": [
+   "Лебедев Егоp Алексеевич"
+  ],
+  "mech": "compound_ip_fio"
+ },
+ {
+  "doc_id": "agency_0008__m2718_case",
+  "start": 223,
+  "end": 246,
+  "value": "лЕбЕдЕв еГоР АлЕкСеЕвИч",
+  "mask_types_max": [
+   "ORG"
+  ],
+  "mask_types_default": [
+   "PER"
+  ],
+  "uncovered_default": 0,
+  "org_text": "ИП лЕбЕдЕв еГоР АлЕкСеЕвИч",
+  "org_span": [
+   220,
+   246
+  ],
+  "org_group": null,
+  "org_detector": "ner",
+  "org_canonical": null,
+  "org_shadowed": [
+   "лЕбЕдЕв еГоР АлЕкСеЕвИч"
+  ],
+  "mech": "compound_ip_fio"
+ },
+ {
+  "doc_id": "agency_0008__m2718_case",
+  "start": 3008,
+  "end": 3031,
+  "value": "лЕбЕдЕв еГоР АлЕкСеЕвИч",
+  "mask_types_max": [
+   "ORG"
+  ],
+  "mask_types_default": [
+   "PER"
+  ],
+  "uncovered_default": 0,
+  "org_text": "Индивидуальный предприниматель лЕбЕдЕв еГоР АлЕкСеЕвИч",
+  "org_span": [
+   2977,
+   3031
+  ],
+  "org_group": null,
+  "org_detector": "ner",
+  "org_canonical": null,
+  "org_shadowed": [
+   "лЕбЕдЕв еГоР АлЕкСеЕвИч"
+  ],
+  "mech": "compound_ip_fio"
+ },
+ {
+  "doc_id": "agency_0010",
+  "start": 99,
+  "end": 113,
+  "value": "Морозова Е. О.",
+  "mask_types_max": [
+   "ORG"
+  ],
+  "mask_types_default": [
+   "PER"
+  ],
+  "uncovered_default": 0,
+  "org_text": "Индивидуальный предприниматель Морозова Е. О.",
+  "org_span": [
+   68,
+   113
+  ],
+  "org_group": null,
+  "org_detector": "ner",
+  "org_canonical": null,
+  "org_shadowed": [
+   "Морозова Е. О."
+  ],
+  "mech": "compound_ip_fio"
+ },
+ {
+  "doc_id": "agency_0010",
+  "start": 257,
+  "end": 268,
+  "value": "Попов О. О.",
+  "mask_types_max": [
+   "ORG"
+  ],
+  "mask_types_default": [
+   "PER"
+  ],
+  "uncovered_default": 0,
+  "org_text": "ИП Попов О. О.",
+  "org_span": [
+   254,
+   268
+  ],
+  "org_group": null,
+  "org_detector": "ner",
+  "org_canonical": null,
+  "org_shadowed": [
+   "Попов О. О."
+  ],
+  "mech": "compound_ip_fio"
+ },
+ {
+  "doc_id": "agency_0010",
+  "start": 2766,
+  "end": 2793,
+  "value": "Морозова Екатерина Олеговна",
+  "mask_types_max": [
+   "ORG"
+  ],
+  "mask_types_default": [
+   "PER"
+  ],
+  "uncovered_default": 0,
+  "org_text": "Морозова Екатерина Олеговна\nИндивидуальный предприниматель",
+  "org_span": [
+   2766,
+   2824
+  ],
+  "org_group": null,
+  "org_detector": "ner",
+  "org_canonical": null,
+  "org_shadowed": [
+   "Морозова Екатерина Олеговна",
+   "Индивидуальный предприниматель Морозова Екатерина Олеговна"
+  ],
+  "mech": "compound_ip_fio"
+ },
+ {
+  "doc_id": "agency_0010",
+  "start": 2825,
+  "end": 2852,
+  "value": "Морозова Екатерина Олеговна",
+  "mask_types_max": [
+   "ORG"
+  ],
+  "mask_types_default": [
+   "PER"
+  ],
+  "uncovered_default": 0,
+  "org_text": "Морозова Екатерина Олеговна",
+  "org_span": [
+   2825,
+   2852
+  ],
+  "org_group": null,
+  "org_detector": "ner",
+  "org_canonical": null,
+  "org_shadowed": [
+   "Морозова Екатерина Олеговна"
+  ],
+  "mech": "compound_ip_fio"
+ },
+ {
+  "doc_id": "agency_0010",
+  "start": 3205,
+  "end": 3224,
+  "value": "Попов Олег Олегович",
+  "mask_types_max": [
+   "ORG"
+  ],
+  "mask_types_default": [
+   "PER"
+  ],
+  "uncovered_default": 0,
+  "org_text": "Индивидуальный предприниматель Попов Олег Олегович",
+  "org_span": [
+   3174,
+   3224
+  ],
+  "org_group": null,
+  "org_detector": "ner",
+  "org_canonical": null,
+  "org_shadowed": [
+   "Попов Олег Олегович"
+  ],
+  "mech": "compound_ip_fio"
+ },
+ {
+  "doc_id": "agency_0010__m1337_case",
+  "start": 257,
+  "end": 268,
+  "value": "ПОПОВ О. О.",
+  "mask_types_max": [
+   "ORG"
+  ],
+  "mask_types_default": [
+   "PER"
+  ],
+  "uncovered_default": 0,
+  "org_text": "ИП ПОПОВ О. О.",
+  "org_span": [
+   254,
+   268
+  ],
+  "org_group": null,
+  "org_detector": "ner",
+  "org_canonical": null,
+  "org_shadowed": [
+   "ПОПОВ О. О."
+  ],
+  "mech": "compound_ip_fio"
+ },
+ {
+  "doc_id": "agency_0010__m1337_case",
+  "start": 2766,
+  "end": 2793,
+  "value": "МОРОЗОВА ЕКАТЕРИНА ОЛЕГОВНА",
+  "mask_types_max": [
+   "ORG"
+  ],
+  "mask_types_default": [
+   "PER"
+  ],
+  "uncovered_default": 0,
+  "org_text": "МОРОЗОВА ЕКАТЕРИНА ОЛЕГОВНА\nИндивидуальный предприниматель",
+  "org_span": [
+   2766,
+   2824
+  ],
+  "org_group": null,
+  "org_detector": "ner",
+  "org_canonical": null,
+  "org_shadowed": [
+   "МОРОЗОВА ЕКАТЕРИНА ОЛЕГОВНА",
+   "Индивидуальный предприниматель МОРОЗОВА ЕКАТЕРИНА ОЛЕГОВНА"
+  ],
+  "mech": "compound_ip_fio"
+ },
+ {
+  "doc_id": "agency_0010__m1337_case",
+  "start": 2825,
+  "end": 2852,
+  "value": "МОРОЗОВА ЕКАТЕРИНА ОЛЕГОВНА",
+  "mask_types_max": [
+   "ORG"
+  ],
+  "mask_types_default": [
+   "PER"
+  ],
+  "uncovered_default": 0,
+  "org_text": "МОРОЗОВА ЕКАТЕРИНА ОЛЕГОВНА",
+  "org_span": [
+   2825,
+   2852
+  ],
+  "org_group": null,
+  "org_detector": "ner",
+  "org_canonical": null,
+  "org_shadowed": [
+   "МОРОЗОВА ЕКАТЕРИНА ОЛЕГОВНА"
+  ],
+  "mech": "compound_ip_fio"
+ },
+ {
+  "doc_id": "agency_0010__m1337_case",
+  "start": 3205,
+  "end": 3224,
+  "value": "пОпОв оЛеГ ОлЕгОвИч",
+  "mask_types_max": [
+   "ORG"
+  ],
+  "mask_types_default": [
+   "PER"
+  ],
+  "uncovered_default": 0,
+  "org_text": "Индивидуальный предприниматель пОпОв оЛеГ ОлЕгОвИч",
+  "org_span": [
+   3174,
+   3224
+  ],
+  "org_group": null,
+  "org_detector": "ner",
+  "org_canonical": null,
+  "org_shadowed": [
+   "пОпОв оЛеГ ОлЕгОвИч"
+  ],
+  "mech": "compound_ip_fio"
+ },
+ {
+  "doc_id": "agency_0010__m2718_linebreak",
+  "start": 260,
+  "end": 272,
+  "value": "Попов О.\n О.",
+  "mask_types_max": [
+   "ORG"
+  ],
+  "mask_types_default": [
+   "PER"
+  ],
+  "uncovered_default": 0,
+  "org_text": "ИП Попов О.\n О.",
+  "org_span": [
+   257,
+   272
+  ],
+  "org_group": null,
+  "org_detector": "ner",
+  "org_canonical": null,
+  "org_shadowed": [
+   "Попов О.\n О."
+  ],
+  "mech": "compound_ip_fio"
+ },
+ {
+  "doc_id": "agency_0010__m2718_linebreak",
+  "start": 2852,
+  "end": 2880,
+  "value": "Морозова Екатерина О\nлеговна",
+  "mask_types_max": [
+   "ORG"
+  ],
+  "mask_types_default": [
+   "PER"
+  ],
+  "uncovered_default": 0,
+  "org_text": "Индивидуальный предприниматель Морозова Екатерина О\nлеговна",
+  "org_span": [
+   2821,
+   2880
+  ],
+  "org_group": null,
+  "org_detector": "ner",
+  "org_canonical": null,
+  "org_shadowed": [
+   "Морозова Екатерина О\nлеговна"
+  ],
+  "mech": "compound_ip_fio"
+ },
+ {
+  "doc_id": "agency_0010__m2718_linebreak",
+  "start": 3245,
+  "end": 3265,
+  "value": "Попов\n Олег Олегович",
+  "mask_types_max": [
+   "ORG"
+  ],
+  "mask_types_default": [
+   "PER"
+  ],
+  "uncovered_default": 0,
+  "org_text": "Индивидуальный предприниматель Попов\n Олег Олегович",
+  "org_span": [
+   3214,
+   3265
+  ],
+  "org_group": null,
+  "org_detector": "ner",
+  "org_canonical": null,
+  "org_shadowed": [
+   "Попов\n Олег Олегович"
+  ],
+  "mech": "compound_ip_fio"
+ },
+ {
+  "doc_id": "cession_0001",
+  "start": 94,
+  "end": 120,
+  "value": "Коваль Владимир Алексеевич",
+  "mask_types_max": [
+   "ORG"
+  ],
+  "mask_types_default": [
+   "PER"
+  ],
+  "uncovered_default": 0,
+  "org_text": "ИП Коваль Владимир Алексеевич",
+  "org_span": [
+   91,
+   120
+  ],
+  "org_group": null,
+  "org_detector": "ner",
+  "org_canonical": null,
+  "org_shadowed": [
+   "Коваль Владимир Алексеевич"
+  ],
+  "mech": "compound_ip_fio"
+ },
+ {
+  "doc_id": "cession_0001",
+  "start": 2712,
+  "end": 2738,
+  "value": "Коваль Владимир Алексеевич",
+  "mask_types_max": [
+   "ORG"
+  ],
+  "mask_types_default": [
+   "PER"
+  ],
+  "uncovered_default": 0,
+  "org_text": "Индивидуальный предприниматель Коваль Владимир Алексеевич",
+  "org_span": [
+   2681,
+   2738
+  ],
+  "org_group": null,
+  "org_detector": "ner",
+  "org_canonical": null,
+  "org_shadowed": [
+   "Коваль Владимир Алексеевич"
+  ],
+  "mech": "compound_ip_fio"
+ },
+ {
+  "doc_id": "cession_0001__m1337_digit_spaces",
+  "start": 95,
+  "end": 121,
+  "value": "Коваль Владимир Алексеевич",
+  "mask_types_max": [
+   "ORG"
+  ],
+  "mask_types_default": [
+   "PER"
+  ],
+  "uncovered_default": 0,
+  "org_text": "ИП Коваль Владимир Алексеевич",
+  "org_span": [
+   92,
+   121
+  ],
+  "org_group": null,
+  "org_detector": "ner",
+  "org_canonical": null,
+  "org_shadowed": [
+   "Коваль Владимир Алексеевич"
+  ],
+  "mech": "compound_ip_fio"
+ },
+ {
+  "doc_id": "cession_0001__m1337_digit_spaces",
+  "start": 2719,
+  "end": 2745,
+  "value": "Коваль Владимир Алексеевич",
+  "mask_types_max": [
+   "ORG"
+  ],
+  "mask_types_default": [
+   "PER"
+  ],
+  "uncovered_default": 0,
+  "org_text": "Индивидуальный предприниматель Коваль Владимир Алексеевич",
+  "org_span": [
+   2688,
+   2745
+  ],
+  "org_group": null,
+  "org_detector": "ner",
+  "org_canonical": null,
+  "org_shadowed": [
+   "Коваль Владимир Алексеевич"
+  ],
+  "mech": "compound_ip_fio"
+ },
+ {
+  "doc_id": "cession_0004",
+  "start": 287,
+  "end": 300,
+  "value": "Волкова М. Ю.",
+  "mask_types_max": [
+   "ORG"
+  ],
+  "mask_types_default": [
+   "PER"
+  ],
+  "uncovered_default": 0,
+  "org_text": "ИП Волкова М. Ю.",
+  "org_span": [
+   284,
+   300
+  ],
+  "org_group": null,
+  "org_detector": "ner",
+  "org_canonical": null,
+  "org_shadowed": [
+   "Волкова М. Ю."
+  ],
+  "mech": "compound_ip_fio"
+ },
+ {
+  "doc_id": "cession_0004",
+  "start": 3060,
+  "end": 3081,
+  "value": "Волкова Мария Юрьевна",
+  "mask_types_max": [
+   "ORG"
+  ],
+  "mask_types_default": [
+   "PER"
+  ],
+  "uncovered_default": 0,
+  "org_text": "Индивидуальный предприниматель Волкова Мария Юрьевна",
+  "org_span": [
+   3029,
+   3081
+  ],
+  "org_group": null,
+  "org_detector": "ner",
+  "org_canonical": null,
+  "org_shadowed": [
+   "Волкова Мария Юрьевна"
+  ],
+  "mech": "compound_ip_fio"
+ },
+ {
+  "doc_id": "cession_0004__m1337_cell_split",
+  "start": 287,
+  "end": 300,
+  "value": "Волкова М. Ю.",
+  "mask_types_max": [
+   "ORG"
+  ],
+  "mask_types_default": [
+   "PER"
+  ],
+  "uncovered_default": 0,
+  "org_text": "ИП Волкова М. Ю.",
+  "org_span": [
+   284,
+   300
+  ],
+  "org_group": null,
+  "org_detector": "ner",
+  "org_canonical": null,
+  "org_shadowed": [
+   "Волкова М. Ю."
+  ],
+  "mech": "compound_ip_fio"
+ },
+ {
+  "doc_id": "cession_0004__m1337_cell_split",
+  "start": 3060,
+  "end": 3081,
+  "value": "Волкова Мария Юрьевна",
+  "mask_types_max": [
+   "ORG"
+  ],
+  "mask_types_default": [
+   "PER"
+  ],
+  "uncovered_default": 0,
+  "org_text": "Индивидуальный предприниматель Волкова Мария Юрьевна",
+  "org_span": [
+   3029,
+   3081
+  ],
+  "org_group": null,
+  "org_detector": "ner",
+  "org_canonical": null,
+  "org_shadowed": [
+   "Волкова Мария Юрьевна"
+  ],
+  "mech": "compound_ip_fio"
+ },
+ {
+  "doc_id": "cession_0004__m2718_invisible",
+  "start": 3161,
+  "end": 3185,
+  "value": "В­ол⁠кова М ария Юрьевна",
+  "mask_types_max": [
+   "ORG"
+  ],
+  "mask_types_default": [
+   "PER"
+  ],
+  "uncovered_default": 0,
+  "org_text": "Индивидуальный предприниматель В­ол⁠кова М ария Юрьевна",
+  "org_span": [
+   3130,
+   3185
+  ],
+  "org_group": null,
+  "org_detector": "ner",
+  "org_canonical": null,
+  "org_shadowed": [
+   "В­ол⁠кова М ария Юрьевна"
+  ],
+  "mech": "compound_ip_fio"
+ },
+ {
+  "doc_id": "cession_0006",
+  "start": 100,
+  "end": 127,
+  "value": "Кузнецова Юлия Владимировна",
+  "mask_types_max": [
+   "ORG"
+  ],
+  "mask_types_default": [
+   "PER"
+  ],
+  "uncovered_default": 0,
+  "org_text": "ИП Кузнецова Юлия Владимировна",
+  "org_span": [
+   97,
+   127
+  ],
+  "org_group": null,
+  "org_detector": "ner",
+  "org_canonical": null,
+  "org_shadowed": [
+   "Кузнецова Юлия Владимировна"
+  ],
+  "mech": "compound_ip_fio"
+ },
+ {
+  "doc_id": "cession_0006",
+  "start": 272,
+  "end": 296,
+  "value": "Павлов Владимир Егорович",
+  "mask_types_max": [
+   "ORG"
+  ],
+  "mask_types_default": [
+   "PER"
+  ],
+  "uncovered_default": 0,
+  "org_text": "ИП Павлов Владимир Егорович",
+  "org_span": [
+   269,
+   296
+  ],
+  "org_group": null,
+  "org_detector": "ner",
+  "org_canonical": null,
+  "org_shadowed": [
+   "Павлов Владимир Егорович"
+  ],
+  "mech": "compound_ip_fio"
+ },
+ {
+  "doc_id": "cession_0006",
+  "start": 2836,
+  "end": 2863,
+  "value": "Кузнецова Юлия Владимировна",
+  "mask_types_max": [
+   "ORG"
+  ],
+  "mask_types_default": [
+   "PER"
+  ],
+  "uncovered_default": 0,
+  "org_text": "Индивидуальный предприниматель Кузнецова Юлия Владимировна",
+  "org_span": [
+   2805,
+   2863
+  ],
+  "org_group": null,
+  "org_detector": "ner",
+  "org_canonical": null,
+  "org_shadowed": [
+   "Кузнецова Юлия Владимировна"
+  ],
+  "mech": "compound_ip_fio"
+ },
+ {
+  "doc_id": "cession_0006",
+  "start": 3187,
+  "end": 3211,
+  "value": "Павлов Владимир Егорович",
+  "mask_types_max": [
+   "ORG"
+  ],
+  "mask_types_default": [
+   "PER"
+  ],
+  "uncovered_default": 0,
+  "org_text": "Индивидуальный предприниматель Павлов Владимир Егорович",
+  "org_span": [
+   3156,
+   3211
+  ],
+  "org_group": null,
+  "org_detector": "ner",
+  "org_canonical": null,
+  "org_shadowed": [
+   "Павлов Владимир Егорович"
+  ],
+  "mech": "compound_ip_fio"
+ },
+ {
+  "doc_id": "cession_0006__m1337_invisible",
+  "start": 100,
+  "end": 130,
+  "value": "Кузнецова Юлия В ладимиро вн‍а",
+  "mask_types_max": [
+   "ORG"
+  ],
+  "mask_types_default": [
+   "PER"
+  ],
+  "uncovered_default": 0,
+  "org_text": "ИП Кузнецова Юлия В ладимиро вн‍а",
+  "org_span": [
+   97,
+   130
+  ],
+  "org_group": null,
+  "org_detector": "ner",
+  "org_canonical": null,
+  "org_shadowed": [
+   "Кузнецова Юлия В ладимиро вн‍а"
+  ],
+  "mech": "compound_ip_fio"
+ },
+ {
+  "doc_id": "cession_0006__m1337_invisible",
+  "start": 277,
+  "end": 304,
+  "value": "Павлов‍ Владимир Егор ов⁠ич",
+  "mask_types_max": [
+   "ORG"
+  ],
+  "mask_types_default": [
+   "PER"
+  ],
+  "uncovered_default": 0,
+  "org_text": "ИП Павлов‍ Владимир Егор ов⁠ич",
+  "org_span": [
+   274,
+   304
+  ],
+  "org_group": null,
+  "org_detector": "ner",
+  "org_canonical": null,
+  "org_shadowed": [
+   "Павлов‍ Владимир Егор ов⁠ич"
+  ],
+  "mech": "compound_ip_fio"
+ },
+ {
+  "doc_id": "cession_0006__m1337_invisible",
+  "start": 2891,
+  "end": 2921,
+  "value": "Кузнецова Юл⁠ия Вл адимир⁠овна",
+  "mask_types_max": [
+   "ORG"
+  ],
+  "mask_types_default": [
+   "PER"
+  ],
+  "uncovered_default": 0,
+  "org_text": "Индивидуальный предприниматель Кузнецова Юл⁠ия Вл адимир⁠овна",
+  "org_span": [
+   2860,
+   2921
+  ],
+  "org_group": null,
+  "org_detector": "ner",
+  "org_canonical": null,
+  "org_shadowed": [
+   "Кузнецова Юл⁠ия Вл адимир⁠овна"
+  ],
+  "mech": "compound_ip_fio"
+ },
+ {
+  "doc_id": "cession_0006__m1337_invisible",
+  "start": 3264,
+  "end": 3291,
+  "value": "Павлов Владим⁠ир­ Егоров​ич",
+  "mask_types_max": [
+   "ORG"
+  ],
+  "mask_types_default": [
+   "PER"
+  ],
+  "uncovered_default": 0,
+  "org_text": "Индивидуальный предприниматель Павлов Владим⁠ир­ Егоров​ич",
+  "org_span": [
+   3233,
+   3291
+  ],
+  "org_group": null,
+  "org_detector": "ner",
+  "org_canonical": null,
+  "org_shadowed": [
+   "Павлов Владим⁠ир­ Егоров​ич"
+  ],
+  "mech": "compound_ip_fio"
+ },
+ {
+  "doc_id": "cession_0006__m2718_digit_spaces",
+  "start": 100,
+  "end": 127,
+  "value": "Кузнецова Юлия Владимировна",
+  "mask_types_max": [
+   "ORG"
+  ],
+  "mask_types_default": [
+   "PER"
+  ],
+  "uncovered_default": 0,
+  "org_text": "ИП Кузнецова Юлия Владимировна",
+  "org_span": [
+   97,
+   127
+  ],
+  "org_group": null,
+  "org_detector": "ner",
+  "org_canonical": null,
+  "org_shadowed": [
+   "Кузнецова Юлия Владимировна"
+  ],
+  "mech": "compound_ip_fio"
+ },
+ {
+  "doc_id": "cession_0006__m2718_digit_spaces",
+  "start": 274,
+  "end": 298,
+  "value": "Павлов Владимир Егорович",
+  "mask_types_max": [
+   "ORG"
+  ],
+  "mask_types_default": [
+   "PER"
+  ],
+  "uncovered_default": 0,
+  "org_text": "ИП Павлов Владимир Егорович",
+  "org_span": [
+   271,
+   298
+  ],
+  "org_group": null,
+  "org_detector": "ner",
+  "org_canonical": null,
+  "org_shadowed": [
+   "Павлов Владимир Егорович"
+  ],
+  "mech": "compound_ip_fio"
+ },
+ {
+  "doc_id": "cession_0006__m2718_digit_spaces",
+  "start": 2840,
+  "end": 2867,
+  "value": "Кузнецова Юлия Владимировна",
+  "mask_types_max": [
+   "ORG"
+  ],
+  "mask_types_default": [
+   "PER"
+  ],
+  "uncovered_default": 0,
+  "org_text": "Индивидуальный предприниматель Кузнецова Юлия Владимировна",
+  "org_span": [
+   2809,
+   2867
+  ],
+  "org_group": null,
+  "org_detector": "ner",
+  "org_canonical": null,
+  "org_shadowed": [
+   "Кузнецова Юлия Владимировна"
+  ],
+  "mech": "compound_ip_fio"
+ },
+ {
+  "doc_id": "cession_0006__m2718_digit_spaces",
+  "start": 3205,
+  "end": 3229,
+  "value": "Павлов Владимир Егорович",
+  "mask_types_max": [
+   "ORG"
+  ],
+  "mask_types_default": [
+   "PER"
+  ],
+  "uncovered_default": 0,
+  "org_text": "Индивидуальный предприниматель Павлов Владимир Егорович",
+  "org_span": [
+   3174,
+   3229
+  ],
+  "org_group": null,
+  "org_detector": "ner",
+  "org_canonical": null,
+  "org_shadowed": [
+   "Павлов Владимир Егорович"
+  ],
+  "mech": "compound_ip_fio"
+ },
+ {
+  "doc_id": "cession_0007",
+  "start": 126,
+  "end": 153,
+  "value": "Тер-Петросян Артур Ашотович",
+  "mask_types_max": [
+   "ORG"
+  ],
+  "mask_types_default": [
+   "PER"
+  ],
+  "uncovered_default": 0,
+  "org_text": "Индивидуальный предприниматель Тер-Петросян Артур Ашотович",
+  "org_span": [
+   95,
+   153
+  ],
+  "org_group": null,
+  "org_detector": "ner",
+  "org_canonical": null,
+  "org_shadowed": [
+   "Тер-Петросян Артур Ашотович"
+  ],
+  "mech": "compound_ip_fio"
+ },
+ {
+  "doc_id": "cession_0007",
+  "start": 4708,
+  "end": 4735,
+  "value": "Тер-Петросян Артур Ашотович",
+  "mask_types_max": [
+   "ORG"
+  ],
+  "mask_types_default": [
+   "PER"
+  ],
+  "uncovered_default": 0,
+  "org_text": "Индивидуальный предприниматель Тер-Петросян Артур Ашотович",
+  "org_span": [
+   4677,
+   4735
+  ],
+  "org_group": null,
+  "org_detector": "ner",
+  "org_canonical": null,
+  "org_shadowed": [
+   "Тер-Петросян Артур Ашотович"
+  ],
+  "mech": "compound_ip_fio"
+ },
+ {
+  "doc_id": "cession_0007__m1337_digit_spaces",
+  "start": 128,
+  "end": 155,
+  "value": "Тер-Петросян Артур Ашотович",
+  "mask_types_max": [
+   "ORG"
+  ],
+  "mask_types_default": [
+   "PER"
+  ],
+  "uncovered_default": 0,
+  "org_text": "Индивидуальный предприниматель Тер-Петросян Артур Ашотович",
+  "org_span": [
+   97,
+   155
+  ],
+  "org_group": null,
+  "org_detector": "ner",
+  "org_canonical": null,
+  "org_shadowed": [
+   "Тер-Петросян Артур Ашотович"
+  ],
+  "mech": "compound_ip_fio"
+ },
+ {
+  "doc_id": "cession_0007__m1337_digit_spaces",
+  "start": 4716,
+  "end": 4743,
+  "value": "Тер-Петросян Артур Ашотович",
+  "mask_types_max": [
+   "ORG"
+  ],
+  "mask_types_default": [
+   "PER"
+  ],
+  "uncovered_default": 0,
+  "org_text": "Индивидуальный предприниматель Тер-Петросян Артур Ашотович",
+  "org_span": [
+   4685,
+   4743
+  ],
+  "org_group": null,
+  "org_detector": "ner",
+  "org_canonical": null,
+  "org_shadowed": [
+   "Тер-Петросян Артур Ашотович"
+  ],
+  "mech": "compound_ip_fio"
+ },
+ {
+  "doc_id": "labor_0001",
+  "start": 72,
+  "end": 101,
+  "value": "Макаров Владимир Владимирович",
+  "mask_types_max": [
+   "ORG"
+  ],
+  "mask_types_default": [
+   "PER"
+  ],
+  "uncovered_default": 0,
+  "org_text": "ИП Макаров Владимир Владимирович",
+  "org_span": [
+   69,
+   101
+  ],
+  "org_group": null,
+  "org_detector": "ner",
+  "org_canonical": null,
+  "org_shadowed": [
+   "Макаров Владимир Владимирович"
+  ],
+  "mech": "compound_ip_fio"
+ },
+ {
+  "doc_id": "labor_0001",
+  "start": 2704,
+  "end": 2733,
+  "value": "Макаров Владимир Владимирович",
+  "mask_types_max": [
+   "ORG"
+  ],
+  "mask_types_default": [
+   "PER"
+  ],
+  "uncovered_default": 0,
+  "org_text": "Индивидуальный предприниматель Макаров Владимир Владимирович",
+  "org_span": [
+   2673,
+   2733
+  ],
+  "org_group": null,
+  "org_detector": "ner",
+  "org_canonical": null,
+  "org_shadowed": [
+   "Макаров Владимир Владимирович"
+  ],
+  "mech": "compound_ip_fio"
+ },
+ {
+  "doc_id": "labor_0001__m1337_combo",
+  "start": 73,
+  "end": 105,
+  "value": "мАкAрОв ­Bл­аДиMиР ВлАдИм­иРоВиЧ",
+  "mask_types_max": [
+   "ORG"
+  ],
+  "mask_types_default": [
+   "PER"
+  ],
+  "uncovered_default": 0,
+  "org_text": "ИП мАкAрОв ­Bл­аДиMиР ВлАдИм­иРоВиЧ",
+  "org_span": [
+   70,
+   105
+  ],
+  "org_group": null,
+  "org_detector": "ner",
+  "org_canonical": null,
+  "org_shadowed": [
+   "мАкAрОв ­Bл­аДиMиР ВлАдИм­иРоВиЧ"
+  ],
+  "mech": "compound_ip_fio"
+ },
+ {
+  "doc_id": "labor_0001__m2718_homoglyph",
+  "start": 72,
+  "end": 101,
+  "value": "Makaров Владимир Владимирович",
+  "mask_types_max": [
+   "ORG"
+  ],
+  "mask_types_default": [
+   "PER"
+  ],
+  "uncovered_default": 0,
+  "org_text": "ИП Makaров Владимир Владимирович",
+  "org_span": [
+   69,
+   101
+  ],
+  "org_group": null,
+  "org_detector": "ner",
+  "org_canonical": null,
+  "org_shadowed": [
+   "Makaров Владимир Владимирович"
+  ],
+  "mech": "compound_ip_fio"
+ },
+ {
+  "doc_id": "labor_0001__m2718_homoglyph",
+  "start": 2704,
+  "end": 2733,
+  "value": "Мakaров Владимиp Владимирович",
+  "mask_types_max": [
+   "ORG"
+  ],
+  "mask_types_default": [
+   "PER"
+  ],
+  "uncovered_default": 0,
+  "org_text": "Индивидуальный предприниматель Мakaров Владимиp Владимирович",
+  "org_span": [
+   2673,
+   2733
+  ],
+  "org_group": null,
+  "org_detector": "ner",
+  "org_canonical": null,
+  "org_shadowed": [
+   "Мakaров Владимиp Владимирович"
+  ],
+  "mech": "compound_ip_fio"
+ },
+ {
+  "doc_id": "labor_0004",
+  "start": 104,
+  "end": 118,
+  "value": "Смирнова М. Н.",
+  "mask_types_max": [
+   "ORG"
+  ],
+  "mask_types_default": [
+   "PER"
+  ],
+  "uncovered_default": 0,
+  "org_text": "Индивидуальный предприниматель Смирнова М. Н.",
+  "org_span": [
+   73,
+   118
+  ],
+  "org_group": null,
+  "org_detector": "ner",
+  "org_canonical": null,
+  "org_shadowed": [
+   "Смирнова М. Н."
+  ],
+  "mech": "compound_ip_fio"
+ },
+ {
+  "doc_id": "labor_0004",
+  "start": 2826,
+  "end": 2851,
+  "value": "Смирнова Мария Николаевна",
+  "mask_types_max": [
+   "ORG"
+  ],
+  "mask_types_default": [
+   "PER"
+  ],
+  "uncovered_default": 0,
+  "org_text": "Индивидуальный предприниматель Смирнова Мария Николаевна",
+  "org_span": [
+   2795,
+   2851
+  ],
+  "org_group": null,
+  "org_detector": "ner",
+  "org_canonical": null,
+  "org_shadowed": [
+   "Смирнова Мария Николаевна"
+  ],
+  "mech": "compound_ip_fio"
+ },
+ {
+  "doc_id": "labor_0004__m1337_homoglyph",
+  "start": 2826,
+  "end": 2851,
+  "value": "Смирнoва Мaрия Никoлаевна",
+  "mask_types_max": [
+   "ORG"
+  ],
+  "mask_types_default": [
+   "PER"
+  ],
+  "uncovered_default": 0,
+  "org_text": "Индивидуальный предприниматель Смирнoва Мaрия Никoлаевна",
+  "org_span": [
+   2795,
+   2851
+  ],
+  "org_group": null,
+  "org_detector": "ner",
+  "org_canonical": null,
+  "org_shadowed": [
+   "Смирнoва Мaрия Никoлаевна"
+  ],
+  "mech": "compound_ip_fio"
+ },
+ {
+  "doc_id": "labor_0004__m2718_case",
+  "start": 104,
+  "end": 118,
+  "value": "СМИРНОВА М. Н.",
+  "mask_types_max": [
+   "ORG"
+  ],
+  "mask_types_default": [
+   "PER"
+  ],
+  "uncovered_default": 0,
+  "org_text": "Индивидуальный предприниматель СМИРНОВА М. Н.",
+  "org_span": [
+   73,
+   118
+  ],
+  "org_group": null,
+  "org_detector": "ner",
+  "org_canonical": null,
+  "org_shadowed": [
+   "СМИРНОВА М. Н."
+  ],
+  "mech": "compound_ip_fio"
+ },
+ {
+  "doc_id": "labor_0004__m2718_case",
+  "start": 2826,
+  "end": 2851,
+  "value": "сМиРнОвА МаРиЯ НиКоЛаЕвНа",
+  "mask_types_max": [
+   "ORG"
+  ],
+  "mask_types_default": [
+   "PER"
+  ],
+  "uncovered_default": 0,
+  "org_text": "Индивидуальный предприниматель сМиРнОвА МаРиЯ НиКоЛаЕвНа",
+  "org_span": [
+   2795,
+   2851
+  ],
+  "org_group": null,
+  "org_detector": "ner",
+  "org_canonical": null,
+  "org_shadowed": [
+   "сМиРнОвА МаРиЯ НиКоЛаЕвНа"
+  ],
+  "mech": "compound_ip_fio"
+ },
+ {
+  "doc_id": "labor_0007",
+  "start": 73,
+  "end": 86,
+  "value": "Волкова Н. Е.",
+  "mask_types_max": [
+   "ORG"
+  ],
+  "mask_types_default": [
+   "PER"
+  ],
+  "uncovered_default": 0,
+  "org_text": "ИП Волкова Н. Е.",
+  "org_span": [
+   70,
+   86
+  ],
+  "org_group": null,
+  "org_detector": "ner",
+  "org_canonical": null,
+  "org_shadowed": [
+   "Волкова Н. Е."
+  ],
+  "mech": "compound_ip_fio"
+ },
+ {
+  "doc_id": "labor_0007",
+  "start": 2887,
+  "end": 2911,
+  "value": "Волкова Наталья Егоровна",
+  "mask_types_max": [
+   "ORG"
+  ],
+  "mask_types_default": [
+   "PER"
+  ],
+  "uncovered_default": 0,
+  "org_text": "Индивидуальный предприниматель Волкова Наталья Егоровна",
+  "org_span": [
+   2856,
+   2911
+  ],
+  "org_group": null,
+  "org_detector": "ner",
+  "org_canonical": null,
+  "org_shadowed": [
+   "Волкова Наталья Егоровна"
+  ],
+  "mech": "compound_ip_fio"
+ },
+ {
+  "doc_id": "labor_0007__m1337_combo",
+  "start": 2934,
+  "end": 2961,
+  "value": "волков­а нaта⁠лья егоровн‍а",
+  "mask_types_max": [
+   "ORG"
+  ],
+  "mask_types_default": [
+   "PER"
+  ],
+  "uncovered_default": 0,
+  "org_text": "Индивидуальный предприниматель волков­а нaта⁠лья егоровн‍а",
+  "org_span": [
+   2903,
+   2961
+  ],
+  "org_group": null,
+  "org_detector": "ner",
+  "org_canonical": null,
+  "org_shadowed": [
+   "волков­а нaта⁠лья егоровн‍а"
+  ],
+  "mech": "compound_ip_fio"
+ },
+ {
+  "doc_id": "labor_0007__m2718_homoglyph",
+  "start": 73,
+  "end": 86,
+  "value": "Волкова H. Е.",
+  "mask_types_max": [
+   "ORG"
+  ],
+  "mask_types_default": [
+   "PER"
+  ],
+  "uncovered_default": 0,
+  "org_text": "ИП Волкова H. Е.",
+  "org_span": [
+   70,
+   86
+  ],
+  "org_group": null,
+  "org_detector": "ner",
+  "org_canonical": null,
+  "org_shadowed": [
+   "Волкова H. Е."
+  ],
+  "mech": "compound_ip_fio"
+ },
+ {
+  "doc_id": "labor_0007__m2718_homoglyph",
+  "start": 2887,
+  "end": 2911,
+  "value": "Вoлкова Наталья Егopовна",
+  "mask_types_max": [
+   "ORG"
+  ],
+  "mask_types_default": [
+   "PER"
+  ],
+  "uncovered_default": 0,
+  "org_text": "Индивидуальный предприниматель Вoлкова Наталья Егopовна",
+  "org_span": [
+   2856,
+   2911
+  ],
+  "org_group": null,
+  "org_detector": "ner",
+  "org_canonical": null,
+  "org_shadowed": [
+   "Вoлкова Наталья Егopовна"
+  ],
+  "mech": "compound_ip_fio"
+ },
+ {
+  "doc_id": "labor_0010",
+  "start": 153,
+  "end": 176,
+  "value": "Мельник Дмитрий Юрьевич",
+  "mask_types_max": [
+   "ORG"
+  ],
+  "mask_types_default": [
+   "PER"
+  ],
+  "uncovered_default": 0,
+  "org_text": "Индивидуальный предприниматель Мельник Дмитрий Юрьевич",
+  "org_span": [
+   122,
+   176
+  ],
+  "org_group": null,
+  "org_detector": "ner",
+  "org_canonical": null,
+  "org_shadowed": [
+   "Мельник Дмитрий Юрьевич"
+  ],
+  "mech": "compound_ip_fio"
+ },
+ {
+  "doc_id": "labor_0010",
+  "start": 4695,
+  "end": 4706,
+  "value": "Д.Ю.Мельник",
+  "mask_types_max": [
+   "ORG"
+  ],
+  "mask_types_default": [
+   "PER"
+  ],
+  "uncovered_default": 0,
+  "org_text": "ИП Д.Ю.Мельник ИНН",
+  "org_span": [
+   4692,
+   4710
+  ],
+  "org_group": null,
+  "org_detector": "ner",
+  "org_canonical": null,
+  "org_shadowed": [
+   "Д.Ю.Мельник ИНН"
+  ],
+  "mech": "compound_ip_fio"
+ },
+ {
+  "doc_id": "labor_0010",
+  "start": 4833,
+  "end": 4856,
+  "value": "Мельник Дмитрий Юрьевич",
+  "mask_types_max": [
+   "ORG"
+  ],
+  "mask_types_default": [
+   "PER"
+  ],
+  "uncovered_default": 0,
+  "org_text": "Индивидуальный предприниматель Мельник Дмитрий Юрьевич",
+  "org_span": [
+   4802,
+   4856
+  ],
+  "org_group": null,
+  "org_detector": "ner",
+  "org_canonical": null,
+  "org_shadowed": [
+   "Мельник Дмитрий Юрьевич"
+  ],
+  "mech": "compound_ip_fio"
+ },
+ {
+  "doc_id": "labor_0010__m1337_cell_split",
+  "start": 153,
+  "end": 176,
+  "value": "Мельник Дмитрий Юрьевич",
+  "mask_types_max": [
+   "ORG"
+  ],
+  "mask_types_default": [
+   "PER"
+  ],
+  "uncovered_default": 0,
+  "org_text": "Индивидуальный предприниматель Мельник Дмитрий Юрьевич",
+  "org_span": [
+   122,
+   176
+  ],
+  "org_group": null,
+  "org_detector": "ner",
+  "org_canonical": null,
+  "org_shadowed": [
+   "Мельник Дмитрий Юрьевич"
+  ],
+  "mech": "compound_ip_fio"
+ },
+ {
+  "doc_id": "labor_0010__m1337_cell_split",
+  "start": 4695,
+  "end": 4706,
+  "value": "Д.Ю.Мельник",
+  "mask_types_max": [
+   "ORG"
+  ],
+  "mask_types_default": [
+   "PER"
+  ],
+  "uncovered_default": 0,
+  "org_text": "ИП Д.Ю.Мельник ИНН",
+  "org_span": [
+   4692,
+   4710
+  ],
+  "org_group": null,
+  "org_detector": "ner",
+  "org_canonical": null,
+  "org_shadowed": [
+   "Д.Ю.Мельник ИНН"
+  ],
+  "mech": "compound_ip_fio"
+ },
+ {
+  "doc_id": "labor_0010__m1337_cell_split",
+  "start": 4833,
+  "end": 4856,
+  "value": "Мельник Дмитрий Юрьевич",
+  "mask_types_max": [
+   "ORG"
+  ],
+  "mask_types_default": [
+   "PER"
+  ],
+  "uncovered_default": 0,
+  "org_text": "Индивидуальный предприниматель Мельник Дмитрий Юрьевич",
+  "org_span": [
+   4802,
+   4856
+  ],
+  "org_group": null,
+  "org_detector": "ner",
+  "org_canonical": null,
+  "org_shadowed": [
+   "Мельник Дмитрий Юрьевич"
+  ],
+  "mech": "compound_ip_fio"
+ },
+ {
+  "doc_id": "labor_0010__m2718_invisible",
+  "start": 163,
+  "end": 189,
+  "value": "М​ельн​ик Дмитрий Юрьеви­ч",
+  "mask_types_max": [
+   "ORG"
+  ],
+  "mask_types_default": [
+   "PER"
+  ],
+  "uncovered_default": 0,
+  "org_text": "Индивидуальный предприниматель М​ельн​ик Дмитрий Юрьеви­ч",
+  "org_span": [
+   132,
+   189
+  ],
+  "org_group": null,
+  "org_detector": "ner",
+  "org_canonical": null,
+  "org_shadowed": [
+   "М​ельн​ик Дмитрий Юрьеви­ч"
+  ],
+  "mech": "compound_ip_fio"
+ },
+ {
+  "doc_id": "labor_0010__m2718_invisible",
+  "start": 4760,
+  "end": 4772,
+  "value": "Д.Ю.Мельни​к",
+  "mask_types_max": [
+   "ORG"
+  ],
+  "mask_types_default": [
+   "PER"
+  ],
+  "uncovered_default": 0,
+  "org_text": "ИП Д.Ю.Мельни​к ИНН",
+  "org_span": [
+   4757,
+   4776
+  ],
+  "org_group": null,
+  "org_detector": "ner",
+  "org_canonical": null,
+  "org_shadowed": [
+   "Д.Ю.Мельни​к ИНН"
+  ],
+  "mech": "compound_ip_fio"
+ },
+ {
+  "doc_id": "labor_0010__m2718_invisible",
+  "start": 4908,
+  "end": 4934,
+  "value": "Мель н ик Дмитри­й Юрьевич",
+  "mask_types_max": [
+   "ORG"
+  ],
+  "mask_types_default": [
+   "PER"
+  ],
+  "uncovered_default": 0,
+  "org_text": "Индивидуальный предприниматель Мель н ик Дмитри­й Юрьевич",
+  "org_span": [
+   4877,
+   4934
+  ],
+  "org_group": null,
+  "org_detector": "ner",
+  "org_canonical": null,
+  "org_shadowed": [
+   "Мель н ик Дмитри­й Юрьевич"
+  ],
+  "mech": "compound_ip_fio"
+ },
+ {
+  "doc_id": "lease_0002",
+  "start": 235,
+  "end": 248,
+  "value": "Зайцева Е. А.",
+  "mask_types_max": [
+   "ORG"
+  ],
+  "mask_types_default": [
+   "PER"
+  ],
+  "uncovered_default": 0,
+  "org_text": "ИП Зайцева Е. А.",
+  "org_span": [
+   232,
+   248
+  ],
+  "org_group": null,
+  "org_detector": "ner",
+  "org_canonical": null,
+  "org_shadowed": [
+   "Зайцева Е. А."
+  ],
+  "mech": "compound_ip_fio"
+ },
+ {
+  "doc_id": "lease_0002",
+  "start": 2812,
+  "end": 2840,
+  "value": "Зайцева Екатерина Алексеевна",
+  "mask_types_max": [
+   "ORG"
+  ],
+  "mask_types_default": [
+   "PER"
+  ],
+  "uncovered_default": 0,
+  "org_text": "Индивидуальный предприниматель Зайцева Екатерина Алексеевна",
+  "org_span": [
+   2781,
+   2840
+  ],
+  "org_group": null,
+  "org_detector": "ner",
+  "org_canonical": null,
+  "org_shadowed": [
+   "Зайцева Екатерина Алексеевна"
+  ],
+  "mech": "compound_ip_fio"
+ },
+ {
+  "doc_id": "lease_0002__m1337_digit_spaces",
+  "start": 236,
+  "end": 249,
+  "value": "Зайцева Е. А.",
+  "mask_types_max": [
+   "ORG"
+  ],
+  "mask_types_default": [
+   "PER"
+  ],
+  "uncovered_default": 0,
+  "org_text": "ИП Зайцева Е. А.",
+  "org_span": [
+   233,
+   249
+  ],
+  "org_group": null,
+  "org_detector": "ner",
+  "org_canonical": null,
+  "org_shadowed": [
+   "Зайцева Е. А."
+  ],
+  "mech": "compound_ip_fio"
+ },
+ {
+  "doc_id": "lease_0002__m1337_digit_spaces",
+  "start": 2844,
+  "end": 2872,
+  "value": "Зайцева Екатерина Алексеевна",
+  "mask_types_max": [
+   "ORG"
+  ],
+  "mask_types_default": [
+   "PER"
+  ],
+  "uncovered_default": 0,
+  "org_text": "Индивидуальный предприниматель Зайцева Екатерина Алексеевна",
+  "org_span": [
+   2813,
+   2872
+  ],
+  "org_group": null,
+  "org_detector": "ner",
+  "org_canonical": null,
+  "org_shadowed": [
+   "Зайцева Екатерина Алексеевна"
+  ],
+  "mech": "compound_ip_fio"
+ },
+ {
+  "doc_id": "lease_0002__m2718_combo",
+  "start": 2874,
+  "end": 2905,
+  "value": "З AЙЦEВА EKАТЕ​РИ НА АЛЕКСЕЕВНА",
+  "mask_types_max": [
+   "ORG"
+  ],
+  "mask_types_default": [
+   "PER"
+  ],
+  "uncovered_default": 0,
+  "org_text": "Индивидуальный предприниматель З AЙЦEВА EKАТЕ​РИ НА АЛЕКСЕЕВНА",
+  "org_span": [
+   2843,
+   2905
+  ],
+  "org_group": null,
+  "org_detector": "ner",
+  "org_canonical": null,
+  "org_shadowed": [
+   "З AЙЦEВА EKАТЕ​РИ НА АЛЕКСЕЕВНА"
+  ],
+  "mech": "compound_ip_fio"
+ },
+ {
+  "doc_id": "lease_0004",
+  "start": 90,
+  "end": 103,
+  "value": "Комаров Д. М.",
+  "mask_types_max": [
+   "ORG"
+  ],
+  "mask_types_default": [
+   "PER"
+  ],
+  "uncovered_default": 0,
+  "org_text": "ИП Комаров Д. М.",
+  "org_span": [
+   87,
+   103
+  ],
+  "org_group": null,
+  "org_detector": "ner",
+  "org_canonical": null,
+  "org_shadowed": [
+   "Комаров Д. М."
+  ],
+  "mech": "compound_ip_fio"
+ },
+ {
+  "doc_id": "lease_0004",
+  "start": 282,
+  "end": 296,
+  "value": "Воробьёв Н. Ю.",
+  "mask_types_max": [
+   "ORG"
+  ],
+  "mask_types_default": [
+   "PER"
+  ],
+  "uncovered_default": 0,
+  "org_text": "Индивидуальный предприниматель Воробьёв Н. Ю.",
+  "org_span": [
+   251,
+   296
+  ],
+  "org_group": null,
+  "org_detector": "ner",
+  "org_canonical": null,
+  "org_shadowed": [
+   "Воробьёв Н. Ю."
+  ],
+  "mech": "compound_ip_fio"
+ },
+ {
+  "doc_id": "lease_0004",
+  "start": 2538,
+  "end": 2564,
+  "value": "Комаров Дмитрий Михайлович",
+  "mask_types_max": [
+   "ORG"
+  ],
+  "mask_types_default": [
+   "PER"
+  ],
+  "uncovered_default": 0,
+  "org_text": "Индивидуальный предприниматель Комаров Дмитрий Михайлович",
+  "org_span": [
+   2507,
+   2564
+  ],
+  "org_group": null,
+  "org_detector": "ner",
+  "org_canonical": null,
+  "org_shadowed": [
+   "Комаров Дмитрий Михайлович"
+  ],
+  "mech": "compound_ip_fio"
+ },
+ {
+  "doc_id": "lease_0004",
+  "start": 2834,
+  "end": 2858,
+  "value": "Воробьёв Николай Юрьевич",
+  "mask_types_max": [
+   "ORG"
+  ],
+  "mask_types_default": [
+   "PER"
+  ],
+  "uncovered_default": 0,
+  "org_text": "Индивидуальный предприниматель Воробьёв Николай Юрьевич",
+  "org_span": [
+   2803,
+   2858
+  ],
+  "org_group": null,
+  "org_detector": "ner",
+  "org_canonical": null,
+  "org_shadowed": [
+   "Воробьёв Николай Юрьевич"
+  ],
+  "mech": "compound_ip_fio"
+ },
+ {
+  "doc_id": "lease_0004__m1337_combo",
+  "start": 90,
+  "end": 105,
+  "value": "КОМАPО‍В ‍Д. М.",
+  "mask_types_max": [
+   "ORG"
+  ],
+  "mask_types_default": [
+   "PER"
+  ],
+  "uncovered_default": 0,
+  "org_text": "ИП КОМАPО‍В ‍Д. М.",
+  "org_span": [
+   87,
+   105
+  ],
+  "org_group": null,
+  "org_detector": "ner",
+  "org_canonical": null,
+  "org_shadowed": [
+   "КОМАPО‍В ‍Д. М."
+  ],
+  "mech": "compound_ip_fio"
+ },
+ {
+  "doc_id": "lease_0004__m1337_combo",
+  "start": 2578,
+  "end": 2607,
+  "value": "кOмApOв дМиТ​РиЙ  мИх⁠аЙлОвИч",
+  "mask_types_max": [
+   "ORG"
+  ],
+  "mask_types_default": [
+   "PER"
+  ],
+  "uncovered_default": 0,
+  "org_text": "Индивидуальный предприниматель кOмApOв дМиТ​РиЙ  мИх⁠аЙлОвИч",
+  "org_span": [
+   2547,
+   2607
+  ],
+  "org_group": null,
+  "org_detector": "ner",
+  "org_canonical": null,
+  "org_shadowed": [
+   "кOмApOв дМиТ​РиЙ  мИх⁠аЙлОвИч"
+  ],
+  "mech": "compound_ip_fio"
+ },
+ {
+  "doc_id": "lease_0004__m1337_combo",
+  "start": 2896,
+  "end": 2923,
+  "value": "ВОP⁠ОБЬЁВ  HИКOЛАЙ ЮР‍ЬЕВИЧ",
+  "mask_types_max": [
+   "ORG"
+  ],
+  "mask_types_default": [
+   "PER"
+  ],
+  "uncovered_default": 0,
+  "org_text": "Индивидуальный предприниматель ВОP⁠ОБЬЁВ  HИКOЛАЙ ЮР‍ЬЕВИЧ",
+  "org_span": [
+   2865,
+   2923
+  ],
+  "org_group": null,
+  "org_detector": "ner",
+  "org_canonical": null,
+  "org_shadowed": [
+   "ВОP⁠ОБЬЁВ  HИКOЛАЙ ЮР‍ЬЕВИЧ"
+  ],
+  "mech": "compound_ip_fio"
+ },
+ {
+  "doc_id": "lease_0004__m2718_homoglyph",
+  "start": 90,
+  "end": 103,
+  "value": "Kомaрoв Д. М.",
+  "mask_types_max": [
+   "ORG"
+  ],
+  "mask_types_default": [
+   "PER"
+  ],
+  "uncovered_default": 0,
+  "org_text": "ИП Kомaрoв Д. М.",
+  "org_span": [
+   87,
+   103
+  ],
+  "org_group": null,
+  "org_detector": "ner",
+  "org_canonical": null,
+  "org_shadowed": [
+   "Kомaрoв Д. М."
+  ],
+  "mech": "compound_ip_fio"
+ },
+ {
+  "doc_id": "lease_0004__m2718_homoglyph",
+  "start": 282,
+  "end": 296,
+  "value": "Воpобьёв Н. Ю.",
+  "mask_types_max": [
+   "ORG"
+  ],
+  "mask_types_default": [
+   "PER"
+  ],
+  "uncovered_default": 0,
+  "org_text": "Индивидуальный предприниматель Воpобьёв Н. Ю.",
+  "org_span": [
+   251,
+   296
+  ],
+  "org_group": null,
+  "org_detector": "ner",
+  "org_canonical": null,
+  "org_shadowed": [
+   "Воpобьёв Н. Ю."
+  ],
+  "mech": "compound_ip_fio"
+ },
+ {
+  "doc_id": "lease_0004__m2718_homoglyph",
+  "start": 2834,
+  "end": 2858,
+  "value": "Вoрoбьёв Hиколай Юpьевич",
+  "mask_types_max": [
+   "ORG"
+  ],
+  "mask_types_default": [
+   "PER"
+  ],
+  "uncovered_default": 0,
+  "org_text": "Индивидуальный предприниматель Вoрoбьёв Hиколай Юpьевич",
+  "org_span": [
+   2803,
+   2858
+  ],
+  "org_group": null,
+  "org_detector": "ner",
+  "org_canonical": null,
+  "org_shadowed": [
+   "Вoрoбьёв Hиколай Юpьевич"
+  ],
+  "mech": "compound_ip_fio"
+ },
+ {
+  "doc_id": "lease_0005",
+  "start": 82,
+  "end": 94,
+  "value": "Беляев П. П.",
+  "mask_types_max": [
+   "ORG"
+  ],
+  "mask_types_default": [
+   "PER"
+  ],
+  "uncovered_default": 0,
+  "org_text": "ИП Беляев П. П.",
+  "org_span": [
+   79,
+   94
+  ],
+  "org_group": null,
+  "org_detector": "ner",
+  "org_canonical": null,
+  "org_shadowed": [
+   "Беляев П. П."
+  ],
+  "mech": "compound_ip_fio"
+ },
+ {
+  "doc_id": "lease_0005",
+  "start": 2546,
+  "end": 2566,
+  "value": "Беляев Пётр Петрович",
+  "mask_types_max": [
+   "ORG"
+  ],
+  "mask_types_default": [
+   "PER"
+  ],
+  "uncovered_default": 0,
+  "org_text": "Индивидуальный предприниматель Беляев Пётр Петрович",
+  "org_span": [
+   2515,
+   2566
+  ],
+  "org_group": null,
+  "org_detector": "ner",
+  "org_canonical": null,
+  "org_shadowed": [
+   "Беляев Пётр Петрович"
+  ],
+  "mech": "compound_ip_fio"
+ },
+ {
+  "doc_id": "lease_0005__m1337_digit_spaces",
+  "start": 82,
+  "end": 94,
+  "value": "Беляев П. П.",
+  "mask_types_max": [
+   "ORG"
+  ],
+  "mask_types_default": [
+   "PER"
+  ],
+  "uncovered_default": 0,
+  "org_text": "ИП Беляев П. П.",
+  "org_span": [
+   79,
+   94
+  ],
+  "org_group": null,
+  "org_detector": "ner",
+  "org_canonical": null,
+  "org_shadowed": [
+   "Беляев П. П."
+  ],
+  "mech": "compound_ip_fio"
+ },
+ {
+  "doc_id": "lease_0005__m1337_digit_spaces",
+  "start": 2554,
+  "end": 2574,
+  "value": "Беляев Пётр Петрович",
+  "mask_types_max": [
+   "ORG"
+  ],
+  "mask_types_default": [
+   "PER"
+  ],
+  "uncovered_default": 0,
+  "org_text": "Индивидуальный предприниматель Беляев Пётр Петрович",
+  "org_span": [
+   2523,
+   2574
+  ],
+  "org_group": null,
+  "org_detector": "ner",
+  "org_canonical": null,
+  "org_shadowed": [
+   "Беляев Пётр Петрович"
+  ],
+  "mech": "compound_ip_fio"
+ },
+ {
+  "doc_id": "lease_0008",
+  "start": 319,
+  "end": 333,
+  "value": "Оганесян Г. А.",
+  "mask_types_max": [
+   "ORG"
+  ],
+  "mask_types_default": [
+   "PER"
+  ],
+  "uncovered_default": 0,
+  "org_text": "Индивидуальный предприниматель Оганесян Г. А.",
+  "org_span": [
+   288,
+   333
+  ],
+  "org_group": null,
+  "org_detector": "ner",
+  "org_canonical": null,
+  "org_shadowed": [
+   "Оганесян Г. А."
+  ],
+  "mech": "compound_ip_fio"
+ },
+ {
+  "doc_id": "lease_0008",
+  "start": 2862,
+  "end": 2886,
+  "value": "Оганесян Гурген Ашотович",
+  "mask_types_max": [
+   "ORG"
+  ],
+  "mask_types_default": [
+   "PER"
+  ],
+  "uncovered_default": 0,
+  "org_text": "Индивидуальный предприниматель Оганесян Гурген Ашотович",
+  "org_span": [
+   2831,
+   2886
+  ],
+  "org_group": null,
+  "org_detector": "ner",
+  "org_canonical": null,
+  "org_shadowed": [
+   "Оганесян Гурген Ашотович"
+  ],
+  "mech": "compound_ip_fio"
+ },
+ {
+  "doc_id": "lease_0008__m1337_case",
+  "start": 2862,
+  "end": 2886,
+  "value": "оГаНеСяН ГуРгЕн аШоТоВиЧ",
+  "mask_types_max": [
+   "ORG"
+  ],
+  "mask_types_default": [
+   "PER"
+  ],
+  "uncovered_default": 0,
+  "org_text": "Индивидуальный предприниматель оГаНеСяН ГуРгЕн аШоТоВиЧ",
+  "org_span": [
+   2831,
+   2886
+  ],
+  "org_group": null,
+  "org_detector": "ner",
+  "org_canonical": null,
+  "org_shadowed": [
+   "оГаНеСяН ГуРгЕн аШоТоВиЧ"
+  ],
+  "mech": "compound_ip_fio"
+ },
+ {
+  "doc_id": "lease_0008__m2718_linebreak",
+  "start": 323,
+  "end": 338,
+  "value": "Оганесян Г. \nА.",
+  "mask_types_max": [
+   "ORG"
+  ],
+  "mask_types_default": [
+   "PER"
+  ],
+  "uncovered_default": 0,
+  "org_text": "Индивидуальный предприниматель Оганесян Г. \nА.",
+  "org_span": [
+   292,
+   338
+  ],
+  "org_group": null,
+  "org_detector": "ner",
+  "org_canonical": null,
+  "org_shadowed": [
+   "Оганесян Г. \nА."
+  ],
+  "mech": "compound_ip_fio"
+ },
+ {
+  "doc_id": "lease_0010",
+  "start": 94,
+  "end": 114,
+  "value": "Попов Павел Петрович",
+  "mask_types_max": [
+   "ORG"
+  ],
+  "mask_types_default": [
+   "PER"
+  ],
+  "uncovered_default": 0,
+  "org_text": "ИП Попов Павел Петрович",
+  "org_span": [
+   91,
+   114
+  ],
+  "org_group": null,
+  "org_detector": "ner",
+  "org_canonical": null,
+  "org_shadowed": [
+   "Попов Павел Петрович"
+  ],
+  "mech": "compound_ip_fio"
+ },
+ {
+  "doc_id": "lease_0010",
+  "start": 293,
+  "end": 306,
+  "value": "Лебедев А. Д.",
+  "mask_types_max": [
+   "ORG"
+  ],
+  "mask_types_default": [
+   "PER"
+  ],
+  "uncovered_default": 0,
+  "org_text": "Индивидуальный предприниматель Лебедев А. Д.",
+  "org_span": [
+   262,
+   306
+  ],
+  "org_group": null,
+  "org_detector": "ner",
+  "org_canonical": null,
+  "org_shadowed": [
+   "Лебедев А. Д."
+  ],
+  "mech": "compound_ip_fio"
+ },
+ {
+  "doc_id": "lease_0010",
+  "start": 2538,
+  "end": 2558,
+  "value": "Попов Павел Петрович",
+  "mask_types_max": [
+   "ORG"
+  ],
+  "mask_types_default": [
+   "PER"
+  ],
+  "uncovered_default": 0,
+  "org_text": "Индивидуальный предприниматель Попов Павел Петрович",
+  "org_span": [
+   2507,
+   2558
+  ],
+  "org_group": null,
+  "org_detector": "ner",
+  "org_canonical": null,
+  "org_shadowed": [
+   "Попов Павел Петрович"
+  ],
+  "mech": "compound_ip_fio"
+ },
+ {
+  "doc_id": "lease_0010",
+  "start": 2874,
+  "end": 2898,
+  "value": "Лебедев Артём Дмитриевич",
+  "mask_types_max": [
+   "ORG"
+  ],
+  "mask_types_default": [
+   "PER"
+  ],
+  "uncovered_default": 0,
+  "org_text": "Индивидуальный предприниматель Лебедев Артём Дмитриевич",
+  "org_span": [
+   2843,
+   2898
+  ],
+  "org_group": null,
+  "org_detector": "ner",
+  "org_canonical": null,
+  "org_shadowed": [
+   "Лебедев Артём Дмитриевич"
+  ],
+  "mech": "compound_ip_fio"
+ },
+ {
+  "doc_id": "lease_0010__m1337_linebreak",
+  "start": 297,
+  "end": 311,
+  "value": "Лебедев А\n. Д.",
+  "mask_types_max": [
+   "ORG"
+  ],
+  "mask_types_default": [
+   "PER"
+  ],
+  "uncovered_default": 0,
+  "org_text": "Индивидуальный предприниматель Лебедев А\n. Д.",
+  "org_span": [
+   266,
+   311
+  ],
+  "org_group": null,
+  "org_detector": "ner",
+  "org_canonical": null,
+  "org_shadowed": [
+   "Лебедев А\n. Д."
+  ],
+  "mech": "compound_ip_fio"
+ },
+ {
+  "doc_id": "lease_0010__m2718_cell_split",
+  "start": 94,
+  "end": 114,
+  "value": "Попов Павел Петрович",
+  "mask_types_max": [
+   "ORG"
+  ],
+  "mask_types_default": [
+   "PER"
+  ],
+  "uncovered_default": 0,
+  "org_text": "ИП Попов Павел Петрович",
+  "org_span": [
+   91,
+   114
+  ],
+  "org_group": null,
+  "org_detector": "ner",
+  "org_canonical": null,
+  "org_shadowed": [
+   "Попов Павел Петрович"
+  ],
+  "mech": "compound_ip_fio"
+ },
+ {
+  "doc_id": "lease_0010__m2718_cell_split",
+  "start": 293,
+  "end": 306,
+  "value": "Лебедев А. Д.",
+  "mask_types_max": [
+   "ORG"
+  ],
+  "mask_types_default": [
+   "PER"
+  ],
+  "uncovered_default": 0,
+  "org_text": "Индивидуальный предприниматель Лебедев А. Д.",
+  "org_span": [
+   262,
+   306
+  ],
+  "org_group": null,
+  "org_detector": "ner",
+  "org_canonical": null,
+  "org_shadowed": [
+   "Лебедев А. Д."
+  ],
+  "mech": "compound_ip_fio"
+ },
+ {
+  "doc_id": "lease_0010__m2718_cell_split",
+  "start": 2538,
+  "end": 2558,
+  "value": "Попов Павел Петрович",
+  "mask_types_max": [
+   "ORG"
+  ],
+  "mask_types_default": [
+   "PER"
+  ],
+  "uncovered_default": 0,
+  "org_text": "Индивидуальный предприниматель Попов Павел Петрович",
+  "org_span": [
+   2507,
+   2558
+  ],
+  "org_group": null,
+  "org_detector": "ner",
+  "org_canonical": null,
+  "org_shadowed": [
+   "Попов Павел Петрович"
+  ],
+  "mech": "compound_ip_fio"
+ },
+ {
+  "doc_id": "lease_0010__m2718_cell_split",
+  "start": 2874,
+  "end": 2898,
+  "value": "Лебедев Артём Дмитриевич",
+  "mask_types_max": [
+   "ORG"
+  ],
+  "mask_types_default": [
+   "PER"
+  ],
+  "uncovered_default": 0,
+  "org_text": "Индивидуальный предприниматель Лебедев Артём Дмитриевич",
+  "org_span": [
+   2843,
+   2898
+  ],
+  "org_group": null,
+  "org_detector": "ner",
+  "org_canonical": null,
+  "org_shadowed": [
+   "Лебедев Артём Дмитриевич"
+  ],
+  "mech": "compound_ip_fio"
+ },
+ {
+  "doc_id": "lease_0011",
+  "start": 84,
+  "end": 105,
+  "value": "Соколова Юлия Юрьевна",
+  "mask_types_max": [
+   "ORG"
+  ],
+  "mask_types_default": [
+   "PER"
+  ],
+  "uncovered_default": 0,
+  "org_text": "ИП Соколова Юлия Юрьевна",
+  "org_span": [
+   81,
+   105
+  ],
+  "org_group": null,
+  "org_detector": "ner",
+  "org_canonical": null,
+  "org_shadowed": [
+   "Соколова Юлия Юрьевна"
+  ],
+  "mech": "compound_ip_fio"
+ },
+ {
+  "doc_id": "lease_0011",
+  "start": 2782,
+  "end": 2803,
+  "value": "Соколова Юлия Юрьевна",
+  "mask_types_max": [
+   "ORG"
+  ],
+  "mask_types_default": [
+   "PER"
+  ],
+  "uncovered_default": 0,
+  "org_text": "Индивидуальный предприниматель Соколова Юлия Юрьевна",
+  "org_span": [
+   2751,
+   2803
+  ],
+  "org_group": null,
+  "org_detector": "ner",
+  "org_canonical": null,
+  "org_shadowed": [
+   "Соколова Юлия Юрьевна"
+  ],
+  "mech": "compound_ip_fio"
+ },
+ {
+  "doc_id": "lease_0011__m1337_digit_spaces",
+  "start": 84,
+  "end": 105,
+  "value": "Соколова Юлия Юрьевна",
+  "mask_types_max": [
+   "ORG"
+  ],
+  "mask_types_default": [
+   "PER"
+  ],
+  "uncovered_default": 0,
+  "org_text": "ИП Соколова Юлия Юрьевна",
+  "org_span": [
+   81,
+   105
+  ],
+  "org_group": null,
+  "org_detector": "ner",
+  "org_canonical": null,
+  "org_shadowed": [
+   "Соколова Юлия Юрьевна"
+  ],
+  "mech": "compound_ip_fio"
+ },
+ {
+  "doc_id": "lease_0011__m1337_digit_spaces",
+  "start": 2789,
+  "end": 2810,
+  "value": "Соколова Юлия Юрьевна",
+  "mask_types_max": [
+   "ORG"
+  ],
+  "mask_types_default": [
+   "PER"
+  ],
+  "uncovered_default": 0,
+  "org_text": "Индивидуальный предприниматель Соколова Юлия Юрьевна",
+  "org_span": [
+   2758,
+   2810
+  ],
+  "org_group": null,
+  "org_detector": "ner",
+  "org_canonical": null,
+  "org_shadowed": [
+   "Соколова Юлия Юрьевна"
+  ],
+  "mech": "compound_ip_fio"
+ },
+ {
+  "doc_id": "loan_0002",
+  "start": 343,
+  "end": 356,
+  "value": "Смирнов В. А.",
+  "mask_types_max": [
+   "ORG"
+  ],
+  "mask_types_default": [
+   "PER"
+  ],
+  "uncovered_default": 0,
+  "org_text": "Индивидуальный предприниматель Смирнов В. А.",
+  "org_span": [
+   312,
+   356
+  ],
+  "org_group": null,
+  "org_detector": "ner",
+  "org_canonical": null,
+  "org_shadowed": [
+   "Смирнов В. А."
+  ],
+  "mech": "compound_ip_fio"
+ },
+ {
+  "doc_id": "loan_0002",
+  "start": 3178,
+  "end": 3205,
+  "value": "Смирнов Владимир Алексеевич",
+  "mask_types_max": [
+   "ORG"
+  ],
+  "mask_types_default": [
+   "PER"
+  ],
+  "uncovered_default": 0,
+  "org_text": "Индивидуальный предприниматель Смирнов Владимир Алексеевич",
+  "org_span": [
+   3147,
+   3205
+  ],
+  "org_group": null,
+  "org_detector": "ner",
+  "org_canonical": null,
+  "org_shadowed": [
+   "Смирнов Владимир Алексеевич"
+  ],
+  "mech": "compound_ip_fio"
+ },
+ {
+  "doc_id": "loan_0002__m1337_invisible",
+  "start": 3275,
+  "end": 3305,
+  "value": "Смирнов  Владим⁠ир Алексеев‍ич",
+  "mask_types_max": [
+   "ORG"
+  ],
+  "mask_types_default": [
+   "PER"
+  ],
+  "uncovered_default": 0,
+  "org_text": "Индивидуальный предприниматель Смирнов  Владим⁠ир Алексеев‍ич",
+  "org_span": [
+   3244,
+   3305
+  ],
+  "org_group": null,
+  "org_detector": "ner",
+  "org_canonical": null,
+  "org_shadowed": [
+   "Смирнов  Владим⁠ир Алексеев‍ич"
+  ],
+  "mech": "compound_ip_fio"
+ },
+ {
+  "doc_id": "loan_0002__m2718_digit_spaces",
+  "start": 345,
+  "end": 358,
+  "value": "Смирнов В. А.",
+  "mask_types_max": [
+   "ORG"
+  ],
+  "mask_types_default": [
+   "PER"
+  ],
+  "uncovered_default": 0,
+  "org_text": "Индивидуальный предприниматель Смирнов В. А.",
+  "org_span": [
+   314,
+   358
+  ],
+  "org_group": null,
+  "org_detector": "ner",
+  "org_canonical": null,
+  "org_shadowed": [
+   "Смирнов В. А."
+  ],
+  "mech": "compound_ip_fio"
+ },
+ {
+  "doc_id": "loan_0002__m2718_digit_spaces",
+  "start": 3212,
+  "end": 3239,
+  "value": "Смирнов Владимир Алексеевич",
+  "mask_types_max": [
+   "ORG"
+  ],
+  "mask_types_default": [
+   "PER"
+  ],
+  "uncovered_default": 0,
+  "org_text": "Индивидуальный предприниматель Смирнов Владимир Алексеевич",
+  "org_span": [
+   3181,
+   3239
+  ],
+  "org_group": null,
+  "org_detector": "ner",
+  "org_canonical": null,
+  "org_shadowed": [
+   "Смирнов Владимир Алексеевич"
+  ],
+  "mech": "compound_ip_fio"
+ },
+ {
+  "doc_id": "loan_0004",
+  "start": 63,
+  "end": 87,
+  "value": "Семёнов Николай Егорович",
+  "mask_types_max": [
+   "ORG"
+  ],
+  "mask_types_default": [
+   "PER"
+  ],
+  "uncovered_default": 0,
+  "org_text": "ИП Семёнов Николай Егорович",
+  "org_span": [
+   60,
+   87
+  ],
+  "org_group": null,
+  "org_detector": "ner",
+  "org_canonical": null,
+  "org_shadowed": [
+   "Семёнов Николай Егорович"
+  ],
+  "mech": "compound_ip_fio"
+ },
+ {
+  "doc_id": "loan_0004",
+  "start": 264,
+  "end": 288,
+  "value": "Оганесян Гурген Ашотович",
+  "mask_types_max": [
+   "ORG"
+  ],
+  "mask_types_default": [
+   "PER"
+  ],
+  "uncovered_default": 0,
+  "org_text": "Индивидуальный предприниматель Оганесян Гурген Ашотович",
+  "org_span": [
+   233,
+   288
+  ],
+  "org_group": null,
+  "org_detector": "ner",
+  "org_canonical": null,
+  "org_shadowed": [
+   "Оганесян Гурген Ашотович"
+  ],
+  "mech": "compound_ip_fio"
+ },
+ {
+  "doc_id": "loan_0004",
+  "start": 2814,
+  "end": 2838,
+  "value": "Семёнов Николай Егорович",
+  "mask_types_max": [
+   "ORG"
+  ],
+  "mask_types_default": [
+   "PER"
+  ],
+  "uncovered_default": 0,
+  "org_text": "Индивидуальный предприниматель Семёнов Николай Егорович",
+  "org_span": [
+   2783,
+   2838
+  ],
+  "org_group": null,
+  "org_detector": "ner",
+  "org_canonical": null,
+  "org_shadowed": [
+   "Семёнов Николай Егорович"
+  ],
+  "mech": "compound_ip_fio"
+ },
+ {
+  "doc_id": "loan_0004",
+  "start": 3145,
+  "end": 3169,
+  "value": "Оганесян Гурген Ашотович",
+  "mask_types_max": [
+   "ORG"
+  ],
+  "mask_types_default": [
+   "PER"
+  ],
+  "uncovered_default": 0,
+  "org_text": "Индивидуальный предприниматель Оганесян Гурген Ашотович",
+  "org_span": [
+   3114,
+   3169
+  ],
+  "org_group": null,
+  "org_detector": "ner",
+  "org_canonical": null,
+  "org_shadowed": [
+   "Оганесян Гурген Ашотович"
+  ],
+  "mech": "compound_ip_fio"
+ },
+ {
+  "doc_id": "loan_0004__m1337_digit_spaces",
+  "start": 63,
+  "end": 87,
+  "value": "Семёнов Николай Егорович",
+  "mask_types_max": [
+   "ORG"
+  ],
+  "mask_types_default": [
+   "PER"
+  ],
+  "uncovered_default": 0,
+  "org_text": "ИП Семёнов Николай Егорович",
+  "org_span": [
+   60,
+   87
+  ],
+  "org_group": null,
+  "org_detector": "ner",
+  "org_canonical": null,
+  "org_shadowed": [
+   "Семёнов Николай Егорович"
+  ],
+  "mech": "compound_ip_fio"
+ },
+ {
+  "doc_id": "loan_0004__m1337_digit_spaces",
+  "start": 265,
+  "end": 289,
+  "value": "Оганесян Гурген Ашотович",
+  "mask_types_max": [
+   "ORG"
+  ],
+  "mask_types_default": [
+   "PER"
+  ],
+  "uncovered_default": 0,
+  "org_text": "Индивидуальный предприниматель Оганесян Гурген Ашотович",
+  "org_span": [
+   234,
+   289
+  ],
+  "org_group": null,
+  "org_detector": "ner",
+  "org_canonical": null,
+  "org_shadowed": [
+   "Оганесян Гурген Ашотович"
+  ],
+  "mech": "compound_ip_fio"
+ },
+ {
+  "doc_id": "loan_0004__m1337_digit_spaces",
+  "start": 2819,
+  "end": 2843,
+  "value": "Семёнов Николай Егорович",
+  "mask_types_max": [
+   "ORG"
+  ],
+  "mask_types_default": [
+   "PER"
+  ],
+  "uncovered_default": 0,
+  "org_text": "Индивидуальный предприниматель Семёнов Николай Егорович",
+  "org_span": [
+   2788,
+   2843
+  ],
+  "org_group": null,
+  "org_detector": "ner",
+  "org_canonical": null,
+  "org_shadowed": [
+   "Семёнов Николай Егорович"
+  ],
+  "mech": "compound_ip_fio"
+ },
+ {
+  "doc_id": "loan_0004__m1337_digit_spaces",
+  "start": 3167,
+  "end": 3191,
+  "value": "Оганесян Гурген Ашотович",
+  "mask_types_max": [
+   "ORG"
+  ],
+  "mask_types_default": [
+   "PER"
+  ],
+  "uncovered_default": 0,
+  "org_text": "Индивидуальный предприниматель Оганесян Гурген Ашотович",
+  "org_span": [
+   3136,
+   3191
+  ],
+  "org_group": null,
+  "org_detector": "ner",
+  "org_canonical": null,
+  "org_shadowed": [
+   "Оганесян Гурген Ашотович"
+  ],
+  "mech": "compound_ip_fio"
+ },
+ {
+  "doc_id": "loan_0004__m2718_combo",
+  "start": 63,
+  "end": 90,
+  "value": "СЕ⁠МЁНOВ НИK­OЛАЙ ‍ЕГОРОВИЧ",
+  "mask_types_max": [
+   "ORG"
+  ],
+  "mask_types_default": [
+   "PER"
+  ],
+  "uncovered_default": 0,
+  "org_text": "ИП СЕ⁠МЁНOВ НИK­OЛАЙ ‍ЕГОРОВИЧ",
+  "org_span": [
+   60,
+   90
+  ],
+  "org_group": null,
+  "org_detector": "ner",
+  "org_canonical": null,
+  "org_shadowed": [
+   "СЕ⁠МЁНOВ НИK­OЛАЙ ‍ЕГОРОВИЧ"
+  ],
+  "mech": "compound_ip_fio"
+ },
+ {
+  "doc_id": "loan_0004__m2718_combo",
+  "start": 2866,
+  "end": 2893,
+  "value": "сЕmЁнО В HиKоЛаЙ Е​ГоРo⁠вИч",
+  "mask_types_max": [
+   "ORG"
+  ],
+  "mask_types_default": [
+   "PER"
+  ],
+  "uncovered_default": 0,
+  "org_text": "Индивидуальный предприниматель сЕmЁнО В HиKоЛаЙ Е​ГоРo⁠вИч",
+  "org_span": [
+   2835,
+   2893
+  ],
+  "org_group": null,
+  "org_detector": "ner",
+  "org_canonical": null,
+  "org_shadowed": [
+   "сЕmЁнО В HиKоЛаЙ Е​ГоРo⁠вИч"
+  ],
+  "mech": "compound_ip_fio"
+ },
+ {
+  "doc_id": "loan_0004__m2718_combo",
+  "start": 3224,
+  "end": 3251,
+  "value": "оГаНеСя­н гУрГeН  aШоТo вИч",
+  "mask_types_max": [
+   "ORG"
+  ],
+  "mask_types_default": [
+   "PER"
+  ],
+  "uncovered_default": 0,
+  "org_text": "Индивидуальный предприниматель оГаНеСя­н гУрГeН  aШоТo вИч",
+  "org_span": [
+   3193,
+   3251
+  ],
+  "org_group": null,
+  "org_detector": "ner",
+  "org_canonical": null,
+  "org_shadowed": [
+   "оГаНеСя­н гУрГeН  aШоТo вИч"
+  ],
+  "mech": "compound_ip_fio"
+ },
+ {
+  "doc_id": "loan_0005",
+  "start": 91,
+  "end": 103,
+  "value": "Кисель Е. П.",
+  "mask_types_max": [
+   "ORG"
+  ],
+  "mask_types_default": [
+   "PER"
+  ],
+  "uncovered_default": 0,
+  "org_text": "Индивидуальный предприниматель Кисель Е. П.",
+  "org_span": [
+   60,
+   103
+  ],
+  "org_group": null,
+  "org_detector": "ner",
+  "org_canonical": null,
+  "org_shadowed": [
+   "Кисель Е. П."
+  ],
+  "mech": "compound_ip_fio"
+ },
+ {
+  "doc_id": "loan_0005",
+  "start": 2662,
+  "end": 2682,
+  "value": "Кисель Егор Петрович",
+  "mask_types_max": [
+   "ORG"
+  ],
+  "mask_types_default": [
+   "PER"
+  ],
+  "uncovered_default": 0,
+  "org_text": "Индивидуальный предприниматель Кисель Егор Петрович",
+  "org_span": [
+   2631,
+   2682
+  ],
+  "org_group": null,
+  "org_detector": "ner",
+  "org_canonical": null,
+  "org_shadowed": [
+   "Кисель Егор Петрович"
+  ],
+  "mech": "compound_ip_fio"
+ },
+ {
+  "doc_id": "loan_0005__m1337_digit_spaces",
+  "start": 91,
+  "end": 103,
+  "value": "Кисель Е. П.",
+  "mask_types_max": [
+   "ORG"
+  ],
+  "mask_types_default": [
+   "PER"
+  ],
+  "uncovered_default": 0,
+  "org_text": "Индивидуальный предприниматель Кисель Е. П.",
+  "org_span": [
+   60,
+   103
+  ],
+  "org_group": null,
+  "org_detector": "ner",
+  "org_canonical": null,
+  "org_shadowed": [
+   "Кисель Е. П."
+  ],
+  "mech": "compound_ip_fio"
+ },
+ {
+  "doc_id": "loan_0005__m1337_digit_spaces",
+  "start": 2669,
+  "end": 2689,
+  "value": "Кисель Егор Петрович",
+  "mask_types_max": [
+   "ORG"
+  ],
+  "mask_types_default": [
+   "PER"
+  ],
+  "uncovered_default": 0,
+  "org_text": "Индивидуальный предприниматель Кисель Егор Петрович",
+  "org_span": [
+   2638,
+   2689
+  ],
+  "org_group": null,
+  "org_detector": "ner",
+  "org_canonical": null,
+  "org_shadowed": [
+   "Кисель Егор Петрович"
+  ],
+  "mech": "compound_ip_fio"
+ },
+ {
+  "doc_id": "loan_0008",
+  "start": 271,
+  "end": 294,
+  "value": "Воробьёв Роман Павлович",
+  "mask_types_max": [
+   "ORG"
+  ],
+  "mask_types_default": [
+   "PER"
+  ],
+  "uncovered_default": 0,
+  "org_text": "ИП Воробьёв Роман Павлович",
+  "org_span": [
+   268,
+   294
+  ],
+  "org_group": null,
+  "org_detector": "ner",
+  "org_canonical": null,
+  "org_shadowed": [
+   "Воробьёв Роман Павлович"
+  ],
+  "mech": "compound_ip_fio"
+ },
+ {
+  "doc_id": "loan_0008",
+  "start": 3162,
+  "end": 3185,
+  "value": "Воробьёв Роман Павлович",
+  "mask_types_max": [
+   "ORG"
+  ],
+  "mask_types_default": [
+   "PER"
+  ],
+  "uncovered_default": 0,
+  "org_text": "Индивидуальный предприниматель Воробьёв Роман Павлович",
+  "org_span": [
+   3131,
+   3185
+  ],
+  "org_group": null,
+  "org_detector": "ner",
+  "org_canonical": null,
+  "org_shadowed": [
+   "Воробьёв Роман Павлович"
+  ],
+  "mech": "compound_ip_fio"
+ },
+ {
+  "doc_id": "loan_0008__m1337_homoglyph",
+  "start": 271,
+  "end": 294,
+  "value": "Воpобьёв Pоман Павлoвич",
+  "mask_types_max": [
+   "ORG"
+  ],
+  "mask_types_default": [
+   "PER"
+  ],
+  "uncovered_default": 0,
+  "org_text": "ИП Воpобьёв Pоман Павлoвич",
+  "org_span": [
+   268,
+   294
+  ],
+  "org_group": null,
+  "org_detector": "ner",
+  "org_canonical": null,
+  "org_shadowed": [
+   "Воpобьёв Pоман Павлoвич"
+  ],
+  "mech": "compound_ip_fio"
+ },
+ {
+  "doc_id": "loan_0008__m1337_homoglyph",
+  "start": 3162,
+  "end": 3185,
+  "value": "Воpобьёв Рomaн Павлович",
+  "mask_types_max": [
+   "ORG"
+  ],
+  "mask_types_default": [
+   "PER"
+  ],
+  "uncovered_default": 0,
+  "org_text": "Индивидуальный предприниматель Воpобьёв Рomaн Павлович",
+  "org_span": [
+   3131,
+   3185
+  ],
+  "org_group": null,
+  "org_detector": "ner",
+  "org_canonical": null,
+  "org_shadowed": [
+   "Воpобьёв Рomaн Павлович"
+  ],
+  "mech": "compound_ip_fio"
+ },
+ {
+  "doc_id": "loan_0008__m2718_case",
+  "start": 271,
+  "end": 294,
+  "value": "ВОРОБЬЁВ РОМАН ПАВЛОВИЧ",
+  "mask_types_max": [
+   "ORG"
+  ],
+  "mask_types_default": [
+   "PER"
+  ],
+  "uncovered_default": 0,
+  "org_text": "ИП ВОРОБЬЁВ РОМАН ПАВЛОВИЧ",
+  "org_span": [
+   268,
+   294
+  ],
+  "org_group": null,
+  "org_detector": "ner",
+  "org_canonical": null,
+  "org_shadowed": [
+   "ВОРОБЬЁВ РОМАН ПАВЛОВИЧ"
+  ],
+  "mech": "compound_ip_fio"
+ },
+ {
+  "doc_id": "loan_0008__m2718_case",
+  "start": 3162,
+  "end": 3185,
+  "value": "ВОРОБЬЁВ РОМАН ПАВЛОВИЧ",
+  "mask_types_max": [
+   "ORG"
+  ],
+  "mask_types_default": [
+   "PER"
+  ],
+  "uncovered_default": 0,
+  "org_text": "ИНДИВИДУАЛЬНЫЙ ПРЕДПРИНИМАТЕЛЬ ВОРОБЬЁВ РОМАН ПАВЛОВИЧ",
+  "org_span": [
+   3131,
+   3185
+  ],
+  "org_group": null,
+  "org_detector": "ner",
+  "org_canonical": null,
+  "org_shadowed": [
+   "ВОРОБЬЁВ РОМАН ПАВЛОВИЧ"
+  ],
+  "mech": "compound_ip_fio"
+ },
+ {
+  "doc_id": "loan_0010",
+  "start": 64,
+  "end": 97,
+  "value": "Нурмагомедова Хадижат Магомедовна",
+  "mask_types_max": [
+   "ORG"
+  ],
+  "mask_types_default": [
+   "PER"
+  ],
+  "uncovered_default": 0,
+  "org_text": "ИП Нурмагомедова Хадижат Магомедовна",
+  "org_span": [
+   61,
+   97
+  ],
+  "org_group": null,
+  "org_detector": "ner",
+  "org_canonical": null,
+  "org_shadowed": [
+   "Нурмагомедова Хадижат Магомедовна"
+  ],
+  "mech": "compound_ip_fio"
+ },
+ {
+  "doc_id": "loan_0010",
+  "start": 274,
+  "end": 288,
+  "value": "Воробьёв И. Е.",
+  "mask_types_max": [
+   "ORG"
+  ],
+  "mask_types_default": [
+   "PER"
+  ],
+  "uncovered_default": 0,
+  "org_text": "Индивидуальный предприниматель Воробьёв И. Е.",
+  "org_span": [
+   243,
+   288
+  ],
+  "org_group": null,
+  "org_detector": "ner",
+  "org_canonical": null,
+  "org_shadowed": [
+   "Воробьёв И. Е."
+  ],
+  "mech": "compound_ip_fio"
+ },
+ {
+  "doc_id": "loan_0010",
+  "start": 4767,
+  "end": 4800,
+  "value": "Нурмагомедова Хадижат Магомедовна",
+  "mask_types_max": [
+   "ORG"
+  ],
+  "mask_types_default": [
+   "PER"
+  ],
+  "uncovered_default": 0,
+  "org_text": "Нурмагомедова Хадижат Магомедовна\nИндивидуальный предприниматель",
+  "org_span": [
+   4767,
+   4831
+  ],
+  "org_group": null,
+  "org_detector": "ner",
+  "org_canonical": null,
+  "org_shadowed": [
+   "Нурмагомедова Хадижат Магомедовна",
+   "Индивидуальный предприниматель Нурмагомедова Хадижат Магомедовна"
+  ],
+  "mech": "compound_ip_fio"
+ },
+ {
+  "doc_id": "loan_0010",
+  "start": 4832,
+  "end": 4865,
+  "value": "Нурмагомедова Хадижат Магомедовна",
+  "mask_types_max": [
+   "ORG"
+  ],
+  "mask_types_default": [
+   "PER"
+  ],
+  "uncovered_default": 0,
+  "org_text": "Нурмагомедова Хадижат Магомедовна",
+  "org_span": [
+   4832,
+   4865
+  ],
+  "org_group": null,
+  "org_detector": "ner",
+  "org_canonical": null,
+  "org_shadowed": [
+   "Нурмагомедова Хадижат Магомедовна"
+  ],
+  "mech": "compound_ip_fio"
+ },
+ {
+  "doc_id": "loan_0010",
+  "start": 5237,
+  "end": 5259,
+  "value": "Воробьёв Иван Егорович",
+  "mask_types_max": [
+   "ORG"
+  ],
+  "mask_types_default": [
+   "PER"
+  ],
+  "uncovered_default": 0,
+  "org_text": "Индивидуальный предприниматель Воробьёв Иван Егорович",
+  "org_span": [
+   5206,
+   5259
+  ],
+  "org_group": null,
+  "org_detector": "ner",
+  "org_canonical": null,
+  "org_shadowed": [
+   "Воробьёв Иван Егорович"
+  ],
+  "mech": "compound_ip_fio"
+ },
+ {
+  "doc_id": "loan_0010__m1337_case",
+  "start": 64,
+  "end": 97,
+  "value": "нУрМаГоМеДоВа хАдИжАт мАгОмЕдОвНа",
+  "mask_types_max": [
+   "ORG"
+  ],
+  "mask_types_default": [
+   "PER"
+  ],
+  "uncovered_default": 0,
+  "org_text": "ИП нУрМаГоМеДоВа хАдИжАт мАгОмЕдОвНа",
+  "org_span": [
+   61,
+   97
+  ],
+  "org_group": null,
+  "org_detector": "ner",
+  "org_canonical": null,
+  "org_shadowed": [
+   "нУрМаГоМеДоВа хАдИжАт мАгОмЕдОвНа"
+  ],
+  "mech": "compound_ip_fio"
+ },
+ {
+  "doc_id": "loan_0010__m1337_case",
+  "start": 4767,
+  "end": 4800,
+  "value": "нурмагомедова хадижат магомедовна",
+  "mask_types_max": [
+   "ORG"
+  ],
+  "mask_types_default": [
+   "PER"
+  ],
+  "uncovered_default": 0,
+  "org_text": "нурмагомедова хадижат магомедовна\nИндивидуальный предприниматель",
+  "org_span": [
+   4767,
+   4831
+  ],
+  "org_group": null,
+  "org_detector": "ner",
+  "org_canonical": null,
+  "org_shadowed": [
+   "нурмагомедова хадижат магомедовна",
+   "Индивидуальный предприниматель НУРМАГОМЕДОВА ХАДИЖАТ МАГОМЕДОВНА"
+  ],
+  "mech": "compound_ip_fio"
+ },
+ {
+  "doc_id": "loan_0010__m1337_case",
+  "start": 4832,
+  "end": 4865,
+  "value": "НУРМАГОМЕДОВА ХАДИЖАТ МАГОМЕДОВНА",
+  "mask_types_max": [
+   "ORG"
+  ],
+  "mask_types_default": [
+   "PER"
+  ],
+  "uncovered_default": 0,
+  "org_text": "НУРМАГОМЕДОВА ХАДИЖАТ МАГОМЕДОВНА",
+  "org_span": [
+   4832,
+   4865
+  ],
+  "org_group": null,
+  "org_detector": "ner",
+  "org_canonical": null,
+  "org_shadowed": [
+   "НУРМАГОМЕДОВА ХАДИЖАТ МАГОМЕДОВНА"
+  ],
+  "mech": "compound_ip_fio"
+ },
+ {
+  "doc_id": "loan_0010__m1337_case",
+  "start": 5237,
+  "end": 5259,
+  "value": "ВОРОБЬЁВ ИВАН ЕГОРОВИЧ",
+  "mask_types_max": [
+   "ORG"
+  ],
+  "mask_types_default": [
+   "PER"
+  ],
+  "uncovered_default": 0,
+  "org_text": "Индивидуальный предприниматель ВОРОБЬЁВ ИВАН ЕГОРОВИЧ",
+  "org_span": [
+   5206,
+   5259
+  ],
+  "org_group": null,
+  "org_detector": "ner",
+  "org_canonical": null,
+  "org_shadowed": [
+   "ВОРОБЬЁВ ИВАН ЕГОРОВИЧ"
+  ],
+  "mech": "compound_ip_fio"
+ },
+ {
+  "doc_id": "loan_0010__m2718_linebreak",
+  "start": 5278,
+  "end": 5301,
+  "value": "Воробьёв \nИван Егорович",
+  "mask_types_max": [
+   "ORG"
+  ],
+  "mask_types_default": [
+   "PER"
+  ],
+  "uncovered_default": 0,
+  "org_text": "Индивидуальный предприниматель Воробьёв \nИван Егорович",
+  "org_span": [
+   5247,
+   5301
+  ],
+  "org_group": null,
+  "org_detector": "ner",
+  "org_canonical": null,
+  "org_shadowed": [
+   "Воробьёв \nИван Егорович"
+  ],
+  "mech": "compound_ip_fio"
+ },
+ {
+  "doc_id": "sale_0001",
+  "start": 106,
+  "end": 121,
+  "value": "Максимова А. М.",
+  "mask_types_max": [
+   "ORG"
+  ],
+  "mask_types_default": [
+   "PER"
+  ],
+  "uncovered_default": 0,
+  "org_text": "Индивидуальный предприниматель Максимова А. М.",
+  "org_span": [
+   75,
+   121
+  ],
+  "org_group": null,
+  "org_detector": "ner",
+  "org_canonical": null,
+  "org_shadowed": [
+   "Максимова А. М."
+  ],
+  "mech": "compound_ip_fio"
+ },
+ {
+  "doc_id": "sale_0001",
+  "start": 2648,
+  "end": 2673,
+  "value": "Максимова Анна Михайловна",
+  "mask_types_max": [
+   "ORG"
+  ],
+  "mask_types_default": [
+   "PER"
+  ],
+  "uncovered_default": 0,
+  "org_text": "Индивидуальный предприниматель Максимова Анна Михайловна",
+  "org_span": [
+   2617,
+   2673
+  ],
+  "org_group": null,
+  "org_detector": "ner",
+  "org_canonical": null,
+  "org_shadowed": [
+   "Максимова Анна Михайловна"
+  ],
+  "mech": "compound_ip_fio"
+ },
+ {
+  "doc_id": "sale_0001__m1337_digit_spaces",
+  "start": 106,
+  "end": 121,
+  "value": "Максимова А. М.",
+  "mask_types_max": [
+   "ORG"
+  ],
+  "mask_types_default": [
+   "PER"
+  ],
+  "uncovered_default": 0,
+  "org_text": "Индивидуальный предприниматель Максимова А. М.",
+  "org_span": [
+   75,
+   121
+  ],
+  "org_group": null,
+  "org_detector": "ner",
+  "org_canonical": null,
+  "org_shadowed": [
+   "Максимова А. М."
+  ],
+  "mech": "compound_ip_fio"
+ },
+ {
+  "doc_id": "sale_0001__m1337_digit_spaces",
+  "start": 2655,
+  "end": 2680,
+  "value": "Максимова Анна Михайловна",
+  "mask_types_max": [
+   "ORG"
+  ],
+  "mask_types_default": [
+   "PER"
+  ],
+  "uncovered_default": 0,
+  "org_text": "Индивидуальный предприниматель Максимова Анна Михайловна",
+  "org_span": [
+   2624,
+   2680
+  ],
+  "org_group": null,
+  "org_detector": "ner",
+  "org_canonical": null,
+  "org_shadowed": [
+   "Максимова Анна Михайловна"
+  ],
+  "mech": "compound_ip_fio"
+ },
+ {
+  "doc_id": "sale_0004",
+  "start": 258,
+  "end": 279,
+  "value": "Иванова-Петрова А. Ю.",
+  "mask_types_max": [
+   "ORG"
+  ],
+  "mask_types_default": [
+   "PER"
+  ],
+  "uncovered_default": 0,
+  "org_text": "ИП Иванова-Петрова А. Ю.",
+  "org_span": [
+   255,
+   279
+  ],
+  "org_group": null,
+  "org_detector": "ner",
+  "org_canonical": null,
+  "org_shadowed": [
+   "Иванова-Петрова А. Ю."
+  ],
+  "mech": "compound_ip_fio"
+ },
+ {
+  "doc_id": "sale_0004",
+  "start": 2995,
+  "end": 3023,
+  "value": "Иванова-Петрова Алла Юрьевна",
+  "mask_types_max": [
+   "ORG"
+  ],
+  "mask_types_default": [
+   "PER"
+  ],
+  "uncovered_default": 0,
+  "org_text": "Индивидуальный предприниматель Иванова-Петрова Алла Юрьевна",
+  "org_span": [
+   2964,
+   3023
+  ],
+  "org_group": null,
+  "org_detector": "ner",
+  "org_canonical": null,
+  "org_shadowed": [
+   "Иванова-Петрова Алла Юрьевна"
+  ],
+  "mech": "compound_ip_fio"
+ },
+ {
+  "doc_id": "sale_0004__m1337_cell_split",
+  "start": 258,
+  "end": 279,
+  "value": "Иванова-Петрова А. Ю.",
+  "mask_types_max": [
+   "ORG"
+  ],
+  "mask_types_default": [
+   "PER"
+  ],
+  "uncovered_default": 0,
+  "org_text": "ИП Иванова-Петрова А. Ю.",
+  "org_span": [
+   255,
+   279
+  ],
+  "org_group": null,
+  "org_detector": "ner",
+  "org_canonical": null,
+  "org_shadowed": [
+   "Иванова-Петрова А. Ю."
+  ],
+  "mech": "compound_ip_fio"
+ },
+ {
+  "doc_id": "sale_0004__m1337_cell_split",
+  "start": 2995,
+  "end": 3023,
+  "value": "Иванова-Петрова Алла Юрьевна",
+  "mask_types_max": [
+   "ORG"
+  ],
+  "mask_types_default": [
+   "PER"
+  ],
+  "uncovered_default": 0,
+  "org_text": "Индивидуальный предприниматель Иванова-Петрова Алла Юрьевна",
+  "org_span": [
+   2964,
+   3023
+  ],
+  "org_group": null,
+  "org_detector": "ner",
+  "org_canonical": null,
+  "org_shadowed": [
+   "Иванова-Петрова Алла Юрьевна"
+  ],
+  "mech": "compound_ip_fio"
+ },
+ {
+  "doc_id": "sale_0004__m2718_invisible",
+  "start": 273,
+  "end": 297,
+  "value": "И ванова-Пе­трова А. Ю­.",
+  "mask_types_max": [
+   "ORG"
+  ],
+  "mask_types_default": [
+   "PER"
+  ],
+  "uncovered_default": 0,
+  "org_text": "ИП И ванова-Пе­трова А. Ю­.",
+  "org_span": [
+   270,
+   297
+  ],
+  "org_group": null,
+  "org_detector": "ner",
+  "org_canonical": null,
+  "org_shadowed": [
+   "И ванова-Пе­трова А. Ю­."
+  ],
+  "mech": "compound_ip_fio"
+ },
+ {
+  "doc_id": "sale_0004__m2718_invisible",
+  "start": 3078,
+  "end": 3109,
+  "value": "Иванова-Петрова Алла​  Юрь​евна",
+  "mask_types_max": [
+   "ORG"
+  ],
+  "mask_types_default": [
+   "PER"
+  ],
+  "uncovered_default": 0,
+  "org_text": "Индивидуальный предприниматель Иванова-Петрова Алла​  Юрь​евна",
+  "org_span": [
+   3047,
+   3109
+  ],
+  "org_group": null,
+  "org_detector": "ner",
+  "org_canonical": null,
+  "org_shadowed": [
+   "Иванова-Петрова Алла​  Юрь​евна"
+  ],
+  "mech": "compound_ip_fio"
+ },
+ {
+  "doc_id": "sale_0006",
+  "start": 71,
+  "end": 85,
+  "value": "Лебедева О. П.",
+  "mask_types_max": [
+   "ORG"
+  ],
+  "mask_types_default": [
+   "PER"
+  ],
+  "uncovered_default": 0,
+  "org_text": "ИП Лебедева О. П.",
+  "org_span": [
+   68,
+   85
+  ],
+  "org_group": null,
+  "org_detector": "ner",
+  "org_canonical": null,
+  "org_shadowed": [
+   "Лебедева О. П."
+  ],
+  "mech": "compound_ip_fio"
+ },
+ {
+  "doc_id": "sale_0006",
+  "start": 260,
+  "end": 272,
+  "value": "Волков В. С.",
+  "mask_types_max": [
+   "ORG"
+  ],
+  "mask_types_default": [
+   "PER"
+  ],
+  "uncovered_default": 0,
+  "org_text": "Индивидуальный предприниматель Волков В. С.",
+  "org_span": [
+   229,
+   272
+  ],
+  "org_group": null,
+  "org_detector": "ner",
+  "org_canonical": null,
+  "org_shadowed": [
+   "Волков В. С."
+  ],
+  "mech": "compound_ip_fio"
+ },
+ {
+  "doc_id": "sale_0006",
+  "start": 2621,
+  "end": 2644,
+  "value": "Лебедева Ольга Павловна",
+  "mask_types_max": [
+   "ORG"
+  ],
+  "mask_types_default": [
+   "PER"
+  ],
+  "uncovered_default": 0,
+  "org_text": "Лебедева Ольга Павловна\nИндивидуальный предприниматель",
+  "org_span": [
+   2621,
+   2675
+  ],
+  "org_group": null,
+  "org_detector": "ner",
+  "org_canonical": null,
+  "org_shadowed": [
+   "Лебедева Ольга Павловна",
+   "Индивидуальный предприниматель Лебедева Ольга Павловна"
+  ],
+  "mech": "compound_ip_fio"
+ },
+ {
+  "doc_id": "sale_0006",
+  "start": 2676,
+  "end": 2699,
+  "value": "Лебедева Ольга Павловна",
+  "mask_types_max": [
+   "ORG"
+  ],
+  "mask_types_default": [
+   "PER"
+  ],
+  "uncovered_default": 0,
+  "org_text": "Лебедева Ольга Павловна",
+  "org_span": [
+   2676,
+   2699
+  ],
+  "org_group": null,
+  "org_detector": "ner",
+  "org_canonical": null,
+  "org_shadowed": [
+   "Лебедева Ольга Павловна"
+  ],
+  "mech": "compound_ip_fio"
+ },
+ {
+  "doc_id": "sale_0006",
+  "start": 3025,
+  "end": 3050,
+  "value": "Волков Владимир Сергеевич",
+  "mask_types_max": [
+   "ORG"
+  ],
+  "mask_types_default": [
+   "PER"
+  ],
+  "uncovered_default": 0,
+  "org_text": "Индивидуальный предприниматель Волков Владимир Сергеевич",
+  "org_span": [
+   2994,
+   3050
+  ],
+  "org_group": null,
+  "org_detector": "ner",
+  "org_canonical": null,
+  "org_shadowed": [
+   "Волков Владимир Сергеевич"
+  ],
+  "mech": "compound_ip_fio"
+ },
+ {
+  "doc_id": "sale_0006__m1337_invisible",
+  "start": 75,
+  "end": 91,
+  "value": "Ле​беде ва О. П.",
+  "mask_types_max": [
+   "ORG"
+  ],
+  "mask_types_default": [
+   "PER"
+  ],
+  "uncovered_default": 0,
+  "org_text": "ИП Ле​беде ва О. П.",
+  "org_span": [
+   72,
+   91
+  ],
+  "org_group": null,
+  "org_detector": "ner",
+  "org_canonical": null,
+  "org_shadowed": [
+   "Ле​беде ва О. П."
+  ],
+  "mech": "compound_ip_fio"
+ },
+ {
+  "doc_id": "sale_0006__m1337_invisible",
+  "start": 268,
+  "end": 282,
+  "value": "Волко‍в В­. С.",
+  "mask_types_max": [
+   "ORG"
+  ],
+  "mask_types_default": [
+   "PER"
+  ],
+  "uncovered_default": 0,
+  "org_text": "Индивидуальный предприниматель Волко‍в В­. С.",
+  "org_span": [
+   237,
+   282
+  ],
+  "org_group": null,
+  "org_detector": "ner",
+  "org_canonical": null,
+  "org_shadowed": [
+   "Волко‍в В­. С."
+  ],
+  "mech": "compound_ip_fio"
+ },
+ {
+  "doc_id": "sale_0006__m1337_invisible",
+  "start": 2662,
+  "end": 2688,
+  "value": "Ле‍б ед ева Ольга Павловна",
+  "mask_types_max": [
+   "ORG"
+  ],
+  "mask_types_default": [
+   "PER"
+  ],
+  "uncovered_default": 0,
+  "org_text": "Ле‍б ед ева Ольга Павловна\nИндивидуальный предприниматель",
+  "org_span": [
+   2662,
+   2719
+  ],
+  "org_group": null,
+  "org_detector": "ner",
+  "org_canonical": null,
+  "org_shadowed": [
+   "Ле‍б ед ева Ольга Павловна",
+   "Индивидуальный предприниматель Лебедева ‍Оль га Павл​овна"
+  ],
+  "mech": "compound_ip_fio"
+ },
+ {
+  "doc_id": "sale_0006__m1337_invisible",
+  "start": 2720,
+  "end": 2746,
+  "value": "Лебедева ‍Оль га Павл​овна",
+  "mask_types_max": [
+   "ORG"
+  ],
+  "mask_types_default": [
+   "PER"
+  ],
+  "uncovered_default": 0,
+  "org_text": "Лебедева ‍Оль га Павл​овна",
+  "org_span": [
+   2720,
+   2746
+  ],
+  "org_group": null,
+  "org_detector": "ner",
+  "org_canonical": null,
+  "org_shadowed": [
+   "Лебедева ‍Оль га Павл​овна"
+  ],
+  "mech": "compound_ip_fio"
+ },
+ {
+  "doc_id": "sale_0006__m1337_invisible",
+  "start": 3096,
+  "end": 3124,
+  "value": "Волков Вла­димир Се­ргее‍вич",
+  "mask_types_max": [
+   "ORG"
+  ],
+  "mask_types_default": [
+   "PER"
+  ],
+  "uncovered_default": 0,
+  "org_text": "Индивидуальный предприниматель Волков Вла­димир Се­ргее‍вич",
+  "org_span": [
+   3065,
+   3124
+  ],
+  "org_group": null,
+  "org_detector": "ner",
+  "org_canonical": null,
+  "org_shadowed": [
+   "Волков Вла­димир Се­ргее‍вич"
+  ],
+  "mech": "compound_ip_fio"
+ },
+ {
+  "doc_id": "sale_0006__m2718_digit_spaces",
+  "start": 73,
+  "end": 87,
+  "value": "Лебедева О. П.",
+  "mask_types_max": [
+   "ORG"
+  ],
+  "mask_types_default": [
+   "PER"
+  ],
+  "uncovered_default": 0,
+  "org_text": "ИП Лебедева О. П.",
+  "org_span": [
+   70,
+   87
+  ],
+  "org_group": null,
+  "org_detector": "ner",
+  "org_canonical": null,
+  "org_shadowed": [
+   "Лебедева О. П."
+  ],
+  "mech": "compound_ip_fio"
+ },
+ {
+  "doc_id": "sale_0006__m2718_digit_spaces",
+  "start": 265,
+  "end": 277,
+  "value": "Волков В. С.",
+  "mask_types_max": [
+   "ORG"
+  ],
+  "mask_types_default": [
+   "PER"
+  ],
+  "uncovered_default": 0,
+  "org_text": "Индивидуальный предприниматель Волков В. С.",
+  "org_span": [
+   234,
+   277
+  ],
+  "org_group": null,
+  "org_detector": "ner",
+  "org_canonical": null,
+  "org_shadowed": [
+   "Волков В. С."
+  ],
+  "mech": "compound_ip_fio"
+ },
+ {
+  "doc_id": "sale_0006__m2718_digit_spaces",
+  "start": 2636,
+  "end": 2659,
+  "value": "Лебедева Ольга Павловна",
+  "mask_types_max": [
+   "ORG"
+  ],
+  "mask_types_default": [
+   "PER"
+  ],
+  "uncovered_default": 0,
+  "org_text": "Лебедева Ольга Павловна\nИндивидуальный предприниматель",
+  "org_span": [
+   2636,
+   2690
+  ],
+  "org_group": null,
+  "org_detector": "ner",
+  "org_canonical": null,
+  "org_shadowed": [
+   "Лебедева Ольга Павловна",
+   "Индивидуальный предприниматель Лебедева Ольга Павловна"
+  ],
+  "mech": "compound_ip_fio"
+ },
+ {
+  "doc_id": "sale_0006__m2718_digit_spaces",
+  "start": 2691,
+  "end": 2714,
+  "value": "Лебедева Ольга Павловна",
+  "mask_types_max": [
+   "ORG"
+  ],
+  "mask_types_default": [
+   "PER"
+  ],
+  "uncovered_default": 0,
+  "org_text": "Лебедева Ольга Павловна",
+  "org_span": [
+   2691,
+   2714
+  ],
+  "org_group": null,
+  "org_detector": "ner",
+  "org_canonical": null,
+  "org_shadowed": [
+   "Лебедева Ольга Павловна"
+  ],
+  "mech": "compound_ip_fio"
+ },
+ {
+  "doc_id": "sale_0006__m2718_digit_spaces",
+  "start": 3053,
+  "end": 3078,
+  "value": "Волков Владимир Сергеевич",
+  "mask_types_max": [
+   "ORG"
+  ],
+  "mask_types_default": [
+   "PER"
+  ],
+  "uncovered_default": 0,
+  "org_text": "Индивидуальный предприниматель Волков Владимир Сергеевич",
+  "org_span": [
+   3022,
+   3078
+  ],
+  "org_group": null,
+  "org_detector": "ner",
+  "org_canonical": null,
+  "org_shadowed": [
+   "Волков Владимир Сергеевич"
+  ],
+  "mech": "compound_ip_fio"
+ },
+ {
+  "doc_id": "sale_0007",
+  "start": 78,
+  "end": 89,
+  "value": "Белов Ю. А.",
+  "mask_types_max": [
+   "ORG"
+  ],
+  "mask_types_default": [
+   "PER"
+  ],
+  "uncovered_default": 0,
+  "org_text": "ИП Белов Ю. А.",
+  "org_span": [
+   75,
+   89
+  ],
+  "org_group": null,
+  "org_detector": "ner",
+  "org_canonical": null,
+  "org_shadowed": [
+   "Белов Ю. А."
+  ],
+  "mech": "compound_ip_fio"
+ },
+ {
+  "doc_id": "sale_0007",
+  "start": 2705,
+  "end": 2726,
+  "value": "Белов Юрий Алексеевич",
+  "mask_types_max": [
+   "ORG"
+  ],
+  "mask_types_default": [
+   "PER"
+  ],
+  "uncovered_default": 0,
+  "org_text": "Индивидуальный предприниматель Белов Юрий Алексеевич",
+  "org_span": [
+   2674,
+   2726
+  ],
+  "org_group": null,
+  "org_detector": "ner",
+  "org_canonical": null,
+  "org_shadowed": [
+   "Белов Юрий Алексеевич"
+  ],
+  "mech": "compound_ip_fio"
+ },
+ {
+  "doc_id": "sale_0007__m1337_digit_spaces",
+  "start": 78,
+  "end": 89,
+  "value": "Белов Ю. А.",
+  "mask_types_max": [
+   "ORG"
+  ],
+  "mask_types_default": [
+   "PER"
+  ],
+  "uncovered_default": 0,
+  "org_text": "ИП Белов Ю. А.",
+  "org_span": [
+   75,
+   89
+  ],
+  "org_group": null,
+  "org_detector": "ner",
+  "org_canonical": null,
+  "org_shadowed": [
+   "Белов Ю. А."
+  ],
+  "mech": "compound_ip_fio"
+ },
+ {
+  "doc_id": "sale_0007__m1337_digit_spaces",
+  "start": 2713,
+  "end": 2734,
+  "value": "Белов Юрий Алексеевич",
+  "mask_types_max": [
+   "ORG"
+  ],
+  "mask_types_default": [
+   "PER"
+  ],
+  "uncovered_default": 0,
+  "org_text": "Индивидуальный предприниматель Белов Юрий Алексеевич",
+  "org_span": [
+   2682,
+   2734
+  ],
+  "org_group": null,
+  "org_detector": "ner",
+  "org_canonical": null,
+  "org_shadowed": [
+   "Белов Юрий Алексеевич"
+  ],
+  "mech": "compound_ip_fio"
+ },
+ {
+  "doc_id": "sale_0010",
+  "start": 254,
+  "end": 282,
+  "value": "Иванова-Петрова Алла Юрьевна",
+  "mask_types_max": [
+   "ORG"
+  ],
+  "mask_types_default": [
+   "PER"
+  ],
+  "uncovered_default": 0,
+  "org_text": "Индивидуальный предприниматель Иванова-Петрова Алла Юрьевна",
+  "org_span": [
+   223,
+   282
+  ],
+  "org_group": null,
+  "org_detector": "ner",
+  "org_canonical": null,
+  "org_shadowed": [
+   "Иванова-Петрова Алла Юрьевна"
+  ],
+  "mech": "compound_ip_fio"
+ },
+ {
+  "doc_id": "sale_0010",
+  "start": 3130,
+  "end": 3158,
+  "value": "Иванова-Петрова Алла Юрьевна",
+  "mask_types_max": [
+   "ORG"
+  ],
+  "mask_types_default": [
+   "PER"
+  ],
+  "uncovered_default": 0,
+  "org_text": "Индивидуальный предприниматель Иванова-Петрова Алла Юрьевна",
+  "org_span": [
+   3099,
+   3158
+  ],
+  "org_group": null,
+  "org_detector": "ner",
+  "org_canonical": null,
+  "org_shadowed": [
+   "Иванова-Петрова Алла Юрьевна"
+  ],
+  "mech": "compound_ip_fio"
+ },
+ {
+  "doc_id": "sale_0010__m1337_combo",
+  "start": 259,
+  "end": 290,
+  "value": "иВаНоВа-пЕтРoВа а лЛа юР​ЬеВ⁠Нa",
+  "mask_types_max": [
+   "ORG"
+  ],
+  "mask_types_default": [
+   "PER"
+  ],
+  "uncovered_default": 0,
+  "org_text": "Индивидуальный предприниматель иВаНоВа-пЕтРoВа а лЛа юР​ЬеВ⁠Нa",
+  "org_span": [
+   228,
+   290
+  ],
+  "org_group": null,
+  "org_detector": "ner",
+  "org_canonical": null,
+  "org_shadowed": [
+   "иВаНоВа-пЕтРoВа а лЛа юР​ЬеВ⁠Нa"
+  ],
+  "mech": "compound_ip_fio"
+ },
+ {
+  "doc_id": "sale_0010__m1337_combo",
+  "start": 3211,
+  "end": 3242,
+  "value": "иванoва-пeтровa   аллa юрь­евна",
+  "mask_types_max": [
+   "ORG"
+  ],
+  "mask_types_default": [
+   "PER"
+  ],
+  "uncovered_default": 0,
+  "org_text": "Индивидуальный предприниматель иванoва-пeтровa   аллa юрь­евна",
+  "org_span": [
+   3180,
+   3242
+  ],
+  "org_group": null,
+  "org_detector": "ner",
+  "org_canonical": null,
+  "org_shadowed": [
+   "иванoва-пeтровa   аллa юрь­евна"
+  ],
+  "mech": "compound_ip_fio"
+ },
+ {
+  "doc_id": "sale_0010__m2718_homoglyph",
+  "start": 254,
+  "end": 282,
+  "value": "Ивановa-Пeтрова Aллa Юрьевна",
+  "mask_types_max": [
+   "ORG"
+  ],
+  "mask_types_default": [
+   "PER"
+  ],
+  "uncovered_default": 0,
+  "org_text": "Индивидуальный предприниматель Ивановa-Пeтрова Aллa Юрьевна",
+  "org_span": [
+   223,
+   282
+  ],
+  "org_group": null,
+  "org_detector": "ner",
+  "org_canonical": null,
+  "org_shadowed": [
+   "Ивановa-Пeтрова Aллa Юрьевна"
+  ],
+  "mech": "compound_ip_fio"
+ },
+ {
+  "doc_id": "sale_0010__m2718_homoglyph",
+  "start": 3130,
+  "end": 3158,
+  "value": "Ивaнoва-Петpoва Алла Юрьевна",
+  "mask_types_max": [
+   "ORG"
+  ],
+  "mask_types_default": [
+   "PER"
+  ],
+  "uncovered_default": 0,
+  "org_text": "Индивидуальный предприниматель Ивaнoва-Петpoва Алла Юрьевна",
+  "org_span": [
+   3099,
+   3158
+  ],
+  "org_group": null,
+  "org_detector": "ner",
+  "org_canonical": null,
+  "org_shadowed": [
+   "Ивaнoва-Петpoва Алла Юрьевна"
+  ],
+  "mech": "compound_ip_fio"
+ },
+ {
+  "doc_id": "sale_0012",
+  "start": 102,
+  "end": 115,
+  "value": "Сидоров Д. В.",
+  "mask_types_max": [
+   "ORG"
+  ],
+  "mask_types_default": [
+   "PER"
+  ],
+  "uncovered_default": 0,
+  "org_text": "Индивидуальный предприниматель Сидоров Д. В.",
+  "org_span": [
+   71,
+   115
+  ],
+  "org_group": null,
+  "org_detector": "ner",
+  "org_canonical": null,
+  "org_shadowed": [
+   "Сидоров Д. В."
+  ],
+  "mech": "compound_ip_fio"
+ },
+ {
+  "doc_id": "sale_0012",
+  "start": 290,
+  "end": 303,
+  "value": "Смирнов И. П.",
+  "mask_types_max": [
+   "ORG"
+  ],
+  "mask_types_default": [
+   "PER"
+  ],
+  "uncovered_default": 0,
+  "org_text": "Индивидуальный предприниматель Смирнов И. П.",
+  "org_span": [
+   259,
+   303
+  ],
+  "org_group": null,
+  "org_detector": "ner",
+  "org_canonical": null,
+  "org_shadowed": [
+   "Смирнов И. П."
+  ],
+  "mech": "compound_ip_fio"
+ },
+ {
+  "doc_id": "sale_0012",
+  "start": 4881,
+  "end": 4909,
+  "value": "Сидоров Дмитрий Владимирович",
+  "mask_types_max": [
+   "ORG"
+  ],
+  "mask_types_default": [
+   "PER"
+  ],
+  "uncovered_default": 0,
+  "org_text": "Индивидуальный предприниматель Сидоров Дмитрий Владимирович",
+  "org_span": [
+   4850,
+   4909
+  ],
+  "org_group": null,
+  "org_detector": "ner",
+  "org_canonical": null,
+  "org_shadowed": [
+   "Сидоров Дмитрий Владимирович"
+  ],
+  "mech": "compound_ip_fio"
+ },
+ {
+  "doc_id": "sale_0012",
+  "start": 5189,
+  "end": 5210,
+  "value": "Смирнов Иван Павлович",
+  "mask_types_max": [
+   "ORG"
+  ],
+  "mask_types_default": [
+   "PER"
+  ],
+  "uncovered_default": 0,
+  "org_text": "Индивидуальный предприниматель Смирнов Иван Павлович",
+  "org_span": [
+   5158,
+   5210
+  ],
+  "org_group": null,
+  "org_detector": "ner",
+  "org_canonical": null,
+  "org_shadowed": [
+   "Смирнов Иван Павлович"
+  ],
+  "mech": "compound_ip_fio"
+ },
+ {
+  "doc_id": "sale_0012__m1337_homoglyph",
+  "start": 290,
+  "end": 303,
+  "value": "Сmирнов И. П.",
+  "mask_types_max": [
+   "ORG"
+  ],
+  "mask_types_default": [
+   "PER"
+  ],
+  "uncovered_default": 0,
+  "org_text": "Индивидуальный предприниматель Сmирнов И. П.",
+  "org_span": [
+   259,
+   303
+  ],
+  "org_group": null,
+  "org_detector": "ner",
+  "org_canonical": null,
+  "org_shadowed": [
+   "Сmирнов И. П."
+  ],
+  "mech": "compound_ip_fio"
+ },
+ {
+  "doc_id": "sale_0012__m1337_homoglyph",
+  "start": 4881,
+  "end": 4909,
+  "value": "Cидоpoв Дmитрий Владимирович",
+  "mask_types_max": [
+   "ORG"
+  ],
+  "mask_types_default": [
+   "PER"
+  ],
+  "uncovered_default": 0,
+  "org_text": "Индивидуальный предприниматель Cидоpoв Дmитрий Владимирович",
+  "org_span": [
+   4850,
+   4909
+  ],
+  "org_group": null,
+  "org_detector": "ner",
+  "org_canonical": null,
+  "org_shadowed": [
+   "Cидоpoв Дmитрий Владимирович"
+  ],
+  "mech": "compound_ip_fio"
+ },
+ {
+  "doc_id": "sale_0012__m1337_homoglyph",
+  "start": 5189,
+  "end": 5210,
+  "value": "Cmиpнoв Иван Павлович",
+  "mask_types_max": [
+   "ORG"
+  ],
+  "mask_types_default": [
+   "PER"
+  ],
+  "uncovered_default": 0,
+  "org_text": "Индивидуальный предприниматель Cmиpнoв Иван Павлович",
+  "org_span": [
+   5158,
+   5210
+  ],
+  "org_group": null,
+  "org_detector": "ner",
+  "org_canonical": null,
+  "org_shadowed": [
+   "Cmиpнoв Иван Павлович"
+  ],
+  "mech": "compound_ip_fio"
+ },
+ {
+  "doc_id": "sale_0012__m2718_case",
+  "start": 102,
+  "end": 115,
+  "value": "СИДОРОВ Д. В.",
+  "mask_types_max": [
+   "ORG"
+  ],
+  "mask_types_default": [
+   "PER"
+  ],
+  "uncovered_default": 0,
+  "org_text": "Индивидуальный предприниматель СИДОРОВ Д. В.",
+  "org_span": [
+   71,
+   115
+  ],
+  "org_group": null,
+  "org_detector": "ner",
+  "org_canonical": null,
+  "org_shadowed": [
+   "СИДОРОВ Д. В."
+  ],
+  "mech": "compound_ip_fio"
+ },
+ {
+  "doc_id": "sale_0012__m2718_case",
+  "start": 4881,
+  "end": 4909,
+  "value": "сИдОрОв дМиТрИй вЛаДиМиРоВиЧ",
+  "mask_types_max": [
+   "ORG"
+  ],
+  "mask_types_default": [
+   "PER"
+  ],
+  "uncovered_default": 0,
+  "org_text": "Индивидуальный предприниматель сИдОрОв дМиТрИй вЛаДиМиРоВиЧ",
+  "org_span": [
+   4850,
+   4909
+  ],
+  "org_group": null,
+  "org_detector": "ner",
+  "org_canonical": null,
+  "org_shadowed": [
+   "сИдОрОв дМиТрИй вЛаДиМиРоВиЧ"
+  ],
+  "mech": "compound_ip_fio"
+ },
+ {
+  "doc_id": "sale_0012__m2718_case",
+  "start": 5189,
+  "end": 5210,
+  "value": "СМИРНОВ ИВАН ПАВЛОВИЧ",
+  "mask_types_max": [
+   "ORG"
+  ],
+  "mask_types_default": [
+   "PER"
+  ],
+  "uncovered_default": 0,
+  "org_text": "Индивидуальный предприниматель СМИРНОВ ИВАН ПАВЛОВИЧ",
+  "org_span": [
+   5158,
+   5210
+  ],
+  "org_group": null,
+  "org_detector": "ner",
+  "org_canonical": null,
+  "org_shadowed": [
+   "СМИРНОВ ИВАН ПАВЛОВИЧ"
+  ],
+  "mech": "compound_ip_fio"
+ },
+ {
+  "doc_id": "sale_0013",
+  "start": 80,
+  "end": 92,
+  "value": "Ершова И. И.",
+  "mask_types_max": [
+   "ORG"
+  ],
+  "mask_types_default": [
+   "PER"
+  ],
+  "uncovered_default": 0,
+  "org_text": "ИП Ершова И. И.",
+  "org_span": [
+   77,
+   92
+  ],
+  "org_group": null,
+  "org_detector": "ner",
+  "org_canonical": null,
+  "org_shadowed": [
+   "Ершова И. И."
+  ],
+  "mech": "compound_ip_fio"
+ },
+ {
+  "doc_id": "sale_0013",
+  "start": 2614,
+  "end": 2635,
+  "value": "Ершова Ирина Ивановна",
+  "mask_types_max": [
+   "ORG"
+  ],
+  "mask_types_default": [
+   "PER"
+  ],
+  "uncovered_default": 0,
+  "org_text": "Индивидуальный предприниматель Ершова Ирина Ивановна",
+  "org_span": [
+   2583,
+   2635
+  ],
+  "org_group": null,
+  "org_detector": "ner",
+  "org_canonical": null,
+  "org_shadowed": [
+   "Ершова Ирина Ивановна"
+  ],
+  "mech": "compound_ip_fio"
+ },
+ {
+  "doc_id": "sale_0013__m1337_digit_spaces",
+  "start": 81,
+  "end": 93,
+  "value": "Ершова И. И.",
+  "mask_types_max": [
+   "ORG"
+  ],
+  "mask_types_default": [
+   "PER"
+  ],
+  "uncovered_default": 0,
+  "org_text": "ИП Ершова И. И.",
+  "org_span": [
+   78,
+   93
+  ],
+  "org_group": null,
+  "org_detector": "ner",
+  "org_canonical": null,
+  "org_shadowed": [
+   "Ершова И. И."
+  ],
+  "mech": "compound_ip_fio"
+ },
+ {
+  "doc_id": "sale_0013__m1337_digit_spaces",
+  "start": 2634,
+  "end": 2655,
+  "value": "Ершова Ирина Ивановна",
+  "mask_types_max": [
+   "ORG"
+  ],
+  "mask_types_default": [
+   "PER"
+  ],
+  "uncovered_default": 0,
+  "org_text": "Индивидуальный предприниматель Ершова Ирина Ивановна",
+  "org_span": [
+   2603,
+   2655
+  ],
+  "org_group": null,
+  "org_detector": "ner",
+  "org_canonical": null,
+  "org_shadowed": [
+   "Ершова Ирина Ивановна"
+  ],
+  "mech": "compound_ip_fio"
+ },
+ {
+  "doc_id": "services_0001",
+  "start": 95,
+  "end": 124,
+  "value": "Никитина Екатерина Николаевна",
+  "mask_types_max": [
+   "ORG"
+  ],
+  "mask_types_default": [
+   "PER"
+  ],
+  "uncovered_default": 0,
+  "org_text": "ИП Никитина Екатерина Николаевна",
+  "org_span": [
+   92,
+   124
+  ],
+  "org_group": null,
+  "org_detector": "ner",
+  "org_canonical": null,
+  "org_shadowed": [
+   "Никитина Екатерина Николаевна"
+  ],
+  "mech": "compound_ip_fio"
+ },
+ {
+  "doc_id": "services_0001",
+  "start": 2579,
+  "end": 2608,
+  "value": "Никитина Екатерина Николаевна",
+  "mask_types_max": [
+   "ORG"
+  ],
+  "mask_types_default": [
+   "PER"
+  ],
+  "uncovered_default": 0,
+  "org_text": "Индивидуальный предприниматель Никитина Екатерина Николаевна",
+  "org_span": [
+   2548,
+   2608
+  ],
+  "org_group": null,
+  "org_detector": "ner",
+  "org_canonical": null,
+  "org_shadowed": [
+   "Никитина Екатерина Николаевна"
+  ],
+  "mech": "compound_ip_fio"
+ },
+ {
+  "doc_id": "services_0001__m1337_combo",
+  "start": 96,
+  "end": 128,
+  "value": "hиkитинa  е­kатерина нико‍лаевна",
+  "mask_types_max": [
+   "ORG"
+  ],
+  "mask_types_default": [
+   "PER"
+  ],
+  "uncovered_default": 0,
+  "org_text": "ИП hиkитинa  е­kатерина нико‍лаевна",
+  "org_span": [
+   93,
+   128
+  ],
+  "org_group": null,
+  "org_detector": "ner",
+  "org_canonical": null,
+  "org_shadowed": [
+   "hиkитинa  е­kатерина нико‍лаевна"
+  ],
+  "mech": "compound_ip_fio"
+ },
+ {
+  "doc_id": "services_0001__m1337_combo",
+  "start": 2626,
+  "end": 2658,
+  "value": "h‍иkи‍тинa еkатерина ​николаевна",
+  "mask_types_max": [
+   "ORG"
+  ],
+  "mask_types_default": [
+   "PER"
+  ],
+  "uncovered_default": 0,
+  "org_text": "Индивидуальный предприниматель h‍иkи‍тинa еkатерина ​николаевна",
+  "org_span": [
+   2595,
+   2658
+  ],
+  "org_group": null,
+  "org_detector": "ner",
+  "org_canonical": null,
+  "org_shadowed": [
+   "h‍иkи‍тинa еkатерина ​николаевна"
+  ],
+  "mech": "compound_ip_fio"
+ },
+ {
+  "doc_id": "services_0001__m2718_homoglyph",
+  "start": 95,
+  "end": 124,
+  "value": "Hикитина Еkaтеринa Николаевна",
+  "mask_types_max": [
+   "ORG"
+  ],
+  "mask_types_default": [
+   "PER"
+  ],
+  "uncovered_default": 0,
+  "org_text": "ИП Hикитина Еkaтеринa Николаевна",
+  "org_span": [
+   92,
+   124
+  ],
+  "org_group": null,
+  "org_detector": "ner",
+  "org_canonical": null,
+  "org_shadowed": [
+   "Hикитина Еkaтеринa Николаевна"
+  ],
+  "mech": "compound_ip_fio"
+ },
+ {
+  "doc_id": "services_0001__m2718_homoglyph",
+  "start": 2579,
+  "end": 2608,
+  "value": "Никитинa Екaтеpина Ниkолаевна",
+  "mask_types_max": [
+   "ORG"
+  ],
+  "mask_types_default": [
+   "PER"
+  ],
+  "uncovered_default": 0,
+  "org_text": "Индивидуальный предприниматель Никитинa Екaтеpина Ниkолаевна",
+  "org_span": [
+   2548,
+   2608
+  ],
+  "org_group": null,
+  "org_detector": "ner",
+  "org_canonical": null,
+  "org_shadowed": [
+   "Никитинa Екaтеpина Ниkолаевна"
+  ],
+  "mech": "compound_ip_fio"
+ },
+ {
+  "doc_id": "services_0004",
+  "start": 309,
+  "end": 320,
+  "value": "Белов Р. Д.",
+  "mask_types_max": [
+   "ORG"
+  ],
+  "mask_types_default": [
+   "PER"
+  ],
+  "uncovered_default": 0,
+  "org_text": "ИП Белов Р. Д.",
+  "org_span": [
+   306,
+   320
+  ],
+  "org_group": null,
+  "org_detector": "ner",
+  "org_canonical": null,
+  "org_shadowed": [
+   "Белов Р. Д."
+  ],
+  "mech": "compound_ip_fio"
+ },
+ {
+  "doc_id": "services_0004",
+  "start": 2973,
+  "end": 2995,
+  "value": "Белов Роман Дмитриевич",
+  "mask_types_max": [
+   "ORG"
+  ],
+  "mask_types_default": [
+   "PER"
+  ],
+  "uncovered_default": 0,
+  "org_text": "Индивидуальный предприниматель Белов Роман Дмитриевич",
+  "org_span": [
+   2942,
+   2995
+  ],
+  "org_group": null,
+  "org_detector": "ner",
+  "org_canonical": null,
+  "org_shadowed": [
+   "Белов Роман Дмитриевич"
+  ],
+  "mech": "compound_ip_fio"
+ },
+ {
+  "doc_id": "services_0004__m1337_cell_split",
+  "start": 309,
+  "end": 320,
+  "value": "Белов Р. Д.",
+  "mask_types_max": [
+   "ORG"
+  ],
+  "mask_types_default": [
+   "PER"
+  ],
+  "uncovered_default": 0,
+  "org_text": "ИП Белов Р. Д.",
+  "org_span": [
+   306,
+   320
+  ],
+  "org_group": null,
+  "org_detector": "ner",
+  "org_canonical": null,
+  "org_shadowed": [
+   "Белов Р. Д."
+  ],
+  "mech": "compound_ip_fio"
+ },
+ {
+  "doc_id": "services_0004__m1337_cell_split",
+  "start": 2973,
+  "end": 2995,
+  "value": "Белов Роман Дмитриевич",
+  "mask_types_max": [
+   "ORG"
+  ],
+  "mask_types_default": [
+   "PER"
+  ],
+  "uncovered_default": 0,
+  "org_text": "Индивидуальный предприниматель Белов Роман Дмитриевич",
+  "org_span": [
+   2942,
+   2995
+  ],
+  "org_group": null,
+  "org_detector": "ner",
+  "org_canonical": null,
+  "org_shadowed": [
+   "Белов Роман Дмитриевич"
+  ],
+  "mech": "compound_ip_fio"
+ },
+ {
+  "doc_id": "services_0004__m2718_invisible",
+  "start": 3039,
+  "end": 3064,
+  "value": "Белов Роман​ Дми​т риевич",
+  "mask_types_max": [
+   "ORG"
+  ],
+  "mask_types_default": [
+   "PER"
+  ],
+  "uncovered_default": 0,
+  "org_text": "Индивидуальный предприниматель Белов Роман​ Дми​т риевич",
+  "org_span": [
+   3008,
+   3064
+  ],
+  "org_group": null,
+  "org_detector": "ner",
+  "org_canonical": null,
+  "org_shadowed": [
+   "Белов Роман​ Дми​т риевич"
+  ],
+  "mech": "compound_ip_fio"
+ },
+ {
+  "doc_id": "services_0006",
+  "start": 115,
+  "end": 128,
+  "value": "Фёдоров А. Д.",
+  "mask_types_max": [
+   "ORG"
+  ],
+  "mask_types_default": [
+   "PER"
+  ],
+  "uncovered_default": 0,
+  "org_text": "Индивидуальный предприниматель Фёдоров А. Д.",
+  "org_span": [
+   84,
+   128
+  ],
+  "org_group": null,
+  "org_detector": "ner",
+  "org_canonical": null,
+  "org_shadowed": [
+   "Фёдоров А. Д."
+  ],
+  "mech": "compound_ip_fio"
+ },
+ {
+  "doc_id": "services_0006",
+  "start": 278,
+  "end": 304,
+  "value": "Петров Владимир Дмитриевич",
+  "mask_types_max": [
+   "ORG"
+  ],
+  "mask_types_default": [
+   "PER"
+  ],
+  "uncovered_default": 0,
+  "org_text": "ИП Петров Владимир Дмитриевич",
+  "org_span": [
+   275,
+   304
+  ],
+  "org_group": null,
+  "org_detector": "ner",
+  "org_canonical": null,
+  "org_shadowed": [
+   "Петров Владимир Дмитриевич"
+  ],
+  "mech": "compound_ip_fio"
+ },
+ {
+  "doc_id": "services_0006",
+  "start": 4658,
+  "end": 4684,
+  "value": "Фёдоров Алексей Дмитриевич",
+  "mask_types_max": [
+   "ORG"
+  ],
+  "mask_types_default": [
+   "PER"
+  ],
+  "uncovered_default": 0,
+  "org_text": "Индивидуальный предприниматель Фёдоров Алексей Дмитриевич",
+  "org_span": [
+   4627,
+   4684
+  ],
+  "org_group": null,
+  "org_detector": "ner",
+  "org_canonical": null,
+  "org_shadowed": [
+   "Фёдоров Алексей Дмитриевич"
+  ],
+  "mech": "compound_ip_fio"
+ },
+ {
+  "doc_id": "services_0006",
+  "start": 5050,
+  "end": 5076,
+  "value": "Петров Владимир Дмитриевич",
+  "mask_types_max": [
+   "ORG"
+  ],
+  "mask_types_default": [
+   "PER"
+  ],
+  "uncovered_default": 0,
+  "org_text": "Индивидуальный предприниматель Петров Владимир Дмитриевич",
+  "org_span": [
+   5019,
+   5076
+  ],
+  "org_group": null,
+  "org_detector": "ner",
+  "org_canonical": null,
+  "org_shadowed": [
+   "Петров Владимир Дмитриевич"
+  ],
+  "mech": "compound_ip_fio"
+ },
+ {
+  "doc_id": "services_0006__m1337_invisible",
+  "start": 115,
+  "end": 130,
+  "value": "Фёдоро‍в ​А. Д.",
+  "mask_types_max": [
+   "ORG"
+  ],
+  "mask_types_default": [
+   "PER"
+  ],
+  "uncovered_default": 0,
+  "org_text": "Индивидуальный предприниматель Фёдоро‍в ​А. Д.",
+  "org_span": [
+   84,
+   130
+  ],
+  "org_group": null,
+  "org_detector": "ner",
+  "org_canonical": null,
+  "org_shadowed": [
+   "Фёдоро‍в ​А. Д."
+  ],
+  "mech": "compound_ip_fio"
+ },
+ {
+  "doc_id": "services_0006__m1337_invisible",
+  "start": 282,
+  "end": 311,
+  "value": "Петров Влади мир Д‍м­итриевич",
+  "mask_types_max": [
+   "ORG"
+  ],
+  "mask_types_default": [
+   "PER"
+  ],
+  "uncovered_default": 0,
+  "org_text": "ИП Петров Влади мир Д‍м­итриевич",
+  "org_span": [
+   279,
+   311
+  ],
+  "org_group": null,
+  "org_detector": "ner",
+  "org_canonical": null,
+  "org_shadowed": [
+   "Петров Влади мир Д‍м­итриевич"
+  ],
+  "mech": "compound_ip_fio"
+ },
+ {
+  "doc_id": "services_0006__m1337_invisible",
+  "start": 4720,
+  "end": 4749,
+  "value": "Фёдо ров Алексей Д мит⁠риевич",
+  "mask_types_max": [
+   "ORG"
+  ],
+  "mask_types_default": [
+   "PER"
+  ],
+  "uncovered_default": 0,
+  "org_text": "Индивидуальный предприниматель Фёдо ров Алексей Д мит⁠риевич",
+  "org_span": [
+   4689,
+   4749
+  ],
+  "org_group": null,
+  "org_detector": "ner",
+  "org_canonical": null,
+  "org_shadowed": [
+   "Фёдо ров Алексей Д мит⁠риевич"
+  ],
+  "mech": "compound_ip_fio"
+ },
+ {
+  "doc_id": "services_0006__m1337_invisible",
+  "start": 5143,
+  "end": 5172,
+  "value": "Петров Вл‍адим​ир Дмитриев ич",
+  "mask_types_max": [
+   "ORG"
+  ],
+  "mask_types_default": [
+   "PER"
+  ],
+  "uncovered_default": 0,
+  "org_text": "Индивидуальный предприниматель Петров Вл‍адим​ир Дмитриев ич",
+  "org_span": [
+   5112,
+   5172
+  ],
+  "org_group": null,
+  "org_detector": "ner",
+  "org_canonical": null,
+  "org_shadowed": [
+   "Петров Вл‍адим​ир Дмитриев ич"
+  ],
+  "mech": "compound_ip_fio"
+ },
+ {
+  "doc_id": "services_0006__m2718_digit_spaces",
+  "start": 115,
+  "end": 128,
+  "value": "Фёдоров А. Д.",
+  "mask_types_max": [
+   "ORG"
+  ],
+  "mask_types_default": [
+   "PER"
+  ],
+  "uncovered_default": 0,
+  "org_text": "Индивидуальный предприниматель Фёдоров А. Д.",
+  "org_span": [
+   84,
+   128
+  ],
+  "org_group": null,
+  "org_detector": "ner",
+  "org_canonical": null,
+  "org_shadowed": [
+   "Фёдоров А. Д."
+  ],
+  "mech": "compound_ip_fio"
+ },
+ {
+  "doc_id": "services_0006__m2718_digit_spaces",
+  "start": 282,
+  "end": 308,
+  "value": "Петров Владимир Дмитриевич",
+  "mask_types_max": [
+   "ORG"
+  ],
+  "mask_types_default": [
+   "PER"
+  ],
+  "uncovered_default": 0,
+  "org_text": "ИП Петров Владимир Дмитриевич",
+  "org_span": [
+   279,
+   308
+  ],
+  "org_group": null,
+  "org_detector": "ner",
+  "org_canonical": null,
+  "org_shadowed": [
+   "Петров Владимир Дмитриевич"
+  ],
+  "mech": "compound_ip_fio"
+ },
+ {
+  "doc_id": "services_0006__m2718_digit_spaces",
+  "start": 4669,
+  "end": 4695,
+  "value": "Фёдоров Алексей Дмитриевич",
+  "mask_types_max": [
+   "ORG"
+  ],
+  "mask_types_default": [
+   "PER"
+  ],
+  "uncovered_default": 0,
+  "org_text": "Индивидуальный предприниматель Фёдоров Алексей Дмитриевич",
+  "org_span": [
+   4638,
+   4695
+  ],
+  "org_group": null,
+  "org_detector": "ner",
+  "org_canonical": null,
+  "org_shadowed": [
+   "Фёдоров Алексей Дмитриевич"
+  ],
+  "mech": "compound_ip_fio"
+ },
+ {
+  "doc_id": "services_0006__m2718_digit_spaces",
+  "start": 5074,
+  "end": 5100,
+  "value": "Петров Владимир Дмитриевич",
+  "mask_types_max": [
+   "ORG"
+  ],
+  "mask_types_default": [
+   "PER"
+  ],
+  "uncovered_default": 0,
+  "org_text": "Индивидуальный предприниматель Петров Владимир Дмитриевич",
+  "org_span": [
+   5043,
+   5100
+  ],
+  "org_group": null,
+  "org_detector": "ner",
+  "org_canonical": null,
+  "org_shadowed": [
+   "Петров Владимир Дмитриевич"
+  ],
+  "mech": "compound_ip_fio"
+ },
+ {
+  "doc_id": "services_0007",
+  "start": 90,
+  "end": 111,
+  "value": "Семёнов Юрий Олегович",
+  "mask_types_max": [
+   "ORG"
+  ],
+  "mask_types_default": [
+   "PER"
+  ],
+  "uncovered_default": 0,
+  "org_text": "ИП Семёнов Юрий Олегович",
+  "org_span": [
+   87,
+   111
+  ],
+  "org_group": null,
+  "org_detector": "ner",
+  "org_canonical": null,
+  "org_shadowed": [
+   "Семёнов Юрий Олегович"
+  ],
+  "mech": "compound_ip_fio"
+ },
+ {
+  "doc_id": "services_0007",
+  "start": 2545,
+  "end": 2566,
+  "value": "Семёнов Юрий Олегович",
+  "mask_types_max": [
+   "ORG"
+  ],
+  "mask_types_default": [
+   "PER"
+  ],
+  "uncovered_default": 0,
+  "org_text": "Индивидуальный предприниматель Семёнов Юрий Олегович",
+  "org_span": [
+   2514,
+   2566
+  ],
+  "org_group": null,
+  "org_detector": "ner",
+  "org_canonical": null,
+  "org_shadowed": [
+   "Семёнов Юрий Олегович"
+  ],
+  "mech": "compound_ip_fio"
+ },
+ {
+  "doc_id": "services_0007__m1337_combo",
+  "start": 90,
+  "end": 114,
+  "value": "СЕМЁНO​В ЮРИЙ O­ЛЕ­ГОВИЧ",
+  "mask_types_max": [
+   "ORG"
+  ],
+  "mask_types_default": [
+   "PER"
+  ],
+  "uncovered_default": 0,
+  "org_text": "ИП СЕМЁНO​В ЮРИЙ O­ЛЕ­ГОВИЧ",
+  "org_span": [
+   87,
+   114
+  ],
+  "org_group": null,
+  "org_detector": "ner",
+  "org_canonical": null,
+  "org_shadowed": [
+   "СЕМЁНO​В ЮРИЙ O­ЛЕ­ГОВИЧ"
+  ],
+  "mech": "compound_ip_fio"
+ },
+ {
+  "doc_id": "services_0007__m1337_combo",
+  "start": 2594,
+  "end": 2618,
+  "value": "CЕМ ЁН OВ ЮРИЙ OЛЕГОВ ИЧ",
+  "mask_types_max": [
+   "ORG"
+  ],
+  "mask_types_default": [
+   "PER"
+  ],
+  "uncovered_default": 0,
+  "org_text": "Индивидуальный предприниматель CЕМ ЁН OВ ЮРИЙ OЛЕГОВ ИЧ",
+  "org_span": [
+   2563,
+   2618
+  ],
+  "org_group": null,
+  "org_detector": "ner",
+  "org_canonical": null,
+  "org_shadowed": [
+   "CЕМ ЁН OВ ЮРИЙ OЛЕГОВ ИЧ"
+  ],
+  "mech": "compound_ip_fio"
+ },
+ {
+  "doc_id": "services_0007__m2718_homoglyph",
+  "start": 90,
+  "end": 111,
+  "value": "Сemёнов Юрий Олегoвич",
+  "mask_types_max": [
+   "ORG"
+  ],
+  "mask_types_default": [
+   "PER"
+  ],
+  "uncovered_default": 0,
+  "org_text": "ИП Сemёнов Юрий Олегoвич",
+  "org_span": [
+   87,
+   111
+  ],
+  "org_group": null,
+  "org_detector": "ner",
+  "org_canonical": null,
+  "org_shadowed": [
+   "Сemёнов Юрий Олегoвич"
+  ],
+  "mech": "compound_ip_fio"
+ },
+ {
+  "doc_id": "services_0007__m2718_homoglyph",
+  "start": 2545,
+  "end": 2566,
+  "value": "Ceмёнoв Юрий Олeгович",
+  "mask_types_max": [
+   "ORG"
+  ],
+  "mask_types_default": [
+   "PER"
+  ],
+  "uncovered_default": 0,
+  "org_text": "Индивидуальный предприниматель Ceмёнoв Юрий Олeгович",
+  "org_span": [
+   2514,
+   2566
+  ],
+  "org_group": null,
+  "org_detector": "ner",
+  "org_canonical": null,
+  "org_shadowed": [
+   "Ceмёнoв Юрий Олeгович"
+  ],
+  "mech": "compound_ip_fio"
+ },
+ {
+  "doc_id": "services_0010",
+  "start": 283,
+  "end": 306,
+  "value": "Иванов Роман Алексеевич",
+  "mask_types_max": [
+   "ORG"
+  ],
+  "mask_types_default": [
+   "PER"
+  ],
+  "uncovered_default": 0,
+  "org_text": "ИП Иванов Роман Алексеевич",
+  "org_span": [
+   280,
+   306
+  ],
+  "org_group": null,
+  "org_detector": "ner",
+  "org_canonical": null,
+  "org_shadowed": [
+   "Иванов Роман Алексеевич"
+  ],
+  "mech": "compound_ip_fio"
+ },
+ {
+  "doc_id": "services_0010",
+  "start": 2863,
+  "end": 2886,
+  "value": "Иванов Роман Алексеевич",
+  "mask_types_max": [
+   "ORG"
+  ],
+  "mask_types_default": [
+   "PER"
+  ],
+  "uncovered_default": 0,
+  "org_text": "Индивидуальный предприниматель Иванов Роман Алексеевич",
+  "org_span": [
+   2832,
+   2886
+  ],
+  "org_group": null,
+  "org_detector": "ner",
+  "org_canonical": null,
+  "org_shadowed": [
+   "Иванов Роман Алексеевич"
+  ],
+  "mech": "compound_ip_fio"
+ },
+ {
+  "doc_id": "services_0010__m2718_homoglyph",
+  "start": 283,
+  "end": 306,
+  "value": "Ивaнов Рomан Aлексеевич",
+  "mask_types_max": [
+   "ORG"
+  ],
+  "mask_types_default": [
+   "PER"
+  ],
+  "uncovered_default": 0,
+  "org_text": "ИП Ивaнов Рomан Aлексеевич",
+  "org_span": [
+   280,
+   306
+  ],
+  "org_group": null,
+  "org_detector": "ner",
+  "org_canonical": null,
+  "org_shadowed": [
+   "Ивaнов Рomан Aлексеевич"
+  ],
+  "mech": "compound_ip_fio"
+ },
+ {
+  "doc_id": "services_0010__m2718_homoglyph",
+  "start": 2863,
+  "end": 2886,
+  "value": "Иванов Роман Алeксеевич",
+  "mask_types_max": [
+   "ORG"
+  ],
+  "mask_types_default": [
+   "PER"
+  ],
+  "uncovered_default": 0,
+  "org_text": "Индивидуальный предприниматель Иванов Роман Алeксеевич",
+  "org_span": [
+   2832,
+   2886
+  ],
+  "org_group": null,
+  "org_detector": "ner",
+  "org_canonical": null,
+  "org_shadowed": [
+   "Иванов Роман Алeксеевич"
+  ],
+  "mech": "compound_ip_fio"
+ },
+ {
+  "doc_id": "services_0012",
+  "start": 110,
+  "end": 123,
+  "value": "Смирнов Ю. П.",
+  "mask_types_max": [
+   "ORG"
+  ],
+  "mask_types_default": [
+   "PER"
+  ],
+  "uncovered_default": 0,
+  "org_text": "Индивидуальный предприниматель Смирнов Ю. П.",
+  "org_span": [
+   79,
+   123
+  ],
+  "org_group": null,
+  "org_detector": "ner",
+  "org_canonical": null,
+  "org_shadowed": [
+   "Смирнов Ю. П."
+  ],
+  "mech": "compound_ip_fio"
+ },
+ {
+  "doc_id": "services_0012",
+  "start": 273,
+  "end": 286,
+  "value": "Семёнов М. О.",
+  "mask_types_max": [
+   "ORG"
+  ],
+  "mask_types_default": [
+   "PER"
+  ],
+  "uncovered_default": 0,
+  "org_text": "ИП Семёнов М. О.",
+  "org_span": [
+   270,
+   286
+  ],
+  "org_group": null,
+  "org_detector": "ner",
+  "org_canonical": null,
+  "org_shadowed": [
+   "Семёнов М. О."
+  ],
+  "mech": "compound_ip_fio"
+ },
+ {
+  "doc_id": "services_0012",
+  "start": 2476,
+  "end": 2497,
+  "value": "Смирнов Юрий Петрович",
+  "mask_types_max": [
+   "ORG"
+  ],
+  "mask_types_default": [
+   "PER"
+  ],
+  "uncovered_default": 0,
+  "org_text": "Смирнов Юрий Петрович\nИндивидуальный предприниматель",
+  "org_span": [
+   2476,
+   2528
+  ],
+  "org_group": null,
+  "org_detector": "ner",
+  "org_canonical": null,
+  "org_shadowed": [
+   "Смирнов Юрий Петрович",
+   "Индивидуальный предприниматель Смирнов Юрий Петрович"
+  ],
+  "mech": "compound_ip_fio"
+ },
+ {
+  "doc_id": "services_0012",
+  "start": 2529,
+  "end": 2550,
+  "value": "Смирнов Юрий Петрович",
+  "mask_types_max": [
+   "ORG"
+  ],
+  "mask_types_default": [
+   "PER"
+  ],
+  "uncovered_default": 0,
+  "org_text": "Смирнов Юрий Петрович",
+  "org_span": [
+   2529,
+   2550
+  ],
+  "org_group": null,
+  "org_detector": "ner",
+  "org_canonical": null,
+  "org_shadowed": [
+   "Смирнов Юрий Петрович"
+  ],
+  "mech": "compound_ip_fio"
+ },
+ {
+  "doc_id": "services_0012",
+  "start": 2834,
+  "end": 2857,
+  "value": "Семёнов Михаил Олегович",
+  "mask_types_max": [
+   "ORG"
+  ],
+  "mask_types_default": [
+   "PER"
+  ],
+  "uncovered_default": 0,
+  "org_text": "Индивидуальный предприниматель Семёнов Михаил Олегович",
+  "org_span": [
+   2803,
+   2857
+  ],
+  "org_group": null,
+  "org_detector": "ner",
+  "org_canonical": null,
+  "org_shadowed": [
+   "Семёнов Михаил Олегович"
+  ],
+  "mech": "compound_ip_fio"
+ },
+ {
+  "doc_id": "services_0012__m1337_homoglyph",
+  "start": 110,
+  "end": 123,
+  "value": "Cмирнoв Ю. П.",
+  "mask_types_max": [
+   "ORG"
+  ],
+  "mask_types_default": [
+   "PER"
+  ],
+  "uncovered_default": 0,
+  "org_text": "Индивидуальный предприниматель Cмирнoв Ю. П.",
+  "org_span": [
+   79,
+   123
+  ],
+  "org_group": null,
+  "org_detector": "ner",
+  "org_canonical": null,
+  "org_shadowed": [
+   "Cмирнoв Ю. П."
+  ],
+  "mech": "compound_ip_fio"
+ },
+ {
+  "doc_id": "services_0012__m1337_homoglyph",
+  "start": 273,
+  "end": 286,
+  "value": "Сеmёнoв М. О.",
+  "mask_types_max": [
+   "ORG"
+  ],
+  "mask_types_default": [
+   "PER"
+  ],
+  "uncovered_default": 0,
+  "org_text": "ИП Сеmёнoв М. О.",
+  "org_span": [
+   270,
+   286
+  ],
+  "org_group": null,
+  "org_detector": "ner",
+  "org_canonical": null,
+  "org_shadowed": [
+   "Сеmёнoв М. О."
+  ],
+  "mech": "compound_ip_fio"
+ },
+ {
+  "doc_id": "services_0012__m1337_homoglyph",
+  "start": 2476,
+  "end": 2497,
+  "value": "Сmиpнов Юрий Петрович",
+  "mask_types_max": [
+   "ORG"
+  ],
+  "mask_types_default": [
+   "PER"
+  ],
+  "uncovered_default": 0,
+  "org_text": "Сmиpнов Юрий Петрович\nИндивидуальный предприниматель",
+  "org_span": [
+   2476,
+   2528
+  ],
+  "org_group": null,
+  "org_detector": "ner",
+  "org_canonical": null,
+  "org_shadowed": [
+   "Сmиpнов Юрий Петрович",
+   "Индивидуальный предприниматель Смиpнoв Юрий Пeтpович"
+  ],
+  "mech": "compound_ip_fio"
+ },
+ {
+  "doc_id": "services_0012__m1337_homoglyph",
+  "start": 2529,
+  "end": 2550,
+  "value": "Смиpнoв Юрий Пeтpович",
+  "mask_types_max": [
+   "ORG"
+  ],
+  "mask_types_default": [
+   "PER"
+  ],
+  "uncovered_default": 0,
+  "org_text": "Смиpнoв Юрий Пeтpович",
+  "org_span": [
+   2529,
+   2550
+  ],
+  "org_group": null,
+  "org_detector": "ner",
+  "org_canonical": null,
+  "org_shadowed": [
+   "Смиpнoв Юрий Пeтpович"
+  ],
+  "mech": "compound_ip_fio"
+ },
+ {
+  "doc_id": "services_0012__m1337_homoglyph",
+  "start": 2834,
+  "end": 2857,
+  "value": "Cеmёнoв Михаил Олегович",
+  "mask_types_max": [
+   "ORG"
+  ],
+  "mask_types_default": [
+   "PER"
+  ],
+  "uncovered_default": 0,
+  "org_text": "Индивидуальный предприниматель Cеmёнoв Михаил Олегович",
+  "org_span": [
+   2803,
+   2857
+  ],
+  "org_group": null,
+  "org_detector": "ner",
+  "org_canonical": null,
+  "org_shadowed": [
+   "Cеmёнoв Михаил Олегович"
+  ],
+  "mech": "compound_ip_fio"
+ },
+ {
+  "doc_id": "services_0012__m2718_case",
+  "start": 110,
+  "end": 123,
+  "value": "СМИРНОВ Ю. П.",
+  "mask_types_max": [
+   "ORG"
+  ],
+  "mask_types_default": [
+   "PER"
+  ],
+  "uncovered_default": 0,
+  "org_text": "Индивидуальный предприниматель СМИРНОВ Ю. П.",
+  "org_span": [
+   79,
+   123
+  ],
+  "org_group": null,
+  "org_detector": "ner",
+  "org_canonical": null,
+  "org_shadowed": [
+   "СМИРНОВ Ю. П."
+  ],
+  "mech": "compound_ip_fio"
+ },
+ {
+  "doc_id": "services_0012__m2718_case",
+  "start": 2476,
+  "end": 2497,
+  "value": "СМИРНОВ ЮРИЙ ПЕТРОВИЧ",
+  "mask_types_max": [
+   "ORG"
+  ],
+  "mask_types_default": [
+   "PER"
+  ],
+  "uncovered_default": 0,
+  "org_text": "СМИРНОВ ЮРИЙ ПЕТРОВИЧ\nиндивидуальный предприниматель",
+  "org_span": [
+   2476,
+   2528
+  ],
+  "org_group": null,
+  "org_detector": "ner",
+  "org_canonical": null,
+  "org_shadowed": [
+   "СМИРНОВ ЮРИЙ ПЕТРОВИЧ",
+   "индивидуальный предприниматель смирнов юрий петрович"
+  ],
+  "mech": "compound_ip_fio"
+ },
+ {
+  "doc_id": "services_0012__m2718_case",
+  "start": 2529,
+  "end": 2550,
+  "value": "смирнов юрий петрович",
+  "mask_types_max": [
+   "ORG"
+  ],
+  "mask_types_default": [
+   "PER"
+  ],
+  "uncovered_default": 0,
+  "org_text": "смирнов юрий петрович",
+  "org_span": [
+   2529,
+   2550
+  ],
+  "org_group": null,
+  "org_detector": "ner",
+  "org_canonical": null,
+  "org_shadowed": [
+   "смирнов юрий петрович"
+  ],
+  "mech": "compound_ip_fio"
+ },
+ {
+  "doc_id": "services_0012__m2718_case",
+  "start": 2834,
+  "end": 2857,
+  "value": "СЕМЁНОВ МИХАИЛ ОЛЕГОВИЧ",
+  "mask_types_max": [
+   "ORG"
+  ],
+  "mask_types_default": [
+   "PER"
+  ],
+  "uncovered_default": 0,
+  "org_text": "Индивидуальный предприниматель СЕМЁНОВ МИХАИЛ ОЛЕГОВИЧ",
+  "org_span": [
+   2803,
+   2857
+  ],
+  "org_group": null,
+  "org_detector": "ner",
+  "org_canonical": null,
+  "org_shadowed": [
+   "СЕМЁНОВ МИХАИЛ ОЛЕГОВИЧ"
+  ],
+  "mech": "compound_ip_fio"
+ },
+ {
+  "doc_id": "services_0013",
+  "start": 87,
+  "end": 112,
+  "value": "Никитина Дарья Дмитриевна",
+  "mask_types_max": [
+   "ORG"
+  ],
+  "mask_types_default": [
+   "PER"
+  ],
+  "uncovered_default": 0,
+  "org_text": "ИП Никитина Дарья Дмитриевна",
+  "org_span": [
+   84,
+   112
+  ],
+  "org_group": null,
+  "org_detector": "ner",
+  "org_canonical": null,
+  "org_shadowed": [
+   "Никитина Дарья Дмитриевна"
+  ],
+  "mech": "compound_ip_fio"
+ },
+ {
+  "doc_id": "services_0013",
+  "start": 4650,
+  "end": 4675,
+  "value": "Никитина Дарья Дмитриевна",
+  "mask_types_max": [
+   "ORG"
+  ],
+  "mask_types_default": [
+   "PER"
+  ],
+  "uncovered_default": 0,
+  "org_text": "Индивидуальный предприниматель Никитина Дарья Дмитриевна",
+  "org_span": [
+   4619,
+   4675
+  ],
+  "org_group": null,
+  "org_detector": "ner",
+  "org_canonical": null,
+  "org_shadowed": [
+   "Никитина Дарья Дмитриевна"
+  ],
+  "mech": "compound_ip_fio"
+ },
+ {
+  "doc_id": "services_0013__m1337_combo",
+  "start": 90,
+  "end": 118,
+  "value": "никитин‍a д­аpья дмитри​евнa",
+  "mask_types_max": [
+   "ORG"
+  ],
+  "mask_types_default": [
+   "PER"
+  ],
+  "uncovered_default": 0,
+  "org_text": "ИП никитин‍a д­аpья дмитри​евнa",
+  "org_span": [
+   87,
+   118
+  ],
+  "org_group": null,
+  "org_detector": "ner",
+  "org_canonical": null,
+  "org_shadowed": [
+   "никитин‍a д­аpья дмитри​евнa"
+  ],
+  "mech": "compound_ip_fio"
+ },
+ {
+  "doc_id": "services_0013__m1337_combo",
+  "start": 4700,
+  "end": 4728,
+  "value": "h⁠иКиТ⁠ИнА ⁠дАpЬя дМиТpИеВнA",
+  "mask_types_max": [
+   "ORG"
+  ],
+  "mask_types_default": [
+   "PER"
+  ],
+  "uncovered_default": 0,
+  "org_text": "Индивидуальный предприниматель h⁠иКиТ⁠ИнА ⁠дАpЬя дМиТpИеВнA",
+  "org_span": [
+   4669,
+   4728
+  ],
+  "org_group": null,
+  "org_detector": "ner",
+  "org_canonical": null,
+  "org_shadowed": [
+   "h⁠иКиТ⁠ИнА ⁠дАpЬя дМиТpИеВнA"
+  ],
+  "mech": "compound_ip_fio"
+ },
+ {
+  "doc_id": "services_0013__m2718_homoglyph",
+  "start": 87,
+  "end": 112,
+  "value": "Hикитина Дарья Дмитриевна",
+  "mask_types_max": [
+   "ORG"
+  ],
+  "mask_types_default": [
+   "PER"
+  ],
+  "uncovered_default": 0,
+  "org_text": "ИП Hикитина Дарья Дмитриевна",
+  "org_span": [
+   84,
+   112
+  ],
+  "org_group": null,
+  "org_detector": "ner",
+  "org_canonical": null,
+  "org_shadowed": [
+   "Hикитина Дарья Дмитриевна"
+  ],
+  "mech": "compound_ip_fio"
+ },
+ {
+  "doc_id": "services_0013__m2718_homoglyph",
+  "start": 4650,
+  "end": 4675,
+  "value": "Hикитина Даpья Дmитриевнa",
+  "mask_types_max": [
+   "ORG"
+  ],
+  "mask_types_default": [
+   "PER"
+  ],
+  "uncovered_default": 0,
+  "org_text": "Индивидуальный предприниматель Hикитина Даpья Дmитриевнa",
+  "org_span": [
+   4619,
+   4675
+  ],
+  "org_group": null,
+  "org_detector": "ner",
+  "org_canonical": null,
+  "org_shadowed": [
+   "Hикитина Даpья Дmитриевнa"
+  ],
+  "mech": "compound_ip_fio"
+ },
+ {
+  "doc_id": "supply_0002",
+  "start": 229,
+  "end": 242,
+  "value": "Семёнов О. Е.",
+  "mask_types_max": [
+   "ORG"
+  ],
+  "mask_types_default": [
+   "PER"
+  ],
+  "uncovered_default": 0,
+  "org_text": "ИП Семёнов О. Е.",
+  "org_span": [
+   226,
+   242
+  ],
+  "org_group": null,
+  "org_detector": "ner",
+  "org_canonical": null,
+  "org_shadowed": [
+   "Семёнов О. Е."
+  ],
+  "mech": "compound_ip_fio"
+ },
+ {
+  "doc_id": "supply_0002",
+  "start": 3152,
+  "end": 3173,
+  "value": "Семёнов Олег Егорович",
+  "mask_types_max": [
+   "ORG"
+  ],
+  "mask_types_default": [
+   "PER"
+  ],
+  "uncovered_default": 0,
+  "org_text": "Индивидуальный предприниматель Семёнов Олег Егорович",
+  "org_span": [
+   3121,
+   3173
+  ],
+  "org_group": null,
+  "org_detector": "ner",
+  "org_canonical": null,
+  "org_shadowed": [
+   "Семёнов Олег Егорович"
+  ],
+  "mech": "compound_ip_fio"
+ },
+ {
+  "doc_id": "supply_0002__m1337_linebreak",
+  "start": 235,
+  "end": 249,
+  "value": "Семёнов О.\n Е.",
+  "mask_types_max": [
+   "ORG"
+  ],
+  "mask_types_default": [
+   "PER"
+  ],
+  "uncovered_default": 0,
+  "org_text": "ИП Семёнов О.\n Е.",
+  "org_span": [
+   232,
+   249
+  ],
+  "org_group": null,
+  "org_detector": "ner",
+  "org_canonical": null,
+  "org_shadowed": [
+   "Семёнов О.\n Е."
+  ],
+  "mech": "compound_ip_fio"
+ },
+ {
+  "doc_id": "supply_0002__m2718_cell_split",
+  "start": 229,
+  "end": 242,
+  "value": "Семёнов О. Е.",
+  "mask_types_max": [
+   "ORG"
+  ],
+  "mask_types_default": [
+   "PER"
+  ],
+  "uncovered_default": 0,
+  "org_text": "ИП Семёнов О. Е.",
+  "org_span": [
+   226,
+   242
+  ],
+  "org_group": null,
+  "org_detector": "ner",
+  "org_canonical": null,
+  "org_shadowed": [
+   "Семёнов О. Е."
+  ],
+  "mech": "compound_ip_fio"
+ },
+ {
+  "doc_id": "supply_0002__m2718_cell_split",
+  "start": 3152,
+  "end": 3173,
+  "value": "Семёнов Олег Егорович",
+  "mask_types_max": [
+   "ORG"
+  ],
+  "mask_types_default": [
+   "PER"
+  ],
+  "uncovered_default": 0,
+  "org_text": "Индивидуальный предприниматель Семёнов Олег Егорович",
+  "org_span": [
+   3121,
+   3173
+  ],
+  "org_group": null,
+  "org_detector": "ner",
+  "org_canonical": null,
+  "org_shadowed": [
+   "Семёнов Олег Егорович"
+  ],
+  "mech": "compound_ip_fio"
+ },
+ {
+  "doc_id": "supply_0004",
+  "start": 96,
+  "end": 119,
+  "value": "Титова Ирина Алексеевна",
+  "mask_types_max": [
+   "ORG"
+  ],
+  "mask_types_default": [
+   "PER"
+  ],
+  "uncovered_default": 0,
+  "org_text": "Индивидуальный предприниматель Титова Ирина Алексеевна",
+  "org_span": [
+   65,
+   119
+  ],
+  "org_group": null,
+  "org_detector": "ner",
+  "org_canonical": null,
+  "org_shadowed": [
+   "Титова Ирина Алексеевна"
+  ],
+  "mech": "compound_ip_fio"
+ },
+ {
+  "doc_id": "supply_0004",
+  "start": 267,
+  "end": 281,
+  "value": "Никитина Е. Д.",
+  "mask_types_max": [
+   "ORG"
+  ],
+  "mask_types_default": [
+   "PER"
+  ],
+  "uncovered_default": 0,
+  "org_text": "ИП Никитина Е. Д.",
+  "org_span": [
+   264,
+   281
+  ],
+  "org_group": null,
+  "org_detector": "ner",
+  "org_canonical": null,
+  "org_shadowed": [
+   "Никитина Е. Д."
+  ],
+  "mech": "compound_ip_fio"
+ },
+ {
+  "doc_id": "supply_0004",
+  "start": 2815,
+  "end": 2838,
+  "value": "Титова Ирина Алексеевна",
+  "mask_types_max": [
+   "ORG"
+  ],
+  "mask_types_default": [
+   "PER"
+  ],
+  "uncovered_default": 0,
+  "org_text": "Индивидуальный предприниматель Титова Ирина Алексеевна",
+  "org_span": [
+   2784,
+   2838
+  ],
+  "org_group": null,
+  "org_detector": "ner",
+  "org_canonical": null,
+  "org_shadowed": [
+   "Титова Ирина Алексеевна"
+  ],
+  "mech": "compound_ip_fio"
+ },
+ {
+  "doc_id": "supply_0004",
+  "start": 3139,
+  "end": 3164,
+  "value": "Никитина Елена Дмитриевна",
+  "mask_types_max": [
+   "ORG"
+  ],
+  "mask_types_default": [
+   "PER"
+  ],
+  "uncovered_default": 0,
+  "org_text": "Индивидуальный предприниматель Никитина Елена Дмитриевна",
+  "org_span": [
+   3108,
+   3164
+  ],
+  "org_group": null,
+  "org_detector": "ner",
+  "org_canonical": null,
+  "org_shadowed": [
+   "Никитина Елена Дмитриевна"
+  ],
+  "mech": "compound_ip_fio"
+ },
+ {
+  "doc_id": "supply_0004__m1337_cell_split",
+  "start": 96,
+  "end": 119,
+  "value": "Титова Ирина Алексеевна",
+  "mask_types_max": [
+   "ORG"
+  ],
+  "mask_types_default": [
+   "PER"
+  ],
+  "uncovered_default": 0,
+  "org_text": "Индивидуальный предприниматель Титова Ирина Алексеевна",
+  "org_span": [
+   65,
+   119
+  ],
+  "org_group": null,
+  "org_detector": "ner",
+  "org_canonical": null,
+  "org_shadowed": [
+   "Титова Ирина Алексеевна"
+  ],
+  "mech": "compound_ip_fio"
+ },
+ {
+  "doc_id": "supply_0004__m1337_cell_split",
+  "start": 267,
+  "end": 281,
+  "value": "Никитина Е. Д.",
+  "mask_types_max": [
+   "ORG"
+  ],
+  "mask_types_default": [
+   "PER"
+  ],
+  "uncovered_default": 0,
+  "org_text": "ИП Никитина Е. Д.",
+  "org_span": [
+   264,
+   281
+  ],
+  "org_group": null,
+  "org_detector": "ner",
+  "org_canonical": null,
+  "org_shadowed": [
+   "Никитина Е. Д."
+  ],
+  "mech": "compound_ip_fio"
+ },
+ {
+  "doc_id": "supply_0004__m1337_cell_split",
+  "start": 2815,
+  "end": 2838,
+  "value": "Титова Ирина Алексеевна",
+  "mask_types_max": [
+   "ORG"
+  ],
+  "mask_types_default": [
+   "PER"
+  ],
+  "uncovered_default": 0,
+  "org_text": "Индивидуальный предприниматель Титова Ирина Алексеевна",
+  "org_span": [
+   2784,
+   2838
+  ],
+  "org_group": null,
+  "org_detector": "ner",
+  "org_canonical": null,
+  "org_shadowed": [
+   "Титова Ирина Алексеевна"
+  ],
+  "mech": "compound_ip_fio"
+ },
+ {
+  "doc_id": "supply_0004__m1337_cell_split",
+  "start": 3139,
+  "end": 3164,
+  "value": "Никитина Елена Дмитриевна",
+  "mask_types_max": [
+   "ORG"
+  ],
+  "mask_types_default": [
+   "PER"
+  ],
+  "uncovered_default": 0,
+  "org_text": "Индивидуальный предприниматель Никитина Елена Дмитриевна",
+  "org_span": [
+   3108,
+   3164
+  ],
+  "org_group": null,
+  "org_detector": "ner",
+  "org_canonical": null,
+  "org_shadowed": [
+   "Никитина Елена Дмитриевна"
+  ],
+  "mech": "compound_ip_fio"
+ },
+ {
+  "doc_id": "supply_0004__m2718_invisible",
+  "start": 98,
+  "end": 124,
+  "value": "Т‍итова Ирина ­Ал­ексеевна",
+  "mask_types_max": [
+   "ORG"
+  ],
+  "mask_types_default": [
+   "PER"
+  ],
+  "uncovered_default": 0,
+  "org_text": "Индивидуальный предприниматель Т‍итова Ирина ­Ал­ексеевна",
+  "org_span": [
+   67,
+   124
+  ],
+  "org_group": null,
+  "org_detector": "ner",
+  "org_canonical": null,
+  "org_shadowed": [
+   "Т‍итова Ирина ­Ал­ексеевна"
+  ],
+  "mech": "compound_ip_fio"
+ },
+ {
+  "doc_id": "supply_0004__m2718_invisible",
+  "start": 274,
+  "end": 290,
+  "value": "Никитин­а  Е. Д.",
+  "mask_types_max": [
+   "ORG"
+  ],
+  "mask_types_default": [
+   "PER"
+  ],
+  "uncovered_default": 0,
+  "org_text": "ИП Никитин­а  Е. Д.",
+  "org_span": [
+   271,
+   290
+  ],
+  "org_group": null,
+  "org_detector": "ner",
+  "org_canonical": null,
+  "org_shadowed": [
+   "Никитин­а  Е. Д."
+  ],
+  "mech": "compound_ip_fio"
+ },
+ {
+  "doc_id": "supply_0004__m2718_invisible",
+  "start": 2843,
+  "end": 2869,
+  "value": "Титова Ирина  Ал⁠ексеев​на",
+  "mask_types_max": [
+   "ORG"
+  ],
+  "mask_types_default": [
+   "PER"
+  ],
+  "uncovered_default": 0,
+  "org_text": "Индивидуальный предприниматель Титова Ирина  Ал⁠ексеев​на",
+  "org_span": [
+   2812,
+   2869
+  ],
+  "org_group": null,
+  "org_detector": "ner",
+  "org_canonical": null,
+  "org_shadowed": [
+   "Титова Ирина  Ал⁠ексеев​на"
+  ],
+  "mech": "compound_ip_fio"
+ },
+ {
+  "doc_id": "supply_0004__m2718_invisible",
+  "start": 3192,
+  "end": 3220,
+  "value": "Никитина Елена Дми‍тр иевн⁠а",
+  "mask_types_max": [
+   "ORG"
+  ],
+  "mask_types_default": [
+   "PER"
+  ],
+  "uncovered_default": 0,
+  "org_text": "Индивидуальный предприниматель Никитина Елена Дми‍тр иевн⁠а",
+  "org_span": [
+   3161,
+   3220
+  ],
+  "org_group": null,
+  "org_detector": "ner",
+  "org_canonical": null,
+  "org_shadowed": [
+   "Никитина Елена Дми‍тр иевн⁠а"
+  ],
+  "mech": "compound_ip_fio"
+ },
+ {
+  "doc_id": "supply_0005",
+  "start": 103,
+  "end": 117,
+  "value": "Смирнова Л. О.",
+  "mask_types_max": [
+   "ORG"
+  ],
+  "mask_types_default": [
+   "PER"
+  ],
+  "uncovered_default": 0,
+  "org_text": "Индивидуальный предприниматель Смирнова Л. О.",
+  "org_span": [
+   72,
+   117
+  ],
+  "org_group": null,
+  "org_detector": "ner",
+  "org_canonical": null,
+  "org_shadowed": [
+   "Смирнова Л. О."
+  ],
+  "mech": "compound_ip_fio"
+ },
+ {
+  "doc_id": "supply_0005",
+  "start": 2839,
+  "end": 2864,
+  "value": "Смирнова Людмила Олеговна",
+  "mask_types_max": [
+   "ORG"
+  ],
+  "mask_types_default": [
+   "PER"
+  ],
+  "uncovered_default": 0,
+  "org_text": "Индивидуальный предприниматель Смирнова Людмила Олеговна",
+  "org_span": [
+   2808,
+   2864
+  ],
+  "org_group": null,
+  "org_detector": "ner",
+  "org_canonical": null,
+  "org_shadowed": [
+   "Смирнова Людмила Олеговна"
+  ],
+  "mech": "compound_ip_fio"
+ },
+ {
+  "doc_id": "supply_0005__m1337_combo",
+  "start": 2873,
+  "end": 2901,
+  "value": "cmирновa‍ ⁠людmила олегов на",
+  "mask_types_max": [
+   "ORG"
+  ],
+  "mask_types_default": [
+   "PER"
+  ],
+  "uncovered_default": 0,
+  "org_text": "Индивидуальный предприниматель cmирновa‍ ⁠людmила олегов на",
+  "org_span": [
+   2842,
+   2901
+  ],
+  "org_group": null,
+  "org_detector": "ner",
+  "org_canonical": null,
+  "org_shadowed": [
+   "cmирновa‍ ⁠людmила олегов на"
+  ],
+  "mech": "compound_ip_fio"
+ },
+ {
+  "doc_id": "supply_0005__m2718_homoglyph",
+  "start": 103,
+  "end": 117,
+  "value": "Cмирнова Л. О.",
+  "mask_types_max": [
+   "ORG"
+  ],
+  "mask_types_default": [
+   "PER"
+  ],
+  "uncovered_default": 0,
+  "org_text": "Индивидуальный предприниматель Cмирнова Л. О.",
+  "org_span": [
+   72,
+   117
+  ],
+  "org_group": null,
+  "org_detector": "ner",
+  "org_canonical": null,
+  "org_shadowed": [
+   "Cмирнова Л. О."
+  ],
+  "mech": "compound_ip_fio"
+ },
+ {
+  "doc_id": "supply_0005__m2718_homoglyph",
+  "start": 2839,
+  "end": 2864,
+  "value": "Сmиpнoва Людмилa Олеговна",
+  "mask_types_max": [
+   "ORG"
+  ],
+  "mask_types_default": [
+   "PER"
+  ],
+  "uncovered_default": 0,
+  "org_text": "Индивидуальный предприниматель Сmиpнoва Людмилa Олеговна",
+  "org_span": [
+   2808,
+   2864
+  ],
+  "org_group": null,
+  "org_detector": "ner",
+  "org_canonical": null,
+  "org_shadowed": [
+   "Сmиpнoва Людмилa Олеговна"
+  ],
+  "mech": "compound_ip_fio"
+ },
+ {
+  "doc_id": "supply_0008",
+  "start": 250,
+  "end": 263,
+  "value": "Петрова Н. Д.",
+  "mask_types_max": [
+   "ORG"
+  ],
+  "mask_types_default": [
+   "PER"
+  ],
+  "uncovered_default": 0,
+  "org_text": "ИП Петрова Н. Д.",
+  "org_span": [
+   247,
+   263
+  ],
+  "org_group": null,
+  "org_detector": "ner",
+  "org_canonical": null,
+  "org_shadowed": [
+   "Петрова Н. Д."
+  ],
+  "mech": "compound_ip_fio"
+ },
+ {
+  "doc_id": "supply_0008",
+  "start": 5235,
+  "end": 5261,
+  "value": "Петрова Наталья Дмитриевна",
+  "mask_types_max": [
+   "ORG"
+  ],
+  "mask_types_default": [
+   "PER"
+  ],
+  "uncovered_default": 0,
+  "org_text": "Индивидуальный предприниматель Петрова Наталья Дмитриевна",
+  "org_span": [
+   5204,
+   5261
+  ],
+  "org_group": null,
+  "org_detector": "ner",
+  "org_canonical": null,
+  "org_shadowed": [
+   "Петрова Наталья Дмитриевна"
+  ],
+  "mech": "compound_ip_fio"
+ },
+ {
+  "doc_id": "supply_0008__m1337_digit_spaces",
+  "start": 250,
+  "end": 263,
+  "value": "Петрова Н. Д.",
+  "mask_types_max": [
+   "ORG"
+  ],
+  "mask_types_default": [
+   "PER"
+  ],
+  "uncovered_default": 0,
+  "org_text": "ИП Петрова Н. Д.",
+  "org_span": [
+   247,
+   263
+  ],
+  "org_group": null,
+  "org_detector": "ner",
+  "org_canonical": null,
+  "org_shadowed": [
+   "Петрова Н. Д."
+  ],
+  "mech": "compound_ip_fio"
+ },
+ {
+  "doc_id": "supply_0008__m1337_digit_spaces",
+  "start": 5268,
+  "end": 5294,
+  "value": "Петрова Наталья Дмитриевна",
+  "mask_types_max": [
+   "ORG"
+  ],
+  "mask_types_default": [
+   "PER"
+  ],
+  "uncovered_default": 0,
+  "org_text": "Индивидуальный предприниматель Петрова Наталья Дмитриевна",
+  "org_span": [
+   5237,
+   5294
+  ],
+  "org_group": null,
+  "org_detector": "ner",
+  "org_canonical": null,
+  "org_shadowed": [
+   "Петрова Наталья Дмитриевна"
+  ],
+  "mech": "compound_ip_fio"
+ },
+ {
+  "doc_id": "supply_0008__m2718_combo",
+  "start": 5323,
+  "end": 5352,
+  "value": "петpов⁠a нaталья дмитpиев‍н­а",
+  "mask_types_max": [
+   "ORG"
+  ],
+  "mask_types_default": [
+   "PER"
+  ],
+  "uncovered_default": 0,
+  "org_text": "Индивидуальный предприниматель петpов⁠a нaталья дмитpиев‍н­а",
+  "org_span": [
+   5292,
+   5352
+  ],
+  "org_group": null,
+  "org_detector": "ner",
+  "org_canonical": null,
+  "org_shadowed": [
+   "петpов⁠a нaталья дмитpиев‍н­а"
+  ],
+  "mech": "compound_ip_fio"
+ },
+ {
+  "doc_id": "supply_0010",
+  "start": 66,
+  "end": 88,
+  "value": "Иванов Михаил Петрович",
+  "mask_types_max": [
+   "ORG"
+  ],
+  "mask_types_default": [
+   "PER"
+  ],
+  "uncovered_default": 0,
+  "org_text": "ИП Иванов Михаил Петрович",
+  "org_span": [
+   63,
+   88
+  ],
+  "org_group": null,
+  "org_detector": "ner",
+  "org_canonical": null,
+  "org_shadowed": [
+   "Иванов Михаил Петрович"
+  ],
+  "mech": "compound_ip_fio"
+ },
+ {
+  "doc_id": "supply_0010",
+  "start": 236,
+  "end": 250,
+  "value": "Новикова О. А.",
+  "mask_types_max": [
+   "ORG"
+  ],
+  "mask_types_default": [
+   "PER"
+  ],
+  "uncovered_default": 0,
+  "org_text": "ИП Новикова О. А.",
+  "org_span": [
+   233,
+   250
+  ],
+  "org_group": null,
+  "org_detector": "ner",
+  "org_canonical": null,
+  "org_shadowed": [
+   "Новикова О. А."
+  ],
+  "mech": "compound_ip_fio"
+ },
+ {
+  "doc_id": "supply_0010",
+  "start": 2778,
+  "end": 2800,
+  "value": "Иванов Михаил Петрович",
+  "mask_types_max": [
+   "ORG"
+  ],
+  "mask_types_default": [
+   "PER"
+  ],
+  "uncovered_default": 0,
+  "org_text": "Индивидуальный предприниматель Иванов Михаил Петрович",
+  "org_span": [
+   2747,
+   2800
+  ],
+  "org_group": null,
+  "org_detector": "ner",
+  "org_canonical": null,
+  "org_shadowed": [
+   "Иванов Михаил Петрович"
+  ],
+  "mech": "compound_ip_fio"
+ },
+ {
+  "doc_id": "supply_0010",
+  "start": 3102,
+  "end": 3126,
+  "value": "Новикова Ольга Андреевна",
+  "mask_types_max": [
+   "ORG"
+  ],
+  "mask_types_default": [
+   "PER"
+  ],
+  "uncovered_default": 0,
+  "org_text": "Индивидуальный предприниматель Новикова Ольга Андреевна",
+  "org_span": [
+   3071,
+   3126
+  ],
+  "org_group": null,
+  "org_detector": "ner",
+  "org_canonical": null,
+  "org_shadowed": [
+   "Новикова Ольга Андреевна"
+  ],
+  "mech": "compound_ip_fio"
+ },
+ {
+  "doc_id": "supply_0010__m1337_combo",
+  "start": 68,
+  "end": 93,
+  "value": "иВаН­Ов m‍и‍xAиЛ ПeТрОвИч",
+  "mask_types_max": [
+   "ORG"
+  ],
+  "mask_types_default": [
+   "PER"
+  ],
+  "uncovered_default": 0,
+  "org_text": "ИП  иВаН­Ов m‍и‍xAиЛ ПeТрОвИч",
+  "org_span": [
+   64,
+   93
+  ],
+  "org_group": null,
+  "org_detector": "ner",
+  "org_canonical": null,
+  "org_shadowed": [
+   "иВаН­Ов m‍и‍xAиЛ ПeТрОвИч"
+  ],
+  "mech": "compound_ip_fio"
+ },
+ {
+  "doc_id": "supply_0010__m1337_combo",
+  "start": 2809,
+  "end": 2834,
+  "value": "ИВАНО В MИXАИ Л  ПЕТPОВИЧ",
+  "mask_types_max": [
+   "ORG"
+  ],
+  "mask_types_default": [
+   "PER"
+  ],
+  "uncovered_default": 0,
+  "org_text": "Индивидуальный предприниматель ИВАНО В MИXАИ Л  ПЕТPОВИЧ",
+  "org_span": [
+   2778,
+   2834
+  ],
+  "org_group": null,
+  "org_detector": "ner",
+  "org_canonical": null,
+  "org_shadowed": [
+   "ИВАНО В MИXАИ Л  ПЕТPОВИЧ"
+  ],
+  "mech": "compound_ip_fio"
+ },
+ {
+  "doc_id": "supply_0010__m2718_homoglyph",
+  "start": 66,
+  "end": 88,
+  "value": "Ивaнов Миxаил Петрович",
+  "mask_types_max": [
+   "ORG"
+  ],
+  "mask_types_default": [
+   "PER"
+  ],
+  "uncovered_default": 0,
+  "org_text": "ИП Ивaнов Миxаил Петрович",
+  "org_span": [
+   63,
+   88
+  ],
+  "org_group": null,
+  "org_detector": "ner",
+  "org_canonical": null,
+  "org_shadowed": [
+   "Ивaнов Миxаил Петрович"
+  ],
+  "mech": "compound_ip_fio"
+ },
+ {
+  "doc_id": "supply_0010__m2718_homoglyph",
+  "start": 236,
+  "end": 250,
+  "value": "Новиkoвa O. А.",
+  "mask_types_max": [
+   "ORG"
+  ],
+  "mask_types_default": [
+   "PER"
+  ],
+  "uncovered_default": 0,
+  "org_text": "ИП Новиkoвa O. А.",
+  "org_span": [
+   233,
+   250
+  ],
+  "org_group": null,
+  "org_detector": "ner",
+  "org_canonical": null,
+  "org_shadowed": [
+   "Новиkoвa O. А."
+  ],
+  "mech": "compound_ip_fio"
+ },
+ {
+  "doc_id": "supply_0010__m2718_homoglyph",
+  "start": 2778,
+  "end": 2800,
+  "value": "Иванов Миxaил Пeтрoвич",
+  "mask_types_max": [
+   "ORG"
+  ],
+  "mask_types_default": [
+   "PER"
+  ],
+  "uncovered_default": 0,
+  "org_text": "Индивидуальный предприниматель Иванов Миxaил Пeтрoвич",
+  "org_span": [
+   2747,
+   2800
+  ],
+  "org_group": null,
+  "org_detector": "ner",
+  "org_canonical": null,
+  "org_shadowed": [
+   "Иванов Миxaил Пeтрoвич"
+  ],
+  "mech": "compound_ip_fio"
+ },
+ {
+  "doc_id": "supply_0010__m2718_homoglyph",
+  "start": 3102,
+  "end": 3126,
+  "value": "Hовикова Oльгa Андpеевна",
+  "mask_types_max": [
+   "ORG"
+  ],
+  "mask_types_default": [
+   "PER"
+  ],
+  "uncovered_default": 0,
+  "org_text": "Индивидуальный предприниматель Hовикова Oльгa Андpеевна",
+  "org_span": [
+   3071,
+   3126
+  ],
+  "org_group": null,
+  "org_detector": "ner",
+  "org_canonical": null,
+  "org_shadowed": [
+   "Hовикова Oльгa Андpеевна"
+  ],
+  "mech": "compound_ip_fio"
+ },
+ {
+  "doc_id": "supply_0011",
+  "start": 96,
+  "end": 110,
+  "value": "Воробьёв П. А.",
+  "mask_types_max": [
+   "ORG"
+  ],
+  "mask_types_default": [
+   "PER"
+  ],
+  "uncovered_default": 0,
+  "org_text": "Индивидуальный предприниматель Воробьёв П. А.",
+  "org_span": [
+   65,
+   110
+  ],
+  "org_group": null,
+  "org_detector": "ner",
+  "org_canonical": null,
+  "org_shadowed": [
+   "Воробьёв П. А."
+  ],
+  "mech": "compound_ip_fio"
+ },
+ {
+  "doc_id": "supply_0011",
+  "start": 2811,
+  "end": 2834,
+  "value": "Воробьёв Пётр Андреевич",
+  "mask_types_max": [
+   "ORG"
+  ],
+  "mask_types_default": [
+   "PER"
+  ],
+  "uncovered_default": 0,
+  "org_text": "Индивидуальный предприниматель Воробьёв Пётр Андреевич",
+  "org_span": [
+   2780,
+   2834
+  ],
+  "org_group": null,
+  "org_detector": "ner",
+  "org_canonical": null,
+  "org_shadowed": [
+   "Воробьёв Пётр Андреевич"
+  ],
+  "mech": "compound_ip_fio"
+ },
+ {
+  "doc_id": "supply_0011__m1337_combo",
+  "start": 2849,
+  "end": 2875,
+  "value": "вороб⁠ьёв пёт‍p андpе⁠евич",
+  "mask_types_max": [
+   "ORG"
+  ],
+  "mask_types_default": [
+   "PER"
+  ],
+  "uncovered_default": 0,
+  "org_text": "Индивидуальный предприниматель вороб⁠ьёв пёт‍p андpе⁠евич",
+  "org_span": [
+   2818,
+   2875
+  ],
+  "org_group": null,
+  "org_detector": "ner",
+  "org_canonical": null,
+  "org_shadowed": [
+   "вороб⁠ьёв пёт‍p андpе⁠евич"
+  ],
+  "mech": "compound_ip_fio"
+ },
+ {
+  "doc_id": "supply_0011__m2718_homoglyph",
+  "start": 96,
+  "end": 110,
+  "value": "Bоробьёв П. А.",
+  "mask_types_max": [
+   "ORG"
+  ],
+  "mask_types_default": [
+   "PER"
+  ],
+  "uncovered_default": 0,
+  "org_text": "Индивидуальный предприниматель Bоробьёв П. А.",
+  "org_span": [
+   65,
+   110
+  ],
+  "org_group": null,
+  "org_detector": "ner",
+  "org_canonical": null,
+  "org_shadowed": [
+   "Bоробьёв П. А."
+  ],
+  "mech": "compound_ip_fio"
+ },
+ {
+  "doc_id": "supply_0011__m2718_homoglyph",
+  "start": 2811,
+  "end": 2834,
+  "value": "Bоpoбьёв Пётp Андреевич",
+  "mask_types_max": [
+   "ORG"
+  ],
+  "mask_types_default": [
+   "PER"
+  ],
+  "uncovered_default": 0,
+  "org_text": "Индивидуальный предприниматель Bоpoбьёв Пётp Андреевич",
+  "org_span": [
+   2780,
+   2834
+  ],
+  "org_group": null,
+  "org_detector": "ner",
+  "org_canonical": null,
+  "org_shadowed": [
+   "Bоpoбьёв Пётp Андреевич"
+  ],
+  "mech": "compound_ip_fio"
+ },
+ {
+  "doc_id": "supply_0014",
+  "start": 281,
+  "end": 294,
+  "value": "Крылова Е. П.",
+  "mask_types_max": [
+   "ORG"
+  ],
+  "mask_types_default": [
+   "PER"
+  ],
+  "uncovered_default": 0,
+  "org_text": "Индивидуальный предприниматель Крылова Е. П.",
+  "org_span": [
+   250,
+   294
+  ],
+  "org_group": null,
+  "org_detector": "ner",
+  "org_canonical": null,
+  "org_shadowed": [
+   "Крылова Е. П."
+  ],
+  "mech": "compound_ip_fio"
+ },
+ {
+  "doc_id": "supply_0014",
+  "start": 3202,
+  "end": 3228,
+  "value": "Крылова Екатерина Петровна",
+  "mask_types_max": [
+   "ORG"
+  ],
+  "mask_types_default": [
+   "PER"
+  ],
+  "uncovered_default": 0,
+  "org_text": "Индивидуальный предприниматель Крылова Екатерина Петровна",
+  "org_span": [
+   3171,
+   3228
+  ],
+  "org_group": null,
+  "org_detector": "ner",
+  "org_canonical": null,
+  "org_shadowed": [
+   "Крылова Екатерина Петровна"
+  ],
+  "mech": "compound_ip_fio"
+ },
+ {
+  "doc_id": "supply_0014__m1337_case",
+  "start": 3202,
+  "end": 3228,
+  "value": "крылова екатерина петровна",
+  "mask_types_max": [
+   "ORG"
+  ],
+  "mask_types_default": [
+   "PER"
+  ],
+  "uncovered_default": 0,
+  "org_text": "иНдИвИдУаЛьНыЙ ПрЕдПрИнИмАтЕлЬ крылова екатерина петровна",
+  "org_span": [
+   3171,
+   3228
+  ],
+  "org_group": null,
+  "org_detector": "ner",
+  "org_canonical": null,
+  "org_shadowed": [
+   "крылова екатерина петровна"
+  ],
+  "mech": "compound_ip_fio"
+ },
+ {
+  "doc_id": "supply_0016",
+  "start": 75,
+  "end": 99,
+  "value": "Орлов Дмитрий Михайлович",
+  "mask_types_max": [
+   "ORG"
+  ],
+  "mask_types_default": [
+   "PER"
+  ],
+  "uncovered_default": 0,
+  "org_text": "ИП Орлов Дмитрий Михайлович",
+  "org_span": [
+   72,
+   99
+  ],
+  "org_group": null,
+  "org_detector": "ner",
+  "org_canonical": null,
+  "org_shadowed": [
+   "Орлов Дмитрий Михайлович"
+  ],
+  "mech": "compound_ip_fio"
+ },
+ {
+  "doc_id": "supply_0016",
+  "start": 275,
+  "end": 288,
+  "value": "Семёнов С. П.",
+  "mask_types_max": [
+   "ORG"
+  ],
+  "mask_types_default": [
+   "PER"
+  ],
+  "uncovered_default": 0,
+  "org_text": "Индивидуальный предприниматель Семёнов С. П.",
+  "org_span": [
+   244,
+   288
+  ],
+  "org_group": null,
+  "org_detector": "ner",
+  "org_canonical": null,
+  "org_shadowed": [
+   "Семёнов С. П."
+  ],
+  "mech": "compound_ip_fio"
+ },
+ {
+  "doc_id": "supply_0016",
+  "start": 2815,
+  "end": 2839,
+  "value": "Орлов Дмитрий Михайлович",
+  "mask_types_max": [
+   "ORG"
+  ],
+  "mask_types_default": [
+   "PER"
+  ],
+  "uncovered_default": 0,
+  "org_text": "Индивидуальный предприниматель Орлов Дмитрий Михайлович",
+  "org_span": [
+   2784,
+   2839
+  ],
+  "org_group": null,
+  "org_detector": "ner",
+  "org_canonical": null,
+  "org_shadowed": [
+   "Орлов Дмитрий Михайлович"
+  ],
+  "mech": "compound_ip_fio"
+ },
+ {
+  "doc_id": "supply_0016",
+  "start": 3140,
+  "end": 3163,
+  "value": "Семёнов Сергей Петрович",
+  "mask_types_max": [
+   "ORG"
+  ],
+  "mask_types_default": [
+   "PER"
+  ],
+  "uncovered_default": 0,
+  "org_text": "Индивидуальный предприниматель Семёнов Сергей Петрович",
+  "org_span": [
+   3109,
+   3163
+  ],
+  "org_group": null,
+  "org_detector": "ner",
+  "org_canonical": null,
+  "org_shadowed": [
+   "Семёнов Сергей Петрович"
+  ],
+  "mech": "compound_ip_fio"
+ },
+ {
+  "doc_id": "supply_0016__m1337_linebreak",
+  "start": 75,
+  "end": 100,
+  "value": "Орлов Дмитрий Михай\nлович",
+  "mask_types_max": [
+   "ORG"
+  ],
+  "mask_types_default": [
+   "PER"
+  ],
+  "uncovered_default": 0,
+  "org_text": "ИП Орлов Дмитрий Михай\nлович",
+  "org_span": [
+   72,
+   100
+  ],
+  "org_group": null,
+  "org_detector": "ner",
+  "org_canonical": null,
+  "org_shadowed": [
+   "Орлов Дмитрий Михай\nлович"
+  ],
+  "mech": "compound_ip_fio"
+ },
+ {
+  "doc_id": "supply_0016__m1337_linebreak",
+  "start": 278,
+  "end": 292,
+  "value": "Семёнов\n С. П.",
+  "mask_types_max": [
+   "ORG"
+  ],
+  "mask_types_default": [
+   "PER"
+  ],
+  "uncovered_default": 0,
+  "org_text": "Индивидуальный предприниматель Семёнов\n С. П.",
+  "org_span": [
+   247,
+   292
+  ],
+  "org_group": null,
+  "org_detector": "ner",
+  "org_canonical": null,
+  "org_shadowed": [
+   "Семёнов\n С. П."
+  ],
+  "mech": "compound_ip_fio"
+ },
+ {
+  "doc_id": "supply_0016__m2718_cell_split",
+  "start": 75,
+  "end": 99,
+  "value": "Орлов Дмитрий Михайлович",
+  "mask_types_max": [
+   "ORG"
+  ],
+  "mask_types_default": [
+   "PER"
+  ],
+  "uncovered_default": 0,
+  "org_text": "ИП Орлов Дмитрий Михайлович",
+  "org_span": [
+   72,
+   99
+  ],
+  "org_group": null,
+  "org_detector": "ner",
+  "org_canonical": null,
+  "org_shadowed": [
+   "Орлов Дмитрий Михайлович"
+  ],
+  "mech": "compound_ip_fio"
+ },
+ {
+  "doc_id": "supply_0016__m2718_cell_split",
+  "start": 275,
+  "end": 288,
+  "value": "Семёнов С. П.",
+  "mask_types_max": [
+   "ORG"
+  ],
+  "mask_types_default": [
+   "PER"
+  ],
+  "uncovered_default": 0,
+  "org_text": "Индивидуальный предприниматель Семёнов С. П.",
+  "org_span": [
+   244,
+   288
+  ],
+  "org_group": null,
+  "org_detector": "ner",
+  "org_canonical": null,
+  "org_shadowed": [
+   "Семёнов С. П."
+  ],
+  "mech": "compound_ip_fio"
+ },
+ {
+  "doc_id": "supply_0016__m2718_cell_split",
+  "start": 2815,
+  "end": 2839,
+  "value": "Орлов Дмитрий Михайлович",
+  "mask_types_max": [
+   "ORG"
+  ],
+  "mask_types_default": [
+   "PER"
+  ],
+  "uncovered_default": 0,
+  "org_text": "Индивидуальный предприниматель Орлов Дмитрий Михайлович",
+  "org_span": [
+   2784,
+   2839
+  ],
+  "org_group": null,
+  "org_detector": "ner",
+  "org_canonical": null,
+  "org_shadowed": [
+   "Орлов Дмитрий Михайлович"
+  ],
+  "mech": "compound_ip_fio"
+ },
+ {
+  "doc_id": "supply_0016__m2718_cell_split",
+  "start": 3140,
+  "end": 3163,
+  "value": "Семёнов Сергей Петрович",
+  "mask_types_max": [
+   "ORG"
+  ],
+  "mask_types_default": [
+   "PER"
+  ],
+  "uncovered_default": 0,
+  "org_text": "Индивидуальный предприниматель Семёнов Сергей Петрович",
+  "org_span": [
+   3109,
+   3163
+  ],
+  "org_group": null,
+  "org_detector": "ner",
+  "org_canonical": null,
+  "org_shadowed": [
+   "Семёнов Сергей Петрович"
+  ],
+  "mech": "compound_ip_fio"
+ },
+ {
+  "doc_id": "works_0002",
+  "start": 232,
+  "end": 256,
+  "value": "Смирнова Ирина Сергеевна",
+  "mask_types_max": [
+   "ORG"
+  ],
+  "mask_types_default": [
+   "PER"
+  ],
+  "uncovered_default": 0,
+  "org_text": "ИП Смирнова Ирина Сергеевна",
+  "org_span": [
+   229,
+   256
+  ],
+  "org_group": null,
+  "org_detector": "ner",
+  "org_canonical": null,
+  "org_shadowed": [
+   "Смирнова Ирина Сергеевна"
+  ],
+  "mech": "compound_ip_fio"
+ },
+ {
+  "doc_id": "works_0002",
+  "start": 3074,
+  "end": 3098,
+  "value": "Смирнова Ирина Сергеевна",
+  "mask_types_max": [
+   "ORG"
+  ],
+  "mask_types_default": [
+   "PER"
+  ],
+  "uncovered_default": 0,
+  "org_text": "Индивидуальный предприниматель Смирнова Ирина Сергеевна",
+  "org_span": [
+   3043,
+   3098
+  ],
+  "org_group": null,
+  "org_detector": "ner",
+  "org_canonical": null,
+  "org_shadowed": [
+   "Смирнова Ирина Сергеевна"
+  ],
+  "mech": "compound_ip_fio"
+ },
+ {
+  "doc_id": "works_0002__m1337_cell_split",
+  "start": 232,
+  "end": 256,
+  "value": "Смирнова Ирина Сергеевна",
+  "mask_types_max": [
+   "ORG"
+  ],
+  "mask_types_default": [
+   "PER"
+  ],
+  "uncovered_default": 0,
+  "org_text": "ИП Смирнова Ирина Сергеевна",
+  "org_span": [
+   229,
+   256
+  ],
+  "org_group": null,
+  "org_detector": "ner",
+  "org_canonical": null,
+  "org_shadowed": [
+   "Смирнова Ирина Сергеевна"
+  ],
+  "mech": "compound_ip_fio"
+ },
+ {
+  "doc_id": "works_0002__m1337_cell_split",
+  "start": 3074,
+  "end": 3098,
+  "value": "Смирнова Ирина Сергеевна",
+  "mask_types_max": [
+   "ORG"
+  ],
+  "mask_types_default": [
+   "PER"
+  ],
+  "uncovered_default": 0,
+  "org_text": "Индивидуальный предприниматель Смирнова Ирина Сергеевна",
+  "org_span": [
+   3043,
+   3098
+  ],
+  "org_group": null,
+  "org_detector": "ner",
+  "org_canonical": null,
+  "org_shadowed": [
+   "Смирнова Ирина Сергеевна"
+  ],
+  "mech": "compound_ip_fio"
+ },
+ {
+  "doc_id": "works_0002__m2718_invisible",
+  "start": 239,
+  "end": 266,
+  "value": "Смир‍нов а Ирина С⁠ергеевна",
+  "mask_types_max": [
+   "ORG"
+  ],
+  "mask_types_default": [
+   "PER"
+  ],
+  "uncovered_default": 0,
+  "org_text": "ИП Смир‍нов а Ирина С⁠ергеевна",
+  "org_span": [
+   236,
+   266
+  ],
+  "org_group": null,
+  "org_detector": "ner",
+  "org_canonical": null,
+  "org_shadowed": [
+   "Смир‍нов а Ирина С⁠ергеевна"
+  ],
+  "mech": "compound_ip_fio"
+ },
+ {
+  "doc_id": "works_0002__m2718_invisible",
+  "start": 3145,
+  "end": 3172,
+  "value": "Смирнов­а И⁠рина­ Сергеевна",
+  "mask_types_max": [
+   "ORG"
+  ],
+  "mask_types_default": [
+   "PER"
+  ],
+  "uncovered_default": 0,
+  "org_text": "Индивидуальный предприниматель Смирнов­а И⁠рина­ Сергеевна",
+  "org_span": [
+   3114,
+   3172
+  ],
+  "org_group": null,
+  "org_detector": "ner",
+  "org_canonical": null,
+  "org_shadowed": [
+   "Смирнов­а И⁠рина­ Сергеевна"
+  ],
+  "mech": "compound_ip_fio"
+ },
+ {
+  "doc_id": "works_0004",
+  "start": 76,
+  "end": 87,
+  "value": "Белов П. П.",
+  "mask_types_max": [
+   "ORG"
+  ],
+  "mask_types_default": [
+   "PER"
+  ],
+  "uncovered_default": 0,
+  "org_text": "ИП Белов П. П.",
+  "org_span": [
+   73,
+   87
+  ],
+  "org_group": null,
+  "org_detector": "ner",
+  "org_canonical": null,
+  "org_shadowed": [
+   "Белов П. П."
+  ],
+  "mech": "compound_ip_fio"
+ },
+ {
+  "doc_id": "works_0004",
+  "start": 263,
+  "end": 277,
+  "value": "Михайлов П. С.",
+  "mask_types_max": [
+   "ORG"
+  ],
+  "mask_types_default": [
+   "PER"
+  ],
+  "uncovered_default": 0,
+  "org_text": "Индивидуальный предприниматель Михайлов П. С.",
+  "org_span": [
+   232,
+   277
+  ],
+  "org_group": null,
+  "org_detector": "ner",
+  "org_canonical": null,
+  "org_shadowed": [
+   "Михайлов П. С."
+  ],
+  "mech": "compound_ip_fio"
+ },
+ {
+  "doc_id": "works_0004",
+  "start": 2765,
+  "end": 2785,
+  "value": "Белов Павел Павлович",
+  "mask_types_max": [
+   "ORG"
+  ],
+  "mask_types_default": [
+   "PER"
+  ],
+  "uncovered_default": 0,
+  "org_text": "Белов Павел Павлович\nИндивидуальный предприниматель",
+  "org_span": [
+   2765,
+   2816
+  ],
+  "org_group": null,
+  "org_detector": "ner",
+  "org_canonical": null,
+  "org_shadowed": [
+   "Белов Павел Павлович",
+   "Индивидуальный предприниматель Белов Павел Павлович"
+  ],
+  "mech": "compound_ip_fio"
+ },
+ {
+  "doc_id": "works_0004",
+  "start": 2817,
+  "end": 2837,
+  "value": "Белов Павел Павлович",
+  "mask_types_max": [
+   "ORG"
+  ],
+  "mask_types_default": [
+   "PER"
+  ],
+  "uncovered_default": 0,
+  "org_text": "Белов Павел Павлович",
+  "org_span": [
+   2817,
+   2837
+  ],
+  "org_group": null,
+  "org_detector": "ner",
+  "org_canonical": null,
+  "org_shadowed": [
+   "Белов Павел Павлович"
+  ],
+  "mech": "compound_ip_fio"
+ },
+ {
+  "doc_id": "works_0004",
+  "start": 3174,
+  "end": 3197,
+  "value": "Михайлов Пётр Сергеевич",
+  "mask_types_max": [
+   "ORG"
+  ],
+  "mask_types_default": [
+   "PER"
+  ],
+  "uncovered_default": 0,
+  "org_text": "Индивидуальный предприниматель Михайлов Пётр Сергеевич",
+  "org_span": [
+   3143,
+   3197
+  ],
+  "org_group": null,
+  "org_detector": "ner",
+  "org_canonical": null,
+  "org_shadowed": [
+   "Михайлов Пётр Сергеевич"
+  ],
+  "mech": "compound_ip_fio"
+ },
+ {
+  "doc_id": "works_0004__m1337_invisible",
+  "start": 78,
+  "end": 90,
+  "value": "Белов П. П .",
+  "mask_types_max": [
+   "ORG"
+  ],
+  "mask_types_default": [
+   "PER"
+  ],
+  "uncovered_default": 0,
+  "org_text": "ИП Белов П. П .",
+  "org_span": [
+   75,
+   90
+  ],
+  "org_group": null,
+  "org_detector": "ner",
+  "org_canonical": null,
+  "org_shadowed": [
+   "Белов П. П ."
+  ],
+  "mech": "compound_ip_fio"
+ },
+ {
+  "doc_id": "works_0004__m1337_invisible",
+  "start": 269,
+  "end": 285,
+  "value": "М и хайлов П. С.",
+  "mask_types_max": [
+   "ORG"
+  ],
+  "mask_types_default": [
+   "PER"
+  ],
+  "uncovered_default": 0,
+  "org_text": "Индивидуальный предприниматель М и хайлов П. С.",
+  "org_span": [
+   238,
+   285
+  ],
+  "org_group": null,
+  "org_detector": "ner",
+  "org_canonical": null,
+  "org_shadowed": [
+   "М и хайлов П. С."
+  ],
+  "mech": "compound_ip_fio"
+ },
+ {
+  "doc_id": "works_0004__m1337_invisible",
+  "start": 2813,
+  "end": 2836,
+  "value": "Белов  Павел Па⁠в лович",
+  "mask_types_max": [
+   "ORG"
+  ],
+  "mask_types_default": [
+   "PER"
+  ],
+  "uncovered_default": 0,
+  "org_text": "Белов  Павел Па⁠в лович\nИндивидуальный предприниматель",
+  "org_span": [
+   2813,
+   2867
+  ],
+  "org_group": null,
+  "org_detector": "ner",
+  "org_canonical": null,
+  "org_shadowed": [
+   "Белов  Павел Па⁠в лович",
+   "Индивидуальный предприниматель Белов П​авел⁠ Павл​ович"
+  ],
+  "mech": "compound_ip_fio"
+ },
+ {
+  "doc_id": "works_0004__m1337_invisible",
+  "start": 2868,
+  "end": 2891,
+  "value": "Белов П​авел⁠ Павл​ович",
+  "mask_types_max": [
+   "ORG"
+  ],
+  "mask_types_default": [
+   "PER"
+  ],
+  "uncovered_default": 0,
+  "org_text": "Белов П​авел⁠ Павл​ович",
+  "org_span": [
+   2868,
+   2891
+  ],
+  "org_group": null,
+  "org_detector": "ner",
+  "org_canonical": null,
+  "org_shadowed": [
+   "Белов П​авел⁠ Павл​ович"
+  ],
+  "mech": "compound_ip_fio"
+ },
+ {
+  "doc_id": "works_0004__m1337_invisible",
+  "start": 3248,
+  "end": 3274,
+  "value": "Мих​айлов Пётр Сергее в​ич",
+  "mask_types_max": [
+   "ORG"
+  ],
+  "mask_types_default": [
+   "PER"
+  ],
+  "uncovered_default": 0,
+  "org_text": "Индивидуальный предприниматель Мих​айлов Пётр Сергее в​ич",
+  "org_span": [
+   3217,
+   3274
+  ],
+  "org_group": null,
+  "org_detector": "ner",
+  "org_canonical": null,
+  "org_shadowed": [
+   "Мих​айлов Пётр Сергее в​ич"
+  ],
+  "mech": "compound_ip_fio"
+ },
+ {
+  "doc_id": "works_0004__m2718_digit_spaces",
+  "start": 76,
+  "end": 87,
+  "value": "Белов П. П.",
+  "mask_types_max": [
+   "ORG"
+  ],
+  "mask_types_default": [
+   "PER"
+  ],
+  "uncovered_default": 0,
+  "org_text": "ИП Белов П. П.",
+  "org_span": [
+   73,
+   87
+  ],
+  "org_group": null,
+  "org_detector": "ner",
+  "org_canonical": null,
+  "org_shadowed": [
+   "Белов П. П."
+  ],
+  "mech": "compound_ip_fio"
+ },
+ {
+  "doc_id": "works_0004__m2718_digit_spaces",
+  "start": 267,
+  "end": 281,
+  "value": "Михайлов П. С.",
+  "mask_types_max": [
+   "ORG"
+  ],
+  "mask_types_default": [
+   "PER"
+  ],
+  "uncovered_default": 0,
+  "org_text": "Индивидуальный предприниматель Михайлов П. С.",
+  "org_span": [
+   236,
+   281
+  ],
+  "org_group": null,
+  "org_detector": "ner",
+  "org_canonical": null,
+  "org_shadowed": [
+   "Михайлов П. С."
+  ],
+  "mech": "compound_ip_fio"
+ },
+ {
+  "doc_id": "works_0004__m2718_digit_spaces",
+  "start": 2780,
+  "end": 2800,
+  "value": "Белов Павел Павлович",
+  "mask_types_max": [
+   "ORG"
+  ],
+  "mask_types_default": [
+   "PER"
+  ],
+  "uncovered_default": 0,
+  "org_text": "Белов Павел Павлович\nИндивидуальный предприниматель",
+  "org_span": [
+   2780,
+   2831
+  ],
+  "org_group": null,
+  "org_detector": "ner",
+  "org_canonical": null,
+  "org_shadowed": [
+   "Белов Павел Павлович",
+   "Индивидуальный предприниматель Белов Павел Павлович"
+  ],
+  "mech": "compound_ip_fio"
+ },
+ {
+  "doc_id": "works_0004__m2718_digit_spaces",
+  "start": 2832,
+  "end": 2852,
+  "value": "Белов Павел Павлович",
+  "mask_types_max": [
+   "ORG"
+  ],
+  "mask_types_default": [
+   "PER"
+  ],
+  "uncovered_default": 0,
+  "org_text": "Белов Павел Павлович",
+  "org_span": [
+   2832,
+   2852
+  ],
+  "org_group": null,
+  "org_detector": "ner",
+  "org_canonical": null,
+  "org_shadowed": [
+   "Белов Павел Павлович"
+  ],
+  "mech": "compound_ip_fio"
+ },
+ {
+  "doc_id": "works_0004__m2718_digit_spaces",
+  "start": 3206,
+  "end": 3229,
+  "value": "Михайлов Пётр Сергеевич",
+  "mask_types_max": [
+   "ORG"
+  ],
+  "mask_types_default": [
+   "PER"
+  ],
+  "uncovered_default": 0,
+  "org_text": "Индивидуальный предприниматель Михайлов Пётр Сергеевич",
+  "org_span": [
+   3175,
+   3229
+  ],
+  "org_group": null,
+  "org_detector": "ner",
+  "org_canonical": null,
+  "org_shadowed": [
+   "Михайлов Пётр Сергеевич"
+  ],
+  "mech": "compound_ip_fio"
+ },
+ {
+  "doc_id": "works_0005",
+  "start": 92,
+  "end": 107,
+  "value": "Максимова М. Н.",
+  "mask_types_max": [
+   "ORG"
+  ],
+  "mask_types_default": [
+   "PER"
+  ],
+  "uncovered_default": 0,
+  "org_text": "Индивидуальный предприниматель Максимова М. Н.",
+  "org_span": [
+   61,
+   107
+  ],
+  "org_group": null,
+  "org_detector": "ner",
+  "org_canonical": null,
+  "org_shadowed": [
+   "Максимова М. Н."
+  ],
+  "mech": "compound_ip_fio"
+ },
+ {
+  "doc_id": "works_0005",
+  "start": 2651,
+  "end": 2677,
+  "value": "Максимова Мария Николаевна",
+  "mask_types_max": [
+   "ORG"
+  ],
+  "mask_types_default": [
+   "PER"
+  ],
+  "uncovered_default": 0,
+  "org_text": "Индивидуальный предприниматель Максимова Мария Николаевна",
+  "org_span": [
+   2620,
+   2677
+  ],
+  "org_group": null,
+  "org_detector": "ner",
+  "org_canonical": null,
+  "org_shadowed": [
+   "Максимова Мария Николаевна"
+  ],
+  "mech": "compound_ip_fio"
+ },
+ {
+  "doc_id": "works_0005__m1337_digit_spaces",
+  "start": 93,
+  "end": 108,
+  "value": "Максимова М. Н.",
+  "mask_types_max": [
+   "ORG"
+  ],
+  "mask_types_default": [
+   "PER"
+  ],
+  "uncovered_default": 0,
+  "org_text": "Индивидуальный предприниматель Максимова М. Н.",
+  "org_span": [
+   62,
+   108
+  ],
+  "org_group": null,
+  "org_detector": "ner",
+  "org_canonical": null,
+  "org_shadowed": [
+   "Максимова М. Н."
+  ],
+  "mech": "compound_ip_fio"
+ },
+ {
+  "doc_id": "works_0005__m1337_digit_spaces",
+  "start": 2658,
+  "end": 2684,
+  "value": "Максимова Мария Николаевна",
+  "mask_types_max": [
+   "ORG"
+  ],
+  "mask_types_default": [
+   "PER"
+  ],
+  "uncovered_default": 0,
+  "org_text": "Индивидуальный предприниматель Максимова Мария Николаевна",
+  "org_span": [
+   2627,
+   2684
+  ],
+  "org_group": null,
+  "org_detector": "ner",
+  "org_canonical": null,
+  "org_shadowed": [
+   "Максимова Мария Николаевна"
+  ],
+  "mech": "compound_ip_fio"
+ },
+ {
+  "doc_id": "works_0008",
+  "start": 250,
+  "end": 271,
+  "value": "Гусева Ирина Олеговна",
+  "mask_types_max": [
+   "ORG"
+  ],
+  "mask_types_default": [
+   "PER"
+  ],
+  "uncovered_default": 0,
+  "org_text": "ИП Гусева Ирина Олеговна",
+  "org_span": [
+   247,
+   271
+  ],
+  "org_group": null,
+  "org_detector": "ner",
+  "org_canonical": null,
+  "org_shadowed": [
+   "Гусева Ирина Олеговна"
+  ],
+  "mech": "compound_ip_fio"
+ },
+ {
+  "doc_id": "works_0008",
+  "start": 5165,
+  "end": 5186,
+  "value": "Гусева Ирина Олеговна",
+  "mask_types_max": [
+   "ORG"
+  ],
+  "mask_types_default": [
+   "PER"
+  ],
+  "uncovered_default": 0,
+  "org_text": "Индивидуальный предприниматель Гусева Ирина Олеговна",
+  "org_span": [
+   5134,
+   5186
+  ],
+  "org_group": null,
+  "org_detector": "ner",
+  "org_canonical": null,
+  "org_shadowed": [
+   "Гусева Ирина Олеговна"
+  ],
+  "mech": "compound_ip_fio"
+ },
+ {
+  "doc_id": "works_0008__m1337_combo",
+  "start": 255,
+  "end": 279,
+  "value": "ГУCЕВA И РИНA OЛ ЕГ​ОВНА",
+  "mask_types_max": [
+   "ORG"
+  ],
+  "mask_types_default": [
+   "PER"
+  ],
+  "uncovered_default": 0,
+  "org_text": "ИП ГУCЕВA И РИНA OЛ ЕГ​ОВНА",
+  "org_span": [
+   252,
+   279
+  ],
+  "org_group": null,
+  "org_detector": "ner",
+  "org_canonical": null,
+  "org_shadowed": [
+   "ГУCЕВA И РИНA OЛ ЕГ​ОВНА"
+  ],
+  "mech": "compound_ip_fio"
+ },
+ {
+  "doc_id": "works_0008__m2718_homoglyph",
+  "start": 250,
+  "end": 271,
+  "value": "Гyсeва Иpинa Олеговна",
+  "mask_types_max": [
+   "ORG"
+  ],
+  "mask_types_default": [
+   "PER"
+  ],
+  "uncovered_default": 0,
+  "org_text": "ИП Гyсeва Иpинa Олеговна",
+  "org_span": [
+   247,
+   271
+  ],
+  "org_group": null,
+  "org_detector": "ner",
+  "org_canonical": null,
+  "org_shadowed": [
+   "Гyсeва Иpинa Олеговна"
+  ],
+  "mech": "compound_ip_fio"
+ },
+ {
+  "doc_id": "works_0008__m2718_homoglyph",
+  "start": 5165,
+  "end": 5186,
+  "value": "Гyсевa Иринa Олеговна",
+  "mask_types_max": [
+   "ORG"
+  ],
+  "mask_types_default": [
+   "PER"
+  ],
+  "uncovered_default": 0,
+  "org_text": "Индивидуальный предприниматель Гyсевa Иринa Олеговна",
+  "org_span": [
+   5134,
+   5186
+  ],
+  "org_group": null,
+  "org_detector": "ner",
+  "org_canonical": null,
+  "org_shadowed": [
+   "Гyсевa Иринa Олеговна"
+  ],
+  "mech": "compound_ip_fio"
+ },
+ {
+  "doc_id": "works_0010",
+  "start": 72,
+  "end": 84,
+  "value": "Коваль М. Е.",
+  "mask_types_max": [
+   "ORG"
+  ],
+  "mask_types_default": [
+   "PER"
+  ],
+  "uncovered_default": 0,
+  "org_text": "ИП Коваль М. Е.",
+  "org_span": [
+   69,
+   84
+  ],
+  "org_group": null,
+  "org_detector": "ner",
+  "org_canonical": null,
+  "org_shadowed": [
+   "Коваль М. Е."
+  ],
+  "mech": "compound_ip_fio"
+ },
+ {
+  "doc_id": "works_0010",
+  "start": 260,
+  "end": 285,
+  "value": "Новиков Михаил Дмитриевич",
+  "mask_types_max": [
+   "ORG"
+  ],
+  "mask_types_default": [
+   "PER"
+  ],
+  "uncovered_default": 0,
+  "org_text": "Индивидуальный предприниматель Новиков Михаил Дмитриевич",
+  "org_span": [
+   229,
+   285
+  ],
+  "org_group": null,
+  "org_detector": "ner",
+  "org_canonical": null,
+  "org_shadowed": [
+   "Новиков Михаил Дмитриевич"
+  ],
+  "mech": "compound_ip_fio"
+ },
+ {
+  "doc_id": "works_0010",
+  "start": 2705,
+  "end": 2727,
+  "value": "Коваль Михаил Егорович",
+  "mask_types_max": [
+   "ORG"
+  ],
+  "mask_types_default": [
+   "PER"
+  ],
+  "uncovered_default": 0,
+  "org_text": "Индивидуальный предприниматель Коваль Михаил Егорович",
+  "org_span": [
+   2674,
+   2727
+  ],
+  "org_group": null,
+  "org_detector": "ner",
+  "org_canonical": null,
+  "org_shadowed": [
+   "Коваль Михаил Егорович"
+  ],
+  "mech": "compound_ip_fio"
+ },
+ {
+  "doc_id": "works_0010",
+  "start": 2992,
+  "end": 3017,
+  "value": "Новиков Михаил Дмитриевич",
+  "mask_types_max": [
+   "ORG"
+  ],
+  "mask_types_default": [
+   "PER"
+  ],
+  "uncovered_default": 0,
+  "org_text": "Индивидуальный предприниматель Новиков Михаил Дмитриевич",
+  "org_span": [
+   2961,
+   3017
+  ],
+  "org_group": null,
+  "org_detector": "ner",
+  "org_canonical": null,
+  "org_shadowed": [
+   "Новиков Михаил Дмитриевич"
+  ],
+  "mech": "compound_ip_fio"
+ },
+ {
+  "doc_id": "works_0010__m1337_homoglyph",
+  "start": 72,
+  "end": 84,
+  "value": "Kовaль М. E.",
+  "mask_types_max": [
+   "ORG"
+  ],
+  "mask_types_default": [
+   "PER"
+  ],
+  "uncovered_default": 0,
+  "org_text": "ИП Kовaль М. E.",
+  "org_span": [
+   69,
+   84
+  ],
+  "org_group": null,
+  "org_detector": "ner",
+  "org_canonical": null,
+  "org_shadowed": [
+   "Kовaль М. E."
+  ],
+  "mech": "compound_ip_fio"
+ },
+ {
+  "doc_id": "works_0010__m1337_homoglyph",
+  "start": 260,
+  "end": 285,
+  "value": "Нoвиkoв Mихаил Дмитриевич",
+  "mask_types_max": [
+   "ORG"
+  ],
+  "mask_types_default": [
+   "PER"
+  ],
+  "uncovered_default": 0,
+  "org_text": "Индивидуальный предприниматель Нoвиkoв Mихаил Дмитриевич",
+  "org_span": [
+   229,
+   285
+  ],
+  "org_group": null,
+  "org_detector": "ner",
+  "org_canonical": null,
+  "org_shadowed": [
+   "Нoвиkoв Mихаил Дмитриевич"
+  ],
+  "mech": "compound_ip_fio"
+ },
+ {
+  "doc_id": "works_0010__m1337_homoglyph",
+  "start": 2705,
+  "end": 2727,
+  "value": "Кoваль Михaил Егорoвич",
+  "mask_types_max": [
+   "ORG"
+  ],
+  "mask_types_default": [
+   "PER"
+  ],
+  "uncovered_default": 0,
+  "org_text": "Индивидуальный предприниматель Кoваль Михaил Егорoвич",
+  "org_span": [
+   2674,
+   2727
+  ],
+  "org_group": null,
+  "org_detector": "ner",
+  "org_canonical": null,
+  "org_shadowed": [
+   "Кoваль Михaил Егорoвич"
+  ],
+  "mech": "compound_ip_fio"
+ },
+ {
+  "doc_id": "works_0010__m1337_homoglyph",
+  "start": 2992,
+  "end": 3017,
+  "value": "Новиков Mиxаил Дмитриевич",
+  "mask_types_max": [
+   "ORG"
+  ],
+  "mask_types_default": [
+   "PER"
+  ],
+  "uncovered_default": 0,
+  "org_text": "Индивидуальный предприниматель Новиков Mиxаил Дмитриевич",
+  "org_span": [
+   2961,
+   3017
+  ],
+  "org_group": null,
+  "org_detector": "ner",
+  "org_canonical": null,
+  "org_shadowed": [
+   "Новиков Mиxаил Дмитриевич"
+  ],
+  "mech": "compound_ip_fio"
+ },
+ {
+  "doc_id": "works_0010__m2718_case",
+  "start": 72,
+  "end": 84,
+  "value": "КОВАЛЬ М. Е.",
+  "mask_types_max": [
+   "ORG"
+  ],
+  "mask_types_default": [
+   "PER"
+  ],
+  "uncovered_default": 0,
+  "org_text": "ИП КОВАЛЬ М. Е.",
+  "org_span": [
+   69,
+   84
+  ],
+  "org_group": null,
+  "org_detector": "ner",
+  "org_canonical": null,
+  "org_shadowed": [
+   "КОВАЛЬ М. Е."
+  ],
+  "mech": "compound_ip_fio"
+ },
+ {
+  "doc_id": "works_0010__m2718_case",
+  "start": 260,
+  "end": 285,
+  "value": "новиков михаил дмитриевич",
+  "mask_types_max": [
+   "ORG"
+  ],
+  "mask_types_default": [
+   "PER"
+  ],
+  "uncovered_default": 0,
+  "org_text": "Индивидуальный предприниматель новиков михаил дмитриевич",
+  "org_span": [
+   229,
+   285
+  ],
+  "org_group": null,
+  "org_detector": "ner",
+  "org_canonical": null,
+  "org_shadowed": [
+   "новиков михаил дмитриевич"
+  ],
+  "mech": "compound_ip_fio"
+ },
+ {
+  "doc_id": "works_0010__m2718_case",
+  "start": 2992,
+  "end": 3017,
+  "value": "НОВИКОВ МИХАИЛ ДМИТРИЕВИЧ",
+  "mask_types_max": [
+   "ORG"
+  ],
+  "mask_types_default": [
+   "PER"
+  ],
+  "uncovered_default": 0,
+  "org_text": "Индивидуальный предприниматель НОВИКОВ МИХАИЛ ДМИТРИЕВИЧ",
+  "org_span": [
+   2961,
+   3017
+  ],
+  "org_group": null,
+  "org_detector": "ner",
+  "org_canonical": null,
+  "org_shadowed": [
+   "НОВИКОВ МИХАИЛ ДМИТРИЕВИЧ"
+  ],
+  "mech": "compound_ip_fio"
+ },
+ {
+  "doc_id": "works_0011",
+  "start": 65,
+  "end": 86,
+  "value": "Беляев Артём Петрович",
+  "mask_types_max": [
+   "ORG"
+  ],
+  "mask_types_default": [
+   "PER"
+  ],
+  "uncovered_default": 0,
+  "org_text": "ИП Беляев Артём Петрович",
+  "org_span": [
+   62,
+   86
+  ],
+  "org_group": null,
+  "org_detector": "ner",
+  "org_canonical": null,
+  "org_shadowed": [
+   "Беляев Артём Петрович"
+  ],
+  "mech": "compound_ip_fio"
+ },
+ {
+  "doc_id": "works_0011",
+  "start": 2793,
+  "end": 2814,
+  "value": "Беляев Артём Петрович",
+  "mask_types_max": [
+   "ORG"
+  ],
+  "mask_types_default": [
+   "PER"
+  ],
+  "uncovered_default": 0,
+  "org_text": "Индивидуальный предприниматель Беляев Артём Петрович",
+  "org_span": [
+   2762,
+   2814
+  ],
+  "org_group": null,
+  "org_detector": "ner",
+  "org_canonical": null,
+  "org_shadowed": [
+   "Беляев Артём Петрович"
+  ],
+  "mech": "compound_ip_fio"
+ },
+ {
+  "doc_id": "works_0011__m1337_digit_spaces",
+  "start": 65,
+  "end": 86,
+  "value": "Беляев Артём Петрович",
+  "mask_types_max": [
+   "ORG"
+  ],
+  "mask_types_default": [
+   "PER"
+  ],
+  "uncovered_default": 0,
+  "org_text": "ИП Беляев Артём Петрович",
+  "org_span": [
+   62,
+   86
+  ],
+  "org_group": null,
+  "org_detector": "ner",
+  "org_canonical": null,
+  "org_shadowed": [
+   "Беляев Артём Петрович"
+  ],
+  "mech": "compound_ip_fio"
+ },
+ {
+  "doc_id": "works_0011__m1337_digit_spaces",
+  "start": 2802,
+  "end": 2823,
+  "value": "Беляев Артём Петрович",
+  "mask_types_max": [
+   "ORG"
+  ],
+  "mask_types_default": [
+   "PER"
+  ],
+  "uncovered_default": 0,
+  "org_text": "Индивидуальный предприниматель Беляев Артём Петрович",
+  "org_span": [
+   2771,
+   2823
+  ],
+  "org_group": null,
+  "org_detector": "ner",
+  "org_canonical": null,
+  "org_shadowed": [
+   "Беляев Артём Петрович"
+  ],
+  "mech": "compound_ip_fio"
+ }
+]
