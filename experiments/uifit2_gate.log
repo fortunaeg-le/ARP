@@ -1,0 +1,15 @@
+=== gate.py — ЕДИНЫЙ регресс-гейт (7 линий: precision / leak_v2 / masking A / masking B / over-mask прозы / границы по направлению / зеркало подавления) ===
+
+MANIFEST.sha256 (до прогона): 659 файлов — OK
+
+Прогон измерения: 324 документов (encrypt+decrypt, изолированное хранилище)…
+[1/324] agency_0001  12s  (0.1 doc/s)
+[10/324] agency_0004  21s  (0.5 doc/s)
+[20/324] agency_0007__m1337_combo  32s  (0.6 doc/s)
+[30/324] agency_0010__m2718_linebreak  39s  (0.8 doc/s)
+[40/324] cession_0004  49s  (0.8 doc/s)
+[50/324] cession_0007__m1337_digit_spaces  57s  (0.9 doc/s)
+[60/324] labor_0002__m2718_homoglyph  66s  (0.9 doc/s)
+[70/324] labor_0006  72s  (1.0 doc/s)
+[80/324] labor_0009__m1337_invisible  84s  (0.9 doc/s)
+[90/324] labor_0012__m2718_digit_spaces  91s  (1.0 doc/s)
