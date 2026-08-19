@@ -171,6 +171,9 @@ hiddenimports = [
     "core", "report", "selfcheck", "procutil", "server", "paths",
     # CIRCLE-UI: единый источник форматов/полей предупреждений (см. app/capabilities.py).
     "capabilities",
+    # ЭТАП DESKTOP-FIT: `appwindow` — открытие интерфейса отдельным окном
+    # приложения (`--app=` у Chromium). Импортируется из launcher.py.
+    "appwindow",
     "pymorphy2_dicts_ru",
 ]
 

@@ -15,6 +15,10 @@
      покажет консоль) — единственный видимый признак работающей программы и
      единственный способ её штатно закрыть. Закрытие окна = корректная
      остановка сервера, без зомби-процессов.
+  5. Интерфейс открывается ОТДЕЛЬНЫМ ОКНОМ приложения (app/appwindow.py:
+     `--app=` у Chromium-браузера), а не вкладкой в браузере пользователя.
+     Браузера на движке Chromium не нашлось — запасной путь webbrowser.open,
+     программа запускается всё равно. Выход из программы закрывает и окно.
 """
 
 import json
@@ -22,10 +26,10 @@ import os
 import sys
 import threading
 import time
-import webbrowser
 
 sys.path.insert(0, os.path.dirname(os.path.abspath(__file__)))
 
+import appwindow  # noqa: E402
 import procutil  # noqa: E402
 import selfcheck  # noqa: E402
 import server as server_mod  # noqa: E402
@@ -69,7 +73,11 @@ def _handle_stale_instance():
     info = _ping(port)
     if info is not None:
         # Живой и отвечающий процесс — не второй сервер, просто открываем окно.
-        webbrowser.open(f"http://127.0.0.1:{port}/")
+        # manage=False: этот процесс завершится через мгновение, и окно,
+        # взятое им под управление, умерло бы вместе с ним — раньше, чем
+        # человек успел бы его увидеть. Профиль общий, поэтому окно достаётся
+        # браузеру ПЕРВОГО лаунчера и закрывается вместе с ним.
+        appwindow.open(f"http://127.0.0.1:{port}/", manage=False)
         return True
 
     # Процесс жив, но не отвечает — зомби (была история со старым сервером,
@@ -129,12 +137,12 @@ def _run_status_window(url: str, on_exit):
     tk.Label(root, text=f"сборка: {core.BUILD_MARK}", font=("Segoe UI", 9), fg="#5c6675").pack()
     tk.Label(
         root,
-        text="Не закрывайте это окно, пока работаете.\nОкно браузера можно закрывать и открывать заново.",
+        text="Не закрывайте это окно, пока работаете.\nОкно программы можно закрывать и открывать заново.",
         font=("Segoe UI", 9), fg="#5c6675", justify="center",
     ).pack(pady=10)
 
     def _open_again():
-        webbrowser.open(url)
+        appwindow.open(url)
 
     def _exit():
         root.destroy()
@@ -176,9 +184,12 @@ def main():
 
     thread = threading.Thread(target=httpd.serve_forever, daemon=True)
     thread.start()
-    webbrowser.open(url)
+    appwindow.open(url)
 
     def _shutdown():
+        # Порядок важен: сначала окно, потом сервер. Наоборот пользователь
+        # успевает увидеть в окне ошибку соединения при штатном выходе.
+        appwindow.close_all()
         httpd.shutdown()
         httpd.server_close()
         _remove_lock()

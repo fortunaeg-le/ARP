@@ -322,6 +322,32 @@ def visible_text(br: Browser, selector: str):
 # `report(ok, name, detail)` приходит из accept_circle.py — там же общий счётчик
 # шагов, чтобы у круга был один сквозной номер, а не два независимых.
 # --------------------------------------------------------------------------- #
+# Помещается ли экран в окно. Ищем узлы, которые не влезли И не прокручиваются
+# (ни сами, ни через прокручиваемого предка) — то есть срезаны насовсем.
+FITS_IN_WINDOW_JS = r"""
+const bad = [];
+const all = document.querySelectorAll('#scr-ver, #scr-ver *');
+for (const el of all) {
+  const st = getComputedStyle(el);
+  if (st.display === 'none' || st.visibility === 'hidden') continue;
+  const lost = el.scrollHeight - el.clientHeight;
+  if (lost <= 1) continue;
+  if (st.overflowY === 'auto' || st.overflowY === 'scroll') continue;
+  let anc = el.parentElement, reachable = false;
+  while (anc) {
+    const ao = getComputedStyle(anc).overflowY;
+    if (ao === 'auto' || ao === 'scroll') { reachable = true; break; }
+    anc = anc.parentElement;
+  }
+  if (!reachable) bad.push((el.id ? '#' + el.id : el.tagName.toLowerCase()) +
+                           ' срезан на ' + lost + ' px');
+}
+const page = document.documentElement.scrollHeight - window.innerHeight;
+if (page > 1) bad.push('страница целиком срезана на ' + page + ' px');
+return bad.length ? bad.slice(0, 4).join('; ') : 'ok';
+"""
+
+
 def run_ui_circle(port: int, report, note, samples: dict):
     """samples: {'txt': bytes, 'docx': bytes, 'pdf_ok': bytes, 'pdf_scan': bytes}"""
     exe = find_browser()
@@ -379,6 +405,17 @@ def run_ui_circle(port: int, report, note, samples: dict):
 
         sid = br.js("return (typeof CUR!=='undefined' && CUR ? CUR.session_id : '')||'';")
         report(bool(sid), "ID сессии показан на экране", sid[:8] + "…")
+
+        # --- экран проверки ПОМЕЩАЕТСЯ в окно ------------------------------- #
+        # ЭТАП DESKTOP-FIT. Карточка экрана не была объявлена колонкой и росла
+        # по содержимому: на договоре из сорока строк — 1427 px в окне 643 px.
+        # `body{overflow-y:hidden}` срезал разницу МОЛЧА, без полосы прокрутки:
+        # низ обоих текстов и кнопки под ними человеку были недоступны, а
+        # ответ сервера при этом был полон — ровно тот класс «движок умеет,
+        # экран не показывает», ради которого этот путь круга и заведён.
+        cut = br.js(FITS_IN_WINDOW_JS)
+        report(cut == "ok", "ЭКРАН ПРОВЕРКИ ПОМЕЩАЕТСЯ В ОКНО целиком",
+               str(cut))
 
         # --- пометить пропущенное значение ЖЕСТОМ --------------------------- #
         # Настоящее выделение (Range) в панели + настоящий mouseup: срабатывает
