@@ -1,0 +1,20 @@
+/home/user/ARP/venv/lib/python3.11/site-packages/pymorphy2/analyzer.py:114: UserWarning: pkg_resources is deprecated as an API. See https://setuptools.pypa.io/en/latest/pkg_resources.html. The pkg_resources package is slated for removal as early as 2025-11-30. Refrain from using this package or pin to Setuptools<81.
+  import pkg_resources
+Замер по наборам: 324 документов, 4 набора(ов), workers=3
+[20/324] 12s
+[40/324] 20s
+[60/324] 29s
+[80/324] 39s
+[100/324] 49s
+[120/324] 59s
+[140/324] 69s
+[160/324] 79s
+[180/324] 89s
+[200/324] 99s
+[220/324] 108s
+[240/324] 118s
+[260/324] 128s
+[280/324] 137s
+[300/324] 148s
+[320/324] 158s
+DONE 324 docs in 161s -> /home/user/ARP/experiments/metrics_full/results_profiles.json

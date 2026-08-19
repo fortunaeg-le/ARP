@@ -1,0 +1,73 @@
+{
+ "gate_v1": {
+  "cmd": [
+   "/home/user/ARP/venv/Scripts/python.exe",
+   "/home/user/ARP/tests/corpus/gate.py"
+  ],
+  "what": "полный гейт корпуса v1 (324 док.)",
+  "log": "run_gate_v1.log",
+  "started_utc": "2026-08-19T13:42:50+00:00",
+  "elapsed_sec": 149.4,
+  "exit_code": 1
+ },
+ "profiles": {
+  "cmd": [
+   "/home/user/ARP/venv/Scripts/python.exe",
+   "/home/user/ARP/experiments/metrics_full/run_profiles.py"
+  ],
+  "what": "четыре набора типов на корпусе v1 (324 док.)",
+  "log": "run_profiles.log",
+  "started_utc": "2026-08-19T13:45:19+00:00",
+  "elapsed_sec": 162.0,
+  "exit_code": 0
+ },
+ "v2": {
+  "cmd": [
+   "/home/user/ARP/venv/Scripts/python.exe",
+   "/home/user/ARP/tests/corpus_v2/measure_v2.py",
+   "--out",
+   "/home/user/ARP/experiments/metrics_full/results_v2.json"
+  ],
+  "what": "замер корпуса v2 (138 док.)",
+  "log": "run_v2.log",
+  "started_utc": "2026-08-19T13:48:01+00:00",
+  "elapsed_sec": 325.4,
+  "exit_code": 0
+ },
+ "by_entity": {
+  "cmd": [
+   "/home/user/ARP/venv/Scripts/python.exe",
+   "/home/user/ARP/tests/corpus/by_entity.py",
+   "/home/user/ARP/tests/corpus/results_gate_current.json"
+  ],
+  "what": "счёт по сущностям поверх дампа гейта",
+  "log": "run_by_entity.log",
+  "started_utc": "2026-08-19T13:53:27+00:00",
+  "elapsed_sec": 0.6,
+  "exit_code": 0
+ },
+ "subsample": {
+  "cmd": [
+   "/home/user/ARP/venv/Scripts/python.exe",
+   "/home/user/ARP/tests/corpus/subsample.py"
+  ],
+  "what": "быстрый срез (33 док.) — ради хронометража",
+  "log": "run_subsample.log",
+  "started_utc": "2026-08-19T13:53:27+00:00",
+  "elapsed_sec": 17.2,
+  "exit_code": 0
+ },
+ "pytest": {
+  "cmd": [
+   "/home/user/ARP/venv/Scripts/python.exe",
+   "-m",
+   "pytest",
+   "-q"
+  ],
+  "what": "полный набор тестов — ради числа тестов и времени",
+  "log": "run_pytest.log",
+  "started_utc": "2026-08-19T13:53:45+00:00",
+  "elapsed_sec": 362.0,
+  "exit_code": 1
+ }
+}

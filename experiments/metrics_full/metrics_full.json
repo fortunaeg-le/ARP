@@ -1,0 +1,3952 @@
+{
+ "head": {
+  "commit": "8de62de2951021ff732a0f606570f6afd706f392",
+  "commit_short": "8de62de",
+  "branch": "claude/zealous-lamport-lh00d9",
+  "dirty": true,
+  "date_utc": "2026-08-19T14:03:43+00:00",
+  "python": "3.11.15",
+  "platform": "Linux-6.18.5-fc-v20-x86_64-with-glibc2.39",
+  "machine": "x86_64 / 4 ядер",
+  "runs": {
+   "gate_v1": {
+    "cmd": [
+     "/home/user/ARP/venv/Scripts/python.exe",
+     "/home/user/ARP/tests/corpus/gate.py"
+    ],
+    "what": "полный гейт корпуса v1 (324 док.)",
+    "log": "run_gate_v1.log",
+    "started_utc": "2026-08-19T13:42:50+00:00",
+    "elapsed_sec": 149.4,
+    "exit_code": 1
+   },
+   "profiles": {
+    "cmd": [
+     "/home/user/ARP/venv/Scripts/python.exe",
+     "/home/user/ARP/experiments/metrics_full/run_profiles.py"
+    ],
+    "what": "четыре набора типов на корпусе v1 (324 док.)",
+    "log": "run_profiles.log",
+    "started_utc": "2026-08-19T13:45:19+00:00",
+    "elapsed_sec": 162.0,
+    "exit_code": 0
+   },
+   "v2": {
+    "cmd": [
+     "/home/user/ARP/venv/Scripts/python.exe",
+     "/home/user/ARP/tests/corpus_v2/measure_v2.py",
+     "--out",
+     "/home/user/ARP/experiments/metrics_full/results_v2.json"
+    ],
+    "what": "замер корпуса v2 (138 док.)",
+    "log": "run_v2.log",
+    "started_utc": "2026-08-19T13:48:01+00:00",
+    "elapsed_sec": 325.4,
+    "exit_code": 0
+   },
+   "by_entity": {
+    "cmd": [
+     "/home/user/ARP/venv/Scripts/python.exe",
+     "/home/user/ARP/tests/corpus/by_entity.py",
+     "/home/user/ARP/tests/corpus/results_gate_current.json"
+    ],
+    "what": "счёт по сущностям поверх дампа гейта",
+    "log": "run_by_entity.log",
+    "started_utc": "2026-08-19T13:53:27+00:00",
+    "elapsed_sec": 0.6,
+    "exit_code": 0
+   },
+   "subsample": {
+    "cmd": [
+     "/home/user/ARP/venv/Scripts/python.exe",
+     "/home/user/ARP/tests/corpus/subsample.py"
+    ],
+    "what": "быстрый срез (33 док.) — ради хронометража",
+    "log": "run_subsample.log",
+    "started_utc": "2026-08-19T13:53:27+00:00",
+    "elapsed_sec": 17.2,
+    "exit_code": 0
+   },
+   "pytest": {
+    "cmd": [
+     "/home/user/ARP/venv/Scripts/python.exe",
+     "-m",
+     "pytest",
+     "-q"
+    ],
+    "what": "полный набор тестов — ради числа тестов и времени",
+    "log": "run_pytest.log",
+    "started_utc": "2026-08-19T13:53:45+00:00",
+    "elapsed_sec": 362.0,
+    "exit_code": 1
+   }
+  },
+  "v1": {
+   "docs": 324,
+   "gold_entities": 12033,
+   "negatives": 4578,
+   "manifest_ok": true,
+   "manifest_files": 659,
+   "manifest_bad": 0,
+   "processed": 324,
+   "crashed": [],
+   "refused": [],
+   "roundtrip_ok": 284,
+   "unresolved": 0
+  },
+  "v2": {
+   "docs": 138,
+   "gold_entities": 8387,
+   "negatives": 11399,
+   "manifest_ok": true,
+   "manifest_files": 394,
+   "manifest_bad": 0,
+   "processed": 138,
+   "crashed": [],
+   "refused": [],
+   "roundtrip_ok": 125,
+   "unresolved": 0
+  }
+ },
+ "product_v1": {
+  "corpus": "v1",
+  "leak_metric": "оконная метрика leak_v2, пороги ≥6 и ≥8",
+  "gold_occurrences_all": 12033,
+  "gold_occurrences_bik_excl": 11580,
+  "recall_all": 91.98038726834538,
+  "recall_bik_excl": 91.66666666666667,
+  "leak6_bik_excl": 924,
+  "leak8_bik_excl": 913,
+  "leak6_bik_excl_pct": 7.979274611398964,
+  "leak8_bik_excl_pct": 7.884283246977548,
+  "leak6_all": 924,
+  "leak8_all": 913,
+  "leaked_by_type": {
+   "PER": 574,
+   "ADDRESS": 195,
+   "ORG": 88,
+   "INN_PER": 15,
+   "PASSPORT": 14,
+   "PHONE": 12,
+   "OGRN": 8,
+   "SUM": 6,
+   "INN": 5,
+   "ACCOUNT": 3,
+   "BIRTHDATE": 3,
+   "SNILS": 1
+  },
+  "masks_total": 16158,
+  "masks_on_gold": 12049,
+  "masks_on_nothing": 2906,
+  "masks_cross": 443,
+  "fp_on_negatives": 970,
+  "fp_by_type": {
+   "PER": 1,
+   "ADDRESS": 1,
+   "CONTRACT_NO": 316,
+   "DATE": 652
+  },
+  "masking_a": 100.0,
+  "masking_b": 87.33504855174704,
+  "masking_c": 96.3233463357955,
+  "under_n": 418,
+  "under_ch": 2911,
+  "over_n": 48,
+  "over_ch": 472,
+  "not_found_n": 966,
+  "not_found_ch": 10133
+ },
+ "product_v2": {
+  "corpus": "v2",
+  "leak_metric": "позиционная метрика leak_pos: цифры эталона, не закрытые ни одной маской",
+  "gold_occurrences_all": 8387,
+  "gold_occurrences_bik_excl": 8200,
+  "recall_all": 89.45987838321211,
+  "recall_bik_excl": 89.21951219512195,
+  "leak6_bik_excl": 569,
+  "leak8_bik_excl": 464,
+  "leak6_bik_excl_pct": 6.939024390243903,
+  "leak8_bik_excl_pct": 5.658536585365853,
+  "leak6_all": 569,
+  "leak8_all": 464,
+  "leaked_by_type": {
+   "CONTRACT_NO": 249,
+   "SUM": 192,
+   "PER": 60,
+   "PHONE": 22,
+   "ORG": 10,
+   "ADDRESS": 10,
+   "INN": 10,
+   "ACCOUNT": 10,
+   "TERM": 5,
+   "PERCENT": 1
+  },
+  "masks_total": 11631,
+  "masks_on_gold": 8044,
+  "masks_on_nothing": 845,
+  "masks_cross": 482,
+  "fp_on_negatives": 2642,
+  "fp_by_type": {
+   "INN": 315,
+   "INN_PER": 189,
+   "ACCOUNT": 492,
+   "BIK": 38,
+   "PHONE": 328,
+   "PASSPORT": 138,
+   "SNILS": 138,
+   "BIRTHDATE": 276,
+   "SUM": 222,
+   "PERCENT": 230,
+   "DATE": 276
+  },
+  "masking_a": 100.0,
+  "masking_b": 95.18896071606166,
+  "masking_c": 94.00795624067628,
+  "under_n": 303,
+  "under_ch": 2182,
+  "over_n": 38,
+  "over_ch": 542,
+  "not_found_n": 884,
+  "not_found_ch": 6684
+ },
+ "types_v1": {
+  "rows": {
+   "ACCOUNT": {
+    "n_gold": 732,
+    "found": 699,
+    "recall": 95.49180327868852,
+    "leak6": 3,
+    "leak8": 3,
+    "leak6_pct": 0.4098360655737705,
+    "leak8_pct": 0.4098360655737705,
+    "precision": 100.0,
+    "tp": 742,
+    "fp_neg": 0,
+    "cross": 0,
+    "nothing": 0,
+    "n_masks": 742,
+    "n_scored": 742,
+    "masking_b": 87.87061994609165,
+    "masking_c": 100.0,
+    "under_n": 4,
+    "under_ch": 4,
+    "over_n": 0,
+    "over_ch": 0,
+    "not_found_bnd": 33,
+    "not_found_ch": 712,
+    "miss": {
+     "nothing": 33
+    }
+   },
+   "ADDRESS": {
+    "n_gold": 1308,
+    "found": 1236,
+    "recall": 94.4954128440367,
+    "leak6": 195,
+    "leak8": 195,
+    "leak6_pct": 14.908256880733944,
+    "leak8_pct": 14.908256880733944,
+    "precision": 99.92205767731879,
+    "tp": 1282,
+    "fp_neg": 1,
+    "cross": 3,
+    "nothing": 5,
+    "n_masks": 1292,
+    "n_scored": 1285,
+    "masking_b": 87.15953307392996,
+    "masking_c": 99.76653696498055,
+    "under_n": 90,
+    "under_ch": 1250,
+    "over_n": 31,
+    "over_ch": 300,
+    "not_found_bnd": 72,
+    "not_found_ch": 2689,
+    "miss": {
+     "nothing": 71,
+     "wrong_type:PER": 1
+    }
+   },
+   "BIK": {
+    "n_gold": 453,
+    "found": 453,
+    "recall": 100.0,
+    "leak6": 0,
+    "leak8": 0,
+    "leak6_pct": 0.0,
+    "leak8_pct": 0.0,
+    "precision": 100.0,
+    "tp": 471,
+    "fp_neg": 0,
+    "cross": 0,
+    "nothing": 0,
+    "n_masks": 471,
+    "n_scored": 471,
+    "masking_b": 91.93205944798301,
+    "masking_c": 100.0,
+    "under_n": 2,
+    "under_ch": 2,
+    "over_n": 0,
+    "over_ch": 0,
+    "not_found_bnd": 0,
+    "not_found_ch": 0,
+    "miss": {}
+   },
+   "BIRTHDATE": {
+    "n_gold": 228,
+    "found": 224,
+    "recall": 98.24561403508773,
+    "leak6": 3,
+    "leak8": 3,
+    "leak6_pct": 1.3157894736842106,
+    "leak8_pct": 1.3157894736842106,
+    "precision": 100.0,
+    "tp": 242,
+    "fp_neg": 0,
+    "cross": 0,
+    "nothing": 0,
+    "n_masks": 242,
+    "n_scored": 242,
+    "masking_b": 83.47107438016529,
+    "masking_c": 100.0,
+    "under_n": 4,
+    "under_ch": 4,
+    "over_n": 0,
+    "over_ch": 0,
+    "not_found_bnd": 4,
+    "not_found_ch": 33,
+    "miss": {
+     "nothing": 3,
+     "wrong_type:DATE": 1
+    }
+   },
+   "CONTRACT_KIND": {
+    "n_gold": 0,
+    "found": 0,
+    "recall": null,
+    "leak6": 0,
+    "leak8": 0,
+    "leak6_pct": null,
+    "leak8_pct": null,
+    "precision": null,
+    "tp": 0,
+    "fp_neg": 0,
+    "cross": 0,
+    "nothing": 349,
+    "n_masks": 349,
+    "n_scored": 0,
+    "masking_b": null,
+    "masking_c": null,
+    "under_n": 0,
+    "under_ch": 0,
+    "over_n": 0,
+    "over_ch": 0,
+    "not_found_bnd": 0,
+    "not_found_ch": 0,
+    "miss": {}
+   },
+   "CONTRACT_NO": {
+    "n_gold": 0,
+    "found": 0,
+    "recall": null,
+    "leak6": 0,
+    "leak8": 0,
+    "leak6_pct": null,
+    "leak8_pct": null,
+    "precision": 0.0,
+    "tp": 0,
+    "fp_neg": 316,
+    "cross": 0,
+    "nothing": 0,
+    "n_masks": 316,
+    "n_scored": 0,
+    "masking_b": null,
+    "masking_c": null,
+    "under_n": 0,
+    "under_ch": 0,
+    "over_n": 0,
+    "over_ch": 0,
+    "not_found_bnd": 0,
+    "not_found_ch": 0,
+    "miss": {}
+   },
+   "DATE": {
+    "n_gold": 0,
+    "found": 0,
+    "recall": null,
+    "leak6": 0,
+    "leak8": 0,
+    "leak6_pct": null,
+    "leak8_pct": null,
+    "precision": 0.0,
+    "tp": 0,
+    "fp_neg": 652,
+    "cross": 1,
+    "nothing": 354,
+    "n_masks": 1238,
+    "n_scored": 1,
+    "masking_b": 100.0,
+    "masking_c": 0.0,
+    "under_n": 0,
+    "under_ch": 0,
+    "over_n": 0,
+    "over_ch": 0,
+    "not_found_bnd": 0,
+    "not_found_ch": 0,
+    "miss": {}
+   },
+   "EMAIL": {
+    "n_gold": 714,
+    "found": 714,
+    "recall": 100.0,
+    "leak6": 0,
+    "leak8": 0,
+    "leak6_pct": 0.0,
+    "leak8_pct": 0.0,
+    "precision": 100.0,
+    "tp": 739,
+    "fp_neg": 0,
+    "cross": 0,
+    "nothing": 0,
+    "n_masks": 739,
+    "n_scored": 739,
+    "masking_b": 84.97970230040596,
+    "masking_c": 100.0,
+    "under_n": 61,
+    "under_ch": 313,
+    "over_n": 0,
+    "over_ch": 0,
+    "not_found_bnd": 0,
+    "not_found_ch": 0,
+    "miss": {}
+   },
+   "INN": {
+    "n_gold": 369,
+    "found": 302,
+    "recall": 81.84281842818429,
+    "leak6": 5,
+    "leak8": 4,
+    "leak6_pct": 1.3550135501355014,
+    "leak8_pct": 1.084010840108401,
+    "precision": 100.0,
+    "tp": 318,
+    "fp_neg": 0,
+    "cross": 43,
+    "nothing": 0,
+    "n_masks": 361,
+    "n_scored": 361,
+    "masking_b": 87.25761772853186,
+    "masking_c": 88.08864265927978,
+    "under_n": 0,
+    "under_ch": 0,
+    "over_n": 0,
+    "over_ch": 0,
+    "not_found_bnd": 67,
+    "not_found_ch": 370,
+    "miss": {
+     "wrong_type:ADDRESS": 30,
+     "nothing": 34,
+     "wrong_type:PHONE": 3
+    }
+   },
+   "INN_PER": {
+    "n_gold": 675,
+    "found": 657,
+    "recall": 97.33333333333333,
+    "leak6": 15,
+    "leak8": 15,
+    "leak6_pct": 2.2222222222222223,
+    "leak8_pct": 2.2222222222222223,
+    "precision": 100.0,
+    "tp": 694,
+    "fp_neg": 0,
+    "cross": 0,
+    "nothing": 0,
+    "n_masks": 694,
+    "n_scored": 694,
+    "masking_b": 85.44668587896254,
+    "masking_c": 100.0,
+    "under_n": 19,
+    "under_ch": 19,
+    "over_n": 0,
+    "over_ch": 0,
+    "not_found_bnd": 18,
+    "not_found_ch": 171,
+    "miss": {
+     "nothing": 13,
+     "wrong_type:INN": 4,
+     "wrong_type:PHONE": 1
+    }
+   },
+   "KPP": {
+    "n_gold": 246,
+    "found": 246,
+    "recall": 100.0,
+    "leak6": 0,
+    "leak8": 0,
+    "leak6_pct": 0.0,
+    "leak8_pct": 0.0,
+    "precision": 100.0,
+    "tp": 254,
+    "fp_neg": 0,
+    "cross": 0,
+    "nothing": 0,
+    "n_masks": 254,
+    "n_scored": 254,
+    "masking_b": 91.73228346456693,
+    "masking_c": 100.0,
+    "under_n": 5,
+    "under_ch": 5,
+    "over_n": 0,
+    "over_ch": 0,
+    "not_found_bnd": 0,
+    "not_found_ch": 0,
+    "miss": {}
+   },
+   "OGRN": {
+    "n_gold": 420,
+    "found": 412,
+    "recall": 98.0952380952381,
+    "leak6": 8,
+    "leak8": 6,
+    "leak6_pct": 1.9047619047619047,
+    "leak8_pct": 1.4285714285714286,
+    "precision": 100.0,
+    "tp": 424,
+    "fp_neg": 0,
+    "cross": 0,
+    "nothing": 0,
+    "n_masks": 424,
+    "n_scored": 424,
+    "masking_b": 93.39622641509433,
+    "masking_c": 100.0,
+    "under_n": 4,
+    "under_ch": 4,
+    "over_n": 0,
+    "over_ch": 0,
+    "not_found_bnd": 8,
+    "not_found_ch": 116,
+    "miss": {
+     "nothing": 8
+    }
+   },
+   "ORG": {
+    "n_gold": 462,
+    "found": 450,
+    "recall": 97.40259740259741,
+    "leak6": 88,
+    "leak8": 88,
+    "leak6_pct": 19.047619047619047,
+    "leak8_pct": 19.047619047619047,
+    "precision": 100.0,
+    "tp": 458,
+    "fp_neg": 0,
+    "cross": 388,
+    "nothing": 351,
+    "n_masks": 1197,
+    "n_scored": 846,
+    "masking_b": 92.43498817966903,
+    "masking_c": 54.1371158392435,
+    "under_n": 23,
+    "under_ch": 104,
+    "over_n": 0,
+    "over_ch": 0,
+    "not_found_bnd": 12,
+    "not_found_ch": 212,
+    "miss": {
+     "nothing": 12
+    }
+   },
+   "PASSPORT": {
+    "n_gold": 912,
+    "found": 871,
+    "recall": 95.50438596491227,
+    "leak6": 14,
+    "leak8": 14,
+    "leak6_pct": 1.5350877192982457,
+    "leak8_pct": 1.5350877192982457,
+    "precision": 100.0,
+    "tp": 943,
+    "fp_neg": 0,
+    "cross": 0,
+    "nothing": 0,
+    "n_masks": 943,
+    "n_scored": 943,
+    "masking_b": 83.24496288441145,
+    "masking_c": 100.0,
+    "under_n": 14,
+    "under_ch": 14,
+    "over_n": 0,
+    "over_ch": 0,
+    "not_found_bnd": 41,
+    "not_found_ch": 74,
+    "miss": {
+     "wrong_type:INN": 30,
+     "nothing": 8,
+     "wrong_type:PHONE": 1,
+     "wrong_type:ADDRESS": 2
+    }
+   },
+   "PASSPORT_ISSUER": {
+    "n_gold": 0,
+    "found": 0,
+    "recall": null,
+    "leak6": 0,
+    "leak8": 0,
+    "leak6_pct": null,
+    "leak8_pct": null,
+    "precision": null,
+    "tp": 0,
+    "fp_neg": 0,
+    "cross": 0,
+    "nothing": 452,
+    "n_masks": 452,
+    "n_scored": 0,
+    "masking_b": null,
+    "masking_c": null,
+    "under_n": 0,
+    "under_ch": 0,
+    "over_n": 0,
+    "over_ch": 0,
+    "not_found_bnd": 0,
+    "not_found_ch": 0,
+    "miss": {}
+   },
+   "PER": {
+    "n_gold": 3420,
+    "found": 2758,
+    "recall": 80.64327485380117,
+    "leak6": 574,
+    "leak8": 574,
+    "leak6_pct": 16.783625730994153,
+    "leak8_pct": 16.783625730994153,
+    "precision": 99.96580027359781,
+    "tp": 2923,
+    "fp_neg": 1,
+    "cross": 2,
+    "nothing": 4,
+    "n_masks": 2931,
+    "n_scored": 2925,
+    "masking_b": 83.48717948717949,
+    "masking_c": 99.93162393162393,
+    "under_n": 150,
+    "under_ch": 868,
+    "over_n": 17,
+    "over_ch": 172,
+    "not_found_bnd": 663,
+    "not_found_ch": 4716,
+    "miss": {
+     "nothing": 276,
+     "wrong_type:ORG": 386
+    }
+   },
+   "PERCENT": {
+    "n_gold": 0,
+    "found": 0,
+    "recall": null,
+    "leak6": 0,
+    "leak8": 0,
+    "leak6_pct": null,
+    "leak8_pct": null,
+    "precision": null,
+    "tp": 0,
+    "fp_neg": 0,
+    "cross": 0,
+    "nothing": 1031,
+    "n_masks": 1031,
+    "n_scored": 0,
+    "masking_b": null,
+    "masking_c": null,
+    "under_n": 0,
+    "under_ch": 0,
+    "over_n": 0,
+    "over_ch": 0,
+    "not_found_bnd": 0,
+    "not_found_ch": 0,
+    "miss": {}
+   },
+   "PHONE": {
+    "n_gold": 1218,
+    "found": 1175,
+    "recall": 96.4696223316913,
+    "leak6": 12,
+    "leak8": 10,
+    "leak6_pct": 0.9852216748768473,
+    "leak8_pct": 0.8210180623973727,
+    "precision": 100.0,
+    "tp": 1224,
+    "fp_neg": 0,
+    "cross": 6,
+    "nothing": 0,
+    "n_masks": 1230,
+    "n_scored": 1230,
+    "masking_b": 89.26829268292683,
+    "masking_c": 99.51219512195122,
+    "under_n": 35,
+    "under_ch": 283,
+    "over_n": 0,
+    "over_ch": 0,
+    "not_found_bnd": 43,
+    "not_found_ch": 973,
+    "miss": {
+     "nothing": 42,
+     "wrong_type:INN": 1
+    }
+   },
+   "REGISTRY_NAME": {
+    "n_gold": 0,
+    "found": 0,
+    "recall": null,
+    "leak6": 0,
+    "leak8": 0,
+    "leak6_pct": null,
+    "leak8_pct": null,
+    "precision": null,
+    "tp": 0,
+    "fp_neg": 0,
+    "cross": 0,
+    "nothing": 0,
+    "n_masks": 0,
+    "n_scored": 0,
+    "masking_b": null,
+    "masking_c": null,
+    "under_n": 0,
+    "under_ch": 0,
+    "over_n": 0,
+    "over_ch": 0,
+    "not_found_bnd": 0,
+    "not_found_ch": 0,
+    "miss": {}
+   },
+   "REG_ID": {
+    "n_gold": 0,
+    "found": 0,
+    "recall": null,
+    "leak6": 0,
+    "leak8": 0,
+    "leak6_pct": null,
+    "leak8_pct": null,
+    "precision": null,
+    "tp": 0,
+    "fp_neg": 0,
+    "cross": 0,
+    "nothing": 0,
+    "n_masks": 0,
+    "n_scored": 0,
+    "masking_b": null,
+    "masking_c": null,
+    "under_n": 0,
+    "under_ch": 0,
+    "over_n": 0,
+    "over_ch": 0,
+    "not_found_bnd": 0,
+    "not_found_ch": 0,
+    "miss": {}
+   },
+   "REG_NUMBER": {
+    "n_gold": 0,
+    "found": 0,
+    "recall": null,
+    "leak6": 0,
+    "leak8": 0,
+    "leak6_pct": null,
+    "leak8_pct": null,
+    "precision": null,
+    "tp": 0,
+    "fp_neg": 0,
+    "cross": 0,
+    "nothing": 0,
+    "n_masks": 0,
+    "n_scored": 0,
+    "masking_b": null,
+    "masking_c": null,
+    "under_n": 0,
+    "under_ch": 0,
+    "over_n": 0,
+    "over_ch": 0,
+    "not_found_bnd": 0,
+    "not_found_ch": 0,
+    "miss": {}
+   },
+   "SHARE_PCT": {
+    "n_gold": 0,
+    "found": 0,
+    "recall": null,
+    "leak6": 0,
+    "leak8": 0,
+    "leak6_pct": null,
+    "leak8_pct": null,
+    "precision": null,
+    "tp": 0,
+    "fp_neg": 0,
+    "cross": 0,
+    "nothing": 0,
+    "n_masks": 0,
+    "n_scored": 0,
+    "masking_b": null,
+    "masking_c": null,
+    "under_n": 0,
+    "under_ch": 0,
+    "over_n": 0,
+    "over_ch": 0,
+    "not_found_bnd": 0,
+    "not_found_ch": 0,
+    "miss": {}
+   },
+   "SNILS": {
+    "n_gold": 228,
+    "found": 226,
+    "recall": 99.12280701754386,
+    "leak6": 1,
+    "leak8": 1,
+    "leak6_pct": 0.43859649122807015,
+    "leak8_pct": 0.43859649122807015,
+    "precision": 100.0,
+    "tp": 244,
+    "fp_neg": 0,
+    "cross": 0,
+    "nothing": 0,
+    "n_masks": 244,
+    "n_scored": 244,
+    "masking_b": 85.24590163934427,
+    "masking_c": 100.0,
+    "under_n": 0,
+    "under_ch": 0,
+    "over_n": 0,
+    "over_ch": 0,
+    "not_found_bnd": 2,
+    "not_found_ch": 16,
+    "miss": {
+     "wrong_type:PHONE": 1,
+     "nothing": 1
+    }
+   },
+   "SUM": {
+    "n_gold": 648,
+    "found": 645,
+    "recall": 99.53703703703704,
+    "leak6": 6,
+    "leak8": 0,
+    "leak6_pct": 0.9259259259259259,
+    "leak8_pct": 0.0,
+    "precision": 100.0,
+    "tp": 648,
+    "fp_neg": 0,
+    "cross": 0,
+    "nothing": 0,
+    "n_masks": 648,
+    "n_scored": 648,
+    "masking_b": 97.99382716049382,
+    "masking_c": 100.0,
+    "under_n": 7,
+    "under_ch": 41,
+    "over_n": 0,
+    "over_ch": 0,
+    "not_found_bnd": 3,
+    "not_found_ch": 51,
+    "miss": {
+     "nothing": 3
+    }
+   },
+   "TERM": {
+    "n_gold": 0,
+    "found": 0,
+    "recall": null,
+    "leak6": 0,
+    "leak8": 0,
+    "leak6_pct": null,
+    "leak8_pct": null,
+    "precision": null,
+    "tp": 0,
+    "fp_neg": 0,
+    "cross": 0,
+    "nothing": 360,
+    "n_masks": 360,
+    "n_scored": 0,
+    "masking_b": null,
+    "masking_c": null,
+    "under_n": 0,
+    "under_ch": 0,
+    "over_n": 0,
+    "over_ch": 0,
+    "not_found_bnd": 0,
+    "not_found_ch": 0,
+    "miss": {}
+   },
+   "TRANCHE": {
+    "n_gold": 0,
+    "found": 0,
+    "recall": null,
+    "leak6": 0,
+    "leak8": 0,
+    "leak6_pct": null,
+    "leak8_pct": null,
+    "precision": null,
+    "tp": 0,
+    "fp_neg": 0,
+    "cross": 0,
+    "nothing": 0,
+    "n_masks": 0,
+    "n_scored": 0,
+    "masking_b": null,
+    "masking_c": null,
+    "under_n": 0,
+    "under_ch": 0,
+    "over_n": 0,
+    "over_ch": 0,
+    "not_found_bnd": 0,
+    "not_found_ch": 0,
+    "miss": {}
+   }
+  }
+ },
+ "types_v2": {
+  "rows": {
+   "ACCOUNT": {
+    "n_gold": 304,
+    "found": 294,
+    "recall": 96.71052631578948,
+    "leak6": 10,
+    "leak8": 10,
+    "leak6_pct": 3.289473684210526,
+    "leak8_pct": 3.289473684210526,
+    "precision": 37.878787878787875,
+    "tp": 300,
+    "fp_neg": 492,
+    "cross": 0,
+    "nothing": 0,
+    "n_masks": 792,
+    "n_scored": 300,
+    "masking_b": 96.0,
+    "masking_c": 100.0,
+    "under_n": 6,
+    "under_ch": 6,
+    "over_n": 0,
+    "over_ch": 0,
+    "not_found_bnd": 10,
+    "not_found_ch": 200,
+    "miss": {
+     "nothing": 10
+    }
+   },
+   "ADDRESS": {
+    "n_gold": 531,
+    "found": 521,
+    "recall": 98.11676082862523,
+    "leak6": 10,
+    "leak8": 10,
+    "leak6_pct": 1.8832391713747645,
+    "leak8_pct": 1.8832391713747645,
+    "precision": 100.0,
+    "tp": 521,
+    "fp_neg": 0,
+    "cross": 0,
+    "nothing": 0,
+    "n_masks": 521,
+    "n_scored": 521,
+    "masking_b": 99.42418426103647,
+    "masking_c": 100.0,
+    "under_n": 3,
+    "under_ch": 4,
+    "over_n": 9,
+    "over_ch": 90,
+    "not_found_bnd": 10,
+    "not_found_ch": 490,
+    "miss": {
+     "nothing": 10
+    }
+   },
+   "BIK": {
+    "n_gold": 187,
+    "found": 187,
+    "recall": 100.0,
+    "leak6": 0,
+    "leak8": 0,
+    "leak6_pct": 0.0,
+    "leak8_pct": 0.0,
+    "precision": 83.11111111111111,
+    "tp": 187,
+    "fp_neg": 38,
+    "cross": 0,
+    "nothing": 0,
+    "n_masks": 225,
+    "n_scored": 187,
+    "masking_b": 100.0,
+    "masking_c": 100.0,
+    "under_n": 0,
+    "under_ch": 0,
+    "over_n": 0,
+    "over_ch": 0,
+    "not_found_bnd": 0,
+    "not_found_ch": 0,
+    "miss": {}
+   },
+   "BIRTHDATE": {
+    "n_gold": 100,
+    "found": 100,
+    "recall": 100.0,
+    "leak6": 0,
+    "leak8": 0,
+    "leak6_pct": 0.0,
+    "leak8_pct": 0.0,
+    "precision": 26.595744680851062,
+    "tp": 100,
+    "fp_neg": 276,
+    "cross": 0,
+    "nothing": 0,
+    "n_masks": 376,
+    "n_scored": 100,
+    "masking_b": 100.0,
+    "masking_c": 100.0,
+    "under_n": 0,
+    "under_ch": 0,
+    "over_n": 0,
+    "over_ch": 0,
+    "not_found_bnd": 0,
+    "not_found_ch": 0,
+    "miss": {}
+   },
+   "CONTRACT_KIND": {
+    "n_gold": 138,
+    "found": 138,
+    "recall": 100.0,
+    "leak6": 0,
+    "leak8": 0,
+    "leak6_pct": 0.0,
+    "leak8_pct": 0.0,
+    "precision": 100.0,
+    "tp": 138,
+    "fp_neg": 0,
+    "cross": 0,
+    "nothing": 149,
+    "n_masks": 287,
+    "n_scored": 138,
+    "masking_b": 100.0,
+    "masking_c": 100.0,
+    "under_n": 0,
+    "under_ch": 0,
+    "over_n": 0,
+    "over_ch": 0,
+    "not_found_bnd": 0,
+    "not_found_ch": 0,
+    "miss": {}
+   },
+   "CONTRACT_NO": {
+    "n_gold": 525,
+    "found": 276,
+    "recall": 52.57142857142857,
+    "leak6": 249,
+    "leak8": 249,
+    "leak6_pct": 47.42857142857143,
+    "leak8_pct": 47.42857142857143,
+    "precision": 100.0,
+    "tp": 276,
+    "fp_neg": 0,
+    "cross": 0,
+    "nothing": 0,
+    "n_masks": 276,
+    "n_scored": 276,
+    "masking_b": 100.0,
+    "masking_c": 100.0,
+    "under_n": 0,
+    "under_ch": 0,
+    "over_n": 0,
+    "over_ch": 0,
+    "not_found_bnd": 249,
+    "not_found_ch": 2680,
+    "miss": {
+     "nothing": 249
+    }
+   },
+   "DATE": {
+    "n_gold": 138,
+    "found": 138,
+    "recall": 100.0,
+    "leak6": 0,
+    "leak8": 0,
+    "leak6_pct": 0.0,
+    "leak8_pct": 0.0,
+    "precision": 33.333333333333336,
+    "tp": 138,
+    "fp_neg": 276,
+    "cross": 12,
+    "nothing": 344,
+    "n_masks": 870,
+    "n_scored": 150,
+    "masking_b": 92.0,
+    "masking_c": 92.0,
+    "under_n": 0,
+    "under_ch": 0,
+    "over_n": 0,
+    "over_ch": 0,
+    "not_found_bnd": 0,
+    "not_found_ch": 0,
+    "miss": {}
+   },
+   "EMAIL": {
+    "n_gold": 305,
+    "found": 305,
+    "recall": 100.0,
+    "leak6": 0,
+    "leak8": 0,
+    "leak6_pct": 0.0,
+    "leak8_pct": 0.0,
+    "precision": 100.0,
+    "tp": 305,
+    "fp_neg": 0,
+    "cross": 0,
+    "nothing": 0,
+    "n_masks": 305,
+    "n_scored": 305,
+    "masking_b": 100.0,
+    "masking_c": 100.0,
+    "under_n": 0,
+    "under_ch": 0,
+    "over_n": 0,
+    "over_ch": 0,
+    "not_found_bnd": 0,
+    "not_found_ch": 0,
+    "miss": {}
+   },
+   "INN": {
+    "n_gold": 420,
+    "found": 126,
+    "recall": 30.0,
+    "leak6": 10,
+    "leak8": 10,
+    "leak6_pct": 2.380952380952381,
+    "leak8_pct": 2.380952380952381,
+    "precision": 29.213483146067414,
+    "tp": 130,
+    "fp_neg": 315,
+    "cross": 22,
+    "nothing": 0,
+    "n_masks": 467,
+    "n_scored": 152,
+    "masking_b": 94.73684210526316,
+    "masking_c": 85.52631578947368,
+    "under_n": 4,
+    "under_ch": 4,
+    "over_n": 0,
+    "over_ch": 0,
+    "not_found_bnd": 294,
+    "not_found_ch": 106,
+    "miss": {
+     "wrong_type:INN_PER": 273,
+     "wrong_type:ADDRESS": 9,
+     "nothing": 10,
+     "wrong_type:OGRN": 2
+    }
+   },
+   "INN_PER": {
+    "n_gold": 0,
+    "found": 0,
+    "recall": null,
+    "leak6": 0,
+    "leak8": 0,
+    "leak6_pct": null,
+    "leak8_pct": null,
+    "precision": 0.0,
+    "tp": 0,
+    "fp_neg": 189,
+    "cross": 279,
+    "nothing": 0,
+    "n_masks": 468,
+    "n_scored": 279,
+    "masking_b": 95.6989247311828,
+    "masking_c": 0.0,
+    "under_n": 0,
+    "under_ch": 0,
+    "over_n": 0,
+    "over_ch": 0,
+    "not_found_bnd": 0,
+    "not_found_ch": 0,
+    "miss": {}
+   },
+   "KPP": {
+    "n_gold": 106,
+    "found": 106,
+    "recall": 100.0,
+    "leak6": 0,
+    "leak8": 0,
+    "leak6_pct": 0.0,
+    "leak8_pct": 0.0,
+    "precision": 100.0,
+    "tp": 106,
+    "fp_neg": 0,
+    "cross": 0,
+    "nothing": 0,
+    "n_masks": 106,
+    "n_scored": 106,
+    "masking_b": 100.0,
+    "masking_c": 100.0,
+    "under_n": 0,
+    "under_ch": 0,
+    "over_n": 0,
+    "over_ch": 0,
+    "not_found_bnd": 0,
+    "not_found_ch": 0,
+    "miss": {}
+   },
+   "OGRN": {
+    "n_gold": 176,
+    "found": 176,
+    "recall": 100.0,
+    "leak6": 0,
+    "leak8": 0,
+    "leak6_pct": 0.0,
+    "leak8_pct": 0.0,
+    "precision": 100.0,
+    "tp": 176,
+    "fp_neg": 0,
+    "cross": 2,
+    "nothing": 0,
+    "n_masks": 178,
+    "n_scored": 178,
+    "masking_b": 100.0,
+    "masking_c": 98.87640449438203,
+    "under_n": 0,
+    "under_ch": 0,
+    "over_n": 0,
+    "over_ch": 0,
+    "not_found_bnd": 0,
+    "not_found_ch": 0,
+    "miss": {}
+   },
+   "ORG": {
+    "n_gold": 202,
+    "found": 196,
+    "recall": 97.02970297029702,
+    "leak6": 10,
+    "leak8": 10,
+    "leak6_pct": 4.9504950495049505,
+    "leak8_pct": 4.9504950495049505,
+    "precision": 100.0,
+    "tp": 199,
+    "fp_neg": 0,
+    "cross": 167,
+    "nothing": 152,
+    "n_masks": 518,
+    "n_scored": 366,
+    "masking_b": 97.81420765027322,
+    "masking_c": 54.37158469945355,
+    "under_n": 4,
+    "under_ch": 33,
+    "over_n": 1,
+    "over_ch": 12,
+    "not_found_bnd": 6,
+    "not_found_ch": 102,
+    "miss": {
+     "nothing": 6
+    }
+   },
+   "PASSPORT": {
+    "n_gold": 400,
+    "found": 378,
+    "recall": 94.5,
+    "leak6": 0,
+    "leak8": 0,
+    "leak6_pct": 0.0,
+    "leak8_pct": 0.0,
+    "precision": 73.35907335907336,
+    "tp": 380,
+    "fp_neg": 138,
+    "cross": 0,
+    "nothing": 0,
+    "n_masks": 518,
+    "n_scored": 380,
+    "masking_b": 98.94736842105263,
+    "masking_c": 100.0,
+    "under_n": 2,
+    "under_ch": 2,
+    "over_n": 0,
+    "over_ch": 0,
+    "not_found_bnd": 22,
+    "not_found_ch": 0,
+    "miss": {
+     "wrong_type:INN": 22
+    }
+   },
+   "PASSPORT_ISSUER": {
+    "n_gold": 138,
+    "found": 138,
+    "recall": 100.0,
+    "leak6": 0,
+    "leak8": 0,
+    "leak6_pct": 0.0,
+    "leak8_pct": 0.0,
+    "precision": 100.0,
+    "tp": 138,
+    "fp_neg": 0,
+    "cross": 0,
+    "nothing": 200,
+    "n_masks": 338,
+    "n_scored": 138,
+    "masking_b": 100.0,
+    "masking_c": 100.0,
+    "under_n": 0,
+    "under_ch": 0,
+    "over_n": 0,
+    "over_ch": 0,
+    "not_found_bnd": 0,
+    "not_found_ch": 0,
+    "miss": {}
+   },
+   "PER": {
+    "n_gold": 1400,
+    "found": 1194,
+    "recall": 85.28571428571429,
+    "leak6": 60,
+    "leak8": 60,
+    "leak6_pct": 4.285714285714286,
+    "leak8_pct": 4.285714285714286,
+    "precision": 100.0,
+    "tp": 1208,
+    "fp_neg": 0,
+    "cross": 0,
+    "nothing": 0,
+    "n_masks": 1208,
+    "n_scored": 1208,
+    "masking_b": 97.18543046357615,
+    "masking_c": 100.0,
+    "under_n": 20,
+    "under_ch": 61,
+    "over_n": 1,
+    "over_ch": 8,
+    "not_found_bnd": 206,
+    "not_found_ch": 736,
+    "miss": {
+     "wrong_type:ORG": 166,
+     "nothing": 40
+    }
+   },
+   "PERCENT": {
+    "n_gold": 775,
+    "found": 775,
+    "recall": 100.0,
+    "leak6": 1,
+    "leak8": 0,
+    "leak6_pct": 0.12903225806451613,
+    "leak8_pct": 0.0,
+    "precision": 77.40667976424362,
+    "tp": 788,
+    "fp_neg": 230,
+    "cross": 0,
+    "nothing": 0,
+    "n_masks": 1018,
+    "n_scored": 788,
+    "masking_b": 96.31979695431473,
+    "masking_c": 100.0,
+    "under_n": 16,
+    "under_ch": 51,
+    "over_n": 0,
+    "over_ch": 0,
+    "not_found_bnd": 0,
+    "not_found_ch": 0,
+    "miss": {}
+   },
+   "PHONE": {
+    "n_gold": 509,
+    "found": 494,
+    "recall": 97.05304518664047,
+    "leak6": 22,
+    "leak8": 15,
+    "leak6_pct": 4.322200392927308,
+    "leak8_pct": 2.9469548133595285,
+    "precision": 60.09732360097323,
+    "tp": 494,
+    "fp_neg": 328,
+    "cross": 0,
+    "nothing": 0,
+    "n_masks": 822,
+    "n_scored": 494,
+    "masking_b": 98.582995951417,
+    "masking_c": 100.0,
+    "under_n": 7,
+    "under_ch": 63,
+    "over_n": 0,
+    "over_ch": 0,
+    "not_found_bnd": 15,
+    "not_found_ch": 325,
+    "miss": {
+     "nothing": 15
+    }
+   },
+   "REGISTRY_NAME": {
+    "n_gold": 138,
+    "found": 138,
+    "recall": 100.0,
+    "leak6": 0,
+    "leak8": 0,
+    "leak6_pct": 0.0,
+    "leak8_pct": 0.0,
+    "precision": 100.0,
+    "tp": 138,
+    "fp_neg": 0,
+    "cross": 0,
+    "nothing": 0,
+    "n_masks": 138,
+    "n_scored": 138,
+    "masking_b": 100.0,
+    "masking_c": 100.0,
+    "under_n": 0,
+    "under_ch": 0,
+    "over_n": 0,
+    "over_ch": 0,
+    "not_found_bnd": 0,
+    "not_found_ch": 0,
+    "miss": {}
+   },
+   "REG_ID": {
+    "n_gold": 138,
+    "found": 138,
+    "recall": 100.0,
+    "leak6": 0,
+    "leak8": 0,
+    "leak6_pct": 0.0,
+    "leak8_pct": 0.0,
+    "precision": 100.0,
+    "tp": 138,
+    "fp_neg": 0,
+    "cross": 0,
+    "nothing": 0,
+    "n_masks": 138,
+    "n_scored": 138,
+    "masking_b": 100.0,
+    "masking_c": 100.0,
+    "under_n": 0,
+    "under_ch": 0,
+    "over_n": 0,
+    "over_ch": 0,
+    "not_found_bnd": 0,
+    "not_found_ch": 0,
+    "miss": {}
+   },
+   "REG_NUMBER": {
+    "n_gold": 138,
+    "found": 138,
+    "recall": 100.0,
+    "leak6": 0,
+    "leak8": 0,
+    "leak6_pct": 0.0,
+    "leak8_pct": 0.0,
+    "precision": 100.0,
+    "tp": 138,
+    "fp_neg": 0,
+    "cross": 0,
+    "nothing": 0,
+    "n_masks": 138,
+    "n_scored": 138,
+    "masking_b": 100.0,
+    "masking_c": 100.0,
+    "under_n": 0,
+    "under_ch": 0,
+    "over_n": 0,
+    "over_ch": 0,
+    "not_found_bnd": 0,
+    "not_found_ch": 0,
+    "miss": {}
+   },
+   "SHARE_PCT": {
+    "n_gold": 138,
+    "found": 138,
+    "recall": 100.0,
+    "leak6": 0,
+    "leak8": 0,
+    "leak6_pct": 0.0,
+    "leak8_pct": 0.0,
+    "precision": 100.0,
+    "tp": 138,
+    "fp_neg": 0,
+    "cross": 0,
+    "nothing": 0,
+    "n_masks": 138,
+    "n_scored": 138,
+    "masking_b": 80.43478260869566,
+    "masking_c": 100.0,
+    "under_n": 27,
+    "under_ch": 243,
+    "over_n": 27,
+    "over_ch": 432,
+    "not_found_bnd": 0,
+    "not_found_ch": 0,
+    "miss": {}
+   },
+   "SNILS": {
+    "n_gold": 100,
+    "found": 100,
+    "recall": 100.0,
+    "leak6": 0,
+    "leak8": 0,
+    "leak6_pct": 0.0,
+    "leak8_pct": 0.0,
+    "precision": 42.016806722689076,
+    "tp": 100,
+    "fp_neg": 138,
+    "cross": 0,
+    "nothing": 0,
+    "n_masks": 238,
+    "n_scored": 100,
+    "masking_b": 100.0,
+    "masking_c": 100.0,
+    "under_n": 0,
+    "under_ch": 0,
+    "over_n": 0,
+    "over_ch": 0,
+    "not_found_bnd": 0,
+    "not_found_ch": 0,
+    "miss": {}
+   },
+   "SUM": {
+    "n_gold": 578,
+    "found": 514,
+    "recall": 88.92733564013841,
+    "leak6": 192,
+    "leak8": 95,
+    "leak6_pct": 33.21799307958477,
+    "leak8_pct": 16.43598615916955,
+    "precision": 70.08086253369272,
+    "tp": 520,
+    "fp_neg": 222,
+    "cross": 0,
+    "nothing": 0,
+    "n_masks": 742,
+    "n_scored": 520,
+    "masking_b": 61.73076923076923,
+    "masking_c": 100.0,
+    "under_n": 193,
+    "under_ch": 1621,
+    "over_n": 0,
+    "over_ch": 0,
+    "not_found_bnd": 64,
+    "not_found_ch": 1896,
+    "miss": {
+     "nothing": 64
+    }
+   },
+   "TERM": {
+    "n_gold": 779,
+    "found": 771,
+    "recall": 98.97304236200257,
+    "leak6": 5,
+    "leak8": 5,
+    "leak6_pct": 0.6418485237483954,
+    "leak8_pct": 0.6418485237483954,
+    "precision": 100.0,
+    "tp": 782,
+    "fp_neg": 0,
+    "cross": 0,
+    "nothing": 0,
+    "n_masks": 782,
+    "n_scored": 782,
+    "masking_b": 95.9079283887468,
+    "masking_c": 100.0,
+    "under_n": 21,
+    "under_ch": 94,
+    "over_n": 0,
+    "over_ch": 0,
+    "not_found_bnd": 8,
+    "not_found_ch": 149,
+    "miss": {
+     "nothing": 5,
+     "wrong_type:DATE": 3
+    }
+   },
+   "TRANCHE": {
+    "n_gold": 24,
+    "found": 24,
+    "recall": 100.0,
+    "leak6": 0,
+    "leak8": 0,
+    "leak6_pct": 0.0,
+    "leak8_pct": 0.0,
+    "precision": 100.0,
+    "tp": 24,
+    "fp_neg": 0,
+    "cross": 0,
+    "nothing": 0,
+    "n_masks": 24,
+    "n_scored": 24,
+    "masking_b": 100.0,
+    "masking_c": 100.0,
+    "under_n": 0,
+    "under_ch": 0,
+    "over_n": 0,
+    "over_ch": 0,
+    "not_found_bnd": 0,
+    "not_found_ch": 0,
+    "miss": {}
+   }
+  }
+ },
+ "by_entity": {
+  "direct": {
+   "occ": 7395,
+   "ent": 5543,
+   "multi": 1328,
+   "occ_found_pct": 89.58755916159568,
+   "ent_found_pct": 89.01316976366589,
+   "occ_prot_pct": 85.17917511832319,
+   "ent_prot_pct": 85.6215046003969,
+   "delta_found_pp": -0.5743893979297923,
+   "delta_prot_pp": 0.4423294820737169
+  },
+  "indirect": {
+   "occ": 4638,
+   "ent": 4194,
+   "multi": 393,
+   "occ_found_pct": 95.79560155239328,
+   "ent_found_pct": 95.517405817835,
+   "occ_prot_pct": 90.8150064683053,
+   "ent_prot_pct": 90.72484501669051,
+   "delta_found_pp": -0.27819573455828106,
+   "delta_prot_pp": -0.09016145161479017
+  },
+  "total": {
+   "occ": 12033,
+   "ent": 9737,
+   "multi": 1721,
+   "occ_found_pct": 91.98038726834538,
+   "ent_found_pct": 91.81472732874602,
+   "occ_prot_pct": 87.35145017867531,
+   "ent_prot_pct": 87.81965697853548,
+   "delta_found_pp": -0.1656599395993652,
+   "delta_prot_pp": 0.46820679986016955
+  },
+  "per_type": {
+   "ACCOUNT": {
+    "occ": 732,
+    "ent": 660,
+    "multi": 69,
+    "occ_found_pct": 95.49180327868852,
+    "ent_found_pct": 95.0,
+    "occ_prot_pct": 95.49180327868852,
+    "ent_prot_pct": 95.0
+   },
+   "ADDRESS": {
+    "occ": 1308,
+    "ent": 1308,
+    "multi": 0,
+    "occ_found_pct": 94.4954128440367,
+    "ent_found_pct": 94.4954128440367,
+    "occ_prot_pct": 82.87461773700306,
+    "ent_prot_pct": 82.87461773700306
+   },
+   "BIK": {
+    "occ": 453,
+    "ent": 411,
+    "multi": 42,
+    "occ_found_pct": 100.0,
+    "ent_found_pct": 100.0,
+    "occ_prot_pct": 100.0,
+    "ent_prot_pct": 100.0
+   },
+   "BIRTHDATE": {
+    "occ": 228,
+    "ent": 228,
+    "multi": 0,
+    "occ_found_pct": 98.24561403508773,
+    "ent_found_pct": 98.24561403508773,
+    "occ_prot_pct": 98.24561403508773,
+    "ent_prot_pct": 98.24561403508773
+   },
+   "EMAIL": {
+    "occ": 714,
+    "ent": 709,
+    "multi": 5,
+    "occ_found_pct": 100.0,
+    "ent_found_pct": 100.0,
+    "occ_prot_pct": 100.0,
+    "ent_prot_pct": 100.0
+   },
+   "INN": {
+    "occ": 369,
+    "ent": 279,
+    "multi": 54,
+    "occ_found_pct": 81.84281842818429,
+    "ent_found_pct": 76.34408602150538,
+    "occ_prot_pct": 81.84281842818429,
+    "ent_prot_pct": 76.34408602150538
+   },
+   "INN_PER": {
+    "occ": 675,
+    "ent": 432,
+    "multi": 231,
+    "occ_found_pct": 97.33333333333333,
+    "ent_found_pct": 96.99074074074075,
+    "occ_prot_pct": 97.18518518518519,
+    "ent_prot_pct": 96.99074074074075
+   },
+   "KPP": {
+    "occ": 246,
+    "ent": 216,
+    "multi": 30,
+    "occ_found_pct": 100.0,
+    "ent_found_pct": 100.0,
+    "occ_prot_pct": 100.0,
+    "ent_prot_pct": 100.0
+   },
+   "OGRN": {
+    "occ": 420,
+    "ent": 420,
+    "multi": 0,
+    "occ_found_pct": 98.0952380952381,
+    "ent_found_pct": 98.0952380952381,
+    "occ_prot_pct": 98.0952380952381,
+    "ent_prot_pct": 98.0952380952381
+   },
+   "ORG": {
+    "occ": 462,
+    "ent": 252,
+    "multi": 198,
+    "occ_found_pct": 97.40259740259741,
+    "ent_found_pct": 97.61904761904762,
+    "occ_prot_pct": 80.95238095238095,
+    "ent_prot_pct": 79.36507936507937
+   },
+   "PASSPORT": {
+    "occ": 912,
+    "ent": 456,
+    "multi": 456,
+    "occ_found_pct": 95.50438596491227,
+    "ent_found_pct": 94.51754385964912,
+    "occ_prot_pct": 94.84649122807018,
+    "ent_prot_pct": 94.51754385964912
+   },
+   "PER": {
+    "occ": 3420,
+    "ent": 2272,
+    "multi": 636,
+    "occ_found_pct": 80.64327485380117,
+    "ent_found_pct": 77.02464788732394,
+    "occ_prot_pct": 71.3157894736842,
+    "ent_prot_pct": 68.75
+   },
+   "PHONE": {
+    "occ": 1218,
+    "ent": 1218,
+    "multi": 0,
+    "occ_found_pct": 96.4696223316913,
+    "ent_found_pct": 96.4696223316913,
+    "occ_prot_pct": 96.4696223316913,
+    "ent_prot_pct": 96.4696223316913
+   },
+   "SNILS": {
+    "occ": 228,
+    "ent": 228,
+    "multi": 0,
+    "occ_found_pct": 99.12280701754386,
+    "ent_found_pct": 99.12280701754386,
+    "occ_prot_pct": 99.12280701754386,
+    "ent_prot_pct": 99.12280701754386
+   },
+   "SUM": {
+    "occ": 648,
+    "ent": 648,
+    "multi": 0,
+    "occ_found_pct": 99.53703703703704,
+    "ent_found_pct": 99.53703703703704,
+    "occ_prot_pct": 99.07407407407408,
+    "ent_prot_pct": 99.07407407407408
+   }
+  }
+ },
+ "persons": {
+  "surface": {
+   "n": 2272,
+   "strict": 1562,
+   "product": 1877,
+   "masked_all": 1750,
+   "strict_pct": 68.75,
+   "product_pct": 82.6144366197183,
+   "masked_all_pct": 77.02464788732394,
+   "open_any": 710,
+   "leaking": 395,
+   "multi": 636
+  },
+  "by_surname": {
+   "n": 1824,
+   "strict": 1234,
+   "product": 1526,
+   "masked_all": 1354,
+   "strict_pct": 67.65350877192982,
+   "product_pct": 83.66228070175438,
+   "masked_all_pct": 74.23245614035088,
+   "open_any": 590,
+   "leaking": 298,
+   "multi": 870
+  },
+  "occurrences": 3420
+ },
+ "gate": {
+  "lines": [
+   {
+    "line": "а",
+    "what": "PRECISION по каждому типу: TP на эталоне своего типа против FP на ОБЪЯВЛЕННОМ негативе",
+    "tolerance": "PRECISION_TOLERANCE_PP",
+    "level": "жёсткая",
+    "red": 0,
+    "warn": 0,
+    "improved": 0,
+    "red_msgs": [],
+    "warn_msgs": []
+   },
+   {
+    "line": "б",
+    "what": "LEAK_V2 — доля эталонных вхождений, от которых в анонимном тексте дожил фрагмент; по каждому типу и по агрегату BIK-excl, оба порога",
+    "tolerance": "LEAK_V2_TOLERANCE",
+    "level": "жёсткая",
+    "red": 0,
+    "warn": 0,
+    "improved": 0,
+    "red_msgs": [],
+    "warn_msgs": []
+   },
+   {
+    "line": "в",
+    "what": "MASKING A — round-trip: замаскированное значение восстанавливается байт-в-байт. Плюс АБСОЛЮТНОЕ требование 100 %",
+    "tolerance": "MASKING_A_TOLERANCE_PP",
+    "level": "жёсткая",
+    "red": 0,
+    "warn": 0,
+    "improved": 0,
+    "red_msgs": [],
+    "warn_msgs": []
+   },
+   {
+    "line": "г",
+    "what": "MASKING B — эталон закрыт масками ЦЕЛИКОМ (границы). C (тип маски) — мягкий уровень решением владельца",
+    "tolerance": "MASKING_B_TOLERANCE_PP",
+    "level": "жёсткая (C — мягкая)",
+    "red": 10,
+    "warn": 0,
+    "improved": 0,
+    "red_msgs": [
+     "(г) masking_correctness[B границы]: 88.14% -> 87.34% — корректность маскировки УПАЛА (допуск 0.00пп)",
+     "(г) masking_correctness[B границы / PER]: 84.45% -> 83.49% — границы масок типа УПАЛИ (допуск 0.00пп; агрегат мог вырасти за счёт других типов)",
+     "(г) masking_correctness[B границы / INN_PER]: 85.46% -> 85.45% — границы масок типа УПАЛИ (допуск 0.00пп; агрегат мог вырасти за счёт других типов)",
+     "(г) masking_correctness[B границы / OGRN]: 93.76% -> 93.40% — границы масок типа УПАЛИ (допуск 0.00пп; агрегат мог вырасти за счёт других типов)",
+     "(г) masking_correctness[B границы / KPP]: 97.80% -> 91.73% — границы масок типа УПАЛИ (допуск 0.00пп; агрегат мог вырасти за счёт других типов)",
+     "(г) masking_correctness[B границы / ACCOUNT]: 88.80% -> 87.87% — границы масок типа УПАЛИ (допуск 0.00пп; агрегат мог вырасти за счёт других типов)",
+     "(г) masking_correctness[B границы / BIK]: 93.29% -> 91.93% — границы масок типа УПАЛИ (допуск 0.00пп; агрегат мог вырасти за счёт других типов)",
+     "(г) masking_correctness[B границы / PASSPORT]: 90.97% -> 83.24% — границы масок типа УПАЛИ (допуск 0.00пп; агрегат мог вырасти за счёт других типов)",
+     "(г) masking_correctness[B границы / SNILS]: 87.39% -> 85.25% — границы масок типа УПАЛИ (допуск 0.00пп; агрегат мог вырасти за счёт других типов)",
+     "(г) masking_correctness[B границы / BIRTHDATE]: 87.01% -> 83.47% — границы масок типа УПАЛИ (допуск 0.00пп; агрегат мог вырасти за счёт других типов)"
+    ],
+    "warn_msgs": []
+   },
+   {
+    "line": "д",
+    "what": "OVER-MASK ПРОЗЫ — маска, не легшая ни на эталон, ни на объявленный негатив: закрыт обычный текст",
+    "tolerance": "OVERMASK_NOTHING_TOLERANCE",
+    "level": "жёсткая",
+    "red": 5,
+    "warn": 0,
+    "improved": 0,
+    "red_msgs": [
+     "(д) over-mask прозы[PER]: 1 -> 4 (+3 масок) — система закрыла маской текст, который не является ни эталонной сущностью, ни объявленным негативом (порча документа)",
+     "(д) over-mask прозы[ORG]: 322 -> 351 (+29 масок) — система закрыла маской текст, который не является ни эталонной сущностью, ни объявленным негативом (порча документа)",
+     "(д) over-mask прозы[ADDRESS]: 4 -> 5 (+1 масок) — система закрыла маской текст, который не является ни эталонной сущностью, ни объявленным негативом (порча документа)",
+     "(д) over-mask прозы[PASSPORT_ISSUER]: 451 -> 452 (+1 масок) — система закрыла маской текст, который не является ни эталонной сущностью, ни объявленным негативом (порча документа)",
+     "(д) over-mask прозы[ВСЕГО]: 2519 -> 2906 (+387 масок)"
+    ],
+    "warn_msgs": []
+   },
+   {
+    "line": "е",
+    "what": "ГРАНИЦЫ ПО НАПРАВЛЕНИЮ: недобор (часть значения открыта — УТЕЧКА) и перебор (закрыт лишний текст — ПОРЧА), раздельно",
+    "tolerance": "BOUNDARY_UNDER_TOLERANCE / BOUNDARY_OVER_TOLERANCE",
+    "level": "жёсткая",
+    "red": 2,
+    "warn": 0,
+    "improved": 0,
+    "red_msgs": [
+     "(е) границы[EMAIL / недобор, сущностей]: 60 -> 61 (+1) — часть эталона осталась ОТКРЫТЫМ текстом (утечка)",
+     "(е) границы[EMAIL / недобор, символов]: 307 -> 313 (+6) — часть эталона осталась ОТКРЫТЫМ текстом (утечка)"
+    ],
+    "warn_msgs": []
+   },
+   {
+    "line": "ж",
+    "what": "ЗЕРКАЛО ПОДАВЛЕНИЯ — эталонных сущностей, погашенных отрицательным классом (CLAUSE_REF/ROLE_TERM/COLLECTIVE)",
+    "tolerance": "0 БЕЗУСЛОВНО",
+    "level": "жёсткая",
+    "red": 0,
+    "warn": 0,
+    "improved": 0,
+    "red_msgs": [],
+    "warn_msgs": []
+   },
+   {
+    "line": "з",
+    "what": "НАБОР ПО УМОЛЧАНИЮ — эталон закрыт на МАКСИМУМЕ и открыт у пользователя, который ничего не настраивал",
+    "tolerance": "0 + поимённый реестр known_default_leaks.json",
+    "level": "жёсткая",
+    "red": 0,
+    "warn": 1,
+    "improved": 0,
+    "red_msgs": [],
+    "warn_msgs": [
+     "(з) набор по умолчанию: в точке отсчёта поля нет (снята до появления линии) — сравнить не с чем, судим ТОЛЬКО по реестру. Сейчас: 6 случаев {'INN_PER': 4, 'ADDRESS': 1, 'PHONE': 1}"
+    ]
+   },
+   {
+    "line": "и",
+    "what": "МАСКА ЧУЖОГО ТИПА — значение спрятано, но под именем другого типа; число мягкое, поимённая сверка реестра жёсткая",
+    "tolerance": "число — мягкий; состав known_single_guard.json — 0",
+    "level": "двойная",
+    "red": 0,
+    "warn": 2,
+    "improved": 0,
+    "red_msgs": [],
+    "warn_msgs": [
+     "(и) МАСКА ЧУЖОГО ТИПА: 395 значений спрятаны под именем ДРУГОГО типа (431 масок неверного типа). Сегодня это не утечка — значение закрыто; МЯГКИЙ уровень (долг DEFGATE-CROSSTYPE-LATENT). По типам эталона: {'PER': 361, 'SNILS': 1, 'PASSPORT': 32, 'BIRTHDATE': 1}",
+     "(и) масок неверного типа: 380 -> 431"
+    ]
+   },
+   {
+    "line": "1",
+    "what": "КРЕШИ — outcome != processed с исключением",
+    "tolerance": "0",
+    "level": "жёсткая",
+    "red": 0,
+    "warn": 0,
+    "improved": 0,
+    "red_msgs": [],
+    "warn_msgs": []
+   },
+   {
+    "line": "3",
+    "what": "FP ВСЕГО на объявленных негативах корпуса",
+    "tolerance": "FP_TOLERANCE",
+    "level": "жёсткая",
+    "red": 1,
+    "warn": 0,
+    "improved": 0,
+    "red_msgs": [
+     "(3) FP по негативам: 2 -> 654 (+652), допуск gate_config.FP_TOLERANCE=+0 превышен [вне счёта: CONTRACT_NO — 316 масок, исключены из линии, см. scope_exclusions.py]"
+    ],
+    "warn_msgs": []
+   },
+   {
+    "line": "4",
+    "what": "MANIFEST.sha256 — корпус не изменился до и после прогона",
+    "tolerance": "OK",
+    "level": "жёсткая",
+    "red": 0,
+    "warn": 0,
+    "improved": 0,
+    "red_msgs": [],
+    "warn_msgs": []
+   },
+   {
+    "line": "5",
+    "what": "ИЗВЕСТНЫЙ ДОЛГ — ADDRESS found=False & leak (реестр docs/known_leaks_stage_c.json)",
+    "tolerance": "MISSED_LEAK_TOLERANCE",
+    "level": "мягкая по числу, состав — предупреждение",
+    "red": 0,
+    "warn": 0,
+    "improved": 0,
+    "red_msgs": [],
+    "warn_msgs": []
+   }
+  ],
+  "tolerances": {
+   "PRECISION_TOLERANCE_PP": 0.0,
+   "LEAK_V2_TOLERANCE": 0,
+   "MASKING_A_TOLERANCE_PP": 0.0,
+   "MASKING_B_TOLERANCE_PP": 0.0,
+   "MASKING_C_WARN_PP": 0.0,
+   "OVERMASK_NOTHING_TOLERANCE": 0,
+   "BOUNDARY_UNDER_TOLERANCE": 0,
+   "BOUNDARY_OVER_TOLERANCE": 0,
+   "FP_TOLERANCE": 0,
+   "MISSED_LEAK_TOLERANCE": 0
+  },
+  "n_red": 18,
+  "n_warn": 4,
+  "n_improved": 48,
+  "red_all": [
+   "(3) FP по негативам: 2 -> 654 (+652), допуск gate_config.FP_TOLERANCE=+0 превышен [вне счёта: CONTRACT_NO — 316 масок, исключены из линии, см. scope_exclusions.py]",
+   "(г) masking_correctness[B границы]: 88.14% -> 87.34% — корректность маскировки УПАЛА (допуск 0.00пп)",
+   "(г) masking_correctness[B границы / PER]: 84.45% -> 83.49% — границы масок типа УПАЛИ (допуск 0.00пп; агрегат мог вырасти за счёт других типов)",
+   "(г) masking_correctness[B границы / INN_PER]: 85.46% -> 85.45% — границы масок типа УПАЛИ (допуск 0.00пп; агрегат мог вырасти за счёт других типов)",
+   "(г) masking_correctness[B границы / OGRN]: 93.76% -> 93.40% — границы масок типа УПАЛИ (допуск 0.00пп; агрегат мог вырасти за счёт других типов)",
+   "(г) masking_correctness[B границы / KPP]: 97.80% -> 91.73% — границы масок типа УПАЛИ (допуск 0.00пп; агрегат мог вырасти за счёт других типов)",
+   "(г) masking_correctness[B границы / ACCOUNT]: 88.80% -> 87.87% — границы масок типа УПАЛИ (допуск 0.00пп; агрегат мог вырасти за счёт других типов)",
+   "(г) masking_correctness[B границы / BIK]: 93.29% -> 91.93% — границы масок типа УПАЛИ (допуск 0.00пп; агрегат мог вырасти за счёт других типов)",
+   "(г) masking_correctness[B границы / PASSPORT]: 90.97% -> 83.24% — границы масок типа УПАЛИ (допуск 0.00пп; агрегат мог вырасти за счёт других типов)",
+   "(г) masking_correctness[B границы / SNILS]: 87.39% -> 85.25% — границы масок типа УПАЛИ (допуск 0.00пп; агрегат мог вырасти за счёт других типов)",
+   "(г) masking_correctness[B границы / BIRTHDATE]: 87.01% -> 83.47% — границы масок типа УПАЛИ (допуск 0.00пп; агрегат мог вырасти за счёт других типов)",
+   "(д) over-mask прозы[PER]: 1 -> 4 (+3 масок) — система закрыла маской текст, который не является ни эталонной сущностью, ни объявленным негативом (порча документа)",
+   "(д) over-mask прозы[ORG]: 322 -> 351 (+29 масок) — система закрыла маской текст, который не является ни эталонной сущностью, ни объявленным негативом (порча документа)",
+   "(д) over-mask прозы[ADDRESS]: 4 -> 5 (+1 масок) — система закрыла маской текст, который не является ни эталонной сущностью, ни объявленным негативом (порча документа)",
+   "(д) over-mask прозы[PASSPORT_ISSUER]: 451 -> 452 (+1 масок) — система закрыла маской текст, который не является ни эталонной сущностью, ни объявленным негативом (порча документа)",
+   "(д) over-mask прозы[ВСЕГО]: 2519 -> 2906 (+387 масок)",
+   "(е) границы[EMAIL / недобор, сущностей]: 60 -> 61 (+1) — часть эталона осталась ОТКРЫТЫМ текстом (утечка)",
+   "(е) границы[EMAIL / недобор, символов]: 307 -> 313 (+6) — часть эталона осталась ОТКРЫТЫМ текстом (утечка)"
+  ],
+  "warn_all": [
+   "(з) набор по умолчанию: в точке отсчёта поля нет (снята до появления линии) — сравнить не с чем, судим ТОЛЬКО по реестру. Сейчас: 6 случаев {'INN_PER': 4, 'ADDRESS': 1, 'PHONE': 1}",
+   "(и) МАСКА ЧУЖОГО ТИПА: 395 значений спрятаны под именем ДРУГОГО типа (431 масок неверного типа). Сегодня это не утечка — значение закрыто; МЯГКИЙ уровень (долг DEFGATE-CROSSTYPE-LATENT). По типам эталона: {'PER': 361, 'SNILS': 1, 'PASSPORT': 32, 'BIRTHDATE': 1}",
+   "(и) масок неверного типа: 380 -> 431",
+   "masking_correctness[C тип]: 96.58% -> 96.32% — упал. МЯГКИЙ уровень (решение владельца, STATE §6): гейт не роняю, но тип маски стал чаще расходиться с эталоном"
+  ],
+  "unclassified_red": {},
+  "debt": {
+   "count": 43,
+   "base_count": 43,
+   "registry": 43,
+   "not_in_registry": 0,
+   "registry_not_leaking": 0,
+   "left": 0,
+   "joined": 0
+  },
+  "line_z": {
+   "n": 6,
+   "per_type": {
+    "INN_PER": 4,
+    "ADDRESS": 1,
+    "PHONE": 1
+   },
+   "cases": [
+    [
+     "lease_0010__m1337_linebreak",
+     "INN_PER",
+     3003,
+     3016
+    ],
+    [
+     "loan_0008__m2718_case",
+     "ADDRESS",
+     2809,
+     2891
+    ],
+    [
+     "services_0011__m2718_linebreak",
+     "INN_PER",
+     3069,
+     3082
+    ],
+    [
+     "works_0005__m2718_linebreak",
+     "INN_PER",
+     3224,
+     3237
+    ],
+    [
+     "works_0011__m2718_linebreak",
+     "INN_PER",
+     3395,
+     3408
+    ],
+    [
+     "works_0011__m2718_linebreak",
+     "PHONE",
+     3030,
+     3046
+    ]
+   ]
+  },
+  "line_i": {
+   "masks": 431,
+   "pairs": {
+    "PER->ORG": 387,
+    "PASSPORT->INN": 30,
+    "INN_PER->INN": 12,
+    "ADDRESS->ORG": 1,
+    "PHONE->INN": 1
+   },
+   "docs": {
+    "PER->ORG": 150,
+    "INN_PER->INN": 10,
+    "PASSPORT->INN": 15,
+    "ADDRESS->ORG": 1,
+    "PHONE->INN": 1
+   },
+   "values": 395,
+   "values_per_type": {
+    "PER": 361,
+    "SNILS": 1,
+    "PASSPORT": 32,
+    "BIRTHDATE": 1
+   },
+   "value_pairs": {
+    "PER->ORG": 361,
+    "PASSPORT->INN": 29,
+    "PASSPORT->ADDRESS": 2,
+    "SNILS->PHONE": 1,
+    "PASSPORT->PHONE": 1,
+    "BIRTHDATE->DATE": 1
+   },
+   "class_total": 842,
+   "open_default": 447,
+   "open_max": 447,
+   "registry_opened": 0
+  },
+  "suppressed_gold": 0
+ },
+ "profiles": {
+  "elapsed_sec": 160.6,
+  "sets": {
+   "personal": {
+    "label": "Только персональные данные",
+    "n_types": 10,
+    "types": [
+     "ADDRESS",
+     "BIRTHDATE",
+     "DATE",
+     "EMAIL",
+     "INN_PERSON",
+     "PASSPORT",
+     "PASSPORT_ISSUER",
+     "PERSON",
+     "PHONE",
+     "SNILS"
+    ],
+    "masks": 10451,
+    "masks_located": 10451,
+    "gold": 12033,
+    "found": 8277,
+    "recall": 68.785838942907,
+    "recall_bik_excl": 71.47668393782384,
+    "leak6": 4079,
+    "leak6_pct": 33.89844594033076,
+    "leak6_bik_excl": 3626,
+    "leak6_bik_excl_pct": 31.312607944732296,
+    "leak8": 3412,
+    "leak8_pct": 28.355356104047203,
+    "open_entities": 3703,
+    "open_by_type": {
+     "ACCOUNT": 726,
+     "SUM": 648,
+     "ORG": 461,
+     "BIK": 453,
+     "OGRN": 420,
+     "INN": 332,
+     "PER": 276,
+     "KPP": 244,
+     "ADDRESS": 71,
+     "PHONE": 43,
+     "INN_PER": 17,
+     "PASSPORT": 8,
+     "BIRTHDATE": 3,
+     "SNILS": 1
+    },
+    "docs_with_open": 324,
+    "gold_in_set": 8703,
+    "found_in_set": 8277,
+    "recall_in_set": 95.10513615994485,
+    "leak_in_set": 818,
+    "leak_in_set_pct": 9.399057796162243,
+    "open_in_set": 419,
+    "open_out_of_set": 3284,
+    "open_by_type_in_set": {
+     "PER": 276,
+     "ADDRESS": 71,
+     "PHONE": 43,
+     "INN_PER": 17,
+     "PASSPORT": 8,
+     "BIRTHDATE": 3,
+     "SNILS": 1
+    },
+    "open_by_type_out_of_set": {
+     "ACCOUNT": 726,
+     "SUM": 648,
+     "ORG": 461,
+     "BIK": 453,
+     "OGRN": 420,
+     "INN": 332,
+     "KPP": 244
+    },
+    "per_type": {
+     "ACCOUNT": {
+      "n": 732,
+      "found": 0,
+      "leak6": 729,
+      "leak8": 729,
+      "open_full": 726
+     },
+     "ADDRESS": {
+      "n": 1308,
+      "found": 1236,
+      "leak6": 195,
+      "leak8": 195,
+      "open_full": 71
+     },
+     "BIK": {
+      "n": 453,
+      "found": 0,
+      "leak6": 453,
+      "leak8": 443,
+      "open_full": 453
+     },
+     "BIRTHDATE": {
+      "n": 228,
+      "found": 224,
+      "leak6": 3,
+      "leak8": 3,
+      "open_full": 3
+     },
+     "EMAIL": {
+      "n": 714,
+      "found": 714,
+      "leak6": 0,
+      "leak8": 0,
+      "open_full": 0
+     },
+     "INN": {
+      "n": 369,
+      "found": 0,
+      "leak6": 304,
+      "leak8": 301,
+      "open_full": 332
+     },
+     "INN_PER": {
+      "n": 675,
+      "found": 657,
+      "leak6": 18,
+      "leak8": 18,
+      "open_full": 17
+     },
+     "KPP": {
+      "n": 246,
+      "found": 0,
+      "leak6": 246,
+      "leak8": 241,
+      "open_full": 244
+     },
+     "OGRN": {
+      "n": 420,
+      "found": 0,
+      "leak6": 420,
+      "leak8": 418,
+      "open_full": 420
+     },
+     "ORG": {
+      "n": 462,
+      "found": 0,
+      "leak6": 462,
+      "leak8": 462,
+      "open_full": 461
+     },
+     "PASSPORT": {
+      "n": 912,
+      "found": 901,
+      "leak6": 14,
+      "leak8": 14,
+      "open_full": 8
+     },
+     "PER": {
+      "n": 3420,
+      "found": 3144,
+      "leak6": 574,
+      "leak8": 574,
+      "open_full": 276
+     },
+     "PHONE": {
+      "n": 1218,
+      "found": 1175,
+      "leak6": 13,
+      "leak8": 11,
+      "open_full": 43
+     },
+     "SNILS": {
+      "n": 228,
+      "found": 226,
+      "leak6": 1,
+      "leak8": 1,
+      "open_full": 1
+     },
+     "SUM": {
+      "n": 648,
+      "found": 0,
+      "leak6": 647,
+      "leak8": 2,
+      "open_full": 648
+     }
+    },
+    "price_leak_here": 818,
+    "price_leak_at_maximum": 814,
+    "price_leak_delta": 4,
+    "price_open_here": 419,
+    "price_open_at_maximum": 414,
+    "price_open_delta": 5
+   },
+   "personal_requisites": {
+    "label": "Персональные данные и реквизиты",
+    "n_types": 19,
+    "types": [
+     "ADDRESS",
+     "BANK_ACCOUNT",
+     "BIK",
+     "BIRTHDATE",
+     "DATE",
+     "EMAIL",
+     "INN",
+     "INN_PERSON",
+     "KPP",
+     "OGRN",
+     "ORG",
+     "PASSPORT",
+     "PASSPORT_ISSUER",
+     "PERSON",
+     "PHONE",
+     "REGISTRY_NAME",
+     "REG_ID",
+     "REG_NUMBER",
+     "SNILS"
+    ],
+    "masks": 13454,
+    "masks_located": 13454,
+    "gold": 12033,
+    "found": 10423,
+    "recall": 86.62012798138453,
+    "recall_bik_excl": 86.09671848013816,
+    "leak6": 1565,
+    "leak6_pct": 13.005900440455415,
+    "leak6_bik_excl": 1565,
+    "leak6_bik_excl_pct": 13.5146804835924,
+    "leak8": 915,
+    "leak8_pct": 7.604088755921216,
+    "open_entities": 1149,
+    "open_by_type": {
+     "SUM": 648,
+     "PER": 276,
+     "ADDRESS": 71,
+     "PHONE": 42,
+     "INN": 34,
+     "ACCOUNT": 33,
+     "INN_PER": 13,
+     "ORG": 12,
+     "OGRN": 8,
+     "PASSPORT": 8,
+     "BIRTHDATE": 3,
+     "SNILS": 1
+    },
+    "docs_with_open": 324,
+    "gold_in_set": 11385,
+    "found_in_set": 10423,
+    "recall_in_set": 91.55028546332895,
+    "leak_in_set": 918,
+    "leak_in_set_pct": 8.063241106719367,
+    "open_in_set": 501,
+    "open_out_of_set": 648,
+    "open_by_type_in_set": {
+     "PER": 276,
+     "ADDRESS": 71,
+     "PHONE": 42,
+     "INN": 34,
+     "ACCOUNT": 33,
+     "INN_PER": 13,
+     "ORG": 12,
+     "OGRN": 8,
+     "PASSPORT": 8,
+     "BIRTHDATE": 3,
+     "SNILS": 1
+    },
+    "open_by_type_out_of_set": {
+     "SUM": 648
+    },
+    "per_type": {
+     "ACCOUNT": {
+      "n": 732,
+      "found": 699,
+      "leak6": 3,
+      "leak8": 3,
+      "open_full": 33
+     },
+     "ADDRESS": {
+      "n": 1308,
+      "found": 1236,
+      "leak6": 195,
+      "leak8": 195,
+      "open_full": 71
+     },
+     "BIK": {
+      "n": 453,
+      "found": 453,
+      "leak6": 0,
+      "leak8": 0,
+      "open_full": 0
+     },
+     "BIRTHDATE": {
+      "n": 228,
+      "found": 224,
+      "leak6": 3,
+      "leak8": 3,
+      "open_full": 3
+     },
+     "EMAIL": {
+      "n": 714,
+      "found": 714,
+      "leak6": 0,
+      "leak8": 0,
+      "open_full": 0
+     },
+     "INN": {
+      "n": 369,
+      "found": 302,
+      "leak6": 5,
+      "leak8": 4,
+      "open_full": 34
+     },
+     "INN_PER": {
+      "n": 675,
+      "found": 657,
+      "leak6": 15,
+      "leak8": 15,
+      "open_full": 13
+     },
+     "KPP": {
+      "n": 246,
+      "found": 246,
+      "leak6": 0,
+      "leak8": 0,
+      "open_full": 0
+     },
+     "OGRN": {
+      "n": 420,
+      "found": 412,
+      "leak6": 8,
+      "leak8": 6,
+      "open_full": 8
+     },
+     "ORG": {
+      "n": 462,
+      "found": 450,
+      "leak6": 88,
+      "leak8": 88,
+      "open_full": 12
+     },
+     "PASSPORT": {
+      "n": 912,
+      "found": 871,
+      "leak6": 14,
+      "leak8": 14,
+      "open_full": 8
+     },
+     "PER": {
+      "n": 3420,
+      "found": 2758,
+      "leak6": 574,
+      "leak8": 574,
+      "open_full": 276
+     },
+     "PHONE": {
+      "n": 1218,
+      "found": 1175,
+      "leak6": 12,
+      "leak8": 10,
+      "open_full": 42
+     },
+     "SNILS": {
+      "n": 228,
+      "found": 226,
+      "leak6": 1,
+      "leak8": 1,
+      "open_full": 1
+     },
+     "SUM": {
+      "n": 648,
+      "found": 0,
+      "leak6": 647,
+      "leak8": 2,
+      "open_full": 648
+     }
+    },
+    "price_leak_here": 918,
+    "price_leak_at_maximum": 918,
+    "price_leak_delta": 0,
+    "price_open_here": 501,
+    "price_open_at_maximum": 501,
+    "price_open_delta": 0
+   },
+   "with_money": {
+    "label": "Всё, включая деньги",
+    "n_types": 26,
+    "types": [
+     "ADDRESS",
+     "BANK_ACCOUNT",
+     "BIK",
+     "BIRTHDATE",
+     "CONTRACT_KIND",
+     "CONTRACT_NO",
+     "DATE",
+     "EMAIL",
+     "INN",
+     "INN_PERSON",
+     "KPP",
+     "OGRN",
+     "ORG",
+     "PASSPORT",
+     "PASSPORT_ISSUER",
+     "PERCENT",
+     "PERSON",
+     "PHONE",
+     "REGISTRY_NAME",
+     "REG_ID",
+     "REG_NUMBER",
+     "SHARE_PCT",
+     "SNILS",
+     "SUM",
+     "TERM",
+     "TRANCHE"
+    ],
+    "masks": 16158,
+    "masks_located": 16158,
+    "gold": 12033,
+    "found": 11068,
+    "recall": 91.98038726834538,
+    "recall_bik_excl": 91.66666666666667,
+    "leak6": 924,
+    "leak6_pct": 7.678883071553229,
+    "leak6_bik_excl": 924,
+    "leak6_bik_excl_pct": 7.979274611398964,
+    "leak8": 913,
+    "leak8_pct": 7.587467796891881,
+    "open_entities": 504,
+    "open_by_type": {
+     "PER": 276,
+     "ADDRESS": 71,
+     "PHONE": 42,
+     "INN": 34,
+     "ACCOUNT": 33,
+     "INN_PER": 13,
+     "ORG": 12,
+     "OGRN": 8,
+     "PASSPORT": 8,
+     "SUM": 3,
+     "BIRTHDATE": 3,
+     "SNILS": 1
+    },
+    "docs_with_open": 168,
+    "gold_in_set": 12033,
+    "found_in_set": 11068,
+    "recall_in_set": 91.98038726834538,
+    "leak_in_set": 924,
+    "leak_in_set_pct": 7.678883071553229,
+    "open_in_set": 504,
+    "open_out_of_set": 0,
+    "open_by_type_in_set": {
+     "PER": 276,
+     "ADDRESS": 71,
+     "PHONE": 42,
+     "INN": 34,
+     "ACCOUNT": 33,
+     "INN_PER": 13,
+     "ORG": 12,
+     "OGRN": 8,
+     "PASSPORT": 8,
+     "SUM": 3,
+     "BIRTHDATE": 3,
+     "SNILS": 1
+    },
+    "open_by_type_out_of_set": {},
+    "per_type": {
+     "ACCOUNT": {
+      "n": 732,
+      "found": 699,
+      "leak6": 3,
+      "leak8": 3,
+      "open_full": 33
+     },
+     "ADDRESS": {
+      "n": 1308,
+      "found": 1236,
+      "leak6": 195,
+      "leak8": 195,
+      "open_full": 71
+     },
+     "BIK": {
+      "n": 453,
+      "found": 453,
+      "leak6": 0,
+      "leak8": 0,
+      "open_full": 0
+     },
+     "BIRTHDATE": {
+      "n": 228,
+      "found": 224,
+      "leak6": 3,
+      "leak8": 3,
+      "open_full": 3
+     },
+     "EMAIL": {
+      "n": 714,
+      "found": 714,
+      "leak6": 0,
+      "leak8": 0,
+      "open_full": 0
+     },
+     "INN": {
+      "n": 369,
+      "found": 302,
+      "leak6": 5,
+      "leak8": 4,
+      "open_full": 34
+     },
+     "INN_PER": {
+      "n": 675,
+      "found": 657,
+      "leak6": 15,
+      "leak8": 15,
+      "open_full": 13
+     },
+     "KPP": {
+      "n": 246,
+      "found": 246,
+      "leak6": 0,
+      "leak8": 0,
+      "open_full": 0
+     },
+     "OGRN": {
+      "n": 420,
+      "found": 412,
+      "leak6": 8,
+      "leak8": 6,
+      "open_full": 8
+     },
+     "ORG": {
+      "n": 462,
+      "found": 450,
+      "leak6": 88,
+      "leak8": 88,
+      "open_full": 12
+     },
+     "PASSPORT": {
+      "n": 912,
+      "found": 871,
+      "leak6": 14,
+      "leak8": 14,
+      "open_full": 8
+     },
+     "PER": {
+      "n": 3420,
+      "found": 2758,
+      "leak6": 574,
+      "leak8": 574,
+      "open_full": 276
+     },
+     "PHONE": {
+      "n": 1218,
+      "found": 1175,
+      "leak6": 12,
+      "leak8": 10,
+      "open_full": 42
+     },
+     "SNILS": {
+      "n": 228,
+      "found": 226,
+      "leak6": 1,
+      "leak8": 1,
+      "open_full": 1
+     },
+     "SUM": {
+      "n": 648,
+      "found": 645,
+      "leak6": 6,
+      "leak8": 0,
+      "open_full": 3
+     }
+    },
+    "price_leak_here": 924,
+    "price_leak_at_maximum": 924,
+    "price_leak_delta": 0,
+    "price_open_here": 504,
+    "price_open_at_maximum": 504,
+    "price_open_delta": 0
+   },
+   "maximum": {
+    "label": "Максимум (все типы)",
+    "n_types": 26,
+    "types": null,
+    "masks": 16158,
+    "masks_located": 16158,
+    "gold": 12033,
+    "found": 11068,
+    "recall": 91.98038726834538,
+    "recall_bik_excl": 91.66666666666667,
+    "leak6": 924,
+    "leak6_pct": 7.678883071553229,
+    "leak6_bik_excl": 924,
+    "leak6_bik_excl_pct": 7.979274611398964,
+    "leak8": 913,
+    "leak8_pct": 7.587467796891881,
+    "open_entities": 504,
+    "open_by_type": {
+     "PER": 276,
+     "ADDRESS": 71,
+     "PHONE": 42,
+     "INN": 34,
+     "ACCOUNT": 33,
+     "INN_PER": 13,
+     "ORG": 12,
+     "OGRN": 8,
+     "PASSPORT": 8,
+     "SUM": 3,
+     "BIRTHDATE": 3,
+     "SNILS": 1
+    },
+    "docs_with_open": 168,
+    "gold_in_set": 12033,
+    "found_in_set": 11068,
+    "recall_in_set": 91.98038726834538,
+    "leak_in_set": 924,
+    "leak_in_set_pct": 7.678883071553229,
+    "open_in_set": 504,
+    "open_out_of_set": 0,
+    "open_by_type_in_set": {
+     "PER": 276,
+     "ADDRESS": 71,
+     "PHONE": 42,
+     "INN": 34,
+     "ACCOUNT": 33,
+     "INN_PER": 13,
+     "ORG": 12,
+     "OGRN": 8,
+     "PASSPORT": 8,
+     "SUM": 3,
+     "BIRTHDATE": 3,
+     "SNILS": 1
+    },
+    "open_by_type_out_of_set": {},
+    "per_type": {
+     "ACCOUNT": {
+      "n": 732,
+      "found": 699,
+      "leak6": 3,
+      "leak8": 3,
+      "open_full": 33
+     },
+     "ADDRESS": {
+      "n": 1308,
+      "found": 1236,
+      "leak6": 195,
+      "leak8": 195,
+      "open_full": 71
+     },
+     "BIK": {
+      "n": 453,
+      "found": 453,
+      "leak6": 0,
+      "leak8": 0,
+      "open_full": 0
+     },
+     "BIRTHDATE": {
+      "n": 228,
+      "found": 224,
+      "leak6": 3,
+      "leak8": 3,
+      "open_full": 3
+     },
+     "EMAIL": {
+      "n": 714,
+      "found": 714,
+      "leak6": 0,
+      "leak8": 0,
+      "open_full": 0
+     },
+     "INN": {
+      "n": 369,
+      "found": 302,
+      "leak6": 5,
+      "leak8": 4,
+      "open_full": 34
+     },
+     "INN_PER": {
+      "n": 675,
+      "found": 657,
+      "leak6": 15,
+      "leak8": 15,
+      "open_full": 13
+     },
+     "KPP": {
+      "n": 246,
+      "found": 246,
+      "leak6": 0,
+      "leak8": 0,
+      "open_full": 0
+     },
+     "OGRN": {
+      "n": 420,
+      "found": 412,
+      "leak6": 8,
+      "leak8": 6,
+      "open_full": 8
+     },
+     "ORG": {
+      "n": 462,
+      "found": 450,
+      "leak6": 88,
+      "leak8": 88,
+      "open_full": 12
+     },
+     "PASSPORT": {
+      "n": 912,
+      "found": 871,
+      "leak6": 14,
+      "leak8": 14,
+      "open_full": 8
+     },
+     "PER": {
+      "n": 3420,
+      "found": 2758,
+      "leak6": 574,
+      "leak8": 574,
+      "open_full": 276
+     },
+     "PHONE": {
+      "n": 1218,
+      "found": 1175,
+      "leak6": 12,
+      "leak8": 10,
+      "open_full": 42
+     },
+     "SNILS": {
+      "n": 228,
+      "found": 226,
+      "leak6": 1,
+      "leak8": 1,
+      "open_full": 1
+     },
+     "SUM": {
+      "n": 648,
+      "found": 645,
+      "leak6": 6,
+      "leak8": 0,
+      "open_full": 3
+     }
+    },
+    "price_leak_here": 924,
+    "price_leak_at_maximum": 924,
+    "price_leak_delta": 0,
+    "price_open_here": 504,
+    "price_open_at_maximum": 504,
+    "price_open_delta": 0
+   }
+  }
+ },
+ "mechanisms": {
+  "by_doc_class": {
+   "чистый текст": {
+    "n": 4011,
+    "leak6": 85,
+    "leak8": 85,
+    "leak6_pct": 2.119172276240339,
+    "not_found": 255,
+    "full": 26,
+    "partial": 59
+   },
+   "case": {
+    "n": 1287,
+    "leak6": 222,
+    "leak8": 222,
+    "leak6_pct": 17.24941724941725,
+    "not_found": 152,
+    "full": 101,
+    "partial": 121
+   },
+   "invisible": {
+    "n": 1266,
+    "leak6": 39,
+    "leak8": 37,
+    "leak6_pct": 3.080568720379147,
+    "not_found": 87,
+    "full": 26,
+    "partial": 13
+   },
+   "homoglyph": {
+    "n": 1260,
+    "leak6": 41,
+    "leak8": 40,
+    "leak6_pct": 3.253968253968254,
+    "not_found": 82,
+    "full": 10,
+    "partial": 31
+   },
+   "combo": {
+    "n": 1256,
+    "leak6": 287,
+    "leak8": 284,
+    "leak6_pct": 22.85031847133758,
+    "not_found": 166,
+    "full": 111,
+    "partial": 176
+   },
+   "digit_spaces": {
+    "n": 1248,
+    "leak6": 27,
+    "leak8": 26,
+    "leak6_pct": 2.1634615384615383,
+    "not_found": 81,
+    "full": 4,
+    "partial": 23
+   },
+   "linebreak": {
+    "n": 1181,
+    "leak6": 198,
+    "leak8": 194,
+    "leak6_pct": 16.76545300592718,
+    "not_found": 90,
+    "full": 15,
+    "partial": 183
+   },
+   "cell_split": {
+    "n": 524,
+    "leak6": 25,
+    "leak8": 25,
+    "leak6_pct": 4.770992366412214,
+    "not_found": 52,
+    "full": 6,
+    "partial": 19
+   }
+  },
+  "by_trick": {
+   "(без метки)": {
+    "n": 5535,
+    "leak6": 101,
+    "leak8": 101,
+    "leak6_pct": 1.824751580849142,
+    "not_found": 259,
+    "full": 31,
+    "partial": 70
+   },
+   "mut:invisible": {
+    "n": 1211,
+    "leak6": 39,
+    "leak8": 37,
+    "leak6_pct": 3.2204789430222958,
+    "not_found": 87,
+    "full": 26,
+    "partial": 13
+   },
+   "mut:combo": {
+    "n": 1194,
+    "leak6": 287,
+    "leak8": 284,
+    "leak6_pct": 24.036850921273032,
+    "not_found": 166,
+    "full": 111,
+    "partial": 176
+   },
+   "mut:homoglyph": {
+    "n": 1192,
+    "leak6": 41,
+    "leak8": 40,
+    "leak6_pct": 3.4395973154362416,
+    "not_found": 82,
+    "full": 10,
+    "partial": 31
+   },
+   "mut:linebreak": {
+    "n": 1123,
+    "leak6": 198,
+    "leak8": 194,
+    "leak6_pct": 17.631344612644703,
+    "not_found": 90,
+    "full": 15,
+    "partial": 183
+   },
+   "mut:case": {
+    "n": 613,
+    "leak6": 220,
+    "leak8": 220,
+    "leak6_pct": 35.88907014681892,
+    "not_found": 124,
+    "full": 99,
+    "partial": 121
+   },
+   "mut:digit_spaces": {
+    "n": 556,
+    "leak6": 12,
+    "leak8": 11,
+    "leak6_pct": 2.158273381294964,
+    "not_found": 15,
+    "full": 1,
+    "partial": 11
+   },
+   "dense_line": {
+    "n": 87,
+    "leak6": 8,
+    "leak8": 8,
+    "leak6_pct": 9.195402298850574,
+    "not_found": 2,
+    "full": 2,
+    "partial": 6
+   },
+   "in_footnote": {
+    "n": 41,
+    "leak6": 0,
+    "leak8": 0,
+    "leak6_pct": 0.0,
+    "not_found": 41,
+    "full": 0,
+    "partial": 0
+   },
+   "in_header": {
+    "n": 35,
+    "leak6": 0,
+    "leak8": 0,
+    "leak6_pct": 0.0,
+    "not_found": 0,
+    "full": 0,
+    "partial": 0
+   },
+   "invisible_chars": {
+    "n": 34,
+    "leak6": 0,
+    "leak8": 0,
+    "leak6_pct": 0.0,
+    "not_found": 0,
+    "full": 0,
+    "partial": 0
+   },
+   "homoglyph_cyrillic_in_digits": {
+    "n": 32,
+    "leak6": 0,
+    "leak8": 0,
+    "leak6_pct": 0.0,
+    "not_found": 0,
+    "full": 0,
+    "partial": 0
+   },
+   "nested_table": {
+    "n": 32,
+    "leak6": 0,
+    "leak8": 0,
+    "leak6_pct": 0.0,
+    "not_found": 32,
+    "full": 0,
+    "partial": 0
+   },
+   "in_textbox": {
+    "n": 32,
+    "leak6": 0,
+    "leak8": 0,
+    "leak6_pct": 0.0,
+    "not_found": 32,
+    "full": 0,
+    "partial": 0
+   },
+   "in_footer": {
+    "n": 30,
+    "leak6": 0,
+    "leak8": 0,
+    "leak6_pct": 0.0,
+    "not_found": 0,
+    "full": 0,
+    "partial": 0
+   },
+   "cell_boundary_split": {
+    "n": 29,
+    "leak6": 0,
+    "leak8": 0,
+    "leak6_pct": 0.0,
+    "not_found": 0,
+    "full": 0,
+    "partial": 0
+   },
+   "linebreak_inside_entity": {
+    "n": 28,
+    "leak6": 2,
+    "leak8": 2,
+    "leak6_pct": 7.142857142857143,
+    "not_found": 0,
+    "full": 1,
+    "partial": 1
+   },
+   "bare_cell_no_sentence": {
+    "n": 28,
+    "leak6": 2,
+    "leak8": 2,
+    "leak6_pct": 7.142857142857143,
+    "not_found": 7,
+    "full": 0,
+    "partial": 2
+   },
+   "homoglyph_in_email": {
+    "n": 21,
+    "leak6": 0,
+    "leak8": 0,
+    "leak6_pct": 0.0,
+    "not_found": 0,
+    "full": 0,
+    "partial": 0
+   },
+   "lowercase": {
+    "n": 20,
+    "leak6": 0,
+    "leak8": 0,
+    "leak6_pct": 0.0,
+    "not_found": 0,
+    "full": 0,
+    "partial": 0
+   },
+   "alternating_case": {
+    "n": 20,
+    "leak6": 0,
+    "leak8": 0,
+    "leak6_pct": 0.0,
+    "not_found": 0,
+    "full": 0,
+    "partial": 0
+   },
+   "glued_to_prev_entity": {
+    "n": 19,
+    "leak6": 0,
+    "leak8": 0,
+    "leak6_pct": 0.0,
+    "not_found": 19,
+    "full": 0,
+    "partial": 0
+   },
+   "uppercase": {
+    "n": 18,
+    "leak6": 2,
+    "leak8": 2,
+    "leak6_pct": 11.11111111111111,
+    "not_found": 0,
+    "full": 0,
+    "partial": 2
+   },
+   "digit_grouping": {
+    "n": 16,
+    "leak6": 0,
+    "leak8": 0,
+    "leak6_pct": 0.0,
+    "not_found": 0,
+    "full": 0,
+    "partial": 0
+   },
+   "digit_grouping_dashes": {
+    "n": 16,
+    "leak6": 0,
+    "leak8": 0,
+    "leak6_pct": 0.0,
+    "not_found": 0,
+    "full": 0,
+    "partial": 0
+   },
+   "bold_split_runs": {
+    "n": 16,
+    "leak6": 0,
+    "leak8": 0,
+    "leak6_pct": 0.0,
+    "not_found": 0,
+    "full": 0,
+    "partial": 0
+   },
+   "homoglyph_latin_in_cyrillic": {
+    "n": 15,
+    "leak6": 3,
+    "leak8": 3,
+    "leak6_pct": 20.0,
+    "not_found": 2,
+    "full": 2,
+    "partial": 1
+   },
+   "zwj_and_soft_hyphen": {
+    "n": 15,
+    "leak6": 1,
+    "leak8": 1,
+    "leak6_pct": 6.666666666666667,
+    "not_found": 1,
+    "full": 1,
+    "partial": 0
+   },
+   "mut:cell_split": {
+    "n": 14,
+    "leak6": 8,
+    "leak8": 8,
+    "leak6_pct": 57.142857142857146,
+    "not_found": 6,
+    "full": 0,
+    "partial": 8
+   },
+   "glued_to_next_entity": {
+    "n": 11,
+    "leak6": 0,
+    "leak8": 0,
+    "leak6_pct": 0.0,
+    "not_found": 0,
+    "full": 0,
+    "partial": 0
+   }
+  },
+  "by_class_focus": {
+   "чистый текст": {
+    "PER": {
+     "n": 1140,
+     "leak6": 28,
+     "leak6_pct": 2.456140350877193,
+     "not_found": 185
+    },
+    "ORG": {
+     "n": 154,
+     "leak6": 21,
+     "leak6_pct": 13.636363636363637,
+     "not_found": 4
+    },
+    "ADDRESS": {
+     "n": 436,
+     "leak6": 33,
+     "leak6_pct": 7.568807339449541,
+     "not_found": 10
+    },
+    "PASSPORT": {
+     "n": 304,
+     "leak6": 0,
+     "leak6_pct": 0.0,
+     "not_found": 12
+    }
+   },
+   "combo": {
+    "PER": {
+     "n": 349,
+     "leak6": 209,
+     "leak6_pct": 59.88538681948424,
+     "not_found": 121
+    },
+    "ORG": {
+     "n": 57,
+     "leak6": 17,
+     "leak6_pct": 29.82456140350877,
+     "not_found": 2
+    },
+    "ADDRESS": {
+     "n": 136,
+     "leak6": 52,
+     "leak6_pct": 38.23529411764706,
+     "not_found": 24
+    },
+    "PASSPORT": {
+     "n": 80,
+     "leak6": 4,
+     "leak6_pct": 5.0,
+     "not_found": 5
+    }
+   },
+   "homoglyph": {
+    "PER": {
+     "n": 350,
+     "leak6": 3,
+     "leak6_pct": 0.8571428571428571,
+     "not_found": 56
+    },
+    "ORG": {
+     "n": 58,
+     "leak6": 15,
+     "leak6_pct": 25.862068965517242,
+     "not_found": 2
+    },
+    "ADDRESS": {
+     "n": 139,
+     "leak6": 16,
+     "leak6_pct": 11.510791366906474,
+     "not_found": 5
+    },
+    "PASSPORT": {
+     "n": 68,
+     "leak6": 4,
+     "leak6_pct": 5.882352941176471,
+     "not_found": 5
+    }
+   },
+   "invisible": {
+    "PER": {
+     "n": 337,
+     "leak6": 18,
+     "leak6_pct": 5.341246290801187,
+     "not_found": 56
+    },
+    "ORG": {
+     "n": 67,
+     "leak6": 5,
+     "leak6_pct": 7.462686567164179,
+     "not_found": 2
+    },
+    "ADDRESS": {
+     "n": 145,
+     "leak6": 6,
+     "leak6_pct": 4.137931034482759,
+     "not_found": 2
+    },
+    "PASSPORT": {
+     "n": 76,
+     "leak6": 6,
+     "leak6_pct": 7.894736842105263,
+     "not_found": 8
+    }
+   },
+   "digit_spaces": {
+    "PER": {
+     "n": 395,
+     "leak6": 9,
+     "leak6_pct": 2.278481012658228,
+     "not_found": 64
+    },
+    "ORG": {
+     "n": 26,
+     "leak6": 5,
+     "leak6_pct": 19.23076923076923,
+     "not_found": 0
+    },
+    "ADDRESS": {
+     "n": 127,
+     "leak6": 11,
+     "leak6_pct": 8.661417322834646,
+     "not_found": 2
+    },
+    "PASSPORT": {
+     "n": 116,
+     "leak6": 0,
+     "leak6_pct": 0.0,
+     "not_found": 4
+    }
+   },
+   "case": {
+    "PER": {
+     "n": 346,
+     "leak6": 169,
+     "leak6_pct": 48.84393063583815,
+     "not_found": 104
+    },
+    "ORG": {
+     "n": 61,
+     "leak6": 14,
+     "leak6_pct": 22.950819672131146,
+     "not_found": 0
+    },
+    "ADDRESS": {
+     "n": 151,
+     "leak6": 37,
+     "leak6_pct": 24.503311258278146,
+     "not_found": 20
+    },
+    "PASSPORT": {
+     "n": 100,
+     "leak6": 0,
+     "leak6_pct": 0.0,
+     "not_found": 6
+    }
+   },
+   "linebreak": {
+    "PER": {
+     "n": 357,
+     "leak6": 119,
+     "leak6_pct": 33.333333333333336,
+     "not_found": 35
+    },
+    "ORG": {
+     "n": 25,
+     "leak6": 8,
+     "leak6_pct": 32.0,
+     "not_found": 0
+    },
+    "ADDRESS": {
+     "n": 120,
+     "leak6": 37,
+     "leak6_pct": 30.833333333333332,
+     "not_found": 7
+    },
+    "PASSPORT": {
+     "n": 128,
+     "leak6": 0,
+     "leak6_pct": 0.0,
+     "not_found": 1
+    }
+   },
+   "cell_split": {
+    "PER": {
+     "n": 146,
+     "leak6": 19,
+     "leak6_pct": 13.013698630136986,
+     "not_found": 41
+    },
+    "ORG": {
+     "n": 14,
+     "leak6": 3,
+     "leak6_pct": 21.428571428571427,
+     "not_found": 2
+    },
+    "ADDRESS": {
+     "n": 54,
+     "leak6": 3,
+     "leak6_pct": 5.555555555555555,
+     "not_found": 2
+    },
+    "PASSPORT": {
+     "n": 40,
+     "leak6": 0,
+     "leak6_pct": 0.0,
+     "not_found": 0
+    }
+   }
+  },
+  "leak_status": {
+   "partial": 625,
+   "full": 299
+  },
+  "fragment_len": {
+   "3": 124,
+   "4": 22,
+   "5": 35,
+   "6": 125,
+   "7": 127,
+   "8": 99,
+   "9": 35,
+   "10": 52,
+   "11": 47,
+   "12": 67,
+   "13": 92,
+   "14": 39,
+   "15": 11,
+   "16": 1,
+   "17": 15,
+   "19": 6,
+   "20": 9,
+   "21": 4,
+   "22": 5,
+   "24": 3,
+   "25": 1,
+   "27": 5
+  }
+ },
+ "documents": {
+  "by_contract_kind": {
+   "агентский": {
+    "docs": 30,
+    "gold": 1182,
+    "masks": 1534,
+    "recall": 91.20135363790186,
+    "leak6": 86,
+    "leak6_pct": 7.2758037225042305,
+    "masks_per_doc": 51.13333333333333
+   },
+   "аренда": {
+    "docs": 36,
+    "gold": 1281,
+    "masks": 1734,
+    "recall": 90.00780640124903,
+    "leak6": 113,
+    "leak6_pct": 8.821233411397346,
+    "masks_per_doc": 48.166666666666664
+   },
+   "займ": {
+    "docs": 30,
+    "gold": 1170,
+    "masks": 1536,
+    "recall": 90.85470085470085,
+    "leak6": 93,
+    "leak6_pct": 7.948717948717949,
+    "masks_per_doc": 51.2
+   },
+   "купля-продажа": {
+    "docs": 42,
+    "gold": 1626,
+    "masks": 2163,
+    "recall": 92.12792127921279,
+    "leak6": 123,
+    "leak6_pct": 7.564575645756458,
+    "masks_per_doc": 51.5
+   },
+   "оказание услуг": {
+    "docs": 42,
+    "gold": 1440,
+    "masks": 1970,
+    "recall": 91.31944444444444,
+    "leak6": 97,
+    "leak6_pct": 6.736111111111111,
+    "masks_per_doc": 46.904761904761905
+   },
+   "подряд": {
+    "docs": 36,
+    "gold": 1401,
+    "masks": 1823,
+    "recall": 90.50678087080657,
+    "leak6": 103,
+    "leak6_pct": 7.351891506067095,
+    "masks_per_doc": 50.638888888888886
+   },
+   "поставка": {
+    "docs": 48,
+    "gold": 1575,
+    "masks": 2216,
+    "recall": 94.66666666666667,
+    "leak6": 103,
+    "leak6_pct": 6.5396825396825395,
+    "masks_per_doc": 46.166666666666664
+   },
+   "трудовой": {
+    "docs": 36,
+    "gold": 1419,
+    "masks": 1887,
+    "recall": 93.37561663143059,
+    "leak6": 125,
+    "leak6_pct": 8.809020436927414,
+    "masks_per_doc": 52.416666666666664
+   },
+   "цессия": {
+    "docs": 24,
+    "gold": 939,
+    "masks": 1295,
+    "recall": 93.39723109691161,
+    "leak6": 81,
+    "leak6_pct": 8.626198083067093,
+    "masks_per_doc": 53.958333333333336
+   }
+  },
+  "by_format": {
+   "docx": {
+    "docs": 162,
+    "gold": 6150,
+    "masks": 7881,
+    "recall": 88.9430894308943,
+    "leak6": 412,
+    "leak6_pct": 6.699186991869919,
+    "masks_per_doc": 48.648148148148145
+   },
+   "txt": {
+    "docs": 162,
+    "gold": 5883,
+    "masks": 8277,
+    "recall": 95.15553289138195,
+    "leak6": 512,
+    "leak6_pct": 8.703042665306816,
+    "masks_per_doc": 51.092592592592595
+   }
+  },
+  "top_leaking": [
+   {
+    "doc_id": "agency_0010__m1337_case",
+    "format": "docx",
+    "contract_type": "агентский",
+    "source": "mutated:1337:case",
+    "gold": 39,
+    "leak6": 14,
+    "masks": 44,
+    "types": {
+     "PER": 12,
+     "ADDRESS": 2
+    }
+   },
+   {
+    "doc_id": "cession_0007__m2718_linebreak",
+    "format": "txt",
+    "contract_type": "цессия",
+    "source": "mutated:2718:linebreak",
+    "gold": 36,
+    "leak6": 14,
+    "masks": 79,
+    "types": {
+     "PER": 11,
+     "ADDRESS": 3
+    }
+   },
+   {
+    "doc_id": "sale_0014__m1337_case",
+    "format": "docx",
+    "contract_type": "купля-продажа",
+    "source": "mutated:1337:case",
+    "gold": 39,
+    "leak6": 14,
+    "masks": 48,
+    "types": {
+     "PER": 11,
+     "ADDRESS": 3
+    }
+   },
+   {
+    "doc_id": "cession_0001__m2718_linebreak",
+    "format": "txt",
+    "contract_type": "цессия",
+    "source": "mutated:2718:linebreak",
+    "gold": 37,
+    "leak6": 13,
+    "masks": 76,
+    "types": {
+     "PER": 13
+    }
+   },
+   {
+    "doc_id": "services_0008__m2718_combo",
+    "format": "docx",
+    "contract_type": "оказание услуг",
+    "source": "mutated:2718:combo",
+    "gold": 38,
+    "leak6": 13,
+    "masks": 45,
+    "types": {
+     "PER": 9,
+     "ADDRESS": 2,
+     "SUM": 1,
+     "SNILS": 1
+    }
+   },
+   {
+    "doc_id": "services_0012__m2718_case",
+    "format": "docx",
+    "contract_type": "оказание услуг",
+    "source": "mutated:2718:case",
+    "gold": 33,
+    "leak6": 13,
+    "masks": 38,
+    "types": {
+     "PER": 10,
+     "ADDRESS": 3
+    }
+   },
+   {
+    "doc_id": "labor_0005__m2718_linebreak",
+    "format": "txt",
+    "contract_type": "трудовой",
+    "source": "mutated:2718:linebreak",
+    "gold": 39,
+    "leak6": 12,
+    "masks": 70,
+    "types": {
+     "ORG": 3,
+     "PER": 3,
+     "INN": 2,
+     "ADDRESS": 2,
+     "OGRN": 1,
+     "INN_PER": 1
+    }
+   },
+   {
+    "doc_id": "lease_0006__m2718_case",
+    "format": "docx",
+    "contract_type": "аренда",
+    "source": "mutated:2718:case",
+    "gold": 40,
+    "leak6": 12,
+    "masks": 51,
+    "types": {
+     "PER": 10,
+     "ADDRESS": 2
+    }
+   },
+   {
+    "doc_id": "sale_0007__m2718_linebreak",
+    "format": "txt",
+    "contract_type": "купля-продажа",
+    "source": "mutated:2718:linebreak",
+    "gold": 37,
+    "leak6": 12,
+    "masks": 79,
+    "types": {
+     "PER": 10,
+     "ADDRESS": 2
+    }
+   },
+   {
+    "doc_id": "sale_0012__m2718_case",
+    "format": "docx",
+    "contract_type": "купля-продажа",
+    "source": "mutated:2718:case",
+    "gold": 44,
+    "leak6": 12,
+    "masks": 46,
+    "types": {
+     "PER": 11,
+     "PHONE": 1
+    }
+   }
+  ]
+ },
+ "roundtrip": {
+  "v1": {
+   "docx": {
+    "docs": 162,
+    "masks": 7881,
+    "masking_a": 100.0,
+    "a_channel": 96.26950894556528,
+    "roundtrip_byte_exact_docs": 122,
+    "unresolved": 0
+   },
+   "txt": {
+    "docs": 162,
+    "masks": 8277,
+    "masking_a": 100.0,
+    "a_channel": 100.0,
+    "roundtrip_byte_exact_docs": 162,
+    "unresolved": 0
+   }
+  },
+  "v2": {
+   "docx": {
+    "docs": 84,
+    "masks": 7209,
+    "masking_a": 100.0,
+    "a_channel": 99.81966985712305,
+    "roundtrip_byte_exact_docs": 71,
+    "unresolved": 0
+   },
+   "txt": {
+    "docs": 54,
+    "masks": 4422,
+    "masking_a": 100.0,
+    "a_channel": 100.0,
+    "roundtrip_byte_exact_docs": 54,
+    "unresolved": 0
+   }
+  }
+ },
+ "registries": {
+  "known_single_guard.json": {
+   "records": 395,
+   "matched": 395,
+   "only_in_dump": 0,
+   "only_in_registry": 0,
+   "meaning": "значение, спрятанное маской ЧУЖОГО типа (одиночная защита)"
+  },
+  "known_default_leaks.json": {
+   "records": 6,
+   "matched": 6,
+   "only_in_dump": 0,
+   "only_in_registry": 0,
+   "meaning": "закрыто на МАКСИМУМЕ, открыто в наборе ПО УМОЛЧАНИЮ"
+  },
+  "overmask_ledger.json": {
+   "records": 7,
+   "matched": null,
+   "only_in_dump": null,
+   "only_in_registry": null,
+   "meaning": "журнал движений точки отсчёта линии «д» (автор + причина); не сверяется с прогоном — это история решений, а не список случаев"
+  },
+  "docs/known_leaks_stage_c.json": {
+   "records": 43,
+   "matched": 43,
+   "only_in_dump": 0,
+   "only_in_registry": 0,
+   "meaning": "ADDRESS found=False и утечка (известный долг этапа C)"
+  }
+ },
+ "findings": {
+  "by_section": {
+   "1. Утечка — значение уходит в LLM открытым текстом": 29,
+   "2. Точность и порча документа — маска там, где её быть не должно": 22,
+   "3. Приборы, процесс, сборка": 24,
+   "4. Охват — чего в измерении нет вовсе": 7
+  },
+  "open_total": 82,
+  "closed_this_stage": 4,
+  "owner_decisions_pending": 11
+ },
+ "system": {
+  "entity_types_total": 29,
+  "entity_types_maskable": 26,
+  "entity_types_maskable_list": [
+   "ADDRESS",
+   "BANK_ACCOUNT",
+   "BIK",
+   "BIRTHDATE",
+   "CONTRACT_KIND",
+   "CONTRACT_NO",
+   "DATE",
+   "EMAIL",
+   "INN",
+   "INN_PERSON",
+   "KPP",
+   "OGRN",
+   "ORG",
+   "PASSPORT",
+   "PASSPORT_ISSUER",
+   "PERCENT",
+   "PERSON",
+   "PHONE",
+   "REGISTRY_NAME",
+   "REG_ID",
+   "REG_NUMBER",
+   "SHARE_PCT",
+   "SNILS",
+   "SUM",
+   "TERM",
+   "TRANCHE"
+  ],
+  "barrier_classes": [
+   "CLAUSE_REF",
+   "COLLECTIVE",
+   "ROLE_TERM"
+  ],
+  "src_py_files": 26,
+  "src_py_lines": 12693,
+  "detector_modules": [
+   "anchor_registry.py",
+   "layout_repair.py",
+   "multispan.py",
+   "ner_detector.py",
+   "normalizer.py",
+   "regex_detector.py",
+   "syntax_compound.py"
+  ],
+  "arbitration_order": {
+   "regex": [
+    "BANK_ACCOUNT",
+    "OGRN",
+    "INN",
+    "INN_PERSON",
+    "BIK",
+    "SNILS",
+    "REG_ID",
+    "KPP",
+    "PASSPORT",
+    "PASSPORT_ISSUER",
+    "PHONE",
+    "REG_NUMBER",
+    "CONTRACT_NO",
+    "CONTRACT_KIND",
+    "REGISTRY_NAME",
+    "SUM",
+    "EMAIL",
+    "BIRTHDATE",
+    "DATE",
+    "SHARE_PCT",
+    "PERCENT",
+    "TRANCHE",
+    "TERM"
+   ],
+   "ner": [
+    "ADDRESS",
+    "ORG",
+    "PERSON"
+   ]
+  },
+  "tests": {
+   "failed": 9,
+   "passed": 1951,
+   "skipped": 3,
+   "xfailed": 6,
+   "collected": 1969,
+   "failed_names": [
+    "tests/component2/test_g_regression.py::test_existing_block1_7_suite_still_fully_green",
+    "tests/test_corpus_v2_reproducible.py::test_rebuild_matches_the_committed_corpus",
+    "tests/test_u1_packaging.py::test_browser_search_prefers_edge_then_chrome",
+    "tests/test_u1_packaging.py::test_close_all_leaves_no_zombie_process",
+    "tests/test_u1_packaging.py::test_procutil_is_pid_alive_for_self_and_for_bogus_pid",
+    "tests/test_u1_packaging.py::test_procutil_kill_pid_terminates_process",
+    "tests/test_u1_packaging.py::test_stale_lock_with_alive_but_unresponsive_pid_is_killed",
+    "tests/test_u1_packaging.py::test_stale_lock_with_dead_pid_is_cleaned_silently",
+    "tests/test_u1_packaging.py::test_stale_lock_with_live_responding_process_is_left_alone"
+   ]
+  },
+  "timings_sec": {
+   "gate_v1": 149.4,
+   "profiles": 162.0,
+   "v2": 325.4,
+   "by_entity": 0.6,
+   "subsample": 17.2,
+   "pytest": 362.0
+  }
+ },
+ "unknowns": {
+  "types_maskable_measured_names": [
+   "ACCOUNT",
+   "ADDRESS",
+   "BIK",
+   "BIRTHDATE",
+   "CONTRACT_KIND",
+   "CONTRACT_NO",
+   "DATE",
+   "EMAIL",
+   "INN",
+   "INN_PER",
+   "KPP",
+   "OGRN",
+   "ORG",
+   "PASSPORT",
+   "PASSPORT_ISSUER",
+   "PER",
+   "PERCENT",
+   "PHONE",
+   "REGISTRY_NAME",
+   "REG_ID",
+   "REG_NUMBER",
+   "SHARE_PCT",
+   "SNILS",
+   "SUM",
+   "TERM",
+   "TRANCHE"
+  ],
+  "no_gold_v1": [
+   "CONTRACT_KIND",
+   "CONTRACT_NO",
+   "DATE",
+   "PASSPORT_ISSUER",
+   "PERCENT",
+   "REGISTRY_NAME",
+   "REG_ID",
+   "REG_NUMBER",
+   "SHARE_PCT",
+   "TERM",
+   "TRANCHE"
+  ],
+  "no_gold_v2": [
+   "INN_PER"
+  ],
+  "no_gold_anywhere": [],
+  "soft_lines": [
+   {
+    "line": "г",
+    "level": "жёсткая (C — мягкая)"
+   },
+   {
+    "line": "5",
+    "level": "мягкая по числу, состав — предупреждение"
+   }
+  ],
+  "soft_details": [
+   {
+    "what": "masking C (тип маски), внутри линии «г»",
+    "why": "`gate_config.MASKING_C_WARN_PP` — падение печатается ПРЕДУПРЕЖДЕНИЕМ, решение владельца (`docs/STATE.md` §6)"
+   },
+   {
+    "what": "линия «и», ЧИСЛО значений под чужой маской",
+    "why": "мягкий: сегодня значение закрыто, ронять гейт нечем. ЖЁСТКАЯ половина той же линии — поимённая сверка реестра `known_single_guard.json`"
+   },
+   {
+    "what": "условие 5, известный долг ADDRESS",
+    "why": "`gate_config.MISSED_LEAK_TOLERANCE` — мягкий порог по решению владельца; компенсатор — диагностика СОСТАВА (подмена «N на другой N» даёт предупреждение)"
+   }
+  ],
+  "carried": {
+   "колонка «реальный документ» (число масок по типам)": {
+    "date": "2026-08-19 (этап SEAM-JOIN; сам замер — снимок DEFAULT-GATE)",
+    "why": "реального договора владельца на этой машине нет (запрет 7 CLAUDE.md: реальные документы не коммитить), разметки у него нет вовсе — по нему считаются только КОЛИЧЕСТВА масок",
+    "source": "docs/STATE.md §2.1 (колонка «реальный документ»)"
+   },
+   "§2.3 STATE — счёт по сущностям (для НАЗВАНИЯ ДЕЛЬТЫ, не для таблиц)": {
+    "date": "снимок этапа DEFAULT-GATE (в docs/STATE.md отмечено: «by_entity.py этим этапом НЕ гонялся»)",
+    "why": "прежний прогон не сохранён; пересчитать «как было» нечем — можно только назвать разницу с тем, что напечатано в STATE",
+    "source": "docs/STATE.md §2.3",
+    "values": {
+     "direct_found_occ": 86.17,
+     "direct_found_ent": 85.82,
+     "direct_prot_occ": 79.41,
+     "direct_prot_ent": 81.35,
+     "indirect_found_occ": 94.33,
+     "indirect_found_ent": 94.04,
+     "indirect_prot_occ": 88.64,
+     "indirect_prot_ent": 88.72,
+     "total_found_occ": 89.31,
+     "total_found_ent": 89.36,
+     "total_prot_occ": 82.96,
+     "total_prot_ent": 84.52,
+     "per_surface": 2272,
+     "per_by_surname": 1824,
+     "per_strict_pct": 66.5,
+     "per_product_pct": 82.35,
+     "per_open_any": 611
+    }
+   },
+   "круг на собранной программе (54/54, размер поставки)": {
+    "date": "2026-08-19 (этап SEAM-JOIN)",
+    "why": "круг на собранной программе — Windows + PyInstaller + настоящий браузер; в этом рабочем дереве не воспроизводится",
+    "source": "docs/STATE.md §5"
+   }
+  },
+  "types_without_gate_row": [
+   "DATE"
+  ]
+ }
+}

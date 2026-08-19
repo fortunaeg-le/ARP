@@ -1,0 +1,20 @@
+== gate_v1 (полный гейт корпуса v1 (324 док.))
+   /home/user/ARP/venv/Scripts/python.exe /home/user/ARP/tests/corpus/gate.py
+   -> код 1, 149.4 с, лог run_gate_v1.log
+== profiles (четыре набора типов на корпусе v1 (324 док.))
+   /home/user/ARP/venv/Scripts/python.exe /home/user/ARP/experiments/metrics_full/run_profiles.py
+   -> код 0, 162.0 с, лог run_profiles.log
+== v2 (замер корпуса v2 (138 док.))
+   /home/user/ARP/venv/Scripts/python.exe /home/user/ARP/tests/corpus_v2/measure_v2.py --out /home/user/ARP/experiments/metrics_full/results_v2.json
+   -> код 0, 325.4 с, лог run_v2.log
+== by_entity (счёт по сущностям поверх дампа гейта)
+   /home/user/ARP/venv/Scripts/python.exe /home/user/ARP/tests/corpus/by_entity.py /home/user/ARP/tests/corpus/results_gate_current.json
+   -> код 0, 0.6 с, лог run_by_entity.log
+== subsample (быстрый срез (33 док.) — ради хронометража)
+   /home/user/ARP/venv/Scripts/python.exe /home/user/ARP/tests/corpus/subsample.py
+   -> код 0, 17.2 с, лог run_subsample.log
+== pytest (полный набор тестов — ради числа тестов и времени)
+   /home/user/ARP/venv/Scripts/python.exe -m pytest -q
+   -> код 1, 362.0 с, лог run_pytest.log
+
+хронометраж -> /home/user/ARP/experiments/metrics_full/runs.json
