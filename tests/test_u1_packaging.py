@@ -144,7 +144,7 @@ def test_stale_lock_with_live_responding_process_is_left_alone(isolated_home, mo
     import launcher
     import procutil
     importlib.reload(launcher)
-    monkeypatch.setattr(launcher.webbrowser, "open", lambda url: None)
+    monkeypatch.setattr(launcher.appwindow, "open", lambda url, **kw: None)
 
     server_script = os.path.join(_APP, "server.py")
     env = dict(os.environ, USERPROFILE=str(isolated_home), HOME=str(isolated_home),
@@ -349,3 +349,282 @@ def test_build_lock_matches_installed_environment():
         "окружение разошлось с packaging/requirements-build.lock.txt: "
         + "; ".join(mismatched)
     )
+
+
+# --------------------------------------------------------------------------- #
+# ЭТАП DESKTOP-FIT. Интерфейс открывается ОКНОМ ПРИЛОЖЕНИЯ, а не вкладкой.
+#
+# Класс отказа, который стерегут эти тесты: вернуться к `webbrowser.open` можно
+# незаметно — программа при этом запускается и работает, просто пользователь
+# снова получает вкладку с адресной строкой среди чужих вкладок. Никакой
+# ошибки, никакого падения. Поэтому проверяется САМА КОМАНДА запуска, а не факт
+# «что-то открылось».
+# --------------------------------------------------------------------------- #
+
+@pytest.fixture
+def fake_browser(tmp_path, monkeypatch):
+    """Подставной Chromium: реальный браузер в тестах не поднимаем."""
+    import appwindow
+
+    exe = tmp_path / "msedge.exe"
+    exe.write_bytes(b"")
+    monkeypatch.setattr(appwindow, "find_browser", lambda: str(exe))
+    return str(exe)
+
+
+@pytest.fixture
+def recorded_popen(monkeypatch):
+    """Перехват запуска процесса: команда записывается, процесс не рождается.
+
+    `_adopt` тоже перехвачен, и это не удобство, а безопасность: он зовёт
+    OpenProcess по PID, а выдуманный PID может принадлежать ЧУЖОМУ живому
+    процессу. Настоящий вызов включил бы его в задание с KILL_ON_JOB_CLOSE, и
+    выход pytest убил бы посторонюю программу на машине разработчика.
+    """
+    import appwindow
+
+    class _Calls(list):
+        adopted = None
+
+    calls = _Calls()
+    adopted = []
+
+    class _FakeProc:
+        pid = 4242
+
+        def poll(self):
+            return 0
+
+        def wait(self, timeout=None):
+            return 0
+
+    def _fake_popen(args, **kwargs):
+        calls.append((list(args), kwargs))
+        return _FakeProc()
+
+    monkeypatch.setattr(appwindow.subprocess, "Popen", _fake_popen)
+    monkeypatch.setattr(appwindow, "_adopt", lambda pid: adopted.append(pid) or True)
+    monkeypatch.setattr(appwindow, "_WINDOWS", [])
+    calls.adopted = adopted
+    return calls
+
+
+def test_interface_opens_as_app_window_not_browser_tab(
+        isolated_home, fake_browser, recorded_popen):
+    import appwindow
+
+    url = "http://127.0.0.1:8765/"
+    assert appwindow.open(url) == "app"
+    assert len(recorded_popen) == 1
+    args = recorded_popen[0][0]
+
+    assert args[0] == fake_browser
+    assert f"--app={url}" in args, (
+        "без --app браузер открывает ОБЫЧНУЮ вкладку: адресная строка, чужие "
+        "вкладки и закладки — это не десктоп-приложение"
+    )
+    assert url not in args, (
+        "URL отдельным позиционным аргументом = вкладка поверх режима окна"
+    )
+
+
+def test_app_window_uses_own_profile_next_to_launcher_lock(
+        isolated_home, fake_browser, recorded_popen):
+    """Профиль окна — свой. На общем профиле окно унаследовало бы расширения и
+    сессии пользователя, а закрытие его браузера утащило бы окно программы."""
+    import appwindow
+    import importlib
+    import launcher
+    importlib.reload(launcher)
+
+    appwindow.open("http://127.0.0.1:8765/")
+    args = recorded_popen[0][0]
+    profile_args = [a for a in args if a.startswith("--user-data-dir=")]
+    assert len(profile_args) == 1, "окно поднимается на профиле пользователя"
+
+    profile = profile_args[0].split("=", 1)[1]
+    assert os.path.isdir(profile), "каталог профиля должен быть создан заранее"
+    assert os.path.dirname(profile) == str(launcher._lock_path().parent), (
+        "профиль окна обязан лежать в каталоге сессий рядом с launcher.lock"
+    )
+    assert str(isolated_home) in profile, "профиль ушёл мимо подменённого HOME"
+
+
+def test_missing_chromium_falls_back_to_browser_and_is_not_an_error(
+        isolated_home, monkeypatch):
+    """Ни Edge, ни Chrome, ни Chromium — программа обязана ЗАПУСТИТЬСЯ.
+    Запасной путь webbrowser.open ошибкой не считается."""
+    import appwindow
+
+    monkeypatch.setattr(appwindow, "find_browser", lambda: None)
+    opened = []
+    monkeypatch.setattr(appwindow.webbrowser, "open", lambda url: opened.append(url))
+
+    assert appwindow.open("http://127.0.0.1:8765/") == "browser"
+    assert opened == ["http://127.0.0.1:8765/"]
+
+
+def test_browser_search_prefers_edge_then_chrome(tmp_path, monkeypatch):
+    """Порядок поиска: Edge (есть на любой Windows 10/11 из коробки) — первым."""
+    import appwindow
+
+    monkeypatch.delenv("SHIFRATOR_APP_BROWSER", raising=False)
+    pf = tmp_path / "Program Files"
+    pf86 = tmp_path / "Program Files (x86)"
+    local = tmp_path / "Local"
+    monkeypatch.setenv("ProgramFiles", str(pf))
+    monkeypatch.setenv("ProgramFiles(x86)", str(pf86))
+    monkeypatch.setenv("LOCALAPPDATA", str(local))
+
+    chrome = pf / "Google" / "Chrome" / "Application" / "chrome.exe"
+    chrome.parent.mkdir(parents=True)
+    chrome.write_bytes(b"")
+    assert appwindow.find_browser() == str(chrome), "Chrome не найден в одиночку"
+
+    edge = pf86 / "Microsoft" / "Edge" / "Application" / "msedge.exe"
+    edge.parent.mkdir(parents=True)
+    edge.write_bytes(b"")
+    assert appwindow.find_browser() == str(edge), (
+        "при наличии обоих браузеров окно должно подниматься на Edge"
+    )
+
+
+def test_window_size_never_exceeds_screen_work_area(monkeypatch):
+    """Жалоба владельца: интерфейс режется снизу. Ноутбучные 1366x768 минус
+    панель задач — окно не имеет права запрашивать высоту больше рабочей области."""
+    import appwindow
+
+    monkeypatch.setattr(appwindow, "_work_area", lambda: (1366, 728))
+    w, h = appwindow.window_size()
+    assert (w, h) == (1360, 728)
+
+    monkeypatch.setattr(appwindow, "_work_area", lambda: (3840, 2160))
+    assert appwindow.window_size() == (1360, 900), "на большом экране — желаемый размер"
+
+    monkeypatch.setattr(appwindow, "_work_area", lambda: None)
+    assert appwindow.window_size() is None, (
+        "размер экрана не определился — размер окна не навязываем вовсе"
+    )
+
+
+def test_window_size_is_passed_to_the_browser(isolated_home, fake_browser,
+                                              recorded_popen, monkeypatch):
+    import appwindow
+
+    monkeypatch.setattr(appwindow, "_work_area", lambda: (1024, 640))
+    appwindow.open("http://127.0.0.1:8765/")
+    assert "--window-size=1024,640" in recorded_popen[0][0]
+
+
+def test_close_all_leaves_no_zombie_process(monkeypatch):
+    """Выход из программы обязан унести окно с собой: живой браузер с мёртвым
+    сервером за спиной — тот же класс, что зомби-сервер в launcher.lock."""
+    import appwindow
+    import procutil
+
+    monkeypatch.setattr(appwindow, "_WINDOWS", [])
+    proc = subprocess.Popen([sys.executable, "-c", "import time; time.sleep(30)"])
+    try:
+        appwindow._WINDOWS.append(proc)
+        appwindow.close_all()
+        assert procutil.is_pid_alive(proc.pid) is False
+        assert appwindow._WINDOWS == [], "список окон должен очищаться"
+    finally:
+        if proc.poll() is None:
+            proc.kill()
+
+
+def test_launcher_closes_the_window_on_exit():
+    """Сторож связки: `_shutdown` лаунчера обязан звать appwindow.close_all().
+    Проверяется как ТЕКСТ функции — поднимать tkinter в тестах нельзя."""
+    import inspect
+    import importlib
+    import launcher
+    importlib.reload(launcher)
+
+    source = inspect.getsource(launcher.main)
+    assert "appwindow.close_all()" in source, (
+        "выход из программы перестал закрывать окно приложения"
+    )
+    assert "webbrowser.open" not in source, (
+        "интерфейс снова открывается вкладкой браузера вместо окна приложения"
+    )
+
+
+def test_window_is_put_under_the_job_that_closes_it(
+        isolated_home, fake_browser, recorded_popen):
+    """Окно обязано попасть в объект задания СРАЗУ при запуске.
+
+    Живая проба (experiments/desktop_fit_probe.log): запущенный msedge.exe
+    завершается с кодом 0 через доли секунды, передав окно другому процессу
+    браузера. Popen после этого показывает «процесс закончился», taskkill по
+    его PID отвечает «нет такого процесса», а окно на экране живёт. Задание —
+    единственное, что этот класс зомби закрывает.
+    """
+    import appwindow
+
+    appwindow.open("http://127.0.0.1:8765/")
+    assert recorded_popen.adopted == [4242], (
+        "окно не включено в задание — закрытие программы оставит его на экране"
+    )
+
+
+def test_second_launch_does_not_take_the_window_under_its_job(
+        isolated_home, fake_browser, recorded_popen):
+    """Второй запуск (двойной клик по ярлыку при работающей программе) открывает
+    окно и СРАЗУ завершается. Возьми он окно в своё задание — оно закрылось бы
+    через мгновение после того, как человек его попросил."""
+    import appwindow
+
+    appwindow.open("http://127.0.0.1:8765/", manage=False)
+    assert recorded_popen.adopted == [], "окно ушло в задание умирающего процесса"
+    assert appwindow._WINDOWS == []
+
+
+def test_launcher_second_instance_opens_window_unmanaged():
+    """Сторож связки: путь «уже запущено» обязан звать open с manage=False."""
+    import inspect
+    import importlib
+    import launcher
+    importlib.reload(launcher)
+
+    source = inspect.getsource(launcher._handle_stale_instance)
+    assert "manage=False" in source, (
+        "второй запуск снова берёт окно под своё управление и убьёт его на выходе"
+    )
+
+
+# --------------------------------------------------------------------------- #
+# ЭТАП DESKTOP-FIT, часть 2. Раскладка не имеет права РЕЗАТЬ содержимое.
+#
+# Настоящая проверка — шаг круга «ЭКРАН ПРОВЕРКИ ПОМЕЩАЕТСЯ В ОКНО целиком»
+# (packaging/ui_circle.py): он меряет живую страницу в настоящем браузере.
+# Здесь стоит дешёвый сторож на удаление правила — он ловится обычным прогоном
+# тестов, до того как кто-то соберёт программу.
+# --------------------------------------------------------------------------- #
+
+def _index_css() -> str:
+    return open(os.path.join(_APP, "index.html"), encoding="utf-8").read()
+
+
+def test_verify_card_is_declared_a_full_height_column():
+    """`#scr-ver>.card` без `flex`+`min-height:0` растёт по содержимому: на
+    договоре из сорока строк — 1427 px в окне 643 px, и `body{overflow-y:hidden}`
+    срезает разницу МОЛЧА (замер: experiments/desktop_fit_layout.log)."""
+    css = _index_css()
+    m = re.search(r"#scr-ver>\.card\{([^}]*)\}", css)
+    assert m, "правило #scr-ver>.card пропало — карточка снова растёт по содержимому"
+    rule = m.group(1)
+    for need in ("display:flex", "flex-direction:column", "min-height:0"):
+        assert need in rule, f"в #scr-ver>.card нет «{need}»: {rule}"
+    assert re.search(r"flex:1 1 0", rule), f"карточка не тянется во всю высоту: {rule}"
+
+
+def test_verify_screen_scrolls_instead_of_clipping():
+    """Полы раскладки (тело договора не ужимается меньше 160 px) на очень низком
+    окне в высоту не влезают. Тогда экран обязан ПРОКРУЧИВАТЬСЯ: срезанное молча
+    содержимое — это потерянная кнопка, о которой человек не узнает."""
+    css = _index_css()
+    m = re.search(r"#scr-ver\.screen\.active\{([^}]*)\}", css)
+    assert m, "экран проверки снова режет содержимое вместо прокрутки"
+    assert "overflow-y:auto" in m.group(1), m.group(1)
