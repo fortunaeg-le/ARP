@@ -71,6 +71,68 @@ def _is_cf(ch: str) -> bool:
     return unicodedata.category(ch) == "Cf"
 
 
+#: чем ограничен ТОКЕН при разборе сторон разрыва: пробельное и вёрсточное.
+#: Знаки препинания токен НЕ рвут — «704-068,» и «д.63» это один токен записи.
+_TOKEN_BREAK = frozenset("\n\r\t ") | _SPACE_LIKE
+
+#: символы, допустимые внутри ЦИФРОВОГО токена помимо цифр и их омоглифов
+#: (_DIGIT_FOLD ниже): разделители групп записи реквизита и номера.
+_NUM_TOKEN_EXTRA = frozenset("-–—‑‒−/№.,()+№")
+
+
+def _side_token(base: str, i: int, j: int) -> tuple[str, str]:
+    """Токены вплотную слева и справа от прогона [i, j)."""
+    a = i
+    while a > 0 and base[a - 1] not in _TOKEN_BREAK:
+        a -= 1
+    b = j
+    while b < len(base) and base[b] not in _TOKEN_BREAK:
+        b += 1
+    return base[a:i], base[j:b]
+
+
+def _is_numeric_token(tok: str) -> bool:
+    """Токен ЗАПИСИ ЧИСЛА: хотя бы одна настоящая цифра и ни одной буквы,
+    кроме омоглифов цифр. «149ЗІ1О09843б» — число, «Иваново» — нет."""
+    core = [ch for ch in tok if not _is_cf(ch)]
+    if not any(ch.isdigit() for ch in core):
+        return False
+    return all(ch.isdigit() or ch in _DIGIT_FOLD or ch in _NUM_TOKEN_EXTRA
+               for ch in core)
+
+
+def _same_token(base: str, i: int, j: int) -> bool:
+    """Один ли ТОКЕН по обе стороны прогона [i, j) — то есть разрыв ВНУТРИ
+    значения, а не структурная граница двух полей.
+
+    ЭТАП SEAM-JOIN, различение для прогонов с '\\n' (докстринг модуля, правило
+    «лечится только разрыв ВНУТРИ ТОКЕНА» — раньше оно проверялось по ОДНОМУ
+    символу с каждой стороны, и «…525187\\nТел.:» проходило как внутритокенное):
+
+      * число | число — разорванная запись числа («044\\n525187», «149З\\nІ1О09843б»);
+      * слово | слово — разорванное слово («Морозо\\nва», «ИН\\nН»), КРОМЕ шага
+        регистра вверх: строчная слева и ЗАГЛАВНАЯ справа — начало нового
+        структурного блока («Олеговна\\nАдрес регистрации»), тот же признак, на
+        котором стоит _person_ok;
+      * число | слово и слово | число — две РАЗНЫЕ записи («525187\\nТел.»,
+        «Иваново\\n2024»): значение кончилось, началась метка.
+
+    Омоглиф цифры считается цифрой (свод normalizer его ещё не применял к этому
+    виду), поэтому испорченный реквизит остаётся числом по обе стороны."""
+    left, right = _side_token(base, i, j)
+    if not left or not right:
+        return False
+    if _is_numeric_token(left) and _is_numeric_token(right):
+        return True
+    lc = [ch for ch in left if not _is_cf(ch)]
+    rc = [ch for ch in right if not _is_cf(ch)]
+    if not lc or not rc or not lc[-1].isalpha() or not rc[0].isalpha():
+        return False
+    if _is_numeric_token(left) or _is_numeric_token(right):
+        return False
+    return not (lc[-1].islower() and rc[0].isupper())
+
+
 def _scan_runs(base: str) -> list[tuple[list[int], str, str, str]]:
     """Прогоны вёрсточных символов между значащими соседями.
 
@@ -126,6 +188,29 @@ def _scan_runs(base: str) -> list[tuple[list[int], str, str, str]]:
             elif ((left.isalnum() or left in _WORDLIKE_EXT)
                   and (right.isalnum() or right in _WORDLIKE_EXT)):
                 klass = "ext"
+            # ЭТАП SEAM-JOIN. Прогон, который СКЛЕИВАЕТ два токена переносом
+            # строки (перенос есть, обычного пробела в прогоне не осталось),
+            # лечится только если по обе стороны ОДИН И ТОТ ЖЕ токен
+            # (_same_token). '\n' — граница по самой разметке; склейка двух
+            # РАЗНЫХ токенов через неё не чинит ничего, а ломает соседей:
+            # «БИК 044\n525187\nТел.:» превращалось в «БИК 044525187Тел.:»,
+            # где `\b` паттерна BIK уже не срабатывает, — значение терялось
+            # ровно из-за ремонта (16 БИК корпуса, разведка
+            # experiments/seam_join_why.py).
+            #
+            # Правило узкое НАМЕРЕННО, три оговорки:
+            #   * прогон с ВЫЖИВШИМ обычным пробелом («199 898,00\n руб.»)
+            #     ничего не склеивает — там правило не применяется;
+            #   * типографский пробел без '\n' — артефакт набора, а не граница
+            #     разметки, и тоже не проверяется;
+            #   * класс 'ext' (край '@'/'.'/'-') внутри значения по построению
+            #     («petrov@\nbk.ru»): токены там кончаются на служебном символе,
+            #     и требовать от них однородности значило бы отменить ремонт
+            #     почты целиком (замерено: −11 EMAIL).
+            if (klass == "strict" and not has_space
+                    and any(base[p] == "\n" for p in drops)
+                    and not _same_token(base, i, j)):
+                klass = None
             if klass is not None:
                 out.append((drops, klass, left, right))
         i = j
